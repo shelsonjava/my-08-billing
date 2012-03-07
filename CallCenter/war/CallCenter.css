@@ -1,0 +1,76 @@
+.abouttext {
+  color: gray;
+}
+.headerClass{
+	background-image: url("images/logo_axali4.jpg");
+}
+.loginTopPadding{
+	padding-top: 20px;	
+}
+.paddingRight{
+	padding-right: 11px;
+}
+.headerStyle{
+	font-size: 12px;
+}
+.paddingLeft12{	
+	padding-left: 12px;
+}
+.paddingRight10{	
+	padding-right: 16px;
+}
+.myHintStyle{
+	width: 0px;
+}
+.fontRed{
+	color: red;
+}
+.fontRedAndBold{
+	color: red;
+	font-weight: bold;
+	border-bottom: 1px solid #a7abb4;
+	border-right: 1px solid #a7abb4;
+	font-size: 12px;
+}
+.fontRedWithBorder{
+	color: red;
+	border-bottom: 1px solid #a7abb4;
+	border-right: 1px solid #a7abb4;
+	font-size: 12px;
+}
+.fontGreenWithBorder{
+	color: green;
+	border-bottom: 1px solid #a7abb4;
+	border-right: 1px solid #a7abb4;
+	font-size: 12px;
+}
+.textBoxStyleMan{
+	color:blue; 
+}
+.textBoxStyleWoman{
+	color:red;
+}
+
+.fontRedAndBoldNoBorder{
+	color: red;
+	font-weight: bold;
+	font-size: 12px;
+	border: 1px solid #a7abb4;
+}
+.fontRedAndBoldNoBorder1{
+	color: red;
+	font-weight: bold;
+	font-size: 12px;
+}
+.BoldNoBorder{
+	font-weight: bold;
+	font-size: 12px;	
+}
+
+.redStyle{
+	color:red;
+}
+.headerStyle12AndRed{
+	font-size: 12px;
+	color: red;
+}
