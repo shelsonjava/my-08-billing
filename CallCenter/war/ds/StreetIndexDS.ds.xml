@@ -1,0 +1,77 @@
+<DataSource
+	ID="StreetIndexDS"
+	serverType="sql"
+	tableName="info.street_index"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="street_index_id"	type="integer"		title="ID"				hidden="true" primaryKey="true" />
+		<field name="street_id"			type="integer" 		title="Street Id"		hidden="true"/>
+		<field name="streetName"		type="text"			title="Street Name" />
+		<field name="street_comment"	type="text"			title="Street Comment"/>
+		<field name="street_index"		type="text"			title="Street Index"/>
+		<field name="rec_user"			type="text"			title="Record User"/>
+		<field name="rec_date"			type="datetime"		title="Record Date"/>
+		<field name="upd_user"			type="text"			title="Update User"/>
+		<field name="deleted"			type="integer"		title="Deleted" 		hidden="true"/>
+		<field name="loggedUserName"	type="text"			title="Logged UserName" hidden="true" />	
+		<field name="idx_descr"			type="text"			title="idx_descr" 		hidden="true" />	
+	</fields>
+	
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+
+		<!-- Add Street Index -->
+		<operationBinding operationType="add" operationId="addStreetIndex" serverMethod="addStreetIndex">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+        </operationBinding>
+        
+		<!-- Street Index Update -->
+		<operationBinding operationType="update" operationId="updateStreetIndex" serverMethod="updateStreetIndex">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+        </operationBinding>
+        
+        <!-- Street Index Status Update -->
+		<operationBinding operationType="update" operationId="updateStreetIndexStatus" serverMethod="updateStreetIndexStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchStreetIndexesFromDB" operationType="fetch">
+    		<selectClause>   			
+    			t.street_index_id,
+				t.street_id,
+				t.street_comment,
+				t.street_index,
+				t.rec_date,
+				t.rec_user,
+				t.upd_user,
+				t.deleted,
+    			s.street_name_geo as streetName    			
+			</selectClause> 
+			<tableClause>street_index t, streets s</tableClause>
+			<whereClause><![CDATA[ 
+				t.street_id = s.street_id
+				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+				#if($criteria.street_comment) and t.street_comment like ($criteria.street_comment)||'%' #end
+				#if($criteria.street_index) and t.street_index like ($criteria.street_index)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.street_index_id</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchStrIdxDescrs" operationType="fetch" customFields="idx_descr">
+    		<selectClause>   			
+    			t.street_index||' : '||t.street_comment as idx_descr
+			</selectClause> 
+			<tableClause>street_index t</tableClause>
+			<whereClause><![CDATA[ 
+				1=1
+				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.street_index_id</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

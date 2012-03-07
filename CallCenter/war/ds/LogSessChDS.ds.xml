@@ -1,0 +1,101 @@
+<DataSource
+    ID="LogSessChDS"
+    serverType="sql"
+    tableName="info.log_session_charges"      
+    qualifyColumnNames="false"
+    >
+    <fields>
+    	<field name="id"				type="integer" 	title="ID" primaryKey="true" hidden="true"/>
+    	<field name="session_id" 		type="text" 	title="Session ID"  hidden="true"/>
+        <field name="ym"		 		type="integer" 	title="Year/Month"	hidden="true"/>
+        <field name="service_id"  		type="integer"  title="Service Id"	hidden="true"/>        
+        <field name="service_name_geo"	type="text"  	title="Service Name"/>
+        <field name="price"  			type="integer"  title="Price"/>
+        <field name="org_name"			type="text"  	title="Org. Name"/>
+        <field name="rec_date"			type="date" 	title="rec_date"/>
+        <field name="ym"  				type="integer"  title="ym"/>
+        <field name="amount"  			type="float"  	title="amount"/>
+        <field name="aprice"  			type="float"  	title="aprice"/>
+        <field name="cnt"  				type="float"  	title="cnt"/>
+    </fields>
+    
+     <operationBindings>
+    	<operationBinding operationId="custSessCharges" operationType="fetch" 
+    		customFields="ch.session_id, s.service_name_geo , ch.price, o.org_name">
+    		<selectClause>   			
+    			ch.session_id,	
+				s.service_name_geo,
+				ch.price,
+				o.org_name
+			</selectClause> 
+			<tableClause>log_session_charges ch, services s, log_charge_hits h, main_orgs o</tableClause>
+			<whereClause><![CDATA[ 
+				ch.service_id = s.service_id(+) and
+				ch.id = h.id(+) and				
+				h.main_id = o.main_id(+) and				
+				ch.session_id=$criteria.sessionId and
+				ch.deleted = 0
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	<operationBinding operationId="custSessNavig" operationType="fetch" 
+    		customFields="h.session_id s.service_name_geo o.org_name">
+    		<selectClause>   			
+    			h.session_id,	
+				s.service_name_geo,
+				o.org_name
+			</selectClause> 
+			<tableClause>log_main_hits h, services s, main_orgs o</tableClause>
+			<whereClause><![CDATA[ 
+				h.service_id = s.service_id and				
+				h.main_id = o.main_id(+) and				
+				h.session_id=$criteria.sessionId
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+        <!-- Add Log Session Charge -->
+		<operationBinding operationType="add" operationId="addLogSessionCharge" serverMethod="addLogSessionCharge">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+        <!-- Log SMS -->
+		<operationBinding operationId="LogSMS" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	{call insert_send_sms_new($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user)}
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        <operationBinding operationId="LogSMSNew1" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	{call insert_send_sms_new1($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user, $values.sms_type)}            	 	
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
+        <operationBinding operationId="LogSMSDisc" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	insert into info.log_sms 
+            	 		(session_id,sms_type,sms_text,phone,rec_user) 
+            	 	values 
+            	 		($values.session_id,$values.sms_type,info.trsms($values.sms_text),trim($values.phone),$values.rec_user)
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
+        <operationBinding operationId="LogMainHits" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	insert into LOG_MAIN_HITS 
+            	 		(YM, SESSION_ID,  MAIN_ID, SERVICE_ID) 
+					values
+                        ($values.ym, $values.session_id, $values.main_id, $values.service_id)            		
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
+    </operationBindings>
+</DataSource>

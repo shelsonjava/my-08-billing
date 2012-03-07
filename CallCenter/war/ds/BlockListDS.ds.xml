@@ -1,0 +1,85 @@
+<DataSource
+	ID="BlockListDS"
+	serverType="sql"
+	tableName="info.block_list"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="id"					type="integer"		title="ID"					hidden="true" primaryKey="true" />
+		<field name="note"					type="text"			title="note"/>
+		<field name="orgName"				type="text"			title="orgName"/>
+		<field name="orgDepName"			type="text"			title="orgDepName"/>
+		<field name="status"				type="integer"		title="status"				hidden="true"/>
+		<field name="block_type"			type="integer"		title="block_type"			hidden="true"/>
+		<field name="deleted"				type="integer"		title="deleted"				hidden="true"/>
+		<field name="main_detail_id"		type="integer"		title="main_detail_id"		hidden="true"/>
+		<field name="main_id"				type="integer"		title="main_id"				hidden="true"/>
+		<field name="rec_date"				type="datetime"		title="rec_date"			hidden="true"/>
+		<field name="rec_user"				type="text"			title="rec_user"			hidden="true"/>
+		<field name="upd_date"				type="datetime"		title="upd_date"			hidden="true"/>
+		<field name="upd_user"				type="text"			title="upd_user"			hidden="true"/>
+		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
+		<field name="blockListPhones"		type="any"			title="blockListPhones" 	hidden="true"/>
+		<field name="phone"					type="text"			title="phone"				hidden="true"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.BlockListManagerDMI"/>
+
+		<!-- Add BlockList -->
+		<operationBinding operationType="add" operationId="addBlockList" serverMethod="addBlockList">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.BlockListManagerDMI"/>
+        </operationBinding>
+        
+		<!-- BlockList Update -->
+		<operationBinding operationType="update" operationId="updateBlockList" serverMethod="updateBlockList">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.BlockListManagerDMI"/>
+        </operationBinding>
+        
+        <!-- BlockList Status Update -->
+		<operationBinding operationType="update" operationId="updateBlockListStatus" serverMethod="updateBlockListStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.BlockListManagerDMI"/>
+        </operationBinding>
+       
+    	<operationBinding operationId="searchAllBlockList" operationType="fetch">
+    		<selectClause>   			
+    			  	t.id,
+					t.block_type,
+					t.deleted,
+					t.main_detail_id,
+					t.main_id,
+					t.note,
+					t.rec_date,
+					t.rec_user,
+					t.status,
+					t.upd_date,
+					t.upd_user,
+				  	mo1.org_name as orgName,
+				  	md.main_detail_geo as orgDepName 
+			</selectClause> 
+			<tableClause>info.block_list t, info.main_orgs mo1, info.main_details md</tableClause>
+			<whereClause><![CDATA[
+				 t.main_id = mo1.main_id(+) and t.main_detail_id = md.main_detail_id (+)
+				 #if($criteria.note) and t.note like '%'||($criteria.note)||'%' #end
+				 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
+				 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
+				 #if($criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
+				 #if($criteria.org_name4) and mo1.org_name like '%'||($criteria.org_name4)||'%' #end
+				 #if($criteria.org_name5) and mo1.org_name like '%'||($criteria.org_name5)||'%' #end
+				 #if($criteria.org_name6) and mo1.org_name like '%'||($criteria.org_name6)||'%' #end
+				 #if($criteria.org_name7) and mo1.org_name like '%'||($criteria.org_name7)||'%' #end
+				 #if($criteria.org_name8) and mo1.org_name like '%'||($criteria.org_name8)||'%' #end
+				 #if($criteria.org_name9) and mo1.org_name like '%'||($criteria.org_name9)||'%' #end
+				 #if($criteria.deleted) and t.deleted = $criteria.deleted #end
+				 #if($criteria.phone)
+				 	and t.id in (select tt.block_list_id from info.block_list_phones tt where tt.phone = $criteria.phone) 				 	
+				 #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.id</orderClause>
+    	</operationBinding>
+
+    </operationBindings>	
+</DataSource>

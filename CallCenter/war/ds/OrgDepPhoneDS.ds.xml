@@ -1,0 +1,48 @@
+<DataSource 
+	ID="OrgDepPhoneDS"
+    serverType="sql"
+    tableName="info.abonents"      
+    qualifyColumnNames="false"
+    dropExtraFields = "false">
+    
+	<fields>
+		<field name="abonent_id"				type="integer"		title="ID"						hidden="true" 	primaryKey="true" />
+		<field name="dep_phone"					type="text"  		title="dep_phone"/>
+		<field name="contact_phones"			type="integer"  	title="contact_phones"			hidden="true"/>
+		<field name="phone_state"				type="text"  		title="phone_state"/>
+	</fields>
+	
+	<operationBindings>
+		
+		
+		
+		<!-- FETCH -->
+        <operationBinding operationId="searchOrgDepPhones" operationType="fetch">
+            <customSQL>
+            	 <![CDATA[
+            	 	select * from (select ab.abonent_id,decode(ps.phone_state_id,6,'მხს.',decode(ab.abonent_hide,1,'დაფ.',p.phone)) as dep_phone,
+					       ps.phone_state,ab.contact_phones
+					from abonents ab, phones p, phone_states ps
+					where ab.phone_id = p.phone_id
+					   and p.phone_state_id = ps.phone_state_id
+					   and ab.deleted = 0
+					   and ab.main_detail_id = $criteria.main_detail_id
+					   and ab.contact_phones = 1 order by ab.abonent_id) tt
+					union all
+					select * from (select ab.abonent_id,decode(ps.phone_state_id,6,'მხს.',decode(ab.abonent_hide,1,'დაფ.',p.phone)) as dep_phone,
+					       ps.phone_state,ab.contact_phones
+					from abonents ab, phones p, phone_states ps
+					where ab.phone_id = p.phone_id
+					   and p.phone_state_id = ps.phone_state_id
+					   and ab.deleted = 0
+					   and ab.main_detail_id = $criteria.main_detail_id
+					   and ab.contact_phones = 0 order by ab.abonent_id) tt
+					where 1 = 1
+					 #if($criteria.dep_phone) and tt.dep_phone like '%'||$criteria.dep_phone||'%' #end
+				]]>
+            </customSQL> 
+        </operationBinding>
+		
+		
+	</operationBindings>
+</DataSource>

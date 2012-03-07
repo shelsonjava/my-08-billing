@@ -1,0 +1,299 @@
+<DataSource 
+	ID="AbonentsDS" 
+	serverType="sql"
+	tableName="info.main_services" 
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="abonent_id" 			type="integer"	title="ABonent ID"			hidden="true"	primaryKey="true" />
+		<field name="main_id" 				type="integer"	title="Main ID"				hidden="true"/>
+		<field name="address_id" 			type="integer"	title="Address ID"			hidden="true"/>
+		<field name="phone_id" 				type="integer"	title="Phone ID"			hidden="true"/>		
+		<field name="firstname" 			type="text" 	title="First Name"/>
+		<field name="lastname"  			type="text"		title="Last Name" />
+		<field name="phone" 				type="text"		title="Phone" />
+		<field name="phone_state"			type="text" 	title="Phone State" />
+		<field name="phone_state_id"		type="integer"	title="Phone State ID"		hidden="true"/>
+		<field name="upd_date" 				type="datetime" title="Upd Date" />
+		<field name="city"					type="text" 	title="City" />
+		<field name="street"				type="text" 	title="Street" />
+		<field name="street_location_geo"	type="text" 	title="Street Location Geo" hidden="true"/>
+		<field name="upd_user" 				type="text" 	title="Upd User" />				
+		<field name="firstname_id" 			type="integer"	title="First Name ID"		hidden="true"/>		
+		<field name="lastname_id" 			type="integer"	title="Last Name ID" 		hidden="true"/>
+		<field name="abonent_hide" 			type="integer"	title="Abonent Hide"		hidden="true"/>
+		<field name="phone_parallel" 		type="integer"	title="Phone Parallel"		hidden="true"/>
+		<field name="phone_status_id" 		type="integer"	title="Phone Status ID"		hidden="true"/>
+		<field name="phone_type_id" 		type="integer"	title="Phone Type ID"		hidden="true"/>
+		<field name="city_id" 				type="integer"	title="City ID"				hidden="true"/>
+		<field name="street_id" 			type="integer"	title="Street ID"			hidden="true"/>
+		<field name="city_region_id" 		type="integer"	title="City Region ID"		hidden="true"/>
+		<field name="address_hide" 			type="integer"	title="Address Hide"		hidden="true"/>
+		<field name="address_suffix_geo"	type="text"		title="Address Suffix Geo"	hidden="true"/>
+		<field name="addr_number"			type="text"		title="Address Number"		hidden="true"/>
+		<field name="addr_block"			type="text"		title="Address Block"		hidden="true"/>
+		<field name="addr_appt"				type="text"		title="Address Appt"		hidden="true"/>
+		<field name="addr_descr"			type="text"		title="Address Descr"		hidden="true"/>
+		<field name="street_district_id" 	type="integer"	title="Street District ID"	hidden="true"/>		
+		<field name="deleted" 				type="integer"	title="Deleted"				hidden="true"/>	
+		<field name="address" 				type="integer"	title="address"				hidden="true"/>	
+	</fields>
+	
+	<operationBindings>
+	
+		<!-- Add Abonent -->
+		<operationBinding operationType="add" operationId="addAbonent" serverMethod="saveOrUpdateAbonent">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.AbonentDMI"/>
+        </operationBinding>
+        
+        <!-- Update Abonent -->
+		<operationBinding operationType="update" operationId="updateAbonent" serverMethod="saveOrUpdateAbonent">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.AbonentDMI"/>
+        </operationBinding>
+        
+        <!-- Update Abonent Status -->
+		<operationBinding operationType="update" operationId="updateAbonentStatus" serverMethod="setAbonentStatusToDelete">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.AbonentDMI"/>
+        </operationBinding>
+        
+        <!-- Search organizations by phone for abonent -->
+		<operationBinding operationType="fetch" operationId="getOrgInfoByPhoneForAbonent" serverMethod="getOrgInfosByPhone">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.AbonentDMI"/>
+        </operationBinding>
+        
+		<!-- FETCH -->
+		<operationBinding operationId="customSearch"
+			operationType="fetch">			
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.Abonent"/>
+			<selectClause>				
+      			t.abonent_id,
+      			t.main_id,
+      			ma.address_id,
+      			p.phone_id,
+      			f.firstname,
+      			l.lastname,
+      			p.phone,      			
+      			ps.phone_state,
+      			ps.phone_state_id,
+      			t.upd_date,      			
+      			c.city_name_geo as city,
+      			str.street_name_geo as street,
+      			t.upd_user,
+      			f.firstname_id,
+      			l.lastname_id,
+      			ap.is_hide as abonent_hide,
+      			ap.is_parallel as phone_parallel,
+      			ap.phone_status_id,
+      			p.phone_type_id,
+      			c.city_id,
+      			str.street_id,
+      			sd.city_region_id,
+      			ma.address_hide,
+      			ma.address_suffix_geo,
+      			ma.addr_number,
+      			ma.addr_block,
+      			ma.addr_appt,
+      			ma.addr_descr,
+      			sd.street_district_id,
+      			str.street_location_geo,
+      			t.deleted,
+      			str.street_name_geo||' '||ma.address_suffix_geo as address
+			</selectClause>
+			<tableClause>
+				abonents t,
+				main_services tt,
+				firstnames f,
+				lastnames l,
+				phones p,
+				abonent_to_phones ap,
+				phone_states ps,
+				main_address ma,
+				streets str,
+				cities c,
+				street_district sd
+			</tableClause>
+			<whereClause><![CDATA[ 
+				tt.service_id = 7 and 
+				tt.main_id = t.main_id and 
+				f.firstname_id = t.firstname_id and  
+				l.lastname_id = t.lastname_id and
+				t.abonent_id = ap.abonent_id and
+				p.phone_id = ap.phone_id and 
+				ps.phone_state_id(+) = p.phone_state_id and 
+				ma.main_id = t.main_id and 
+				str.street_id = ma.street_id and
+				c.city_id = str.city_id and 
+				ma.city_id = sd.city_id(+) and
+			    ma.street_id = sd.street_id(+) and
+			    ma.city_region_id = sd.city_region_id (+) 				
+				#if($criteria.abonent_id) AND t.abonent_id = $criteria.abonent_id #end
+				#if($criteria.firstname_id) AND f.firstname_id = $criteria.firstname_id #end
+				#if($criteria.lastname_id) AND l.lastname_id = $criteria.lastname_id #end
+				#if($criteria.phone) AND p.phone like ($criteria.phone)||'%' #end
+				#if($criteria.city_id) AND c.city_id = $criteria.city_id #end
+				#if($criteria.city_region_id) AND sd.city_region_id = $criteria.city_region_id #end
+				#if($criteria.street_id) AND sd.street_id = $criteria.street_id #end
+				#if($criteria.street_name_geo) AND str.street_name_geo like '%'||$criteria.street_name_geo||'%' #end
+				#if($criteria.addr_number) AND ma.addr_number like '%%'||($criteria.addr_number)||'%' #end
+				#if($criteria.addr_block) AND ma.addr_block like '%%'||($criteria.addr_block)||'%' #end
+				#if($criteria.addr_appt) AND ma.addr_appt like '%%'||($criteria.addr_appt)||'%' #end
+				#if($criteria.addr_descr) AND ma.addr_descr like '%%'||($criteria.addr_descr)||'%' #end
+				#if($criteria.is_parallel) AND ap.is_parallel = $criteria.is_parallel #end
+				#if($criteria.phone_status_id) AND ap.phone_status_id = $criteria.phone_status_id #end
+				#if($criteria.phone_state_id) AND p.phone_state_id = $criteria.phone_state_id #end
+				#if($criteria.phone_type_id) AND p.phone_type_id = $criteria.phone_type_id #end
+				#if($criteria.is_hide) AND ap.is_hide = $criteria.is_hide #end
+				#if($criteria.firstname) AND f.firstname like '%%'||($criteria.firstname)||'%' #end
+				#if($criteria.lastname) AND l.lastname like '%%'||($criteria.lastname)||'%' #end				
+				]]>
+			</whereClause>			
+		</operationBinding>
+		
+		
+		
+		<!-- FETCH -->
+		<operationBinding operationId="customSearchForCC"
+			operationType="fetch">			
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.Abonent"/>
+			<selectClause>	/*+ use_nl(t,tt,f,l,p,ap,ps,ma,str,c,sd) */			
+      			t.abonent_id,
+      			t.main_id,
+      			ma.address_id,
+      			p.phone_id,
+      			f.firstname,
+      			l.lastname,
+      			decode(ap.is_hide,1,'დაფ.', decode(ps.phone_state_id,6,'მხს.',p.phone)) as phone,
+      			ps.phone_state,
+      			ps.phone_state_id,
+      			t.upd_date,
+      			decode(ma.address_hide,1,'დაფარულია',c.city_name_geo) as city,
+      			decode(ma.address_hide,1,'დაფარულია',str.street_name_geo) as street,
+      			t.upd_user,
+      			f.firstname_id,
+      			l.lastname_id,
+      			ap.is_hide as abonent_hide,
+      			ap.is_parallel as phone_parallel,
+      			ap.phone_status_id,
+      			p.phone_type_id,
+      			c.city_id,
+      			str.street_id,
+      			sd.city_region_id,
+      			ma.address_hide,
+      			ma.address_suffix_geo,
+      			ma.addr_number,
+      			ma.addr_block,
+      			ma.addr_appt,
+      			ma.addr_descr,
+      			sd.street_district_id,
+      			str.street_location_geo,
+      			t.deleted,
+      			decode(ma.address_hide,1,'დაფარულია',(str.street_name_geo||' '||ma.address_suffix_geo)) as address1,
+      			str.street_name_geo || ' ' ||
+       			(decode(ma.addr_number,null,'',ma.addr_number)|| decode(ma.addr_block,null,'','კ.'||ma.addr_block)||
+        		 decode(ma.addr_appt,null,'',' ბ.'||ma.addr_appt)|| ma.addr_descr) as address      			
+			</selectClause>
+			<tableClause>
+				abonents t,
+				main_services tt,
+				firstnames f,
+				lastnames l,
+				phones p,
+				abonent_to_phones ap,
+				phone_states ps,
+				main_address ma,
+				streets str,
+				cities c,
+				street_district sd
+			</tableClause>
+			<whereClause><![CDATA[ 
+				tt.service_id = 7 and 
+				tt.main_id = t.main_id and 
+				f.firstname_id = t.firstname_id and  
+				l.lastname_id = t.lastname_id and
+				t.abonent_id = ap.abonent_id and
+				p.phone_id = ap.phone_id and 
+				ps.phone_state_id(+) = p.phone_state_id and 
+				ma.main_id = t.main_id and 
+				str.street_id = ma.street_id and
+				c.city_id = str.city_id and 
+				ma.city_id = sd.city_id(+) and
+			    ma.street_id = sd.street_id(+) and
+			    ma.city_region_id = sd.city_region_id (+) and 
+			    t.deleted = 0
+				
+				#if($criteria.phone) AND p.phone like ($criteria.phone)||'%' #end
+				#if($criteria.phone_param) AND p.phone like ($criteria.phone_param)||'%' #end
+				
+				#if($criteria.city_id) AND c.city_id = $criteria.city_id #end
+				#if($criteria.city_region_id) AND sd.city_region_id = $criteria.city_region_id #end
+				
+				#if($criteria.street_name_geo) AND 
+					 str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				 decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo||'%' #end
+				#if($criteria.address) AND (str.street_name_geo||' '||ma.address_suffix_geo) like '%'||$criteria.address||'%' #end
+				
+				
+				#if($criteria.street_name_geo_param1) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param1||'%' 
+				#end
+				#if($criteria.street_name_geo_param2) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param2||'%' 
+				#end
+				#if($criteria.street_name_geo_param3) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param3||'%' 
+				#end
+				#if($criteria.street_name_geo_param4) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param4||'%' 
+				#end
+				#if($criteria.street_name_geo_param5) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param5||'%' 
+				#end
+				#if($criteria.street_name_geo_param6) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param6||'%' 
+				#end
+				#if($criteria.street_name_geo_param7) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param7||'%' 
+				#end
+				#if($criteria.street_name_geo_param8) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param8||'%' 
+				#end
+				#if($criteria.street_name_geo_param9) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param9||'%' 
+				#end
+				#if($criteria.street_name_geo_param10) AND 
+					  str.street_name_geo || ' ' || (decode(ma.addr_number, null, '', ma.addr_number) || decode(ma.addr_block, null, '', 'კ.' || ma.addr_block) ||
+       				  decode(ma.addr_appt, null, '', ' ბ.' || ma.addr_appt) || ma.addr_descr)
+					 like '%'||$criteria.street_name_geo_param10||'%' 
+				#end
+				
+				#if($criteria.firstname) AND f.firstname like ($criteria.firstname)||'%' #end
+				#if($criteria.firstname_param) AND f.firstname like ($criteria.firstname_param)||'%' #end
+				
+				#if($criteria.lastname) AND l.lastname like ($criteria.lastname)||'%' #end
+				#if($criteria.lastname_param) AND l.lastname like ($criteria.lastname_param)||'%' #end
+				
+				]]>
+			</whereClause>			
+		</operationBinding>
+		
+	</operationBindings>
+</DataSource>

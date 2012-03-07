@@ -1,0 +1,108 @@
+<DataSource
+	ID="BillCallsBySrvDS"
+	serverType="sql"
+	tableName="info.billing_calls_by_service"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="id"					type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="bill_ym"				type="integer"		title="bill_ym"/>
+		<field name="bill_date"				type="date"			title="bill_date"/>
+		<field name="bill_date_str"			type="text"			title="bill_date_str"/>
+		<field name="service_id"			type="integer"		title="service_id"/>
+		<field name="calls_count"			type="integer"		title="calls_count"/>
+		<field name="rec_date"				type="datetime"		title="rec_date"/>
+		<field name="type"					type="integer"		title="type"/>
+		<field name="service_name_geo"		type="text"			title="service_name_geo"/>
+		<field name="count_type"			type="integer"		title="count_type"/>		
+		<field name="week_day"				type="text"			title="week_day"/>
+		<field name="value"					type="integer"		title="value"/>
+	</fields>
+
+	<operationBindings>		
+
+    	<operationBinding operationId="searchBillCallsBySrv" operationType="fetch">
+    		<selectClause>   			
+    			trunc(t.bill_date),
+    			info.getFormatedDate(t.bill_date) as bill_date_str,
+    			#if($criteria.groupBySum == 0)
+    				s.service_name_geo,
+				#elseif($criteria.groupBySum == 1)
+					'ყველა სერვისი' as service_name_geo,
+				#end
+				
+				#if($criteria.allInMoney==1)
+					sum(
+						t.calls_count * 
+						case when t.type = 2 then s.price_special/100 else s.price/100 end
+					) as value,
+				#else
+					sum(t.calls_count) as value,
+				#end
+				
+				count_type,
+				info.Getweekdaybydate(t.bill_date) as week_day
+			</selectClause> 
+			<tableClause>billing_calls_by_service t, info.services s</tableClause>
+			<whereClause><![CDATA[
+				 s.service_id = t.service_id
+				 #if($criteria.bill_date_start) and trunc(t.bill_date) >= trunc($criteria.bill_date_start) #end
+				 #if($criteria.bill_date_end) and trunc(t.bill_date) <= trunc($criteria.bill_date_end) #end
+				 
+				 #if($criteria.type && $criteria.type == 0 ) 
+				 	and t.type in (1,2)
+				 #else
+				 	 and t.type = $criteria.type
+				 #end
+				 
+				 #if($criteria.count_type) and t.count_type = $criteria.count_type #end
+				
+				 #if($criteria.groupBySum == 0) and ( t.service_id = -10900001 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId1) or t.service_id = $criteria.servicesId1 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId2) or t.service_id = $criteria.servicesId2 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId3) or t.service_id = $criteria.servicesId3 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId4) or t.service_id = $criteria.servicesId4 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId5) or t.service_id = $criteria.servicesId5 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId6) or t.service_id = $criteria.servicesId6 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId7) or t.service_id = $criteria.servicesId7 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId8) or t.service_id = $criteria.servicesId8 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId9) or t.service_id = $criteria.servicesId9 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId10) or t.service_id = $criteria.servicesId10 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId11) or t.service_id = $criteria.servicesId11 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId12) or t.service_id = $criteria.servicesId12 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId13) or t.service_id = $criteria.servicesId13 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId14) or t.service_id = $criteria.servicesId14 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId15) or t.service_id = $criteria.servicesId15 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId16) or t.service_id = $criteria.servicesId16 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId17) or t.service_id = $criteria.servicesId17 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId18) or t.service_id = $criteria.servicesId18 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId19) or t.service_id = $criteria.servicesId19 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId20) or t.service_id = $criteria.servicesId20 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId21) or t.service_id = $criteria.servicesId21 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId22) or t.service_id = $criteria.servicesId22 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId23) or t.service_id = $criteria.servicesId23 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId24) or t.service_id = $criteria.servicesId24 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId25) or t.service_id = $criteria.servicesId25 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId26) or t.service_id = $criteria.servicesId26 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId27) or t.service_id = $criteria.servicesId27 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId28) or t.service_id = $criteria.servicesId28 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId29) or t.service_id = $criteria.servicesId29 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId30) or t.service_id = $criteria.servicesId30 #end
+				
+				 #if($criteria.groupBySum == 0) ) #end
+				 	
+				 #if($criteria.groupBySum == 0)
+				 	group by trunc(t.bill_date), info.getFormatedDate(t.bill_date), s.service_name_geo, t.service_id, count_type, info.Getweekdaybydate(t.bill_date)
+				 	order by trunc(t.bill_date), t.service_id
+				 #elseif($criteria.groupBySum == 1)
+				 	group by trunc(t.bill_date), info.getFormatedDate(t.bill_date), count_type, info.Getweekdaybydate(t.bill_date)
+				 	order by trunc(t.bill_date)
+				 #end				 	
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+    	
+    </operationBindings>	
+</DataSource>

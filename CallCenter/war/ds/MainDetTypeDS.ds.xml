@@ -1,0 +1,96 @@
+<DataSource
+	ID="MainDetTypeDS"
+	serverType="sql"
+	tableName="info.main_detail_types"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="main_detail_type_id"		type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="main_detail_type_name_geo"	type="text"			title="main_detail_type_name_geo"/>
+		<field name="service_name_geo"			type="text"			title="service_name_geo"/>
+		<field name="rec_date"					type="datetime"		title="Record Date"/>
+		<field name="rec_user"					type="text"			title="Record User"/>
+		<field name="upd_user"					type="text"			title="Update User"/>
+		<field name="upd_date"					type="datetime"		title="upd_date"/>
+		<field name="searcher_zone"				type="integer"		title="searcher_zone" 				hidden="true"/>
+		<field name="visible_option"			type="integer"		title="visible_option" 				hidden="true"/>
+		<field name="service_id"				type="integer"		title="service_id" 					hidden="true"/>
+		<field name="main_detail_type_name_eng"	type="text"			title="main_detail_type_name_eng"	hidden="true"/>
+		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
+		<field name="criteria_type"				type="integer"		title="criteria_type" 				hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+
+		<!-- Add MainDetailType -->
+		<operationBinding operationType="add" operationId="addMainDetailType" serverMethod="addMainDetailType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+		<!-- MainDetailType Update -->
+		<operationBinding operationType="update" operationId="updateMainDetailType" serverMethod="updateMainDetailType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+        <!-- MainDetailType Status Update -->
+		<operationBinding operationType="update" operationId="updateMainDetailTypeStatus" serverMethod="updateMainDetailTypeStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchMainDetailTypes" operationType="fetch">
+    		<selectClause>   			
+    			t.main_detail_type_id,
+				t.criteria_type,
+				t.deleted,
+				t.main_detail_type_name_eng,
+				t.main_detail_type_name_geo,
+				t.rec_date,
+				t.rec_user,
+				t.searcher_zone,
+				t.service_id,
+				t.upd_user,
+				t.visible_option,
+				t.upd_date,
+				s.service_name_geo
+			</selectClause> 
+			<tableClause>main_detail_types t,services s</tableClause>
+			<whereClause><![CDATA[
+				t.service_id = s.service_id(+)
+				#if($criteria.service_id) and t.service_id = $criteria.service_id #end
+				#if($criteria.main_detail_type_name_geo) and t.main_detail_type_name_geo like ($criteria.main_detail_type_name_geo)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.main_detail_type_id</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchMainDetailTypesFirWebSites" operationType="fetch">
+    		<selectClause>   			
+    			t.main_detail_type_id,
+				t.main_detail_type_name_geo
+			</selectClause> 
+			<tableClause>main_detail_types t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) AND t.deleted = 0 AND t.service_id = 63
+				]]>  
+			</whereClause> 
+			<orderClause>t.main_detail_type_name_geo</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchMainDetailTypesForNonStInfo" operationType="fetch">
+    		<selectClause>   			
+    			t.main_detail_type_id,
+				t.main_detail_type_name_geo
+			</selectClause> 
+			<tableClause>main_detail_types t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) AND t.deleted = 0 AND t.service_id = 32
+				]]>  
+			</whereClause> 
+			<orderClause>t.main_detail_type_name_geo</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

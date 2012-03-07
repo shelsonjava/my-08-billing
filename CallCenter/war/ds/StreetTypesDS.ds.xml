@@ -1,0 +1,77 @@
+<DataSource
+	ID="StreetTypesDS"
+	serverType="sql"
+	tableName="info.street_types"
+	qualifyColumnNames="false">
+	<fields>
+		<field name="street_type_Id"		type="integer"	title="ID"				hidden="true" primaryKey="true" />
+		<field name="street_type_name_geo"	type="text" 	title="Street Type Name Geo"/>		
+		<field name="street_type_name_eng"	type="text" 	title="Street Type Name Eng"/>
+		<field name="rec_date"				type="datetime"	title="Record Date"/>
+		<field name="rec_user"				type="text"		title="Record User"/>
+		<field name="searcher_zone"			type="integer"	title="Searcher Zone" 	hidden="true"/>		
+		<field name="deleted"				type="integer"	title="Deleted" 		hidden="true"/>		
+		<field name="deletedText"			type="text"		title="Deleted Text" 	hidden="true"/>
+		<field name="loggedUserName"		type="text"		title="Logged UserName" hidden="true" />
+		<field name="upd_user"				type="text"		title="Update User"/>
+	</fields>
+	
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+
+		<!-- Add StreetType -->
+		<operationBinding operationType="add" operationId="addStreetType" serverMethod="addStreetType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+		<!-- StreetType Update -->
+		<operationBinding operationType="update" operationId="updateStreetType" serverMethod="updateStreetType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- StreetType Status Update -->
+		<operationBinding operationType="update" operationId="updateStreetTypeStatus" serverMethod="updateStreetTypeStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+	
+		<!-- Fetching StreetTypes - Cached  -->
+		<operationBinding operationId="fetchStreetTypes" operationType="fetch" serverMethod="fetchStreetTypes">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>    	
+    	
+    	<operationBinding operationId="searchFromDB" operationType="fetch" 
+    		customFields="street_type_Id,street_type_name_geo,street_type_name_eng,rec_date,rec_user,searcher_zone,deleted,upd_user">
+    		<selectClause>   			
+    			t.street_type_id,
+    			t.street_type_name_geo,
+    			t.street_type_name_eng,
+    			t.rec_date,
+    			t.rec_user,
+    			t.searcher_zone,
+    			t.deleted,
+    			t.upd_user
+			</selectClause> 
+			<tableClause>street_types t</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1
+				#if($criteria.street_type_name_geo) AND t.street_type_name_geo like ($criteria.street_type_name_geo)||'%' #end
+				#if($criteria.street_type_name_eng) AND t.street_type_name_eng like ($criteria.street_type_name_eng)||'%' #end
+				#if($criteria.deleted) AND t.deleted = $criteria.deleted #end				
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchStrTypesFromDBForCB" operationType="fetch" customFields="street_type_Id,street_type_name_geo">
+    		<selectClause>   			
+    			t.street_type_id,
+    			t.street_type_name_geo
+			</selectClause> 
+			<tableClause>street_types t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) AND t.deleted = 0			
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

@@ -1,0 +1,89 @@
+<DataSource 
+	ID="CityRegionDS" 
+	serverType="sql"
+	tableName="info.city_regions" 
+	qualifyColumnNames="false">
+	<fields>				
+	    <field name="city_region_id" 		type="integer"	title="City Region ID"		hidden="true" primaryKey="true" />
+		<field name="city_id" 				type="integer"	title="City ID" 			hidden="true" />
+		<field name="city_region_name_geo"	type="text" 	title="City Region Name"/>
+		<field name="city_region_name_eng"	type="text" 	title="City Region Eng"		hidden="true"/>
+		<field name="deleted"				type="integer"	title="Deleted" 			hidden="true"/>
+		<field name="city_region_type_id"	type="integer"	title="City Region Type Id" hidden="true"/>
+		<field name="map_id"				type="integer"	title="Map Id" 				hidden="true"/>
+		<field name="rec_date"				type="datetime"	title="Record Date"/>
+		<field name="rec_user"				type="text"		title="Record User"/>
+		<field name="loggedUserName"		type="text"		title="Logged UserName"		hidden="true" />
+		<field name="upd_user"				type="text"		title="Update User"/>
+		<field name="upd_date"				type="datetime"	title="Update Date"/>
+	</fields>
+
+	<operationBindings>
+	
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+
+		<!-- Add City Region -->
+		<operationBinding operationType="add" operationId="addCityRegion" serverMethod="addCityRegion">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+		<!-- Update City Region -->
+		<operationBinding operationType="update" operationId="updateCityRegion" serverMethod="updateCityRegion">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- Update City Region Status -->
+		<operationBinding operationType="update" operationId="updateCityRegionStatus" serverMethod="updateCityRegionStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+	
+		<!-- Fetching City Regions - Cached  -->
+		<operationBinding operationId="fetchCityRegions" operationType="fetch" serverMethod="fetchCityRegions">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>    	
+
+		<!-- FETCH -->
+		<operationBinding operationId="searchFromDB" operationType="fetch">						
+			<selectClause>
+      			t.city_region_id,
+      			t.city_id,
+      			t.city_region_name_geo,
+      			t.city_region_name_eng,
+      			t.deleted,
+      			t.city_region_type_id,
+      			t.map_id,
+      			t.rec_date,
+      			t.rec_user,
+      			t.upd_user,
+      			t.upd_date      			
+			</selectClause>
+			<tableClause>
+				city_regions t
+			</tableClause>
+			<whereClause><![CDATA[ 
+				t.deleted = 0
+				#if($criteria.city_id) and t.city_id = $criteria.city_id #end
+				#if($criteria.city_region_name_geo) and t.city_region_name_geo like ($criteria.city_region_name_geo)||'%' #end
+				#if($criteria.city_region_name_eng) and t.city_region_name_eng like ($criteria.city_region_name_eng)||'%' #end
+				]]>
+			</whereClause>
+			<orderClause>t.city_region_id</orderClause>
+		</operationBinding>	
+		
+		<!-- Search From DB -->
+        <operationBinding operationId="searchCityRegsFromDBForCombos" operationType="fetch" customFields="t.city_region_id, t.city_region_name_geo">
+    		<selectClause>   			
+    			t.city_region_id,
+    			t.city_region_name_geo
+			</selectClause> 
+			<tableClause>city_regions t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) AND t.deleted = 0
+				#if($criteria.city_id) AND t.city_id = $criteria.city_id #end 
+				]]>  
+			</whereClause> 
+			<orderClause>t.city_region_id</orderClause>
+        </operationBinding>
+        	
+	</operationBindings>
+</DataSource>

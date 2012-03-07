@@ -1,0 +1,129 @@
+<DataSource ID="LogSessDS" serverType="sql"
+	tableName="info.log_sessions" qualifyColumnNames="false">
+	<fields>
+		<field name="session_id" type="text" title="Session ID"  hidden="true" primaryKey="true" />
+		<field name="ym" type="integer" title="Year/Month" hidden="true" />
+		<field name="user_name" type="text" title="User Name" />
+		<field name="start_date" type="datetime" title="Start Date" />
+		<field name="phone" type="text" title="Phone Number" />
+		<field name="duration" type="integer" title="Duration" />
+		<field name="hangUp" type="text" title="hangUp" />
+		<field name="chargeCount" type="integer" title="Count" />
+		<field name="personnel_id" type="integer" title="Personel ID" hidden="true"/>
+		<field name="session_quality" type="integer" title="Session Quality" hidden="true"/>
+		<field name="session_quality_desc" type="text" title="Session Quality Desc" />
+		<field name="person_name" type="text" title="Personel Name" />
+	</fields>
+
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.SessQualityDMI"/>
+
+	<operationBindings>
+		<!-- UPDATE -->
+		<operationBinding operationType="update" operationId="update" serverMethod="update">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.SessQualityDMI"/>
+        </operationBinding>
+        
+        <!-- FETCH -->
+		<operationBinding operationId="customSearch"
+			operationType="fetch"
+			customFields="personnel_id, session_id, ym, user_name, start_date, phone, duration, hangUp, chargeCount, session_quality, session_quality_desc, person_name">			
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.LogSessionItem"/>
+			<selectClause>
+				p.personnel_id,
+				s.session_id,
+				s.ym,
+				substr(s.user_name,3,length(s.user_name)) as user_name,
+				s.start_date,
+				s.phone,
+				s.duration,
+				decode(s.hungup,0,'აბონენტმა',1,'ოპერატორმა','უცნობია') as hangUp,
+				count(ch.session_id) as chargeCount,
+				s.session_quality,
+				decode(s.session_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი') as session_quality_desc,
+				p.personnel_name||' '||p.personnel_surname as person_name
+			</selectClause>
+			<tableClause> <![CDATA[ 
+				log_sessions s,
+				log_session_charges ch,
+				info.personnel p				
+				]]>
+			</tableClause>
+			<whereClause><![CDATA[ 
+				s.session_id=ch.session_id(+) and ch.deleted(+) = 0 and
+				p.user_name = s.user_name and p.deleted = 0 and							
+				s.start_date > to_date(to_char(#if($criteria.startDate) $criteria.startDate #else trunc(sysdate) #end ,'yyyymmdd')||  #if ($criteria.startTime)  to_char($criteria.startTime ,'hh24miss')  #else '000000' #end ,'yyyymmddhh24miss') and 
+				s.start_date < to_date(to_char(#if($criteria.endDate)   $criteria.endDate   #else trunc(sysdate)+1 #end ,'yyyymmdd')|| #if ($criteria.endTime) to_char($criteria.endTime,'hh24miss')  #else '235959' #end ,'yyyymmddhh24miss')
+				
+				#if($criteria.phone && $criteria.numberCondTypeItem == 1)AND 
+					s.phone like ($criteria.phone)||'%'
+				#end
+				#if($criteria.phone && $criteria.numberCondTypeItem == 2) AND 
+					s.phone like '%'||($criteria.phone)||'%'
+				#end				
+				#if ($criteria.personelId) AND p.personnel_id = $criteria.personelId #end
+				#if ($criteria.serviceId) AND
+					(ch.service_id = $criteria.serviceId or 
+						(						
+							select count(1) from info.log_sms sms where s.session_id = sms.session_id and sms.service_id = $criteria.serviceId 
+						) > 0 
+					)
+				#end	
+				#if ($criteria.numOfSecondsStart) AND s.duration > $criteria.numOfSecondsStart #end						
+				#if ($criteria.numOfSecondsEnd) AND s.duration <= $criteria.numOfSecondsEnd #end
+				#if ($criteria.chargedCall == 2) AND
+					 (
+            			select 
+            				count(1) 
+            			from log_session_charges a 
+            			where a.session_id = s.session_id
+            		 ) > 0
+				#end
+				#if ($criteria.chargedCall == 3) AND
+					s.call_type in (0,3) AND
+					 (
+            			select 
+            				count(1) 
+            			from log_session_charges a 
+            			where a.session_id = s.session_id
+            		 ) <= 0
+				#end
+				#if($criteria.sessQualityTypeItem && $criteria.sessQualityTypeItem != 100) AND s.session_quality=$criteria.sessQualityTypeItem #end
+				]]>
+			</whereClause>
+			<groupClause>
+				p.personnel_id,
+				s.session_id,
+				s.ym,
+				substr(s.user_name,3,length(s.user_name)),
+				s.start_date,
+				s.phone,
+				s.duration,
+				decode(s.hungup,0,'აბონენტმა',1,'ოპერატორმა','უცნობია'),
+				s.session_quality,
+				decode(s.session_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი'),
+				p.personnel_name||' '||p.personnel_surname
+			</groupClause>			
+		</operationBinding>
+		
+		
+		
+		 <!-- FETCH -->
+		<operationBinding operationId="customSearchStat" operationType="fetch">			
+			<selectClause>
+				t.ym,
+				count(1) as chargeCount
+			</selectClause>
+			<tableClause> <![CDATA[ 
+				log_sessions t				
+				]]>
+			</tableClause>
+			<whereClause><![CDATA[ 
+					t.ym like '11%'
+				]]>
+			</whereClause>
+			<groupClause>
+				t.ym
+			</groupClause>			
+		</operationBinding>
+	</operationBindings>
+</DataSource>

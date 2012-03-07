@@ -1,0 +1,22 @@
+<DataSource
+	ID="PersTypeDS"
+	serverType="sql"
+	tableName="info.personnel_types"
+	qualifyColumnNames="false" dropExtraFields = "false">
+	<fields>
+		<field name="personnel_type_id"			type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="personnel_type_name_geo"	type="text" 	title="Personnel Type Name Geo"/>			
+		<field name="rec_date"					type="datetime"	title="Record Date"/>
+		<field name="rec_user"					type="text"		title="Record User"/>		
+		<field name="deleted"					type="integer"	title="Deleted" hidden="true"/>
+	</fields>
+
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+
+	<operationBindings>
+		<!-- Searching Person Types - Cached -->
+		<operationBinding operationId="persTypesSearch" operationType="fetch" serverMethod="fetchPersTypes">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>    
+    </operationBindings>
+</DataSource>

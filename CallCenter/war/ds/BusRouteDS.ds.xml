@@ -1,0 +1,154 @@
+<DataSource
+	ID="BusRouteDS"
+	serverType="sql"
+	tableName="info.bus_routes"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="route_id"			type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="route_nm"			type="text"			title="Route Number"/>		
+		<field name="route_old_nm"		type="text"			title="Route Old Number"/>
+		<field name="round_descr"		type="text"			title="Round Description"/>
+		<field name="service_descr"		type="text"			title="Service Description"/>
+		<field name="rec_user"			type="text"			title="Record User"/>
+		<field name="rec_date"			type="datetime"		title="Record Date"/>
+		<field name="upd_user"			type="text"			title="Update User"/>
+		<field name="deleted"			type="integer"		title="Deleted" 					hidden="true"/>
+		<field name="round_id"			type="integer"		title="Round Id" 					hidden="true"/>
+		<field name="service_id"		type="integer"		title="Service Id" 					hidden="true"/>
+		<field name="loggedUserName"	type="text"			title="Logged UserName" 			hidden="true" />
+		<field name="start_place"		type="text"			title="start_place"/>
+		<field name="start_place_id"	type="integer"		title="start_place_id" 				hidden="true"/>
+		<field name="end_place"			type="text"			title="end_place"/>
+		<field name="end_place_id"		type="integer"		title="end_place_id" 				hidden="true"/>
+		<field name="direction"			type="integer"		title="direction" 					hidden="true"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+
+		<!-- Add BusRoute -->
+		<operationBinding operationType="add" operationId="addBusRoute" serverMethod="addBusRoute">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+        
+		<!-- BusRoute Update -->
+		<operationBinding operationType="update" operationId="updateBusRoute" serverMethod="updateBusRoute">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+        
+        <!-- BusRoute Status Update -->
+		<operationBinding operationType="update" operationId="updateBusRouteStatus" serverMethod="updateBusRouteStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllBusRoutes" operationType="fetch">
+    		<selectClause>   			
+    			t.route_id,
+				t.route_nm,
+				t.route_old_nm,
+				decode(t.round_id,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as round_descr,
+				tt.transport_type_name_geo as service_descr,
+				t.rec_user,
+				t.rec_date,
+				t.upd_user,
+				t.deleted,
+				t.round_id,	
+				t.service_id
+			</selectClause> 
+			<tableClause>bus_routes t, transport_types tt</tableClause>
+			<whereClause><![CDATA[
+				t.service_id = tt.transport_type_id 
+				#if($criteria.route_id) and t.route_id = $criteria.route_id #end
+				#if($criteria.route_nm) and t.route_nm = $criteria.route_nm #end
+				#if($criteria.route_old_nm) and t.route_old_nm = $criteria.route_old_nm #end
+				#if($criteria.round_id) and t.round_id = $criteria.round_id #end
+				#if($criteria.service_id) and t.service_id = $criteria.service_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.route_nm</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllBusRoutesForCombos" operationType="fetch">
+    		<selectClause>   			
+    			t.route_id,
+				t.route_nm || ' ( '|| tt.transport_type_name_geo||' ) ' as route_nm
+			</selectClause> 
+			<tableClause>bus_routes t, transport_types tt</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) AND t.service_id = tt.transport_type_id AND t.deleted = 0				
+				]]>  
+			</whereClause> 
+			<orderClause>t.route_nm</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchAllBusRoutesForCallCenter" operationType="fetch">
+    		<selectClause>
+    			   tt.transport_type_name_geo as service_descr,
+    			   t.transportid as route_id,
+			       t.transportno as route_nm,
+			       getminbusstop(t.transportid) start_place,
+			       getminbusstop_id(t.transportid) start_place_id,
+			       getmaxbusstop(t.transportid) end_place,
+			       getmaxbusstop_id(t.transportid) end_place_id,
+			       t.direction,
+			       decode(t.direction,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as round_descr
+			</selectClause> 
+			<tableClause>incity_transport_view_new t, info.transport_types tt</tableClause>
+			<whereClause><![CDATA[
+				t.transport_type_id = tt.transport_type_id
+				#if($criteria.transport_type_id) and t.transport_type_id = $criteria.transport_type_id #end
+				#if($criteria.transportno) and (t.transportno = $criteria.transportno) #end
+				
+				#if($criteria.start_place_id1) 
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id1||'%')			 
+				#end
+				#if($criteria.start_place_id2) 
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id2||'%')
+				#end
+				#if($criteria.start_place_id3) 
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id3||'%')			 
+				#end
+				#if($criteria.start_place_id4) 
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id4||'%')			 
+				#end
+				#if($criteria.start_place_id5) 
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id5||'%')
+				#end
+				
+				#if($criteria.end_place_id1)
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id1||'%')			 	
+				#end
+				#if($criteria.end_place_id2)
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id2||'%')
+				#end
+				#if($criteria.end_place_id3)
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id3||'%')				 	
+				#end
+				#if($criteria.end_place_id4)
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id4||'%')				 	
+				#end
+				#if($criteria.end_place_id5)
+					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id5||'%')				 	
+				#end					
+				]]>  
+			</whereClause> 
+			<groupClause>tt.transport_type_name_geo, t.transportid, t.transportno, t.direction</groupClause>
+			<orderClause>t.transportno</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

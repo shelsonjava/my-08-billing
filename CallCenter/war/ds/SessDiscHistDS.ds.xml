@@ -1,0 +1,38 @@
+<DataSource
+	ID="SessDiscHistDS"
+	serverType="sql"
+	tableName="info.discover"
+	qualifyColumnNames="false">
+	<fields>
+		<field name="discover_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="phone"				type="text"		title="phone"/>
+		<field name="discover_txt"		type="text" 	title="Discover Text"/>		
+		<field name="rec_user"			type="text" 	title="Rec User"/>
+		<field name="upd_user"			type="text" 	title="UPD User"/>
+		<field name="response_type"		type="text" 	title="Response Type"/>
+		<field name="execution_status"	type="integer"	title="Execution Status"/>
+	</fields>
+	
+	<operationBindings>
+		<operationBinding operationId="sessDiscCustSearch" operationType="fetch" 
+    		customFields="discover_id, phone, discover_txt , rec_user, upd_user, response_type ,execution_status">
+    		<selectClause>  
+    			t.discover_id,
+  				t.phone,
+  				t.discover_txt,
+  				(r.user_name||' ( '||r.personnel_name||' '||r.personnel_surname||' ) ') as rec_user,
+  				(d.user_name||' ( '||d.personnel_name||' '||d.personnel_surname||' ) ') as upd_user,
+  				dt.response_type,
+  				t.execution_status
+			</selectClause> 
+			<tableClause>discover t, personnel r, personnel d, discover_rtypes dt</tableClause>
+			<whereClause><![CDATA[ 
+				r.user_name = t.rec_user and 
+				d.user_name = t.upd_user and
+				t.response_type_id = dt.response_type_id(+) and
+				t.call_id=$criteria.sessionId and t.deleted = 0			
+				]]>  
+			</whereClause> 
+    	</operationBinding>    	
+    </operationBindings>	
+</DataSource>

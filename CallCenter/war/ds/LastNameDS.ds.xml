@@ -1,0 +1,80 @@
+<DataSource
+	ID="LastNameDS"
+	serverType="sql"
+	tableName="info.lastnames"
+	qualifyColumnNames="false">
+	<fields>
+		<field name="lastname_Id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="lastname"			type="text" 	title="Lastname"/>		
+		<field name="rec_date"			type="datetime"	title="Record Date"/>
+		<field name="deleted"			type="integer"	title="Deleted" hidden="true"/>
+		<field name="deletedText"		type="text"		title="Deleted Text"/>
+		<field name="loggedUserName"	type="text"		title="Logged UserName" hidden="true" />
+	</fields>
+	
+	<operationBindings>
+	
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+	
+		<!-- Add LastName -->
+		<operationBinding operationType="add" operationId="addLastName" serverMethod="addLastName">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+		<!-- LastName Update -->
+		<operationBinding operationType="update" operationId="updateLastName" serverMethod="updateLastName">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- LastName Status Update -->
+		<operationBinding operationType="update" operationId="updateLastNameStatus" serverMethod="updateLastNameStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+		<operationBinding operationId="lastNameSearch" operationType="fetch" serverMethod="fetchLastNames">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>	
+    	<operationBinding operationId="searchFromDB" operationType="fetch" customFields="lastname_Id,lastname,rec_date,deleted,deletedText">
+    		<selectClause>   			
+    			t.lastname_Id,
+    			t.lastname,
+    			t.rec_date,
+    			t.deleted,
+    			decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText
+			</selectClause> 
+			<tableClause>lastnames t</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1
+				#if($criteria.lastname) AND t.lastname like ($criteria.lastname)||'%' #end
+				#if($criteria.deleted) AND t.deleted = $criteria.deleted #end			
+				]]>  
+			</whereClause> 
+    	</operationBinding>	
+    	<operationBinding operationId="searchFromDB1" operationType="fetch" customFields="lastname_Id,lastname,rec_date,deleted,deletedText">
+    		<selectClause>   			
+    			t.lastname_Id,
+    			t.lastname,
+    			t.rec_date,
+    			t.deleted,
+    			decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText
+			</selectClause> 
+			<tableClause>lastnames t</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1
+				#if($criteria.lastname) AND t.lastname like ($criteria.lastname)||'%' #end
+				AND t.deleted = 0			
+				]]>  
+			</whereClause> 
+    	</operationBinding>	
+    	<operationBinding operationId="searchLastNamesFromDBCustomForCombos" operationType="fetch" customFields="lastname_Id,lastname">
+    		<selectClause>   			
+    			t.lastname_Id,
+    			t.lastname
+			</selectClause> 
+			<tableClause>lastnames t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) AND t.deleted = 0
+				]]>  
+			</whereClause> 
+    	</operationBinding>	
+    </operationBindings>	
+</DataSource>

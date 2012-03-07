@@ -1,0 +1,48 @@
+<DataSource
+	ID="StreetsOldDS"
+	serverType="sql"
+	tableName="info.streets_old"
+	qualifyColumnNames="false">
+	<fields>
+		<field name="old_id"				type="integer"	title="ID"				hidden="true" primaryKey="true" />
+		<field name="city_id"				type="integer"	title="City Id" 		hidden="true"/>
+		<field name="street_id"				type="integer"	title="Street Id" 		hidden="true"/>
+		<field name="street_old_name_geo"	type="text" 	title="Street Old Name Geo"/>		
+		<field name="street_old_name_eng"	type="text" 	title="Street Old Name Eng" hidden="true"/>		
+		<field name="rec_date"				type="datetime"	title="Record Date"/>
+		<field name="rec_user"				type="text"		title="Record User"/>
+		<field name="deleted"				type="integer"	title="Deleted" 		hidden="true"/>		
+		<field name="upd_user"				type="text"		title="Update User"/>
+	</fields>
+	
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+	
+	<operationBindings>		
+	
+		<!-- StreetType Status Update -->
+		<operationBinding operationType="update" operationId="updateStreetsOldEntStatus" serverMethod="updateStreetsOldEntStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchFromDB" operationType="fetch" 
+    		customFields="old_id,street_id,street_old_name_geo,rec_date,rec_user,upd_user,deleted ">
+    		<selectClause>   			
+    			t.old_id,
+    			t.street_id,
+    			t.street_old_name_geo,
+    			t.rec_date,
+    			t.rec_user,
+    			t.upd_user,
+    			t.deleted
+			</selectClause> 
+			<tableClause>streets_old t</tableClause>
+			<whereClause><![CDATA[ 				
+				1 = 1
+				#if($criteria.street_old_name_geo) AND t.street_old_name_geo like ($criteria.street_old_name_geo)||'%' #end
+				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.old_id</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

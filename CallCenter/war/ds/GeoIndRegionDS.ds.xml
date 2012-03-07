@@ -1,0 +1,61 @@
+<DataSource
+	ID="GeoIndRegionDS"
+	serverType="sql"
+	tableName="info.geo_ind_region"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="region_id"			type="integer"		title="ID"				hidden="true" primaryKey="true" />
+		<field name="service_id"		type="integer" 		title="Service Id"		hidden="true"/>
+		<field name="region_name_geo"	type="text"			title="Region Name Geo"/>
+		<field name="region_name_eng"	type="text"			title="Region Name Geo" hidden="true"/>
+		<field name="rec_user"			type="text"			title="Record User"/>
+		<field name="rec_date"			type="datetime"		title="Record Date"/>
+		<field name="upd_user"			type="text"			title="Update User"/>
+		<field name="deleted"			type="integer"		title="Deleted" 		hidden="true"/>
+		<field name="loggedUserName"	type="text"			title="Logged UserName" hidden="true" />
+		<field name="serviceName"		type="text"			title="Service Name"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+
+		<!-- Add GeoIndRegion -->
+		<operationBinding operationType="add" operationId="addGeoIndRegion" serverMethod="addGeoIndRegion">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+        </operationBinding>
+        
+		<!-- GeoIndRegion Update -->
+		<operationBinding operationType="update" operationId="updateGeoIndRegion" serverMethod="updateGeoIndRegion">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+        </operationBinding>
+        
+        <!-- GeoIndRegion Status Update -->
+		<operationBinding operationType="update" operationId="updateGeoIndRegionStatus" serverMethod="updateGeoIndRegionStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchGeoIndRegionFromDB" operationType="fetch">
+    		<selectClause>   			
+    			t.region_id,
+    			t.service_id,
+    			t.region_name_geo,
+    			t.region_name_eng,
+    			t.rec_user,
+    			t.rec_date,
+    			t.upd_user,
+    			t.deleted,
+    			s.service_name_geo as serviceName    			
+			</selectClause> 
+			<tableClause>geo_ind_region t,info.services s</tableClause>
+			<whereClause><![CDATA[ 
+				t.service_id = s.service_id and t.service_id = 48
+				#if($criteria.region_name_geo) and t.region_name_geo like ($criteria.region_name_geo)||'%' #end
+				#if($criteria.region_name_eng) and t.region_name_eng like ($criteria.region_name_eng)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.region_name_geo</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

@@ -1,0 +1,135 @@
+<DataSource
+	ID="MainDetailDS"
+	serverType="sql"
+	tableName="info.main_details"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="main_detail_id"			type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="main_detail_note_geo"		type="text"			title="main_detail_note_geo"/>
+		<field name="main_detail_note_eng"		type="text"			title="main_detail_note_eng"/>
+		<field name="main_detail_type_name_geo"	type="text"			title="main_detail_type_name_geo"/>
+		<field name="main_detail_geo"			type="text"			title="main_detail_geo"/>
+		<field name="main_detail_eng"			type="text"			title="main_detail_eng"/>
+		<field name="rec_date"					type="datetime"		title="Record Date"/>
+		<field name="rec_user"					type="text"			title="Record User"/>
+		<field name="upd_user"					type="text"			title="Update User"/>
+		<field name="upd_date"					type="datetime"		title="upd_date"/>
+		<field name="old_id"					type="integer"		title="old_id" 						hidden="true"/>
+		<field name="main_id"					type="integer"		title="main_id" 					hidden="true"/>
+		<field name="main_detail_type_id"		type="integer"		title="main_detail_type_id" 		hidden="true"/>
+		<field name="main_detail_master_id"		type="integer"		title="main_detail_master_id" 		hidden="true"/>
+		<field name="fields_order"				type="integer"		title="fields_order" 				hidden="true"/>
+		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+
+		<!-- Add MainDetail -->
+		<operationBinding operationType="add" operationId="addMainDetail" serverMethod="addOrUpdateMainDetail">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+		<!-- MainDetail Update -->
+		<operationBinding operationType="update" operationId="updateMainDetail" serverMethod="addOrUpdateMainDetail">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+        <!-- MainDetail Status Update -->
+		<operationBinding operationType="update" operationId="updateMainDetailStatus" serverMethod="addOrUpdateMainDetail">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchMainDetails" operationType="fetch">
+    		<selectClause>
+    			/*+ index(dt MDT_IND_KS_001) index(t MD_IND_KK4441) */
+    			t.main_detail_id,
+				t.deleted,
+				t.fields_order,
+				t.main_detail_eng,
+				t.main_detail_geo,
+				t.main_detail_master_id,
+				t.main_detail_note_eng,
+				t.main_detail_note_geo,
+				t.main_detail_type_id,
+				t.main_id,
+				t.old_id,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user,
+				dt.main_detail_type_name_geo
+			</selectClause> 
+			<tableClause>main_details t, main_detail_types dt</tableClause>
+			<whereClause><![CDATA[
+				t.main_detail_type_id = dt.main_detail_type_id
+				#if($criteria.service_id) and dt.service_id = $criteria.service_id #end
+				#if($criteria.main_detail_type_id) and t.main_detail_type_id = $criteria.main_detail_type_id #end
+				#if($criteria.main_detail_geo) and t.main_detail_geo like '%'||($criteria.main_detail_geo)||'%' #end
+				#if($criteria.main_detail_eng) and t.main_detail_eng like '%'||($criteria.main_detail_eng)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.main_detail_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	
+    	<operationBinding operationId="searchMainDetailsSplitedBySpace" operationType="fetch">
+    		<selectClause>
+    			/*+ index(dt MDT_IND_KS_001) index(t MD_IND_KK4441) */
+    			t.main_detail_id,
+				t.deleted,
+				t.fields_order,
+				t.main_detail_eng,
+				t.main_detail_geo,
+				t.main_detail_master_id,
+				t.main_detail_note_eng,
+				t.main_detail_note_geo,
+				t.main_detail_type_id,
+				t.main_id,
+				t.old_id,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user,
+				dt.main_detail_type_name_geo
+			</selectClause> 
+			<tableClause>main_details t, main_detail_types dt</tableClause>
+			<whereClause><![CDATA[
+				t.main_detail_type_id = dt.main_detail_type_id and t.deleted = 0
+				#if($criteria.service_id) and dt.service_id = $criteria.service_id #end
+				#if($criteria.main_detail_type_id) and t.main_detail_type_id = $criteria.main_detail_type_id #end
+				#if($criteria.main_detail_geo1) and t.main_detail_geo like '%'||($criteria.main_detail_geo1)||'%' #end
+				#if($criteria.main_detail_geo2) and t.main_detail_geo like '%'||($criteria.main_detail_geo2)||'%' #end
+				#if($criteria.main_detail_geo3) and t.main_detail_geo like '%'||($criteria.main_detail_geo3)||'%' #end
+				#if($criteria.main_detail_geo4) and t.main_detail_geo like '%'||($criteria.main_detail_geo4)||'%' #end
+				#if($criteria.main_detail_geo5) and t.main_detail_geo like '%'||($criteria.main_detail_geo5)||'%' #end				
+				#if($criteria.main_detail_eng) and t.main_detail_eng like '%'||($criteria.main_detail_eng)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.main_detail_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchMainDetailsAdv" operationType="fetch">
+    		<selectClause>   			
+    			md.main_detail_id,
+    			md.main_detail_geo 
+			</selectClause> 
+			<tableClause>info.main_details md</tableClause>	
+			<whereClause>
+					md.main_detail_type_id in (5,30,59,60,61) and md.deleted = 0	    
+				    #if($criteria.main_id) and md.main_id = $criteria.main_id #end
+				    #if($criteria.main_detail_id) and md.main_detail_id = $criteria.main_detail_id #end
+				    #if($criteria.main_detail_geo) and md.main_detail_geo like $criteria.main_detail_geo||'%' #end
+			</whereClause>	
+			<orderClause>md.fields_order</orderClause>		
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

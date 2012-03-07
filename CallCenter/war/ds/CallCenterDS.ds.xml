@@ -1,0 +1,47 @@
+<DataSource
+	ID="CallCenterDS"
+	serverType="sql"
+	tableName="info.call_center_queue"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="id"						type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="op_user_name"				type="text"			title="op_user_name"/>
+		<field name="phone"						type="text"			title="phone"/>
+		<field name="abonent_name"				type="text"			title="abonent_name"/>
+		<field name="call_duration"				type="integer"		title="call_duration"/>
+		<field name="incomming_date"			type="datetime"		title="incomming_date"/>
+		<field name="end_date"					type="datetime"		title="end_date"/>
+		<field name="status"					type="integer"		title="status"/>
+		<field name="rec_date"					type="datetime"		title="rec_date"/>
+		<field name="rec_user"					type="text"			title="rec_user"/>
+		<field name="upd_date"					type="datetime"		title="upd_date"/>
+		<field name="upd_user"					type="text"			title="upd_user"/>
+	</fields>
+
+	<operationBindings>		
+    	<operationBinding operationId="searchMainDetails" operationType="fetch">
+    		<selectClause>
+    			t.id,
+				t.op_user_name,
+				t.phone,
+				t.abonent_name,
+				t.call_duration,
+				t.incomming_date,
+				t.end_date,
+				t.status,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user
+			</selectClause> 
+			<tableClause>call_center_queue t</tableClause>
+			<whereClause><![CDATA[
+				#if($criteria.op_user_name) and t.op_user_name = $criteria.op_user_name #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.rec_date desc</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

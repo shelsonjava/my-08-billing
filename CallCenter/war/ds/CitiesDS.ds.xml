@@ -1,0 +1,30 @@
+<DataSource ID="CitiesDS" serverType="sql"
+	tableName="info.cities" qualifyColumnNames="false">
+	<fields>
+		<field name="city_id" 		type="integer"	title="City ID"  hidden="true" primaryKey="true" />
+		<field name="city_name_geo" type="text" 	title="City Name"/>
+		<field name="is_capital"  	type="integer"	title="Is Capital" />
+	</fields>
+
+	<operationBindings>
+		<!-- FETCH -->
+		<operationBinding operationId="customCitiesSearch"
+			operationType="fetch" customFields="city_id, city_name_geo, is_capital">			
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.City"/>
+			<selectClause>				
+      			t.city_id,
+      			t.city_name_geo,
+      			t.is_capital
+			</selectClause>
+			<tableClause>				
+				cities t
+			</tableClause>
+			<whereClause><![CDATA[ 
+				t.country_id = 194 and t.city_id <> 0 and t.deleted = 0
+				#if($criteria.city_name_geo) and t.city_name_geo like ($criteria.city_name_geo)||'%' #end
+				]]>
+			</whereClause>
+			<orderClause>t.city_name_geo</orderClause>
+		</operationBinding>		
+	</operationBindings>
+</DataSource>

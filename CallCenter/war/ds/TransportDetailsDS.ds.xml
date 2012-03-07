@@ -1,0 +1,72 @@
+<DataSource
+	ID="TransportDetailsDS"
+	serverType="sql"
+	tableName="info.transport_details"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="transport_detail_id"		type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
+		<field name="transport_place_geo_out"	type="text"			title="Transport Place Geo Out"/>
+		<field name="in_time"					type="datetime"		title="In Time"/>
+		<field name="out_time"					type="datetime"		title="Out Time"/>
+		<field name="rec_date"					type="datetime"		title="Record Date"/>
+		<field name="upd_user"					type="text"			title="Update User"/>
+		<field name="stay_time"					type="datetime"		title="Stay Time"/>
+		<field name="transport_detail_order"	type="integer"		title="Transport Detail Order"/>
+		<field name="transport_id"				type="integer"		title="Transport Id"/>
+		<field name="transport_place_id"		type="integer"		title="Transport Plane Id"/>
+		<field name="upd_user"					type="text"			title="Update User"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true" />
+		<field name="out_transport_place_id"	type="integer"		title="out_transport_place_id" 		hidden="true" />
+		<field name="in_transport_place_id"		type="integer"		title="in_transport_place_id" 		hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+
+		<!-- Add TransportDetail -->
+		<operationBinding operationType="add" operationId="addTransportDetail" serverMethod="addTransportDetail">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+        
+		<!-- TransportDetail Update -->
+		<operationBinding operationType="update" operationId="updateTransportDetail" serverMethod="updateTransportDetail">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+        
+        <!-- TransportDetail Status Update -->
+		<operationBinding operationType="update" operationId="updateTransportDetailStatus" serverMethod="updateTransportDetailStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchTransportDetails" operationType="fetch">
+    		<selectClause>   			
+    			t.transport_detail_id,
+				t.deleted,
+				t.in_time,
+				t.out_time,
+				t.rec_date,
+				t.rec_user,
+				t.stay_time,
+				t.transport_detail_order,
+				t.transport_id,
+				t.transport_place_id,
+				t.upd_user,
+				o.transport_place_geo_descr as transport_place_geo_out,
+				t.out_transport_place_id,
+				t.in_transport_place_id
+			</selectClause> 
+			<tableClause>transport_details t,transport_places o</tableClause>
+			<whereClause><![CDATA[				
+					t.transport_place_id = o.transport_place_id
+					#if($criteria.transport_id) and t.transport_id = $criteria.transport_id #end
+					#if($criteria.deleted) and t.deleted = $criteria.deleted #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.transport_detail_order</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>
