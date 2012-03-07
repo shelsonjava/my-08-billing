@@ -1,0 +1,82 @@
+<DataSource
+	ID="AbPhonesDS"
+	serverType="sql"
+	tableName="info.phones"
+	qualifyColumnNames="false">
+	<fields>
+		<field name="phone_Id"			type="integer"	title="ID"					hidden="true" primaryKey="true" />
+		<field name="phone"				type="text" 	title="Phone"/>		
+		<field name="rec_date"			type="datetime"	title="Record Date"/>
+		<field name="rec_user"			type="text" 	title="Record User"/>
+		<field name="deleted"			type="integer"	title="Deleted" 			hidden="true"/>
+		<field name="upd_user"			type="text" 	title="Update User"/>
+		<field name="abonent_id"		type="integer"	title="Abonent ID" 			hidden="true"/>
+		<field name="is_hide"			type="integer"	title="Is Hide" 			hidden="true"/>
+		<field name="is_hide_descr"		type="text"		title="Is Hide Descr"/>
+		<field name="is_parallel"		type="integer"	title="Is Hide" 			hidden="true"/>
+		<field name="is_parallel_descr"	type="text"		title="Is Parallel Descr"/>
+		<field name="phone_state_id"	type="integer"	title="Phone State ID"		hidden="true"/>		
+		<field name="phone_state"		type="text"		title="Phone State"/>
+		<field name="phone_status_id"	type="integer"	title="Phone Status ID"		hidden="true"/>
+		<field name="phone_status"		type="text"		title="Phone Status"/>
+		<field name="phone_type_id"		type="integer"	title="Phone Type ID"		hidden="true"/>
+		<field name="phone_type"		type="text"		title="Phone Type"/>
+	</fields>	
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+	
+	<operationBindings>
+		<operationBinding operationId="getPhonesByAbonentId" operationType="fetch">    		
+    		<selectClause>  
+    			t.phone_Id, 
+    			t.phone, 
+    			t.phone_state_id, 
+    			t.rec_date,
+    			t.rec_user,
+    			t.deleted,
+    			t.upd_user,
+    			t.phone_type_id,
+    			ap.abonent_id,
+    			ap.is_hide,
+    			decode(ap.is_hide,0,'ღია',1,'დაფარულია')as is_hide_descr,
+    			ap.is_parallel,
+    			decode(ap.is_parallel,0,'ჩვეულებრივი',1,'პარალელური')as is_parallel_descr,
+    			ps.phone_state_id,
+    			ps.phone_state,
+    			pst.phone_status_id,
+    			pst.phone_status,
+    			pt.phone_type
+			</selectClause> 
+			<tableClause>phones t, abonent_to_phones ap, phone_states ps,phone_statuses pst, phone_types pt</tableClause>
+			<whereClause><![CDATA[ 
+				t.phone_id = ap.phone_id and 			
+				ap.phone_status_id = pst.phone_status_id and	
+				t.phone_state_id = ps.phone_state_id and
+				t.phone_type_id = pt.phone_type_id and							
+				ap.abonent_id = $criteria.abonent_id		
+				]]>  
+			</whereClause> 
+			<orderClause>t.phone</orderClause>
+    	</operationBinding>    
+    	
+    	<operationBinding operationId="getPhone" operationType="fetch" customFields="firstname, lastname, phone">    		
+    		<selectClause>  
+    			f.firstname as firstname,
+    			l.lastname as lastname,
+    			t.phone
+			</selectClause> 
+			<tableClause>phones t, abonent_to_phones ap, abonents a,main_services ms, firstnames f, lastnames l</tableClause>
+			<whereClause><![CDATA[ 
+				 t.phone_id = ap.phone_id and 
+				 ap.abonent_id = a.abonent_id and 
+				 a.main_id = ms.main_id and 
+				 f.firstname_id = a.firstname_id and 
+				 l.lastname_id = a.lastname_id and
+				 t.phone = $criteria.phone and 
+				 ms.service_id = 7 and 
+				 a.deleted = 0
+				]]>  
+			</whereClause> 
+			<orderClause>t.phone</orderClause>
+    	</operationBinding>      		
+    </operationBindings>	
+</DataSource>

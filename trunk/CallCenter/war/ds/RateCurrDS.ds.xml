@@ -1,0 +1,111 @@
+<DataSource
+	ID="RateCurrDS"
+	serverType="sql"
+	tableName="info.rate_curr"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="curr_id"					type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="curr_abbrev"				type="text"			title="curr_abbrev"/>
+		<field name="curr_name_geo"				type="text"			title="curr_name_geo"/>
+		<field name="curr_order"				type="integer"		title="curr_order"/>
+		<field name="country_name_geo"			type="integer"		title="country_name_geo"/>
+		<field name="rec_date"					type="datetime"		title="Record Date"/>
+		<field name="rec_user"					type="text"			title="Record User"/>
+		<field name="upd_date"					type="datetime"		title="upd_date"/>
+		<field name="upd_user"					type="text"			title="Update User"/>
+		<field name="country_id"				type="text"			title="country_id"					hidden="true"/>
+		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
+		<field name="curr_name_eng"				type="text"			title="curr_name_eng" 				hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true"/>
+		<field name="custom_order"				type="integer"		title="custom_order" 				hidden="true"/>	
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CurrencyDMI"/>
+
+		<!-- Add RateCurr -->
+		<operationBinding operationType="add" operationId="addRateCurr" serverMethod="addRateCurr">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CurrencyDMI"/>
+        </operationBinding>
+        
+		<!-- RateCurr Update -->
+		<operationBinding operationType="update" operationId="updateRateCurr" serverMethod="updateRateCurr">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CurrencyDMI"/>
+        </operationBinding>
+        
+        <!-- RateCurr Status Update -->
+		<operationBinding operationType="update" operationId="updateRateCurrStatus" serverMethod="updateRateCurrStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CurrencyDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllRateCurrs" operationType="fetch">
+    		<selectClause>   			
+    			t.curr_id,
+				t.country_id,
+				t.curr_abbrev,
+				t.curr_name_eng,
+				t.curr_name_geo,
+				t.curr_order,
+				t.deleted,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user,
+				c.country_name_geo
+			</selectClause> 
+			<tableClause>rate_curr t, countries c</tableClause>
+			<whereClause><![CDATA[
+				t.country_id = c.country_id(+)
+				#if($criteria.deleted) and t.deleted = $criteria.deleted #end
+				#if($criteria.curr_name_geo) and t.curr_name_geo like ($criteria.curr_name_geo)||'%' #end
+				#if($criteria.curr_abbrev) and t.curr_abbrev like ($criteria.curr_abbrev)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.curr_order</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllRateCurrsForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.curr_id,
+    			t.curr_name_geo 
+			</selectClause> 
+			<tableClause>rate_curr t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0
+			</whereClause>
+			<orderClause>t.curr_order</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchAllRateCurrsForCallCenter" operationType="fetch">
+    		<selectClause>   			
+    			t.curr_id,
+				t.country_id,
+				t.curr_abbrev,
+				t.curr_name_eng,
+				t.curr_name_geo,
+				t.curr_order,
+				t.deleted,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user,
+				c.country_name_geo,
+				t.custom_order
+			</selectClause> 
+			<tableClause>rate_curr t, countries c</tableClause>
+			<whereClause><![CDATA[
+				t.country_id = c.country_id(+)
+				#if($criteria.deleted) and t.deleted = $criteria.deleted #end
+				#if($criteria.curr_name_geo) and t.curr_name_geo like '%'||($criteria.curr_name_geo)||'%' #end
+				#if($criteria.curr_abbrev) and upper(t.curr_abbrev) like UPPER('%'||($criteria.curr_abbrev)||'%') #end
+				#if($criteria.country_name_geo) and c.country_name_geo like '%'||($criteria.country_name_geo)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.custom_order</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

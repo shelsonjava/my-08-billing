@@ -1,0 +1,21 @@
+<DataSource 
+	ID="LockDS" 
+	serverType="sql"
+	tableName="info.lock_status" 
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="session_id" 	type="text" 		title="session_id" 	hidden="true" 	primaryKey="true" />
+		<field name="status" 		type="integer" 		title="Year/Month" 	hidden="true" />
+		<field name="rec_date" 		type="datetime" 	title="rec_date" />		
+	</fields>
+
+	<operationBindings>
+	
+		<!-- Update Abonent -->
+		<operationBinding operationType="update" operationId="updateLockStatus" serverMethod="updateLockStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+	</operationBindings>
+</DataSource>

@@ -1,0 +1,217 @@
+<DataSource 
+	ID="MainDetDS"
+    serverType="sql"
+    tableName="info.main_details"      
+    qualifyColumnNames="false"
+    dropExtraFields = "false">
+    
+	<fields>
+		<field name="main_detail_id"			type="integer"		title="ID"						hidden="true" 	primaryKey="true" />
+		<field name="main_detail_master_id"		type="integer"  	title="parrent"					hidden="true"	required="true" foreignKey="MainDetDS.main_detail_id"  detail="true"/>
+		<field name="main_detail_geo"			type="text"  		title="main_detail_geo"/>
+		<field name="main_detail_eng"			type="text"  		title="main_detail_eng"/>
+		<field name="main_detail_note_geo"		type="text"  		title="main_detail_note_geo"/>
+		<field name="main_detail_note_eng"		type="text"  		title="main_detail_note_eng"/>
+		<field name="rec_user"					type="text"  		title="rec_user"/>
+		<field name="rec_date"					type="datetime"  	title="rec_date"/>
+		<field name="upd_user"					type="text"  		title="upd_user"/>
+		<field name="upd_date"					type="datetime"  	title="upd_date"/>
+		<field name="phones"					type="text"  		title="phones"/>
+		<field name="dep_phone"					type="text"  		title="dep_phone"/>
+		<field name="phone_state"				type="text"  		title="phone_state"/>
+		<field name="main_detail_geo_orig"		type="text"  		title="main_detail_geo_orig"	hidden="true"/>
+		<field name="deleted"					type="integer"  	title="deleted"					hidden="true"/>
+		<field name="fields_order"				type="integer"  	title="fields_order"			hidden="true"/>
+		<field name="main_detail_type_id"		type="integer"  	title="main_detail_type_id"		hidden="true"/>		
+		<field name="main_id"					type="integer"  	title="main_id"					hidden="true"/>
+		<field name="old_id"					type="integer"  	title="old_id"					hidden="true"/>
+		<field name="contact_phones"			type="integer"  	title="contact_phones"			hidden="true"/>
+		<field name="abonent_id"				type="integer"  	title="abonent_id"				hidden="true"/>
+		<field name="phone"						type="text"  		title="phone"/>
+	</fields>
+	
+	<operationBindings>
+		
+		<!-- FETCH -->
+        <operationBinding operationId="mainDetailSearchCustom" operationType="fetch">
+            <customSQL>
+            	 <![CDATA[
+            		select distinct * from (
+					SELECT md.main_detail_id,
+					       md.main_detail_master_id,
+					       md.deleted,
+					       md.fields_order,
+					       case
+					         when main_detail_type_id = 5 then
+					          md.main_detail_geo
+					         when main_detail_type_id = 61 then
+					          '...' || md.main_detail_geo
+					         when main_detail_type_id = 60 then
+					          '.........' || md.main_detail_geo
+					         when main_detail_type_id = 59 then
+					          '...............' || md.main_detail_geo
+					         when main_detail_type_id = 30 then
+					          '.....................' || md.main_detail_geo
+					         else
+					          md.main_detail_geo
+					       end as main_detail_geo,
+					       md.main_detail_geo as main_detail_geo_orig,
+					       md.main_detail_eng,
+					       md.main_detail_note_eng,
+					       md.main_detail_note_geo,
+					       md.main_detail_type_id,
+					       md.main_id,
+					       md.old_id,
+					       md.rec_user,
+					       md.rec_date,
+					       md.upd_user,
+					       md.upd_date,
+					       getorgdeptphones(main_detail_id) as phones
+					  FROM info.main_details md
+					 start with md.main_id = $criteria.p_main_id 
+					 and md.deleted = 0  
+					 #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||($criteria.main_detail_geo)||'%' #end
+					 #if($criteria.main_detail_geo1) and md.main_detail_geo like '%'||($criteria.main_detail_geo1)||'%' #end
+					 #if($criteria.main_detail_geo2) and md.main_detail_geo like '%'||($criteria.main_detail_geo2)||'%' #end
+					 #if($criteria.main_detail_geo3) and md.main_detail_geo like '%'||($criteria.main_detail_geo3)||'%' #end
+					 #if($criteria.main_detail_geo4) and md.main_detail_geo like '%'||($criteria.main_detail_geo4)||'%' #end
+					 #if($criteria.main_detail_geo5) and md.main_detail_geo like '%'||($criteria.main_detail_geo5)||'%' #end
+					 
+					 #if($criteria.main_detail_note_geo) and md.main_detail_note_geo like '%'||($criteria.main_detail_note_geo)||'%' #end	
+					 #if($criteria.p_phones) 
+					 		and info.getPhones(md.main_detail_id)||' '||info.getContactPhones(md.main_detail_id) like '%'||($criteria.p_phones)||'%'
+					 #end
+					 #if($criteria.p_cont_phones) 
+					 		and length(trim(info.getContactPhones(md.main_detail_id))) > 2
+					 #end
+					 connect by prior md.main_detail_master_id = md.main_detail_id and md.deleted = 0
+					union all 
+					SELECT md.main_detail_id,
+					       md.main_detail_master_id,
+					       md.deleted,
+					       md.fields_order,
+					       case
+					         when main_detail_type_id = 5 then
+					          md.main_detail_geo
+					         when main_detail_type_id = 61 then
+					          '...' || md.main_detail_geo
+					         when main_detail_type_id = 60 then
+					          '.........' || md.main_detail_geo
+					         when main_detail_type_id = 59 then
+					          '...............' || md.main_detail_geo
+					         when main_detail_type_id = 30 then
+					          '.....................' || md.main_detail_geo
+					         else
+					          md.main_detail_geo
+					       end as main_detail_geo,
+					       md.main_detail_geo as main_detail_geo_orig,
+					       md.main_detail_eng,
+					       md.main_detail_note_eng,
+					       md.main_detail_note_geo,
+					       md.main_detail_type_id,
+					       md.main_id,
+					       md.old_id,
+					       md.rec_user,
+					       md.rec_date,
+					       md.upd_user,
+					       md.upd_date,
+					       getorgdeptphones(main_detail_id) as phones
+					  FROM info.main_details md
+					 start with md.main_id = $criteria.p_main_id
+					 and md.deleted = 0 
+					 #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||($criteria.main_detail_geo)||'%' #end
+					 #if($criteria.main_detail_geo1) and md.main_detail_geo like '%'||($criteria.main_detail_geo1)||'%' #end
+					 #if($criteria.main_detail_geo2) and md.main_detail_geo like '%'||($criteria.main_detail_geo2)||'%' #end
+					 #if($criteria.main_detail_geo3) and md.main_detail_geo like '%'||($criteria.main_detail_geo3)||'%' #end
+					 #if($criteria.main_detail_geo4) and md.main_detail_geo like '%'||($criteria.main_detail_geo4)||'%' #end
+					 #if($criteria.main_detail_geo5) and md.main_detail_geo like '%'||($criteria.main_detail_geo5)||'%' #end
+					 
+					 #if($criteria.main_detail_note_geo) and md.main_detail_note_geo like '%'||($criteria.main_detail_note_geo)||'%' #end
+					 #if($criteria.p_phones) 
+					 		and info.getPhones(md.main_detail_id)||' '||info.getContactPhones(md.main_detail_id) like '%'||($criteria.p_phones)||'%'
+					 #end
+					 #if($criteria.p_cont_phones) 
+					 		and length(trim(info.getContactPhones(md.main_detail_id))) > 2
+					 #end
+					 connect by prior md.main_detail_id = md.main_detail_master_id and md.deleted = 0
+					) tt 
+					order by tt.fields_order            		
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+		
+		<!-- FETCH -->
+		<operationBinding operationId="mainDetailSearch" operationType="fetch">			
+			<selectClause>
+				md.main_detail_id,
+			    md.main_detail_master_id,
+				md.deleted,
+				md.fields_order,
+				
+				case when main_detail_type_id = 5  then md.main_detail_geo
+					 when main_detail_type_id = 61 then '...'||md.main_detail_geo
+					 when main_detail_type_id = 60 then '.........'||md.main_detail_geo
+					 when main_detail_type_id = 59 then '...............'||md.main_detail_geo
+    				 when main_detail_type_id = 30 then '.....................'||md.main_detail_geo
+    				 else md.main_detail_geo
+  				end as main_detail_geo,
+  				 
+				md.main_detail_eng,
+				md.main_detail_note_eng,
+				md.main_detail_note_geo,
+				md.main_detail_type_id,
+				md.main_id,
+				md.old_id,
+				md.rec_user,
+				md.rec_date,
+				md.upd_user,
+				md.upd_date,
+				getorgdeptphones(main_detail_id) as phones
+			</selectClause>
+			<tableClause>info.main_details md</tableClause>
+			<whereClause>
+				 <![CDATA[
+				 	 1 = 1
+				 	 #if($criteria.deleted) and md.deleted = $criteria.deleted #end
+				 	 #if($criteria.main_detail_id) and md.main_detail_id = $criteria.main_detail_id #end
+				 	 #if($criteria.main_id) and md.main_id = $criteria.main_id #end
+				 	 #if($criteria.main_detail_master_id && $criteria.main_detail_master_id != -10000 ) and md.main_detail_master_id = $criteria.main_detail_master_id #end
+				 	 #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||($criteria.main_detail_geo)||'%' #end				 	 
+				 ]]>
+			</whereClause>
+			<orderClause>md.fields_order</orderClause>
+		</operationBinding>		
+		
+		
+		<operationBinding operationId="searchMainDetailsForCBByMainId" operationType="fetch">
+    		<selectClause>   			
+    			md.main_detail_id,
+    			md.main_detail_geo 
+			</selectClause> 
+			<tableClause>info.main_details md</tableClause>	
+			<whereClause>
+					md.main_detail_type_id in (5,30,59,60,61) and md.deleted = 0 and	    
+				   ($defaultWhereClause)
+			</whereClause>	
+			<orderClause>md.fields_order</orderClause>		
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchMainDetailsAdv" operationType="fetch">
+    		<selectClause>   			
+    			md.main_detail_id,
+    			main_id,
+    			md.main_detail_geo 
+			</selectClause> 
+			<tableClause>info.main_details md</tableClause>	
+			<whereClause>
+					md.main_detail_type_id in (5,30,59,60,61) and md.deleted = 0	    
+				    #if($criteria.main_id) and md.main_id = $criteria.main_id #end
+				    #if($criteria.main_detail_id) and md.main_detail_id = $criteria.main_detail_id #end
+				    #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||$criteria.main_detail_geo||'%' #end
+			</whereClause>	
+			<orderClause>md.fields_order</orderClause>		
+    	</operationBinding>
+		
+	</operationBindings>
+</DataSource>

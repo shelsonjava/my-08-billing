@@ -1,0 +1,70 @@
+<DataSource
+	ID="BusinessSecDS"
+	serverType="sql"
+	tableName="info.business_sector"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="business_sector_id"			type="integer"		title="ID"								hidden="true" primaryKey="true" />
+		<field name="business_sector_name_geo"		type="text"			title="business_sector_name_geo"/>
+		<field name="rec_user"						type="text"			title="Record User"/>
+		<field name="rec_date"						type="datetime"		title="rec_date"/>
+		<field name="upd_user"						type="text"			title="Update User"/>
+		<field name="upd_date"						type="datetime"		title="upd_date"/>
+		<field name="business_sector_name_eng"		type="text"			title="business_sector_name_eng"		hidden="true"/>		
+		<field name="deleted"						type="integer"		title="Deleted" 						hidden="true"/>
+		<field name="loggedUserName"				type="text"			title="Logged UserName" 				hidden="true" />	
+	</fields>
+
+	<operationBindings>		
+
+		<!-- Add BusinessSector -->
+		<operationBinding operationType="add" operationId="addBusinessSector" serverMethod="addBusinessSector">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+        </operationBinding>
+        
+		<!-- BusinessSector Update -->
+		<operationBinding operationType="update" operationId="updateBusinessSector" serverMethod="updateBusinessSector">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+        </operationBinding>
+        
+        <!-- BusinessSector Status Update -->
+		<operationBinding operationType="update" operationId="updateBusinessSectorStatus" serverMethod="updateBusinessSectorStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchAllBusinessSectors" operationType="fetch">
+    		<selectClause>   			
+    			t.business_sector_id,
+				t.business_sector_name_eng,
+				t.business_sector_name_geo,
+				t.deleted,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user
+			</selectClause> 
+			<tableClause>business_sector t</tableClause>
+			<whereClause><![CDATA[
+				1=1
+				]]>  
+			</whereClause> 
+			<orderClause>t.business_sector_name_geo</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllBusinessSectorsForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.business_sector_id, 
+				t.business_sector_name_geo
+			</selectClause> 
+			<tableClause>business_sector t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) AND t.deleted = 0
+				]]>  
+			</whereClause> 
+			<orderClause>t.business_sector_name_geo</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

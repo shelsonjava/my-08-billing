@@ -1,0 +1,46 @@
+<DataSource
+	ID="ContractorsPhonesDS"
+	serverType="sql"
+	tableName="info.contractor_phones"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="cp_id"				type="integer"		title="cp_id"			hidden="true" 	primaryKey="true" />
+		<field name="phone"				type="text"			title="phone"/>
+		<field name="deleted"			type="integer"		title="deleted"			hidden="true"/>
+		<field name="limited"			type="integer"		title="limited"			hidden="true"/>
+		<field name="main_detail_id"	type="integer"		title="main_detail_id"	hidden="true"/>
+		<field name="main_id"			type="integer"		title="main_id"			hidden="true"/>
+		<field name="phone_id"			type="integer"		title="phone_id"		hidden="true"/>
+		<field name="rec_user"			type="text"			title="rec_user"		hidden="true"/>
+		<field name="upd_user"			type="text"			title="upd_user"		hidden="true"/>
+		<field name="rec_date"			type="datetime"		title="rec_date"		hidden="true"/>
+		<field name="upd_date"			type="datetime"		title="upd_date"		hidden="true"/>
+		<field name="contract_id"		type="integer"		title="contract_id"		hidden="true"/>
+	</fields>
+	<operationBindings>		
+    	<operationBinding operationId="searchContractorPhones" operationType="fetch">
+    		<selectClause>
+    			    t.cp_id,
+					t.phone,
+					t.deleted,
+					t.limited,
+					t.main_detail_id,
+					t.main_id,
+					t.phone_id,
+					t.rec_date,
+					t.rec_user,
+					t.upd_date,
+					t.upd_user,
+					t.contract_id
+			</selectClause> 
+			<tableClause>info.contractor_phones t</tableClause>
+			<whereClause><![CDATA[
+				 t.contract_id = $criteria.contract_id 
+				]]>  
+			</whereClause> 
+			<orderClause>t.cp_id</orderClause>
+    	</operationBinding>
+
+    </operationBindings>	
+</DataSource>

@@ -1,0 +1,86 @@
+<DataSource
+	ID="EntTypeDS"
+	serverType="sql"
+	tableName="info.ent_types"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="ent_type_id"				type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="ent_type_geo"				type="text"			title="Ent Type Geo"/>
+		<field name="rec_date"					type="datetime"		title="Record Date"/>
+		<field name="rec_user"					type="text"			title="Record User"/>
+		<field name="upd_user"					type="text"			title="Update User"/>
+		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
+		<field name="ent_type_eng"				type="text"			title="ent_type_eng"				hidden="true"/>
+		<field name="old_id"					type="integer"		title="Old Id" 						hidden="true"/>
+		<field name="service_id"				type="integer"		title="Service Id" 					hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+
+		<!-- Add EntType -->
+		<operationBinding operationType="add" operationId="addEntType" serverMethod="addEntType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+        
+		<!-- EntType Update -->
+		<operationBinding operationType="update" operationId="updateEntType" serverMethod="updateEntType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+        
+        <!-- EntType Status Update -->
+		<operationBinding operationType="update" operationId="updateEntTypeStatus" serverMethod="updateEntTypeStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllEntTypes" operationType="fetch">
+    		<selectClause>   			
+    			t.ent_type_id,
+				t.deleted,
+				t.ent_type_eng,
+				t.ent_type_geo,
+				t.old_id,
+				t.rec_date,
+				t.rec_user,
+				t.service_id,
+				t.upd_user			    
+			</selectClause> 
+			<tableClause>ent_types t</tableClause>
+			<whereClause><![CDATA[
+				1=1
+				#if($criteria.ent_type_geo) and t.ent_type_geo like ($criteria.ent_type_geo)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.ent_type_id</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllEntTypesForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.ent_type_id,
+    			t.ent_type_geo 
+			</selectClause> 
+			<tableClause>ent_types t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0
+			</whereClause>	
+			<orderClause>t.ent_type_geo</orderClause>		
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllEntTypesForCC" operationType="fetch">
+    		<selectClause>   			
+    			t.ent_type_id,
+    			t.ent_type_geo 
+			</selectClause> 
+			<tableClause>ent_types t</tableClause>	
+			<whereClause>
+				t.deleted = 0
+				#if($criteria.ent_type_geo) and t.ent_type_geo like '%'||($criteria.ent_type_geo)||'%' #end
+			</whereClause>	
+			<orderClause>t.ent_type_geo</orderClause>		
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

@@ -1,0 +1,70 @@
+<DataSource
+	ID="BusinessUnionDS"
+	serverType="sql"
+	tableName="info.business_union"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="business_union_id"				type="integer"		title="ID"								hidden="true" primaryKey="true" />
+		<field name="business_union_name_geo"		type="text"			title="business_union_name_geo"/>
+		<field name="rec_user"						type="text"			title="Record User"/>
+		<field name="rec_date"						type="datetime"		title="rec_date"/>
+		<field name="upd_user"						type="text"			title="Update User"/>
+		<field name="upd_date"						type="datetime"		title="upd_date"/>
+		<field name="business_union_name_eng"		type="text"			title="business_union_name_eng"			hidden="true"/>
+		<field name="deleted"						type="integer"		title="Deleted" 						hidden="true"/>
+		<field name="loggedUserName"				type="text"			title="Logged UserName" 				hidden="true" />	
+	</fields>
+
+	<operationBindings>		
+
+		<!-- Add BusinessUnion -->
+		<operationBinding operationType="add" operationId="addBusinessUnion" serverMethod="addBusinessUnion">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+        </operationBinding>
+        
+		<!-- BusinessUnion Update -->
+		<operationBinding operationType="update" operationId="updateBusinessUnion" serverMethod="updateBusinessUnion">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+        </operationBinding>
+        
+        <!-- BusinessUnion Status Update -->
+		<operationBinding operationType="update" operationId="updateBusinessUnionStatus" serverMethod="updateBusinessUnionStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchAllBusinessUnions" operationType="fetch">
+    		<selectClause>   			
+    			t.business_union_id,
+				t.business_union_name_eng,
+				t.business_union_name_geo,
+				t.deleted,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user
+			</selectClause> 
+			<tableClause>business_union t</tableClause>
+			<whereClause><![CDATA[
+				1=1
+				]]>  
+			</whereClause> 
+			<orderClause>t.business_union_name_geo</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllBusinessUnionsForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.business_union_id, 
+				t.business_union_name_geo
+			</selectClause> 
+			<tableClause>business_union t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) AND t.deleted = 0
+				]]>  
+			</whereClause> 
+			<orderClause>t.business_union_name_geo</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

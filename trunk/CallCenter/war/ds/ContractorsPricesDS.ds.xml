@@ -1,0 +1,38 @@
+<DataSource
+	ID="ContractorsPricesDS"
+	serverType="sql"
+	tableName="info.contract_price_items"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+
+	<fields>
+		<field name="id"					type="integer"		title="ID"					hidden="true" primaryKey="true" />
+		<field name="contract_id"			type="integer"		title="contract_id"			hidden="true"/>
+		<field name="call_count_start"		type="integer"		title="call_count_start"/>
+		<field name="call_count_end"		type="integer"		title="call_count_end"/>
+		<field name="price"					type="any"			title="price"/>
+		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+
+    	<operationBinding operationId="searchContractorPrices" operationType="fetch">
+    		<selectClause>
+    			  t.id,   			
+    			  t.contract_id,
+				  t.call_count_start,
+				  t.call_count_end,
+				  t.price
+			</selectClause> 
+			<tableClause>info.contract_price_items t</tableClause>
+			<whereClause><![CDATA[
+				 t.contract_id = $criteria.contract_id 
+				]]>  
+			</whereClause> 
+			<orderClause>t.id</orderClause>
+    	</operationBinding>
+
+    </operationBindings>	
+</DataSource>

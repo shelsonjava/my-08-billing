@@ -1,0 +1,34 @@
+<DataSource
+	ID="CityTypeDS"
+	serverConstructor="com.isomorphic.jpa.JPADataSource"  
+    beanClassName="com.info08.billing.callcenter.shared.entity.CityType">
+	<fields>
+		<field name="city_type_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="city_type_geo"		type="text" 	title="City Type Geo"/>			
+		<field name="city_type_eng"		type="text" 	title="City Type Eng"/>
+		<field name="rec_date"			type="datetime"	title="Record Date"/>
+		<field name="rec_user"			type="text"		title="Record User"/>		
+		<field name="deleted"			type="integer"	title="Deleted" hidden="true"/>
+	</fields>
+
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+
+	<operationBindings>
+		<!-- Searching City Types - Cached -->
+		<operationBinding operationId="cityTypesSearch" operationType="fetch" serverMethod="fetchCityTypes">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllCityTypesForCombos" operationType="fetch">
+    		<selectClause>   			
+    			t.city_type_id,
+				t.city_type_geo
+			</selectClause> 
+			<tableClause>city_types t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0
+			</whereClause>
+			<orderClause>t.city_type_id</orderClause>
+    	</operationBinding>    
+    </operationBindings>
+</DataSource>

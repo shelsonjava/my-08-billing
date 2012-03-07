@@ -1,0 +1,56 @@
+<DataSource
+	ID="FixedOpPrefDS"
+	serverType="sql"
+	tableName="info.fixed_operator_prefixes"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+
+	<fields>
+		<field name="id"				type="integer"			title="ID"					hidden="true" primaryKey="true" />
+		<field name="prefix"			type="text"				title="prefix"/>
+		<field name="rec_date"			type="datetime"			title="Record Date"/>
+		<field name="rec_user"			type="text"				title="Record User"/>
+		<field name="upd_date"			type="datetime"			title="upd_date"/>
+		<field name="upd_user"			type="text"				title="Update User"/>
+		<field name="deleted"			type="integer"			title="Deleted" 			hidden="true"/>
+		<field name="loggedUserName"	type="text"				title="Logged UserName" 	hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<!-- Add FixedOperatorPrefix -->
+		<operationBinding operationType="add" operationId="addFixedOperatorPrefix" serverMethod="addFixedOperatorPrefix">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+
+		<!-- FixedOperatorPrefix Update -->
+		<operationBinding operationType="update" operationId="updateFixedOperatorPrefix" serverMethod="updateFixedOperatorPrefix">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+
+        <!-- FixedOperatorPrefix Status Update -->
+		<operationBinding operationType="update" operationId="updateFixedOperatorPrefixStatus" serverMethod="updateFixedOperatorPrefixStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchFixedOperatorPrefixes" operationType="fetch">
+    		<selectClause>   			
+    			t.id,
+				t.prefix,
+				t.deleted,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user    
+			</selectClause> 
+			<tableClause>fixed_operator_prefixes t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.deleted) and t.deleted = $criteria.deleted #end
+				#if($criteria.prefix) AND t.prefix like '%'||($criteria.prefix)||'%' #end
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

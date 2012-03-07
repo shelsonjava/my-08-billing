@@ -1,0 +1,113 @@
+<DataSource
+	ID="GeoIndCountryDS"
+	serverType="sql"
+	tableName="info.geo_ind_country"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="geo_country_id"	type="integer"		title="ID"					hidden="true" primaryKey="true" />
+		<field name="region_id"			type="integer"		title="Region ID"			hidden="true"/>
+		<field name="geo_country_geo"	type="text" 		title="Geo Country Geo"/>
+		<field name="geo_country_eng"	type="text"			title="Geo Country Eng" 	hidden="true"/>
+		<field name="geo_index"			type="text"			title="Geo Index"/>
+		<field name="is_center"			type="integer"		title="Is Center"			hidden="true"/>
+		<field name="rec_user"			type="text"			title="Record User"/>
+		<field name="rec_date"			type="datetime"		title="Record Date"/>
+		<field name="upd_user"			type="text"			title="Update User"/>
+		<field name="deleted"			type="integer"		title="Deleted" 			hidden="true"/>
+		<field name="loggedUserName"	type="text"			title="Logged UserName" 	hidden="true" />
+		<field name="regionName"		type="text"			title="Region Name"/>
+		<field name="isCenterDescr"		type="text"			title="Is Center Description"/>
+		<field name="fullText"			type="text"			title="fullText"/>		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+
+		<!-- Add GeoIndCountry -->
+		<operationBinding operationType="add" operationId="addGeoIndCountry" serverMethod="addGeoIndCountry">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+        </operationBinding>
+        
+		<!-- GeoIndCountry Update -->
+		<operationBinding operationType="update" operationId="updateGeoIndCountry" serverMethod="updateGeoIndCountry">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+        </operationBinding>
+        
+        <!-- GeoIndCountry Status Update -->
+		<operationBinding operationType="update" operationId="updateGeoIndCountryStatus" serverMethod="updateGeoIndCountryStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchGeoIndRegionsFromDB" operationType="fetch">
+    		<selectClause>   			
+    			t.geo_country_id,
+    			t.region_id,
+    			t.geo_country_geo,
+    			t.geo_country_eng,
+    			t.geo_index,
+    			t.is_center,
+    			t.rec_user,
+    			t.rec_date,
+    			t.upd_user,
+    			t.deleted,
+    			r.region_name_geo as regionName,    			
+    			decode(t.is_center,-1,'რაიონული ცენტრი',0,'სოფელი','უცნობია') as isCenterDescr
+			</selectClause> 
+			<tableClause>geo_ind_country t,geo_ind_region r</tableClause>
+			<whereClause><![CDATA[ 
+				t.region_id = r.region_id
+				#if($criteria.region_id) AND t.region_id = $criteria.region_id #end
+				#if($criteria.geo_country_geo) and t.geo_country_geo like ($criteria.geo_country_geo)||'%' #end
+				#if($criteria.geo_country_eng) and t.geo_country_eng like ($criteria.geo_country_eng)||'%' #end
+				#if($criteria.geo_index) and t.geo_index like ($criteria.geo_index)||'%' #end
+				#if($criteria.is_center) AND t.is_center = $criteria.is_center #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.geo_country_geo</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchGeoIndRegCountry" operationType="fetch">
+    		<selectClause>   			
+    			t.geo_country_id,
+    			t.region_id,
+    			t.geo_country_geo,
+    			t.geo_country_eng,
+    			t.geo_index,
+    			t.is_center,
+    			t.rec_user,
+    			t.rec_date,
+    			t.upd_user,
+    			t.deleted,
+    			r.region_name_geo as regionName,    			
+    			decode(t.is_center,-1,'რაიონული ცენტრი',0,'სოფელი','უცნობია') as isCenterDescr,
+    			r.region_name_geo||' '||t.geo_country_geo as fullText
+			</selectClause> 
+			<tableClause>geo_ind_country t,geo_ind_region r</tableClause>
+			<whereClause><![CDATA[ 
+				t.region_id = r.region_id and t.deleted = 0 and r.deleted = 0
+				
+				#if($criteria.fullText1)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText1||'%' #end
+				#if($criteria.fullText2)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText2||'%' #end
+				#if($criteria.fullText3)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText3||'%' #end
+				#if($criteria.fullText4)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText4||'%' #end
+				#if($criteria.fullText5)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText5||'%' #end
+				#if($criteria.fullText6)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText6||'%' #end
+				#if($criteria.fullText7)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText7||'%' #end
+				#if($criteria.fullText8)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText8||'%' #end
+				#if($criteria.fullText9)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText9||'%' #end
+				#if($criteria.fullText10)  and (r.region_name_geo||' '||t.geo_country_geo) like '%'||$criteria.fullText10||'%' #end
+				
+				#if($criteria.geo_index) and t.geo_index like '%'||($criteria.geo_index)||'%' #end
+				#if($criteria.geo_country_geo) and t.geo_country_geo like '%'||($criteria.geo_country_geo)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>r.region_name_geo,t.geo_country_geo</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    </operationBindings>	
+</DataSource>

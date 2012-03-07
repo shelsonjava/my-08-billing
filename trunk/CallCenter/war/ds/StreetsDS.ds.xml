@@ -1,0 +1,44 @@
+<DataSource ID="StreetsDS" serverType="sql"
+	tableName="info.streets" qualifyColumnNames="false">
+	<fields>
+		<field name="street_district_id" 	type="integer"	title="City District ID"	hidden="true"  primaryKey="true" />
+	    <field name="street_id" 			type="integer"	title="Street ID"			hidden="true"/>
+		<field name="city_id" 				type="integer"	title="City ID" 			hidden="true" />
+		<field name="street_name_geo"		type="text" 	title="City Name"/>
+		<field name="deleted"				type="integer"	title="Deleted" 			hidden="true" />
+		<field name="street_location_geo"	type="text" 	title="Street Location GEO"/>
+		<field name="city_region_id" 		type="integer"	title="City Region ID" 		hidden="true" />		
+	</fields>
+	<operationBindings>
+		<!-- FETCH - Cached -->
+		<operationBinding operationId="streetSearchCached" operationType="fetch" serverMethod="fetchStreets">
+	    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+	   	</operationBinding>
+	   	
+		<!-- FETCH -->
+		<operationBinding operationId="customStreetsSearch"
+			operationType="fetch" customFields="street_district_id, street_id, city_id, street_name_geo,deleted,street_location_geo,city_region_id ">			
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.Street"/>
+			<selectClause>
+				d.street_district_id,
+      			t.street_id,
+      			t.city_id,
+      			t.street_name_geo,
+      			t.deleted,
+      			t.street_location_geo,
+      			d.city_region_id
+			</selectClause>
+			<tableClause>				
+				streets t, street_district d
+			</tableClause>
+			<whereClause><![CDATA[ 
+				t.street_id = d.street_id and 
+				t.city_id = d.city_id and t.deleted = 0
+				#if($criteria.city_id) and t.city_id = $criteria.city_id #end
+				#if($criteria.street_name_geo) and t.street_name_geo like ($criteria.street_name_geo)||'%' #end
+				]]>
+			</whereClause>
+			<orderClause>t.street_name_geo</orderClause>
+		</operationBinding>		
+	</operationBindings>
+</DataSource>

@@ -1,0 +1,172 @@
+<DataSource 
+	ID="OrgParrAndChildByIdDS"
+    serverType="sql"
+    tableName="info.main_services"      
+    qualifyColumnNames="false"
+    dropExtraFields = "false">
+    
+	<fields>
+		<field name="main_id"					type="integer"		title="ID"					hidden="true" 	primaryKey="true" />
+		<field name="main_master_id"			type="integer"  	title="parrent"				hidden="true"	required="true" foreignKey="OrgParrAndChildByIdDS.main_id"  detail="true"/>
+		<field name="org_name"					type="text"  		title="org_name"/>
+		<field name="note"						type="text"  		title="note"/>
+		<field name="identcode"					type="text"  		title="identcode"/>
+		<field name="new_identcode"				type="text"  		title="new_identcode"/>
+		<field name="director"					type="text"  		title="director"/>
+		<field name="legaladdress"				type="text"  		title="legaladdress"/>
+		<field name="workinghours"				type="text"  		title="workinghours"/>
+		<field name="founded"					type="text"  		title="founded"/>
+		<field name="mail"						type="text"  		title="mail"/>
+		<field name="webaddress"				type="text"  		title="webaddress"/>
+		<field name="org_info"					type="text"  		title="org_info"/>
+		<field name="contactperson"				type="text"  		title="contactperson"/>
+		<field name="dayoffs"					type="text"  		title="dayoffs"/>
+		<field name="workpersoncountity"		type="text"  		title="workpersoncountity"/>
+		<field name="ind"						type="text"  		title="ind"/>
+		<field name="org_name_eng"				type="text"  		title="org_name_eng"/>
+		<field name="real_address"				type="text"  		title="real_address"/>
+		<field name="deleted"					type="integer"  	title="deleted"				hidden="true"/>
+		<field name="legal_statuse_id"			type="integer"  	title="legal_statuse_id"	hidden="true"/>
+		<field name="statuse"					type="integer"  	title="statuse"				hidden="true"/>
+		<field name="note_crit"					type="integer"  	title="note_crit"/>
+		<field name="city_name_geo"				type="text"  		title="city_name_geo"/>
+		<field name="city_region_name_geo"		type="text"  		title="city_region_name_geo"/>
+		<field name="street_location_geo"		type="text"  		title="street_location_geo"/>
+		<field name="index_text"				type="text"  		title="index_text"/>
+		<field name="legal_statuse"				type="text"  		title="legal_statuse"/>
+		<field name="org_name_tree_like"		type="text"  		title="org_name_tree_like"/>
+		<field name="partnerbank"				type="text"  		title="partnerbank"/>
+		<field name="city_id"					type="integer"  	title="city_id"				hidden="true"/>
+		<field name="priority"					type="integer"  	title="priority"			hidden="true"/>
+		<field name="extra_priority"			type="integer"  	title="extra_priority"		hidden="true"/>		
+		<field name="partnerbank_id"			type="integer"  	title="partnerbank_id"		hidden="true"/>
+		<field name="full_address"				type="text"  		title="full_address"/>
+	</fields>
+	
+	<operationBindings>
+	
+		<!-- FETCH -->
+		<operationBinding operationId="customOrgTreeSearch" operationType="fetch">			
+			<selectClause>distinct 
+				case when level=2 then t.org_name
+        			 when level=3 then '...'||t.org_name
+        			 when level=4 then '.........'||t.org_name
+        		     when level=5 then '...............'||t.org_name
+        			 when level=6 then '.....................'||t.org_name
+        			 else t.org_name
+      			end as org_name_tree_like, 
+			        t.main_id,
+			        t.main_master_id,
+			        t.org_name,
+			        t.identcode,
+			        t.director,
+			        t.legaladdress,
+			        t.deleted,
+			        t.note,
+			        t.workinghours,
+			        t.founded,
+			        t.mail,
+			        t.org_info,
+			        t.webaddress,
+			        t.contactperson,
+			        t.dayoffs,
+			        t.workpersoncountity,
+			        t.ind,
+			        t.org_name_eng,
+			        t.new_identcode,
+			        t.legal_statuse_id,
+			        t.statuse,
+			        t.real_address,
+			        t.city_name_geo,
+			        t.city_region_name_geo,
+			        t.street_location_geo,
+			        t.index_text,
+			        t.note_crit,
+			        t.legal_statuse,
+			        t.city_id,
+			        t.priority,
+			        t.extra_priority,
+			        p.partnerbank,
+			        t.partnerbank_id,
+			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.city_name_geo||' / '|| getDistrict(t.street_id)||' / '||t.street_name_geo||' '||t.address_suffix_geo)) as full_address
+			</selectClause>
+			<tableClause>info.nb_org_search t, org_partnerbank_lists p</tableClause>
+			<whereClause>
+				 <![CDATA[
+				 		t.partnerbank_id = p.main_id(+) and level > 1
+				        #if($criteria.org_name_tree_like) and t.org_name like '%'||($criteria.org_name_tree_like)||'%' #end
+				        #if($criteria.org_name) and t.org_name like '%'||($criteria.org_name)||'%' #end
+				        #if($criteria.real_address) and t.real_address like '%'||($criteria.real_address)||'%' #end
+				        #if($criteria.full_address) and t.real_address like '%'||($criteria.full_address)||'%' #end
+				        #if($criteria.p_main_id)
+				        	start with t.main_id = $criteria.p_main_id  
+				        #end
+					  	connect by prior t.main_id = t.main_master_id
+						order siblings by t.priority
+				 ]]>
+			</whereClause>
+		</operationBinding>	
+		
+		
+		
+		
+		<!-- FETCH -->
+		<operationBinding operationId="customOrgTreeSearchParrent" operationType="fetch">			
+			<selectClause> distinct 
+				case when level=2 then t.org_name
+        			 when level=1 then '...'||t.org_name
+        			 else t.org_name
+      			end as org_name_tree_like,
+					t.main_id,
+			        t.main_master_id,
+			        t.org_name,
+			        t.identcode,
+			        t.director,
+			        t.legaladdress,
+			        t.deleted,
+			        t.note,
+			        t.workinghours,
+			        t.founded,
+			        t.mail,
+			        t.org_info,
+			        t.webaddress,
+			        t.contactperson,
+			        t.dayoffs,
+			        t.workpersoncountity,
+			        t.ind,
+			        t.org_name_eng,
+			        t.new_identcode,
+			        t.legal_statuse_id,
+			        t.statuse,
+			        t.real_address,
+			        t.city_name_geo,
+			        t.city_region_name_geo,
+			        t.street_location_geo,
+			        t.index_text,
+			        t.note_crit,
+			        t.legal_statuse,
+			        t.city_id,
+			        t.priority,
+			        t.extra_priority,
+			        p.partnerbank,
+			        t.partnerbank_id,
+			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.city_name_geo||' / '|| getDistrict(t.street_id)||' / '||t.street_name_geo||' '||t.address_suffix_geo)) as full_address
+			</selectClause>
+			<tableClause>info.nb_org_search t, org_partnerbank_lists p</tableClause>
+			<whereClause>
+				 <![CDATA[
+				 		t.partnerbank_id = p.main_id(+) and level = 2
+				        #if($criteria.org_name_tree_like) and t.org_name like '%'||($criteria.org_name_tree_like)||'%' #end
+				        #if($criteria.org_name) and t.org_name like '%'||($criteria.org_name)||'%' #end
+				        #if($criteria.real_address) and t.real_address like '%'||($criteria.real_address)||'%' #end
+				        #if($criteria.p_main_id)
+				        	start with t.main_id = $criteria.p_main_id
+				        #end
+					  	connect by prior t.main_master_id = t.main_id 
+						order by t.priority
+				 ]]>
+			</whereClause>
+		</operationBinding>	
+		
+	</operationBindings>
+</DataSource>

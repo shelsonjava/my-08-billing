@@ -1,0 +1,57 @@
+<DataSource
+	ID="CCServiceLog"
+	serverType="sql"
+	tableName="info.ent_types"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="id"						type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="rec_date"					type="datetime"		title="rec_date"/>
+		<field name="service_id"				type="text"			title="service_id"/>
+		<field name="session_id"				type="text"			title="session_id"/>
+		<field name="user_name"					type="text"			title="user_name"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+
+		<!-- Add EntType -->
+		<operationBinding operationType="add" operationId="addEntType" serverMethod="addEntType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+        
+		<!-- EntType Update -->
+		<operationBinding operationType="update" operationId="updateEntType" serverMethod="updateEntType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+        
+        <!-- EntType Status Update -->
+		<operationBinding operationType="update" operationId="updateEntTypeStatus" serverMethod="updateEntTypeStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllEntTypes" operationType="fetch">
+    		<selectClause>   			
+    			t.ent_type_id,
+				t.deleted,
+				t.ent_type_eng,
+				t.ent_type_geo,
+				t.old_id,
+				t.rec_date,
+				t.rec_user,
+				t.service_id,
+				t.upd_user			    
+			</selectClause> 
+			<tableClause>ent_types t</tableClause>
+			<whereClause><![CDATA[
+				1=1
+				#if($criteria.ent_type_geo) and t.ent_type_geo like ($criteria.ent_type_geo)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.ent_type_id</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

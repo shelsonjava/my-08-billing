@@ -1,0 +1,24 @@
+<DataSource
+	ID="WorldRegionDS"
+	serverType="sql"
+	tableName="info.world_regions"
+	qualifyColumnNames="false" dropExtraFields = "false">
+	<fields>
+		<field name="world_region_id"			type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="world_region_name_geo"		type="text" 	title="World Region Name Geo"/>			
+		<field name="world_region_name_eng"		type="text"		title="World Region Name Eng"/>
+		<field name="rec_date"					type="datetime"	title="Record Date"/>
+		<field name="rec_user"					type="text"		title="Record User"/>				
+		<field name="deleted"					type="integer"	title="Deleted" hidden="true"/>
+	</fields>
+
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+
+	<operationBindings>
+    	<!-- Searching World Regions - Cached -->
+		<operationBinding operationId="worldRegionsSearch" operationType="fetch" serverMethod="fetchWorldRegions">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>
+    	    
+    </operationBindings>
+</DataSource>

@@ -1,0 +1,102 @@
+<DataSource
+	ID="CountryDS"
+	serverType="sql"
+	tableName="info.countries"
+	qualifyColumnNames="false">
+	<fields>
+		<field name="country_id"				type="integer"	title="ID"				hidden="true" primaryKey="true" />
+		<field name="country_name_geo"			type="text" 	title="Country Name Geo"/>
+		<field name="country_name_eng"			type="text" 	title="Country Name Eng"/>					
+		<field name="rec_date"					type="datetime"	title="Record Date"/>		
+		<field name="rec_user"					type="text"		title="Record User"/>		
+		<field name="deleted"					type="integer"	title="Deleted" 		hidden="true"/>
+		<field name="world_region_id"			type="integer"	title="World Region Id" hidden="true"/>
+		<field name="upd_user"					type="text"		title="Update User"/>
+		<field name="country_code"				type="text"		title="Country Code"/>
+		<field name="upd_date"					type="datetime"	title="Record Upd Date"/>
+		<field name="season_id"					type="integer"	title="Season Id" 		hidden="true"/>
+		<field name="worldRegion"				type="text"		title="World Region"/>			
+	</fields>
+
+	<operationBindings>
+    	
+    	<!-- Searching Countries From Database -->
+    	<operationBinding operationId="countriesSearchFromDB" operationType="fetch" serverMethod="fetchAllCountriesFromDB">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>
+    	
+    	<!-- Searching Countries - Cached -->
+    	<operationBinding operationId="countriesSearchCached" operationType="fetch" serverMethod="fetchAllCountries">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>
+    	
+    	<!-- Add New Country -->
+		<operationBinding operationId="countryAdd" operationType="add" serverMethod="countryAdd">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- Modify Country -->
+		<operationBinding operationId="countryUpdate" operationType="update" serverMethod="countryUpdate">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- Modify Country Status -->
+		<operationBinding operationId="countryStatusUpdate" operationType="update" serverMethod="countryStatusUpdate">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <operationBinding operationId="searchAllCountriesForCombos" operationType="fetch">
+    		<selectClause>   			
+    			t.country_id,
+				t.country_name_geo,
+				trim(nvl(t.country_code,'')) as country_code
+			</selectClause> 
+			<tableClause>countries t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0
+			</whereClause>
+			<orderClause>t.country_name_geo</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllCountriesNoContForCombos" operationType="fetch">
+    		<selectClause>   			
+    			t.country_id,
+				t.country_name_geo,
+				trim(nvl(t.country_code,'')) as country_code		
+			</selectClause> 
+			<tableClause>countries t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0 and country_code is not null
+			</whereClause>
+			<orderClause>t.country_name_geo</orderClause>
+    	</operationBinding>
+    	
+    	
+    	 <!-- Search From DB -->
+        <operationBinding operationId="searchCountriesByTransportType" operationType="fetch">
+    		<selectClause>   			
+    			c.country_id, 
+    			c.country_name_geo
+			</selectClause> 
+			<tableClause>countries c</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) AND c.deleted = 0 
+				#if($criteria.transport_type_id) 
+					 and c.country_id in 
+					 	(
+					 		select 
+					 			c.country_id 
+					 		from 
+					 			transport_places t, cities c 
+					 		where 
+					 			c.city_id = t.city_id and t.transport_type_id = $criteria.transport_type_id
+					 	)
+				#end
+				]]>  
+			</whereClause> 
+			<groupClause>c.country_id, c.country_name_geo</groupClause>
+			<orderClause>c.country_name_geo</orderClause>
+        </operationBinding>
+    	
+    </operationBindings>
+</DataSource>

@@ -1,0 +1,38 @@
+<DataSource ID="OrgInfoByPhoneDS" serverType="sql"
+	tableName="info.main_orgs" qualifyColumnNames="false">
+	<fields>
+		<field name="main_id" 				type="integer"	title="Main ID"				hidden="true"	primaryKey="true" />
+		<field name="org_name" 				type="text" 	title="Org Name"/>
+		<field name="note"  				type="text"		title="Note" />
+		<field name="workinghours" 			type="text"		title="Working Hours" />
+		<field name="director"				type="text" 	title="Director" />
+		<field name="identcode"				type="text" 	title="Ident. Code" />
+		<field name="founded"				type="text" 	title="Founded" />
+		<field name="legaladdress"			type="text" 	title="Legal Address" />
+		<field name="mail"					type="text" 	title="Mail" />
+		<field name="webaddress"			type="text" 	title="Web Address" />
+		<field name="org_info"				type="text" 	title="Org. Info" />
+		<field name="contactperson"			type="text" 	title="Contact Person" />
+		<field name="dayoffs"				type="text" 	title="Day Offs" />
+		<field name="statuse"				type="integer"	title="Statuse"				hidden="true"/>
+		<field name="legal_statuse_id"		type="integer"	title="Legal Statuse Id"	hidden="true"/>
+		<field name="legal_statuse"			type="text" 	title="Legal Statuse" />
+		<field name="partnerbank_id"		type="integer"	title="Partner Bank Id"		hidden="true"/>
+  		<field name="partnerbank"			type="text" 	title="Partner Bank" />
+  		<field name="workpersoncountity"	type="text" 	title="Work Person Countity" />
+  		<field name="upd_user"				type="text" 	title="Upd User" />
+  		<field name="upd_date" 				type="datetime" title="Upd Date" />
+  		<field name="ind"					type="text" 	title="Ind" />
+  		<field name="note_crit"				type="integer"	title="Note Crit"			hidden="true"/>
+  		<field name="org_name_eng"			type="text" 	title="Org Name Eng" />
+  		<field name="extra_priority"		type="integer"	title="Extra Priority" 		hidden="true"/>
+  		<field name="new_identcode"			type="text" 	title="New Ident Code" />
+	</fields>
+	
+	<operationBindings>
+        <!-- Search organizations by phone for abonent -->
+		<operationBinding operationType="fetch" operationId="getOrgInfoByPhoneForAbonent" serverMethod="getOrgInfosByPhone">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.AbonentDMI"/>
+        </operationBinding>
+	</operationBindings>
+</DataSource>

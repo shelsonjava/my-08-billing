@@ -1,0 +1,113 @@
+<DataSource
+	ID="TranspCompDS"
+	serverType="sql"
+	tableName="info.transport_companies"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="transport_company_id"		type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="main_id"					type="integer"		title="Main Id" 					hidden="true"/>
+		<field name="transport_company_geo"		type="text"			title="Transport Company Name Geo"/>		
+		<field name="transport_type_name_geo"	type="text"			title="Transport Type Name Geo"/>
+		<field name="rec_user"					type="text"			title="Record User"/>
+		<field name="rec_date"					type="datetime"		title="Record Date"/>
+		<field name="upd_user"					type="text"			title="Update User"/>
+		<field name="transport_company_eng"		type="text"			title="Transport Company Name Eng"	hidden="true"/>
+		<field name="transport_type_id"			type="integer"		title="Transport Type Id" 			hidden="true"/>
+		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+
+		<!-- Add TransportCompany -->
+		<operationBinding operationType="add" operationId="addTransportCompany" serverMethod="addTransportCompany">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+        
+		<!-- TransportCompany Update -->
+		<operationBinding operationType="update" operationId="updateTransportCompany" serverMethod="updateTransportCompany">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+        
+        <!-- TransportCompany Status Update -->
+		<operationBinding operationType="update" operationId="updateTransportCompanyStatus" serverMethod="updateTransportCompanyStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllTransportCompanies" operationType="fetch">
+    		<selectClause>   			
+    			t.transport_company_id,
+				t.transport_type_id,
+				t.main_id,
+				t.transport_company_geo,
+				t.transport_company_eng,
+				t.rec_date,
+				t.rec_user,
+				t.deleted,
+				t.upd_user,
+				tt.transport_type_name_geo
+			</selectClause> 
+			<tableClause>transport_companies t, transport_types tt</tableClause>
+			<whereClause><![CDATA[
+				t.transport_type_id = tt.transport_type_id
+				#if($criteria.transport_type_id) and t.transport_type_id = $criteria.transport_type_id #end
+				#if($criteria.transport_company_geo) and t.transport_company_geo like ($criteria.transport_company_geo)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.transport_company_geo</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllTransportCompsForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.transport_company_id,
+    			t.transport_type_id,
+    			t.transport_company_geo 
+			</selectClause> 
+			<tableClause>transport_companies t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0
+			</whereClause>			
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllTransportCompsForCBAv" operationType="fetch">
+    		<selectClause>   			
+    			t.transport_company_id,
+    			t.transport_type_id,
+    			t.transport_company_geo 
+			</selectClause> 
+			<tableClause>transport_companies t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1
+			</whereClause>			
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllTransportCompsForCBRail" operationType="fetch">
+    		<selectClause>   			
+    			t.transport_company_id,
+    			t.transport_type_id,
+    			t.transport_company_geo 
+			</selectClause> 
+			<tableClause>transport_companies t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 2
+			</whereClause>			
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllTransportCompsForCBAvt" operationType="fetch">
+    		<selectClause>   			
+    			t.transport_company_id,
+    			t.transport_type_id,
+    			t.transport_company_geo 
+			</selectClause> 
+			<tableClause>transport_companies t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 3
+			</whereClause>			
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

@@ -1,0 +1,16 @@
+<DataSource
+    ID="imageTestDS" serverType="generic">
+    <fields>
+        <field name="code"  title="Key"   type="sequence" primaryKey="true" hidden="true"/>
+        <field name="title"  title="Title"   type="text"  length="128" required="false"/>   
+        <field name="imageTest"  title="Test image"   type="imageFile" required="false" showFileInline="true"/>
+        <field name="image_ext"  title="Image Ext"   type="text"/>    
+    </fields>
+    
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.UploadImageDMI" />    
+    <operationBindings>
+		<binding operationType="viewFile" serverMethod="viewFile">    
+	    	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.UploadImageDMI" />
+	    </binding>
+    </operationBindings>   
+</DataSource>
