@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
 	<listener>
-		<listener-class>com.info08.billing.callcenter.server.listener.sms.SMSMessageListener</listener-class>
+		<listener-class>com.info08.billing.callcenter.server.listener.MyContextListener</listener-class>
 	</listener>
 
 	<context-param>

@@ -33,7 +33,8 @@
 		<field name="contractor_call_cnt"	type="integer"		title="contractor_call_cnt"	hidden="true"/>
 		<field name="phone"					type="text"			title="phone"				hidden="true"/>
 		<field name="price_type_descr"		type="text"			title="price_type_descr"	hidden="true"/>
-		
+		<field name="range_curr_price"		type="any"			title="range_curr_price"	hidden="true"/>
+		<field name="checkContractor"		type="integer"		title="checkContractor"		hidden="true"/>
 	</fields>
 
 	<operationBindings>		
@@ -50,8 +51,8 @@
             <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
-        <!-- Contractor Status Update -->
-		<operationBinding operationType="update" operationId="updateContractorStatus" serverMethod="updateContractorStatus">
+        <!-- Delete Contractor -->
+		<operationBinding operationType="update" operationId="removeContractor" serverMethod="removeContractor">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
@@ -75,6 +76,11 @@
             <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
+        <!-- Contractor Range Price Update Manually -->
+        <operationBinding operationType="update" operationId="updateContractorRangePrice" serverMethod="updateContractorRangePrice">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+        </operationBinding>        
+        
     	<operationBinding operationId="searchAllContractors" operationType="fetch">
     		<selectClause>   			
     			  t.contract_id,
@@ -95,6 +101,7 @@
 				  t.upd_date,
 				  t.upd_user,
 				  t.phone_list_type,
+				  t.range_curr_price,
 				  mo1.org_name as orgName,
 				  md.main_detail_geo as orgDepName,
 				  decode(t.price_type,0,'მარტ.','რთული') as price_type_descr
@@ -500,6 +507,30 @@
 			]]>  
 			</whereClause> 			
 		</operationBinding>
+    	
+    	
+    	<operationBinding operationId="getCallsCountByMainDetAndYM" operationType="fetch">
+    		<selectClause>   		
+    			  info.getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_detail_id)	as contractor_call_cnt 			  
+			</selectClause> 
+			<tableClause>dual</tableClause>
+			<whereClause><![CDATA[
+				 1 = 1
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="getCallsCountByMainAndYM" operationType="fetch">
+    		<selectClause>   		
+    			  info.getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_id)	as contractor_call_cnt 			  
+			</selectClause> 
+			<tableClause>dual</tableClause>
+			<whereClause><![CDATA[
+				 1 = 1
+				]]>  
+			</whereClause> 			
+    	</operationBinding>
     	
     </operationBindings>	
 </DataSource>
