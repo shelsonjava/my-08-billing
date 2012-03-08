@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
+import com.info08.billing.callcenter.server.common.RCNGenerator;
 import com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI;
 import com.info08.billing.callcenter.shared.entity.contractors.Contract;
 import com.info08.billing.callcenter.shared.entity.contractors.ContractorBlockChecker;
@@ -46,6 +47,10 @@ public class ContractorCheckerJob extends TimerTask {
 				Timestamp currDate = new Timestamp(System.currentTimeMillis());
 
 				ContractorsDMI contractorsDMI = new ContractorsDMI();
+
+				RCNGenerator.getInstance().initRcn(oracleManager,
+						new Timestamp(System.currentTimeMillis()), "JOB",
+						"Checking Contract.");
 
 				for (ContractorBlockChecker blockChecker : list) {
 					Long contractId = blockChecker.getContract_id();

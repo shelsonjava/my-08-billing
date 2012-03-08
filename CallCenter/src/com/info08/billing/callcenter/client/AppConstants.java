@@ -546,6 +546,12 @@ public interface AppConstants extends Constants {
 	String contractorCharges();
 	String blockPhoneList();
 	String priceType();
+	String reCalcCopntrRangePrice();
+	String currentPrice();
+	String noOrgOrDepSelected();
+	String setCurrentPrice();
+	String isNotAdvancePriceType();
+	String currentPriceShort();
 }
 
 

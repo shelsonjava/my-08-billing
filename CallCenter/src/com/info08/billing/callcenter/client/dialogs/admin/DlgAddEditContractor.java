@@ -54,6 +54,7 @@ public class DlgAddEditContractor extends Window {
 
 	private DynamicForm dynamicForm;
 	private DynamicForm dynamicForm1;
+	private DynamicForm dynamicForm2;
 
 	private DateItem startDateItem;
 	private DateItem endDateItem;
@@ -64,6 +65,8 @@ public class DlgAddEditContractor extends Window {
 	private SpinnerItem critNumberItem;
 	private CheckboxItem priceTypeItem;
 	private TextItem normalPriceItem;
+	private CheckboxItem reCalcRancePriceItem;
+	private TextItem currrentPriceItem;
 
 	private RadioGroupItem phoneListType;
 
@@ -76,6 +79,8 @@ public class DlgAddEditContractor extends Window {
 	private ToolStripButton addBtn1;
 	private ToolStripButton deleteBtn;
 	private ToolStripButton deleteBtn1;
+
+	private IButton checkOrgCallsBtn;
 
 	public DlgAddEditContractor(ListGrid listGrid, ListGridRecord pRecord) {
 		try {
@@ -217,6 +222,40 @@ public class DlgAddEditContractor extends Window {
 
 			addBtn.setDisabled(true);
 			deleteBtn.setDisabled(true);
+
+			dynamicForm2 = new DynamicForm();
+			dynamicForm2.setAutoFocus(true);
+			dynamicForm2.setWidth100();
+			dynamicForm2.setTitleWidth(2);
+			dynamicForm2.setNumCols(4);
+			dynamicForm2.setTitleSuffix(" ");
+
+			HLayout row = new HLayout();
+			row.setWidth100();
+			hLayout.addMember(row);
+
+			reCalcRancePriceItem = new CheckboxItem();
+			reCalcRancePriceItem.setTitle(CallCenter.constants
+					.reCalcCopntrRangePrice());
+			reCalcRancePriceItem.setWidth(200);
+			reCalcRancePriceItem.setName("reCalcRancePriceItem");
+			reCalcRancePriceItem.setValue(false);
+			reCalcRancePriceItem.setTextBoxStyle("headerStyle12AndRed");
+
+			currrentPriceItem = new TextItem();
+			currrentPriceItem.setTitle(CallCenter.constants.currentPrice());
+			currrentPriceItem.setWidth(200);
+			currrentPriceItem.setName("currrentPriceItem");
+			currrentPriceItem.setDisabled(true);
+			currrentPriceItem.setValue("0");
+
+			checkOrgCallsBtn = new IButton();
+			checkOrgCallsBtn.setTitle(CallCenter.constants.callsCount());
+			checkOrgCallsBtn.setWidth(150);
+
+			row.addMembers(dynamicForm2, checkOrgCallsBtn);
+
+			dynamicForm2.setFields(reCalcRancePriceItem, currrentPriceItem);
 
 			ContractorPriceClientDS contractorPriceClientDS = ContractorPriceClientDS
 					.getInstance();
@@ -444,9 +483,72 @@ public class DlgAddEditContractor extends Window {
 							}
 						}
 					});
+
+			checkOrgCallsBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					Integer main_id = myComboBoxItemOrg.getMyId();
+					Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
+					if (main_id == null && main_detail_id == null) {
+						SC.say(CallCenter.constants.noOrgOrDepSelected());
+						return;
+					}
+					if (main_id == null) {
+						main_id = 0;
+					}
+					if (main_detail_id == null) {
+						main_detail_id = 0;
+					}
+					if (main_id == 0 && main_detail_id == 0) {
+						SC.say(CallCenter.constants.noOrgOrDepSelected());
+						return;
+					}
+
+					getCallCountByOrgOrDep(main_id, main_detail_id);
+				}
+			});
+
 			addItem(hLayout);
 			fillFields();
 
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void getCallCountByOrgOrDep(Integer main_id, Integer main_detail_id) {
+		try {
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+			Criteria record = new Criteria();
+			record.setAttribute("main_id", main_id);
+			record.setAttribute("main_detail_id", main_detail_id);
+
+			DSRequest req = new DSRequest();
+			DataSource dataSource = DataSource.get("ContractorsDS");
+			if (main_detail_id > 0) {
+				req.setAttribute("operationId", "getCallsCountByMainDetAndYM");
+			} else {
+				req.setAttribute("operationId", "getCallsCountByMainAndYM");
+			}
+
+			dataSource.fetchData(record, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record records[] = response.getData();
+					if (records != null && records.length > 0) {
+						Record record = records[0];
+						Integer contractor_call_cnt = record
+								.getAttributeAsInt("contractor_call_cnt");
+						if (contractor_call_cnt == null) {
+							contractor_call_cnt = 0;
+						}
+						SC.say((CallCenter.constants.contractorCallCnt() + contractor_call_cnt));
+					}
+				}
+			}, req);
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -597,6 +699,11 @@ public class DlgAddEditContractor extends Window {
 				normalPriceItem.setValue(price);
 			}
 
+			String range_curr_price = editRecord.getAttributeAsString("range_curr_price");
+			if (range_curr_price != null && !range_curr_price.trim().equals("")) {
+				currrentPriceItem.setValue(range_curr_price);
+			}
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -610,6 +717,9 @@ public class DlgAddEditContractor extends Window {
 				return;
 			}
 			Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
+			if (main_detail_id != null && main_detail_id.intValue() < 0) {
+				main_detail_id = 0;
+			}
 
 			String note = noteItem.getValueAsString();
 			String is_budget_str = contractorType.getValueAsString();
@@ -809,6 +919,14 @@ public class DlgAddEditContractor extends Window {
 			record.setAttribute("contractorAdvPhones", contractorAdvPhones);
 			record.setAttribute("critical_number", critical_number);
 			record.setAttribute("phone_list_type", phone_list_type);
+			record.setAttribute("range_curr_price",
+					currrentPriceItem.getValueAsString());
+			Boolean checkContractor = reCalcRancePriceItem.getValueAsBoolean();
+			if (checkContractor != null && checkContractor.booleanValue()) {
+				record.setAttribute("checkContractor", 1);
+			} else {
+				record.setAttribute("checkContractor", 0);
+			}
 
 			if (contractorAdvPhones != null && !contractorAdvPhones.isEmpty()) {
 				checkContractPhones(record);

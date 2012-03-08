@@ -2,6 +2,10 @@ package com.info08.billing.callcenter.server.common;
 
 public interface QueryConstants {
 	
+	public static final String Q_GET_ORG_CALL_CNT_BY_YM = "select getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
+	
+	public static final String Q_GET_DEP_CALL_CNT_BY_YM = "select getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
+	
 	public static final String Q_GET_MAIN_ORGS_PHONES_HIERARCHY_NEW = "select distinct p.phone from (\n" +
 				"       select ms.main_id from info.main_services ms\n" + 
 				"       start with ms.main_id = ? and ms.service_id = 3\n" + 
