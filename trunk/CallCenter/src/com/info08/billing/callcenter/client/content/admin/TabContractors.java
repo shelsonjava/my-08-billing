@@ -3,6 +3,7 @@ package com.info08.billing.callcenter.client.content.admin;
 import com.info08.billing.callcenter.client.CallCenter;
 import com.info08.billing.callcenter.client.dialogs.admin.DlgAddEditContractor;
 import com.info08.billing.callcenter.client.dialogs.admin.DlgBlockPhoneList;
+import com.info08.billing.callcenter.client.dialogs.admin.DlgUpdateContrCurrRangePrice;
 import com.info08.billing.callcenter.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenter.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -47,7 +48,9 @@ public class TabContractors extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
+	private ToolStripButton setRangePriceBtn;
+
+	// private ToolStripButton restoreBtn;
 	private ToolStripButton viewCallCntBtn;
 	private ToolStripButton viewChargesSumBtn;
 	private ToolStripButton blockPhoneListBtn;
@@ -140,11 +143,17 @@ public class TabContractors extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton(CallCenter.constants.enable(),
-					"restoreIcon.gif");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
+			setRangePriceBtn = new ToolStripButton(
+					CallCenter.constants.setCurrentPrice(), "moneySmall.png");
+			setRangePriceBtn.setLayoutAlign(Alignment.LEFT);
+			setRangePriceBtn.setWidth(50);
+			toolStrip.addButton(setRangePriceBtn);
+
+			// restoreBtn = new ToolStripButton(CallCenter.constants.enable(),
+			// "restoreIcon.gif");
+			// restoreBtn.setLayoutAlign(Alignment.LEFT);
+			// restoreBtn.setWidth(50);
+			// toolStrip.addButton(restoreBtn);
 
 			toolStrip.addSeparator();
 
@@ -227,15 +236,21 @@ public class TabContractors extends Tab {
 					CallCenter.constants.comment(), 200);
 			ListGridField price = new ListGridField("price",
 					CallCenter.constants.price(), 70);
+			ListGridField range_curr_price = new ListGridField(
+					"range_curr_price",
+					CallCenter.constants.currentPriceShort(), 70);
 			ListGridField price_type_descr = new ListGridField(
 					"price_type_descr", CallCenter.constants.priceType(), 70);
 
 			start_date.setAlign(Alignment.CENTER);
 			end_date.setAlign(Alignment.CENTER);
 			price_type_descr.setAlign(Alignment.CENTER);
+			price.setAlign(Alignment.CENTER);
+			range_curr_price.setAlign(Alignment.CENTER);
 
 			contractorsGrid.setFields(orgName, orgDepName, note,
-					price_type_descr, price, start_date, end_date);
+					price_type_descr, price, range_curr_price, start_date,
+					end_date);
 
 			mainLayout.addMember(contractorsGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -312,32 +327,32 @@ public class TabContractors extends Tab {
 							});
 				}
 			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = contractorsGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrEnabled());
-						return;
-					}
-					SC.ask(CallCenter.constants.askForEnable(),
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(listGridRecord, 0);
-									}
-								}
-							});
-				}
-			});
+			// restoreBtn.addClickHandler(new ClickHandler() {
+			// @Override
+			// public void onClick(ClickEvent event) {
+			// final ListGridRecord listGridRecord = contractorsGrid
+			// .getSelectedRecord();
+			// if (listGridRecord == null) {
+			// SC.say(CallCenter.constants.pleaseSelrecord());
+			// return;
+			// }
+			// Integer deleted = listGridRecord
+			// .getAttributeAsInt("deleted");
+			// if (deleted.equals(0)) {
+			// SC.say(CallCenter.constants.recordAlrEnabled());
+			// return;
+			// }
+			// SC.ask(CallCenter.constants.askForEnable(),
+			// new BooleanCallback() {
+			// @Override
+			// public void execute(Boolean value) {
+			// if (value) {
+			// changeStatus(listGridRecord, 0);
+			// }
+			// }
+			// });
+			// }
+			// });
 
 			contractorsGrid
 					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
@@ -428,7 +443,37 @@ public class TabContractors extends Tab {
 				}
 			});
 
+			setRangePriceBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					ListGridRecord listGridRecord = contractorsGrid
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say(CallCenter.constants.pleaseSelrecord());
+						return;
+					}
+					Integer price_type = listGridRecord
+							.getAttributeAsInt("price_type");
+					if (price_type == null || !price_type.equals(1)) {
+						SC.say(CallCenter.constants.isNotAdvancePriceType());
+						return;
+					}
+					updateCurrentRangePrice(listGridRecord);
+				}
+			});
+
 			setPane(mainLayout);
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void updateCurrentRangePrice(ListGridRecord listGridRecord) {
+		try {
+			DlgUpdateContrCurrRangePrice blockPhoneList = new DlgUpdateContrCurrRangePrice(
+					listGridRecord, contractorsGrid);
+			blockPhoneList.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -568,13 +613,13 @@ public class TabContractors extends Tab {
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
-			record.setAttribute("deleted", deleted);
+			record.setAttribute("deleted", 1);
 			record.setAttribute("contract_id",
 					listGridRecord.getAttributeAsInt("contract_id"));
 
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateContractorStatus");
+			req.setAttribute("operationId", "removeContractor");
 			contractorsGrid.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

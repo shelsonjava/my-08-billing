@@ -97,6 +97,10 @@ public class Contract implements Serializable {
 	@Basic
 	@Column(name = "PHONE_LIST_TYPE")
 	private Long phone_list_type;
+	
+	@Basic
+	@Column(name = "RANGE_CURR_PRICE")
+	private BigDecimal range_curr_price;
 
 	@Transient
 	private String loggedUserName;
@@ -121,6 +125,9 @@ public class Contract implements Serializable {
 	
 	@Transient
 	private Double contractor_charges;
+	
+	@Transient
+	private Long checkContractor;
 
 	public Contract() {
 	}
@@ -333,5 +340,21 @@ public class Contract implements Serializable {
 
 	public void setPrice_type_descr(String price_type_descr) {
 		this.price_type_descr = price_type_descr;
+	}
+
+	public BigDecimal getRange_curr_price() {
+		return range_curr_price;
+	}
+
+	public void setRange_curr_price(BigDecimal range_curr_price) {
+		this.range_curr_price = range_curr_price;
+	}
+
+	public Long getCheckContractor() {
+		return checkContractor;
+	}
+
+	public void setCheckContractor(Long checkContractor) {
+		this.checkContractor = checkContractor;
 	}
 }

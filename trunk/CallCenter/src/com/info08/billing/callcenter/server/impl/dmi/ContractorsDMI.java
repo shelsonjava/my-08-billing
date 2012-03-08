@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenter.client.exception.CallCenterException;
 import com.info08.billing.callcenter.server.common.QueryConstants;
+import com.info08.billing.callcenter.server.common.RCNGenerator;
 import com.info08.billing.callcenter.shared.common.CommonFunctions;
 import com.info08.billing.callcenter.shared.entity.contractors.Contract;
 import com.info08.billing.callcenter.shared.entity.contractors.ContractPriceItem;
@@ -121,15 +123,19 @@ public class ContractorsDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			oracleManager.persist(contract);
-			oracleManager.flush();
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Adding Contract.");
 
-			oracleManager
-					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PRICES)
-					.setParameter(1, contract.getContract_id()).executeUpdate();
+			Long checkContractor = new Long(dsRequest.getFieldValue(
+					"checkContractor").toString());
+			BigDecimal range_curr_price = new BigDecimal(dsRequest
+					.getFieldValue("range_curr_price").toString());
 
-			oracleManager.flush();
+			boolean needCalc = (price_type != null && price_type.equals(1L))
+					&& (range_curr_price.doubleValue() <= 0 || checkContractor
+							.intValue() == 1);
 
+			ArrayList<ContractPriceItem> contractAdvPrices = new ArrayList<ContractPriceItem>();
 			Object oMap = dsRequest.getFieldValue("contractorAdvPrices");
 			if (oMap != null) {
 				LinkedMap contractorAdvPrices = (LinkedMap) oMap;
@@ -151,19 +157,28 @@ public class ContractorsDMI implements QueryConstants {
 							item.setCall_count_start(new Long(key1));
 							item.setCall_count_end(new Long(key2));
 							item.setPrice(new BigDecimal(value2));
-
-							oracleManager.persist(item);
+							contractAdvPrices.add(item);
 							break;
 						}
 					}
 				}
 			}
 
-			oracleManager
-					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PHONES)
-					.setParameter(1, contract.getContract_id()).executeUpdate();
+			if (needCalc) {
+				range_curr_price = getRangeCurrPrice(main_id, main_detail_id,
+						oracleManager, contractAdvPrices);
+			}
+			contract.setRange_curr_price(range_curr_price);
 
+			oracleManager.persist(contract);
 			oracleManager.flush();
+
+			if (contractAdvPrices != null && !contractAdvPrices.isEmpty()) {
+				for (ContractPriceItem priceItem : contractAdvPrices) {
+					priceItem.setContract_id(contract.getContract_id());
+					oracleManager.persist(priceItem);
+				}
+			}
 
 			Object oMap1 = dsRequest.getFieldValue("contractorAdvPhones");
 			if (oMap1 != null) {
@@ -232,6 +247,53 @@ public class ContractorsDMI implements QueryConstants {
 		}
 	}
 
+	private BigDecimal getRangeCurrPrice(Long main_id, Long main_detail_id,
+			EntityManager oracleManager,
+			ArrayList<ContractPriceItem> contractAdvPrices)
+			throws CallCenterException {
+		try {
+			BigDecimal result = new BigDecimal("0");
+			if (contractAdvPrices == null || contractAdvPrices.isEmpty()) {
+				return result;
+			}
+			Long callCnt = 0L;
+			System.out.println("main_detail_id = " + main_detail_id);
+			System.out.println("main_id = " + main_id);
+			if (main_detail_id != null && main_detail_id.longValue() > 0) {
+				callCnt = new Long(oracleManager
+						.createNativeQuery(
+								QueryConstants.Q_GET_DEP_CALL_CNT_BY_YM)
+						.setParameter(1, main_detail_id).getSingleResult()
+						.toString());
+			} else {
+				callCnt = new Long(oracleManager
+						.createNativeQuery(
+								QueryConstants.Q_GET_ORG_CALL_CNT_BY_YM)
+						.setParameter(1, main_id).getSingleResult().toString());
+			}
+			System.out.println("callCnt = " + callCnt);
+			for (ContractPriceItem priceItem : contractAdvPrices) {
+				Long start = priceItem.getCall_count_start();
+				Long end = priceItem.getCall_count_end();
+				System.out.println("start = " + start + ", end = " + end);
+				if (start != null && end != null && callCnt >= start
+						&& callCnt < end) {
+					result = priceItem.getPrice();
+					break;
+				}
+			}
+			System.out.println("result = " + result);
+			return result;
+		} catch (Exception e) {
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Calculate Contract Range Price : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		}
+	}
+
 	/**
 	 * Updating Contract
 	 * 
@@ -291,15 +353,24 @@ public class ContractorsDMI implements QueryConstants {
 			contract.setUpd_user(loggedUserName);
 			contract.setPhone_list_type(phone_list_type);
 
-			oracleManager.merge(contract);
-			oracleManager.flush();
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Updating Contract.");
 
-			oracleManager
-					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PRICES)
-					.setParameter(1, contract.getContract_id()).executeUpdate();
+			Long checkContractor = new Long(record.get("checkContractor")
+					.toString());
+			BigDecimal range_curr_price = new BigDecimal(record.get(
+					"range_curr_price").toString());
 
-			oracleManager.flush();
+			boolean needCalc = (price_type != null && price_type.equals(1L))
+					&& (range_curr_price.doubleValue() <= 0 || checkContractor
+							.intValue() == 1);
+			System.out.println("+++++++++++++++++++++++++++++++");
+			System.out.println("price_type = " + price_type);
+			System.out.println("range_curr_price = " + range_curr_price);
+			System.out.println("checkContractor = " + checkContractor);
+			System.out.println("needCalc = " + needCalc);
 
+			ArrayList<ContractPriceItem> contractAdvPrices = new ArrayList<ContractPriceItem>();
 			Object oMap = record.get("contractorAdvPrices");
 			if (oMap != null) {
 				LinkedMap contractorAdvPrices = (LinkedMap) oMap;
@@ -321,17 +392,35 @@ public class ContractorsDMI implements QueryConstants {
 							item.setCall_count_start(new Long(key1));
 							item.setCall_count_end(new Long(key2));
 							item.setPrice(new BigDecimal(value2));
-
-							oracleManager.persist(item);
+							contractAdvPrices.add(item);
 							break;
 						}
 					}
 				}
 			}
 
+			if (needCalc) {
+				range_curr_price = getRangeCurrPrice(main_id, main_detail_id,
+						oracleManager, contractAdvPrices);
+			}
+			contract.setRange_curr_price(range_curr_price);
+
+			oracleManager.merge(contract);
+
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PRICES)
+					.setParameter(1, contract.getContract_id()).executeUpdate();
 			oracleManager
 					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PHONES)
 					.setParameter(1, contract.getContract_id()).executeUpdate();
+			oracleManager.flush();
+
+			if (contractAdvPrices != null && !contractAdvPrices.isEmpty()) {
+				for (ContractPriceItem item : contractAdvPrices) {
+					item.setContract_id(contract.getContract_id());
+					oracleManager.persist(item);
+				}
+			}
 
 			Object oMap1 = record.get("contractorAdvPhones");
 			if (oMap1 != null) {
@@ -408,51 +497,108 @@ public class ContractorsDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public Contract updateContractorStatus(Map record) throws Exception {
+	public Contract removeContractor(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateContractorStatus.";
+			String log = "Method:CommonDMI.removeContractor.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
 			Long contract_id = new Long(record.get("contract_id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 
 			Contract contract = oracleManager.find(Contract.class, contract_id);
 
-			contract.setDeleted(deleted);
-			contract.setUpd_user(loggedUserName);
-			contract.setUpd_date(updDate);
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Updating Contract Status.");
 
-			oracleManager.merge(contract);
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PRICES)
+					.setParameter(1, contract.getContract_id()).executeUpdate();
+
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PHONES)
+					.setParameter(1, contract.getContract_id()).executeUpdate();
+
+			oracleManager.remove(contract);
 			oracleManager.flush();
+
+			blockUnblockContractorPhones(contract, oracleManager);
+			EMF.commitTransaction(transaction);
+			log += ". Status Updating Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error(
+					"Error While Update Status for Contract Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	/**
+	 * Updating Contract Status
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("rawtypes")
+	public Contract updateContractorRangePrice(Map record) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.updateContractorRangePrice.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long contract_id = new Long(record.get("contract_id").toString());
+			String loggedUserName = record.get("loggedUserName").toString();
+			BigDecimal range_curr_price = new BigDecimal(record.get(
+					"range_curr_price").toString());
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+
+			Contract contract = oracleManager.find(Contract.class, contract_id);
+
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Updating Contract Status.");
+
+			contract.setRange_curr_price(range_curr_price);
+			oracleManager.merge(contract);
+			EMF.commitTransaction(transaction);
 
 			contract = oracleManager.find(Contract.class, contract_id);
 			contract.setLoggedUserName(loggedUserName);
-			Long main_id = contract.getMain_id();
-			if (main_id != null) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class, main_id);
+			if (contract.getMain_id() != null) {
+				MainOrg mainOrg = oracleManager.find(MainOrg.class,
+						contract.getMain_id());
 				if (mainOrg != null) {
 					contract.setOrgName(mainOrg.getOrg_name());
 				}
 			}
-			Long main_detail_id = contract.getMain_detail_id();
-			if (main_detail_id != null) {
+			if (contract.getMain_detail_id() != null) {
 				MainDetail mainDetail = oracleManager.find(MainDetail.class,
-						main_detail_id);
+						contract.getMain_detail_id());
 				if (mainDetail != null) {
 					contract.setOrgDepName(mainDetail.getMain_detail_geo());
 				}
 			}
-			blockUnblockContractorPhones(contract, oracleManager);
 			contract.setContractor_call_cnt(0L);
 			contract.setPrice_type_descr((contract.getPrice_type() != null
 					&& contract.getPrice_type().equals(0L) ? "მარტ." : "რთული"));
-			EMF.commitTransaction(transaction);
-			log += ". Status Updating Finished SuccessFully. ";
+
+			log += ". Range Price Updating Finished SuccessFully. ";
 			logger.info(log);
 			return contract;
 		} catch (Exception e) {
@@ -461,7 +607,7 @@ public class ContractorsDMI implements QueryConstants {
 				throw (CallCenterException) e;
 			}
 			logger.error(
-					"Error While Update Status for Contract Into Database : ",
+					"Error While Update Range Price for Contract Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
@@ -482,11 +628,9 @@ public class ContractorsDMI implements QueryConstants {
 	@SuppressWarnings("rawtypes")
 	public Contract blockUnBlockContractor(Map record) throws Exception {
 		EntityManager oracleManager = null;
-		Object transaction = null;
 		try {
 			String log = "Method:CommonDMI.blockUnBlockContractor.";
 			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
 			Long contract_id = new Long(record.get("contract_id").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 			Long main_id = new Long(record.get("main_id").toString());
@@ -519,12 +663,10 @@ public class ContractorsDMI implements QueryConstants {
 			contract.setContractor_call_cnt(0L);
 			contract.setPrice_type_descr((contract.getPrice_type() != null
 					&& contract.getPrice_type().equals(0L) ? "მარტ." : "რთული"));
-			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
 			return contract;
 		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
@@ -991,7 +1133,7 @@ public class ContractorsDMI implements QueryConstants {
 								.setParameter(2, main_id)
 								.setParameter(3, main_id)
 								.setParameter(4, contract.getContract_id())
-								.getResultList();						
+								.getResultList();
 						break;
 					default:
 						break;
