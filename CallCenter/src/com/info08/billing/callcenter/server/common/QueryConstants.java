@@ -149,7 +149,9 @@ public interface QueryConstants {
 					"\t               t.main_detail_id\n" + 
 					"\t         from info.main_details t\n" + 
 					"           start with t.main_detail_id = ? and t.deleted = 0\n" + 
-					"           connect by prior t.main_detail_id = t.main_detail_master_id\n" + 
+					"           connect by prior t.main_detail_id = t.main_detail_master_id\n" +
+					"			union "+
+					"			select -999999999 from dual "+
 					"         )\n" + 
 					"  and p.deleted = 0 and a.deleted = 0 and p.phone not in (\n" + 
 					"       select\n" + 
@@ -167,8 +169,12 @@ public interface QueryConstants {
 					"              from info.main_details t\n" + 
 					"              where level>1\n" + 
 					"              start with t.main_detail_id = ? and t.deleted = 0\n" + 
-					"              connect by prior t.main_detail_id = t.main_detail_master_id\n" + 
-					"            )\n" + 
+					"              connect by prior t.main_detail_id = t.main_detail_master_id\n" +
+					"			   union "+
+					"			   select -999999999 from dual "+
+					"            )\n" +
+					"			union "+
+					"			select -999999999 from dual "+
 					"        )\n" + 
 					"  )";
 	
@@ -216,7 +222,9 @@ public interface QueryConstants {
 					"                         t.main_detail_id\n" + 
 					"                   from info.main_details t\n" + 
 					"                     start with t.main_detail_id = ? and t.deleted = 0\n" + 
-					"                     connect by prior t.main_detail_id = t.main_detail_master_id\n" + 
+					"                     connect by prior t.main_detail_id = t.main_detail_master_id\n" +
+					"					union	"+
+					"					select -999999999 from dual	"+
 					"                   )\n" + 
 					"            and p.deleted = 0 and a.deleted = 0 and p.phone not in (\n" + 
 					"                 select\n" + 
@@ -230,14 +238,18 @@ public interface QueryConstants {
 					"                    where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_detail_id in\n" + 
 					"                      (\n" + 
 					"                        select\n" + 
-					"      \t\t                    t.main_detail_id\n" + 
-					"\t\t\t\t\t              from info.main_details t\n" + 
-					"\t\t\t\t\t              where level>1\n" + 
-					"\t\t\t\t\t              start with t.main_detail_id = ? and t.deleted = 0\n" + 
-					"\t\t\t\t\t              connect by prior t.main_detail_id = t.main_detail_master_id\n" + 
-					"\t\t\t\t\t            )\n" + 
-					"\t\t\t\t\t        )\n" + 
-					"\t\t\t\t\t  )\n" + 
+					"                          t.main_detail_id\n" + 
+					"			             from info.main_details t\n" + 
+					"                        where level>1\n" + 
+					"                        start with t.main_detail_id = ? and t.deleted = 0\n" + 
+					"                        connect by prior t.main_detail_id = t.main_detail_master_id\n" +
+					"					     union	"+
+					"					     select -999999999 from dual	"+
+					"                      )\n" +
+					"					   union	"+
+					"					   select -999999999 from dual	"+
+					"                   )\n" + 
+					"                 )\n" + 
 					")";
 
 	public static final String Q_GET_CHARGES_BY_CONT_AND_MAIN_DET_ID = "select\n" +

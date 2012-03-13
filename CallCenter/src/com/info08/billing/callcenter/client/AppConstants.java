@@ -2,6 +2,36 @@ package com.info08.billing.callcenter.client;
 
 import com.google.gwt.i18n.client.Constants;
 
+/**
+ * <p>
+ * ეს არის ინტერფეის რომელიც გამოიყენება იმისათვის რომ აღწეროს პროგრამაში
+ * გამოყენებადი წარწერები კომპონენტებზე. ამ ინტერფეისის იმპლემენტაცია არის ფაილი
+ * რომელშიც მოცემულია უკვე მნიშვნელობები უნიკოდის მხარდამჭერ კოდირებაში.
+ * ცვლადების მნიშვნელობები შეგიძლიათ ნახოთ პროექტში :
+ * com.info08.billing.callcenter.client.AppConstants.properties.
+ * <p>
+ * სისტემას დღეისათვის გააჩნია მხოლოდ ქართული ენის მხარდაჭერა თუმცა
+ * განვითარებადია და შესაძლებელია სხვა ენების დამატება.
+ * 
+ * მიმდენარე კლასში გამოყენებულია ე.წ. Google Web Toolkit ბიბლიოთეკის
+ * ინტერნაციონალიზაციის კლასი : com.google.gwt.i18n.client.Constants. რომლის
+ * იმპლიმენტაციასაც აკეთებს მოცემული კლასი, კლასის სტრუქტურა არის მარტივი და
+ * მისი ფუნქციათა სახელები არის მიმთითებლები მხოლოდ მათ მნიშვნელობაზე და არ
+ * მოიცავა რაიმე ბიზნეს ლოგიკას. ბიბლიოთეკა შეგიძლიათ მოიპოვოთ :
+ * <p>
+ * <blockquote>
+ * 
+ * <pre>
+ * <a href="http://code.google.com/webtoolkit">Google Web Toolkit</a>
+ * </pre>
+ * 
+ * </blockquote>
+ * 
+ * @author პაატა ლომინაძე
+ * @version 1.0.0.1
+ * @since 1.0.0.1
+ * 
+ */
 public interface AppConstants extends Constants {
 	String save();
 	String close();
@@ -552,6 +582,8 @@ public interface AppConstants extends Constants {
 	String setCurrentPrice();
 	String isNotAdvancePriceType();
 	String currentPriceShort();
+	String limit();
+	String incorrectCriticalNumber();
 }
 
 

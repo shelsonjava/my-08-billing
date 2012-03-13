@@ -106,8 +106,8 @@ public class DlgAddEditMainOrg extends Window {
 			this.listGridRecord = listGridRecord;
 			setTitle(CallCenter.constants.manageOrgs());
 
-			setHeight(750);
-			setWidth(1250);
+			setHeight(760);
+			setWidth(1270);
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);

@@ -35,7 +35,7 @@ public class DlgOrgStatusChange extends Window {
 			this.listGridRecord = listGridRecord;
 			setTitle(CallCenter.constants.sortOrgs());
 
-			setHeight(100);
+			setHeight(110);
 			setWidth(430);
 			setShowMinimizeButton(false);
 			setIsModal(true);

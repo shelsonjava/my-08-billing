@@ -92,7 +92,7 @@ public class TabOrganization extends Tab {
 		setTitle(CallCenter.constants.manageOrgs());
 		setCanClose(true);
 
-		orgDS = DataSource.get("OrgDSNew");
+		orgDS = DataSource.get("OrgDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();

@@ -112,7 +112,7 @@ public class DlgAddEditTransportPlace extends Window {
 		cityItem.setAddUnknownValues(false);
 
 		DataSource cityDS = DataSource.get("CityDS");
-		cityItem.setOptionOperationId("searchCitiesFromDBForCombos");
+		cityItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
 		cityItem.setOptionDataSource(cityDS);
 		cityItem.setValueField("city_id");
 		cityItem.setDisplayField("city_name_geo");
