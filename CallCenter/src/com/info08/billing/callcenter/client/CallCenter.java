@@ -21,7 +21,7 @@ import com.smartgwt.client.util.SC;
  * ბრაუზერში). ამ კლასის გამოძახება ხდება როგორც მისამართით (მაგ.: <a
  * href="http://192.168.1.1:8080/CallCenter"
  * >http://192.168.1.1:8080/CallCenter</a>) ასევე მისი გამოძახება ხდება სერვლეტ
- * კლასიდან @see com.info08.billing.callcenter.server.servlets.InitAppServlet,
+ * კლასიდან {@link com.info08.billing.callcenter.server.servlets.InitAppServlet} , 
  * რომელსაც თავისთავად იძახებს ე.წ. SIP კლიენტი რომელშიც შემოდის აბონენტის ზარი.
  * ანუ პროცესი მიმდინარეობს შემდეგნაირად : ზარი შემოდის SIP კლიენტში, ის ხსნის
  * ბილინგისა და ქოლცენტის პროგრამას, ელოდება მის ჩატვირთვას და და შემდგომი ამისა
