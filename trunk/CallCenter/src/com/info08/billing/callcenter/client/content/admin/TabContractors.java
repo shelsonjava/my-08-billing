@@ -232,8 +232,8 @@ public class TabContractors extends Tab {
 					CallCenter.constants.startDate(), 120);
 			ListGridField end_date = new ListGridField("end_date",
 					CallCenter.constants.endDate(), 120);
-			ListGridField note = new ListGridField("note",
-					CallCenter.constants.comment(), 200);
+			// ListGridField note = new ListGridField("note",
+			// CallCenter.constants.comment(), 200);
 			ListGridField price = new ListGridField("price",
 					CallCenter.constants.price(), 70);
 			ListGridField range_curr_price = new ListGridField(
@@ -241,15 +241,18 @@ public class TabContractors extends Tab {
 					CallCenter.constants.currentPriceShort(), 70);
 			ListGridField price_type_descr = new ListGridField(
 					"price_type_descr", CallCenter.constants.priceType(), 70);
+			ListGridField critical_number = new ListGridField(
+					"critical_number", CallCenter.constants.limit(), 70);
 
 			start_date.setAlign(Alignment.CENTER);
 			end_date.setAlign(Alignment.CENTER);
 			price_type_descr.setAlign(Alignment.CENTER);
 			price.setAlign(Alignment.CENTER);
 			range_curr_price.setAlign(Alignment.CENTER);
+			critical_number.setAlign(Alignment.CENTER);
 
-			contractorsGrid.setFields(orgName, orgDepName, note,
-					price_type_descr, price, range_curr_price, start_date,
+			contractorsGrid.setFields(orgName, orgDepName, price_type_descr,
+					price, range_curr_price, critical_number, start_date,
 					end_date);
 
 			mainLayout.addMember(contractorsGrid);

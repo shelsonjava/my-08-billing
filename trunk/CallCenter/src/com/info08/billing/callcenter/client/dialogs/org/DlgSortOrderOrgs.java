@@ -34,8 +34,8 @@ public class DlgSortOrderOrgs extends Window {
 			this.tabOrganization = tabOrganization;
 			setTitle(CallCenter.constants.sortOrgs());
 
-			setHeight(700);
-			setWidth(980);
+			setHeight(710);
+			setWidth(1000);
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);

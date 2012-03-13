@@ -20,6 +20,7 @@ import com.info08.billing.callcenter.client.exception.CallCenterException;
 import com.info08.billing.callcenter.server.common.QueryConstants;
 import com.info08.billing.callcenter.server.common.RCNGenerator;
 import com.info08.billing.callcenter.shared.common.CommonFunctions;
+import com.info08.billing.callcenter.shared.common.Constants;
 import com.info08.billing.callcenter.shared.entity.contractors.Contract;
 import com.info08.billing.callcenter.shared.entity.contractors.ContractPriceItem;
 import com.info08.billing.callcenter.shared.entity.contractors.ContractorPhone;
@@ -30,16 +31,34 @@ import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
 import com.isomorphic.sql.SQLDataSource;
 
+/**
+ * ეს კლასი გამოიყენება კონტრაქტორების მონაცემების დასამუშავებლად და შესანახად
+ * მონაცემთა ბაზაში.
+ * 
+ * @author პაატა ლომინაძე
+ * @version 1.0.0.1
+ * @since 1.0.0.1
+ * 
+ */
 public class ContractorsDMI implements QueryConstants {
 
+	/**
+	 * კლასი რომლის მეშვეობითაც ხდება სისტემური ინფორმაციის ლოგირება სერვერზე
+	 * ფაილში.
+	 */
 	private Logger logger = Logger.getLogger(ContractorsDMI.class.getName());
 
 	/**
-	 * Adding New Contract
+	 * ახალი კონტრაქტორის დამატების ფუნქციონალი.
 	 * 
-	 * @param record
-	 * @return
+	 * @param dsRequest
+	 *            ამ პარამეტრში მოდის თუ რა ინფორმაცია უნდა შეინახოს კონტრატორის
+	 *            შესახებ
+	 * @return Contract ფუნქცია აბრუნებს ჰიბერნეიტის კლასს რომელიც უკვე
+	 *         შენახულია მონაცმთა ბაზაში. ეს კლასი ბრუნდება კლიენტის მხარეს რათა
+	 *         კლიენტმა დაინახოს მის მიერ ახალ დამატებული კონტრაქტორი
 	 * @throws Exception
+	 *             შეცდომის დამუშავება.
 	 */
 	@SuppressWarnings("rawtypes")
 	public Contract addContractor(DSRequest dsRequest) throws Exception {
@@ -247,6 +266,26 @@ public class ContractorsDMI implements QueryConstants {
 		}
 	}
 
+	/**
+	 * მეთოდი რომელიც გამოიყენება ლოკალურად მხოლოდ მიმდინარე კლასში და
+	 * განკუთვნილია კონტრაქტორის ფასის გამოსათვლელად რომელსაც აქვს ზღვრული ფასი.
+	 * ანუ მაგალითად (1 დან 1000 ზარამდე - ზარის ფასია 0.77, 1001 დან 5000 მდე
+	 * 0.70, 5001 დან 999999999 მდე არის 0.65, ფუნქცია ანგარიშობს მიმდინარე
+	 * თვეში რა ფასი ეკუთვნის კონტრაქტორს განხორციელებული ზარებიდან გამომდინარე)
+	 * 
+	 * @param main_id
+	 *            კონტრაქტორი ორგანიზაციის იდენტიფიკატორი
+	 * @param main_detail_id
+	 *            კონტრაქტორი ორგანიზაციის განყოფილების იდენტიფიკატორი
+	 * @param oracleManager
+	 *            ბაზის მენეჯერი რომლის საშუალებითახ ხდება ნებისმიერო ოპერაცია
+	 *            მონაცემთა ბაზაში
+	 * @param contractAdvPrices
+	 *            კონტრაქტორის ზღვრული ფასები
+	 * @return BigDecimal აბრუნებს ფასს
+	 * @throws CallCenterException
+	 *             შეცდომის დამუშავება
+	 */
 	private BigDecimal getRangeCurrPrice(Long main_id, Long main_detail_id,
 			EntityManager oracleManager,
 			ArrayList<ContractPriceItem> contractAdvPrices)
@@ -257,8 +296,6 @@ public class ContractorsDMI implements QueryConstants {
 				return result;
 			}
 			Long callCnt = 0L;
-			System.out.println("main_detail_id = " + main_detail_id);
-			System.out.println("main_id = " + main_id);
 			if (main_detail_id != null && main_detail_id.longValue() > 0) {
 				callCnt = new Long(oracleManager
 						.createNativeQuery(
@@ -271,18 +308,15 @@ public class ContractorsDMI implements QueryConstants {
 								QueryConstants.Q_GET_ORG_CALL_CNT_BY_YM)
 						.setParameter(1, main_id).getSingleResult().toString());
 			}
-			System.out.println("callCnt = " + callCnt);
 			for (ContractPriceItem priceItem : contractAdvPrices) {
 				Long start = priceItem.getCall_count_start();
 				Long end = priceItem.getCall_count_end();
-				System.out.println("start = " + start + ", end = " + end);
 				if (start != null && end != null && callCnt >= start
 						&& callCnt < end) {
 					result = priceItem.getPrice();
 					break;
 				}
 			}
-			System.out.println("result = " + result);
 			return result;
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
@@ -295,11 +329,14 @@ public class ContractorsDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Contract
+	 * კონტრაქტორის ინფორმაციის განახლება.
 	 * 
 	 * @param record
-	 * @return
+	 *            ეს პარამეტრი მოიცავს ყველა ინფორმაცის ცვლილების შესახებ.
+	 * @return Contract ფუნქცია აბრუნებს კონტრაქტორის კლასს რომელშიც უკვე
+	 *         შესულია ცვლილება და ასახულია ბაზაში.
 	 * @throws Exception
+	 *             შეცდომის დამუშავება
 	 */
 	@SuppressWarnings("rawtypes")
 	public Contract updateContractor(Map record) throws Exception {
@@ -364,11 +401,6 @@ public class ContractorsDMI implements QueryConstants {
 			boolean needCalc = (price_type != null && price_type.equals(1L))
 					&& (range_curr_price.doubleValue() <= 0 || checkContractor
 							.intValue() == 1);
-			System.out.println("+++++++++++++++++++++++++++++++");
-			System.out.println("price_type = " + price_type);
-			System.out.println("range_curr_price = " + range_curr_price);
-			System.out.println("checkContractor = " + checkContractor);
-			System.out.println("needCalc = " + needCalc);
 
 			ArrayList<ContractPriceItem> contractAdvPrices = new ArrayList<ContractPriceItem>();
 			Object oMap = record.get("contractorAdvPrices");
@@ -490,9 +522,11 @@ public class ContractorsDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Contract Status
+	 * კონტრაქტორის გაუმქნების ფუნქცია.
 	 * 
 	 * @param record
+	 *            პარამეტრი რომელშიც მოდის თუ რომელი კონტრაქტორი უნდა წაიშალოს
+	 *            მონაცემთა ბაზიდან
 	 * @return
 	 * @throws Exception
 	 */
@@ -548,9 +582,12 @@ public class ContractorsDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Contract Status
+	 * მიმდინარე ფუნქცია გამოიყენება იმისათვის რომ მოხდეს ზღვრული ფასების მქონე
+	 * კონტრაქტორის მიმდინარე ფასის ცვლილება.
 	 * 
 	 * @param record
+	 *            პარამეტრად მოდის თუ რომელ კონტრაქტორს უნდა შეეცვალოს ფასი და
+	 *            რა მნიშვნელობა უნდა მიენიჭოს.
 	 * @return
 	 * @throws Exception
 	 */
@@ -619,7 +656,6 @@ public class ContractorsDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Contract
 	 * 
 	 * @param record
 	 * @return
@@ -655,10 +691,7 @@ public class ContractorsDMI implements QueryConstants {
 							QueryConstants.Q_GET_PHONE_LIST_BY_MAIN_ID)
 					.setParameter(1, main_id).getResultList();
 			if (resultList != null && !resultList.isEmpty()) {
-				for (Object object : resultList) {
-					String phone = object.toString();
-					System.out.println("phone = " + phone);
-				}
+
 			}
 			contract.setContractor_call_cnt(0L);
 			contract.setPrice_type_descr((contract.getPrice_type() != null
@@ -681,11 +714,15 @@ public class ContractorsDMI implements QueryConstants {
 	}
 
 	/**
-	 * Check Contractor Numbers
+	 * ხდება შემოწმება თუ რამდენად სწორედ შეიყვანა ოპერატორმა კონტრაქტორის
+	 * ნომრები - ეკუთვნის თუ არა ეს ნომრების არჩეულ ორგანიზაციას(დეპარტამენტს).
 	 * 
 	 * @param record
-	 * @return
+	 *            ნომრები რომლებიც უნდა შემოწმდეს
+	 * @return აბრუნებს კონტრაქტორის ჩანაწერს
 	 * @throws Exception
+	 *             გამოისვის შეცდომას თუ რომელიმე ნომერი არ ეკუთვბნის ამ
+	 *             ორგანიზაციას(დეპარტამენტს)
 	 */
 	@SuppressWarnings("rawtypes")
 	public Contract checkContractorNumbers(Map record) throws Exception {
@@ -693,35 +730,10 @@ public class ContractorsDMI implements QueryConstants {
 		try {
 			String log = "Method:CommonDMI.checkContractorNumbers.";
 			oracleManager = EMF.getEntityManager();
-			// Object oContract_id = record.get("contract_id");
-			// if (oContract_id == null) {
-			// return null;
-			// }
-			// Long contract_id = new Long(oContract_id.toString());
-			// String loggedUserName = record.get("loggedUserName").toString();
 			Long main_id = new Long(record.get("main_id").toString());
 			Long main_detail_id = new Long(
 					record.get("main_detail_id") == null ? "0" : record.get(
 							"main_detail_id").toString());
-			// Contract contract = oracleManager.find(Contract.class,
-			// contract_id);
-			// contract.setLoggedUserName(loggedUserName);
-			// if (contract.getMain_id() != null
-			// && contract.getMain_id().longValue() > 0) {
-			// MainOrg mainOrg = oracleManager.find(MainOrg.class,
-			// contract.getMain_id());
-			// if (mainOrg != null) {
-			// contract.setOrgName(mainOrg.getOrg_name());
-			// }
-			// }
-			// if (contract.getMain_detail_id() != null
-			// && contract.getMain_detail_id().longValue() > 0) {
-			// MainDetail mainDetail = oracleManager.find(MainDetail.class,
-			// contract.getMain_detail_id());
-			// if (mainDetail != null) {
-			// contract.setOrgDepName(mainDetail.getMain_detail_geo());
-			// }
-			// }
 
 			Object oMap1 = record.get("contractorAdvPhones");
 			if (oMap1 != null && main_id != null && main_id.longValue() > 0) {
@@ -780,11 +792,13 @@ public class ContractorsDMI implements QueryConstants {
 	}
 
 	/**
-	 * Check Contractor Numbers
+	 * ფუნქცია აბრუნებს თუ რამდენი ზარი აქვს განხორციელებული კონტრაქტორს
 	 * 
 	 * @param record
-	 * @return
+	 *            რომელი კონტრაქტორისათვის უნდა მოხდეს დათვლა
+	 * @return აბრუნებს ზარების რაოდენობას
 	 * @throws Exception
+	 *             შეცდომის დამუშავება
 	 */
 	@SuppressWarnings("rawtypes")
 	public Contract getContractorCallCnt(Map record) throws Exception {
@@ -816,7 +830,6 @@ public class ContractorsDMI implements QueryConstants {
 			Long main_detail_id = contract.getMain_detail_id();
 			Long main_id = contract.getMain_id();
 			Long contrCallCnt = -1L;
-			System.out.println("contrCallCnt = " + contrCallCnt);
 
 			if (main_detail_id != null && main_detail_id.longValue() > 0) {
 				contrCallCnt = new Long(
@@ -860,10 +873,11 @@ public class ContractorsDMI implements QueryConstants {
 	}
 
 	/**
-	 * Check Contractor Numbers
+	 * ფუნქციის საშუალებით ხდება კონტრაქტორის მიმდინარე დავალიანების გამოთვლა.
 	 * 
 	 * @param record
-	 * @return
+	 *            რომელი კონტრაქტორის დავალიანების გამოთვლა უნდა მოხდეს
+	 * @return აბრუნებს დავალიანებას ლარებში.
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
@@ -896,7 +910,6 @@ public class ContractorsDMI implements QueryConstants {
 			Long main_detail_id = contract.getMain_detail_id();
 			Long main_id = contract.getMain_id();
 			Double contrCharges = -1D;
-			System.out.println("contrCallCnt = " + contrCharges);
 
 			if (main_detail_id != null && main_detail_id.longValue() > 0) {
 				contrCharges = new Double(
@@ -940,6 +953,20 @@ public class ContractorsDMI implements QueryConstants {
 		}
 	}
 
+	/**
+	 * ფუნქცია გამოიყენება ლოკალურად მხოლოდ ამ კლასში და უზრუნველყოფს
+	 * კონტრაქტორის ნომრების მართვას ე.წ. SIP ის ბაზაში. ამ ფუნქციის საშუალებით
+	 * ხდება ნომრების დაბლოკვა რომ ვერ დარეკოს 11808 ზე გადაუხდელობის ან კიდევ
+	 * კონტრაქტის ვადის გასვლის შემთხვევაში. ასევე განბლოკვა თანხის გადახდის ან
+	 * კონტრაქტის ვადის გაგრძელების შემთხვევაში.
+	 * 
+	 * @param contract
+	 *            კონტრატორის მონაცემები.
+	 * @param oracleManager
+	 *            მონაცემთა ბაზის მენეჯერი.
+	 * @throws CallCenterException
+	 *             შეცდომის დამუშავება თუ რაიმე პარამეტრი არასწორია
+	 */
 	@SuppressWarnings("rawtypes")
 	public void blockUnblockContractorPhones(Contract contract,
 			EntityManager oracleManager) throws CallCenterException {
@@ -1027,7 +1054,8 @@ public class ContractorsDMI implements QueryConstants {
 					blockedByCondition = true;
 				} else {
 					Long critical_numer = contract.getCritical_number();
-					if (critical_numer != null && critical_numer.intValue() > 0) {
+					if (critical_numer != null
+							&& critical_numer.intValue() != Constants.criticalNumberIgnore) {
 						Long contrCallCnt = -1L;
 
 						log.append(", 7. Contract Call's Lomit : ").append(
@@ -1056,7 +1084,8 @@ public class ContractorsDMI implements QueryConstants {
 											.setParameter(4, main_id)
 											.getSingleResult().toString());
 						}
-						if ((contrCallCnt + 10) >= critical_numer) {
+						if (contrCallCnt <= 0
+								|| (contrCallCnt + 10) >= critical_numer) {
 							blockedByCondition = true;
 						}
 					}
@@ -1184,3 +1213,540 @@ public class ContractorsDMI implements QueryConstants {
 		}
 	}
 }
+
+//			<DataSource
+//			ID="ContractorsDS"
+//			serverType="sql"
+//			tableName="info.contracts"
+//			qualifyColumnNames="false"
+//			dropExtraFields = "false">
+//			
+//			<fields>
+//				<field name="contract_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
+//				<field name="block"					type="integer"		title="block"				hidden="true"/>
+//				<field name="critical_number"		type="integer"		title="critical_number"		hidden="true"/>
+//				<field name="deleted"				type="integer"		title="deleted"				hidden="true"/>
+//				<field name="orgName"				type="text"			title="orgName"/>
+//				<field name="orgDepName"			type="text"			title="orgDepName"/>
+//				<field name="start_date"			type="date"			title="start_date"/>
+//				<field name="end_date"				type="date"			title="end_date"/>
+//				<field name="note"					type="text"			title="note"/>
+//				<field name="price"					type="any"			title="price"/>
+//				<field name="rec_user"				type="text"			title="rec_user"/>
+//				<field name="upd_user"				type="text"			title="upd_user"/>
+//				<field name="is_budget"				type="integer"		title="is_budget"			hidden="true"/>
+//				<field name="main_detail_id"		type="integer"		title="main_detail_id"		hidden="true"/>
+//				<field name="main_id"				type="integer"		title="main_id"				hidden="true"/>
+//				<field name="price_type"			type="integer"		title="price_type"			hidden="true"/>
+//				<field name="rec_date"				type="datetime"		title="rec_date"			hidden="true"/>		
+//				<field name="sms_warning"			type="integer"		title="sms_warning"			hidden="true"/>
+//				<field name="upd_date"				type="datetime"		title="upd_date"			hidden="true"/>
+//				<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
+//				<field name="contractorAdvPrices"	type="any"			title="contractorAdvPrices" hidden="true"/>
+//				<field name="contractorAdvPhones"	type="any"			title="contractorAdvPhones" hidden="true"/>
+//				<field name="block_type"			type="integer"		title="block_type"			hidden="true"/>
+//				<field name="phone_list_type"		type="integer"		title="phone_list_type"		hidden="true"/>
+//				<field name="contractor_call_cnt"	type="integer"		title="contractor_call_cnt"	hidden="true"/>
+//				<field name="phone"					type="text"			title="phone"				hidden="true"/>
+//				<field name="price_type_descr"		type="text"			title="price_type_descr"	hidden="true"/>
+//				<field name="range_curr_price"		type="any"			title="range_curr_price"	hidden="true"/>
+//				<field name="checkContractor"		type="integer"		title="checkContractor"		hidden="true"/>
+//			</fields>
+//			
+//			<operationBindings>		
+//			
+//				<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+//			
+//				<!-- Add Contractor -->
+//				<operationBinding operationType="add" operationId="addContractor" serverMethod="addContractor">
+//			        <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+//			    </operationBinding>
+//			    
+//				<!-- Contractor Update -->
+//				<operationBinding operationType="update" operationId="updateContractor" serverMethod="updateContractor">
+//			        <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+//			    </operationBinding>
+//			    
+//			    <!-- Delete Contractor -->
+//				<operationBinding operationType="update" operationId="removeContractor" serverMethod="removeContractor">
+//			        <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+//			    </operationBinding>
+//			    
+//			    <!-- Check Contractor -->
+//				<operationBinding operationType="update" operationId="checkContractorNumbers" serverMethod="checkContractorNumbers">
+//			        <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+//			    </operationBinding>
+//			    
+//			    <!-- Getting Contractor Call Count -->
+//				<operationBinding operationType="update" operationId="getContractorCallCnt" serverMethod="getContractorCallCnt">
+//			        <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+//			    </operationBinding>
+//			    
+//			    <!-- Getting Contractor Call Charges -->
+//				<operationBinding operationType="update" operationId="getContractorCharges" serverMethod="getContractorCharges">
+//			        <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+//			    </operationBinding>
+//			    
+//			    <!-- Block Contractor -->
+//				<operationBinding operationType="update" operationId="blockUnBlockContractor" serverMethod="blockUnBlockContractor">
+//			        <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+//			    </operationBinding>
+//			    
+//			    <!-- Contractor Range Price Update Manually -->
+//			    <operationBinding operationType="update" operationId="updateContractorRangePrice" serverMethod="updateContractorRangePrice">
+//			        <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+//			    </operationBinding>        
+//			    
+//				<operationBinding operationId="searchAllContractors" operationType="fetch">
+//					<selectClause>   			
+//						  t.contract_id,
+//						  t.block,
+//						  t.critical_number,
+//						  t.deleted,
+//						  t.end_date,
+//						  t.is_budget,
+//						  t.main_detail_id,
+//						  t.main_id,
+//						  t.note,
+//						  t.price,
+//						  t.price_type,
+//						  t.rec_date,
+//						  t.rec_user,
+//						  t.sms_warning,
+//						  t.start_date,
+//						  t.upd_date,
+//						  t.upd_user,
+//						  t.phone_list_type,
+//						  t.range_curr_price,
+//						  mo1.org_name as orgName,
+//						  md.main_detail_geo as orgDepName,
+//						  decode(t.price_type,0,'მარტ.','რთული') as price_type_descr
+//					</selectClause> 
+//					<tableClause>info.contracts t, info.main_orgs mo1, info.main_details md</tableClause>
+//					<whereClause><![CDATA[
+//						 t.main_id = mo1.main_id and t.main_detail_id = md.main_detail_id (+)
+//						 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
+//						 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
+//						 #if($criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
+//						 #if($criteria.org_name4) and mo1.org_name like '%'||($criteria.org_name4)||'%' #end
+//						 #if($criteria.org_name5) and mo1.org_name like '%'||($criteria.org_name5)||'%' #end
+//						 #if($criteria.org_name6) and mo1.org_name like '%'||($criteria.org_name6)||'%' #end
+//						 #if($criteria.org_name7) and mo1.org_name like '%'||($criteria.org_name7)||'%' #end
+//						 #if($criteria.org_name8) and mo1.org_name like '%'||($criteria.org_name8)||'%' #end
+//						 #if($criteria.org_name9) and mo1.org_name like '%'||($criteria.org_name9)||'%' #end
+//						 #if($criteria.is_budget) and t.is_budget = $criteria.is_budget #end
+//						 #if($criteria.deleted) and t.deleted = $criteria.deleted #end
+//						 #if($criteria.phone)
+//						 	and t.contract_id in (select tt.contract_id from info.contractor_phones tt where tt.phone = $criteria.phone) 				 	
+//						 #end
+//						]]>  
+//					</whereClause> 
+//					<orderClause>t.contract_id</orderClause>
+//				</operationBinding>
+//				
+//				
+//				<operationBinding operationId="selectByDepAll" operationType="fetch">
+//					<selectClause> 
+//						tt.phone
+//					</selectClause> 
+//					<tableClause>
+//						<![CDATA[
+//						 (select /*+ index(p PHN_PRY_KS001)*/
+//							distinct p.phone 
+//						      from info.abonents a 
+//							    inner join info.phones p on p.phone_id = a.phone_id 
+//						      where a.main_detail_id in 
+//							      ( 
+//								select 
+//								      t.main_detail_id 
+//								from info.main_details t 
+//								  start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
+//								  connect by prior t.main_detail_id = t.main_detail_master_id 
+//								) 
+//						      and p.deleted = 0 and a.deleted = 0 and p.phone not in ( 
+//							      select 
+//								    /*+ index(p PHN_PRY_KS001)*/ p.phone 
+//							      from info.abonents a 
+//								  inner join info.phones p on p.phone_id = a.phone_id 
+//							      where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in ( 
+//								select 
+//								      c.main_detail_id 
+//								from info.contracts c 
+//								where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate) < trunc(c.end_date) and c.main_detail_id in 
+//								  ( 
+//								    select 
+//									  t.main_detail_id 
+//								    from info.main_details t 
+//								    where level>1 
+//								    start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
+//								    connect by prior t.main_detail_id = t.main_detail_master_id 
+//								  ) 
+//							      ) 
+//								) and info.isPhoneChargeable(p.phone) = 1
+//						      ) tt
+//					       ]]>
+//					</tableClause>
+//					<whereClause><![CDATA[
+//						1 = 1
+//						#if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
+//					]]>  
+//					</whereClause> 			
+//				</operationBinding>
+//				
+//				
+//				<operationBinding operationId="selectByDepExceptList" operationType="fetch">
+//					<selectClause> 
+//						tt.phone     
+//					</selectClause> 
+//					<tableClause>
+//						<![CDATA[
+//							 ( select
+//							        /*+ index(p PHN_PRY_KS001)*/ distinct p.phone 
+//							  from info.abonents a 
+//							       inner join info.phones p on p.phone_id = a.phone_id 
+//							  where a.main_detail_id in 
+//							         ( 
+//							           select 
+//							                 t.main_detail_id 
+//							           from info.main_details t 
+//							             start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
+//							             connect by prior t.main_detail_id = t.main_detail_master_id 
+//							           ) 
+//							    and p.deleted = 0 and a.deleted = 0 and p.phone not in ( 
+//							         select 
+//							               /*+ index(p PHN_PRY_KS001)*/ p.phone 
+//							         from info.abonents a 
+//							              inner join info.phones p on p.phone_id = a.phone_id 
+//							         where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in ( 
+//							            select 
+//							                  c.main_detail_id 
+//							            from info.contracts c 
+//							            where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_detail_id in 
+//							              ( 
+//							                select 
+//							                      t.main_detail_id 
+//							                from info.main_details t 
+//							                where level>1 
+//							                start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
+//							                connect by prior t.main_detail_id = t.main_detail_master_id 
+//							              ) 
+//							          ) 
+//							    ) 
+//							    and p.phone not in ( 
+//							        select tt.phone from info.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
+//							    )
+//							    and info.isPhoneChargeable(p.phone) = 1
+//							) tt
+//							]]>   
+//					</tableClause>
+//					<whereClause><![CDATA[
+//						 1 = 1
+//					     #if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
+//						]]>  
+//					</whereClause> 			
+//				</operationBinding>
+//				
+//				
+//				<operationBinding operationId="selectByDepOnlyList" operationType="fetch">
+//					<selectClause>
+//						tt.phone
+//					</selectClause> 
+//					<tableClause>
+//						 <![CDATA[
+//							 ( select
+//							        /*+ index(p PHN_PRY_KS001)*/ distinct p.phone 
+//							  from info.abonents a 
+//							       inner join info.phones p on p.phone_id = a.phone_id 
+//							  where a.main_detail_id in 
+//							         ( 
+//							           select 
+//							                 t.main_detail_id 
+//							           from info.main_details t 
+//							             start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
+//							             connect by prior t.main_detail_id = t.main_detail_master_id 
+//							           ) 
+//							    and p.deleted = 0 and a.deleted = 0 and p.phone not in ( 
+//							         select 
+//							               /*+ index(p PHN_PRY_KS001)*/ p.phone 
+//							         from info.abonents a 
+//							              inner join info.phones p on p.phone_id = a.phone_id 
+//							         where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in ( 
+//							            select 
+//							                  c.main_detail_id 
+//							            from info.contracts c 
+//							            where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_detail_id in 
+//							              ( 
+//							                select 
+//							                      t.main_detail_id 
+//							                from info.main_details t 
+//							                where level>1 
+//							                start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
+//							                connect by prior t.main_detail_id = t.main_detail_master_id 
+//							              ) 
+//							          ) 
+//							    ) 
+//							    and p.phone in ( 
+//							        select tt.phone from info.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
+//							    )
+//							    and info.isPhoneChargeable(p.phone) = 1
+//							) tt      
+//							]]>  
+//					</tableClause>
+//					<whereClause><![CDATA[
+//						 1 = 1
+//						 #if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
+//						]]>  
+//					</whereClause> 			
+//				</operationBinding>
+//				
+//				
+//				
+//				<operationBinding operationId="selectByOrganizationAll" operationType="fetch">
+//					<selectClause> 
+//						tt.phone
+//					</selectClause> 
+//					<tableClause>
+//						<![CDATA[
+//							(select distinct p.phone from (
+//								       select ms.main_id from info.main_services ms 
+//								       start with ms.main_id = $criteria.main_id and ms.service_id = 3 
+//								       connect by prior ms.main_id = ms.main_master_id) r 
+//								inner join info.abonents a on a.main_id = r.main_id 
+//								inner join info.phones p on p.phone_id = a.phone_id 
+//								where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
+//								    select p.phone from ( 
+//								    select 
+//								      t.main_id 
+//								    from info.main_services t 
+//								    start with t.main_id in ( 
+//								          select 
+//								               c.main_id 
+//								          from info.contracts c 
+//								          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in ( 
+//								                select 
+//								                      t.main_id 
+//								                from info.main_services t 
+//								                where level>1 
+//								          start with t.main_id = $criteria.main_id and t.service_id = 3 
+//								          connect by prior t.main_id = t.main_master_id 
+//								          ) and (c.main_detail_id is null or c.main_detail_id = 0) 
+//								    ) and t.service_id = 3 
+//								    connect by prior t.main_id = t.main_master_id 
+//								    ) a1 
+//								    inner join info.abonents a on a.main_id = a1.main_id 
+//								    inner join info.phones p on p.phone_id = a.phone_id 
+//								    where a.deleted = 0 and p.deleted = 0 
+//								) and p.phone not in ( 
+//								    select 
+//								      /*+ index(p PHN_PRY_KS001)*/ p.phone 
+//								    from info.abonents a 
+//								         inner join info.phones p on p.phone_id = a.phone_id 
+//								    where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in 
+//								          (select 
+//								                 t.main_detail_id 
+//								           from info.main_details t 
+//								           start with t.main_detail_id in 
+//								                 (select 
+//								                        c.main_detail_id 
+//								                  from info.contracts c 
+//								                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in 
+//								                        (select 
+//								                               t.main_id 
+//								                         from info.main_services t 
+//								                         where level>1 
+//								                         start with t.main_id = $criteria.main_id and t.service_id = 3 
+//								                         connect by prior t.main_id = t.main_master_id 
+//								                         ) 
+//								                         and (c.main_detail_id is not null and c.main_detail_id <> 0) 
+//								                  ) and t.deleted = 0 
+//								           connect by prior t.main_detail_id = t.main_detail_master_id) 
+//								)
+//								and info.isPhoneChargeable(p.phone) = 1
+//							) tt
+//					       ]]>
+//					</tableClause>
+//					<whereClause><![CDATA[
+//						1 = 1
+//						#if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
+//					]]>  
+//					</whereClause> 			
+//				</operationBinding>
+//				
+//				
+//				
+//				<operationBinding operationId="selectByOrganizationExceptList" operationType="fetch">
+//					<selectClause> 
+//						tt.phone
+//					</selectClause> 
+//					<tableClause>
+//						<![CDATA[
+//							 	(select distinct p.phone from (
+//								       select ms.main_id from info.main_services ms 
+//								       start with ms.main_id = $criteria.main_id and ms.service_id = 3 
+//								       connect by prior ms.main_id = ms.main_master_id) r 
+//								inner join info.abonents a on a.main_id = r.main_id 
+//								inner join info.phones p on p.phone_id = a.phone_id 
+//								where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
+//								    select p.phone from ( 
+//								    select 
+//								      t.main_id 
+//								    from info.main_services t 
+//								    start with t.main_id in ( 
+//								          select 
+//								               c.main_id 
+//								          from info.contracts c 
+//								          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in ( 
+//								                select 
+//								                      t.main_id 
+//								                from info.main_services t 
+//								                where level>1 
+//								          start with t.main_id = $criteria.main_id and t.service_id = 3 
+//								          connect by prior t.main_id = t.main_master_id 
+//								          ) and (c.main_detail_id is null or c.main_detail_id = 0) 
+//								    ) and t.service_id = 3 
+//								    connect by prior t.main_id = t.main_master_id 
+//								    ) a1 
+//								    inner join info.abonents a on a.main_id = a1.main_id 
+//								    inner join info.phones p on p.phone_id = a.phone_id 
+//								    where a.deleted = 0 and p.deleted = 0 
+//								) and p.phone not in ( 
+//								    select 
+//								      /*+ index(p PHN_PRY_KS001)*/ p.phone 
+//								    from info.abonents a 
+//								         inner join info.phones p on p.phone_id = a.phone_id 
+//								    where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in 
+//								          (select 
+//								                 t.main_detail_id 
+//								           from info.main_details t 
+//								           start with t.main_detail_id in 
+//								                 (select 
+//								                        c.main_detail_id 
+//								                  from info.contracts c 
+//								                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in 
+//								                        (select 
+//								                               t.main_id 
+//								                         from info.main_services t 
+//								                         where level>1 
+//								                         start with t.main_id = $criteria.main_id and t.service_id = 3 
+//								                         connect by prior t.main_id = t.main_master_id 
+//								                         ) 
+//								                         and (c.main_detail_id is not null and c.main_detail_id <> 0) 
+//								                  ) and t.deleted = 0 
+//								           connect by prior t.main_detail_id = t.main_detail_master_id) 
+//								) 
+//								and p.phone not in ( 
+//								      select tt.phone from info.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
+//								)
+//								and info.isPhoneChargeable(p.phone) = 1
+//								) tt
+//					       ]]>
+//					</tableClause>
+//					<whereClause><![CDATA[
+//						1 = 1
+//						#if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
+//					]]>  
+//					</whereClause> 			
+//				</operationBinding>
+//				
+//				
+//				
+//				<operationBinding operationId="selectByOrganizationOnlyList" operationType="fetch">
+//					<selectClause> 
+//						tt.phone
+//					</selectClause> 
+//					<tableClause>
+//						<![CDATA[
+//							 	(select distinct p.phone from (
+//								       select ms.main_id from info.main_services ms 
+//								       start with ms.main_id = $criteria.main_id and ms.service_id = 3 
+//								       connect by prior ms.main_id = ms.main_master_id) r 
+//								inner join info.abonents a on a.main_id = r.main_id 
+//								inner join info.phones p on p.phone_id = a.phone_id 
+//								where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
+//								    select p.phone from ( 
+//								    select 
+//								      t.main_id 
+//								    from info.main_services t 
+//								    start with t.main_id in ( 
+//								          select 
+//								               c.main_id 
+//								          from info.contracts c 
+//								          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in ( 
+//								                select 
+//								                      t.main_id 
+//								                from info.main_services t 
+//								                where level>1 
+//								          start with t.main_id = $criteria.main_id and t.service_id = 3 
+//								          connect by prior t.main_id = t.main_master_id 
+//								          ) and (c.main_detail_id is null or c.main_detail_id = 0) 
+//								    ) and t.service_id = 3 
+//								    connect by prior t.main_id = t.main_master_id 
+//								    ) a1 
+//								    inner join info.abonents a on a.main_id = a1.main_id 
+//								    inner join info.phones p on p.phone_id = a.phone_id 
+//								    where a.deleted = 0 and p.deleted = 0 
+//								) and p.phone not in ( 
+//								    select 
+//								      /*+ index(p PHN_PRY_KS001)*/ p.phone 
+//								    from info.abonents a 
+//								         inner join info.phones p on p.phone_id = a.phone_id 
+//								    where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in 
+//								          (select 
+//								                 t.main_detail_id 
+//								           from info.main_details t 
+//								           start with t.main_detail_id in 
+//								                 (select 
+//								                        c.main_detail_id 
+//								                  from info.contracts c 
+//								                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in 
+//								                        (select 
+//								                               t.main_id 
+//								                         from info.main_services t 
+//								                         where level>1 
+//								                         start with t.main_id = $criteria.main_id and t.service_id = 3 
+//								                         connect by prior t.main_id = t.main_master_id 
+//								                         ) 
+//								                         and (c.main_detail_id is not null and c.main_detail_id <> 0) 
+//								                  ) and t.deleted = 0 
+//								           connect by prior t.main_detail_id = t.main_detail_master_id) 
+//								) 
+//								and p.phone in ( 
+//									  select tt.phone from info.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0
+//								)
+//								and info.isPhoneChargeable(p.phone) = 1
+//								) tt
+//					       ]]>
+//					</tableClause>
+//					<whereClause><![CDATA[
+//						1 = 1
+//						#if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
+//					]]>  
+//					</whereClause> 			
+//				</operationBinding>
+//				
+//				
+//				<operationBinding operationId="getCallsCountByMainDetAndYM" operationType="fetch">
+//					<selectClause>   		
+//						  info.getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_detail_id)	as contractor_call_cnt 			  
+//					</selectClause> 
+//					<tableClause>dual</tableClause>
+//					<whereClause><![CDATA[
+//						 1 = 1
+//						]]>  
+//					</whereClause> 
+//				</operationBinding>
+//				
+//				
+//				<operationBinding operationId="getCallsCountByMainAndYM" operationType="fetch">
+//					<selectClause>   		
+//						  info.getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_id)	as contractor_call_cnt 			  
+//					</selectClause> 
+//					<tableClause>dual</tableClause>
+//					<whereClause><![CDATA[
+//						 1 = 1
+//						]]>  
+//					</whereClause> 			
+//				</operationBinding>
+//				
+//			</operationBindings>	
+//			</DataSource>

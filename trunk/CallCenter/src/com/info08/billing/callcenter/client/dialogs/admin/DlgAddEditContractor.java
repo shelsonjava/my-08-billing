@@ -12,6 +12,7 @@ import com.info08.billing.callcenter.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenter.client.common.components.MyComboBoxItemDataChangedHandler;
 import com.info08.billing.callcenter.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenter.client.singletons.CommonSingleton;
+import com.info08.billing.callcenter.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -186,7 +187,7 @@ public class DlgAddEditContractor extends Window {
 					.contractorCritCallNumb());
 			critNumberItem.setWidth(200);
 			critNumberItem.setName("critNumberItem");
-			critNumberItem.setValue(0);
+			critNumberItem.setValue(-999999999);
 
 			priceTypeItem = new CheckboxItem();
 			priceTypeItem.setTitle(CallCenter.constants.normalPrice());
@@ -699,7 +700,8 @@ public class DlgAddEditContractor extends Window {
 				normalPriceItem.setValue(price);
 			}
 
-			String range_curr_price = editRecord.getAttributeAsString("range_curr_price");
+			String range_curr_price = editRecord
+					.getAttributeAsString("range_curr_price");
 			if (range_curr_price != null && !range_curr_price.trim().equals("")) {
 				currrentPriceItem.setValue(range_curr_price);
 			}
@@ -736,9 +738,15 @@ public class DlgAddEditContractor extends Window {
 			}
 
 			String critNumberStr = critNumberItem.getValueAsString();
-			Integer critical_number = new Integer(0);
+			Integer critical_number = new Integer(
+					Constants.criticalNumberIgnore);
 			if (critNumberStr != null && !critNumberStr.trim().equals("")) {
 				critical_number = Integer.parseInt(critNumberStr);
+			}
+			if (critical_number != Constants.criticalNumberIgnore
+					&& critical_number.intValue() < 0) {
+				SC.say(CallCenter.constants.incorrectCriticalNumber());
+				return;
 			}
 
 			Date start_date = null;

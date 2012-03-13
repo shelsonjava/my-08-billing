@@ -34,4 +34,6 @@ public interface Constants {
 	public static final int servicePosterInfo = 10;
 	public static final int serviceInCityTransportInfo = 26;
 	public static final int serviceCurrencyInfo = 11;
+	
+	public static final int criticalNumberIgnore = -999999999;
 }
