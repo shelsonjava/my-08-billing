@@ -1,0 +1,133 @@
+<DataSource
+	ID="TelCompsDS"
+	serverType="sql"
+	tableName="info.tel_comps"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="tel_comp_id"			type="integer"		title="tel_comp_id"			hidden="true" primaryKey="true" />
+		<field name="tel_comp_name_geo"		type="text"			title="tel_comp_name_geo"/>
+		<field name="tel_comp_name_eng"		type="text"			title="tel_comp_name_eng"/>
+		<field name="rec_user"				type="text"			title="rec_user"/>
+		<field name="rec_date"				type="date"			title="rec_date"/>
+		<field name="upd_user"				type="text"			title="upd_user"/>
+		<field name="deleted"				type="integer"		title="deleted"				hidden="true"/>
+		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
+		<field name="telCompIdexes"			type="any"			title="telCompIdexes" 		hidden="true"/>
+		<field name="phoneIndex"			type="integer"		title="phoneIndex"			hidden="true"/>
+		<field name="phonea"				type="text"			title="phonea"				hidden="true"/>
+		<field name="phoneb"				type="text"			title="phoneb"				hidden="true"/>
+		<field name="charge_date"			type="date"			title="charge_date"			hidden="true"/>
+		<field name="duration"				type="integer"		title="duration"			hidden="true"/>
+		<field name="price"					type="any"			title="price"				hidden="true"/>
+		<field name="rate"					type="any"			title="rate"				hidden="true"/>
+		<field name="charge_date1"			type="text"			title="charge_date1"		hidden="true"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+
+		<!-- Add TelComp -->
+		<operationBinding operationType="add" operationId="addTelComp" serverMethod="addTelComp">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+        </operationBinding>
+        
+		<!--  TelComp Update -->
+		<operationBinding operationType="update" operationId="updateTelComp" serverMethod="updateTelComp">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+        </operationBinding>
+        
+        <!-- Delete  TelComp -->
+		<operationBinding operationType="remove" operationId="removeTelComp" serverMethod="removeTelComp">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+        </operationBinding>
+                     
+        
+    	<operationBinding operationId="searchAllTelComps" operationType="fetch">
+    		<selectClause>   			
+    			  	t.tel_comp_id,
+					t.deleted,
+					t.rec_date,
+					t.rec_user,
+					t.tel_comp_name_eng,
+					t.tel_comp_name_geo,
+					t.upd_user
+			</selectClause> 
+			<tableClause>info.tel_comps t</tableClause>
+			<whereClause><![CDATA[
+				 1 = 1
+				 #if($criteria.tel_comp_name_geo) and t.tel_comp_name_geo like '%'||($criteria.tel_comp_name_geo)||'%' #end
+				 #if($criteria.phoneIndex)
+				 	and t.tel_comp_id in (select tt.tel_comp_id from info.tel_comps_ind tt where $criteria.phoneIndex between tt.st_ind and end_ind) 				 	
+				 #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.tel_comp_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="getTelCompBillByDay" operationType="fetch">
+    		<selectClause>   			
+    			  		t.phone as phonea, 
+				       '11808' as phoneb, 
+				        ch.rec_date as charge_date,
+				        to_char(ch.rec_date,'DD/MM/YYYY HH24:MI:SS') as charge_date1,
+				        60 as duration,
+				        ch.price/100 as rate,
+				        ch.price/100 as price
+			</selectClause> 
+			<tableClause>info.log_sessions t, info.log_session_charges ch</tableClause>
+			<whereClause><![CDATA[
+				 t.session_id  = ch.session_id and 
+				 trunc(t.start_date) = trunc($criteria.date_param) and
+				 trunc(ch.rec_date) = trunc($criteria.date_param) and
+					exists (
+					  select 
+					    to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind)),
+					    to_number(decode(length(i.end_ind),7,'32'||i.st_ind,i.end_ind))
+					  from info.tel_comps tc 
+					         inner join info.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id
+					  where tc.tel_comp_id = $criteria.tel_comp_id
+					        and to_number(t.phone) >= to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind))
+					        and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))
+					) 
+					and info.getcontractorpricenew(t.phone)=-999999999
+					and t.phone like '322%'				 
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+    	<operationBinding operationId="getTelCompBillByMonth" operationType="fetch">
+    		<selectClause>   			
+    			  		t.phone as phonea, 
+				       '11808' as phoneb, 
+				        ch.rec_date as charge_date,
+				        to_char(ch.rec_date,'DD/MM/YYYY HH24:MI:SS') as charge_date1,
+				        60 as duration,
+				        ch.price/100 as rate,
+				        ch.price/100 as price
+			</selectClause> 
+			<tableClause>info.log_sessions t, info.log_session_charges ch</tableClause>
+			<whereClause><![CDATA[
+				 t.session_id  = ch.session_id and 
+				 t.ym = $criteria.ym and ch.ym = $criteria.ym and
+					exists (
+					  select 
+					    to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind)),
+					    to_number(decode(length(i.end_ind),7,'32'||i.st_ind,i.end_ind))
+					  from info.tel_comps tc 
+					         inner join info.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id
+					  where tc.tel_comp_id = $criteria.tel_comp_id
+					        and to_number(t.phone) >= to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind))
+					        and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))
+					) 
+					and info.getcontractorpricenew(t.phone)=-999999999						
+					and t.phone like '322%'
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
