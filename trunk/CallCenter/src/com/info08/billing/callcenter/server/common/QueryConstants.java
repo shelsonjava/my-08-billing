@@ -2,6 +2,59 @@ package com.info08.billing.callcenter.server.common;
 
 public interface QueryConstants {
 	
+	public static final String Q_GET_TEL_COMP_BILL_BY_DAY = 
+			"select\n" +
+					"      t.phone as phonea,\n" + 
+					"     '11808' as phoneb,\n" + 
+					"      ch.rec_date as charge_date,\n" + 
+					"      to_char(ch.rec_date,'DD/MM/YYYY HH24:MI:SS') as charge_date1,\n" + 
+					"      60 as duration,\n" + 
+					"      ch.price/100 as rate,\n" + 
+					"      ch.price/100 as price\n" + 
+					"from info.log_sessions t, info.log_session_charges ch\n" + 
+					"where\n" + 
+					"     t.session_id  = ch.session_id and\n" + 
+					"     trunc(t.start_date) = trunc(?) and\n" + 
+					"     trunc(ch.rec_date) = trunc(?) and\n" + 
+					"      exists (\n" + 
+					"        select\n" + 
+					"          to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind)),\n" + 
+					"          to_number(decode(length(i.end_ind),7,'32'||i.st_ind,i.end_ind))\n" + 
+					"        from info.tel_comps tc\n" + 
+					"               inner join info.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id\n" + 
+					"        where tc.tel_comp_id = ? \n" + 
+					"              and to_number(t.phone) >= to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind))\n" + 
+					"              and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))\n" + 
+					"      )\n" + 
+					"      and info.getcontractorpricenew(t.phone)=-999999999\n" + 
+					"      and t.phone like '322%'";
+	
+	
+	public static final String Q_GET_TEL_COMP_BILL_BY_YM = "select substr(t.phone,3, length(t.phone)) as phonea,\n"
+			+ "   '11808' as phoneb,\n"
+			+ "    ch.rec_date as charge_date,\n"
+			+ "    to_char(ch.rec_date,'DD/MM/YYYY HH24:MI:SS') as charge_date1,\n"
+			+ "    60 as duration,\n"
+			+ "    ch.price/100 as rate,\n"
+			+ "    ch.price/100 as price\n"
+			+ "from info.log_sessions t, info.log_session_charges ch\n"
+			+ "where\n"
+			+ "     t.session_id  = ch.session_id and\n"
+			+ "     t.ym = ? and ch.ym = ? and\n"
+			+ "      exists (\n"
+			+ "        select\n"
+			+ "          to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind)),\n"
+			+ "          to_number(decode(length(i.end_ind),7,'32'||i.st_ind,i.end_ind))\n"
+			+ "        from info.tel_comps tc\n"
+			+ "               inner join info.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id\n"
+			+ "        where tc.tel_comp_id = ? \n"
+			+ "              and to_number(t.phone) >= to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind))\n"
+			+ "              and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))\n"
+			+ "      )\n"
+			+ "      and info.getcontractorpricenew(t.phone)=-999999999\n"
+			+ "      and t.phone like '322%'";
+	
+	
 	public static final String Q_GET_ORG_CALL_CNT_BY_YM = "select getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
 	
 	public static final String Q_GET_DEP_CALL_CNT_BY_YM = "select getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
@@ -753,6 +806,7 @@ public interface QueryConstants {
 	public static final String Q_DELETE_CONTRACT_PRICES = "delete from info.contract_price_items t where t.contract_id = ? ";
 	public static final String Q_DELETE_CONTRACT_PHONES = "delete from info.contractor_phones t where t.contract_id = ? ";
 	public static final String Q_DELETE_BLOCKLIST_PHONES = "delete from info.block_list_phones t where t.block_list_id = ? ";
+	public static final String Q_DELETE_TELCOMP = "delete from info.tel_comps t where t.tel_comp_id = ? ";
 	
 	public static final String Q_REMOVE_PHONE_FROM_AST_DB = " delete from asteriskcdrdb.block where code = ? and proriti = ? and len = ? "; 
 	public static final String Q_ADD_PHONE_INTO_AST_DB = " insert into asteriskcdrdb.block (code,proriti,len) values (?, ?, ?) ";
