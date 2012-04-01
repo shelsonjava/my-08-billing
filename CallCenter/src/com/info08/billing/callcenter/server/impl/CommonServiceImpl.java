@@ -1,6 +1,10 @@
 package com.info08.billing.callcenter.server.impl;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -12,6 +16,8 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -23,6 +29,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.info08.billing.callcenter.client.exception.CallCenterException;
 import com.info08.billing.callcenter.client.service.CommonService;
 import com.info08.billing.callcenter.server.common.QueryConstants;
+import com.info08.billing.callcenter.server.opencsv.CSVWriter;
 import com.info08.billing.callcenter.shared.common.Constants;
 import com.info08.billing.callcenter.shared.common.ServerSession;
 import com.info08.billing.callcenter.shared.entity.Person;
@@ -362,6 +369,110 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 			}
 			logger.error("Error While Insert Personal Note Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	@Override
+	public void getTelCompBillByMonth(Integer tel_comp_id, Integer ym)
+			throws CallCenterException {
+		EntityManager oracleManager = null;
+		try {
+
+		} catch (Exception e) {
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While getting cvs from database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წამოღებისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void getTelCompBillByDay(Integer tel_comp_id, Date date_param)
+			throws CallCenterException {
+		EntityManager oracleManager = null;
+		try {
+			oracleManager = EMF.getEntityManager();
+
+			List<String[]> retResult = new ArrayList<String[]>();
+
+			List resultList = oracleManager
+					.createNativeQuery(
+							QueryConstants.Q_GET_TEL_COMP_BILL_BY_DAY)
+					.setParameter(1, new Timestamp(date_param.getTime()))
+					.setParameter(2, new Timestamp(date_param.getTime()))
+					.setParameter(3, tel_comp_id).getResultList();
+			if (resultList != null && !resultList.isEmpty()) {
+				for (Object row : resultList) {
+					Object record[] = (Object[]) row;
+					String rowData[] = new String[6];
+					String phoneA = (record[0] == null) ? "" : record[0]
+							.toString();
+					String phoneB = (record[1] == null) ? "" : record[1]
+							.toString();
+					String charge_date1 = (record[3] == null) ? "" : record[3]
+							.toString();
+					Double duration = (record[4] == null) ? new Double(0)
+							: new Double(record[4].toString());
+					;
+					Double rate = (record[5] == null) ? new Double(0)
+							: new Double(record[5].toString());
+					Double price = (record[6] == null) ? new Double(0)
+							: new Double(record[6].toString());
+					;
+					rowData[0] = phoneA;
+					rowData[1] = phoneB;
+					rowData[2] = charge_date1;
+					rowData[3] = duration.toString();
+					rowData[4] = rate.toString();
+					rowData[5] = price.toString();
+					retResult.add(rowData);
+				}
+			}
+			String filename = (File.separator + System.getProperty("user.home")
+					+ File.separator + System.currentTimeMillis() + ".csv");
+			File file = new File(filename);
+			FileWriter fileWriter = new FileWriter(file);
+			CSVWriter writer = new CSVWriter(fileWriter);
+			writer.writeAll(retResult);
+			writer.close();
+			int length = 0;
+
+			HttpServletResponse resp = getThreadLocalResponse();
+			ServletOutputStream op = resp.getOutputStream();
+			resp.setContentType("application/octet-stream");
+			resp.setContentLength((int) file.length());
+			resp.setHeader("Content-Disposition",
+					"attachment; filename*=\"utf-8''" + filename + "");
+
+			byte[] bbuf = new byte[1024];
+			DataInputStream in = new DataInputStream(new FileInputStream(file));
+
+			while ((in != null) && ((length = in.read(bbuf)) != -1)) {
+				op.write(bbuf, 0, length);
+			}
+
+			in.close();
+			op.flush();
+			op.close();
+
+		} catch (Exception e) {
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While getting cvs from database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წამოღებისას : "
 					+ e.toString());
 		} finally {
 			if (oracleManager != null) {

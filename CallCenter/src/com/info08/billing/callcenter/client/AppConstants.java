@@ -584,6 +584,36 @@ public interface AppConstants extends Constants {
 	String currentPriceShort();
 	String limit();
 	String incorrectCriticalNumber();
+	String telComps();
+	String companyName();
+	String addTelComp();
+	String editTelComp();
+	String companyNameFull();
+	String startIndex();
+	String endIndex();
+	String partial();
+	String full();
+	String addTelCompInd();
+	String editTelCompInd();
+	String plzEnterStartIndex();
+	String plzEnterEndIndex();
+	String invalidStartIndex();
+	String invalidEndIndex();
+	String contractorsBilling();
+	String yearMonth();
+	String download();
+	String plzEnterYearMonth();
+	String invalidYearMonth();
+	String contractorsBillingFull();
+	String generateBillAgain();
+	String telCombBillByDay();
+	String telCombBillByMonth();
+	String chooseDate();
+	String plzEnterDate();
+	String simple();
+	String advanced();
+	String whithLimit();
+	String whithOutLimit();
 }
 
 

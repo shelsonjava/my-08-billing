@@ -3,6 +3,7 @@ package com.info08.billing.callcenter.client.content.admin;
 import com.info08.billing.callcenter.client.CallCenter;
 import com.info08.billing.callcenter.client.dialogs.admin.DlgAddEditContractor;
 import com.info08.billing.callcenter.client.dialogs.admin.DlgBlockPhoneList;
+import com.info08.billing.callcenter.client.dialogs.admin.DlgGetContractorsBilling;
 import com.info08.billing.callcenter.client.dialogs.admin.DlgUpdateContrCurrRangePrice;
 import com.info08.billing.callcenter.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenter.client.singletons.CommonSingleton;
@@ -39,9 +40,11 @@ public class TabContractors extends Tab {
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
 	private TextItem orgNameItem;
+	private TextItem orgDepItem;
 	private TextItem phoneItem;
 	private SelectItem contractorType;
-	private SelectItem deletedItem;
+	private SelectItem limitItem;
+	private SelectItem priceTypeItem;
 
 	private IButton findButton;
 	private IButton clearButton;
@@ -50,10 +53,11 @@ public class TabContractors extends Tab {
 	private ToolStripButton deleteBtn;
 	private ToolStripButton setRangePriceBtn;
 
-	// private ToolStripButton restoreBtn;
 	private ToolStripButton viewCallCntBtn;
 	private ToolStripButton viewChargesSumBtn;
 	private ToolStripButton blockPhoneListBtn;
+	private ToolStripButton contractorsBillBtn;
+	private ToolStripButton contractorsBillFullBtn;
 
 	private ListGrid contractorsGrid;
 	private DataSource contractorsDS;
@@ -70,7 +74,7 @@ public class TabContractors extends Tab {
 			mainLayout.setWidth100();
 			mainLayout.setHeight100();
 			mainLayout.setMargin(5);
-			//
+
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth(830);
@@ -82,6 +86,11 @@ public class TabContractors extends Tab {
 			orgNameItem.setTitle(CallCenter.constants.orgNameFull());
 			orgNameItem.setWidth(250);
 			orgNameItem.setName("orgNameItem");
+
+			orgDepItem = new TextItem();
+			orgDepItem.setTitle(CallCenter.constants.department());
+			orgDepItem.setWidth(250);
+			orgDepItem.setName("orgDepItem");
 
 			phoneItem = new TextItem();
 			phoneItem.setTitle(CallCenter.constants.phone());
@@ -96,15 +105,23 @@ public class TabContractors extends Tab {
 			contractorType.setValueMap(ClientMapUtil.getInstance()
 					.getContractorTypes());
 
-			deletedItem = new SelectItem();
-			deletedItem.setTitle(CallCenter.constants.status());
-			deletedItem.setWidth(250);
-			deletedItem.setName("deletedItem");
-			deletedItem.setDefaultToFirstOption(true);
-			deletedItem.setValueMap(ClientMapUtil.getInstance().getStatuses());
+			limitItem = new SelectItem();
+			limitItem.setTitle(CallCenter.constants.limit());
+			limitItem.setWidth(250);
+			limitItem.setName("limitItem");
+			limitItem.setDefaultToFirstOption(true);
+			limitItem.setValueMap(ClientMapUtil.getInstance().getLimitTypes());
 
-			searchForm.setFields(orgNameItem, contractorType, phoneItem,
-					deletedItem);
+			priceTypeItem = new SelectItem();
+			priceTypeItem.setTitle(CallCenter.constants.priceType());
+			priceTypeItem.setWidth(250);
+			priceTypeItem.setName("priceTypeItem");
+			priceTypeItem.setDefaultToFirstOption(true);
+			priceTypeItem.setValueMap(ClientMapUtil.getInstance()
+					.getContractorPriceTypes());
+
+			searchForm.setFields(orgNameItem, contractorType, orgDepItem,
+					limitItem, phoneItem, priceTypeItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(830);
@@ -149,12 +166,6 @@ public class TabContractors extends Tab {
 			setRangePriceBtn.setWidth(50);
 			toolStrip.addButton(setRangePriceBtn);
 
-			// restoreBtn = new ToolStripButton(CallCenter.constants.enable(),
-			// "restoreIcon.gif");
-			// restoreBtn.setLayoutAlign(Alignment.LEFT);
-			// restoreBtn.setWidth(50);
-			// toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			viewCallCntBtn = new ToolStripButton(
@@ -176,19 +187,20 @@ public class TabContractors extends Tab {
 			blockPhoneListBtn.setWidth(50);
 			toolStrip.addButton(blockPhoneListBtn);
 
-			// toolStrip.addSeparator();
-			//
-			// blockPhonesBtn = new ToolStripButton(
-			// CallCenter.constants.blockPhone(), "telephone_delete.png");
-			// blockPhonesBtn.setLayoutAlign(Alignment.LEFT);
-			// blockPhonesBtn.setWidth(50);
-			// toolStrip.addButton(blockPhonesBtn);
-			//
-			// unBlockPhonesBtn = new ToolStripButton(
-			// CallCenter.constants.unBlockPhone(), "telephone_add.png");
-			// unBlockPhonesBtn.setLayoutAlign(Alignment.LEFT);
-			// unBlockPhonesBtn.setWidth(50);
-			// toolStrip.addButton(unBlockPhonesBtn);
+			toolStrip.addSeparator();
+
+			contractorsBillBtn = new ToolStripButton(
+					CallCenter.constants.contractorsBilling(), "billing.png");
+			contractorsBillBtn.setLayoutAlign(Alignment.LEFT);
+			contractorsBillBtn.setWidth(50);
+			toolStrip.addButton(contractorsBillBtn);
+
+			contractorsBillFullBtn = new ToolStripButton(
+					CallCenter.constants.contractorsBillingFull(),
+					"billing.png");
+			contractorsBillFullBtn.setLayoutAlign(Alignment.LEFT);
+			contractorsBillFullBtn.setWidth(50);
+			toolStrip.addButton(contractorsBillFullBtn);
 
 			contractorsGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -232,8 +244,6 @@ public class TabContractors extends Tab {
 					CallCenter.constants.startDate(), 120);
 			ListGridField end_date = new ListGridField("end_date",
 					CallCenter.constants.endDate(), 120);
-			// ListGridField note = new ListGridField("note",
-			// CallCenter.constants.comment(), 200);
 			ListGridField price = new ListGridField("price",
 					CallCenter.constants.price(), 70);
 			ListGridField range_curr_price = new ListGridField(
@@ -264,6 +274,15 @@ public class TabContractors extends Tab {
 			});
 
 			orgNameItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			});
+
+			orgDepItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
@@ -330,33 +349,6 @@ public class TabContractors extends Tab {
 							});
 				}
 			});
-			// restoreBtn.addClickHandler(new ClickHandler() {
-			// @Override
-			// public void onClick(ClickEvent event) {
-			// final ListGridRecord listGridRecord = contractorsGrid
-			// .getSelectedRecord();
-			// if (listGridRecord == null) {
-			// SC.say(CallCenter.constants.pleaseSelrecord());
-			// return;
-			// }
-			// Integer deleted = listGridRecord
-			// .getAttributeAsInt("deleted");
-			// if (deleted.equals(0)) {
-			// SC.say(CallCenter.constants.recordAlrEnabled());
-			// return;
-			// }
-			// SC.ask(CallCenter.constants.askForEnable(),
-			// new BooleanCallback() {
-			// @Override
-			// public void execute(Boolean value) {
-			// if (value) {
-			// changeStatus(listGridRecord, 0);
-			// }
-			// }
-			// });
-			// }
-			// });
-
 			contractorsGrid
 					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 						@Override
@@ -369,37 +361,6 @@ public class TabContractors extends Tab {
 							dlgAddEditContractor.show();
 						}
 					});
-
-			// blockPhonesBtn.addClickHandler(new ClickHandler() {
-			// @Override
-			// public void onClick(ClickEvent event) {
-			// final ListGridRecord listGridRecord = contractorsGrid
-			// .getSelectedRecord();
-			// if (listGridRecord == null) {
-			// SC.say(CallCenter.constants.pleaseSelrecord());
-			// return;
-			// }
-			// DlgBlockUnBlockContrPhones blockContrPhones = new
-			// DlgBlockUnBlockContrPhones(
-			// contractorsGrid, listGridRecord, true);
-			// blockContrPhones.show();
-			// }
-			// });
-			// unBlockPhonesBtn.addClickHandler(new ClickHandler() {
-			// @Override
-			// public void onClick(ClickEvent event) {
-			// final ListGridRecord listGridRecord = contractorsGrid
-			// .getSelectedRecord();
-			// if (listGridRecord == null) {
-			// SC.say(CallCenter.constants.pleaseSelrecord());
-			// return;
-			// }
-			// DlgBlockUnBlockContrPhones blockContrPhones = new
-			// DlgBlockUnBlockContrPhones(
-			// contractorsGrid, listGridRecord, false);
-			// blockContrPhones.show();
-			// }
-			// });
 
 			viewCallCntBtn.addClickHandler(new ClickHandler() {
 				@Override
@@ -465,9 +426,31 @@ public class TabContractors extends Tab {
 				}
 			});
 
+			contractorsBillBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					getContractorsBilling(false);
+				}
+			});
+			contractorsBillFullBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					getContractorsBilling(true);
+				}
+			});
 			setPane(mainLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void getContractorsBilling(boolean full) {
+		try {
+			DlgGetContractorsBilling dlgGetCOntractorsBilling = new DlgGetContractorsBilling(
+					full);
+			dlgGetCOntractorsBilling.show();
+		} catch (Exception e) {
 			SC.say(e.toString());
 		}
 	}
@@ -581,6 +564,21 @@ public class TabContractors extends Tab {
 					i++;
 				}
 			}
+			String orgDepName = orgDepItem.getValueAsString();
+			if (orgDepName != null && !orgDepName.trim().equals("")) {
+				String tmp = orgDepName.trim();
+				String arrStr[] = tmp.split(" ");
+				int i = 1;
+				for (String string : arrStr) {
+					String item = string.trim();
+					if (item.equals("")) {
+						continue;
+					}
+					criteria.setAttribute("orgDepName" + i, item);
+					i++;
+				}
+			}
+
 			String is_budget_str = contractorType.getValueAsString();
 			if (is_budget_str != null && !is_budget_str.trim().equals("")
 					&& !is_budget_str.trim().equals("-1")) {
@@ -591,9 +589,17 @@ public class TabContractors extends Tab {
 				criteria.setAttribute("phone", phone);
 			}
 
-			String deleted = deletedItem.getValueAsString();
-			if (deleted != null && !deleted.equals("")) {
-				criteria.setAttribute("deleted", new Integer(deleted));
+			String limitStr = limitItem.getValueAsString();
+			if (limitStr != null && !limitStr.equals("")) {
+				Integer limitType = new Integer(limitStr);
+				if (limitType != -1) {
+					criteria.setAttribute("limitType", limitType);
+				}
+			}
+
+			Integer price_type = new Integer(priceTypeItem.getValueAsString());
+			if (price_type != -1) {
+				criteria.setAttribute("price_type", price_type);
 			}
 
 			DSRequest dsRequest = new DSRequest();

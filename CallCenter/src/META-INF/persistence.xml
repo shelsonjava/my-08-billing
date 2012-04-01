@@ -68,6 +68,8 @@
     <class>com.info08.billing.callcenter.shared.entity.contractors.ContractorBlockChecker</class>
     <class>com.info08.billing.callcenter.shared.entity.block.BlockList</class>
     <class>com.info08.billing.callcenter.shared.entity.block.BlockListPhone</class>
+    <class>com.info08.billing.callcenter.shared.entity.telcomps.TelComp</class>
+    <class>com.info08.billing.callcenter.shared.entity.telcomps.TelCompsInd</class>
     <properties>
       <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
       <property name="hibernate.connection.username" value="info"/>

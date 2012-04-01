@@ -43,6 +43,9 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> weekDays;
 	private LinkedHashMap<String, String> contractorTypes;
 	private LinkedHashMap<String, String> contractorTypes1;
+	private LinkedHashMap<String, String> telCompIndTypes;
+	private LinkedHashMap<String, String> contractorPriceTypes;
+	private LinkedHashMap<String, String> limitTypes;
 
 	protected ClientMapUtil() {
 		mapOpClose = new LinkedHashMap<String, String>();
@@ -74,6 +77,9 @@ public class ClientMapUtil {
 		weekDays = new LinkedHashMap<String, String>();
 		contractorTypes = new LinkedHashMap<String, String>();
 		contractorTypes1 = new LinkedHashMap<String, String>();
+		telCompIndTypes = new LinkedHashMap<String, String>();
+		contractorPriceTypes = new LinkedHashMap<String, String>();
+		limitTypes = new LinkedHashMap<String, String>();
 
 		mapOpClose.put("0", "ღია");
 		mapOpClose.put("1", "დაფარულია");
@@ -182,8 +188,27 @@ public class ClientMapUtil {
 
 		contractorTypes1.put("0", CallCenter.constants.budget());
 		contractorTypes1.put("1", CallCenter.constants.commercial());
+
+		telCompIndTypes.put("0", CallCenter.constants.partial());
+		telCompIndTypes.put("1", CallCenter.constants.full());
+		
+		contractorPriceTypes.put("-1", CallCenter.constants.all());
+		contractorPriceTypes.put("0", CallCenter.constants.simple());
+		contractorPriceTypes.put("1", CallCenter.constants.advanced());
+		
+		limitTypes.put("-1", CallCenter.constants.all());
+		limitTypes.put("0", CallCenter.constants.whithLimit());
+		limitTypes.put("1", CallCenter.constants.whithOutLimit());
 	}
 
+	public LinkedHashMap<String, String> getLimitTypes() {
+		return limitTypes;
+	}	
+	
+	public LinkedHashMap<String, String> getContractorPriceTypes() {
+		return contractorPriceTypes;
+	}
+	
 	public LinkedHashMap<String, String> getMapOpClose() {
 		return mapOpClose;
 	}
@@ -298,5 +323,9 @@ public class ClientMapUtil {
 
 	public LinkedHashMap<String, String> getContractorTypes1() {
 		return contractorTypes1;
+	}
+
+	public LinkedHashMap<String, String> getTelCompIndTypes() {
+		return telCompIndTypes;
 	}
 }

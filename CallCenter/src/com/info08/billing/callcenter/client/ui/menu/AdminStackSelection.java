@@ -6,6 +6,7 @@ import com.info08.billing.callcenter.client.content.admin.TabBlockList;
 import com.info08.billing.callcenter.client.content.admin.TabContractors;
 import com.info08.billing.callcenter.client.content.admin.TabFixedOperPrefs;
 import com.info08.billing.callcenter.client.content.admin.TabMobOperPrefs;
+import com.info08.billing.callcenter.client.content.admin.TabTelComps;
 import com.info08.billing.callcenter.client.singletons.CommonSingleton;
 import com.info08.billing.callcenter.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -29,6 +30,7 @@ public class AdminStackSelection extends SectionStackSection {
 			new MenuNode("102", "1", CallCenter.constants.fixedOpIndexes(), true, "phone.png"),
 			new MenuNode("103", "1", CallCenter.constants.contractors(), true, "contracts.png"),
 			new MenuNode("104", "1", CallCenter.constants.blockPhone(), true, "telephone_delete.png"),
+			new MenuNode("105", "1", CallCenter.constants.telComps(), true, "phone.png"),
 	};
 
 	private TreeGrid menuTreeGrid;
@@ -96,6 +98,7 @@ public class AdminStackSelection extends SectionStackSection {
 			menuData[2].setAttribute("enabled", hasAdminPerm);
 			menuData[3].setAttribute("enabled", hasAdminPerm);
 			menuData[4].setAttribute("enabled", hasAdminPerm);
+			menuData[5].setAttribute("enabled", hasAdminPerm);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,9 +122,12 @@ public class AdminStackSelection extends SectionStackSection {
 		} else if (menuId.equals("103")) {
 			TabContractors tabContractors = new TabContractors();
 			body.addTab(tabContractors);
-		}else if (menuId.equals("104")) {
+		} else if (menuId.equals("104")) {
 			TabBlockList tabBlockList = new TabBlockList();
 			body.addTab(tabBlockList);
+		} else if (menuId.equals("105")) {
+			TabTelComps tabTelComps = new TabTelComps();
+			body.addTab(tabTelComps);
 		}
 	}
 
