@@ -1,0 +1,159 @@
+<DataSource
+	ID="StatisticsDS"
+	serverType="sql"
+	tableName="info.statistic"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="id"						type="integer"		title="id"					hidden="true" primaryKey="true" />
+		<field name="ym"						type="integer"		title="ym"					hidden="true"/>
+		<field name="stat_date"					type="date"			title="stat_date"/>
+		<field name="abonent_cnt"				type="integer"		title="abonent_cnt"/>		
+		<field name="abonent_amm"				type="integer"		title="abonent_amm"/>
+		<field name="org_contr_comm_cnt"		type="integer"		title="org_contr_comm_cnt"/>
+		<field name="org_contr_comm_amm"		type="integer"		title="org_contr_comm_amm"/>
+		<field name="org_non_contr_cnt"			type="integer"		title="org_non_contr_cnt"/>
+		<field name="org_non_contr_amm"			type="integer"		title="org_non_contr_amm"/>
+		<field name="org_contr_gov_cnt"			type="integer"		title="org_contr_gov_cnt"/>
+		<field name="org_contr_gov_amm"			type="integer"		title="org_contr_gov_amm"/>
+		<field name="magti_cnt"					type="integer"		title="magti_cnt"/>
+		<field name="magti_amm"					type="integer"		title="magti_amm"/>
+		<field name="geocell_cnt"				type="integer"		title="geocell_cnt"/>
+		<field name="geocell_amm"				type="integer"		title="geocell_amm"/>
+		<field name="beeline_cnt"				type="integer"		title="beeline_cnt"/>
+		<field name="beeline_amm"				type="integer"		title="beeline_amm"/>
+		<field name="org_contr_email_srv_cnt"	type="integer"		title="org_contr_email_srv_cnt"/>
+		<field name="org_contr_email_srv_amm"	type="integer"		title="org_contr_email_srv_amm"/>
+		<field name="org_email_srv_cnt"			type="integer"		title="org_email_srv_cnt"/>
+		<field name="org_email_srv_amm"			type="integer"		title="org_email_srv_amm"/>
+		<field name="stat_date_start"			type="date"			title="stat_date_start"		hidden="true"/>
+		<field name="stat_date_end"				type="date"			title="stat_date_end"		hidden="true"/>
+		<field name="week_day"					type="integer"		title="week_day"			hidden="true"/>
+		<field name="org_sum"					type="integer"		title="org_sum"/>
+		<field name="all_sum"					type="integer"		title="all_sum"/>
+		<field name="all_amount"				type="integer"		title="all_amount"/>
+		<field name="date_str"					type="text"			title="date_str"/>
+		<field name="week_day_descr"			type="text"			title="week_day_descr"/>
+		<field name="cnt_percent"				type="integer"		title="cnt_percent"/>
+	</fields>
+
+	<operationBindings>		
+
+    	<operationBinding operationId="searchAllStatistics" operationType="fetch">
+    		<selectClause>   			
+    			  	t.id,
+					t.ym,
+					t.stat_date,
+					t.abonent_cnt,
+					t.abonent_amm,
+					t.org_contr_comm_cnt,
+					t.org_contr_comm_amm,
+					t.org_non_contr_cnt,
+					t.org_non_contr_amm,
+					t.org_contr_gov_cnt,
+					t.org_contr_gov_amm,
+					t.magti_cnt,
+					t.magti_amm,
+					t.geocell_cnt,
+					t.geocell_amm,
+					t.beeline_cnt,
+					t.beeline_amm,
+					t.org_contr_email_srv_cnt,
+					t.org_contr_email_srv_amm,
+					t.org_email_srv_cnt,
+					t.org_email_srv_amm,
+					case when to_number(to_char(t.stat_date,'D')) = 1 or to_number(to_char(t.stat_date,'D')) = 7 then 
+				    	1 else 
+				    	0 
+				   	end as week_day,
+				   	(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt) as org_sum,
+				   	(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
+				   	(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount,
+				   	info.getFormatedDate(t.stat_date) as date_str,
+				   	info.Getweekdaybydate(t.stat_date) as week_day_descr				   	
+			</selectClause> 
+			<tableClause>info.statistic t</tableClause>
+			<whereClause><![CDATA[
+				 1 = 1
+				 #if($criteria.ym) and t.ym = $criteria.ym #end
+				 #if($criteria.stat_date_start) and trunc(t.stat_date) >= $criteria.stat_date_start #end
+				 #if($criteria.stat_date_end) and trunc(t.stat_date) <= $criteria.stat_date_end #end				 
+				]]>  
+			</whereClause> 
+			<orderClause>trunc(stat_date)</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchAllStatisticsByMonth" operationType="fetch">
+    		<selectClause>   			
+    			  	t.ym,
+					sum(t.abonent_cnt) as abonent_cnt,
+					sum(t.abonent_amm) as abonent_amm,
+					sum(t.org_contr_comm_cnt) as org_contr_comm_cnt,
+					sum(t.org_contr_comm_amm) as org_contr_comm_amm,
+					sum(t.org_non_contr_cnt) as org_non_contr_cnt,
+					sum(t.org_non_contr_amm) as org_non_contr_amm,
+					sum(t.org_contr_gov_cnt) as org_contr_gov_cnt,
+					sum(t.org_contr_gov_amm) as org_contr_gov_amm,
+					sum(t.magti_cnt) as magti_cnt,
+					sum(t.magti_amm) as magti_amm,
+					sum(t.geocell_cnt) as geocell_cnt,
+					sum(t.geocell_amm) as geocell_amm,
+					sum(t.beeline_cnt) as beeline_cnt,
+					sum(t.beeline_amm) as beeline_amm,
+					sum(t.org_contr_email_srv_cnt) as org_contr_email_srv_cnt,
+					sum(t.org_contr_email_srv_amm) as org_contr_email_srv_amm,
+					sum(t.org_email_srv_cnt) as org_email_srv_cnt,
+					sum(t.org_email_srv_amm) as org_email_srv_amm,
+				   	sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt) as org_sum,
+				   	sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
+				   	sum(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount,
+				   	round((sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) * 100/
+  					decode((LAG((sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt)), 1, 0) OVER (ORDER BY YM)),0,
+  					sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt),
+  					(LAG((sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt)), 1, 0) OVER (ORDER BY YM))) - 100),2) as cnt_percent				   	
+			</selectClause> 
+			<tableClause>info.statistic t</tableClause>
+			<whereClause><![CDATA[
+				 1 = 1
+				 #if($criteria.ym) and t.ym = $criteria.ym #end
+				 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
+				 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end				 
+				]]>  
+			</whereClause> 
+			<groupClause>t.ym</groupClause>
+			<orderClause>t.ym</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchPrevStatisticsByMonth" operationType="fetch">
+    		<selectClause>   			
+    			  	  t.ym,
+			          avg(t.abonent_cnt) as abonent_cnt,
+			          avg(t.org_contr_comm_cnt) as org_contr_comm_cnt,
+			          avg(t.org_non_contr_cnt) as org_non_contr_cnt,
+			          avg(t.org_contr_gov_cnt) as org_contr_gov_cnt,
+			          avg(t.magti_cnt) as magti_cnt,
+			          avg(t.geocell_cnt) as geocell_cnt,
+			          avg(t.beeline_cnt) as beeline_cnt,
+			          avg(t.org_contr_email_srv_cnt) as org_contr_email_srv_cnt,
+			          avg(t.org_email_srv_cnt) as org_email_srv_cnt,
+			          avg(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt) as org_sum,
+			          avg(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
+			          avg(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount				   	
+			</selectClause> 
+			<tableClause>info.statistic t</tableClause>
+			<whereClause><![CDATA[
+				 1 = 1
+				 #if($criteria.ym) and t.ym = $criteria.ym #end
+				 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
+				 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end				 
+				]]>  
+			</whereClause> 
+			<groupClause>t.ym</groupClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

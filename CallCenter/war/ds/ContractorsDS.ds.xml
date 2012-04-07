@@ -566,7 +566,8 @@
 			<tableClause>info.contractor_bill t, info.contracts c, info.main_orgs mo, info.main_details md </tableClause>
 			<whereClause><![CDATA[
 				 t.contractor_id = c.contract_id and c.main_id = mo.main_id and c.main_detail_id = md.main_detail_id(+) 
-				 and t.ym = $criteria.ym				 
+				 and t.ym = $criteria.ym
+				 #if($criteria.contract_id) and c.contract_id = $criteria.contract_id #end				 
 				]]>  
 			</whereClause> 
 			<orderClause>mo.org_name, md.main_detail_geo</orderClause>
@@ -586,7 +587,8 @@
 			<tableClause> info.contractor_bill_items bi, info.contracts c, info.main_orgs mo, info.main_details md, info.tel_comps tc, info.services s </tableClause>
 			<whereClause><![CDATA[
 				 bi.contractor_id = c.contract_id and c.main_id = mo.main_id and c.main_detail_id = md.main_detail_id(+) and 
-				 bi.tel_comp_id = tc.tel_comp_id and  bi.service_id = s.service_id  and bi.ym = $criteria.ym				 
+				 bi.tel_comp_id = tc.tel_comp_id and  bi.service_id = s.service_id  and bi.ym = $criteria.ym
+				 #if($criteria.contract_id) and c.contract_id = $criteria.contract_id #end				 
 				]]>  
 			</whereClause> 
 			<orderClause>tc.tel_comp_name_geo, mo.org_name, md.main_detail_geo, bi.phone, s.service_name_geo, bi.call_date, bi.charge_date </orderClause>

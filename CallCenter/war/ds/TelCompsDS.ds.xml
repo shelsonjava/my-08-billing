@@ -12,6 +12,7 @@
 		<field name="rec_user"				type="text"			title="rec_user"/>
 		<field name="rec_date"				type="date"			title="rec_date"/>
 		<field name="upd_user"				type="text"			title="upd_user"/>
+		<field name="our_percent"			type="float"		title="our_percent"/>
 		<field name="deleted"				type="integer"		title="deleted"				hidden="true"/>
 		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
 		<field name="telCompIdexes"			type="any"			title="telCompIdexes" 		hidden="true"/>
@@ -23,6 +24,7 @@
 		<field name="price"					type="any"			title="price"				hidden="true"/>
 		<field name="rate"					type="any"			title="rate"				hidden="true"/>
 		<field name="charge_date1"			type="text"			title="charge_date1"		hidden="true"/>
+		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
 	</fields>
 
 	<operationBindings>		
@@ -39,10 +41,26 @@
             <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
         </operationBinding>
         
+        <!-- Checking Tel. Comp. Indexes -->
+        <!-- 
+        <operationBinding operationType="validate" operationId="checkTelCompIndexes" serverMethod="checkTelCompIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+        </operationBinding>
+         -->
+        
         <!-- Delete  TelComp -->
 		<operationBinding operationType="remove" operationId="removeTelComp" serverMethod="removeTelComp">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
         </operationBinding>
+         
+         <!--              
+         <validators>
+                <validator type="serverCustom" operationId="condition">
+                    <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+                    <errorMessage>Only $available in stock</errorMessage>
+                </validator>
+         </validators>
+         -->
                      
         
     	<operationBinding operationId="searchAllTelComps" operationType="fetch">
@@ -53,7 +71,8 @@
 					t.rec_user,
 					t.tel_comp_name_eng,
 					t.tel_comp_name_geo,
-					t.upd_user
+					t.upd_user,
+					t.our_percent
 			</selectClause> 
 			<tableClause>info.tel_comps t</tableClause>
 			<whereClause><![CDATA[
