@@ -49,7 +49,7 @@ public class TabTelComps extends Tab {
 	private ToolStripButton telCompBillByDayBtn;
 	private ToolStripButton telCompBillByMonthBtn;
 
-	private ListGrid blockListGrid;
+	private ListGrid telCompsGrid;
 	private DataSource telCompsDS;
 
 	public TabTelComps() {
@@ -135,30 +135,36 @@ public class TabTelComps extends Tab {
 			telCompBillByMonthBtn.setWidth(50);
 			toolStrip.addButton(telCompBillByMonthBtn);
 
-			blockListGrid = new ListGrid();
+			telCompsGrid = new ListGrid();
 
-			blockListGrid.setWidth100();
-			blockListGrid.setHeight100();
-			blockListGrid.setAlternateRecordStyles(true);
-			blockListGrid.setDataSource(telCompsDS);
-			blockListGrid.setAutoFetchData(false);
-			blockListGrid.setShowFilterEditor(false);
-			blockListGrid.setCanEdit(false);
-			blockListGrid.setCanRemoveRecords(false);
-			blockListGrid.setFetchOperation("searchAllTelComps");
-			blockListGrid.setShowRowNumbers(true);
-			blockListGrid.setCanHover(true);
-			blockListGrid.setShowHover(true);
-			blockListGrid.setShowHoverComponents(true);
-			blockListGrid.setWrapCells(true);
-			blockListGrid.setFixedRecordHeights(false);
-			blockListGrid.setCanDragSelectText(true);
+			telCompsGrid.setWidth100();
+			telCompsGrid.setHeight100();
+			telCompsGrid.setAlternateRecordStyles(true);
+			telCompsGrid.setDataSource(telCompsDS);
+			telCompsGrid.setAutoFetchData(false);
+			telCompsGrid.setShowFilterEditor(false);
+			telCompsGrid.setCanEdit(false);
+			telCompsGrid.setCanRemoveRecords(false);
+			telCompsGrid.setFetchOperation("searchAllTelComps");
+			telCompsGrid.setShowRowNumbers(true);
+			telCompsGrid.setCanHover(true);
+			telCompsGrid.setShowHover(true);
+			telCompsGrid.setShowHoverComponents(true);
+			telCompsGrid.setWrapCells(true);
+			telCompsGrid.setFixedRecordHeights(false);
+			telCompsGrid.setCanDragSelectText(true);
 
 			ListGridField tel_comp_name_geo = new ListGridField(
 					"tel_comp_name_geo", CallCenter.constants.companyName());
-			blockListGrid.setFields(tel_comp_name_geo);
 
-			mainLayout.addMember(blockListGrid);
+			ListGridField our_percent = new ListGridField("our_percent",
+					CallCenter.constants.ourPercent(), 150);
+
+			our_percent.setAlign(Alignment.CENTER);
+
+			telCompsGrid.setFields(tel_comp_name_geo, our_percent);
+
+			mainLayout.addMember(telCompsGrid);
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -195,7 +201,7 @@ public class TabTelComps extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					DlgAddEditTelComp dlgAddEditTelComp = new DlgAddEditTelComp(
-							blockListGrid, null);
+							telCompsGrid, null);
 					dlgAddEditTelComp.show();
 				}
 			});
@@ -203,7 +209,7 @@ public class TabTelComps extends Tab {
 			editBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = blockListGrid
+					ListGridRecord listGridRecord = telCompsGrid
 							.getSelectedRecord();
 
 					if (listGridRecord == null) {
@@ -212,23 +218,17 @@ public class TabTelComps extends Tab {
 					}
 
 					DlgAddEditTelComp dlgAddEditTelComp = new DlgAddEditTelComp(
-							blockListGrid, listGridRecord);
+							telCompsGrid, listGridRecord);
 					dlgAddEditTelComp.show();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = blockListGrid
+					final ListGridRecord listGridRecord = telCompsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenter.constants.pleaseSelrecord());
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
 						return;
 					}
 					SC.ask(CallCenter.constants.askForDisable(),
@@ -243,15 +243,15 @@ public class TabTelComps extends Tab {
 				}
 			});
 
-			blockListGrid
+			telCompsGrid
 					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 						@Override
 						public void onRecordDoubleClick(
 								RecordDoubleClickEvent event) {
-							ListGridRecord listGridRecord = blockListGrid
+							ListGridRecord listGridRecord = telCompsGrid
 									.getSelectedRecord();
 							DlgAddEditTelComp dlgAddEditTelComp = new DlgAddEditTelComp(
-									blockListGrid, listGridRecord);
+									telCompsGrid, listGridRecord);
 							dlgAddEditTelComp.show();
 						}
 					});
@@ -260,7 +260,7 @@ public class TabTelComps extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 
-					final ListGridRecord listGridRecord = blockListGrid
+					final ListGridRecord listGridRecord = telCompsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenter.constants.pleaseSelrecord());
@@ -275,7 +275,7 @@ public class TabTelComps extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 
-					final ListGridRecord listGridRecord = blockListGrid
+					final ListGridRecord listGridRecord = telCompsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenter.constants.pleaseSelrecord());
@@ -335,8 +335,8 @@ public class TabTelComps extends Tab {
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "searchAllTelComps");
-			blockListGrid.invalidateCache();
-			blockListGrid.filterData(criteria, new DSCallback() {
+			telCompsGrid.invalidateCache();
+			telCompsGrid.filterData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -350,6 +350,7 @@ public class TabTelComps extends Tab {
 	private void delete(ListGridRecord listGridRecord) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
+
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
@@ -357,9 +358,9 @@ public class TabTelComps extends Tab {
 					listGridRecord.getAttributeAsInt("tel_comp_id"));
 
 			DSRequest req = new DSRequest();
-
 			req.setAttribute("operationId", "removeTelComp");
-			blockListGrid.removeData(record, new DSCallback() {
+
+			telCompsGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

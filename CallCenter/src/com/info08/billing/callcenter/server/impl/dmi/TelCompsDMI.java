@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenter.client.exception.CallCenterException;
 import com.info08.billing.callcenter.server.common.QueryConstants;
 import com.info08.billing.callcenter.server.common.RCNGenerator;
-import com.info08.billing.callcenter.shared.entity.contractors.Contract;
 import com.info08.billing.callcenter.shared.entity.telcomps.TelComp;
 import com.info08.billing.callcenter.shared.entity.telcomps.TelCompsInd;
 import com.isomorphic.datasource.DSRequest;
@@ -56,6 +55,7 @@ public class TelCompsDMI implements QueryConstants {
 
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
+
 			// sysdate
 			Timestamp rec_date = new Timestamp(System.currentTimeMillis());
 			TelComp telComp = new TelComp();
@@ -77,6 +77,11 @@ public class TelCompsDMI implements QueryConstants {
 			telComp.setTel_comp_name_geo(tel_comp_name_geo);
 			telComp.setUpd_user(loggedUserName);
 
+			Object oour_percent = dsRequest.getFieldValue("our_percent");
+			Double our_percent = (oour_percent == null ? 1L : new Double(
+					oour_percent.toString()));
+			telComp.setOur_percent(our_percent);
+
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -88,14 +93,13 @@ public class TelCompsDMI implements QueryConstants {
 
 			Object oMap = dsRequest.getFieldValue("telCompIdexes");
 			if (oMap != null) {
-				LinkedMap contractorAdvPrices = (LinkedMap) oMap;
-				if (!contractorAdvPrices.isEmpty()) {
-					Set keys1 = contractorAdvPrices.keySet();
-
+				LinkedMap indexed = (LinkedMap) oMap;
+				if (!indexed.isEmpty()) {
+					Set keys1 = indexed.keySet();
+					checkTelCompIndexes(null, indexed);
 					for (Object okey1 : keys1) {
 						String str_st_ind = okey1.toString();
-						LinkedMap value1 = (LinkedMap) contractorAdvPrices
-								.get(str_st_ind);
+						LinkedMap value1 = (LinkedMap) indexed.get(str_st_ind);
 						String str_end_ind = value1.get("str_end_ind")
 								.toString();
 						String str_cr = value1.get("str_cr").toString();
@@ -159,17 +163,22 @@ public class TelCompsDMI implements QueryConstants {
 					: record.get("tel_comp_name_eng").toString();
 			String tel_comp_name_geo = record.get("tel_comp_name_geo") == null ? null
 					: record.get("tel_comp_name_geo").toString();
+			Object oour_percent = record.get("our_percent");
+			Double our_percent = (oour_percent == null ? 1L : new Double(
+					oour_percent.toString()));
 
 			TelComp telComp = oracleManager.find(TelComp.class, tel_comp_id);
 			telComp.setDeleted(0L);
 			telComp.setLoggedUserName(loggedUserName);
 			telComp.setTel_comp_name_eng(tel_comp_name_eng);
 			telComp.setTel_comp_name_geo(tel_comp_name_geo);
+			telComp.setOur_percent(our_percent);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, upd_date,
 					loggedUserName, "Updating Contract.");
 
-			oracleManager.createNativeQuery(QueryConstants.Q_DELETE_TELCOMP)
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_TELCOMP_IND)
 					.setParameter(1, telComp.getTel_comp_id()).executeUpdate();
 
 			oracleManager.merge(telComp);
@@ -177,14 +186,13 @@ public class TelCompsDMI implements QueryConstants {
 
 			Object oMap = record.get("telCompIdexes");
 			if (oMap != null) {
-				LinkedMap contractorAdvPrices = (LinkedMap) oMap;
-				if (!contractorAdvPrices.isEmpty()) {
-					Set keys1 = contractorAdvPrices.keySet();
-
+				LinkedMap indexed = (LinkedMap) oMap;
+				if (!indexed.isEmpty()) {
+					checkTelCompIndexes(tel_comp_id, indexed);
+					Set keys1 = indexed.keySet();
 					for (Object okey1 : keys1) {
 						String str_st_ind = okey1.toString();
-						LinkedMap value1 = (LinkedMap) contractorAdvPrices
-								.get(str_st_ind);
+						LinkedMap value1 = (LinkedMap) indexed.get(str_st_ind);
 						String str_end_ind = value1.get("str_end_ind")
 								.toString();
 						String str_cr = value1.get("str_cr").toString();
@@ -220,6 +228,87 @@ public class TelCompsDMI implements QueryConstants {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
+	public void checkTelCompIndexes(Long tel_comp_id, LinkedMap indexes)
+			throws Exception {
+		EntityManager oracleManager = null;
+		try {
+			String log = "Method:TelCompsDMI.checkTelCompIndexes.";
+			oracleManager = EMF.getEntityManager();
+			if (!indexes.isEmpty()) {
+				Set keys1 = indexes.keySet();
+
+				if (tel_comp_id == null) {
+					tel_comp_id = -111111111L;
+				}
+
+				for (Object okey1 : keys1) {
+					String str_st_ind = okey1.toString();
+					LinkedMap value1 = (LinkedMap) indexes.get(str_st_ind);
+					String str_end_ind = value1.get("str_end_ind").toString();
+					Long st_ind = new Long(str_st_ind);
+					Long end_ind = new Long(str_end_ind);
+
+					Long count = 0L;
+					if (tel_comp_id.equals(-111111111L)) {
+						count = new Long(oracleManager
+								.createNativeQuery(
+										QueryConstants.Q_GET_TEL_COMP_IND)
+								.setParameter(1, st_ind).getSingleResult()
+								.toString());
+					} else {
+						count = new Long(
+								oracleManager
+										.createNativeQuery(
+												QueryConstants.Q_GET_TEL_COMP_IND_BY_ID)
+										.setParameter(1, st_ind)
+										.setParameter(2, tel_comp_id)
+										.getSingleResult().toString());
+					}
+					if (count.longValue() > 0) {
+						throw new CallCenterException(
+								"მსგავსი ინდექსი უკვე რეგისტრირებულია : "
+										+ st_ind);
+					}
+					if (tel_comp_id.equals(-111111111L)) {
+						count = new Long(oracleManager
+								.createNativeQuery(
+										QueryConstants.Q_GET_TEL_COMP_IND)
+								.setParameter(1, end_ind).getSingleResult()
+								.toString());
+					} else {
+						count = new Long(
+								oracleManager
+										.createNativeQuery(
+												QueryConstants.Q_GET_TEL_COMP_IND_BY_ID)
+										.setParameter(1, end_ind)
+										.setParameter(2, tel_comp_id)
+										.getSingleResult().toString());
+					}
+					if (count.longValue() > 0) {
+						throw new CallCenterException(
+								"მსგავსი ინდექსი უკვე რეგისტრირებულია : "
+										+ end_ind);
+					}
+				}
+			}
+			log += ". Check Finished SuccessFully. ";
+			logger.info(log);
+		} catch (Exception e) {
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error(
+					"Error While Checking TelComp Indexes Into Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შემოწმებისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
 	/**
 	 * სატელეფონო კომპანიის და მისი ინდექსების ინფორმაციის გაუქმების ფუნქცია.
 	 * 
@@ -231,26 +320,31 @@ public class TelCompsDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public Contract removeTelComp(Map record) throws Exception {
+	public TelComp removeTelComp(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
+			Map oldValue = dsRequest.getOldValues();
+			Long tel_comp_id = new Long(dsRequest.getFieldValue("tel_comp_id")
+					.toString());
+			String loggedUserName = oldValue.get("loggedUserName").toString();
+
 			String log = "Method:TelCompsDMI.removeTelComp.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long tel_comp_id = new Long(record.get("tel_comp_id").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 
 			TelComp telComp = oracleManager.find(TelComp.class, tel_comp_id);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
-					loggedUserName, "Updating Contract Status.");
+					loggedUserName, "Remove TelComp.");
 
-			oracleManager.createNativeQuery(QueryConstants.Q_DELETE_TELCOMP)
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_TELCOMP_IND)
 					.setParameter(1, telComp.getTel_comp_id()).executeUpdate();
 			oracleManager.remove(telComp);
+
 			oracleManager.flush();
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
@@ -261,9 +355,8 @@ public class TelCompsDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Update Status for TelComp Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+			logger.error("Error While Remove TelComps From Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წაშლისას : "
 					+ e.toString());
 		} finally {
 			if (oracleManager != null) {

@@ -2,6 +2,10 @@ package com.info08.billing.callcenter.server.common;
 
 public interface QueryConstants {
 	
+	public static final String Q_GET_TEL_COMP_IND =" select count(1) from info.tel_comps_ind t where ? between t.st_ind and t.end_ind ";
+	
+	public static final String Q_GET_TEL_COMP_IND_BY_ID =" select count(1) from info.tel_comps_ind t where ? between t.st_ind and t.end_ind and t.tel_comp_id <> ? ";
+	
 	public static final String Q_GET_TEL_COMP_BILL_BY_DAY = 
 			"select\n" +
 					"      t.phone as phonea,\n" + 
@@ -807,6 +811,7 @@ public interface QueryConstants {
 	public static final String Q_DELETE_CONTRACT_PHONES = "delete from info.contractor_phones t where t.contract_id = ? ";
 	public static final String Q_DELETE_BLOCKLIST_PHONES = "delete from info.block_list_phones t where t.block_list_id = ? ";
 	public static final String Q_DELETE_TELCOMP = "delete from info.tel_comps t where t.tel_comp_id = ? ";
+	public static final String Q_DELETE_TELCOMP_IND = "delete from info.tel_comps_ind t where t.tel_comp_id = ? ";
 	
 	public static final String Q_REMOVE_PHONE_FROM_AST_DB = " delete from asteriskcdrdb.block where code = ? and proriti = ? and len = ? "; 
 	public static final String Q_ADD_PHONE_INTO_AST_DB = " insert into asteriskcdrdb.block (code,proriti,len) values (?, ?, ?) ";

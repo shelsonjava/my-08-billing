@@ -30,7 +30,7 @@ public class TelComp implements Serializable {
 	private Long tel_comp_id;
 
 	@Basic
-	@Column(name="DELETED")
+	@Column(name = "DELETED")
 	private Long deleted;
 
 	@Basic
@@ -52,10 +52,14 @@ public class TelComp implements Serializable {
 	@Basic
 	@Column(name = "UPD_USER")
 	private String upd_user;
-	
+
+	@Basic
+	@Column(name = "OUR_PERCENT")
+	private Double our_percent;
+
 	@Transient
 	private LinkedHashMap<String, String> telCompIdexes;
-	
+
 	@Transient
 	private String loggedUserName;
 
@@ -132,5 +136,13 @@ public class TelComp implements Serializable {
 
 	public void setLoggedUserName(String loggedUserName) {
 		this.loggedUserName = loggedUserName;
+	}
+
+	public Double getOur_percent() {
+		return our_percent;
+	}
+
+	public void setOur_percent(Double our_percent) {
+		this.our_percent = our_percent;
 	}
 }

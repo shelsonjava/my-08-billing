@@ -614,6 +614,38 @@ public interface AppConstants extends Constants {
 	String advanced();
 	String whithLimit();
 	String whithOutLimit();
+	String statisticFull();
+	String direct();
+	String nonDirect();
+	String government();
+	String sum();
+	String magti();
+	String geocell();
+	String beeline();
+	String mobile();
+	String avarage();
+	String graph();
+	String pleaseSearchData();
+	String directEmail();
+	String nonDirectEmail();
+	String count();
+	String graphAmount();
+	String statisticFullDay();
+	String statisticFullMonth();
+	String ymStart();
+	String ymEnd();
+	String plzEnterStartMonthCorrectly();
+	String plzEnterEndMonthCorrectly();
+	String yearMonthOnly();
+	String prevMonthPercent();
+	String billing();
+	String billingDetailed();
+	String billing1();
+	String billingDetailed1();
+	String ourPercent();
+	String plzEnterTelCompName();
+	String plzEnterOurPercent();
+	String invalidOurPercent();
 }
 
 
