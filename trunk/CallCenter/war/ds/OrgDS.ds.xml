@@ -959,7 +959,7 @@
     	<operationBinding operationId="searchMainOrgsForCBDoubleLike" operationType="fetch">
     		<selectClause>   			
     			mo.main_id,
-    			mo.org_name 
+    			mo.org_name || ' ( '||mo.note||' ) ' as org_name 
 			</selectClause> 
 			<tableClause>info.main_orgs mo, info.main_services ms</tableClause>	
 			<whereClause>
