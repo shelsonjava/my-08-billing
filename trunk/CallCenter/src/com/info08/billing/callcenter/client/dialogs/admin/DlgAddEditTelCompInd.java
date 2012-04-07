@@ -167,38 +167,69 @@ public class DlgAddEditTelCompInd extends Window {
 				SC.say(CallCenter.constants.invalidEndIndex());
 				return;
 			}
+			if (startIndex.intValue() >= endIndex.intValue()) {
+				SC.say(CallCenter.constants.invalidEndIndex());
+				return;
+			}
 
 			Integer cr = Integer.parseInt(typeItem.getValueAsString());
 
 			ListGridRecord oldRecords[] = listGrid.getRecords();
 			if (oldRecords != null && oldRecords.length > 0) {
 				for (int i = 0; i < oldRecords.length; i++) {
-					ListGridRecord listGridRecord = oldRecords[i];
-					Integer st_ind = listGridRecord.getAttributeAsInt("st_ind");
-					Integer end_ind = listGridRecord
-							.getAttributeAsInt("end_ind");
-					if (startIndex.intValue() > st_ind && startIndex <= end_ind) {
+					ListGridRecord item = oldRecords[i];
+					if (item.equals(listGridRecord)) {
+						continue;
+					}
+					Integer ind_id = item.getAttributeAsInt("ind_id");
+					if (ind_id != null && listGridRecord != null) {
+						Integer ind_id1 = listGridRecord
+								.getAttributeAsInt("ind_id");
+						if (ind_id1 != null
+								&& ind_id1.intValue() == ind_id.intValue()) {
+							continue;
+						}
+					}
+
+					Integer st_ind = item.getAttributeAsInt("st_ind");
+					Integer end_ind = item.getAttributeAsInt("end_ind");
+					if (startIndex.intValue() >= st_ind
+							&& startIndex <= end_ind) {
 						SC.say(CallCenter.constants.invalidStartIndex());
 						return;
 					}
-					if (endIndex.intValue() > st_ind && endIndex <= end_ind) {
+					if (endIndex.intValue() >= st_ind && endIndex <= end_ind) {
 						SC.say(CallCenter.constants.invalidEndIndex());
 						return;
 					}
 				}
 			}
 
-			ListGridRecord dateRec = new ListGridRecord();
+			ListGridRecord dateRec = null;
+			boolean isUpdate = false;
+			if (listGridRecord == null) {
+				dateRec = new ListGridRecord();
+			} else {
+				isUpdate = true;
+				dateRec = listGridRecord;
+			}
 			dateRec.setAttribute("st_ind", startIndex);
 			dateRec.setAttribute("end_ind", endIndex);
 			dateRec.setAttribute("cr", cr);
+			dateRec.setAttribute("cr_descr", typeItem.getDisplayValue());
 			if (listGridRecord != null) {
 				dateRec.setAttribute("tel_comp_id",
 						listGridRecord.getAttributeAsInt("tel_comp_id"));
-
+				dateRec.setAttribute("ind_id",
+						listGridRecord.getAttributeAsInt("ind_id"));
 			}
 			dateRec.setAttribute("tel_comp_id", cr);
-			listGrid.addData(dateRec);
+			if (isUpdate) {
+				listGrid.updateData(dateRec);
+			} else {
+				listGrid.addData(dateRec);
+			}
+
 			destroy();
 		} catch (Exception e) {
 			e.printStackTrace();

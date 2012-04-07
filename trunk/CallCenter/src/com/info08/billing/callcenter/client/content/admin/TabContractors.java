@@ -58,6 +58,8 @@ public class TabContractors extends Tab {
 	private ToolStripButton blockPhoneListBtn;
 	private ToolStripButton contractorsBillBtn;
 	private ToolStripButton contractorsBillFullBtn;
+	private ToolStripButton contractorsBillBtn1;
+	private ToolStripButton contractorsBillFullBtn1;
 
 	private ListGrid contractorsGrid;
 	private DataSource contractorsDS;
@@ -190,17 +192,30 @@ public class TabContractors extends Tab {
 			toolStrip.addSeparator();
 
 			contractorsBillBtn = new ToolStripButton(
-					CallCenter.constants.contractorsBilling(), "billing.png");
+					CallCenter.constants.billing(), "billing.png");
 			contractorsBillBtn.setLayoutAlign(Alignment.LEFT);
 			contractorsBillBtn.setWidth(50);
 			toolStrip.addButton(contractorsBillBtn);
 
 			contractorsBillFullBtn = new ToolStripButton(
-					CallCenter.constants.contractorsBillingFull(),
-					"billing.png");
+					CallCenter.constants.billingDetailed(), "billing.png");
 			contractorsBillFullBtn.setLayoutAlign(Alignment.LEFT);
 			contractorsBillFullBtn.setWidth(50);
 			toolStrip.addButton(contractorsBillFullBtn);
+
+			toolStrip.addSeparator();
+
+			contractorsBillBtn1 = new ToolStripButton(
+					CallCenter.constants.billing1(), "billing.png");
+			contractorsBillBtn1.setLayoutAlign(Alignment.LEFT);
+			contractorsBillBtn1.setWidth(50);
+			toolStrip.addButton(contractorsBillBtn1);
+
+			contractorsBillFullBtn1 = new ToolStripButton(
+					CallCenter.constants.billingDetailed1(), "billing.png");
+			contractorsBillFullBtn1.setLayoutAlign(Alignment.LEFT);
+			contractorsBillFullBtn1.setWidth(50);
+			toolStrip.addButton(contractorsBillFullBtn1);
 
 			contractorsGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -438,6 +453,20 @@ public class TabContractors extends Tab {
 					getContractorsBilling(true);
 				}
 			});
+
+			contractorsBillBtn1.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					getContractorsBilling1(false);
+				}
+			});
+			contractorsBillFullBtn1.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					getContractorsBilling1(true);
+				}
+			});
+
 			setPane(mainLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -445,10 +474,32 @@ public class TabContractors extends Tab {
 		}
 	}
 
+	private void getContractorsBilling1(boolean full) {
+		try {
+			ListGridRecord listGridRecord = contractorsGrid.getSelectedRecord();
+			if (listGridRecord == null) {
+				SC.say(CallCenter.constants.pleaseSelrecord());
+				return;
+			}
+			Integer contract_id = listGridRecord
+					.getAttributeAsInt("contract_id");
+			if (contract_id == null) {
+				SC.say(CallCenter.constants.pleaseSelrecord());
+				return;
+			}
+
+			DlgGetContractorsBilling dlgGetCOntractorsBilling = new DlgGetContractorsBilling(
+					contract_id, full);
+			dlgGetCOntractorsBilling.show();
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
+
 	private void getContractorsBilling(boolean full) {
 		try {
 			DlgGetContractorsBilling dlgGetCOntractorsBilling = new DlgGetContractorsBilling(
-					full);
+					null, full);
 			dlgGetCOntractorsBilling.show();
 		} catch (Exception e) {
 			SC.say(e.toString());

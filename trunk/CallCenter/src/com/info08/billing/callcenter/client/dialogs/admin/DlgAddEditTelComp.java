@@ -1,12 +1,16 @@
 package com.info08.billing.callcenter.client.dialogs.admin;
 
+import java.util.LinkedHashMap;
+
 import com.info08.billing.callcenter.client.CallCenter;
+import com.info08.billing.callcenter.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.BooleanCallback;
@@ -32,10 +36,12 @@ public class DlgAddEditTelComp extends Window {
 	private VLayout hLayout;
 
 	private TextItem telCompNameItem;
+	private TextItem telCompOurPercentItem;
 	private DynamicForm dynamicForm;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGridIndexes;
+	private ListGrid listGrid;
 
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
@@ -44,6 +50,7 @@ public class DlgAddEditTelComp extends Window {
 	public DlgAddEditTelComp(ListGrid listGrid, ListGridRecord pRecord) {
 		try {
 			this.editRecord = pRecord;
+			this.listGrid = listGrid;
 			setTitle(pRecord == null ? CallCenter.constants.addTelComp()
 					: CallCenter.constants.editTelComp());
 
@@ -68,13 +75,18 @@ public class DlgAddEditTelComp extends Window {
 			telCompNameItem.setWidth("100%");
 			telCompNameItem.setName("telCompNameItem");
 
+			telCompOurPercentItem = new TextItem();
+			telCompOurPercentItem.setTitle(CallCenter.constants.ourPercent());
+			telCompOurPercentItem.setWidth("100%");
+			telCompOurPercentItem.setName("telCompOurPercentItem");
+
 			dynamicForm = new DynamicForm();
 			dynamicForm.setAutoFocus(true);
 			dynamicForm.setWidth100();
 			dynamicForm.setTitleWidth(250);
 			dynamicForm.setNumCols(2);
 
-			dynamicForm.setFields(telCompNameItem);
+			dynamicForm.setFields(telCompNameItem, telCompOurPercentItem);
 
 			hLayout.addMember(dynamicForm);
 
@@ -247,6 +259,8 @@ public class DlgAddEditTelComp extends Window {
 			}
 			telCompNameItem.setValue(editRecord
 					.getAttributeAsString("tel_comp_name_geo"));
+			telCompOurPercentItem.setValue(editRecord
+					.getAttributeAsString("our_percent"));
 
 			DataSource telCompIndDS = DataSource.get("TelCompIndDS");
 			Criteria criteria = new Criteria();
@@ -274,7 +288,92 @@ public class DlgAddEditTelComp extends Window {
 
 	private void save() {
 		try {
+			String tel_comp_name_geo = telCompNameItem.getValueAsString();
+			if (tel_comp_name_geo == null
+					|| tel_comp_name_geo.trim().equals("")) {
+				SC.say(CallCenter.constants.plzEnterTelCompName());
+				return;
+			}
+			tel_comp_name_geo = tel_comp_name_geo.trim();
 
+			String our_percent_str = telCompOurPercentItem.getValueAsString();
+			if (our_percent_str == null || our_percent_str.trim().equals("")) {
+				SC.say(CallCenter.constants.plzEnterOurPercent());
+				return;
+			}
+
+			Double our_percent = null;
+			try {
+				our_percent = Double.parseDouble(our_percent_str);
+			} catch (Exception e) {
+				SC.say(CallCenter.constants.invalidOurPercent());
+				return;
+			}
+			if (our_percent.intValue() <= 0 && our_percent.intValue() > 100) {
+				SC.say(CallCenter.constants.invalidOurPercent());
+				return;
+			}
+			LinkedHashMap<String, LinkedHashMap<String, String>> indexes = new LinkedHashMap<String, LinkedHashMap<String, String>>();
+			RecordList recordList = listGridIndexes.getDataAsRecordList();
+			int length = recordList.getLength();
+			if (length > 0) {
+				for (int i = 0; i < length; i++) {
+					Record record = recordList.get(i);
+
+					Integer st_ind = record.getAttributeAsInt("st_ind");
+					Integer end_ind = record.getAttributeAsInt("end_ind");
+					Integer cr = record.getAttributeAsInt("cr");
+					LinkedHashMap<String, String> param = new LinkedHashMap<String, String>();
+					param.put("str_end_ind", end_ind.toString());
+					param.put("str_cr", cr.toString());
+					indexes.put(st_ind.toString(), param);
+				}
+			}
+
+			Record record = new Record();
+			if (editRecord != null) {
+				record.setAttribute("tel_comp_id",
+						editRecord.getAttributeAsInt("tel_comp_id"));
+			}
+			String loggedUser = CommonSingleton.getInstance()
+					.getSessionPerson().getUserName();
+			record.setAttribute("loggedUserName", loggedUser);
+			record.setAttribute("tel_comp_name_geo", tel_comp_name_geo);
+			record.setAttribute("our_percent", our_percent);
+			record.setAttribute("telCompIdexes", indexes);
+
+			saveTelComp(record);
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void saveTelComp(Record record) {
+		try {
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+			DSRequest req = new DSRequest();
+			if (editRecord == null) {
+				req.setAttribute("operationId", "addTelComp");
+				listGrid.addData(record, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						destroy();
+					}
+				}, req);
+			} else {
+				req.setAttribute("operationId", "updateTelComp");
+				listGrid.updateData(record, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						destroy();
+					}
+				}, req);
+			}
+
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
