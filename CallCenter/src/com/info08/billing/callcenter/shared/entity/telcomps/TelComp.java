@@ -57,6 +57,13 @@ public class TelComp implements Serializable {
 	@Column(name = "OUR_PERCENT")
 	private Double our_percent;
 
+	@Basic
+	@Column(name = "HAS_CALCULATION")
+	private Long has_calculation;
+
+	@Transient
+	private String has_calculation_descr;
+
 	@Transient
 	private LinkedHashMap<String, String> telCompIdexes;
 
@@ -144,5 +151,21 @@ public class TelComp implements Serializable {
 
 	public void setOur_percent(Double our_percent) {
 		this.our_percent = our_percent;
+	}
+
+	public Long getHas_calculation() {
+		return has_calculation;
+	}
+
+	public void setHas_calculation(Long has_calculation) {
+		this.has_calculation = has_calculation;
+	}
+
+	public String getHas_calculation_descr() {
+		return has_calculation_descr;
+	}
+
+	public void setHas_calculation_descr(String has_calculation_descr) {
+		this.has_calculation_descr = has_calculation_descr;
 	}
 }

@@ -3,6 +3,7 @@ package com.info08.billing.callcenter.client.dialogs.admin;
 import java.util.LinkedHashMap;
 
 import com.info08.billing.callcenter.client.CallCenter;
+import com.info08.billing.callcenter.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenter.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -20,6 +21,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -37,6 +39,8 @@ public class DlgAddEditTelComp extends Window {
 
 	private TextItem telCompNameItem;
 	private TextItem telCompOurPercentItem;
+	private SelectItem hasCalcItem;
+
 	private DynamicForm dynamicForm;
 
 	private ListGridRecord editRecord;
@@ -80,13 +84,22 @@ public class DlgAddEditTelComp extends Window {
 			telCompOurPercentItem.setWidth("100%");
 			telCompOurPercentItem.setName("telCompOurPercentItem");
 
+			hasCalcItem = new SelectItem();
+			hasCalcItem.setTitle(CallCenter.constants.hasCalculation());
+			hasCalcItem.setWidth(250);
+			hasCalcItem.setName("hasCalcItem");
+			hasCalcItem.setDefaultToFirstOption(true);
+			hasCalcItem.setValueMap(ClientMapUtil.getInstance()
+					.getHasCalculations1());
+
 			dynamicForm = new DynamicForm();
 			dynamicForm.setAutoFocus(true);
 			dynamicForm.setWidth100();
 			dynamicForm.setTitleWidth(250);
 			dynamicForm.setNumCols(2);
 
-			dynamicForm.setFields(telCompNameItem, telCompOurPercentItem);
+			dynamicForm.setFields(telCompNameItem, telCompOurPercentItem,
+					hasCalcItem);
 
 			hLayout.addMember(dynamicForm);
 
@@ -134,6 +147,7 @@ public class DlgAddEditTelComp extends Window {
 			listGridIndexes.setShowFilterEditor(true);
 			listGridIndexes.setFilterOnKeypress(true);
 			listGridIndexes.setCanDragSelectText(true);
+			listGridIndexes.setShowRowNumbers(true);
 
 			ListGridField st_ind = new ListGridField("st_ind",
 					CallCenter.constants.startIndex());
@@ -261,6 +275,8 @@ public class DlgAddEditTelComp extends Window {
 					.getAttributeAsString("tel_comp_name_geo"));
 			telCompOurPercentItem.setValue(editRecord
 					.getAttributeAsString("our_percent"));
+			hasCalcItem.setValue(editRecord
+					.getAttributeAsInt("has_calculation"));
 
 			DataSource telCompIndDS = DataSource.get("TelCompIndDS");
 			Criteria criteria = new Criteria();
@@ -302,6 +318,9 @@ public class DlgAddEditTelComp extends Window {
 				return;
 			}
 
+			Integer has_calculation = new Integer(
+					hasCalcItem.getValueAsString());
+
 			Double our_percent = null;
 			try {
 				our_percent = Double.parseDouble(our_percent_str);
@@ -341,6 +360,7 @@ public class DlgAddEditTelComp extends Window {
 			record.setAttribute("tel_comp_name_geo", tel_comp_name_geo);
 			record.setAttribute("our_percent", our_percent);
 			record.setAttribute("telCompIdexes", indexes);
+			record.setAttribute("has_calculation", has_calculation);
 
 			saveTelComp(record);
 		} catch (Exception e) {

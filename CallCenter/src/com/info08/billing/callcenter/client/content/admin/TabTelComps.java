@@ -4,6 +4,7 @@ import com.info08.billing.callcenter.client.CallCenter;
 import com.info08.billing.callcenter.client.dialogs.admin.DlgAddEditTelComp;
 import com.info08.billing.callcenter.client.dialogs.admin.DlgGetTelCompBillByDay;
 import com.info08.billing.callcenter.client.dialogs.admin.DlgGetTelCompBillByMonth;
+import com.info08.billing.callcenter.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenter.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -18,6 +19,7 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
@@ -38,6 +40,7 @@ public class TabTelComps extends Tab {
 	private VLayout mainLayout;
 	private TextItem telCompNameItem;
 	private TextItem phoneIndexItem;
+	private SelectItem hasCalcItem;
 
 	private IButton findButton;
 	private IButton clearButton;
@@ -82,7 +85,15 @@ public class TabTelComps extends Tab {
 			phoneIndexItem.setWidth(250);
 			phoneIndexItem.setName("phoneIndexItem");
 
-			searchForm.setFields(telCompNameItem, phoneIndexItem);
+			hasCalcItem = new SelectItem();
+			hasCalcItem.setTitle(CallCenter.constants.hasCalculation());
+			hasCalcItem.setWidth(250);
+			hasCalcItem.setName("hasCalcItem");
+			hasCalcItem.setDefaultToFirstOption(true);
+			hasCalcItem.setValueMap(ClientMapUtil.getInstance()
+					.getHasCalculations());
+
+			searchForm.setFields(telCompNameItem, phoneIndexItem, hasCalcItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(830);
@@ -160,9 +171,14 @@ public class TabTelComps extends Tab {
 			ListGridField our_percent = new ListGridField("our_percent",
 					CallCenter.constants.ourPercent(), 150);
 
+			ListGridField has_calculation_descr = new ListGridField(
+					"has_calculation_descr",
+					CallCenter.constants.hasCalculation(), 150);
 			our_percent.setAlign(Alignment.CENTER);
+			has_calculation_descr.setAlign(Alignment.CENTER);
 
-			telCompsGrid.setFields(tel_comp_name_geo, our_percent);
+			telCompsGrid.setFields(tel_comp_name_geo, our_percent,
+					has_calculation_descr);
 
 			mainLayout.addMember(telCompsGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -331,6 +347,13 @@ public class TabTelComps extends Tab {
 				}
 
 				criteria.setAttribute("phoneIndex", new Integer(phoneIndex));
+			}
+
+			String has_calculation_str = hasCalcItem.getValueAsString();
+			if (has_calculation_str != null
+					&& !has_calculation_str.equals("-1")) {
+				criteria.setAttribute("has_calculation",
+						Integer.parseInt(has_calculation_str));
 			}
 
 			DSRequest dsRequest = new DSRequest();

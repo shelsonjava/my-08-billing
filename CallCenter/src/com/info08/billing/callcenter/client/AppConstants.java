@@ -646,6 +646,10 @@ public interface AppConstants extends Constants {
 	String plzEnterTelCompName();
 	String plzEnterOurPercent();
 	String invalidOurPercent();
+	String hasCalculation();
+	String yes();
+	String noInGeo();
+	String printPreview();
 }
 
 

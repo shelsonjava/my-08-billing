@@ -17,6 +17,7 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SummaryFunctionType;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -53,6 +54,7 @@ public class TabStatFull extends Tab {
 
 	private ToolStripButton statN1Btn;
 	private ToolStripButton statN2Btn;
+	private ToolStripButton printPreviewBtn;
 
 	private Record prevMonthRecord;
 
@@ -114,6 +116,18 @@ public class TabStatFull extends Tab {
 			statN2Btn.setLayoutAlign(Alignment.LEFT);
 			statN2Btn.setWidth(50);
 			toolStrip.addButton(statN2Btn);
+
+			printPreviewBtn = new ToolStripButton(
+					CallCenter.constants.printPreview(), "printer.png");
+			printPreviewBtn.setLayoutAlign(Alignment.LEFT);
+			printPreviewBtn.setWidth(50);
+			toolStrip.addButton(printPreviewBtn);
+
+			// printPreviewButton.addClickHandler(new ClickHandler() {
+			// public void onClick(ClickEvent event) {
+			// Canvas.showPrintPreview(printContainer);
+			// }
+			// });
 
 			listGrid = new ListGrid() {
 				// @Override
@@ -250,8 +264,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -265,8 +278,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -280,8 +292,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -295,8 +306,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -310,8 +320,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -325,8 +334,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -340,8 +348,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -355,8 +362,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -370,8 +376,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -385,8 +390,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -414,8 +418,7 @@ public class TabStatFull extends Tab {
 					if (value == null)
 						return null;
 					try {
-						NumberFormat nf = NumberFormat
-								.getFormat("#,##0.00");
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
 						return nf.format(((Number) value).doubleValue());
 					} catch (Exception e) {
 						return value.toString();
@@ -590,6 +593,14 @@ public class TabStatFull extends Tab {
 					showGraphDialog1();
 				}
 			});
+
+			printPreviewBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					Canvas.showPrintPreview(listGrid);
+				}
+			});
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

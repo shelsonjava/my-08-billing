@@ -82,6 +82,12 @@ public class TelCompsDMI implements QueryConstants {
 					oour_percent.toString()));
 			telComp.setOur_percent(our_percent);
 
+			Object ohas_calculation = dsRequest
+					.getFieldValue("has_calculation");
+			Long has_calculation = (ohas_calculation == null ? -1L : new Long(
+					ohas_calculation.toString()));
+			telComp.setHas_calculation(has_calculation);
+
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -117,6 +123,13 @@ public class TelCompsDMI implements QueryConstants {
 			telComp = oracleManager.find(TelComp.class,
 					telComp.getTel_comp_id());
 			telComp.setLoggedUserName(loggedUserName);
+			if (has_calculation.equals(1L)) {
+				telComp.setHas_calculation_descr("დიახ");
+			} else if (has_calculation.equals(0L)) {
+				telComp.setHas_calculation_descr("არა");
+			} else {
+				telComp.setHas_calculation_descr("ყველა");
+			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
@@ -166,6 +179,9 @@ public class TelCompsDMI implements QueryConstants {
 			Object oour_percent = record.get("our_percent");
 			Double our_percent = (oour_percent == null ? 1L : new Double(
 					oour_percent.toString()));
+			Object ohas_calculation = record.get("has_calculation");
+			Long has_calculation = (ohas_calculation == null ? -1L : new Long(
+					ohas_calculation.toString()));
 
 			TelComp telComp = oracleManager.find(TelComp.class, tel_comp_id);
 			telComp.setDeleted(0L);
@@ -173,6 +189,7 @@ public class TelCompsDMI implements QueryConstants {
 			telComp.setTel_comp_name_eng(tel_comp_name_eng);
 			telComp.setTel_comp_name_geo(tel_comp_name_geo);
 			telComp.setOur_percent(our_percent);
+			telComp.setHas_calculation(has_calculation);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, upd_date,
 					loggedUserName, "Updating Contract.");
@@ -209,10 +226,17 @@ public class TelCompsDMI implements QueryConstants {
 
 			telComp = oracleManager.find(TelComp.class, tel_comp_id);
 			telComp.setLoggedUserName(loggedUserName);
+			if (has_calculation.equals(1L)) {
+				telComp.setHas_calculation_descr("დიახ");
+			} else if (has_calculation.equals(0L)) {
+				telComp.setHas_calculation_descr("არა");
+			} else {
+				telComp.setHas_calculation_descr("ყველა");
+			}
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return null;
+			return telComp;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
