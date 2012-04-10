@@ -6,25 +6,27 @@
 	dropExtraFields = "false">
 	
 	<fields>
-		<field name="tel_comp_id"			type="integer"		title="tel_comp_id"			hidden="true" primaryKey="true" />
-		<field name="tel_comp_name_geo"		type="text"			title="tel_comp_name_geo"/>
-		<field name="tel_comp_name_eng"		type="text"			title="tel_comp_name_eng"/>
-		<field name="rec_user"				type="text"			title="rec_user"/>
-		<field name="rec_date"				type="date"			title="rec_date"/>
-		<field name="upd_user"				type="text"			title="upd_user"/>
-		<field name="our_percent"			type="float"		title="our_percent"/>
-		<field name="deleted"				type="integer"		title="deleted"				hidden="true"/>
-		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
-		<field name="telCompIdexes"			type="any"			title="telCompIdexes" 		hidden="true"/>
-		<field name="phoneIndex"			type="integer"		title="phoneIndex"			hidden="true"/>
-		<field name="phonea"				type="text"			title="phonea"				hidden="true"/>
-		<field name="phoneb"				type="text"			title="phoneb"				hidden="true"/>
-		<field name="charge_date"			type="date"			title="charge_date"			hidden="true"/>
-		<field name="duration"				type="integer"		title="duration"			hidden="true"/>
-		<field name="price"					type="any"			title="price"				hidden="true"/>
-		<field name="rate"					type="any"			title="rate"				hidden="true"/>
-		<field name="charge_date1"			type="text"			title="charge_date1"		hidden="true"/>
-		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
+		<field name="tel_comp_id"				type="integer"		title="tel_comp_id"				hidden="true" primaryKey="true" />
+		<field name="tel_comp_name_geo"			type="text"			title="tel_comp_name_geo"/>
+		<field name="tel_comp_name_eng"			type="text"			title="tel_comp_name_eng"/>
+		<field name="rec_user"					type="text"			title="rec_user"/>
+		<field name="rec_date"					type="date"			title="rec_date"/>
+		<field name="upd_user"					type="text"			title="upd_user"/>
+		<field name="our_percent"				type="float"		title="our_percent"/>
+		<field name="has_calculation_descr"		type="integer"		title="has_calculation_descr"/>
+		<field name="has_calculation"			type="integer"		title="has_calculation"			hidden="true"/>
+		<field name="deleted"					type="integer"		title="deleted"					hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="loggedUserName"			hidden="true"/>
+		<field name="telCompIdexes"				type="any"			title="telCompIdexes" 			hidden="true"/>
+		<field name="phoneIndex"				type="integer"		title="phoneIndex"				hidden="true"/>
+		<field name="phonea"					type="text"			title="phonea"					hidden="true"/>
+		<field name="phoneb"					type="text"			title="phoneb"					hidden="true"/>
+		<field name="charge_date"				type="date"			title="charge_date"				hidden="true"/>
+		<field name="duration"					type="integer"		title="duration"				hidden="true"/>
+		<field name="price"						type="any"			title="price"					hidden="true"/>
+		<field name="rate"						type="any"			title="rate"					hidden="true"/>
+		<field name="charge_date1"				type="text"			title="charge_date1"			hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="loggedUserName"			hidden="true"/>
 	</fields>
 
 	<operationBindings>		
@@ -72,7 +74,9 @@
 					t.tel_comp_name_eng,
 					t.tel_comp_name_geo,
 					t.upd_user,
-					t.our_percent
+					t.our_percent,
+					t.has_calculation,
+					decode(t.has_calculation,1,'დიახ',0,'არა','ყველა') as has_calculation_descr					
 			</selectClause> 
 			<tableClause>info.tel_comps t</tableClause>
 			<whereClause><![CDATA[
@@ -81,6 +85,7 @@
 				 #if($criteria.phoneIndex)
 				 	and t.tel_comp_id in (select tt.tel_comp_id from info.tel_comps_ind tt where $criteria.phoneIndex between tt.st_ind and end_ind) 				 	
 				 #end
+				 #if($criteria.has_calculation) and t.has_calculation = $criteria.has_calculation #end
 				]]>  
 			</whereClause> 
 			<orderClause>t.tel_comp_id</orderClause>

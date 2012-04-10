@@ -46,6 +46,8 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> telCompIndTypes;
 	private LinkedHashMap<String, String> contractorPriceTypes;
 	private LinkedHashMap<String, String> limitTypes;
+	private LinkedHashMap<String, String> hasCalculations;
+	private LinkedHashMap<String, String> hasCalculations1;
 
 	protected ClientMapUtil() {
 		mapOpClose = new LinkedHashMap<String, String>();
@@ -80,6 +82,8 @@ public class ClientMapUtil {
 		telCompIndTypes = new LinkedHashMap<String, String>();
 		contractorPriceTypes = new LinkedHashMap<String, String>();
 		limitTypes = new LinkedHashMap<String, String>();
+		hasCalculations = new LinkedHashMap<String, String>();
+		hasCalculations1 = new LinkedHashMap<String, String>();
 
 		mapOpClose.put("0", "ღია");
 		mapOpClose.put("1", "დაფარულია");
@@ -191,24 +195,40 @@ public class ClientMapUtil {
 
 		telCompIndTypes.put("0", CallCenter.constants.partial());
 		telCompIndTypes.put("1", CallCenter.constants.full());
-		
+
 		contractorPriceTypes.put("-1", CallCenter.constants.all());
 		contractorPriceTypes.put("0", CallCenter.constants.simple());
 		contractorPriceTypes.put("1", CallCenter.constants.advanced());
-		
+
 		limitTypes.put("-1", CallCenter.constants.all());
 		limitTypes.put("0", CallCenter.constants.whithLimit());
 		limitTypes.put("1", CallCenter.constants.whithOutLimit());
+
+		hasCalculations.put("-1", CallCenter.constants.all());
+		hasCalculations.put("1", CallCenter.constants.yes());
+		hasCalculations.put("0", CallCenter.constants.noInGeo());
+
+		hasCalculations1.put("1", CallCenter.constants.yes());
+		hasCalculations1.put("0", CallCenter.constants.noInGeo());
+
+	}
+
+	public LinkedHashMap<String, String> getHasCalculations1() {
+		return hasCalculations1;
+	}
+
+	public LinkedHashMap<String, String> getHasCalculations() {
+		return hasCalculations;
 	}
 
 	public LinkedHashMap<String, String> getLimitTypes() {
 		return limitTypes;
-	}	
-	
+	}
+
 	public LinkedHashMap<String, String> getContractorPriceTypes() {
 		return contractorPriceTypes;
 	}
-	
+
 	public LinkedHashMap<String, String> getMapOpClose() {
 		return mapOpClose;
 	}
