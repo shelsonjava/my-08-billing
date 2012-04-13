@@ -33,11 +33,14 @@ public class DlgGetContractorsBilling extends Window {
 	private CheckboxItem generateBillItem;
 	private boolean full;
 	private Integer contract_id;
+	private Integer is_budget;
 
-	public DlgGetContractorsBilling(Integer contract_id, boolean full) {
+	public DlgGetContractorsBilling(Integer contract_id, boolean full,
+			Integer is_budget) {
 		try {
 			this.full = full;
 			this.contract_id = contract_id;
+			this.is_budget = is_budget;
 			setTitle(full ? CallCenter.constants.contractorsBillingFull()
 					: CallCenter.constants.contractorsBilling());
 
@@ -191,6 +194,9 @@ public class DlgGetContractorsBilling extends Window {
 			criteria.setAttribute("ym", ym);
 			if (contract_id != null) {
 				criteria.setAttribute("contract_id", contract_id);
+			}
+			if (is_budget != null && !is_budget.equals(new Integer(-1))) {
+				criteria.setAttribute("is_budget", is_budget);
 			}
 			dataSource.exportData(criteria, dsRequest, new DSCallback() {
 

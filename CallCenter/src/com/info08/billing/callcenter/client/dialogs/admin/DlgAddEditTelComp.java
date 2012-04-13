@@ -40,6 +40,7 @@ public class DlgAddEditTelComp extends Window {
 	private TextItem telCompNameItem;
 	private TextItem telCompOurPercentItem;
 	private SelectItem hasCalcItem;
+	private TextItem callPriceItem;
 
 	private DynamicForm dynamicForm;
 
@@ -83,14 +84,21 @@ public class DlgAddEditTelComp extends Window {
 			telCompOurPercentItem.setTitle(CallCenter.constants.ourPercent());
 			telCompOurPercentItem.setWidth("100%");
 			telCompOurPercentItem.setName("telCompOurPercentItem");
+			telCompOurPercentItem.setKeyPressFilter("[0-9\\.]");
 
 			hasCalcItem = new SelectItem();
 			hasCalcItem.setTitle(CallCenter.constants.hasCalculation());
-			hasCalcItem.setWidth(250);
+			hasCalcItem.setWidth("100%");
 			hasCalcItem.setName("hasCalcItem");
 			hasCalcItem.setDefaultToFirstOption(true);
 			hasCalcItem.setValueMap(ClientMapUtil.getInstance()
 					.getHasCalculations1());
+
+			callPriceItem = new TextItem();
+			callPriceItem.setTitle(CallCenter.constants.callPrice());
+			callPriceItem.setWidth("100%");
+			callPriceItem.setName("callPriceItem");
+			callPriceItem.setKeyPressFilter("[0-9\\.]");
 
 			dynamicForm = new DynamicForm();
 			dynamicForm.setAutoFocus(true);
@@ -99,7 +107,7 @@ public class DlgAddEditTelComp extends Window {
 			dynamicForm.setNumCols(2);
 
 			dynamicForm.setFields(telCompNameItem, telCompOurPercentItem,
-					hasCalcItem);
+					hasCalcItem, callPriceItem);
 
 			hLayout.addMember(dynamicForm);
 
@@ -161,7 +169,12 @@ public class DlgAddEditTelComp extends Window {
 					CallCenter.constants.type());
 			cr_descr.setAlign(Alignment.CENTER);
 
-			listGridIndexes.setFields(st_ind, end_ind, cr_descr);
+			ListGridField count_type_descr = new ListGridField(
+					"count_type_descr", CallCenter.constants.type());
+			count_type_descr.setAlign(Alignment.CENTER);
+
+			listGridIndexes.setFields(st_ind, end_ind, cr_descr,
+					count_type_descr);
 
 			hLayout.addMember(listGridIndexes);
 
@@ -277,6 +290,8 @@ public class DlgAddEditTelComp extends Window {
 					.getAttributeAsString("our_percent"));
 			hasCalcItem.setValue(editRecord
 					.getAttributeAsInt("has_calculation"));
+			callPriceItem.setValue(editRecord
+					.getAttributeAsString("call_price"));
 
 			DataSource telCompIndDS = DataSource.get("TelCompIndDS");
 			Criteria criteria = new Criteria();
@@ -332,6 +347,24 @@ public class DlgAddEditTelComp extends Window {
 				SC.say(CallCenter.constants.invalidOurPercent());
 				return;
 			}
+
+			String call_price_str = callPriceItem.getValueAsString();
+			if (call_price_str == null || call_price_str.trim().equals("")) {
+				SC.say(CallCenter.constants.plzEnterCallPrice());
+				return;
+			}
+			Double call_price = null;
+			try {
+				call_price = Double.parseDouble(call_price_str);
+			} catch (Exception e) {
+				SC.say(CallCenter.constants.invalidCallPrice());
+				return;
+			}
+			if (call_price.intValue() <= 0 && call_price.intValue() > 100) {
+				SC.say(CallCenter.constants.invalidCallPrice());
+				return;
+			}
+
 			LinkedHashMap<String, LinkedHashMap<String, String>> indexes = new LinkedHashMap<String, LinkedHashMap<String, String>>();
 			RecordList recordList = listGridIndexes.getDataAsRecordList();
 			int length = recordList.getLength();
@@ -342,9 +375,11 @@ public class DlgAddEditTelComp extends Window {
 					Integer st_ind = record.getAttributeAsInt("st_ind");
 					Integer end_ind = record.getAttributeAsInt("end_ind");
 					Integer cr = record.getAttributeAsInt("cr");
+					Integer count_type = record.getAttributeAsInt("count_type");
 					LinkedHashMap<String, String> param = new LinkedHashMap<String, String>();
 					param.put("str_end_ind", end_ind.toString());
 					param.put("str_cr", cr.toString());
+					param.put("str_count_type", count_type.toString());
 					indexes.put(st_ind.toString(), param);
 				}
 			}
@@ -359,6 +394,7 @@ public class DlgAddEditTelComp extends Window {
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("tel_comp_name_geo", tel_comp_name_geo);
 			record.setAttribute("our_percent", our_percent);
+			record.setAttribute("call_price", call_price);
 			record.setAttribute("telCompIdexes", indexes);
 			record.setAttribute("has_calculation", has_calculation);
 

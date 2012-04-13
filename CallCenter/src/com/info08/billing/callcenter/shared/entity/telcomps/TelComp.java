@@ -60,6 +60,10 @@ public class TelComp implements Serializable {
 	@Basic
 	@Column(name = "HAS_CALCULATION")
 	private Long has_calculation;
+	
+	@Basic
+	@Column(name = "CALL_PRICE")
+	private Double call_price;
 
 	@Transient
 	private String has_calculation_descr;
@@ -167,5 +171,13 @@ public class TelComp implements Serializable {
 
 	public void setHas_calculation_descr(String has_calculation_descr) {
 		this.has_calculation_descr = has_calculation_descr;
+	}
+
+	public Double getCall_price() {
+		return call_price;
+	}
+
+	public void setCall_price(Double call_price) {
+		this.call_price = call_price;
 	}
 }

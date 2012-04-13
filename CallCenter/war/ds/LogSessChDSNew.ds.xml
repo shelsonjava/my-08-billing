@@ -33,6 +33,11 @@
 		<operationBinding operationType="add" operationId="addChargesByDiscovery" serverMethod="addChargesByDiscovery">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
         </operationBinding>
+        
+        <!-- Add New Charges -->
+		<operationBinding operationType="add" operationId="addChargesWithoutCall" serverMethod="addChargesWithoutCall">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+        </operationBinding>
     
     
     	<operationBinding operationId="deleteSessionCharge" operationType="update">

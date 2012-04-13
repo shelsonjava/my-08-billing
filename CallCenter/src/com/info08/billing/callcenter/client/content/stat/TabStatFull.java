@@ -508,7 +508,14 @@ public class TabStatFull extends Tab {
 			});
 
 			org_contr_email_srv_cnt.setSummaryFunction(SummaryFunctionType.SUM);
-			org_contr_email_srv_cnt.addSummaryFunction(SummaryFunctionType.AVG);
+			org_contr_email_srv_cnt.addSummaryFunction(new SummaryFunction() {
+				@Override
+				public Object getSummaryValue(Record[] records,
+						ListGridField field) {
+					return getCustomAvarageSummary1(records,
+							"org_contr_email_srv_cnt");
+				}
+			});
 			org_contr_email_srv_cnt.addSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
@@ -519,7 +526,14 @@ public class TabStatFull extends Tab {
 			});
 
 			org_email_srv_cnt.setSummaryFunction(SummaryFunctionType.SUM);
-			org_email_srv_cnt.addSummaryFunction(SummaryFunctionType.AVG);
+			org_email_srv_cnt.addSummaryFunction(new SummaryFunction() {
+				@Override
+				public Object getSummaryValue(Record[] records,
+						ListGridField field) {
+					return getCustomAvarageSummary1(records,
+							"org_email_srv_cnt");
+				}
+			});
 			org_email_srv_cnt.addSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
@@ -607,17 +621,42 @@ public class TabStatFull extends Tab {
 		}
 	}
 
+	private String getCustomAvarageSummary1(Record records[], String fieldName) {
+		if (records == null || records.length <= 0) {
+			return "0.00";
+		}
+		double sum = 0;
+		int cnt = 0;
+		for (Record record : records) {
+			Double value = record.getAttributeAsDouble(fieldName);
+			if (value == null) {
+				continue;
+			}
+			sum += value.doubleValue();
+			cnt++;
+		}
+		if (sum <= 0) {
+			return "0.00";
+		}
+		double average = sum / cnt;
+		NumberFormat nf = NumberFormat.getFormat("#,##0.00");
+		return nf.format(((Number) average).doubleValue());
+	}
+
 	private String getCustomAvarageSummary(Record records[], String fieldName) {
 		if (records == null || records.length <= 0) {
-			return null;
+			return "0.00";
 		}
 		if (prevMonthRecord == null) {
-			return null;
+			return "0.00";
 		}
 		Double abonent_cnt_prev = prevMonthRecord
 				.getAttributeAsDouble(fieldName);
 		if (abonent_cnt_prev == null) {
-			return null;
+			return "0.00";
+		}
+		if (abonent_cnt_prev.doubleValue() <= 0) {
+			return "0.00";
 		}
 		double sum = 0;
 		int cnt = 0;

@@ -650,6 +650,15 @@ public interface AppConstants extends Constants {
 	String yes();
 	String noInGeo();
 	String printPreview();
+	String charge1();
+	String statisticByTelComp();
+	String byCharges();
+	String byCalls();
+	String callPrice();
+	String plzEnterCallPrice();
+	String invalidCallPrice();
+	String virtualCharge();
+	String phoneLengthMustBe9();
 }
 
 

@@ -174,11 +174,16 @@ public class TabTelComps extends Tab {
 			ListGridField has_calculation_descr = new ListGridField(
 					"has_calculation_descr",
 					CallCenter.constants.hasCalculation(), 150);
+
+			ListGridField call_price = new ListGridField("call_price",
+					CallCenter.constants.callPrice(), 150);
+
 			our_percent.setAlign(Alignment.CENTER);
 			has_calculation_descr.setAlign(Alignment.CENTER);
+			call_price.setAlign(Alignment.CENTER);
 
 			telCompsGrid.setFields(tel_comp_name_geo, our_percent,
-					has_calculation_descr);
+					has_calculation_descr, call_price);
 
 			mainLayout.addMember(telCompsGrid);
 			findButton.addClickHandler(new ClickHandler() {

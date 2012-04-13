@@ -27,7 +27,10 @@ public class TelCompIndClientDS extends DataSource {
 		DataSourceTextField cr_descr = new DataSourceTextField("cr_descr",
 				CallCenter.constants.type());
 
-		setFields(ind_id, st_ind, end_ind, cr_descr);
+		DataSourceTextField count_type_descr = new DataSourceTextField(
+				"count_type_descr", CallCenter.constants.type());
+
+		setFields(ind_id, st_ind, end_ind, cr_descr, count_type_descr);
 		setClientOnly(true);
 	}
 }

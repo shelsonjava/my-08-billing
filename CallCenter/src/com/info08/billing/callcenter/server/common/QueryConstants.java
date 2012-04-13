@@ -2,6 +2,9 @@ package com.info08.billing.callcenter.server.common;
 
 public interface QueryConstants {
 	
+	
+	public static final String Q_GET_VIRTUAL_SESSION_ID = " select 'VIRT.'||info.seq_virtual_session_id.nextval as session_id from dual ";
+	
 	public static final String Q_GET_TEL_COMP_IND =" select count(1) from info.tel_comps_ind t where ? between t.st_ind and t.end_ind ";
 	
 	public static final String Q_GET_TEL_COMP_IND_BY_ID =" select count(1) from info.tel_comps_ind t where ? between t.st_ind and t.end_ind and t.tel_comp_id <> ? ";

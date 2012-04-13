@@ -1,9 +1,11 @@
 package com.info08.billing.callcenter.client.ui.menu;
 
+import com.info08.billing.callcenter.client.CallCenter;
 import com.info08.billing.callcenter.client.content.TabAbonent;
 import com.info08.billing.callcenter.client.content.TabAbonentLastNames;
 import com.info08.billing.callcenter.client.content.TabAbonentNames;
 import com.info08.billing.callcenter.client.content.TabOrganization;
+import com.info08.billing.callcenter.client.content.TabVirtualCharge;
 import com.info08.billing.callcenter.client.singletons.CommonSingleton;
 import com.info08.billing.callcenter.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -25,7 +27,9 @@ public class CorrectionStackSelection extends SectionStackSection {
 			new MenuNode("100", "1", "ორგანიზაციები", true, "organization.gif"),
 			new MenuNode("101", "2", "აბონენტები", true, "person.png"),
 			new MenuNode("102", "3", "სახელები", true, "person.png"),
-			new MenuNode("103", "4", "გვარები", true, "person.png") };
+			new MenuNode("103", "4", "გვარები", true, "person.png"),
+			new MenuNode("104", "5", CallCenter.constants.virtualCharge(),
+					true, "moneySmall.png") };
 
 	private TreeGrid menuTreeGrid;
 
@@ -91,6 +95,7 @@ public class CorrectionStackSelection extends SectionStackSection {
 					.hasPermission("105000");
 			boolean hasAbonentNameSurPerm = CommonSingleton.getInstance()
 					.hasPermission("104000");
+
 			menuData[1].setAttribute("enabled", hasAbonentPerm);
 			menuData[2].setAttribute("enabled", hasAbonentNameSurPerm);
 			menuData[3].setAttribute("enabled", hasAbonentNameSurPerm);
@@ -98,6 +103,11 @@ public class CorrectionStackSelection extends SectionStackSection {
 			boolean hasOrgManPerm = CommonSingleton.getInstance()
 					.hasPermission("105500");
 			menuData[0].setAttribute("enabled", hasOrgManPerm);
+
+			boolean hasVirtChargePerm = CommonSingleton.getInstance()
+					.hasPermission("106550");
+			
+			menuData[4].setAttribute("enabled", hasVirtChargePerm);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,6 +131,9 @@ public class CorrectionStackSelection extends SectionStackSection {
 		} else if (menuId.equals("103")) {
 			TabAbonentLastNames tabAbonentLastNames = new TabAbonentLastNames();
 			body.addTab(tabAbonentLastNames);
+		} else if (menuId.equals("104")) {
+			TabVirtualCharge tabVirtualCharge = new TabVirtualCharge();
+			body.addTab(tabVirtualCharge);
 		}
 	}
 

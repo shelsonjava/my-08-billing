@@ -81,6 +81,11 @@ public class TelCompsDMI implements QueryConstants {
 			Double our_percent = (oour_percent == null ? 1L : new Double(
 					oour_percent.toString()));
 			telComp.setOur_percent(our_percent);
+			
+			Object ocall_price = dsRequest.getFieldValue("call_price");
+			Double call_price = (ocall_price == null ? 1L : new Double(
+					ocall_price.toString()));
+			telComp.setCall_price(call_price);
 
 			Object ohas_calculation = dsRequest
 					.getFieldValue("has_calculation");
@@ -109,11 +114,13 @@ public class TelCompsDMI implements QueryConstants {
 						String str_end_ind = value1.get("str_end_ind")
 								.toString();
 						String str_cr = value1.get("str_cr").toString();
+						String str_count_type = value1.get("str_count_type").toString();
 
 						TelCompsInd item = new TelCompsInd();
 						item.setCr(new Long(str_cr));
 						item.setEnd_ind(new Long(str_end_ind));
 						item.setSt_ind(new Long(str_st_ind));
+						item.setCount_type(new Long(str_count_type));
 						item.setTel_comp_id(telComp.getTel_comp_id());
 						oracleManager.persist(item);
 					}
@@ -179,6 +186,11 @@ public class TelCompsDMI implements QueryConstants {
 			Object oour_percent = record.get("our_percent");
 			Double our_percent = (oour_percent == null ? 1L : new Double(
 					oour_percent.toString()));
+			
+			Object ocall_price = record.get("call_price");
+			Double call_price = (ocall_price == null ? 1L : new Double(
+					ocall_price.toString()));
+			
 			Object ohas_calculation = record.get("has_calculation");
 			Long has_calculation = (ohas_calculation == null ? -1L : new Long(
 					ohas_calculation.toString()));
@@ -189,6 +201,7 @@ public class TelCompsDMI implements QueryConstants {
 			telComp.setTel_comp_name_eng(tel_comp_name_eng);
 			telComp.setTel_comp_name_geo(tel_comp_name_geo);
 			telComp.setOur_percent(our_percent);
+			telComp.setCall_price(call_price);
 			telComp.setHas_calculation(has_calculation);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, upd_date,
@@ -213,11 +226,13 @@ public class TelCompsDMI implements QueryConstants {
 						String str_end_ind = value1.get("str_end_ind")
 								.toString();
 						String str_cr = value1.get("str_cr").toString();
+						String str_count_type = value1.get("str_count_type").toString();
 
 						TelCompsInd item = new TelCompsInd();
 						item.setCr(new Long(str_cr));
 						item.setEnd_ind(new Long(str_end_ind));
 						item.setSt_ind(new Long(str_st_ind));
+						item.setCount_type(new Long(str_count_type));
 						item.setTel_comp_id(telComp.getTel_comp_id());
 						oracleManager.persist(item);
 					}

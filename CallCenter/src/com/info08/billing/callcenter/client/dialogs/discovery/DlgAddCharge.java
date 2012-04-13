@@ -42,6 +42,7 @@ public class DlgAddCharge extends Window {
 	private IButton findButton;
 	private IButton clearButton;
 	private IButton chargeButton;
+	private IButton chargeButton1;
 
 	public DlgAddCharge(String phone, String sOperator, Date callDate) {
 		try {
@@ -100,8 +101,14 @@ public class DlgAddCharge extends Window {
 			chargeButton.setTitle(CallCenter.constants.charge());
 			chargeButton.setIcon("moneySmall.png");
 			chargeButton.setWidth(150);
+			
+			chargeButton1 = new IButton();
+			chargeButton1.setTitle(CallCenter.constants.charge1());
+			chargeButton1.setIcon("moneySmall.png");
+			chargeButton1.setWidth(150);
 
 			buttonLayout.addMember(chargeButton);
+			//buttonLayout.addMember(chargeButton1);
 			buttonLayout.addMember(new LayoutSpacer());
 
 			findButton = new IButton();

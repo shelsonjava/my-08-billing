@@ -2,6 +2,7 @@ package com.info08.billing.callcenter.client.ui.menu;
 
 import com.info08.billing.callcenter.client.CallCenter;
 import com.info08.billing.callcenter.client.content.stat.TabBillCallsBySrvBK;
+import com.info08.billing.callcenter.client.content.stat.TabStatByTelComp;
 import com.info08.billing.callcenter.client.content.stat.TabStatFull;
 import com.info08.billing.callcenter.client.content.stat.TabStatFullByMonth;
 import com.info08.billing.callcenter.client.singletons.CommonSingleton;
@@ -24,7 +25,8 @@ public class StatStackSelection extends SectionStackSection {
 	public static final TreeNode[] menuData = new TreeNode[] {
 		new MenuNode("100", "1", CallCenter.constants.callsTotalBySrv(), true,"stats.png") ,
 		new MenuNode("101", "1", CallCenter.constants.statisticFullDay(), true,"stats.png"),
-		new MenuNode("102", "1", CallCenter.constants.statisticFullMonth(), true,"stats.png")
+		new MenuNode("102", "1", CallCenter.constants.statisticFullMonth(), true,"stats.png"),
+		new MenuNode("103", "1", CallCenter.constants.statisticByTelComp(), true,"stats.png")
 	};
 
 	private TreeGrid menuTreeGrid;
@@ -89,6 +91,9 @@ public class StatStackSelection extends SectionStackSection {
 			boolean hasAdminPerm = CommonSingleton.getInstance().hasPermission(
 					"501000");
 			menuData[0].setAttribute("enabled", hasAdminPerm);
+			menuData[1].setAttribute("enabled", hasAdminPerm);
+			menuData[2].setAttribute("enabled", hasAdminPerm);
+			menuData[3].setAttribute("enabled", hasAdminPerm);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -105,9 +110,12 @@ public class StatStackSelection extends SectionStackSection {
 		} else if (menuId.equals("101")) {
 			TabStatFull tabStatFull = new TabStatFull(body.getMainTabPanel());
 			body.addTab(tabStatFull);
-		}else if (menuId.equals("102")) {
+		} else if (menuId.equals("102")) {
 			TabStatFullByMonth tabStatFullByMonth = new TabStatFullByMonth(body.getMainTabPanel());
 			body.addTab(tabStatFullByMonth);
+		} else if (menuId.equals("103")) {
+			TabStatByTelComp tabStatByTelComp = new TabStatByTelComp(body.getMainTabPanel());
+			body.addTab(tabStatByTelComp);
 		}
 	}
 
