@@ -13,6 +13,9 @@
 		<field name="session_quality" type="integer" title="Session Quality" hidden="true"/>
 		<field name="session_quality_desc" type="text" title="Session Quality Desc" />
 		<field name="person_name" type="text" title="Personel Name" />
+		<field name="loggedUserName" type="text" title="loggedUserName" hidden="true"/>
+		<field name="service_id" type="integer" title="service_id" hidden="true"/>
+		<field name="virt_call_type" type="integer" title="virt_call_type" hidden="true"/>		
 	</fields>
 
 	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.SessQualityDMI"/>
@@ -20,6 +23,10 @@
 	<operationBindings>
 		<!-- UPDATE -->
 		<operationBinding operationType="update" operationId="update" serverMethod="update">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.SessQualityDMI"/>
+        </operationBinding>
+        
+        <operationBinding operationType="add" operationId="addChargesWithoutCall" serverMethod="addChargesWithoutCall">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.SessQualityDMI"/>
         </operationBinding>
         

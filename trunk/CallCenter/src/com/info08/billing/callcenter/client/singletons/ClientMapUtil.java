@@ -48,6 +48,8 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> limitTypes;
 	private LinkedHashMap<String, String> hasCalculations;
 	private LinkedHashMap<String, String> hasCalculations1;
+	private LinkedHashMap<String, String> telCompIndTypes1;
+	private LinkedHashMap<String, String> callTypes;
 
 	protected ClientMapUtil() {
 		mapOpClose = new LinkedHashMap<String, String>();
@@ -84,6 +86,8 @@ public class ClientMapUtil {
 		limitTypes = new LinkedHashMap<String, String>();
 		hasCalculations = new LinkedHashMap<String, String>();
 		hasCalculations1 = new LinkedHashMap<String, String>();
+		telCompIndTypes1 = new LinkedHashMap<String, String>();
+		callTypes = new LinkedHashMap<String, String>();
 
 		mapOpClose.put("0", "ღია");
 		mapOpClose.put("1", "დაფარულია");
@@ -210,9 +214,23 @@ public class ClientMapUtil {
 
 		hasCalculations1.put("1", CallCenter.constants.yes());
 		hasCalculations1.put("0", CallCenter.constants.noInGeo());
+		
+		telCompIndTypes1.put("0", CallCenter.constants.byCharges());
+		telCompIndTypes1.put("1", CallCenter.constants.byCalls());
+		
+		callTypes.put("11", CallCenter.constants.direct());
+		callTypes.put("12", CallCenter.constants.nonDirect());
 
 	}
+	
+	public LinkedHashMap<String, String> getCallTypes() {
+		return callTypes;
+	}
 
+	public LinkedHashMap<String, String> getTelCompIndTypes1() {
+		return telCompIndTypes1;
+	}
+	
 	public LinkedHashMap<String, String> getHasCalculations1() {
 		return hasCalculations1;
 	}

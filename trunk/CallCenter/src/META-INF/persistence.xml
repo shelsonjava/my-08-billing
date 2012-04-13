@@ -61,6 +61,7 @@
     <class>com.info08.billing.callcenter.shared.entity.callcenter.CcServiceLog</class>
     <class>com.info08.billing.callcenter.shared.entity.MainNew</class>
     <class>com.info08.billing.callcenter.shared.entity.session.LogSessionCharge</class>
+    <class>com.info08.billing.callcenter.shared.entity.session.LogSession</class>
     <class>com.info08.billing.callcenter.shared.entity.control.LogPersonellNote</class>
     <class>com.info08.billing.callcenter.shared.entity.contractors.Contract</class>
     <class>com.info08.billing.callcenter.shared.entity.contractors.ContractPriceItem</class>
@@ -69,7 +70,7 @@
     <class>com.info08.billing.callcenter.shared.entity.block.BlockList</class>
     <class>com.info08.billing.callcenter.shared.entity.block.BlockListPhone</class>
     <class>com.info08.billing.callcenter.shared.entity.telcomps.TelComp</class>
-    <class>com.info08.billing.callcenter.shared.entity.telcomps.TelCompsInd</class>
+    <class>com.info08.billing.callcenter.shared.entity.telcomps.TelCompsInd</class>    
     <properties>
       <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
       <property name="hibernate.connection.username" value="info"/>

@@ -43,11 +43,18 @@ public class TelCompsInd implements Serializable {
 	@Column(name = "TEL_COMP_ID")
 	private Long tel_comp_id;
 	
+	@Basic
+	@Column(name = "COUNT_TYPE")
+	private Long count_type;
+	
 	@Transient
 	private String loggedUserName;
 	
 	@Transient
 	private String cr_descr;
+	
+	@Transient
+	private String count_type_descr;
 
 	public TelCompsInd() {
 	}
@@ -106,5 +113,21 @@ public class TelCompsInd implements Serializable {
 
 	public void setCr_descr(String cr_descr) {
 		this.cr_descr = cr_descr;
+	}
+
+	public Long getCount_type() {
+		return count_type;
+	}
+
+	public void setCount_type(Long count_type) {
+		this.count_type = count_type;
+	}
+
+	public String getCount_type_descr() {
+		return count_type_descr;
+	}
+
+	public void setCount_type_descr(String count_type_descr) {
+		this.count_type_descr = count_type_descr;
 	}
 }

@@ -56,8 +56,10 @@ public class TabContractors extends Tab {
 	private ToolStripButton viewCallCntBtn;
 	private ToolStripButton viewChargesSumBtn;
 	private ToolStripButton blockPhoneListBtn;
+
 	private ToolStripButton contractorsBillBtn;
 	private ToolStripButton contractorsBillFullBtn;
+
 	private ToolStripButton contractorsBillBtn1;
 	private ToolStripButton contractorsBillFullBtn1;
 
@@ -488,8 +490,11 @@ public class TabContractors extends Tab {
 				return;
 			}
 
+			Integer contractor_type = new Integer(
+					contractorType.getValueAsString());
+
 			DlgGetContractorsBilling dlgGetCOntractorsBilling = new DlgGetContractorsBilling(
-					contract_id, full);
+					contract_id, full, contractor_type);
 			dlgGetCOntractorsBilling.show();
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -498,8 +503,11 @@ public class TabContractors extends Tab {
 
 	private void getContractorsBilling(boolean full) {
 		try {
+			Integer contractor_type = new Integer(
+					contractorType.getValueAsString());
+
 			DlgGetContractorsBilling dlgGetCOntractorsBilling = new DlgGetContractorsBilling(
-					null, full);
+					null, full, contractor_type);
 			dlgGetCOntractorsBilling.show();
 		} catch (Exception e) {
 			SC.say(e.toString());

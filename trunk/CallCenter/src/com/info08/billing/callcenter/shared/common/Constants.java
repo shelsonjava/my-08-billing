@@ -15,6 +15,8 @@ public interface Constants {
 	public static final int callTypeMobile = -3;
 	public static final int callTypeMobitel = -7;
 	public static final int callTypeNoncharge = -8;
+	public static final int callTypeVirtualDirect = 11;
+	public static final int callTypeVirtualNonDirect = 12;
 
 	public static final int serviceOrganization = 3;
 	public static final int serviceAddressInfo = 4;

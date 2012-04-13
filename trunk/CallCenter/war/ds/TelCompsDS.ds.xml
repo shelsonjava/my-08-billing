@@ -13,6 +13,7 @@
 		<field name="rec_date"					type="date"			title="rec_date"/>
 		<field name="upd_user"					type="text"			title="upd_user"/>
 		<field name="our_percent"				type="float"		title="our_percent"/>
+		<field name="call_price"				type="float"		title="call_price"/>
 		<field name="has_calculation_descr"		type="integer"		title="has_calculation_descr"/>
 		<field name="has_calculation"			type="integer"		title="has_calculation"			hidden="true"/>
 		<field name="deleted"					type="integer"		title="deleted"					hidden="true"/>
@@ -76,7 +77,8 @@
 					t.upd_user,
 					t.our_percent,
 					t.has_calculation,
-					decode(t.has_calculation,1,'დიახ',0,'არა','ყველა') as has_calculation_descr					
+					decode(t.has_calculation,1,'დიახ',0,'არა','ყველა') as has_calculation_descr,
+					t.call_price					
 			</selectClause> 
 			<tableClause>info.tel_comps t</tableClause>
 			<whereClause><![CDATA[
@@ -97,7 +99,7 @@
     			  		t.phone as phonea, 
 				       '11808' as phoneb, 
 				        ch.rec_date as charge_date,
-				        to_char(ch.rec_date,'DD/MM/YYYY HH24:MI:SS') as charge_date1,
+				        to_char(ch.rec_date,'MM/DD/YYYY HH24:MI:SS') as charge_date1,
 				        60 as duration,
 				        ch.price/100 as rate,
 				        ch.price/100 as price
@@ -128,7 +130,7 @@
     			  		t.phone as phonea, 
 				       '11808' as phoneb, 
 				        ch.rec_date as charge_date,
-				        to_char(ch.rec_date,'DD/MM/YYYY HH24:MI:SS') as charge_date1,
+				        to_char(ch.rec_date,'MM/DD/YYYY HH24:MI:SS') as charge_date1,
 				        60 as duration,
 				        ch.price/100 as rate,
 				        ch.price/100 as price

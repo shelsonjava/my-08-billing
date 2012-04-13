@@ -24,6 +24,7 @@ public class DlgAddEditTelCompInd extends Window {
 	private TextItem startIndexItem;
 	private TextItem endIndexItem;
 	private SelectItem typeItem;
+	private SelectItem typeItem1;
 
 	private ListGrid listGrid = null;
 	private ListGridRecord listGridRecord = null;
@@ -35,7 +36,7 @@ public class DlgAddEditTelCompInd extends Window {
 			setTitle(listGridRecord == null ? CallCenter.constants
 					.addTelCompInd() : CallCenter.constants.editTelCompInd());
 
-			setHeight(160);
+			setHeight(180);
 			setWidth(400);
 			setShowMinimizeButton(false);
 			setIsModal(true);
@@ -76,7 +77,16 @@ public class DlgAddEditTelCompInd extends Window {
 			typeItem.setValueMap(ClientMapUtil.getInstance()
 					.getTelCompIndTypes());
 
-			dynamicForm.setFields(startIndexItem, endIndexItem, typeItem);
+			typeItem1 = new SelectItem();
+			typeItem1.setTitle(CallCenter.constants.type());
+			typeItem1.setName("typeItem1");
+			typeItem1.setWidth(250);
+			typeItem1.setDefaultToFirstOption(true);
+			typeItem1.setValueMap(ClientMapUtil.getInstance()
+					.getTelCompIndTypes1());
+
+			dynamicForm.setFields(startIndexItem, endIndexItem, typeItem,
+					typeItem1);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -122,6 +132,7 @@ public class DlgAddEditTelCompInd extends Window {
 			startIndexItem.setValue(listGridRecord.getAttributeAsInt("st_ind"));
 			endIndexItem.setValue(listGridRecord.getAttributeAsInt("end_ind"));
 			typeItem.setValue(listGridRecord.getAttributeAsInt("cr"));
+			typeItem1.setValue(listGridRecord.getAttributeAsInt("count_type"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -173,6 +184,7 @@ public class DlgAddEditTelCompInd extends Window {
 			}
 
 			Integer cr = Integer.parseInt(typeItem.getValueAsString());
+			Integer count_type = Integer.parseInt(typeItem1.getValueAsString());
 
 			ListGridRecord oldRecords[] = listGrid.getRecords();
 			if (oldRecords != null && oldRecords.length > 0) {
@@ -216,6 +228,10 @@ public class DlgAddEditTelCompInd extends Window {
 			dateRec.setAttribute("st_ind", startIndex);
 			dateRec.setAttribute("end_ind", endIndex);
 			dateRec.setAttribute("cr", cr);
+			dateRec.setAttribute("count_type", count_type);
+			dateRec.setAttribute("count_type_descr",
+					typeItem1.getDisplayValue());
+
 			dateRec.setAttribute("cr_descr", typeItem.getDisplayValue());
 			if (listGridRecord != null) {
 				dateRec.setAttribute("tel_comp_id",

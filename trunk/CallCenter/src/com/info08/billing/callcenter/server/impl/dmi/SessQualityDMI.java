@@ -3,21 +3,116 @@ package com.info08.billing.callcenter.server.impl.dmi;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
+import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenter.client.exception.CallCenterException;
 import com.info08.billing.callcenter.server.common.QueryConstants;
+import com.info08.billing.callcenter.shared.entity.session.LogSession;
+import com.info08.billing.callcenter.shared.entity.session.LogSessionCharge;
 import com.info08.billing.callcenter.shared.items.LogSessionItem;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DSResponse;
 import com.isomorphic.datasource.DataSource;
 import com.isomorphic.datasource.DataSourceManager;
+import com.isomorphic.jpa.EMF;
 import com.isomorphic.sql.SQLDataSource;
 
 public class SessQualityDMI implements QueryConstants {
 
 	Logger logger = Logger.getLogger(SessQualityDMI.class.getName());
+
+	/**
+	 * Adding Virtual charges (Making new virtual call)
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public DSResponse addChargesWithoutCall(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.addChargesWithoutCall.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			String loggedUserName = dsRequest.getValues().get("loggedUserName")
+					.toString();
+			String phone = dsRequest.getValues().get("phone").toString();
+			Long service_id = new Long(dsRequest.getValues().get("service_id")
+					.toString());
+			Long chargeCount = new Long(dsRequest.getValues()
+					.get("chargeCount").toString());
+			
+			Long virt_call_type = new Long(dsRequest.getValues()
+					.get("virt_call_type").toString());
+
+			Timestamp currDate = new Timestamp(System.currentTimeMillis());
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyMM");
+			Long ym = new Long(dateFormat.format(currDate));
+
+			LogSession logSession = new LogSession();
+			String session_id = oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_VIRTUAL_SESSION_ID)
+					.getSingleResult().toString();
+			logSession.setSession_id(session_id);
+			logSession.setCall_type(virt_call_type);
+			logSession.setDuration(0L);
+			logSession.setEnd_date(currDate);
+			logSession.setHungup(0L);
+			logSession.setIs_new_bill(1L);
+			logSession.setParent_id(0L);
+			logSession.setPhone(phone);
+			logSession.setSession_quality(0L);
+			logSession.setStart_date(currDate);
+			logSession.setUser_name(loggedUserName);
+			logSession.setYm(ym);
+
+			oracleManager.persist(logSession);
+
+			for (int i = 0; i < chargeCount.intValue(); i++) {
+				LogSessionCharge item = new LogSessionCharge();
+				item.setId(new Long((System.currentTimeMillis() * (i + 1))));
+				item.setService_id(service_id);
+				item.setSession_id(session_id);
+				item.setUpd_user(loggedUserName);
+				item.setYm(ym);
+				item.setDeleted(0L);
+				item.setRec_date(currDate);
+				item.setPrice(0L);
+				oracleManager.persist(item);
+			}
+
+			EMF.commitTransaction(transaction);
+
+			DSResponse resp = new DSResponse();
+			resp.setData(logSession);
+			resp.setStatus(DSResponse.STATUS_SUCCESS);
+
+			log += ". Adding Virtual Charges Finished SuccessFully. ";
+			logger.info(log);
+			return resp;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Adding Virtual Charges Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
 
 	public DSResponse update(DSRequest req) throws Exception {
 		PreparedStatement updateStmt = null;
