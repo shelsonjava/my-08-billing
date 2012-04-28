@@ -202,7 +202,7 @@ public class TabStreet extends Tab {
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
 			listGrid.setFetchOperation("fetchStreetsFromDB");
-			listGrid.setCanSort(false);
+			listGrid.setCanSort(true);
 			listGrid.setCanResizeFields(false);
 			listGrid.setWrapCells(true);
 			listGrid.setFixedRecordHeights(false);
