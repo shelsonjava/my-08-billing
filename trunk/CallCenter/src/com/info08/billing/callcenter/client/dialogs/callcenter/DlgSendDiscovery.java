@@ -112,6 +112,7 @@ public class DlgSendDiscovery extends Window {
 			phoneItem.setTitle(CallCenter.constants.phone());
 			phoneItem.setName("phoneItem");
 			phoneItem.setWidth(300);
+			phoneItem.setKeyPressFilter("[0-9]");
 
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
@@ -130,6 +131,7 @@ public class DlgSendDiscovery extends Window {
 			contactPhoneItem.setTitle(CallCenter.constants.contactPhone());
 			contactPhoneItem.setName("contactPhoneItem");
 			contactPhoneItem.setWidth(300);
+			contactPhoneItem.setKeyPressFilter("[0-9]");
 
 			messageItem = new TextAreaItem();
 			messageItem.setTitle(CallCenter.constants.message());
