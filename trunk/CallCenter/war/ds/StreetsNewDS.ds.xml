@@ -125,7 +125,8 @@
 				 #if($criteria.street_name_geo) AND t.street_name_geo like '%'||($criteria.street_name_geo)||'%' #end
 				 #if($criteria.deleted) AND t.deleted = $criteria.deleted #end
 				]]>  
-			</whereClause> 
+			</whereClause>
+			<orderClause>t.street_name_geo</orderClause>
     	</operationBinding>
 
     	<operationBinding operationId="searchStreetFromDBForCombos" operationType="fetch" customFields="street_id, city_id, street_name_geo, city_region_id ">
