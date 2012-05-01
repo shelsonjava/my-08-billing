@@ -73,7 +73,7 @@
     <class>com.info08.billing.callcenter.shared.entity.telcomps.TelCompsInd</class>    
     <properties>
       <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
-      <property name="hibernate.connection.username" value="info"/>
+      <property name="hibernate.connection.username" value="paata"/>
       <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver"/>
       <property name="hibernate.connection.password" value="sa"/>
       <property name="hibernate.connection.url" value="jdbc:oracle:thin:@192.168.1.7:1521:ORCL"/>
@@ -81,22 +81,4 @@
       <property name="hibernate.format_sql" value="false"/>
     </properties>
   </persistence-unit>
-  
-  
-  <persistence-unit name="mysqlds" transaction-type="RESOURCE_LOCAL">    
-    <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <!--  
-    <jta-data-source>java:jboss/datasources/OracleDS</jta-data-source>
-    -->
-    <properties>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
-      <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
-      <property name="hibernate.connection.username" value="kaxa"/>      
-      <property name="hibernate.connection.password" value="kaxa"/>
-      <property name="hibernate.connection.url" value="jdbc:mysql://192.168.1.251/asteriskcdrdb"/>
-      <property name="hibernate.show_sql" value="false"/>
-      <property name="hibernate.format_sql" value="false"/>
-    </properties>
-  </persistence-unit>
-  
 </persistence>
