@@ -1,7 +1,7 @@
 <DataSource
 	ID="EntPlaceDS"
 	serverType="sql"
-	tableName="info.ent_places"
+	tableName="paata.ent_places"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -57,7 +57,7 @@
 			    et.ent_type_geo,
 			    mo.org_name as org_name
 			</selectClause> 
-			<tableClause>ent_places t,ent_types et, info.main_orgs mo</tableClause>
+			<tableClause>ent_places t,ent_types et, paata.main_orgs mo</tableClause>
 			<whereClause><![CDATA[
 				t.ent_type_id = et.ent_type_id and t.main_id = mo.main_id(+)
 				#if($criteria.ent_type_id) and t.ent_type_id = $criteria.ent_type_id #end
@@ -85,7 +85,7 @@
     			mo.main_id,
     			mo.org_name 
 			</selectClause> 
-			<tableClause>info.main_orgs mo</tableClause>	
+			<tableClause>paata.main_orgs mo</tableClause>	
 			<whereClause>
 				   ($defaultWhereClause)
 			</whereClause>	

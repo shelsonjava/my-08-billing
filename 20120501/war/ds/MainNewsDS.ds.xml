@@ -1,7 +1,7 @@
 <DataSource
 	ID="MainNewsDS"
 	serverType="sql"
-	tableName="info.main_news"
+	tableName="paata.main_news"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

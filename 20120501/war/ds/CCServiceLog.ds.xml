@@ -1,7 +1,7 @@
 <DataSource
 	ID="CCServiceLog"
 	serverType="sql"
-	tableName="info.ent_types"
+	tableName="paata.ent_types"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

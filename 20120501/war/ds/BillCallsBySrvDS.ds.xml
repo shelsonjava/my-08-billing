@@ -1,7 +1,7 @@
 <DataSource
 	ID="BillCallsBySrvDS"
 	serverType="sql"
-	tableName="info.billing_calls_by_service"
+	tableName="paata.billing_calls_by_service"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	
@@ -25,7 +25,7 @@
     	<operationBinding operationId="searchBillCallsBySrv" operationType="fetch">
     		<selectClause>   			
     			trunc(t.bill_date),
-    			info.getFormatedDate(t.bill_date) as bill_date_str,
+    			paata.getFormatedDate(t.bill_date) as bill_date_str,
     			#if($criteria.groupBySum == 0)
     				s.service_name_geo,
 				#elseif($criteria.groupBySum == 1)
@@ -42,9 +42,9 @@
 				#end
 				
 				count_type,
-				info.Getweekdaybydate(t.bill_date) as week_day
+				paata.Getweekdaybydate(t.bill_date) as week_day
 			</selectClause> 
-			<tableClause>billing_calls_by_service t, info.services s</tableClause>
+			<tableClause>billing_calls_by_service t, paata.services s</tableClause>
 			<whereClause><![CDATA[
 				 s.service_id = t.service_id
 				 #if($criteria.bill_date_start) and trunc(t.bill_date) >= trunc($criteria.bill_date_start) #end
@@ -93,10 +93,10 @@
 				 #if($criteria.groupBySum == 0) ) #end
 				 	
 				 #if($criteria.groupBySum == 0)
-				 	group by trunc(t.bill_date), info.getFormatedDate(t.bill_date), s.service_name_geo, t.service_id, count_type, info.Getweekdaybydate(t.bill_date)
+				 	group by trunc(t.bill_date), paata.getFormatedDate(t.bill_date), s.service_name_geo, t.service_id, count_type, paata.Getweekdaybydate(t.bill_date)
 				 	order by trunc(t.bill_date), t.service_id
 				 #elseif($criteria.groupBySum == 1)
-				 	group by trunc(t.bill_date), info.getFormatedDate(t.bill_date), count_type, info.Getweekdaybydate(t.bill_date)
+				 	group by trunc(t.bill_date), paata.getFormatedDate(t.bill_date), count_type, paata.Getweekdaybydate(t.bill_date)
 				 	order by trunc(t.bill_date)
 				 #end				 	
 				]]>  

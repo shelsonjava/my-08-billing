@@ -1,7 +1,7 @@
 <DataSource
 	ID="BusinessUnionDS"
 	serverType="sql"
-	tableName="info.business_union"
+	tableName="paata.business_union"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

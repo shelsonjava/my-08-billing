@@ -1,7 +1,7 @@
 <DataSource
 	ID="BlockListDS"
 	serverType="sql"
-	tableName="info.block_list"
+	tableName="paata.block_list"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	
@@ -59,7 +59,7 @@
 				  	mo1.org_name as orgName,
 				  	md.main_detail_geo as orgDepName 
 			</selectClause> 
-			<tableClause>info.block_list t, info.main_orgs mo1, info.main_details md</tableClause>
+			<tableClause>paata.block_list t, paata.main_orgs mo1, paata.main_details md</tableClause>
 			<whereClause><![CDATA[
 				 t.main_id = mo1.main_id(+) and t.main_detail_id = md.main_detail_id (+)
 				 #if($criteria.note) and t.note like '%'||($criteria.note)||'%' #end
@@ -74,7 +74,7 @@
 				 #if($criteria.org_name9) and mo1.org_name like '%'||($criteria.org_name9)||'%' #end
 				 #if($criteria.deleted) and t.deleted = $criteria.deleted #end
 				 #if($criteria.phone)
-				 	and t.id in (select tt.block_list_id from info.block_list_phones tt where tt.phone = $criteria.phone) 				 	
+				 	and t.id in (select tt.block_list_id from paata.block_list_phones tt where tt.phone = $criteria.phone) 				 	
 				 #end
 				]]>  
 			</whereClause> 

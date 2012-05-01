@@ -1,7 +1,7 @@
 <DataSource 
 	ID="OrgDSNew"
     serverType="sql"
-    tableName="info.main_services"      
+    tableName="paata.main_services"      
     qualifyColumnNames="false"
     dropExtraFields = "false">
     
@@ -114,12 +114,12 @@
              			p.partnerbank,
              			p.main_id as p_bank_main_id,
              		    decode(ma.address_hide,1,'მისამართი დაფარულია',(c.city_name_geo||' / '|| getDistrict(str.street_id)||' / '||str.street_name_geo||' '||ma.address_suffix_geo)) as full_address,
-		                info.getTbilisiOrder(c.city_id) as cust_order,
-		                info.getStreetOldNames(str.street_id) as street_old_name, 
+		                paata.getTbilisiOrder(c.city_id) as cust_order,
+		                paata.getStreetOldNames(str.street_id) as street_old_name, 
 		                str.street_name_geo,
 		                ma.address_hide,
 		                decode(ms.main_master_id,0,null,'home') as tree_org_parrent,
-		                decode((select min(1) from info.main_services ms1 where ms1.main_master_id = ms.main_id and ms1.deleted=0),null,null,'associations') as tree_org_child,
+		                decode((select min(1) from paata.main_services ms1 where ms1.main_master_id = ms.main_id and ms1.deleted=0),null,null,'associations') as tree_org_child,
 		                ma.address_suffix_geo,
 						ma.addr_block,
 						ma.addr_appt,
@@ -127,9 +127,9 @@
 						ma.addr_number,
 						getStreetIdxs(str.street_id) as street_indexes,
 						(c.city_name_geo||' / '|| getDistrict(str.street_id)||' / '||str.street_name_geo||' '||ma.address_suffix_geo) as full_address_not_hidden,
-						info.getorgbusiness_alerts(ms.main_id) as org_allert_by_buss_det
+						paata.getorgbusiness_alerts(ms.main_id) as org_allert_by_buss_det
 			</selectClause>
-			<tableClause>info.main_services ms, info.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls, org_partnerbank_lists p</tableClause>
+			<tableClause>paata.main_services ms, paata.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls, org_partnerbank_lists p</tableClause>
 			<whereClause>
 				 <![CDATA[
 						 mo1.main_id = ms.main_id and ma.main_id=ms.main_id and str.street_id = ma.street_id and mo1.partnerbank_id = p.main_id(+) and 
@@ -137,13 +137,13 @@
 						 and ms.main_id in (
 						 	SELECT 
 						 		ms1.main_id
-  						 	FROM info.main_services ms1						 
+  						 	FROM paata.main_services ms1						 
 						 	start with ms1.main_id in (
 						 			select 
 						 				ms.main_id 
 						 			from 
-						 				info.main_services ms, 
-						 				info.main_orgs mo1, 
+						 				paata.main_services ms, 
+						 				paata.main_orgs mo1, 
 						 				main_address ma, 
 						 				streets str, 
 						 				cities c, 
@@ -205,14 +205,14 @@
 										 #if(!$criteria.main_master_id && $criteria.city_id) and ma.city_id = $criteria.city_id #end
 										 #if(!$criteria.main_master_id && $criteria.ident_code) and (mo1.identcode = $criteria.ident_code or mo1.new_identcode = $criteria.ident_code )  #end
 										 #if(!$criteria.main_master_id && $criteria.city_region_id) 
-										 	and exists (select * from info.street_district tt where tt.street_id = str.street_id and  tt.city_region_id = $criteria.city_region_id)  
+										 	and exists (select * from paata.street_district tt where tt.street_id = str.street_id and  tt.city_region_id = $criteria.city_region_id)  
 										 #end
 						 	)						 
 						 	connect by prior ms1.main_id = ms1.main_master_id
 						 )						 
 				 ]]>
 			</whereClause>
-			<orderClause>info.getTbilisiOrder(c.city_id), mo1.extra_priority,ms.main_master_id, ms.priority</orderClause>
+			<orderClause>paata.getTbilisiOrder(c.city_id), mo1.extra_priority,ms.main_master_id, ms.priority</orderClause>
 		</operationBinding>
 		
 	</operationBindings>

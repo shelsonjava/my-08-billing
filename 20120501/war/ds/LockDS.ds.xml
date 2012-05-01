@@ -1,7 +1,7 @@
 <DataSource 
 	ID="LockDS" 
 	serverType="sql"
-	tableName="info.lock_status" 
+	tableName="paata.lock_status" 
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

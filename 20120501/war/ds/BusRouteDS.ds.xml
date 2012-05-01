@@ -1,7 +1,7 @@
 <DataSource
 	ID="BusRouteDS"
 	serverType="sql"
-	tableName="info.bus_routes"
+	tableName="paata.bus_routes"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -97,51 +97,51 @@
 			       t.direction,
 			       decode(t.direction,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as round_descr
 			</selectClause> 
-			<tableClause>incity_transport_view_new t, info.transport_types tt</tableClause>
+			<tableClause>incity_transport_view_new t, paata.transport_types tt</tableClause>
 			<whereClause><![CDATA[
 				t.transport_type_id = tt.transport_type_id
 				#if($criteria.transport_type_id) and t.transport_type_id = $criteria.transport_type_id #end
 				#if($criteria.transportno) and (t.transportno = $criteria.transportno) #end
 				
 				#if($criteria.start_place_id1) 
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id1||'%')			 
 				#end
 				#if($criteria.start_place_id2) 
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id2||'%')
 				#end
 				#if($criteria.start_place_id3) 
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id3||'%')			 
 				#end
 				#if($criteria.start_place_id4) 
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id4||'%')			 
 				#end
 				#if($criteria.start_place_id5) 
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id5||'%')
 				#end
 				
 				#if($criteria.end_place_id1)
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id1||'%')			 	
 				#end
 				#if($criteria.end_place_id2)
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id2||'%')
 				#end
 				#if($criteria.end_place_id3)
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id3||'%')				 	
 				#end
 				#if($criteria.end_place_id4)
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id4||'%')				 	
 				#end
 				#if($criteria.end_place_id5)
-					and t.transportid in (select tt.route_id from info.bus_route_streets tt , info.streets str
+					and t.transportid in (select tt.route_id from paata.bus_route_streets tt , paata.streets str
 						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id5||'%')				 	
 				#end					
 				]]>  

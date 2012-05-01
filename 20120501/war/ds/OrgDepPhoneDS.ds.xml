@@ -1,7 +1,7 @@
 <DataSource 
 	ID="OrgDepPhoneDS"
     serverType="sql"
-    tableName="info.abonents"      
+    tableName="paata.abonents"      
     qualifyColumnNames="false"
     dropExtraFields = "false">
     

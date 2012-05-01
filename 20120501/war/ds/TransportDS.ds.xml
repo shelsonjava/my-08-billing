@@ -1,7 +1,7 @@
 <DataSource
 	ID="TransportDS"
 	serverType="sql"
-	tableName="info.transports"
+	tableName="paata.transports"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -100,7 +100,7 @@
 				to_char(t.out_time,'HH24:MI') c_out_time,
        			to_char(t.in_time ,'HH24:MI') c_in_time
 			</selectClause> 
-			<tableClause>info.transports t, transport_types tt,transport_places o, cities oc,transport_places i, cities ic, transport_companies tc, transport_plane tp</tableClause>
+			<tableClause>paata.transports t, transport_types tt,transport_places o, cities oc,transport_places i, cities ic, transport_companies tc, transport_plane tp</tableClause>
 			<whereClause><![CDATA[
 					t.transport_type_id = tt.transport_type_id and
 					t.out_transport_place_id = o.transport_place_id and o.city_id = oc.city_id and
@@ -174,7 +174,7 @@
 				to_char(t.out_time,'HH24:MI') c_out_time,
        			to_char(t.in_time ,'HH24:MI') c_in_time
 			</selectClause> 
-			<tableClause>info.transports t, transport_types tt,transport_places o, cities oc,transport_places i, cities ic, transport_companies tc, transport_plane tp</tableClause>
+			<tableClause>paata.transports t, transport_types tt,transport_places o, cities oc,transport_places i, cities ic, transport_companies tc, transport_plane tp</tableClause>
 			<whereClause><![CDATA[
 					t.transport_type_id = tt.transport_type_id and
 					t.out_transport_place_id = o.transport_place_id and o.city_id = oc.city_id and
@@ -256,7 +256,7 @@
 						select 
 							tt.transport_id 
 						from 
-							info.transports tt 
+							paata.transports tt 
 						where 1 = 1
 						 	#if($criteria.transport_type_id) and tt.transport_type_id = $criteria.transport_type_id #end
 							#if($criteria.c_days)  and (bitand(tt.days, $criteria.c_days) = $criteria.c_days OR tt.days = 0) #end
@@ -354,26 +354,26 @@
 			</selectClause> 
 			<tableClause>
 				<![CDATA[
-					     info.transports t 
-						 inner join info.transport_types tt on t.transport_type_id = tt.transport_type_id
-						 left join  info.transport_companies tc on t.transport_company_id = tc.transport_company_id
- 						 left join  info.transport_plane tp on t.transport_plane_id = tp.transport_plane_id
-						 left join  info.transport_details d on t.transport_id = d.transport_id and d.deleted = 0
+					     paata.transports t 
+						 inner join paata.transport_types tt on t.transport_type_id = tt.transport_type_id
+						 left join  paata.transport_companies tc on t.transport_company_id = tc.transport_company_id
+ 						 left join  paata.transport_plane tp on t.transport_plane_id = tp.transport_plane_id
+						 left join  paata.transport_details d on t.transport_id = d.transport_id and d.deleted = 0
 						 
 						 #if( ($criteria.o_city_id && $criteria.i_city_id) || ($criteria.o_country_id && $criteria.i_country_id) )
-						  	left join  info.transport_details d1 on t.transport_id = d1.transport_id and d1.deleted = 0 and d1.transport_detail_order >= d.transport_detail_order 
+						  	left join  paata.transport_details d1 on t.transport_id = d1.transport_id and d1.deleted = 0 and d1.transport_detail_order >= d.transport_detail_order 
 						 #end
 						  
-						 inner join  info.transport_places o on o.transport_place_id = t.out_transport_place_id and o.deleted = 0
-						 inner join  info.transport_places i on i.transport_place_id = t.in_transport_place_id and i.deleted = 0
-						 left join  info.cities oc on oc.city_id = o.city_id
-						 left join  info.cities ic on ic.city_id = i.city_id
-						 left join  info.transport_places dp on dp.transport_place_id = d.transport_place_id
-						 left join  info.cities dpc on dpc.city_id = dp.city_id
+						 inner join  paata.transport_places o on o.transport_place_id = t.out_transport_place_id and o.deleted = 0
+						 inner join  paata.transport_places i on i.transport_place_id = t.in_transport_place_id and i.deleted = 0
+						 left join  paata.cities oc on oc.city_id = o.city_id
+						 left join  paata.cities ic on ic.city_id = i.city_id
+						 left join  paata.transport_places dp on dp.transport_place_id = d.transport_place_id
+						 left join  paata.cities dpc on dpc.city_id = dp.city_id
 						 
 						 #if( ($criteria.o_city_id && $criteria.i_city_id) || ($criteria.o_country_id && $criteria.i_country_id) )
-							 left join  info.transport_places dp1 on dp1.transport_place_id = d1.transport_place_id
-							 left join  info.cities dpc1 on dpc1.city_id = dp1.city_id
+							 left join  paata.transport_places dp1 on dp1.transport_place_id = d1.transport_place_id
+							 left join  paata.cities dpc1 on dpc1.city_id = dp1.city_id
 						  #end
 				]]>  
 			</tableClause>

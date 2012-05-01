@@ -1,7 +1,7 @@
 <DataSource
 	ID="SessDiscHistDS"
 	serverType="sql"
-	tableName="info.discover"
+	tableName="paata.discover"
 	qualifyColumnNames="false">
 	<fields>
 		<field name="discover_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />

@@ -1,7 +1,7 @@
 <DataSource
 	ID="ContractorsPricesDS"
 	serverType="sql"
-	tableName="info.contract_price_items"
+	tableName="paata.contract_price_items"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 
@@ -26,7 +26,7 @@
 				  t.call_count_end,
 				  t.price
 			</selectClause> 
-			<tableClause>info.contract_price_items t</tableClause>
+			<tableClause>paata.contract_price_items t</tableClause>
 			<whereClause><![CDATA[
 				 t.contract_id = $criteria.contract_id 
 				]]>  

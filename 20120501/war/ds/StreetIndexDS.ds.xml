@@ -1,7 +1,7 @@
 <DataSource
 	ID="StreetIndexDS"
 	serverType="sql"
-	tableName="info.street_index"
+	tableName="paata.street_index"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

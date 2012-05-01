@@ -1,7 +1,7 @@
 <DataSource
 	ID="BusRouteStreetDS"
 	serverType="sql"
-	tableName="info.bus_route_streets"
+	tableName="paata.bus_route_streets"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

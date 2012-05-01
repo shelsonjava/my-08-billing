@@ -61,12 +61,12 @@
     -->
   
     <servlet>  
-        <servlet-name>callcenter</servlet-name>  
+        <servlet-name>callcenterbk</servlet-name>  
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
         <load-on-startup>1</load-on-startup>  
     </servlet>
 	<servlet-mapping>  
-         <servlet-name>callcenter</servlet-name>  
+         <servlet-name>callcenterbk</servlet-name>  
          <url-pattern>*.do</url-pattern>  
      </servlet-mapping>	
 	
@@ -151,60 +151,60 @@
 	<!-- RPCManager uses this URL by default for Built-in DataSource operations -->
 	<servlet-mapping>
 		<servlet-name>IDACall</servlet-name>
-		<url-pattern>/callcenter/sc/IDACall/*</url-pattern>
+		<url-pattern>/callcenterbk/sc/IDACall/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>IDACall</servlet-name>
-		<url-pattern>/callcenter/sc/IDACall.aspx/*</url-pattern>
+		<url-pattern>/callcenterbk/sc/IDACall.aspx/*</url-pattern>
 	</servlet-mapping>
 	<!-- DataSourceLoader requests -->
 	<servlet-mapping>
 		<servlet-name>DataSourceLoader</servlet-name>
-		<url-pattern>/callcenter/sc/DataSourceLoader</url-pattern>
+		<url-pattern>/callcenterbk/sc/DataSourceLoader</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>HttpProxy</servlet-name>
-		<url-pattern>/callcenter/sc/HttpProxy/*</url-pattern>
+		<url-pattern>/callcenterbk/sc/HttpProxy/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>FileDownload</servlet-name>
-		<url-pattern>/callcenter/sc/skins/*</url-pattern>
+		<url-pattern>/callcenterbk/sc/skins/*</url-pattern>
 	</servlet-mapping>
 	<!-- serve ISC modules compressed, with expires headers -->
 	<servlet-mapping>
 		<servlet-name>FileDownload</servlet-name>
-		<url-pattern>/callcenter/sc/system/modules/*</url-pattern>
+		<url-pattern>/callcenterbk/sc/system/modules/*</url-pattern>
 	</servlet-mapping>
 	<!-- serve ISC development modules compressed, with expires headers -->
 	<servlet-mapping>
 		<servlet-name>FileDownload</servlet-name>
-		<url-pattern>/callcenter/sc/system/development/*</url-pattern>
+		<url-pattern>/callcenterbk/sc/system/development/*</url-pattern>
 	</servlet-mapping>
 	<!-- server skin assets with expires headers -->
 	<servlet-mapping>
 		<servlet-name>FileDownload</servlet-name>
-		<url-pattern>/callcenter/sc/system/reference/skin/*</url-pattern>
+		<url-pattern>/callcenterbk/sc/system/reference/skin/*</url-pattern>
 	</servlet-mapping>	 
 	<servlet-mapping>
 		<servlet-name>MessagingServlet</servlet-name>
-		<url-pattern>/callcenter/sc/messaging/*</url-pattern>
+		<url-pattern>/callcenterbk/sc/messaging/*</url-pattern>
 	</servlet-mapping>
 		
 	<servlet-mapping>
 		<servlet-name>commonServiceServlet</servlet-name>
-		<url-pattern>/callcenter/commonService</url-pattern>
+		<url-pattern>/callcenterbk/commonService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>callCenterServlet</servlet-name>
-		<url-pattern>/callcenter/callCenterServlet/*</url-pattern>
+		<url-pattern>/callcenterbk/callCenterServlet/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>discoveryServlet</servlet-name>
-		<url-pattern>/callcenter/discoveryServlet/*</url-pattern>
+		<url-pattern>/callcenterbk/discoveryServlet/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>initAppServlet</servlet-name>
-		<url-pattern>/callcenter/initAppServlet/*</url-pattern>
+		<url-pattern>/callcenterbk/initAppServlet/*</url-pattern>
 	</servlet-mapping>
 	
 	
@@ -218,7 +218,7 @@
 	</mime-mapping>
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>CallCenter.html</welcome-file>
+		<welcome-file>CallCenterBK.html</welcome-file>
 	</welcome-file-list>
 	<jsp-config>
 		<!-- Isomorphic JSP tags -->

@@ -1,7 +1,7 @@
 <DataSource
 	ID="TranspPlaceDS"
 	serverType="sql"
-	tableName="info.transport_places"
+	tableName="paata.transport_places"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 

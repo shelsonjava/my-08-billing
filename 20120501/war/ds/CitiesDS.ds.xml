@@ -1,5 +1,5 @@
 <DataSource ID="CitiesDS" serverType="sql"
-	tableName="info.cities" qualifyColumnNames="false">
+	tableName="paata.cities" qualifyColumnNames="false">
 	<fields>
 		<field name="city_id" 		type="integer"	title="City ID"  hidden="true" primaryKey="true" />
 		<field name="city_name_geo" type="text" 	title="City Name"/>

@@ -1,7 +1,7 @@
 <DataSource
 	ID="StatisticsByTelCompDS"
 	serverType="sql"
-	tableName="info.statistic_by_telcomp"
+	tableName="paata.statistic_by_telcomp"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 
@@ -26,7 +26,7 @@
 					tc.tel_comp_name_geo,
 					tc.tel_comp_id
 			</selectClause> 
-			<tableClause>info.statistic_by_telcomp t, info.tel_comps tc</tableClause>
+			<tableClause>paata.statistic_by_telcomp t, paata.tel_comps tc</tableClause>
 			<whereClause><![CDATA[
 				 t.tel_comp_id = tc.tel_comp_id
 				 #if($criteria.ym) and t.ym = $criteria.ym #end			 				

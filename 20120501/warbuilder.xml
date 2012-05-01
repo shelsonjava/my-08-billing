@@ -1,4 +1,4 @@
-<project name="CallCenter" basedir="." default="default">
+<project name="CallCenterBK" basedir="." default="default">
  	<target name="default" depends="buildwar,deploy"></target>
  	<target name="buildwar">
 		<war basedir="war" destfile="CallCenter.war" webxml="war/WEB-INF/web.xml">			
@@ -8,6 +8,6 @@
 		</war>
 	</target>
 	<target name="deploy">
-		<copy file="CallCenter.war" todir="." />
+		<copy file="CallCenterBK.war" todir="." />
 	</target>
 </project>

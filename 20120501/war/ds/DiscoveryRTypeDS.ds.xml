@@ -1,7 +1,7 @@
 <DataSource
 	ID="DiscoveryRTypeDS"
 	serverType="sql"
-	tableName="info.discover_rtypes"
+	tableName="paata.discover_rtypes"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

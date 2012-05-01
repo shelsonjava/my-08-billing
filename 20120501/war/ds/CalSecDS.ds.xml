@@ -1,7 +1,7 @@
 <DataSource
 	ID="CalSecDS"
 	serverType="sql"
-	tableName="info.secular_calendar"
+	tableName="paata.secular_calendar"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

@@ -1,7 +1,7 @@
 <DataSource
     ID="LogPersNotesDS"
     serverType="sql"
-    tableName="info.log_personell_notes"      
+    tableName="paata.log_personell_notes"      
     qualifyColumnNames="false"
     dropExtraFields = "false">
     <fields>

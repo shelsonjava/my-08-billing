@@ -1,7 +1,7 @@
 <DataSource 
 	ID="MainDetDS"
     serverType="sql"
-    tableName="info.main_details"      
+    tableName="paata.main_details"      
     qualifyColumnNames="false"
     dropExtraFields = "false">
     
@@ -67,7 +67,7 @@
 					       md.upd_user,
 					       md.upd_date,
 					       getorgdeptphones(main_detail_id) as phones
-					  FROM info.main_details md
+					  FROM paata.main_details md
 					 start with md.main_id = $criteria.p_main_id 
 					 and md.deleted = 0  
 					 #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||($criteria.main_detail_geo)||'%' #end
@@ -79,10 +79,10 @@
 					 
 					 #if($criteria.main_detail_note_geo) and md.main_detail_note_geo like '%'||($criteria.main_detail_note_geo)||'%' #end	
 					 #if($criteria.p_phones) 
-					 		and info.getPhones(md.main_detail_id)||' '||info.getContactPhones(md.main_detail_id) like '%'||($criteria.p_phones)||'%'
+					 		and paata.getPhones(md.main_detail_id)||' '||paata.getContactPhones(md.main_detail_id) like '%'||($criteria.p_phones)||'%'
 					 #end
 					 #if($criteria.p_cont_phones) 
-					 		and length(trim(info.getContactPhones(md.main_detail_id))) > 2
+					 		and length(trim(paata.getContactPhones(md.main_detail_id))) > 2
 					 #end
 					 connect by prior md.main_detail_master_id = md.main_detail_id and md.deleted = 0
 					union all 
@@ -116,7 +116,7 @@
 					       md.upd_user,
 					       md.upd_date,
 					       getorgdeptphones(main_detail_id) as phones
-					  FROM info.main_details md
+					  FROM paata.main_details md
 					 start with md.main_id = $criteria.p_main_id
 					 and md.deleted = 0 
 					 #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||($criteria.main_detail_geo)||'%' #end
@@ -128,10 +128,10 @@
 					 
 					 #if($criteria.main_detail_note_geo) and md.main_detail_note_geo like '%'||($criteria.main_detail_note_geo)||'%' #end
 					 #if($criteria.p_phones) 
-					 		and info.getPhones(md.main_detail_id)||' '||info.getContactPhones(md.main_detail_id) like '%'||($criteria.p_phones)||'%'
+					 		and paata.getPhones(md.main_detail_id)||' '||paata.getContactPhones(md.main_detail_id) like '%'||($criteria.p_phones)||'%'
 					 #end
 					 #if($criteria.p_cont_phones) 
-					 		and length(trim(info.getContactPhones(md.main_detail_id))) > 2
+					 		and length(trim(paata.getContactPhones(md.main_detail_id))) > 2
 					 #end
 					 connect by prior md.main_detail_id = md.main_detail_master_id and md.deleted = 0
 					) tt 
@@ -168,7 +168,7 @@
 				md.upd_date,
 				getorgdeptphones(main_detail_id) as phones
 			</selectClause>
-			<tableClause>info.main_details md</tableClause>
+			<tableClause>paata.main_details md</tableClause>
 			<whereClause>
 				 <![CDATA[
 				 	 1 = 1
@@ -188,7 +188,7 @@
     			md.main_detail_id,
     			md.main_detail_geo 
 			</selectClause> 
-			<tableClause>info.main_details md</tableClause>	
+			<tableClause>paata.main_details md</tableClause>	
 			<whereClause>
 					md.main_detail_type_id in (5,30,59,60,61) and md.deleted = 0 and	    
 				   ($defaultWhereClause)
@@ -203,7 +203,7 @@
     			main_id,
     			md.main_detail_geo 
 			</selectClause> 
-			<tableClause>info.main_details md</tableClause>	
+			<tableClause>paata.main_details md</tableClause>	
 			<whereClause>
 					md.main_detail_type_id in (5,30,59,60,61) and md.deleted = 0	    
 				    #if($criteria.main_id) and md.main_id = $criteria.main_id #end

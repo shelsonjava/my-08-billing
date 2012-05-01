@@ -29,9 +29,9 @@
   <bean id="oracle-ds" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
     <property name="url" value="jdbc:oracle:thin:@192.168.1.7:1521:ORCL"/>
-    <!-- ACTIVEMQ1,activemq -->
-    <property name="username" value="ACTIVEMQ1"/>
-    <property name="password" value="ACTIVEMQ1"/>
+    <!-- ACTIVEMQP,activemq -->
+    <property name="username" value="ACTIVEMQP"/>
+    <property name="password" value="ACTIVEMQP"/>
     <property name="poolPreparedStatements" value="true"/>
   </bean>
   

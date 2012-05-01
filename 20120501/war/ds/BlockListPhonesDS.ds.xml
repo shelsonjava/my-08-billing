@@ -1,7 +1,7 @@
 <DataSource
 	ID="BlockListPhonesDS"
 	serverType="sql"
-	tableName="info.block_list_phones"
+	tableName="paata.block_list_phones"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -16,7 +16,7 @@
 					t.phone,
 					t.block_list_id
 			</selectClause> 
-			<tableClause>info.block_list_phones t</tableClause>
+			<tableClause>paata.block_list_phones t</tableClause>
 			<whereClause><![CDATA[
 				 t.block_list_id = $criteria.block_list_id 
 				]]>  

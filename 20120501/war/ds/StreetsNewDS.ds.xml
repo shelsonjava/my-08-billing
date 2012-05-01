@@ -1,7 +1,7 @@
 <DataSource
 	ID="StreetsNewDS"
 	serverType="sql"
-	tableName="info.streets"
+	tableName="paata.streets"
 	qualifyColumnNames="false"
 	dropExtraFields="false">
 	<fields>
@@ -115,7 +115,7 @@
 				getSreetOldNames(t.street_id) as oldName
 								
 			</selectClause> 
-			<tableClause>info.streets t,info.cities c,street_district sd,city_regions sr</tableClause>
+			<tableClause>paata.streets t,paata.cities c,street_district sd,city_regions sr</tableClause>
 			<whereClause><![CDATA[ 
 				 t.city_id = c.city_id and
 				 t.street_id = sd.street_id(+) and
@@ -137,7 +137,7 @@
 				t.street_name_geo,
 				sd.city_region_id
 			</selectClause> 
-			<tableClause>info.streets t,street_district sd</tableClause>
+			<tableClause>paata.streets t,street_district sd</tableClause>
 			<whereClause><![CDATA[ 
 				t.street_id = sd.street_id(+) AND t.deleted = 0
 				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
@@ -153,7 +153,7 @@
     			t.street_id,
     			t.street_name_geo				
 			</selectClause> 
-			<tableClause>info.streets t</tableClause>
+			<tableClause>paata.streets t</tableClause>
 			<whereClause><![CDATA[ 
 				($defaultWhereClause) AND t.deleted = 0
 				]]>  
@@ -166,7 +166,7 @@
     			t.street_id,
     			t.street_name_geo				
 			</selectClause> 
-			<tableClause>info.streets t</tableClause>
+			<tableClause>paata.streets t</tableClause>
 			<whereClause><![CDATA[ 
 				($defaultWhereClause) AND t.deleted = 0 AND t.city_id = 2208
 				]]>  
