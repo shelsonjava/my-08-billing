@@ -44,26 +44,26 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EntDMI"/>
 
 		<!-- Add EntPoster -->
 		<operationBinding operationType="add" operationId="addEntPoster" serverMethod="addEntPoster">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EntDMI"/>
         </operationBinding>
         
 		<!-- EntPoster Update -->
 		<operationBinding operationType="update" operationId="updateEntPoster" serverMethod="updateEntPoster">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EntDMI"/>
         </operationBinding>
         
         <!-- EntPoster Status Update -->
 		<operationBinding operationType="update" operationId="updateEntPosterStatus" serverMethod="updateEntPosterStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EntDMI"/>
         </operationBinding>
         
         <!-- EntPoster Delete -->
 		<operationBinding operationType="remove" operationId="deleteEntPoster" serverMethod="deleteEntPoster">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EntDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchAllEntPosters" operationType="fetch">

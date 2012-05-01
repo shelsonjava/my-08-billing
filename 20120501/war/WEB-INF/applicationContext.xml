@@ -35,13 +35,13 @@
 	<!-- Job Classes -->
 	<!-- Discovery SMS Sender -->
 	<bean id="sendDiscoverySMSMessages"
-		class="com.info08.billing.callcenter.server.spring.jobs.DiscoverySMSSenderJob">
+		class="com.info08.billing.callcenterbk.server.spring.jobs.DiscoverySMSSenderJob">
 	</bean>
 	<!-- Discovery SMS Sender -->
 	
 	<!--  Sms Sender-->
 	<bean id="sendSMSMessages"
-		class="com.info08.billing.callcenter.server.spring.jobs.SMSSenderJob">
+		class="com.info08.billing.callcenterbk.server.spring.jobs.SMSSenderJob">
 	</bean>
 	<!--  Sms Sender-->
 	
@@ -88,7 +88,7 @@
 		<property name="timerTask" ref="contractorCheckerJob" />
 	</bean>
 	<bean id="contractorCheckerJob"
-		class="com.info08.billing.callcenter.server.spring.jobs.ContractorCheckerJob">
+		class="com.info08.billing.callcenterbk.server.spring.jobs.ContractorCheckerJob">
 	</bean>
 	<!-- Contractor Checker -->
 	

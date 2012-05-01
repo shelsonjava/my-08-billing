@@ -20,21 +20,21 @@
 	
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.GeoIndDMI"/>
 
 		<!-- Add Street Index -->
 		<operationBinding operationType="add" operationId="addStreetIndex" serverMethod="addStreetIndex">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.GeoIndDMI"/>
         </operationBinding>
         
 		<!-- Street Index Update -->
 		<operationBinding operationType="update" operationId="updateStreetIndex" serverMethod="updateStreetIndex">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.GeoIndDMI"/>
         </operationBinding>
         
         <!-- Street Index Status Update -->
 		<operationBinding operationType="update" operationId="updateStreetIndexStatus" serverMethod="updateStreetIndexStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.GeoIndDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchStreetIndexesFromDB" operationType="fetch">

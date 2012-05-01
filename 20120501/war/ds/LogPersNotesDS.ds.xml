@@ -24,23 +24,23 @@
     </fields>
      <operationBindings>
 
-     	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.LogPersNotesDMI"/>
+     	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.LogPersNotesDMI"/>
 	    
 	    <!-- Update Personel Note -->
 		<operationBinding operationType="update" operationId="updatePersNote" serverMethod="updatePersNote">
-	           <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.LogPersNotesDMI"/>
+	           <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.LogPersNotesDMI"/>
 	    </operationBinding>
 	    
 	    <operationBinding operationType="add" operationId="add" serverMethod="add">
-	           <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.LogPersNotesDMI"/>
+	           <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.LogPersNotesDMI"/>
 	    </operationBinding>
 	    
 	    <operationBinding operationType="update" operationId="update" serverMethod="update">
-	           <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.LogPersNotesDMI"/>
+	           <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.LogPersNotesDMI"/>
 	    </operationBinding>
 	    
 	    <operationBinding operationType="remove" operationId="deleteLogPersNoteItem" serverMethod="deleteLogPersNoteItem">
-	           <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.LogPersNotesDMI"/>
+	           <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.LogPersNotesDMI"/>
 	    </operationBinding>
      
     	<operationBinding operationId="notesCustSearch" operationType="fetch">

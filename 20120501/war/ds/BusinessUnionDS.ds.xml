@@ -21,17 +21,17 @@
 
 		<!-- Add BusinessUnion -->
 		<operationBinding operationType="add" operationId="addBusinessUnion" serverMethod="addBusinessUnion">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
 		<!-- BusinessUnion Update -->
 		<operationBinding operationType="update" operationId="updateBusinessUnion" serverMethod="updateBusinessUnion">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
         <!-- BusinessUnion Status Update -->
 		<operationBinding operationType="update" operationId="updateBusinessUnionStatus" serverMethod="updateBusinessUnionStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
     	<operationBinding operationId="searchAllBusinessUnions" operationType="fetch">

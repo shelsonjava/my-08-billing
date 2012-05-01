@@ -25,21 +25,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
 
 		<!-- Add SecularCalendar -->
 		<operationBinding operationType="add" operationId="addSecularCalendar" serverMethod="addSecularCalendar">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
 		<!-- SecularCalendar Update -->
 		<operationBinding operationType="update" operationId="updateSecularCalendar" serverMethod="updateSecularCalendar">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
         <!-- SecularCalendar Status Update -->
 		<operationBinding operationType="update" operationId="updateSecularCalendarStatus" serverMethod="updateSecularCalendarStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchAllSecularCalendars" operationType="fetch">

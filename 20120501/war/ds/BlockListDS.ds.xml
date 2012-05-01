@@ -26,21 +26,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.BlockListManagerDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BlockListManagerDMI"/>
 
 		<!-- Add BlockList -->
 		<operationBinding operationType="add" operationId="addBlockList" serverMethod="addBlockList">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.BlockListManagerDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BlockListManagerDMI"/>
         </operationBinding>
         
 		<!-- BlockList Update -->
 		<operationBinding operationType="update" operationId="updateBlockList" serverMethod="updateBlockList">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.BlockListManagerDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BlockListManagerDMI"/>
         </operationBinding>
         
         <!-- BlockList Status Update -->
 		<operationBinding operationType="update" operationId="updateBlockListStatus" serverMethod="updateBlockListStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.BlockListManagerDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BlockListManagerDMI"/>
         </operationBinding>
        
     	<operationBinding operationId="searchAllBlockList" operationType="fetch">

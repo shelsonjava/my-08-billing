@@ -47,27 +47,27 @@
     	
     	<!-- Searching Cities From Database -->
     	<operationBinding operationId="citiesSearchFromDB" operationType="fetch" serverMethod="fetchAllCitiesFromDB">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>
     	
     	<!-- Searching Cities - Cached -->
     	<operationBinding operationId="citiesSearchCached" operationType="fetch" serverMethod="fetchAllCities">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>
     	
     	<!-- Add New City -->
 		<operationBinding operationId="cityAdd" operationType="add" serverMethod="cityAdd">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <!-- Modify City -->
 		<operationBinding operationId="cityUpdate" operationType="update" serverMethod="cityUpdate">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <!-- Modify City Status -->
 		<operationBinding operationId="cityStatusUpdate" operationType="update" serverMethod="cityStatusUpdate">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <!-- Search From DB -->

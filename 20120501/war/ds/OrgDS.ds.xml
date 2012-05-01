@@ -77,17 +77,17 @@
 	
 		 <!-- Sort Order Update For Orgs -->
 		<operationBinding operationType="update" operationId="updateMainServiceOrders" serverMethod="updateMainServiceOrders">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
         <!-- Delete Or Restore Update For Orgs -->
 		<operationBinding operationType="update" operationId="updateMainOrgDeleteOrRestore" serverMethod="updateMainOrgDeleteOrRestore">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
         <!-- Status Update For Orgs -->
 		<operationBinding operationType="update" operationId="updateMainOrgStatus" serverMethod="updateMainOrgStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
 	
 		<!-- Main Service Update On Drag And Drop -->

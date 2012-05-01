@@ -23,21 +23,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CurrencyDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
 
 		<!-- Add RateCurr -->
 		<operationBinding operationType="add" operationId="addRateCurr" serverMethod="addRateCurr">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CurrencyDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
         </operationBinding>
         
 		<!-- RateCurr Update -->
 		<operationBinding operationType="update" operationId="updateRateCurr" serverMethod="updateRateCurr">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CurrencyDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
         </operationBinding>
         
         <!-- RateCurr Status Update -->
 		<operationBinding operationType="update" operationId="updateRateCurrStatus" serverMethod="updateRateCurrStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CurrencyDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchAllRateCurrs" operationType="fetch">

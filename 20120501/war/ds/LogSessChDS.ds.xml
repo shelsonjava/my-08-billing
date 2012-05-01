@@ -56,7 +56,7 @@
     	
         <!-- Add Log Session Charge -->
 		<operationBinding operationType="add" operationId="addLogSessionCharge" serverMethod="addLogSessionCharge">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
         <!-- Log SMS -->

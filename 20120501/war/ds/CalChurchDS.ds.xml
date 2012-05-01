@@ -24,21 +24,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
 
 		<!-- Add ChurchCalendar -->
 		<operationBinding operationType="add" operationId="addChurchCalendar" serverMethod="addChurchCalendar">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
 		<!-- ChurchCalendar Update -->
 		<operationBinding operationType="update" operationId="updateChurchCalendar" serverMethod="updateChurchCalendar">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
         <!-- ChurchCalendar Status Update -->
 		<operationBinding operationType="update" operationId="updateChurchCalendarStatus" serverMethod="updateChurchCalendarStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchAllChurchCalendars" operationType="fetch">

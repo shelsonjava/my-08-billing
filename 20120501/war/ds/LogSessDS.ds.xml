@@ -18,23 +18,23 @@
 		<field name="virt_call_type" type="integer" title="virt_call_type" hidden="true"/>		
 	</fields>
 
-	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.SessQualityDMI"/>
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SessQualityDMI"/>
 
 	<operationBindings>
 		<!-- UPDATE -->
 		<operationBinding operationType="update" operationId="update" serverMethod="update">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.SessQualityDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SessQualityDMI"/>
         </operationBinding>
         
         <operationBinding operationType="add" operationId="addChargesWithoutCall" serverMethod="addChargesWithoutCall">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.SessQualityDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SessQualityDMI"/>
         </operationBinding>
         
         <!-- FETCH -->
 		<operationBinding operationId="customSearch"
 			operationType="fetch"
 			customFields="personnel_id, session_id, ym, user_name, start_date, phone, duration, hangUp, chargeCount, session_quality, session_quality_desc, person_name">			
-			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.LogSessionItem"/>
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.LogSessionItem"/>
 			<selectClause>
 				p.personnel_id,
 				s.session_id,

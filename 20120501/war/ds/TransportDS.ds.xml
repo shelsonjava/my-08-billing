@@ -47,20 +47,20 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
 		<!-- Add Transport -->
 		<operationBinding operationType="add" operationId="addTransport" serverMethod="addTransport">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
 		<!-- Transport Update -->
 		<operationBinding operationType="update" operationId="updateTransport" serverMethod="updateTransport">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
         <!-- Transport Status Update -->
 		<operationBinding operationType="update" operationId="updateTransportStatus" serverMethod="updateTransportStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchAllTransports" operationType="fetch">

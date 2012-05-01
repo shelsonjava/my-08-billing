@@ -21,17 +21,17 @@
 
 		<!-- Add BusinessSector -->
 		<operationBinding operationType="add" operationId="addBusinessSector" serverMethod="addBusinessSector">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
 		<!-- BusinessSector Update -->
 		<operationBinding operationType="update" operationId="updateBusinessSector" serverMethod="updateBusinessSector">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
         <!-- BusinessSector Status Update -->
 		<operationBinding operationType="update" operationId="updateBusinessSectorStatus" serverMethod="updateBusinessSectorStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
     	<operationBinding operationId="searchAllBusinessSectors" operationType="fetch">

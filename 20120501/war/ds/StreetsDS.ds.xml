@@ -12,13 +12,13 @@
 	<operationBindings>
 		<!-- FETCH - Cached -->
 		<operationBinding operationId="streetSearchCached" operationType="fetch" serverMethod="fetchStreets">
-	    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+	    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 	   	</operationBinding>
 	   	
 		<!-- FETCH -->
 		<operationBinding operationId="customStreetsSearch"
 			operationType="fetch" customFields="street_district_id, street_id, city_id, street_name_geo,deleted,street_location_geo,city_region_id ">			
-			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.Street"/>
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.Street"/>
 			<selectClause>
 				d.street_district_id,
       			t.street_id,

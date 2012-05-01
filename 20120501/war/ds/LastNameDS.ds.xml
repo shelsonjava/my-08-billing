@@ -14,24 +14,24 @@
 	
 	<operationBindings>
 	
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 	
 		<!-- Add LastName -->
 		<operationBinding operationType="add" operationId="addLastName" serverMethod="addLastName">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
 		<!-- LastName Update -->
 		<operationBinding operationType="update" operationId="updateLastName" serverMethod="updateLastName">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <!-- LastName Status Update -->
 		<operationBinding operationType="update" operationId="updateLastNameStatus" serverMethod="updateLastNameStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
 		<operationBinding operationId="lastNameSearch" operationType="fetch" serverMethod="fetchLastNames">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>	
     	<operationBinding operationId="searchFromDB" operationType="fetch" customFields="lastname_Id,lastname,rec_date,deleted,deletedText">
     		<selectClause>   			

@@ -22,27 +22,27 @@
     	
     	<!-- Searching Countries From Database -->
     	<operationBinding operationId="countriesSearchFromDB" operationType="fetch" serverMethod="fetchAllCountriesFromDB">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>
     	
     	<!-- Searching Countries - Cached -->
     	<operationBinding operationId="countriesSearchCached" operationType="fetch" serverMethod="fetchAllCountries">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>
     	
     	<!-- Add New Country -->
 		<operationBinding operationId="countryAdd" operationType="add" serverMethod="countryAdd">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <!-- Modify Country -->
 		<operationBinding operationId="countryUpdate" operationType="update" serverMethod="countryUpdate">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <!-- Modify Country Status -->
 		<operationBinding operationId="countryStatusUpdate" operationType="update" serverMethod="countryStatusUpdate">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <operationBinding operationId="searchAllCountriesForCombos" operationType="fetch">

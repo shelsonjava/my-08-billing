@@ -7,10 +7,10 @@
         <field name="image_ext"  title="Image Ext"   type="text"/>    
     </fields>
     
-	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.UploadImageDMI" />    
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.UploadImageDMI" />    
     <operationBindings>
 		<binding operationType="viewFile" serverMethod="viewFile">    
-	    	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.UploadImageDMI" />
+	    	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.UploadImageDMI" />
 	    </binding>
     </operationBindings>   
 </DataSource>

@@ -17,21 +17,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
 
 		<!-- Add DiscoverType -->
 		<operationBinding operationType="add" operationId="addDiscoverType" serverMethod="addDiscoverType">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
         </operationBinding>
 
 		<!-- DiscoverType Update -->
 		<operationBinding operationType="update" operationId="updateDiscoverType" serverMethod="updateDiscoverType">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
         </operationBinding>
 
         <!-- DiscoverType Status Update -->
 		<operationBinding operationType="update" operationId="updateDiscoverTypeStatus" serverMethod="updateDiscoverTypeStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
         </operationBinding>
         
     	<operationBinding operationId="searchDiscoverTypes" operationType="fetch">

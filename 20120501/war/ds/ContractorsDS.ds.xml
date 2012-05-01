@@ -46,46 +46,46 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
 
 		<!-- Add Contractor -->
 		<operationBinding operationType="add" operationId="addContractor" serverMethod="addContractor">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
 		<!-- Contractor Update -->
 		<operationBinding operationType="update" operationId="updateContractor" serverMethod="updateContractor">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
         <!-- Delete Contractor -->
 		<operationBinding operationType="update" operationId="removeContractor" serverMethod="removeContractor">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
         <!-- Check Contractor -->
 		<operationBinding operationType="update" operationId="checkContractorNumbers" serverMethod="checkContractorNumbers">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
         <!-- Getting Contractor Call Count -->
 		<operationBinding operationType="update" operationId="getContractorCallCnt" serverMethod="getContractorCallCnt">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
         <!-- Getting Contractor Call Charges -->
 		<operationBinding operationType="update" operationId="getContractorCharges" serverMethod="getContractorCharges">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
         <!-- Block Contractor -->
 		<operationBinding operationType="update" operationId="blockUnBlockContractor" serverMethod="blockUnBlockContractor">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
         <!-- Contractor Range Price Update Manually -->
         <operationBinding operationType="update" operationId="updateContractorRangePrice" serverMethod="updateContractorRangePrice">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>        
         
     	<operationBinding operationId="searchAllContractors" operationType="fetch">

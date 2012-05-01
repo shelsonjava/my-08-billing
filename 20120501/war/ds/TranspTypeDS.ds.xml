@@ -19,21 +19,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
 
 		<!-- Add TransportType -->
 		<operationBinding operationType="add" operationId="addTransportType" serverMethod="addTransportType">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
 		<!-- TransportType Update -->
 		<operationBinding operationType="update" operationId="updateTransportType" serverMethod="updateTransportType">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
         <!-- TransportType Status Update -->
 		<operationBinding operationType="update" operationId="updateTransportTypeStatus" serverMethod="updateTransportTypeStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchAllTransportTypes" operationType="fetch">

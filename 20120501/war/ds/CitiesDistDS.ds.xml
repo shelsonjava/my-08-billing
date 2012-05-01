@@ -26,21 +26,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 
 		<!-- Add CityDistance -->
 		<operationBinding operationType="add" operationId="addCityDistance" serverMethod="addCityDistance">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
 		<!-- CityDistance Update -->
 		<operationBinding operationType="update" operationId="updateCityDistance" serverMethod="updateCityDistance">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <!-- CityDistance Status Update -->
 		<operationBinding operationType="update" operationId="updateCityDistanceStatus" serverMethod="updateCityDistanceStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchFromDB" operationType="fetch">

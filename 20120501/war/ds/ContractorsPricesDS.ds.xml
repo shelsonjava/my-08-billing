@@ -16,7 +16,7 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.ContractorsDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
 
     	<operationBinding operationId="searchContractorPrices" operationType="fetch">
     		<selectClause>

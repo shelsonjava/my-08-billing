@@ -22,7 +22,7 @@
 		<field name="phone_type_id"		type="integer"	title="Phone Type ID"		hidden="true"/>
 		<field name="phone_type"		type="text"		title="Phone Type"/>
 	</fields>	
-	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 	
 	<operationBindings>
 		<operationBinding operationId="getPhonesByAbonentId" operationType="fetch">    		

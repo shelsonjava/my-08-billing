@@ -43,28 +43,28 @@
 	
 		<!-- Add Abonent -->
 		<operationBinding operationType="add" operationId="addAbonent" serverMethod="saveOrUpdateAbonent">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.AbonentDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.AbonentDMI"/>
         </operationBinding>
         
         <!-- Update Abonent -->
 		<operationBinding operationType="update" operationId="updateAbonent" serverMethod="saveOrUpdateAbonent">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.AbonentDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.AbonentDMI"/>
         </operationBinding>
         
         <!-- Update Abonent Status -->
 		<operationBinding operationType="update" operationId="updateAbonentStatus" serverMethod="setAbonentStatusToDelete">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.AbonentDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.AbonentDMI"/>
         </operationBinding>
         
         <!-- Search organizations by phone for abonent -->
 		<operationBinding operationType="fetch" operationId="getOrgInfoByPhoneForAbonent" serverMethod="getOrgInfosByPhone">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.AbonentDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.AbonentDMI"/>
         </operationBinding>
         
 		<!-- FETCH -->
 		<operationBinding operationId="customSearch"
 			operationType="fetch">			
-			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.Abonent"/>
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.Abonent"/>
 			<selectClause>				
       			t.abonent_id,
       			t.main_id,
@@ -154,7 +154,7 @@
 		<!-- FETCH -->
 		<operationBinding operationId="customSearchForCC"
 			operationType="fetch">			
-			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.Abonent"/>
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.Abonent"/>
 			<selectClause>	/*+ use_nl(t,tt,f,l,p,ap,ps,ma,str,c,sd) */			
       			t.abonent_id,
       			t.main_id,

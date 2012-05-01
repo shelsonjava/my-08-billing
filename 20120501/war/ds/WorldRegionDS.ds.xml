@@ -12,12 +12,12 @@
 		<field name="deleted"					type="integer"	title="Deleted" hidden="true"/>
 	</fields>
 
-	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 
 	<operationBindings>
     	<!-- Searching World Regions - Cached -->
 		<operationBinding operationId="worldRegionsSearch" operationType="fetch" serverMethod="fetchWorldRegions">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>
     	    
     </operationBindings>

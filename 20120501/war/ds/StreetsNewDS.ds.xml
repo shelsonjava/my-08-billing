@@ -51,26 +51,26 @@
 	
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 
 		<!-- Add Street -->
 		<operationBinding operationType="add" operationId="addStreetEnt" serverMethod="addStreetEnt">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
 		<!-- Street Update -->
 		<operationBinding operationType="update" operationId="updateStreetEnt" serverMethod="updateStreetEnt">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <!-- Street Status Update -->
 		<operationBinding operationType="update" operationId="updateStreetEntStatus" serverMethod="updateStreetEntStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
 	
 		<!-- Fetching Streets - Cached  -->
 		<operationBinding operationId="fetchStreetEnts" operationType="fetch" serverMethod="fetchStreetEnts">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>    	
     	
     	<operationBinding operationId="fetchStreetsFromDB" operationType="fetch">

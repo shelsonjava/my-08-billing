@@ -10,7 +10,7 @@
 		<!-- FETCH -->
 		<operationBinding operationId="customCitiesSearch"
 			operationType="fetch" customFields="city_id, city_name_geo, is_capital">			
-			<serverObject lookupStyle="new" className="com.info08.billing.callcenter.shared.items.City"/>
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.City"/>
 			<selectClause>				
       			t.city_id,
       			t.city_name_geo,

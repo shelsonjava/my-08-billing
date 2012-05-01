@@ -1,7 +1,7 @@
 <DataSource
 	ID="CityTypeDS"
 	serverConstructor="com.isomorphic.jpa.JPADataSource"  
-    beanClassName="com.info08.billing.callcenter.shared.entity.CityType">
+    beanClassName="com.info08.billing.callcenterbk.shared.entity.CityType">
 	<fields>
 		<field name="city_type_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
 		<field name="city_type_geo"		type="text" 	title="City Type Geo"/>			
@@ -11,12 +11,12 @@
 		<field name="deleted"			type="integer"	title="Deleted" hidden="true"/>
 	</fields>
 
-	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 
 	<operationBindings>
 		<!-- Searching City Types - Cached -->
 		<operationBinding operationId="cityTypesSearch" operationType="fetch" serverMethod="fetchCityTypes">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>
     	
     	<operationBinding operationId="searchAllCityTypesForCombos" operationType="fetch">

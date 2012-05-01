@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
 	<listener>
-		<listener-class>com.info08.billing.callcenter.server.listener.MyContextListener</listener-class>
+		<listener-class>com.info08.billing.callcenterbk.server.listener.MyContextListener</listener-class>
 	</listener>
 
 	<context-param>
@@ -50,7 +50,7 @@
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
 			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>com.info08.billing.callcenter.server.ws</param-value>
+			<param-value>com.info08.billing.callcenterbk.server.ws</param-value>
 		</init-param>  
         <load-on-startup>1</load-on-startup>  
     </servlet>
@@ -74,7 +74,7 @@
 	<!--  Setting Character Encoding -->
 	<filter>
 		<filter-name>CharsetFilter</filter-name>
-		<filter-class>com.info08.billing.callcenter.server.servlets.SetCharacterEncodingFilter</filter-class>
+		<filter-class>com.info08.billing.callcenterbk.server.servlets.SetCharacterEncodingFilter</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
@@ -120,19 +120,19 @@
 		
 	<servlet>
 		<servlet-name>commonServiceServlet</servlet-name>
-		<servlet-class>com.info08.billing.callcenter.server.impl.CommonServiceImpl</servlet-class>
+		<servlet-class>com.info08.billing.callcenterbk.server.impl.CommonServiceImpl</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>callCenterServlet</servlet-name>
-		<servlet-class>com.info08.billing.callcenter.server.listener.CallCenterServlet</servlet-class>
+		<servlet-class>com.info08.billing.callcenterbk.server.listener.CallCenterServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>discoveryServlet</servlet-name>
-		<servlet-class>com.info08.billing.callcenter.server.listener.DiscoveryServlet</servlet-class>
+		<servlet-class>com.info08.billing.callcenterbk.server.listener.DiscoveryServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>initAppServlet</servlet-name>
-		<servlet-class>com.info08.billing.callcenter.server.servlets.InitAppServlet</servlet-class>
+		<servlet-class>com.info08.billing.callcenterbk.server.servlets.InitAppServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>Init</servlet-name>

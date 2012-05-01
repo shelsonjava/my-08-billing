@@ -21,42 +21,42 @@
         <field name="schedule_txt" 		type="text" 	title="schedule_txt" hidden="true"/>
 	</fields>
 	
-	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.PersonsDMI"/>
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.PersonsDMI"/>
 	
 	<operationBindings>
 		<!-- Add User -->
 		<operationBinding operationId="customAdd" operationType="add" serverMethod="customAdd">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.PersonsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.PersonsDMI"/>
         </operationBinding>
         
         <!-- Modify User -->
 		<operationBinding operationId="customUpdate" operationType="update" serverMethod="customUpdate">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.PersonsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.PersonsDMI"/>
         </operationBinding>
         
         <!-- Modify User Status -->
 		<operationBinding operationId="customStatusUpdate" operationType="update" serverMethod="customUpdateStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.PersonsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.PersonsDMI"/>
         </operationBinding>
         
         <!-- Custom Search -->
         <operationBinding operationId="customPersSearch" operationType="fetch" serverMethod="fetchAdvOrdered">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.PersonsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.PersonsDMI"/>
         </operationBinding>
 
         <!-- Custom Search Cached -->
         <operationBinding operationId="customPersSearchAll"  operationType="fetch" serverMethod="fetchAllData">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.PersonsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.PersonsDMI"/>
         </operationBinding>
         
         <!-- Custom Search - DB-->
         <operationBinding operationId="customPersSearchAllFromDB"  operationType="fetch" serverMethod="fetchAllDataFromDB">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.PersonsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.PersonsDMI"/>
         </operationBinding>
         
         <!-- Login -->
         <operationBinding operationId="login"  operationType="add" serverMethod="login">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.PersonsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.PersonsDMI"/>
         </operationBinding>
         
         

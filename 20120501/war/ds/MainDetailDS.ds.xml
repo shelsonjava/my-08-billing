@@ -26,21 +26,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
 
 		<!-- Add MainDetail -->
 		<operationBinding operationType="add" operationId="addMainDetail" serverMethod="addOrUpdateMainDetail">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
 		<!-- MainDetail Update -->
 		<operationBinding operationType="update" operationId="updateMainDetail" serverMethod="addOrUpdateMainDetail">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
         <!-- MainDetail Status Update -->
 		<operationBinding operationType="update" operationId="updateMainDetailStatus" serverMethod="addOrUpdateMainDetail">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchMainDetails" operationType="fetch">

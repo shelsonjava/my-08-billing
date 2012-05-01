@@ -25,17 +25,17 @@
 
 		<!-- Add BusinessDetail -->
 		<operationBinding operationType="add" operationId="addBusinessDetail" serverMethod="addBusinessDetail">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
 		<!-- BusinessDetailr Update -->
 		<operationBinding operationType="update" operationId="updateBusinessDetail" serverMethod="updateBusinessDetail">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
         <!-- BusinessDetail Status Update -->
 		<operationBinding operationType="update" operationId="updateBusinessDetailStatus" serverMethod="updateBusinessDetailStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
         </operationBinding>
         
     	<operationBinding operationId="searchAllBusinessDetails" operationType="fetch">

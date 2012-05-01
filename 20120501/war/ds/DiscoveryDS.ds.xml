@@ -32,7 +32,7 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
 		
 		
 		<!-- add New Discovery Record -->
@@ -63,12 +63,12 @@
 
 		<!-- Discover Update -->
 		<operationBinding operationType="update" operationId="updateDiscoverItem" serverMethod="updateDiscoverItem">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
         </operationBinding>
         
         <!-- Discover Update -->
 		<operationBinding operationType="update" operationId="takeDiscover" serverMethod="takeDiscover">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
         </operationBinding>
         
         

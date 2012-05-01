@@ -1,5 +1,5 @@
 <DataSource ID="ServiceDS" serverConstructor="com.isomorphic.jpa.JPADataSource"
-	beanClassName="com.info08.billing.callcenter.shared.entity.Service">
+	beanClassName="com.info08.billing.callcenterbk.shared.entity.Service">
 	<fields>
 		<field name="serviceId" type="integer" hidden="true" primaryKey="true" />
 		<field name="serviceNameGeo" type="text" title="Service Name" />

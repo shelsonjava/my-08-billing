@@ -18,21 +18,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
 
 		<!-- Add DiscoverRtypes -->
 		<operationBinding operationType="add" operationId="addDiscoverRtypes" serverMethod="addDiscoverRtypes">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
         </operationBinding>
 
 		<!-- DiscoverRtypes Update -->
 		<operationBinding operationType="update" operationId="updateDiscoverRtypes" serverMethod="updateDiscoverRtypes">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
         </operationBinding>
 
         <!-- DiscoverRtypes Status Update -->
 		<operationBinding operationType="update" operationId="updateDiscoverRtypesStatus" serverMethod="updateDiscoverRtypesStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DiscoveryDMI"/>
         </operationBinding>
         
     	<operationBinding operationId="searchDiscoverRtypes" operationType="fetch">

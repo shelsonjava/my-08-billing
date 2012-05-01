@@ -32,34 +32,34 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TelCompsDMI"/>
 
 		<!-- Add TelComp -->
 		<operationBinding operationType="add" operationId="addTelComp" serverMethod="addTelComp">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TelCompsDMI"/>
         </operationBinding>
         
 		<!--  TelComp Update -->
 		<operationBinding operationType="update" operationId="updateTelComp" serverMethod="updateTelComp">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TelCompsDMI"/>
         </operationBinding>
         
         <!-- Checking Tel. Comp. Indexes -->
         <!-- 
         <operationBinding operationType="validate" operationId="checkTelCompIndexes" serverMethod="checkTelCompIndexes">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TelCompsDMI"/>
         </operationBinding>
          -->
         
         <!-- Delete  TelComp -->
 		<operationBinding operationType="remove" operationId="removeTelComp" serverMethod="removeTelComp">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TelCompsDMI"/>
         </operationBinding>
          
          <!--              
          <validators>
                 <validator type="serverCustom" operationId="condition">
-                    <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TelCompsDMI"/>
+                    <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TelCompsDMI"/>
                     <errorMessage>Only $available in stock</errorMessage>
                 </validator>
          </validators>

@@ -26,21 +26,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
 
 		<!-- Add BusRoute -->
 		<operationBinding operationType="add" operationId="addBusRoute" serverMethod="addBusRoute">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
 		<!-- BusRoute Update -->
 		<operationBinding operationType="update" operationId="updateBusRoute" serverMethod="updateBusRoute">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
         <!-- BusRoute Status Update -->
 		<operationBinding operationType="update" operationId="updateBusRouteStatus" serverMethod="updateBusRouteStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.TransportDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchAllBusRoutes" operationType="fetch">

@@ -15,13 +15,13 @@
 		<field name="upd_user"				type="text"		title="Update User"/>
 	</fields>
 	
-	<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 	
 	<operationBindings>		
 	
 		<!-- StreetType Status Update -->
 		<operationBinding operationType="update" operationId="updateStreetsOldEntStatus" serverMethod="updateStreetsOldEntStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchFromDB" operationType="fetch" 

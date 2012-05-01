@@ -21,17 +21,17 @@
 
 		<!-- Add MobileOperatorPrefix -->
 		<operationBinding operationType="add" operationId="addMobileOperatorPrefix" serverMethod="addMobileOperatorPrefix">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
 
 		<!-- MobileOperatorPrefix Update -->
 		<operationBinding operationType="update" operationId="updateMobileOperatorPrefix" serverMethod="updateMobileOperatorPrefix">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
 
         <!-- DiscoverRtypes Status Update -->
 		<operationBinding operationType="update" operationId="updateMobileOperatorPrefixStatus" serverMethod="updateMobileOperatorPrefixStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.MiscDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
     	<operationBinding operationId="searchMobOperPrefs" operationType="fetch">

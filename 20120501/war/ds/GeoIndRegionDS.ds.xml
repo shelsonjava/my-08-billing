@@ -19,21 +19,21 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.GeoIndDMI"/>
 
 		<!-- Add GeoIndRegion -->
 		<operationBinding operationType="add" operationId="addGeoIndRegion" serverMethod="addGeoIndRegion">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.GeoIndDMI"/>
         </operationBinding>
         
 		<!-- GeoIndRegion Update -->
 		<operationBinding operationType="update" operationId="updateGeoIndRegion" serverMethod="updateGeoIndRegion">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.GeoIndDMI"/>
         </operationBinding>
         
         <!-- GeoIndRegion Status Update -->
 		<operationBinding operationType="update" operationId="updateGeoIndRegionStatus" serverMethod="updateGeoIndRegionStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.GeoIndDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.GeoIndDMI"/>
         </operationBinding>
 	
     	<operationBinding operationId="searchGeoIndRegionFromDB" operationType="fetch">

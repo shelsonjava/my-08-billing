@@ -20,26 +20,26 @@
 
 	<operationBindings>
 	
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 
 		<!-- Add City Region -->
 		<operationBinding operationType="add" operationId="addCityRegion" serverMethod="addCityRegion">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
 		<!-- Update City Region -->
 		<operationBinding operationType="update" operationId="updateCityRegion" serverMethod="updateCityRegion">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <!-- Update City Region Status -->
 		<operationBinding operationType="update" operationId="updateCityRegionStatus" serverMethod="updateCityRegionStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
 	
 		<!-- Fetching City Regions - Cached  -->
 		<operationBinding operationId="fetchCityRegions" operationType="fetch" serverMethod="fetchCityRegions">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>    	
 
 		<!-- FETCH -->
