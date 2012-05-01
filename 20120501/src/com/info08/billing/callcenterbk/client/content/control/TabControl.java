@@ -8,7 +8,7 @@ import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.bramosystems.oss.player.core.client.ui.FlashMediaPlayer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.control.DlgAddEditSessQuality;
 import com.info08.billing.callcenterbk.client.dialogs.control.LogSMSDialog;
 import com.info08.billing.callcenterbk.client.dialogs.control.NotesDialog;
@@ -651,7 +651,7 @@ public class TabControl extends Tab {
 
 	private void downloadFile(String sessionId, Date date) {
 		try {
-			CallCenter.commonService.findSessionMp3ById(sessionId, date,
+			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
 					new AsyncCallback<String>() {
 
 						@Override
@@ -676,7 +676,7 @@ public class TabControl extends Tab {
 
 	private void getURL(String sessionId, Date date) {
 		try {
-			CallCenter.commonService.findSessionMp3ById(sessionId, date,
+			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
 					new AsyncCallback<String>() {
 
 						@Override

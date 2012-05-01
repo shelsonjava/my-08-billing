@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.misc;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -33,8 +33,8 @@ public class DlgAddEditWebSiteGroup extends Window {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenter.constants.addSiteGroupTitle()
-					: CallCenter.constants.editSiteGroupTitle());
+			setTitle(pRecord == null ? CallCenterBK.constants.addSiteGroupTitle()
+					: CallCenterBK.constants.editSiteGroupTitle());
 
 			setHeight(100);
 			setWidth(430);
@@ -60,7 +60,7 @@ public class DlgAddEditWebSiteGroup extends Window {
 			hLayout.addMember(dynamicForm);
 
 			mainDetTypeNameGeoItem = new TextItem();
-			mainDetTypeNameGeoItem.setTitle(CallCenter.constants.description());
+			mainDetTypeNameGeoItem.setTitle(CallCenterBK.constants.description());
 			mainDetTypeNameGeoItem.setName("main_detail_type_name_geo");
 			mainDetTypeNameGeoItem.setWidth(300);
 
@@ -71,11 +71,11 @@ public class DlgAddEditWebSiteGroup extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -122,7 +122,7 @@ public class DlgAddEditWebSiteGroup extends Window {
 					.getValueAsString();
 			if (main_detail_type_name_geo == null
 					|| main_detail_type_name_geo.trim().equals("")) {
-				SC.say(CallCenter.constants.enterDescription());
+				SC.say(CallCenterBK.constants.enterDescription());
 				return;
 			}
 

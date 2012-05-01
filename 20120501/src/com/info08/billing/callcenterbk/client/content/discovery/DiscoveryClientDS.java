@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.discovery;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.fields.DataSourceDateTimeField;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
@@ -28,14 +28,14 @@ public class DiscoveryClientDS extends DataSource {
 		DataSourceIntegerField response_type_id = new DataSourceIntegerField("response_type_id");
 		DataSourceDateTimeField upd_date = new DataSourceDateTimeField("upd_date");
 		DataSourceTextField upd_user = new DataSourceTextField("upd_user");
-		DataSourceTextField discover_type = new DataSourceTextField("discover_type",CallCenter.constants.type());
-		DataSourceTextField phone = new DataSourceTextField("phone",CallCenter.constants.phone());		
-		DataSourceTextField contact_phone = new DataSourceTextField("contact_phone",CallCenter.constants.contactPhone());
-		DataSourceTextField contact_person = new DataSourceTextField("contact_person",CallCenter.constants.contactPerson());
-		DataSourceTextField discover_txt = new DataSourceTextField("discover_txt",CallCenter.constants.message());
-		DataSourceTextField rec_user = new DataSourceTextField("rec_user",CallCenter.constants.shortOp());
-		DataSourceDateTimeField rec_date = new DataSourceDateTimeField("rec_date",CallCenter.constants.time());
-		DataSourceTextField status_descr = new DataSourceTextField("status_descr",CallCenter.constants.status());
+		DataSourceTextField discover_type = new DataSourceTextField("discover_type",CallCenterBK.constants.type());
+		DataSourceTextField phone = new DataSourceTextField("phone",CallCenterBK.constants.phone());		
+		DataSourceTextField contact_phone = new DataSourceTextField("contact_phone",CallCenterBK.constants.contactPhone());
+		DataSourceTextField contact_person = new DataSourceTextField("contact_person",CallCenterBK.constants.contactPerson());
+		DataSourceTextField discover_txt = new DataSourceTextField("discover_txt",CallCenterBK.constants.message());
+		DataSourceTextField rec_user = new DataSourceTextField("rec_user",CallCenterBK.constants.shortOp());
+		DataSourceDateTimeField rec_date = new DataSourceDateTimeField("rec_date",CallCenterBK.constants.time());
+		DataSourceTextField status_descr = new DataSourceTextField("status_descr",CallCenterBK.constants.status());
 		
 		discover_id.setHidden(true);
 		discover_id.setPrimaryKey(true);

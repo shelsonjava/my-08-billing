@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewCalendar;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.smartgwt.client.data.Criteria;
@@ -61,7 +61,7 @@ public class TabFindCalendar extends Tab {
 
 	public TabFindCalendar() {
 
-		setTitle(CallCenter.constants.calendar());
+		setTitle(CallCenterBK.constants.calendar());
 		setCanClose(true);
 
 		calSecDS = DataSource.get("CalSecDS");
@@ -79,7 +79,7 @@ public class TabFindCalendar extends Tab {
 		mainLayout.addMember(searchForm);
 
 		calendarStateItem = new ComboBoxItem();
-		calendarStateItem.setTitle(CallCenter.constants.type());
+		calendarStateItem.setTitle(CallCenterBK.constants.type());
 		calendarStateItem.setWidth(250);
 		calendarStateItem.setName("calendar_state_id");
 		calendarStateItem.setValueMap(ClientMapUtil.getInstance()
@@ -87,7 +87,7 @@ public class TabFindCalendar extends Tab {
 		calendarStateItem.setAddUnknownValues(false);
 
 		secCalendarTypeItem = new ComboBoxItem();
-		secCalendarTypeItem.setTitle(CallCenter.constants.moonPhase());
+		secCalendarTypeItem.setTitle(CallCenterBK.constants.moonPhase());
 		secCalendarTypeItem.setWidth(250);
 		secCalendarTypeItem.setName("calendar_event_id");
 		secCalendarTypeItem.setValueMap(ClientMapUtil.getInstance()
@@ -95,13 +95,13 @@ public class TabFindCalendar extends Tab {
 		secCalendarTypeItem.setAddUnknownValues(false);
 
 		calendarDayItem = new DateItem();
-		calendarDayItem.setTitle(CallCenter.constants.date());
+		calendarDayItem.setTitle(CallCenterBK.constants.date());
 		calendarDayItem.setWidth(250);
 		calendarDayItem.setName("dateItem");
 		calendarDayItem.setUseTextField(true);
 
 		descriptionItem = new TextItem();
-		descriptionItem.setTitle(CallCenter.constants.descAndComment());
+		descriptionItem.setTitle(CallCenterBK.constants.descAndComment());
 		descriptionItem.setName("descrItem");
 		descriptionItem.setWidth(500);
 		descriptionItem.setColSpan(2);
@@ -109,7 +109,7 @@ public class TabFindCalendar extends Tab {
 		dayOrMonthItem = new CheckboxItem();
 		dayOrMonthItem.setName("dayOrMonthItem");
 		dayOrMonthItem.setWidth(250);
-		dayOrMonthItem.setTitle(CallCenter.constants.byMonth());
+		dayOrMonthItem.setTitle(CallCenterBK.constants.byMonth());
 
 		searchForm.setFields(secCalendarTypeItem, calendarStateItem,
 				dayOrMonthItem, calendarDayItem, descriptionItem);
@@ -120,10 +120,10 @@ public class TabFindCalendar extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -154,31 +154,31 @@ public class TabFindCalendar extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField calendar_day = new ListGridField("fcalendar_day",
-				CallCenter.constants.date(), 70);
+				CallCenterBK.constants.date(), 70);
 		calendar_day.setAlign(Alignment.LEFT);
 		calendar_day.setCanFilter(false);
 
 		ListGridField event = new ListGridField("event",
-				CallCenter.constants.moonPhase(), 150);
+				CallCenterBK.constants.moonPhase(), 150);
 		event.setAlign(Alignment.LEFT);
 		event.setCanFilter(false);
 
 		ListGridField state = new ListGridField("state",
-				CallCenter.constants.type(), 70);
+				CallCenterBK.constants.type(), 70);
 		state.setAlign(Alignment.LEFT);
 		state.setCanFilter(false);
 
 		ListGridField sun_rise = new ListGridField("sun_rise",
-				CallCenter.constants.sunRise(), 100);
+				CallCenterBK.constants.sunRise(), 100);
 		sun_rise.setCanFilter(false);
 
 		ListGridField calendar_description = new ListGridField(
-				"calendar_description", CallCenter.constants.information(), 200);
+				"calendar_description", CallCenterBK.constants.information(), 200);
 		calendar_description.setAlign(Alignment.LEFT);
 		calendar_description.setCanFilter(true);
 
 		ListGridField calendar_comment = new ListGridField("calendar_comment",
-				CallCenter.constants.comment());
+				CallCenterBK.constants.comment());
 		calendar_comment.setAlign(Alignment.LEFT);
 		calendar_comment.setCanFilter(true);
 		calendar_comment.setOptionTextMatchStyle(TextMatchStyle.EXACT);
@@ -247,7 +247,7 @@ public class TabFindCalendar extends Tab {
 					criteria.setAttribute("calendar_day", calendar_day);
 				}
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidDate());
+				SC.say(CallCenterBK.constants.invalidDate());
 				return;
 			}
 

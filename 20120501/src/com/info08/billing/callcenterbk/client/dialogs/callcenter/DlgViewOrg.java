@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -89,7 +89,7 @@ public class DlgViewOrg extends Window {
 			this.record = pRecord;
 			this.dataSource = dataSource;
 
-			setTitle(CallCenter.constants.organization());
+			setTitle(CallCenterBK.constants.organization());
 
 			setHeight(700);
 			setWidth(1100);
@@ -123,7 +123,7 @@ public class DlgViewOrg extends Window {
 			orgNameInfo.setWidth("100%");
 			orgNameInfo.setName("orgNameInfo");
 			orgNameInfo.setCanEdit(false);
-			orgNameInfo.setTitle(CallCenter.constants.orgName());
+			orgNameInfo.setTitle(CallCenterBK.constants.orgName());
 			orgNameInfo.setTextBoxStyle("BoldNoBorder");
 			orgNameInfo.setValue(pRecord.getAttributeAsString("org_name"));
 			orgNameInfo.setCanFocus(false);
@@ -132,7 +132,7 @@ public class DlgViewOrg extends Window {
 			orgAddressInfo.setWidth("100%");
 			orgAddressInfo.setName("orgAddressInfo");
 			orgAddressInfo.setCanEdit(false);
-			orgAddressInfo.setTitle(CallCenter.constants.realAddress());
+			orgAddressInfo.setTitle(CallCenterBK.constants.realAddress());
 			orgAddressInfo.setTextBoxStyle("BoldNoBorder");
 			orgAddressInfo.setCanFocus(false);
 
@@ -140,7 +140,7 @@ public class DlgViewOrg extends Window {
 					.getAttributeAsInt("address_hide");
 
 			if (address_hide != null && address_hide.equals(1)) {
-				orgAddressInfo.setValue(CallCenter.constants.addressHide());
+				orgAddressInfo.setValue(CallCenterBK.constants.addressHide());
 			} else {
 				String city_name_geo1 = pRecord
 						.getAttributeAsString("city_name_geo");
@@ -175,7 +175,7 @@ public class DlgViewOrg extends Window {
 			tabSet.setWidth100();
 			tabSet.setHeight100();
 
-			Tab tabDetViewer = new Tab(CallCenter.constants.maininfo());
+			Tab tabDetViewer = new Tab(CallCenterBK.constants.maininfo());
 
 			VLayout addInfoLayout = new VLayout(5);
 			addInfoLayout.setWidth100();
@@ -187,12 +187,12 @@ public class DlgViewOrg extends Window {
 			addInfoLayout.addMember(toolStrip);
 
 			sendAddInfoSMS = new ToolStripButton(
-					CallCenter.constants.orgSMSAddInfo(), "sms.png");
+					CallCenterBK.constants.orgSMSAddInfo(), "sms.png");
 			sendAddInfoSMS.setLayoutAlign(Alignment.LEFT);
 			toolStrip.addButton(sendAddInfoSMS);
 
 			sendStreetInfoSMS = new ToolStripButton(
-					CallCenter.constants.orgSMSStreetInfo1(), "information.png");
+					CallCenterBK.constants.orgSMSStreetInfo1(), "information.png");
 			sendStreetInfoSMS.setLayoutAlign(Alignment.LEFT);
 			toolStrip.addButton(sendStreetInfoSMS);
 
@@ -207,45 +207,45 @@ public class DlgViewOrg extends Window {
 			detailViewer.setData(arr);
 
 			DetailViewerField org_name = new DetailViewerField("org_name",
-					CallCenter.constants.orgName());
+					CallCenterBK.constants.orgName());
 			DetailViewerField org_name_eng = new DetailViewerField(
-					"org_name_eng", CallCenter.constants.orgNameEng());
+					"org_name_eng", CallCenterBK.constants.orgNameEng());
 			DetailViewerField note = new DetailViewerField("note",
-					CallCenter.constants.comment());
+					CallCenterBK.constants.comment());
 			DetailViewerField director = new DetailViewerField("director",
-					CallCenter.constants.director());
+					CallCenterBK.constants.director());
 			DetailViewerField founded = new DetailViewerField("founded",
-					CallCenter.constants.founded());
+					CallCenterBK.constants.founded());
 			DetailViewerField identcode = new DetailViewerField("identcode",
-					CallCenter.constants.identCode());
+					CallCenterBK.constants.identCode());
 			DetailViewerField new_identcode = new DetailViewerField(
-					"new_identcode", CallCenter.constants.identCodeNew());
+					"new_identcode", CallCenterBK.constants.identCodeNew());
 			DetailViewerField legaladdress = new DetailViewerField(
-					"legaladdress", CallCenter.constants.legalAddress());
+					"legaladdress", CallCenterBK.constants.legalAddress());
 			DetailViewerField workinghours = new DetailViewerField(
-					"workinghours", CallCenter.constants.workinghours());
+					"workinghours", CallCenterBK.constants.workinghours());
 			DetailViewerField dayoffs = new DetailViewerField("dayoffs",
-					CallCenter.constants.dayOffs());
+					CallCenterBK.constants.dayOffs());
 			DetailViewerField org_info = new DetailViewerField("org_info",
-					CallCenter.constants.orgInfo());
+					CallCenterBK.constants.orgInfo());
 			DetailViewerField contactperson = new DetailViewerField(
-					"contactperson", CallCenter.constants.contactPerson());
+					"contactperson", CallCenterBK.constants.contactPerson());
 			DetailViewerField workpersoncountity = new DetailViewerField(
 					"workpersoncountity",
-					CallCenter.constants.workPersonCountity());
+					CallCenterBK.constants.workPersonCountity());
 			DetailViewerField ind = new DetailViewerField("ind",
-					CallCenter.constants.index());
+					CallCenterBK.constants.index());
 			DetailViewerField webaddress = new DetailViewerField("webaddress",
-					CallCenter.constants.webaddress());
+					CallCenterBK.constants.webaddress());
 			DetailViewerField mail = new DetailViewerField("mail",
-					CallCenter.constants.eMail());
+					CallCenterBK.constants.eMail());
 			DetailViewerField legal_statuse = new DetailViewerField(
-					"legal_statuse", CallCenter.constants.legalStatuse());
+					"legal_statuse", CallCenterBK.constants.legalStatuse());
 			DetailViewerField partnerbank = new DetailViewerField(
-					"partnerbank", CallCenter.constants.partnerBank());
+					"partnerbank", CallCenterBK.constants.partnerBank());
 
 			DetailViewerField full_address = new DetailViewerField(
-					"full_address", CallCenter.constants.fullOrgAddress());
+					"full_address", CallCenterBK.constants.fullOrgAddress());
 
 			Integer note_crit = pRecord.getAttributeAsInt("note_crit");
 			if (note_crit != null && note_crit.intValue() == -1) {
@@ -261,7 +261,7 @@ public class DlgViewOrg extends Window {
 			addInfoLayout.addMember(detailViewer);
 			tabDetViewer.setPane(addInfoLayout);
 
-			Tab tabDeps = new Tab(CallCenter.constants.departments());
+			Tab tabDeps = new Tab(CallCenterBK.constants.departments());
 
 			VLayout depsContent = new VLayout(10);
 			depsContent.setWidth100();
@@ -274,22 +274,22 @@ public class DlgViewOrg extends Window {
 			searchDepsForm.setNumCols(8);
 
 			depNameGeoItem = new TextItem();
-			depNameGeoItem.setTitle(CallCenter.constants.orgName());
+			depNameGeoItem.setTitle(CallCenterBK.constants.orgName());
 			depNameGeoItem.setWidth(300);
 			depNameGeoItem.setName("dep_name_geo");
 
 			depPhonesItem = new TextItem();
-			depPhonesItem.setTitle(CallCenter.constants.phones());
+			depPhonesItem.setTitle(CallCenterBK.constants.phones());
 			depPhonesItem.setWidth(100);
 			depPhonesItem.setName("depPhonesItem");
 
 			depAddressItem = new TextItem();
-			depAddressItem.setTitle(CallCenter.constants.address());
+			depAddressItem.setTitle(CallCenterBK.constants.address());
 			depAddressItem.setWidth(150);
 			depAddressItem.setName("depAddressItem");
 
 			depContPhonesItem = new CheckboxItem();
-			depContPhonesItem.setTitle(CallCenter.constants.contPhoneShort());
+			depContPhonesItem.setTitle(CallCenterBK.constants.contPhoneShort());
 			depContPhonesItem.setWidth(50);
 			depContPhonesItem.setName("depContPhonesItem");
 
@@ -297,10 +297,10 @@ public class DlgViewOrg extends Window {
 					depPhonesItem, depContPhonesItem);
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			HLayout formLayOut = new HLayout(5);
 			formLayOut.setWidth100();
@@ -339,15 +339,15 @@ public class DlgViewOrg extends Window {
 			depsTreeGrid.setCanDragSelectText(true);
 			depsTreeGrid.setWrapCells(true);
 			depsTreeGrid.setFixedRecordHeights(false);
-			depsTreeGrid.setEmptyMessage(CallCenter.constants
+			depsTreeGrid.setEmptyMessage(CallCenterBK.constants
 					.depsNotFoundMessage());
 			depsTreeGrid.setEmptyMessageStyle("redStyle");
 
 			TreeGridField main_detail_geo = new TreeGridField(
-					"main_detail_geo", CallCenter.constants.department());
+					"main_detail_geo", CallCenterBK.constants.department());
 
 			TreeGridField main_detail_note_geo = new TreeGridField(
-					"main_detail_note_geo", CallCenter.constants.address(), 300);
+					"main_detail_note_geo", CallCenterBK.constants.address(), 300);
 
 			// TreeGridField p_phones = new TreeGridField("p_phones",
 			// CallCenter.constants.phones(), 100);
@@ -360,7 +360,7 @@ public class DlgViewOrg extends Window {
 			depsTreeGrid.setFields(main_detail_geo, main_detail_note_geo);
 			depsContent.addMember(depsTreeGrid);
 
-			sendDepInfoSMS = new IButton(CallCenter.constants.orgSMSDepInfo());
+			sendDepInfoSMS = new IButton(CallCenterBK.constants.orgSMSDepInfo());
 			sendDepInfoSMS.setWidth(200);
 			sendDepInfoSMS.setIcon("sms.png");
 
@@ -374,7 +374,7 @@ public class DlgViewOrg extends Window {
 			orgNoteOnDep.setWidth(645);
 			orgNoteOnDep.setHeight(87);
 			orgNoteOnDep.setName("orgNoteOnDep");
-			orgNoteOnDep.setTitle(CallCenter.constants.comment());
+			orgNoteOnDep.setTitle(CallCenterBK.constants.comment());
 			orgNoteOnDep.setCanEdit(false);
 			orgNoteOnDep.setCanFocus(false);
 			if (note_crit != null && note_crit.intValue() == -1) {
@@ -422,11 +422,11 @@ public class DlgViewOrg extends Window {
 			phonesGrid.setCanDragSelectText(true);
 
 			ListGridField dep_phone = new ListGridField("dep_phone",
-					CallCenter.constants.phone());
+					CallCenterBK.constants.phone());
 			dep_phone.setCanFilter(true);
 
 			ListGridField phone_state = new ListGridField("phone_state",
-					CallCenter.constants.phoneState(), 100);
+					CallCenterBK.constants.phoneState(), 100);
 			phone_state.setCanFilter(false);
 
 			phonesGrid.setFields(dep_phone, phone_state);
@@ -444,7 +444,7 @@ public class DlgViewOrg extends Window {
 
 			depsContent.addMember(depDalyOut);
 
-			Tab tabOrgTree = new Tab(CallCenter.constants.mainIerarch());
+			Tab tabOrgTree = new Tab(CallCenterBK.constants.mainIerarch());
 
 			VLayout orgTreeLayOut = new VLayout(10);
 			orgTreeLayOut.setWidth100();
@@ -499,14 +499,14 @@ public class DlgViewOrg extends Window {
 			listGridOrgTreeParrent.setWrapCells(true);
 			listGridOrgTreeParrent.setFixedRecordHeights(false);
 			listGridOrgTreeParrent.setCanDragSelectText(true);
-			listGridOrgTreeParrent.setEmptyMessage(CallCenter.constants
+			listGridOrgTreeParrent.setEmptyMessage(CallCenterBK.constants
 					.orgParrentsNotFound());
 
 			ListGridField org_nameTree1 = new ListGridField(
-					"org_name_tree_like", CallCenter.constants.orgName());
+					"org_name_tree_like", CallCenterBK.constants.orgName());
 
 			ListGridField real_addressTree1 = new ListGridField("full_address",
-					CallCenter.constants.realAddress(), 400);
+					CallCenterBK.constants.realAddress(), 400);
 
 			listGridOrgTreeParrent.setFields(org_nameTree1, real_addressTree1);
 			orgTreeLayOut.addMember(listGridOrgTreeParrent);
@@ -559,15 +559,15 @@ public class DlgViewOrg extends Window {
 			listGridOrgTreeChilds.setShowFilterEditor(true);
 			listGridOrgTreeChilds.setFilterOnKeypress(true);
 			listGridOrgTreeChilds.setCanDragSelectText(true);
-			listGridOrgTreeChilds.setEmptyMessage(CallCenter.constants
+			listGridOrgTreeChilds.setEmptyMessage(CallCenterBK.constants
 					.orgChildsNotFound());
 
 			ListGridField org_nameTree = new ListGridField(
-					"org_name_tree_like", CallCenter.constants.orgName());
+					"org_name_tree_like", CallCenterBK.constants.orgName());
 			org_nameTree.setCanFilter(true);
 
 			ListGridField real_addressTree = new ListGridField("full_address",
-					CallCenter.constants.realAddress(), 400);
+					CallCenterBK.constants.realAddress(), 400);
 			real_addressTree.setCanFilter(true);
 
 			listGridOrgTreeChilds.setFields(org_nameTree, real_addressTree);
@@ -589,7 +589,7 @@ public class DlgViewOrg extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);
@@ -707,7 +707,7 @@ public class DlgViewOrg extends Window {
 				public void onClick(ClickEvent event) {
 
 					if (address_hide != null && address_hide.equals(1)) {
-						SC.say(CallCenter.constants.addressHide());
+						SC.say(CallCenterBK.constants.addressHide());
 						return;
 					}
 
@@ -745,8 +745,8 @@ public class DlgViewOrg extends Window {
 								return;
 							}
 							if (cMain_id.equals(main_id)) {
-								SC.say(CallCenter.constants.warning(),
-										CallCenter.constants.orgAlreadyOpened());
+								SC.say(CallCenterBK.constants.warning(),
+										CallCenterBK.constants.orgAlreadyOpened());
 								return;
 							}
 
@@ -778,8 +778,8 @@ public class DlgViewOrg extends Window {
 								return;
 							}
 							if (cMain_id.equals(main_id)) {
-								SC.say(CallCenter.constants.warning(),
-										CallCenter.constants.orgAlreadyOpened());
+								SC.say(CallCenterBK.constants.warning(),
+										CallCenterBK.constants.orgAlreadyOpened());
 								return;
 							}
 
@@ -913,16 +913,16 @@ public class DlgViewOrg extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendAddInfoSMS);
@@ -997,23 +997,23 @@ public class DlgViewOrg extends Window {
 		try {
 			ListGridRecord listGridRecord = depsTreeGrid.getSelectedRecord();
 			if (listGridRecord == null) {
-				SC.say(CallCenter.constants.plzSelectDepart());
+				SC.say(CallCenterBK.constants.plzSelectDepart());
 				return;
 			}
 
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendDepInfoSMS);
@@ -1030,8 +1030,8 @@ public class DlgViewOrg extends Window {
 					.getAttributeAsString("main_detail_geo_orig");
 
 			if (mainDetail != null && !mainDetail.trim().equalsIgnoreCase("")) {
-				if (mainDetail.equals(CallCenter.constants.common())) {
-					sms_text.append(CallCenter.constants.phoneShort());
+				if (mainDetail.equals(CallCenterBK.constants.common())) {
+					sms_text.append(CallCenterBK.constants.phoneShort());
 				} else {
 					sms_text.append(mainDetail).append(" ");
 				}
@@ -1048,8 +1048,8 @@ public class DlgViewOrg extends Window {
 							|| dep_phone.trim().equalsIgnoreCase("")) {
 						continue;
 					}
-					if (dep_phone.equals(CallCenter.constants.moxs())
-							|| dep_phone.equals(CallCenter.constants.daf())) {
+					if (dep_phone.equals(CallCenterBK.constants.moxs())
+							|| dep_phone.equals(CallCenterBK.constants.daf())) {
 						continue;
 					}
 					if (dep_phone.startsWith("2")

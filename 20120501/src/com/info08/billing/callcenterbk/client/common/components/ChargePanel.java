@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.common.components;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgAddMyMobBase;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgSendDiscovery;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewChargesByPhone;
@@ -93,34 +93,34 @@ public class ChargePanel extends HLayout {
 			vLayout.addMember(hLayout);
 
 			addMyMobileInfo = new ToolStripButton(
-					CallCenter.constants.addMobSubsInfo(), "addIcon.png");
+					CallCenterBK.constants.addMobSubsInfo(), "addIcon.png");
 			addMyMobileInfo.setLayoutAlign(Alignment.LEFT);
 			toolStrip.addButton(addMyMobileInfo);
 
 			toolStrip.addSeparator();
 
 			viewChargeInfo = new ToolStripButton(
-					CallCenter.constants.viewChargeInfo(), "moneySmall.png");
+					CallCenterBK.constants.viewChargeInfo(), "moneySmall.png");
 			viewChargeInfo.setLayoutAlign(Alignment.LEFT);
 			toolStrip.addButton(viewChargeInfo);
 
 			toolStrip.addSeparator();
 
 			discoveryBtn = new ToolStripButton(
-					CallCenter.constants.discovery(), "discovery.png");
+					CallCenterBK.constants.discovery(), "discovery.png");
 			discoveryBtn.setLayoutAlign(Alignment.LEFT);
 			toolStrip.addButton(discoveryBtn);
 
 			toolStrip.addSeparator();
 			toolStrip.addFill();
 
-			chargeBtn = new ToolStripButton(CallCenter.constants.charge(),
+			chargeBtn = new ToolStripButton(CallCenterBK.constants.charge(),
 					"moneySmall.png");
 			chargeBtn.setLayoutAlign(Alignment.LEFT);
 			toolStrip.addButton(chargeBtn);
 			toolStrip.addSeparator();
 
-			chargeCounter = new Label(CallCenter.constants.charges() + " : 0");
+			chargeCounter = new Label(CallCenterBK.constants.charges() + " : 0");
 			chargeCounter.setWidth(120);
 			chargeCounter.setStyleName("fontRed");
 			chargeCounter.setHeight(20);
@@ -142,7 +142,7 @@ public class ChargePanel extends HLayout {
 			userNameItem = new TextItem();
 			userNameItem.setWidth("100%");
 			userNameItem.setName("user_name");
-			userNameItem.setTitle(CallCenter.constants.username());
+			userNameItem.setTitle(CallCenterBK.constants.username());
 			userNameItem.setCanEdit(false);
 			userNameItem.setValue(CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
@@ -151,7 +151,7 @@ public class ChargePanel extends HLayout {
 			currentNumberItem = new TextItem();
 			currentNumberItem.setWidth(175);
 			currentNumberItem.setName("current_number");
-			currentNumberItem.setTitle(CallCenter.constants.currentphone());
+			currentNumberItem.setTitle(CallCenterBK.constants.currentphone());
 			currentNumberItem.setCanEdit(false);
 			currentNumberItem.setValue("");
 			currentNumberItem.setCanFocus(false);
@@ -159,7 +159,7 @@ public class ChargePanel extends HLayout {
 			currentNameItem = new TextItem();
 			currentNameItem.setWidth("100%");
 			currentNameItem.setName("current_name");
-			currentNameItem.setTitle(CallCenter.constants.currentname());
+			currentNameItem.setTitle(CallCenterBK.constants.currentname());
 			currentNameItem.setCanEdit(false);
 			currentNameItem.setValue("");
 			currentNameItem.setCanFocus(false);
@@ -167,7 +167,7 @@ public class ChargePanel extends HLayout {
 			prevNumberItem = new TextItem();
 			prevNumberItem.setWidth(175);
 			prevNumberItem.setName("prev_number");
-			prevNumberItem.setTitle(CallCenter.constants.prevphone());
+			prevNumberItem.setTitle(CallCenterBK.constants.prevphone());
 			prevNumberItem.setCanEdit(false);
 			prevNumberItem.setValue("");
 			prevNumberItem.setCanFocus(false);
@@ -175,7 +175,7 @@ public class ChargePanel extends HLayout {
 			prevNameItem = new TextItem();
 			prevNameItem.setWidth("100%");
 			prevNameItem.setName("prev_name");
-			prevNameItem.setTitle(CallCenter.constants.prevname());
+			prevNameItem.setTitle(CallCenterBK.constants.prevname());
 			prevNameItem.setCanEdit(false);
 			prevNameItem.setValue("");
 			prevNameItem.setCanFocus(false);
@@ -237,7 +237,7 @@ public class ChargePanel extends HLayout {
 					.getServerSession();
 			if (serverSession != null && !serverSession.isWebSession()) {
 
-				chargeCounter.setContents(CallCenter.constants.charges()
+				chargeCounter.setContents(CallCenterBK.constants.charges()
 						+ " : " + serverSession.getChcount());
 
 				String phone = serverSession.getPhone();
@@ -304,16 +304,16 @@ public class ChargePanel extends HLayout {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsMobile());
+				SC.say(CallCenterBK.constants.phoneIsMobile());
 				return;
 			}
 			DlgViewChargesByPhone dlgViewChargesByPhone = new DlgViewChargesByPhone();
@@ -329,16 +329,16 @@ public class ChargePanel extends HLayout {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			DlgAddMyMobBase addMyMobBase = new DlgAddMyMobBase();
@@ -407,22 +407,22 @@ public class ChargePanel extends HLayout {
 			final ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 
 			if (!phone.startsWith("570") && serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.chargeImpPhoneIsMobile());
+				SC.say(CallCenterBK.constants.chargeImpPhoneIsMobile());
 				return;
 			}
 
 			if (service_id == null || service_id.intValue() < 0) {
-				SC.say(CallCenter.constants.invalidService());
+				SC.say(CallCenterBK.constants.invalidService());
 				return;
 			}
 
@@ -449,7 +449,7 @@ public class ChargePanel extends HLayout {
 					int chCount = serverSession.getChcount();
 					chCount++;
 					serverSession.setChcount(chCount);
-					chargeCounter.setContents(CallCenter.constants.charges()
+					chargeCounter.setContents(CallCenterBK.constants.charges()
 							+ " : " + chCount);
 
 					int lChargeCounter = getChrgCounter();
@@ -471,7 +471,7 @@ public class ChargePanel extends HLayout {
 				return;
 			}
 			int chCount = serverSession.getChcount();
-			chargeCounter.setContents(CallCenter.constants.charges() + " : "
+			chargeCounter.setContents(CallCenterBK.constants.charges() + " : "
 					+ chCount);
 		} catch (Exception e) {
 			e.printStackTrace();

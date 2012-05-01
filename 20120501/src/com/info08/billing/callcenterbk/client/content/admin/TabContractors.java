@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditContractor;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgBlockPhoneList;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetContractorsBilling;
@@ -69,7 +69,7 @@ public class TabContractors extends Tab {
 	public TabContractors() {
 		try {
 
-			setTitle(CallCenter.constants.contractors());
+			setTitle(CallCenterBK.constants.contractors());
 			setCanClose(true);
 
 			contractorsDS = DataSource.get("ContractorsDS");
@@ -87,22 +87,22 @@ public class TabContractors extends Tab {
 			mainLayout.addMember(searchForm);
 
 			orgNameItem = new TextItem();
-			orgNameItem.setTitle(CallCenter.constants.orgNameFull());
+			orgNameItem.setTitle(CallCenterBK.constants.orgNameFull());
 			orgNameItem.setWidth(250);
 			orgNameItem.setName("orgNameItem");
 
 			orgDepItem = new TextItem();
-			orgDepItem.setTitle(CallCenter.constants.department());
+			orgDepItem.setTitle(CallCenterBK.constants.department());
 			orgDepItem.setWidth(250);
 			orgDepItem.setName("orgDepItem");
 
 			phoneItem = new TextItem();
-			phoneItem.setTitle(CallCenter.constants.phone());
+			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setWidth(250);
 			phoneItem.setName("phoneItem");
 
 			contractorType = new SelectItem();
-			contractorType.setTitle(CallCenter.constants.contractorType());
+			contractorType.setTitle(CallCenterBK.constants.contractorType());
 			contractorType.setWidth(250);
 			contractorType.setName("contractorType");
 			contractorType.setDefaultToFirstOption(true);
@@ -110,14 +110,14 @@ public class TabContractors extends Tab {
 					.getContractorTypes());
 
 			limitItem = new SelectItem();
-			limitItem.setTitle(CallCenter.constants.limit());
+			limitItem.setTitle(CallCenterBK.constants.limit());
 			limitItem.setWidth(250);
 			limitItem.setName("limitItem");
 			limitItem.setDefaultToFirstOption(true);
 			limitItem.setValueMap(ClientMapUtil.getInstance().getLimitTypes());
 
 			priceTypeItem = new SelectItem();
-			priceTypeItem.setTitle(CallCenter.constants.priceType());
+			priceTypeItem.setTitle(CallCenterBK.constants.priceType());
 			priceTypeItem.setWidth(250);
 			priceTypeItem.setName("priceTypeItem");
 			priceTypeItem.setDefaultToFirstOption(true);
@@ -133,10 +133,10 @@ public class TabContractors extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -146,26 +146,26 @@ public class TabContractors extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenter.constants.modify(),
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			deleteBtn = new ToolStripButton(CallCenter.constants.disable(),
+			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			deleteBtn.setLayoutAlign(Alignment.LEFT);
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
 			setRangePriceBtn = new ToolStripButton(
-					CallCenter.constants.setCurrentPrice(), "moneySmall.png");
+					CallCenterBK.constants.setCurrentPrice(), "moneySmall.png");
 			setRangePriceBtn.setLayoutAlign(Alignment.LEFT);
 			setRangePriceBtn.setWidth(50);
 			toolStrip.addButton(setRangePriceBtn);
@@ -173,19 +173,19 @@ public class TabContractors extends Tab {
 			toolStrip.addSeparator();
 
 			viewCallCntBtn = new ToolStripButton(
-					CallCenter.constants.callsCount(), "stats.png");
+					CallCenterBK.constants.callsCount(), "stats.png");
 			viewCallCntBtn.setLayoutAlign(Alignment.LEFT);
 			viewCallCntBtn.setWidth(50);
 			toolStrip.addButton(viewCallCntBtn);
 
 			viewChargesSumBtn = new ToolStripButton(
-					CallCenter.constants.charges(), "moneySmall.png");
+					CallCenterBK.constants.charges(), "moneySmall.png");
 			viewChargesSumBtn.setLayoutAlign(Alignment.LEFT);
 			viewChargesSumBtn.setWidth(50);
 			toolStrip.addButton(viewChargesSumBtn);
 
 			blockPhoneListBtn = new ToolStripButton(
-					CallCenter.constants.blockPhoneList(),
+					CallCenterBK.constants.blockPhoneList(),
 					"telephone_delete.png");
 			blockPhoneListBtn.setLayoutAlign(Alignment.LEFT);
 			blockPhoneListBtn.setWidth(50);
@@ -194,13 +194,13 @@ public class TabContractors extends Tab {
 			toolStrip.addSeparator();
 
 			contractorsBillBtn = new ToolStripButton(
-					CallCenter.constants.billing(), "billing.png");
+					CallCenterBK.constants.billing(), "billing.png");
 			contractorsBillBtn.setLayoutAlign(Alignment.LEFT);
 			contractorsBillBtn.setWidth(50);
 			toolStrip.addButton(contractorsBillBtn);
 
 			contractorsBillFullBtn = new ToolStripButton(
-					CallCenter.constants.billingDetailed(), "billing.png");
+					CallCenterBK.constants.billingDetailed(), "billing.png");
 			contractorsBillFullBtn.setLayoutAlign(Alignment.LEFT);
 			contractorsBillFullBtn.setWidth(50);
 			toolStrip.addButton(contractorsBillFullBtn);
@@ -208,13 +208,13 @@ public class TabContractors extends Tab {
 			toolStrip.addSeparator();
 
 			contractorsBillBtn1 = new ToolStripButton(
-					CallCenter.constants.billing1(), "billing.png");
+					CallCenterBK.constants.billing1(), "billing.png");
 			contractorsBillBtn1.setLayoutAlign(Alignment.LEFT);
 			contractorsBillBtn1.setWidth(50);
 			toolStrip.addButton(contractorsBillBtn1);
 
 			contractorsBillFullBtn1 = new ToolStripButton(
-					CallCenter.constants.billingDetailed1(), "billing.png");
+					CallCenterBK.constants.billingDetailed1(), "billing.png");
 			contractorsBillFullBtn1.setLayoutAlign(Alignment.LEFT);
 			contractorsBillFullBtn1.setWidth(50);
 			toolStrip.addButton(contractorsBillFullBtn1);
@@ -254,22 +254,22 @@ public class TabContractors extends Tab {
 			contractorsGrid.setCanDragSelectText(true);
 
 			ListGridField orgName = new ListGridField("orgName",
-					CallCenter.constants.orgNameFull());
+					CallCenterBK.constants.orgNameFull());
 			ListGridField orgDepName = new ListGridField("orgDepName",
-					CallCenter.constants.department(), 300);
+					CallCenterBK.constants.department(), 300);
 			ListGridField start_date = new ListGridField("start_date",
-					CallCenter.constants.startDate(), 120);
+					CallCenterBK.constants.startDate(), 120);
 			ListGridField end_date = new ListGridField("end_date",
-					CallCenter.constants.endDate(), 120);
+					CallCenterBK.constants.endDate(), 120);
 			ListGridField price = new ListGridField("price",
-					CallCenter.constants.price(), 70);
+					CallCenterBK.constants.price(), 70);
 			ListGridField range_curr_price = new ListGridField(
 					"range_curr_price",
-					CallCenter.constants.currentPriceShort(), 70);
+					CallCenterBK.constants.currentPriceShort(), 70);
 			ListGridField price_type_descr = new ListGridField(
-					"price_type_descr", CallCenter.constants.priceType(), 70);
+					"price_type_descr", CallCenterBK.constants.priceType(), 70);
 			ListGridField critical_number = new ListGridField(
-					"critical_number", CallCenter.constants.limit(), 70);
+					"critical_number", CallCenterBK.constants.limit(), 70);
 
 			start_date.setAlign(Alignment.CENTER);
 			end_date.setAlign(Alignment.CENTER);
@@ -331,7 +331,7 @@ public class TabContractors extends Tab {
 							.getSelectedRecord();
 
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 
@@ -346,16 +346,16 @@ public class TabContractors extends Tab {
 					final ListGridRecord listGridRecord = contractorsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
+						SC.say(CallCenterBK.constants.recordAlrDisabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -385,7 +385,7 @@ public class TabContractors extends Tab {
 					ListGridRecord listGridRecord = contractorsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer contract_id = listGridRecord
@@ -401,7 +401,7 @@ public class TabContractors extends Tab {
 					ListGridRecord listGridRecord = contractorsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer contract_id = listGridRecord
@@ -417,7 +417,7 @@ public class TabContractors extends Tab {
 					ListGridRecord listGridRecord = contractorsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					showBlockPhoneList(listGridRecord);
@@ -430,13 +430,13 @@ public class TabContractors extends Tab {
 					ListGridRecord listGridRecord = contractorsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer price_type = listGridRecord
 							.getAttributeAsInt("price_type");
 					if (price_type == null || !price_type.equals(1)) {
-						SC.say(CallCenter.constants.isNotAdvancePriceType());
+						SC.say(CallCenterBK.constants.isNotAdvancePriceType());
 						return;
 					}
 					updateCurrentRangePrice(listGridRecord);
@@ -480,13 +480,13 @@ public class TabContractors extends Tab {
 		try {
 			ListGridRecord listGridRecord = contractorsGrid.getSelectedRecord();
 			if (listGridRecord == null) {
-				SC.say(CallCenter.constants.pleaseSelrecord());
+				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
 			Integer contract_id = listGridRecord
 					.getAttributeAsInt("contract_id");
 			if (contract_id == null) {
-				SC.say(CallCenter.constants.pleaseSelrecord());
+				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
 
@@ -559,7 +559,7 @@ public class TabContractors extends Tab {
 						if (contractor_charges == null) {
 							contractor_charges = 0D;
 						}
-						SC.say((CallCenter.constants.contractorCharges() + contractor_charges));
+						SC.say((CallCenterBK.constants.contractorCharges() + contractor_charges));
 					}
 				}
 			}, req);
@@ -594,7 +594,7 @@ public class TabContractors extends Tab {
 						if (contractor_call_cnt == null) {
 							contractor_call_cnt = 0;
 						}
-						SC.say((CallCenter.constants.contractorCallCnt() + contractor_call_cnt));
+						SC.say((CallCenterBK.constants.contractorCallCnt() + contractor_call_cnt));
 					}
 				}
 			}, req);

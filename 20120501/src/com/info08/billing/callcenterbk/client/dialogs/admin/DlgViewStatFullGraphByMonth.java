@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 import java.util.ArrayList;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ChartType;
@@ -28,7 +28,7 @@ public class DlgViewStatFullGraphByMonth extends Window {
 	public DlgViewStatFullGraphByMonth(ListGridRecord records[]) {
 		try {
 			this.records = records;
-			setTitle(CallCenter.constants.graph());
+			setTitle(CallCenterBK.constants.graph());
 
 			setHeight(700);
 			setWidth(1200);
@@ -56,19 +56,19 @@ public class DlgViewStatFullGraphByMonth extends Window {
 
 			chart.setValueProperty("value");
 			chart.setChartType(ChartType.LINE);
-			chart.setTitle(CallCenter.constants.statisticFull());
-			chart.setValueTitle(CallCenter.constants.callsCount());
+			chart.setTitle(CallCenterBK.constants.statisticFull());
+			chart.setValueTitle(CallCenterBK.constants.callsCount());
 			chart.setShowDataPoints(true);
 			chart.setPointHoverCustomizer(new ChartPointHoverCustomizer() {
 				@Override
 				public String hoverHTML(Float value, Record record) {
 					return ("<b>"
-							+ CallCenter.constants.service()
+							+ CallCenterBK.constants.service()
 							+ " : </b> "
 							+ record.getAttribute("service_name")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.callsCount()
+							+ CallCenterBK.constants.callsCount()
 							+ " : </b> "
 							+ (record.getAttributeAsDouble("value") == null ? nf
 									.format(0) : nf.format(record
@@ -83,7 +83,7 @@ public class DlgViewStatFullGraphByMonth extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);
@@ -114,7 +114,7 @@ public class DlgViewStatFullGraphByMonth extends Window {
 				abonent_cnt.setAttribute("ym",
 						record.getAttributeAsString("ym"));
 				abonent_cnt.setAttribute("service_name",
-						CallCenter.constants.abonent());
+						CallCenterBK.constants.abonent());
 				abonent_cnt.setAttribute("value",
 						record.getAttributeAsDouble("abonent_cnt"));
 
@@ -122,7 +122,7 @@ public class DlgViewStatFullGraphByMonth extends Window {
 				org_contr_comm_cnt.setAttribute("ym",
 						record.getAttributeAsString("ym"));
 				org_contr_comm_cnt.setAttribute("service_name",
-						CallCenter.constants.direct());
+						CallCenterBK.constants.direct());
 				org_contr_comm_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_contr_comm_cnt"));
 
@@ -130,7 +130,7 @@ public class DlgViewStatFullGraphByMonth extends Window {
 				org_non_contr_cnt.setAttribute("ym",
 						record.getAttributeAsString("ym"));
 				org_non_contr_cnt.setAttribute("service_name",
-						CallCenter.constants.nonDirect());
+						CallCenterBK.constants.nonDirect());
 				org_non_contr_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_non_contr_cnt"));
 
@@ -138,14 +138,14 @@ public class DlgViewStatFullGraphByMonth extends Window {
 				org_contr_gov_cnt.setAttribute("ym",
 						record.getAttributeAsString("ym"));
 				org_contr_gov_cnt.setAttribute("service_name",
-						CallCenter.constants.government());
+						CallCenterBK.constants.government());
 				org_contr_gov_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_contr_gov_cnt"));
 
 				ListGridRecord magti_cnt = new ListGridRecord();
 				magti_cnt.setAttribute("ym", record.getAttributeAsString("ym"));
 				magti_cnt.setAttribute("service_name",
-						CallCenter.constants.magti());
+						CallCenterBK.constants.magti());
 				magti_cnt.setAttribute("value",
 						record.getAttributeAsDouble("magti_cnt"));
 				magti_cnt.setAttribute("week_day_descr",
@@ -155,7 +155,7 @@ public class DlgViewStatFullGraphByMonth extends Window {
 				geocell_cnt.setAttribute("ym",
 						record.getAttributeAsString("ym"));
 				geocell_cnt.setAttribute("service_name",
-						CallCenter.constants.geocell());
+						CallCenterBK.constants.geocell());
 				geocell_cnt.setAttribute("value",
 						record.getAttributeAsDouble("geocell_cnt"));
 
@@ -163,7 +163,7 @@ public class DlgViewStatFullGraphByMonth extends Window {
 				beeline_cnt.setAttribute("ym",
 						record.getAttributeAsString("ym"));
 				beeline_cnt.setAttribute("service_name",
-						CallCenter.constants.beeline());
+						CallCenterBK.constants.beeline());
 				beeline_cnt.setAttribute("value",
 						record.getAttributeAsDouble("beeline_cnt"));
 
@@ -171,7 +171,7 @@ public class DlgViewStatFullGraphByMonth extends Window {
 				org_contr_email_srv_cnt.setAttribute("ym",
 						record.getAttributeAsString("ym"));
 				org_contr_email_srv_cnt.setAttribute("service_name",
-						CallCenter.constants.directEmail() + ".1");
+						CallCenterBK.constants.directEmail() + ".1");
 				org_contr_email_srv_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_contr_email_srv_cnt"));
 
@@ -179,7 +179,7 @@ public class DlgViewStatFullGraphByMonth extends Window {
 				org_email_srv_cnt.setAttribute("ym",
 						record.getAttributeAsString("ym"));
 				org_email_srv_cnt.setAttribute("service_name",
-						CallCenter.constants.nonDirectEmail() + ".1");
+						CallCenterBK.constants.nonDirectEmail() + ".1");
 				org_email_srv_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_email_srv_cnt"));
 

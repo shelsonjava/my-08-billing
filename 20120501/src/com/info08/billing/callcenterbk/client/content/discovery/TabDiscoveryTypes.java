@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.discovery;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.discovery.DlgAddEditDiscoveryType;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -56,7 +56,7 @@ public class TabDiscoveryTypes extends Tab {
 
 	public TabDiscoveryTypes() {
 		try {
-			setTitle(CallCenter.constants.menuDiscoveryTypes());
+			setTitle(CallCenterBK.constants.menuDiscoveryTypes());
 			setCanClose(true);
 
 			datasource = DataSource.get("DiscoveryTypeDS");
@@ -75,7 +75,7 @@ public class TabDiscoveryTypes extends Tab {
 			
 			
 			discoverTypeItem = new TextItem();
-			discoverTypeItem.setTitle(CallCenter.constants.type());
+			discoverTypeItem.setTitle(CallCenterBK.constants.type());
 			discoverTypeItem.setName("discover_type");
 			discoverTypeItem.setWidth(300);
 			
@@ -87,10 +87,10 @@ public class TabDiscoveryTypes extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -100,25 +100,25 @@ public class TabDiscoveryTypes extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenter.constants.modify(),
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			disableBtn = new ToolStripButton(CallCenter.constants.disable(),
+			disableBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			disableBtn.setLayoutAlign(Alignment.LEFT);
 			disableBtn.setWidth(50);
 			toolStrip.addButton(disableBtn);
 
-			activateBtn = new ToolStripButton(CallCenter.constants.enable(),
+			activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
 					"restoreIcon.gif");
 			activateBtn.setLayoutAlign(Alignment.LEFT);
 			activateBtn.setWidth(50);
@@ -157,17 +157,17 @@ public class TabDiscoveryTypes extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("discover_type").setTitle(CallCenter.constants.type());
-			datasource.getField("rec_date").setTitle(CallCenter.constants.recDate());
-			datasource.getField("rec_user").setTitle(CallCenter.constants.recUser());
-			datasource.getField("upd_date").setTitle(CallCenter.constants.updDate());
-			datasource.getField("upd_user").setTitle(CallCenter.constants.updUser());
+			datasource.getField("discover_type").setTitle(CallCenterBK.constants.type());
+			datasource.getField("rec_date").setTitle(CallCenterBK.constants.recDate());
+			datasource.getField("rec_user").setTitle(CallCenterBK.constants.recUser());
+			datasource.getField("upd_date").setTitle(CallCenterBK.constants.updDate());
+			datasource.getField("upd_user").setTitle(CallCenterBK.constants.updUser());
 			
-			ListGridField discover_type = new ListGridField("discover_type",CallCenter.constants.type(), 190);
-			ListGridField rec_date = new ListGridField("rec_date",CallCenter.constants.recDate(), 140);
-			ListGridField rec_user = new ListGridField("rec_user",CallCenter.constants.recUser(), 130);
-			ListGridField upd_date = new ListGridField("upd_date",CallCenter.constants.updDate(), 140);
-			ListGridField upd_user = new ListGridField("upd_user",CallCenter.constants.updUser(), 140);
+			ListGridField discover_type = new ListGridField("discover_type",CallCenterBK.constants.type(), 190);
+			ListGridField rec_date = new ListGridField("rec_date",CallCenterBK.constants.recDate(), 140);
+			ListGridField rec_user = new ListGridField("rec_user",CallCenterBK.constants.recUser(), 130);
+			ListGridField upd_date = new ListGridField("upd_date",CallCenterBK.constants.updDate(), 140);
+			ListGridField upd_user = new ListGridField("upd_user",CallCenterBK.constants.updUser(), 140);
 			
 			discover_type.setAlign(Alignment.LEFT);
 			rec_date.setAlign(Alignment.CENTER);
@@ -206,7 +206,7 @@ public class TabDiscoveryTypes extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditDiscoveryType dlgAddEditDiscoveryType = new DlgAddEditDiscoveryType(
@@ -220,16 +220,16 @@ public class TabDiscoveryTypes extends Tab {
 					final ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
+						SC.say(CallCenterBK.constants.recordAlrDisabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -246,16 +246,16 @@ public class TabDiscoveryTypes extends Tab {
 					final ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrEnabled());
+						SC.say(CallCenterBK.constants.recordAlrEnabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForEnable(),
+					SC.ask(CallCenterBK.constants.askForEnable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -269,7 +269,7 @@ public class TabDiscoveryTypes extends Tab {
 
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(780);
-			Tab tabDetViewer = new Tab(CallCenter.constants.view());
+			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
 			final DetailViewer detailViewer = new DetailViewer();
 			detailViewer.setDataSource(datasource);
 			detailViewer.setWidth(750);
@@ -287,7 +287,7 @@ public class TabDiscoveryTypes extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditDiscoveryType dlgAddEditDiscoveryType = new DlgAddEditDiscoveryType(

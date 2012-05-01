@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -104,7 +104,7 @@ public class DlgAddEditMainOrg extends Window {
 			this.isAddNewOrg = isAddNewOrg;
 			this.orgTreeGrid = orgTreeGrid;
 			this.listGridRecord = listGridRecord;
-			setTitle(CallCenter.constants.manageOrgs());
+			setTitle(CallCenterBK.constants.manageOrgs());
 
 			setHeight(760);
 			setWidth(1270);
@@ -151,102 +151,102 @@ public class DlgAddEditMainOrg extends Window {
 			String campTex = "";
 			if (isAddNewOrg) {
 				if (listGridRecord == null) {
-					campTex = CallCenter.constants.addNewOrg1();
+					campTex = CallCenterBK.constants.addNewOrg1();
 				} else {
-					campTex = CallCenter.constants.addChildOrg1();
+					campTex = CallCenterBK.constants.addChildOrg1();
 				}
 			} else {
-				campTex = CallCenter.constants.editOrg();
+				campTex = CallCenterBK.constants.editOrg();
 			}
 			headerItemOrgInfo.setValue(campTex);
 			headerItemOrgInfo.setTextBoxStyle("headerStyle12AndRed");
 
 			HeaderItem headerItemOrgInfo1 = new HeaderItem();
-			headerItemOrgInfo1.setValue(CallCenter.constants.orgCommonInfo());
+			headerItemOrgInfo1.setValue(CallCenterBK.constants.orgCommonInfo());
 			headerItemOrgInfo1.setTextBoxStyle("headerStyle");
 
 			orgNameItem = new TextAreaItem();
 			orgNameItem.setName("org_name");
 			orgNameItem.setWidth(650);
-			orgNameItem.setTitle(CallCenter.constants.orgName());
+			orgNameItem.setTitle(CallCenterBK.constants.orgName());
 			orgNameItem.setHeight(62);
 
 			orgNameEngItem = new TextAreaItem();
 			orgNameEngItem.setName("org_name_eng");
 			orgNameEngItem.setWidth(650);
-			orgNameEngItem.setTitle(CallCenter.constants.orgNameEng());
+			orgNameEngItem.setTitle(CallCenterBK.constants.orgNameEng());
 			orgNameEngItem.setHeight(62);
 
 			orgNoteItem = new TextAreaItem();
 			orgNoteItem.setName("comment");
 			orgNoteItem.setWidth(650);
-			orgNoteItem.setTitle(CallCenter.constants.comment());
+			orgNoteItem.setTitle(CallCenterBK.constants.comment());
 			orgNoteItem.setHeight(126);
 
 			orgDirectorItem = new TextItem();
 			orgDirectorItem.setName("director");
 			orgDirectorItem.setWidth(284);
-			orgDirectorItem.setTitle(CallCenter.constants.director());
+			orgDirectorItem.setTitle(CallCenterBK.constants.director());
 
 			orgContactPersonItem = new TextItem();
 			orgContactPersonItem.setName("contact_person");
 			orgContactPersonItem.setWidth(284);
-			orgContactPersonItem.setTitle(CallCenter.constants.contactPerson());
+			orgContactPersonItem.setTitle(CallCenterBK.constants.contactPerson());
 
 			orgIdentCodeItem = new TextItem();
 			orgIdentCodeItem.setName("ident_code");
 			orgIdentCodeItem.setWidth(284);
-			orgIdentCodeItem.setTitle(CallCenter.constants.identCode());
+			orgIdentCodeItem.setTitle(CallCenterBK.constants.identCode());
 
 			orgNewIdentCodeItem = new TextItem();
 			orgNewIdentCodeItem.setName("new_ident_code");
 			orgNewIdentCodeItem.setWidth(284);
-			orgNewIdentCodeItem.setTitle(CallCenter.constants.identCodeNew());
+			orgNewIdentCodeItem.setTitle(CallCenterBK.constants.identCodeNew());
 
 			orgWorkHoursItem = new TextItem();
 			orgWorkHoursItem.setName("working_hours");
 			orgWorkHoursItem.setWidth(284);
-			orgWorkHoursItem.setTitle(CallCenter.constants.workinghours());
+			orgWorkHoursItem.setTitle(CallCenterBK.constants.workinghours());
 
 			orgWebAddressItem = new TextItem();
 			orgWebAddressItem.setName("orgWebAddressItem");
 			orgWebAddressItem.setWidth(284);
-			orgWebAddressItem.setTitle(CallCenter.constants.webaddress());
+			orgWebAddressItem.setTitle(CallCenterBK.constants.webaddress());
 
 			orgMailItem = new TextItem();
 			orgMailItem.setName("orgMailItem");
 			orgMailItem.setWidth(284);
-			orgMailItem.setTitle(CallCenter.constants.eMail());
+			orgMailItem.setTitle(CallCenterBK.constants.eMail());
 
 			orgDayOffsItem = new TextItem();
 			orgDayOffsItem.setName("day_offs");
 			orgDayOffsItem.setWidth(284);
-			orgDayOffsItem.setTitle(CallCenter.constants.dayOffs());
+			orgDayOffsItem.setTitle(CallCenterBK.constants.dayOffs());
 
 			orgIndItem = new TextItem();
 			orgIndItem.setName("post_ind");
 			orgIndItem.setWidth(284);
-			orgIndItem.setTitle(CallCenter.constants.postIndex());
+			orgIndItem.setTitle(CallCenterBK.constants.postIndex());
 
 			orgWorkPersQuantItem = new TextItem();
 			orgWorkPersQuantItem.setName("work_pers_quant");
 			orgWorkPersQuantItem.setWidth(284);
-			orgWorkPersQuantItem.setTitle(CallCenter.constants
+			orgWorkPersQuantItem.setTitle(CallCenterBK.constants
 					.workPersonCountity());
 
 			orgInfoItem = new TextAreaItem();
 			orgInfoItem.setName("org_info");
 			orgInfoItem.setWidth(650);
 			orgInfoItem.setHeight(62);
-			orgInfoItem.setTitle(CallCenter.constants.orgInfo());
+			orgInfoItem.setTitle(CallCenterBK.constants.orgInfo());
 
 			orgLegalAddressItem = new TextItem();
 			orgLegalAddressItem.setName("org_legal_address");
 			orgLegalAddressItem.setWidth(284);
-			orgLegalAddressItem.setTitle(CallCenter.constants.legalAddress());
+			orgLegalAddressItem.setTitle(CallCenterBK.constants.legalAddress());
 
 			orgLegalStatusItem = new ComboBoxItem();
-			orgLegalStatusItem.setTitle(CallCenter.constants.legalStatuse());
+			orgLegalStatusItem.setTitle(CallCenterBK.constants.legalStatuse());
 			orgLegalStatusItem.setName("org_legal_status");
 			orgLegalStatusItem.setWidth(284);
 			orgLegalStatusItem.setFetchMissingValues(true);
@@ -279,7 +279,7 @@ public class DlgAddEditMainOrg extends Window {
 			});
 
 			orgPartnerBankItem = new ComboBoxItem();
-			orgPartnerBankItem.setTitle(CallCenter.constants.orgPartnerBank());
+			orgPartnerBankItem.setTitle(CallCenterBK.constants.orgPartnerBank());
 			orgPartnerBankItem.setName("org_partner_bank");
 			orgPartnerBankItem.setWidth(284);
 			orgPartnerBankItem.setFetchMissingValues(true);
@@ -310,13 +310,13 @@ public class DlgAddEditMainOrg extends Window {
 			});
 
 			orgFoundedItem = new DateItem();
-			orgFoundedItem.setTitle(CallCenter.constants.founded());
+			orgFoundedItem.setTitle(CallCenterBK.constants.founded());
 			orgFoundedItem.setWidth(284);
 			orgFoundedItem.setName("founded");
 			orgFoundedItem.setUseTextField(true);
 
 			extraPriorityItem = new SelectItem();
-			extraPriorityItem.setTitle(CallCenter.constants.extraPriority());
+			extraPriorityItem.setTitle(CallCenterBK.constants.extraPriority());
 			extraPriorityItem.setWidth(284);
 			extraPriorityItem.setName("extraPriority");
 			extraPriorityItem.setDefaultToFirstOption(true);
@@ -327,18 +327,18 @@ public class DlgAddEditMainOrg extends Window {
 			extraPriorityItem.setDisabled(!hasPermission);
 
 			noteCritItem = new CheckboxItem();
-			noteCritItem.setTitle(CallCenter.constants.noteCrit());
+			noteCritItem.setTitle(CallCenterBK.constants.noteCrit());
 			noteCritItem.setWidth(650);
 			noteCritItem.setHeight(24);
 			noteCritItem.setName("note_crit");
 
 			HeaderItem headerItemAddr1 = new HeaderItem();
-			headerItemAddr1.setValue(CallCenter.constants
+			headerItemAddr1.setValue(CallCenterBK.constants
 					.orgAddressHeaderReal());
 			headerItemAddr1.setTextBoxStyle("headerStyle");
 
 			citiesItem = new ComboBoxItem();
-			citiesItem.setTitle(CallCenter.constants.city());
+			citiesItem.setTitle(CallCenterBK.constants.city());
 			citiesItem.setName("city_name_geo");
 			citiesItem.setWidth(284);
 			citiesItem.setFetchMissingValues(true);
@@ -370,7 +370,7 @@ public class DlgAddEditMainOrg extends Window {
 			citiesItem.setValue(Constants.defCityTbilisiId);
 
 			streetItem = new ComboBoxItem();
-			streetItem.setTitle(CallCenter.constants.street());
+			streetItem.setTitle(CallCenterBK.constants.street());
 			streetItem.setName("street_name_geo");
 			streetItem.setWidth(284);
 			streetItem.setFetchMissingValues(true);
@@ -400,7 +400,7 @@ public class DlgAddEditMainOrg extends Window {
 			});
 
 			regionItem = new ComboBoxItem();
-			regionItem.setTitle(CallCenter.constants.cityRegion());
+			regionItem.setTitle(CallCenterBK.constants.cityRegion());
 			regionItem.setName("city_region_name_geo");
 			regionItem.setWidth(284);
 			regionItem.setFetchMissingValues(true);
@@ -434,7 +434,7 @@ public class DlgAddEditMainOrg extends Window {
 			});
 
 			streetDescrItem = new TextAreaItem();
-			streetDescrItem.setTitle(CallCenter.constants.streetDescr());
+			streetDescrItem.setTitle(CallCenterBK.constants.streetDescr());
 			streetDescrItem.setName("streetDescrItem");
 			streetDescrItem.setWidth(569);
 			streetDescrItem.setColSpan(2);
@@ -442,7 +442,7 @@ public class DlgAddEditMainOrg extends Window {
 			streetDescrItem.setCanEdit(false);
 
 			streetIdxItem = new TextItem();
-			streetIdxItem.setTitle(CallCenter.constants.streetIdx());
+			streetIdxItem.setTitle(CallCenterBK.constants.streetIdx());
 			streetIdxItem.setName("street_index");
 			streetIdxItem.setWidth(569);
 			// streetIdxItem.setHeight(50);
@@ -450,7 +450,7 @@ public class DlgAddEditMainOrg extends Window {
 			streetIdxItem.setColSpan(2);
 
 			oldAddItem = new TextItem();
-			oldAddItem.setTitle(CallCenter.constants.oldAddress());
+			oldAddItem.setTitle(CallCenterBK.constants.oldAddress());
 			oldAddItem.setName("oldAddItem");
 			oldAddItem.setWidth(284);
 			oldAddItem.setCanEdit(false);
@@ -459,28 +459,28 @@ public class DlgAddEditMainOrg extends Window {
 			adressOpCloseItem.setValueMap(ClientMapUtil.getInstance()
 					.getAddrMapOpClose());
 			adressOpCloseItem.setDefaultToFirstOption(true);
-			adressOpCloseItem.setTitle(CallCenter.constants.openClose());
+			adressOpCloseItem.setTitle(CallCenterBK.constants.openClose());
 			adressOpCloseItem.setName("adressOpCloseItem");
 			adressOpCloseItem.setWidth(284);
 			adressOpCloseItem.setFetchMissingValues(false);
 
 			adressItem = new TextItem();
-			adressItem.setTitle(CallCenter.constants.home());
+			adressItem.setTitle(CallCenterBK.constants.home());
 			adressItem.setName("adressItem");
 			adressItem.setWidth(284);
 
 			blockItem = new TextItem();
-			blockItem.setTitle(CallCenter.constants.block());
+			blockItem.setTitle(CallCenterBK.constants.block());
 			blockItem.setName("blockItem");
 			blockItem.setWidth(284);
 
 			appartItem = new TextItem();
-			appartItem.setTitle(CallCenter.constants.appartment());
+			appartItem.setTitle(CallCenterBK.constants.appartment());
 			appartItem.setName("appartItem");
 			appartItem.setWidth(284);
 
 			orgStatusItem = new SelectItem();
-			orgStatusItem.setTitle(CallCenter.constants.status());
+			orgStatusItem.setTitle(CallCenterBK.constants.status());
 			orgStatusItem.setName("response_type");
 			orgStatusItem.setWidth(284);
 			orgStatusItem.setValueMap(ClientMapUtil.getInstance()
@@ -534,7 +534,7 @@ public class DlgAddEditMainOrg extends Window {
 			activityGrid.setFetchOperation("searchAllBusinessDetailsForCB");
 
 			ListGridField activity = new ListGridField(
-					"business_detail_name_geo", CallCenter.constants.activity());
+					"business_detail_name_geo", CallCenterBK.constants.activity());
 			activity.setAlign(Alignment.LEFT);
 
 			activityGrid.setFields(activity);
@@ -564,7 +564,7 @@ public class DlgAddEditMainOrg extends Window {
 			orgActivityGrid.setCanRemoveRecords(true);
 			orgActivityGrid.setAutoFetchData(true);
 			orgActivityGrid.setPreventDuplicates(true);
-			orgActivityGrid.setDuplicateDragMessage(CallCenter.constants
+			orgActivityGrid.setDuplicateDragMessage(CallCenterBK.constants
 					.thisOrgActAlreadyChoosen());
 
 			Img arrowImg = new Img("arrow_right.png", 32, 32);
@@ -602,11 +602,11 @@ public class DlgAddEditMainOrg extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);

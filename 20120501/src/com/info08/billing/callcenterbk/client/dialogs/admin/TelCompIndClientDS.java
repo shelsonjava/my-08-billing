@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
@@ -19,16 +19,16 @@ public class TelCompIndClientDS extends DataSource {
 		ind_id.setRequired(true);
 
 		DataSourceTextField st_ind = new DataSourceTextField("st_ind",
-				CallCenter.constants.startIndex());
+				CallCenterBK.constants.startIndex());
 
 		DataSourceTextField end_ind = new DataSourceTextField("end_ind",
-				CallCenter.constants.endIndex());
+				CallCenterBK.constants.endIndex());
 
 		DataSourceTextField cr_descr = new DataSourceTextField("cr_descr",
-				CallCenter.constants.type());
+				CallCenterBK.constants.type());
 
 		DataSourceTextField count_type_descr = new DataSourceTextField(
-				"count_type_descr", CallCenter.constants.type());
+				"count_type_descr", CallCenterBK.constants.type());
 
 		setFields(ind_id, st_ind, end_ind, cr_descr, count_type_descr);
 		setClientOnly(true);

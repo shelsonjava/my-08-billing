@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewCurrencyRate;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -46,7 +46,7 @@ public class TabFindCurrencyRates extends Tab {
 	private DataSource rateCurrDS;
 
 	public TabFindCurrencyRates() {
-		setTitle(CallCenter.constants.valute());
+		setTitle(CallCenterBK.constants.valute());
 		setCanClose(true);
 
 		mainLayout = new VLayout(5);
@@ -61,7 +61,7 @@ public class TabFindCurrencyRates extends Tab {
 		searchForm.setTitleOrientation(TitleOrientation.TOP);
 
 		amountItem = new TextItem();
-		amountItem.setTitle(CallCenter.constants.amount());
+		amountItem.setTitle(CallCenterBK.constants.amount());
 		amountItem.setName("amountItem");
 		amountItem.setWidth(500);
 
@@ -74,10 +74,10 @@ public class TabFindCurrencyRates extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		calculateButton = new IButton();
-		calculateButton.setTitle(CallCenter.constants.calculate());
+		calculateButton.setTitle(CallCenterBK.constants.calculate());
 
 		buttonLayout.setMembers(calculateButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -93,7 +93,7 @@ public class TabFindCurrencyRates extends Tab {
 		sectionStack1.setHeight100();
 
 		SectionStackSection section1 = new SectionStackSection(
-				CallCenter.constants.chooseCurrFrom());
+				CallCenterBK.constants.chooseCurrFrom());
 		section1.setCanCollapse(false);
 		section1.setExpanded(true);
 
@@ -102,7 +102,7 @@ public class TabFindCurrencyRates extends Tab {
 		sectionStack2.setHeight100();
 
 		SectionStackSection section2 = new SectionStackSection(
-				CallCenter.constants.chooseCurrTo());
+				CallCenterBK.constants.chooseCurrTo());
 		section2.setCanCollapse(false);
 		section2.setExpanded(true);
 
@@ -133,15 +133,15 @@ public class TabFindCurrencyRates extends Tab {
 		flag1.setCanFilter(false);
 
 		ListGridField country_name_geo = new ListGridField("country_name_geo",
-				CallCenter.constants.country(), 200);
+				CallCenterBK.constants.country(), 200);
 		country_name_geo.setAlign(Alignment.LEFT);
 
 		ListGridField curr_name_geo = new ListGridField("curr_name_geo",
-				CallCenter.constants.currencyName());
+				CallCenterBK.constants.currencyName());
 		curr_name_geo.setAlign(Alignment.LEFT);
 
 		ListGridField curr_abbrev = new ListGridField("curr_abbrev",
-				CallCenter.constants.currencyAbbrShort(), 50);
+				CallCenterBK.constants.currencyAbbrShort(), 50);
 		curr_abbrev.setAlign(Alignment.LEFT);
 
 		listGridFrom.setFields(flag1, country_name_geo, curr_name_geo,
@@ -176,15 +176,15 @@ public class TabFindCurrencyRates extends Tab {
 		flag.setCanFilter(false);
 
 		ListGridField country_name_geo1 = new ListGridField("country_name_geo",
-				CallCenter.constants.country(), 200);
+				CallCenterBK.constants.country(), 200);
 		country_name_geo1.setAlign(Alignment.LEFT);
 
 		ListGridField curr_name_geo1 = new ListGridField("curr_name_geo",
-				CallCenter.constants.currencyName());
+				CallCenterBK.constants.currencyName());
 		curr_name_geo1.setAlign(Alignment.LEFT);
 
 		ListGridField curr_abbrev1 = new ListGridField("curr_abbrev",
-				CallCenter.constants.currencyAbbrShort(), 50);
+				CallCenterBK.constants.currencyAbbrShort(), 50);
 		curr_abbrev1.setAlign(Alignment.LEFT);
 
 		listGridTo.setFields(flag, country_name_geo1, curr_name_geo1,
@@ -231,7 +231,7 @@ public class TabFindCurrencyRates extends Tab {
 					double tmp = Double.parseDouble(amount_str.trim());
 					amount = tmp;
 				} catch (Exception e) {
-					SC.say(CallCenter.constants.invalidAmount());
+					SC.say(CallCenterBK.constants.invalidAmount());
 				}
 			}
 
@@ -240,16 +240,16 @@ public class TabFindCurrencyRates extends Tab {
 			final ListGridRecord listGridRecordFrom = listGridFrom
 					.getSelectedRecord();
 			if (listGridRecordFrom == null) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.chooseCurrFrom());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.chooseCurrFrom());
 				return;
 			}
 
 			final ListGridRecord listGridRecordTo = listGridTo
 					.getSelectedRecord();
 			if (listGridRecordTo == null) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.chooseCurrTo());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.chooseCurrTo());
 				return;
 			}
 
@@ -258,8 +258,8 @@ public class TabFindCurrencyRates extends Tab {
 			Integer to_curr_id = listGridRecordTo.getAttributeAsInt("curr_id");
 
 			if (form_curr_id.equals(to_curr_id)) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.fromAndToCurrIsSame());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.fromAndToCurrIsSame());
 				return;
 			}
 
@@ -276,7 +276,7 @@ public class TabFindCurrencyRates extends Tab {
 						DSRequest request) {
 					Record records[] = response.getData();
 					if (records == null || records.length != 2) {
-						SC.say(CallCenter.constants.ratesNotFound());
+						SC.say(CallCenterBK.constants.ratesNotFound());
 						return;
 					}
 

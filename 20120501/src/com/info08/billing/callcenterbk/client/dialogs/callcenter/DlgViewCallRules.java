@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.widgets.IButton;
@@ -17,7 +17,7 @@ public class DlgViewCallRules extends Window {
 	private VLayout mainLayout;
 
 	public DlgViewCallRules() {
-		setTitle(CallCenter.constants.info());
+		setTitle(CallCenterBK.constants.info());
 
 		setHeight(160);
 		setWidth(500);
@@ -42,7 +42,7 @@ public class DlgViewCallRules extends Window {
 		mainLayout.addMember(dynamicForm);
 
 		TextAreaItem infoItem = new TextAreaItem();
-		infoItem.setTitle(CallCenter.constants.callInfo());
+		infoItem.setTitle(CallCenterBK.constants.callInfo());
 		infoItem.setWidth("100%");
 		infoItem.setHeight(65);
 		infoItem.setName("infoItem");
@@ -50,7 +50,7 @@ public class DlgViewCallRules extends Window {
 		infoItem.setCanEdit(false);
 		infoItem.setTextBoxStyle("fontRedAndBoldNoBorder1");
 		infoItem.setCanFocus(false);
-		infoItem.setValue(CallCenter.constants.codesTextConstant());
+		infoItem.setValue(CallCenterBK.constants.codesTextConstant());
 		dynamicForm.setFields(infoItem);
 
 		addItem(mainLayout);
@@ -60,7 +60,7 @@ public class DlgViewCallRules extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);

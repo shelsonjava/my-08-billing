@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.content.discovery;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.control.LogSMSDialog;
 import com.info08.billing.callcenterbk.client.dialogs.discovery.DlgChangeResolveStatus;
 import com.info08.billing.callcenterbk.client.dialogs.discovery.DlgDiscoveryManagerHist;
@@ -58,7 +58,7 @@ public class TabDiscoveryHist extends Tab {
 
 	public TabDiscoveryHist() {
 		try {
-			setTitle(CallCenter.constants.menuDiscoveryHist());
+			setTitle(CallCenterBK.constants.menuDiscoveryHist());
 			setCanClose(true);
 
 			datasource = DataSource.get("DiscoveryDS");
@@ -77,7 +77,7 @@ public class TabDiscoveryHist extends Tab {
 			mainLayout.addMember(searchForm);
 
 			discoveryTypeItem = new SelectItem();
-			discoveryTypeItem.setTitle(CallCenter.constants.discoveryType());
+			discoveryTypeItem.setTitle(CallCenterBK.constants.discoveryType());
 			discoveryTypeItem.setWidth(250);
 			discoveryTypeItem.setName("discoveryTypeItem");
 
@@ -107,23 +107,23 @@ public class TabDiscoveryHist extends Tab {
 
 			discoveryDateItem = new DateItem();
 			discoveryDateItem.setUseTextField(true);
-			discoveryDateItem.setTitle(CallCenter.constants.date());
+			discoveryDateItem.setTitle(CallCenterBK.constants.date());
 			discoveryDateItem.setName("discoveryDateItem");
 			discoveryDateItem.setWidth(250);
 			discoveryDateItem.setValue(new Date());
 
 			nmItem = new TextItem();
-			nmItem.setTitle(CallCenter.constants.phone());
+			nmItem.setTitle(CallCenterBK.constants.phone());
 			nmItem.setName("nmItem");
 			nmItem.setWidth(250);
 
 			contactNmItem = new TextItem();
-			contactNmItem.setTitle(CallCenter.constants.contactPhone());
+			contactNmItem.setTitle(CallCenterBK.constants.contactPhone());
 			contactNmItem.setName("contactNmItem");
 			contactNmItem.setWidth(250);
 
 			operatorItem = new ComboBoxItem();
-			operatorItem.setTitle(CallCenter.constants.operator());
+			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setType("comboBox");
 			operatorItem.setWidth(250);
 			operatorItem.setName("operatorItem");
@@ -136,7 +136,7 @@ public class TabDiscoveryHist extends Tab {
 			}
 
 			updateUserItem = new ComboBoxItem();
-			updateUserItem.setTitle(CallCenter.constants.resolve());
+			updateUserItem.setTitle(CallCenterBK.constants.resolve());
 			updateUserItem.setType("comboBox");
 			updateUserItem.setWidth(250);
 			updateUserItem.setName("updateUserItem");
@@ -149,7 +149,7 @@ public class TabDiscoveryHist extends Tab {
 			}
 
 			discResponseType = new SelectItem();
-			discResponseType.setTitle(CallCenter.constants.status());
+			discResponseType.setTitle(CallCenterBK.constants.status());
 			discResponseType.setName("discResponseType");
 			discResponseType.setWidth(250);
 
@@ -170,10 +170,10 @@ public class TabDiscoveryHist extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -184,13 +184,13 @@ public class TabDiscoveryHist extends Tab {
 			mainLayout.addMember(toolStrip);
 
 			ToolStripButton smsBtn = new ToolStripButton(
-					CallCenter.constants.sms(), "save.png");
+					CallCenterBK.constants.sms(), "save.png");
 			smsBtn.setLayoutAlign(Alignment.LEFT);
 			smsBtn.setWidth(50);
 			toolStrip.addButton(smsBtn);
 
 			ToolStripButton changeStatus = new ToolStripButton(
-					CallCenter.constants.changeStatus(), "yes.png");
+					CallCenterBK.constants.changeStatus(), "yes.png");
 			changeStatus.setLayoutAlign(Alignment.LEFT);
 			changeStatus.setWidth(50);
 			toolStrip.addButton(changeStatus);
@@ -199,7 +199,7 @@ public class TabDiscoveryHist extends Tab {
 			toolStrip.addSpacer(100);
 
 			ToolStripButton viewBtn = new ToolStripButton(
-					CallCenter.constants.view(), "yes.png");
+					CallCenterBK.constants.view(), "yes.png");
 			viewBtn.setLayoutAlign(Alignment.LEFT);
 			viewBtn.setWidth(50);
 			toolStrip.addButton(viewBtn);
@@ -216,24 +216,24 @@ public class TabDiscoveryHist extends Tab {
 			listGrid.setShowRowNumbers(true);
 
 			ListGridField discover_type = new ListGridField("discover_type",
-					CallCenter.constants.type(), 100);
+					CallCenterBK.constants.type(), 100);
 			ListGridField phone = new ListGridField("phone",
-					CallCenter.constants.phone(), 80);
+					CallCenterBK.constants.phone(), 80);
 			ListGridField contact_phone = new ListGridField("contact_phone",
-					CallCenter.constants.contactPhone(), 120);
+					CallCenterBK.constants.contactPhone(), 120);
 			ListGridField contact_person = new ListGridField("contact_person",
-					CallCenter.constants.contactPerson(), 150);
+					CallCenterBK.constants.contactPerson(), 150);
 			ListGridField discover_txt = new ListGridField("discover_txt",
-					CallCenter.constants.message());
+					CallCenterBK.constants.message());
 			ListGridField response_type = new ListGridField("response_type",
-					CallCenter.constants.status(), 150);
+					CallCenterBK.constants.status(), 150);
 			ListGridField rec_user = new ListGridField("rec_user",
-					CallCenter.constants.shortOp(), 50);
+					CallCenterBK.constants.shortOp(), 50);
 			ListGridField rec_date = new ListGridField("rec_date",
-					CallCenter.constants.time(), 100);
+					CallCenterBK.constants.time(), 100);
 			// rec_date.setDateFormatter(DateDisplayFormat.TOEUROPEANSHORTDATETIME);
 			ListGridField upd_user = new ListGridField("upd_user",
-					CallCenter.constants.updUser(), 100);
+					CallCenterBK.constants.updUser(), 100);
 
 			discover_type.setAlign(Alignment.LEFT);
 			phone.setAlign(Alignment.LEFT);
@@ -290,8 +290,8 @@ public class TabDiscoveryHist extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.warning(),
-								CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					String sessionId = listGridRecord
@@ -319,7 +319,7 @@ public class TabDiscoveryHist extends Tab {
 
 					ListGridRecord gridRecord = listGrid.getSelectedRecord();
 					if (gridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgDiscoveryManagerHist dlgResolveDiscovery = new DlgDiscoveryManagerHist(
@@ -341,16 +341,16 @@ public class TabDiscoveryHist extends Tab {
 					.getUserName();
 			ListGridRecord listGridRecord = listGrid.getSelectedRecord();
 			if (listGridRecord == null) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.pleaseSelrecord());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
 			String upd_user = listGridRecord.getAttributeAsString("upd_user");
 			if (!userName.trim().equals(
 					((upd_user == null) ? "NO_USSERRRRRRRRRRRRRR" : upd_user
 							.trim()))) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.discNotAuthUser());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.discNotAuthUser());
 				return;
 			}
 			// listGrid.setCriteria(null);

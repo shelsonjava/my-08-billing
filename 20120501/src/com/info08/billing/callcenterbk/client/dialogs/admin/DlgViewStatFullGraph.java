@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 import java.util.ArrayList;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ChartType;
@@ -28,7 +28,7 @@ public class DlgViewStatFullGraph extends Window {
 	public DlgViewStatFullGraph(ListGridRecord records[]) {
 		try {
 			this.records = records;
-			setTitle(CallCenter.constants.graph());
+			setTitle(CallCenterBK.constants.graph());
 
 			setHeight(700);
 			setWidth(1200);
@@ -57,29 +57,29 @@ public class DlgViewStatFullGraph extends Window {
 
 			chart.setValueProperty("value");
 			chart.setChartType(ChartType.LINE);
-			chart.setTitle(CallCenter.constants.statisticFull());
-			chart.setValueTitle(CallCenter.constants.callsCount());
+			chart.setTitle(CallCenterBK.constants.statisticFull());
+			chart.setValueTitle(CallCenterBK.constants.callsCount());
 			chart.setShowDataPoints(true);
 			chart.setPointHoverCustomizer(new ChartPointHoverCustomizer() {
 				@Override
 				public String hoverHTML(Float value, Record record) {
 					return ("<b>"
-							+ CallCenter.constants.service()
+							+ CallCenterBK.constants.service()
 							+ " : </b> "
 							+ record.getAttribute("service_name")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.date()
+							+ CallCenterBK.constants.date()
 							+ " : </b> "
 							+ record.getAttribute("date_str")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.weekDay()
+							+ CallCenterBK.constants.weekDay()
 							+ " : </b> "
 							+ record.getAttribute("week_day_descr")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.callsCount()
+							+ CallCenterBK.constants.callsCount()
 							+ " : </b> "
 							+ (record.getAttributeAsDouble("value") == null ? nf
 									.format(0) : nf.format(record
@@ -94,7 +94,7 @@ public class DlgViewStatFullGraph extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);
@@ -125,7 +125,7 @@ public class DlgViewStatFullGraph extends Window {
 				abonent_cnt.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				abonent_cnt.setAttribute("service_name",
-						CallCenter.constants.abonent());
+						CallCenterBK.constants.abonent());
 				abonent_cnt.setAttribute("value",
 						record.getAttributeAsDouble("abonent_cnt"));
 				abonent_cnt.setAttribute("week_day_descr",
@@ -135,7 +135,7 @@ public class DlgViewStatFullGraph extends Window {
 				org_contr_comm_cnt.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				org_contr_comm_cnt.setAttribute("service_name",
-						CallCenter.constants.direct());
+						CallCenterBK.constants.direct());
 				org_contr_comm_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_contr_comm_cnt"));
 				org_contr_comm_cnt.setAttribute("week_day_descr",
@@ -145,7 +145,7 @@ public class DlgViewStatFullGraph extends Window {
 				org_non_contr_cnt.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				org_non_contr_cnt.setAttribute("service_name",
-						CallCenter.constants.nonDirect());
+						CallCenterBK.constants.nonDirect());
 				org_non_contr_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_non_contr_cnt"));
 				org_non_contr_cnt.setAttribute("week_day_descr",
@@ -155,7 +155,7 @@ public class DlgViewStatFullGraph extends Window {
 				org_contr_gov_cnt.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				org_contr_gov_cnt.setAttribute("service_name",
-						CallCenter.constants.government());
+						CallCenterBK.constants.government());
 				org_contr_gov_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_contr_gov_cnt"));
 				org_contr_gov_cnt.setAttribute("week_day_descr",
@@ -173,7 +173,7 @@ public class DlgViewStatFullGraph extends Window {
 				magti_cnt.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				magti_cnt.setAttribute("service_name",
-						CallCenter.constants.magti());
+						CallCenterBK.constants.magti());
 				magti_cnt.setAttribute("value",
 						record.getAttributeAsDouble("magti_cnt"));
 				magti_cnt.setAttribute("week_day_descr",
@@ -183,7 +183,7 @@ public class DlgViewStatFullGraph extends Window {
 				geocell_cnt.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				geocell_cnt.setAttribute("service_name",
-						CallCenter.constants.geocell());
+						CallCenterBK.constants.geocell());
 				geocell_cnt.setAttribute("value",
 						record.getAttributeAsDouble("geocell_cnt"));
 				geocell_cnt.setAttribute("week_day_descr",
@@ -193,7 +193,7 @@ public class DlgViewStatFullGraph extends Window {
 				beeline_cnt.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				beeline_cnt.setAttribute("service_name",
-						CallCenter.constants.beeline());
+						CallCenterBK.constants.beeline());
 				beeline_cnt.setAttribute("value",
 						record.getAttributeAsDouble("beeline_cnt"));
 				beeline_cnt.setAttribute("week_day_descr",
@@ -203,7 +203,7 @@ public class DlgViewStatFullGraph extends Window {
 				org_contr_email_srv_cnt.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				org_contr_email_srv_cnt.setAttribute("service_name",
-						CallCenter.constants.directEmail() + ".1");
+						CallCenterBK.constants.directEmail() + ".1");
 				org_contr_email_srv_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_contr_email_srv_cnt"));
 				org_contr_email_srv_cnt.setAttribute("week_day_descr",
@@ -213,7 +213,7 @@ public class DlgViewStatFullGraph extends Window {
 				org_email_srv_cnt.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				org_email_srv_cnt.setAttribute("service_name",
-						CallCenter.constants.nonDirectEmail() + ".1");
+						CallCenterBK.constants.nonDirectEmail() + ".1");
 				org_email_srv_cnt.setAttribute("value",
 						record.getAttributeAsDouble("org_email_srv_cnt"));
 				org_email_srv_cnt.setAttribute("week_day_descr",

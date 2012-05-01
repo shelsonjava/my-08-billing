@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxEvent;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItemDataChangedHandler;
@@ -87,8 +87,8 @@ public class DlgAddEditContractor extends Window {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenter.constants.addContractor()
-					: CallCenter.constants.editContractor());
+			setTitle(pRecord == null ? CallCenterBK.constants.addContractor()
+					: CallCenterBK.constants.editContractor());
 
 			setHeight(750);
 			setWidth(800);
@@ -107,7 +107,7 @@ public class DlgAddEditContractor extends Window {
 			hLayout.setPadding(10);
 
 			myComboBoxItemOrg = new MyComboBoxItem("org_name",
-					CallCenter.constants.orgNameFull(), 168, 580);
+					CallCenterBK.constants.orgNameFull(), 168, 580);
 			myComboBoxItemOrg.setMyDlgHeight(400);
 			myComboBoxItemOrg.setMyDlgWidth(600);
 			DataSource orgDS = DataSource.get("OrgDS");
@@ -116,13 +116,13 @@ public class DlgAddEditContractor extends Window {
 					.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
 			myComboBoxItemOrg.setMyIdField("main_id");
 			myComboBoxItemOrg.setMyDisplayField("org_name");
-			myComboBoxItemOrg.setMyChooserTitle(CallCenter.constants
+			myComboBoxItemOrg.setMyChooserTitle(CallCenterBK.constants
 					.organization());
 
 			hLayout.addMember(myComboBoxItemOrg);
 
 			myComboBoxItemOrgDetails = new MyComboBoxItem("main_detail_geo",
-					CallCenter.constants.department(), 168, 580);
+					CallCenterBK.constants.department(), 168, 580);
 			myComboBoxItemOrgDetails.setMyDlgHeight(400);
 			myComboBoxItemOrgDetails.setMyDlgWidth(600);
 			DataSource mainDetDS = DataSource.get("MainDetDS");
@@ -131,7 +131,7 @@ public class DlgAddEditContractor extends Window {
 					.setMyDataSourceOperation("searchMainDetailsAdv");
 			myComboBoxItemOrgDetails.setMyIdField("main_detail_id");
 			myComboBoxItemOrgDetails.setMyDisplayField("main_detail_geo");
-			myComboBoxItemOrgDetails.setMyChooserTitle(CallCenter.constants
+			myComboBoxItemOrgDetails.setMyChooserTitle(CallCenterBK.constants
 					.department());
 			Criteria myCriteria = new Criteria();
 			myCriteria.setAttribute("main_id", -1000);
@@ -147,55 +147,55 @@ public class DlgAddEditContractor extends Window {
 			hLayout.addMember(dynamicForm);
 
 			startDateItem = new DateItem();
-			startDateItem.setTitle(CallCenter.constants.startDate());
+			startDateItem.setTitle(CallCenterBK.constants.startDate());
 			startDateItem.setWidth(200);
 			startDateItem.setName("startDateItem");
 			startDateItem.setUseTextField(true);
 
 			endDateItem = new DateItem();
-			endDateItem.setTitle(CallCenter.constants.endDate());
+			endDateItem.setTitle(CallCenterBK.constants.endDate());
 			endDateItem.setWidth(200);
 			endDateItem.setName("endDateItem");
 			endDateItem.setUseTextField(true);
 
 			blockItem = new CheckboxItem();
-			blockItem.setTitle(CallCenter.constants.isBlockable());
+			blockItem.setTitle(CallCenterBK.constants.isBlockable());
 			blockItem.setWidth(200);
 			blockItem.setName("blockItem");
 
 			smsWarnItem = new CheckboxItem();
-			smsWarnItem.setTitle(CallCenter.constants.smsWarnable());
+			smsWarnItem.setTitle(CallCenterBK.constants.smsWarnable());
 			smsWarnItem.setWidth(200);
 			smsWarnItem.setName("smsWarnItem");
 
 			noteItem = new TextAreaItem();
-			noteItem.setTitle(CallCenter.constants.comment());
+			noteItem.setTitle(CallCenterBK.constants.comment());
 			noteItem.setWidth(600);
 			noteItem.setHeight(50);
 			noteItem.setName("noteItem");
 			noteItem.setColSpan(4);
 
 			contractorType = new SelectItem();
-			contractorType.setTitle(CallCenter.constants.contractorType());
+			contractorType.setTitle(CallCenterBK.constants.contractorType());
 			contractorType.setWidth(200);
 			contractorType.setName("contractorType");
 			contractorType.setValueMap(ClientMapUtil.getInstance()
 					.getContractorTypes1());
 
 			critNumberItem = new SpinnerItem();
-			critNumberItem.setTitle(CallCenter.constants
+			critNumberItem.setTitle(CallCenterBK.constants
 					.contractorCritCallNumb());
 			critNumberItem.setWidth(200);
 			critNumberItem.setName("critNumberItem");
 			critNumberItem.setValue(-999999999);
 
 			priceTypeItem = new CheckboxItem();
-			priceTypeItem.setTitle(CallCenter.constants.normalPrice());
+			priceTypeItem.setTitle(CallCenterBK.constants.normalPrice());
 			priceTypeItem.setWidth(200);
 			priceTypeItem.setName("priceTypeItem");
 
 			normalPriceItem = new TextItem();
-			normalPriceItem.setTitle(CallCenter.constants.price());
+			normalPriceItem.setTitle(CallCenterBK.constants.price());
 			normalPriceItem.setWidth(200);
 			normalPriceItem.setName("normalPriceItem");
 			normalPriceItem.setKeyPressFilter("[0-9\\.]");
@@ -209,13 +209,13 @@ public class DlgAddEditContractor extends Window {
 			toolStrip.setPadding(5);
 			hLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			deleteBtn = new ToolStripButton(CallCenter.constants.disable(),
+			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			deleteBtn.setLayoutAlign(Alignment.LEFT);
 			deleteBtn.setWidth(50);
@@ -236,7 +236,7 @@ public class DlgAddEditContractor extends Window {
 			hLayout.addMember(row);
 
 			reCalcRancePriceItem = new CheckboxItem();
-			reCalcRancePriceItem.setTitle(CallCenter.constants
+			reCalcRancePriceItem.setTitle(CallCenterBK.constants
 					.reCalcCopntrRangePrice());
 			reCalcRancePriceItem.setWidth(200);
 			reCalcRancePriceItem.setName("reCalcRancePriceItem");
@@ -244,14 +244,14 @@ public class DlgAddEditContractor extends Window {
 			reCalcRancePriceItem.setTextBoxStyle("headerStyle12AndRed");
 
 			currrentPriceItem = new TextItem();
-			currrentPriceItem.setTitle(CallCenter.constants.currentPrice());
+			currrentPriceItem.setTitle(CallCenterBK.constants.currentPrice());
 			currrentPriceItem.setWidth(200);
 			currrentPriceItem.setName("currrentPriceItem");
 			currrentPriceItem.setDisabled(true);
 			currrentPriceItem.setValue("0");
 
 			checkOrgCallsBtn = new IButton();
-			checkOrgCallsBtn.setTitle(CallCenter.constants.callsCount());
+			checkOrgCallsBtn.setTitle(CallCenterBK.constants.callsCount());
 			checkOrgCallsBtn.setWidth(150);
 
 			row.addMembers(dynamicForm2, checkOrgCallsBtn);
@@ -272,11 +272,11 @@ public class DlgAddEditContractor extends Window {
 			listGridPrices.setCanDragSelectText(true);
 
 			ListGridField call_count_start = new ListGridField(
-					"call_count_start", CallCenter.constants.startCount());
+					"call_count_start", CallCenterBK.constants.startCount());
 			ListGridField call_count_end = new ListGridField("call_count_end",
-					CallCenter.constants.endCount());
+					CallCenterBK.constants.endCount());
 			ListGridField price = new ListGridField("price",
-					CallCenter.constants.price());
+					CallCenterBK.constants.price());
 			call_count_start.setAlign(Alignment.CENTER);
 			call_count_end.setAlign(Alignment.CENTER);
 			price.setAlign(Alignment.CENTER);
@@ -294,9 +294,9 @@ public class DlgAddEditContractor extends Window {
 			hLayout.addMember(dynamicForm1);
 
 			LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-			map.put("1", CallCenter.constants.contrPhonesAll());
-			map.put("2", CallCenter.constants.contrPhonesOnlyList());
-			map.put("3", CallCenter.constants.contrPhonesExceptList());
+			map.put("1", CallCenterBK.constants.contrPhonesAll());
+			map.put("2", CallCenterBK.constants.contrPhonesOnlyList());
+			map.put("3", CallCenterBK.constants.contrPhonesExceptList());
 			phoneListType = new RadioGroupItem();
 			phoneListType.setWidth(750);
 			phoneListType.setVertical(false);
@@ -311,13 +311,13 @@ public class DlgAddEditContractor extends Window {
 			toolStrip1.setPadding(5);
 			hLayout.addMember(toolStrip1);
 
-			addBtn1 = new ToolStripButton(CallCenter.constants.add(),
+			addBtn1 = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn1.setLayoutAlign(Alignment.LEFT);
 			addBtn1.setWidth(50);
 			toolStrip1.addButton(addBtn1);
 
-			deleteBtn1 = new ToolStripButton(CallCenter.constants.disable(),
+			deleteBtn1 = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			deleteBtn1.setLayoutAlign(Alignment.LEFT);
 			deleteBtn1.setWidth(50);
@@ -357,7 +357,7 @@ public class DlgAddEditContractor extends Window {
 			listGridPhones.setCanDragSelectText(true);
 
 			ListGridField phone = new ListGridField("phone",
-					CallCenter.constants.phone());
+					CallCenterBK.constants.phone());
 			phone.setAlign(Alignment.CENTER);
 			listGridPhones.setFields(phone);
 			hLayout.addMember(listGridPhones);
@@ -367,11 +367,11 @@ public class DlgAddEditContractor extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -421,11 +421,11 @@ public class DlgAddEditContractor extends Window {
 					final ListGridRecord record = listGridPrices
 							.getSelectedRecord();
 					if (record == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 
-					SC.ask(CallCenter.constants.deleteConfirm(),
+					SC.ask(CallCenterBK.constants.deleteConfirm(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -443,10 +443,10 @@ public class DlgAddEditContractor extends Window {
 					final ListGridRecord records[] = listGridPhones
 							.getSelectedRecords();
 					if (records == null || records.length <= 0) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					SC.ask(CallCenter.constants.deleteConfirm(),
+					SC.ask(CallCenterBK.constants.deleteConfirm(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -491,7 +491,7 @@ public class DlgAddEditContractor extends Window {
 					Integer main_id = myComboBoxItemOrg.getMyId();
 					Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
 					if (main_id == null && main_detail_id == null) {
-						SC.say(CallCenter.constants.noOrgOrDepSelected());
+						SC.say(CallCenterBK.constants.noOrgOrDepSelected());
 						return;
 					}
 					if (main_id == null) {
@@ -501,7 +501,7 @@ public class DlgAddEditContractor extends Window {
 						main_detail_id = 0;
 					}
 					if (main_id == 0 && main_detail_id == 0) {
-						SC.say(CallCenter.constants.noOrgOrDepSelected());
+						SC.say(CallCenterBK.constants.noOrgOrDepSelected());
 						return;
 					}
 
@@ -545,7 +545,7 @@ public class DlgAddEditContractor extends Window {
 						if (contractor_call_cnt == null) {
 							contractor_call_cnt = 0;
 						}
-						SC.say((CallCenter.constants.contractorCallCnt() + contractor_call_cnt));
+						SC.say((CallCenterBK.constants.contractorCallCnt() + contractor_call_cnt));
 					}
 				}
 			}, req);
@@ -571,14 +571,14 @@ public class DlgAddEditContractor extends Window {
 			if (value != null && value.booleanValue()) {
 				normalPriceItem.setCanEdit(false);
 				normalPriceItem.setDisabled(true);
-				priceTypeItem.setTitle(CallCenter.constants.advancedPrice());
+				priceTypeItem.setTitle(CallCenterBK.constants.advancedPrice());
 				priceTypeItem.redraw();
 				addBtn.setDisabled(false);
 				deleteBtn.setDisabled(false);
 			} else {
 				normalPriceItem.setCanEdit(true);
 				normalPriceItem.setDisabled(false);
-				priceTypeItem.setTitle(CallCenter.constants.normalPrice());
+				priceTypeItem.setTitle(CallCenterBK.constants.normalPrice());
 				priceTypeItem.redraw();
 				addBtn.setDisabled(true);
 				deleteBtn.setDisabled(true);
@@ -715,7 +715,7 @@ public class DlgAddEditContractor extends Window {
 		try {
 			Integer main_id = myComboBoxItemOrg.getMyId();
 			if (main_id == null || main_id.intValue() <= 0) {
-				SC.say(CallCenter.constants.plzSelectOrg());
+				SC.say(CallCenterBK.constants.plzSelectOrg());
 				return;
 			}
 			Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
@@ -726,14 +726,14 @@ public class DlgAddEditContractor extends Window {
 			String note = noteItem.getValueAsString();
 			String is_budget_str = contractorType.getValueAsString();
 			if (is_budget_str == null || is_budget_str.trim().equals("")) {
-				SC.say(CallCenter.constants.plzSelectContractorType());
+				SC.say(CallCenterBK.constants.plzSelectContractorType());
 				return;
 			}
 			Integer is_budget = null;
 			try {
 				is_budget = Integer.parseInt(is_budget_str);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.plzSelectContractorType());
+				SC.say(CallCenterBK.constants.plzSelectContractorType());
 				return;
 			}
 
@@ -745,7 +745,7 @@ public class DlgAddEditContractor extends Window {
 			}
 			if (critical_number != Constants.criticalNumberIgnore
 					&& critical_number.intValue() < 0) {
-				SC.say(CallCenter.constants.incorrectCriticalNumber());
+				SC.say(CallCenterBK.constants.incorrectCriticalNumber());
 				return;
 			}
 
@@ -753,32 +753,32 @@ public class DlgAddEditContractor extends Window {
 			try {
 				start_date = startDateItem.getValueAsDate();
 				if (start_date == null) {
-					SC.say(CallCenter.constants.plzSelectContrStartDate());
+					SC.say(CallCenterBK.constants.plzSelectContrStartDate());
 					return;
 				}
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.plzSelectContrStartDate());
+				SC.say(CallCenterBK.constants.plzSelectContrStartDate());
 				return;
 			}
 			Date end_date = null;
 			try {
 				end_date = endDateItem.getValueAsDate();
 				if (end_date == null) {
-					SC.say(CallCenter.constants.plzSelectContrEndDate());
+					SC.say(CallCenterBK.constants.plzSelectContrEndDate());
 					return;
 				}
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.plzSelectContrEndDate());
+				SC.say(CallCenterBK.constants.plzSelectContrEndDate());
 				return;
 			}
 
 			if (start_date.after(end_date)) {
-				SC.say(CallCenter.constants.endDateMustBeAfterStartDate());
+				SC.say(CallCenterBK.constants.endDateMustBeAfterStartDate());
 				return;
 			}
 			Date currDate = new Date();
 			if (start_date.getTime() > currDate.getTime()) {
-				SC.say(CallCenter.constants.startDateMustNotBeAfterSysDate());
+				SC.say(CallCenterBK.constants.startDateMustNotBeAfterSysDate());
 				return;
 			}
 			Integer block = new Integer(0);
@@ -804,7 +804,7 @@ public class DlgAddEditContractor extends Window {
 			if (priceType == null || !priceType.booleanValue()) {
 				String normalPriceStr = normalPriceItem.getValueAsString();
 				if (normalPriceStr == null || normalPriceStr.trim().equals("")) {
-					SC.say(CallCenter.constants.enterAmount());
+					SC.say(CallCenterBK.constants.enterAmount());
 					return;
 				}
 
@@ -812,14 +812,14 @@ public class DlgAddEditContractor extends Window {
 					Float.parseFloat(normalPriceStr);
 					normalPrice = normalPriceStr;
 				} catch (Exception e) {
-					SC.say(CallCenter.constants.invalidAmount());
+					SC.say(CallCenterBK.constants.invalidAmount());
 					return;
 				}
 
 			} else {
 				RecordList recordList = listGridPrices.getDataAsRecordList();
 				if (recordList == null || recordList.isEmpty()) {
-					SC.say(CallCenter.constants.advPriceListIsEmpty());
+					SC.say(CallCenterBK.constants.advPriceListIsEmpty());
 					return;
 				}
 				int length = recordList.getLength();
@@ -836,7 +836,7 @@ public class DlgAddEditContractor extends Window {
 				}
 
 				if (!sorted.containsKey(new Integer(0))) {
-					SC.say(CallCenter.constants.priceListMustContZero());
+					SC.say(CallCenterBK.constants.priceListMustContZero());
 					return;
 				}
 
@@ -855,7 +855,7 @@ public class DlgAddEditContractor extends Window {
 
 					if (pevStartCount != null && pevEndCount != null) {
 						if (currStartCount != (pevEndCount + 1)) {
-							SC.say(CallCenter.constants.invalidPriceRange1());
+							SC.say(CallCenterBK.constants.invalidPriceRange1());
 							return;
 						}
 					}
@@ -884,7 +884,7 @@ public class DlgAddEditContractor extends Window {
 			RecordList recordList = listGridPhones.getDataAsRecordList();
 			if (phone_list_type != 1
 					&& (recordList == null || recordList.isEmpty())) {
-				SC.say(CallCenter.constants.phonesListIsEmpty());
+				SC.say(CallCenterBK.constants.phonesListIsEmpty());
 				return;
 			}
 			int length = recordList.getLength();

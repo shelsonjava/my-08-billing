@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.currency;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.currency.DlgAddEditRate;
 import com.info08.billing.callcenterbk.client.dialogs.currency.DlgAddEditRateCurr;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
@@ -65,7 +65,7 @@ public class TabRateCurrency extends Tab {
 
 	public TabRateCurrency() {
 		try {
-			setTitle(CallCenter.constants.manageCurrency());
+			setTitle(CallCenterBK.constants.manageCurrency());
 			setCanClose(true);
 
 			datasource = DataSource.get("RateCurrDS");
@@ -83,7 +83,7 @@ public class TabRateCurrency extends Tab {
 			mainLayout.addMember(searchForm);
 
 			countryItem = new ComboBoxItem();
-			countryItem.setTitle(CallCenter.constants.country());
+			countryItem.setTitle(CallCenterBK.constants.country());
 			countryItem.setWidth(300);
 			countryItem.setName("country_id");
 			countryItem.setFetchMissingValues(true);
@@ -114,17 +114,17 @@ public class TabRateCurrency extends Tab {
 			});
 
 			currNameGeoItem = new TextItem();
-			currNameGeoItem.setTitle(CallCenter.constants.currencyName());
+			currNameGeoItem.setTitle(CallCenterBK.constants.currencyName());
 			currNameGeoItem.setName("curr_name_geo");
 			currNameGeoItem.setWidth(300);
 
 			currAbbrItem = new TextItem();
-			currAbbrItem.setTitle(CallCenter.constants.currencyAbbr());
+			currAbbrItem.setTitle(CallCenterBK.constants.currencyAbbr());
 			currAbbrItem.setName("curr_abbrev");
 			currAbbrItem.setWidth(300);
 
 			deletedItem = new ComboBoxItem();
-			deletedItem.setTitle(CallCenter.constants.status());
+			deletedItem.setTitle(CallCenterBK.constants.status());
 			deletedItem.setWidth(300);
 			deletedItem.setName("deleted_curr_rates");
 			deletedItem.setValueMap(ClientMapUtil.getInstance().getStatuses());
@@ -139,10 +139,10 @@ public class TabRateCurrency extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -152,25 +152,25 @@ public class TabRateCurrency extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenter.constants.modify(),
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			disableBtn = new ToolStripButton(CallCenter.constants.disable(),
+			disableBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			disableBtn.setLayoutAlign(Alignment.LEFT);
 			disableBtn.setWidth(50);
 			toolStrip.addButton(disableBtn);
 
-			activateBtn = new ToolStripButton(CallCenter.constants.enable(),
+			activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
 					"restoreIcon.gif");
 			activateBtn.setLayoutAlign(Alignment.LEFT);
 			activateBtn.setWidth(50);
@@ -178,7 +178,7 @@ public class TabRateCurrency extends Tab {
 
 			toolStrip.addSeparator();
 
-			reteBtn = new ToolStripButton(CallCenter.constants.rates(),
+			reteBtn = new ToolStripButton(CallCenterBK.constants.rates(),
 					"exchange.png");
 			reteBtn.setLayoutAlign(Alignment.LEFT);
 			reteBtn.setWidth(50);
@@ -216,30 +216,30 @@ public class TabRateCurrency extends Tab {
 			listGrid.setShowHoverComponents(true);
 
 			datasource.getField("country_name_geo").setTitle(
-					CallCenter.constants.country());
+					CallCenterBK.constants.country());
 			datasource.getField("curr_name_geo").setTitle(
-					CallCenter.constants.currencyName());
+					CallCenterBK.constants.currencyName());
 			datasource.getField("curr_abbrev").setTitle(
-					CallCenter.constants.currencyAbbr());
+					CallCenterBK.constants.currencyAbbr());
 			datasource.getField("curr_order").setTitle(
-					CallCenter.constants.order());
+					CallCenterBK.constants.order());
 			datasource.getField("rec_date").setTitle(
-					CallCenter.constants.recDate());
+					CallCenterBK.constants.recDate());
 			datasource.getField("rec_user").setTitle(
-					CallCenter.constants.recUser());
+					CallCenterBK.constants.recUser());
 			datasource.getField("upd_date").setTitle(
-					CallCenter.constants.updDate());
+					CallCenterBK.constants.updDate());
 			datasource.getField("upd_user").setTitle(
-					CallCenter.constants.updUser());
+					CallCenterBK.constants.updUser());
 
 			ListGridField country_name_geo = new ListGridField(
-					"country_name_geo", CallCenter.constants.country(), 250);
+					"country_name_geo", CallCenterBK.constants.country(), 250);
 			ListGridField curr_name_geo = new ListGridField("curr_name_geo",
-					CallCenter.constants.currencyName(), 250);
+					CallCenterBK.constants.currencyName(), 250);
 			ListGridField curr_abbrev = new ListGridField("curr_abbrev",
-					CallCenter.constants.currencyAbbr(), 150);
+					CallCenterBK.constants.currencyAbbr(), 150);
 			ListGridField curr_order = new ListGridField("curr_order",
-					CallCenter.constants.order(), 70);
+					CallCenterBK.constants.order(), 70);
 
 			country_name_geo.setAlign(Alignment.LEFT);
 			curr_name_geo.setAlign(Alignment.LEFT);
@@ -279,7 +279,7 @@ public class TabRateCurrency extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditRateCurr dlgAddEditEntCurrency = new DlgAddEditRateCurr(
@@ -293,18 +293,18 @@ public class TabRateCurrency extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
+						SC.say(CallCenterBK.constants.recordAlrDisabled());
 						return;
 					}
 					final Integer curr_id = listGridRecord
 							.getAttributeAsInt("curr_id");
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -321,18 +321,18 @@ public class TabRateCurrency extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrEnabled());
+						SC.say(CallCenterBK.constants.recordAlrEnabled());
 						return;
 					}
 					final Integer curr_id = listGridRecord
 							.getAttributeAsInt("curr_id");
-					SC.ask(CallCenter.constants.askForEnable(),
+					SC.ask(CallCenterBK.constants.askForEnable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -350,7 +350,7 @@ public class TabRateCurrency extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditRate dlgAddEditRate = new DlgAddEditRate(
@@ -361,7 +361,7 @@ public class TabRateCurrency extends Tab {
 
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(780);
-			Tab tabDetViewer = new Tab(CallCenter.constants.view());
+			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
 			final DetailViewer detailViewer = new DetailViewer();
 			detailViewer.setDataSource(datasource);
 			detailViewer.setWidth(750);
@@ -379,7 +379,7 @@ public class TabRateCurrency extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditRate dlgAddEditRate = new DlgAddEditRate(

@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewStreet;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
@@ -52,7 +52,7 @@ public class TabFindStreets extends Tab {
 	private DataSource streetsDS;
 
 	public TabFindStreets() {
-		setTitle(CallCenter.constants.streetsFind());
+		setTitle(CallCenterBK.constants.streetsFind());
 		setCanClose(true);
 
 		streetsDS = DataSource.get("StreetsNewDS");
@@ -70,7 +70,7 @@ public class TabFindStreets extends Tab {
 		mainLayout.addMember(searchForm);
 
 		citiesItem = new ComboBoxItem();
-		citiesItem.setTitle(CallCenter.constants.city());
+		citiesItem.setTitle(CallCenterBK.constants.city());
 		citiesItem.setName("city_name_geo");
 		citiesItem.setWidth(250);
 		citiesItem.setFetchMissingValues(true);
@@ -103,12 +103,12 @@ public class TabFindStreets extends Tab {
 		citiesItem.setValue(Constants.defCityTbilisiId);
 
 		streetNameItem = new TextItem();
-		streetNameItem.setTitle(CallCenter.constants.street());
+		streetNameItem.setTitle(CallCenterBK.constants.street());
 		streetNameItem.setName("streetNameItem");
 		streetNameItem.setWidth(250);
 
 		indexItem = new TextItem();
-		indexItem.setTitle(CallCenter.constants.index());
+		indexItem.setTitle(CallCenterBK.constants.index());
 		indexItem.setName("indexItem");
 		indexItem.setWidth(250);
 
@@ -121,10 +121,10 @@ public class TabFindStreets extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -155,27 +155,27 @@ public class TabFindStreets extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField city_name_geo = new ListGridField("city_name_geo",
-				CallCenter.constants.city(), 120);
+				CallCenterBK.constants.city(), 120);
 		city_name_geo.setAlign(Alignment.LEFT);
 
 		ListGridField street_name_geo = new ListGridField("street_name_geo",
-				CallCenter.constants.street(), 170);
+				CallCenterBK.constants.street(), 170);
 		street_name_geo.setAlign(Alignment.LEFT);
 
 		ListGridField oldName = new ListGridField("oldName",
-				CallCenter.constants.oldStreetName(), 170);
+				CallCenterBK.constants.oldStreetName(), 170);
 		oldName.setAlign(Alignment.LEFT);
 
 		ListGridField streetIndex = new ListGridField("streetIndex",
-				CallCenter.constants.indexes(), 120);
+				CallCenterBK.constants.indexes(), 120);
 		streetIndex.setAlign(Alignment.LEFT);
 
 		ListGridField streetDistrict = new ListGridField("streetDistrict",
-				CallCenter.constants.district(), 120);
+				CallCenterBK.constants.district(), 120);
 		streetDistrict.setAlign(Alignment.LEFT);
 
 		ListGridField street_location_geo = new ListGridField(
-				"street_location_geo", CallCenter.constants.streetDescr());
+				"street_location_geo", CallCenterBK.constants.streetDescr());
 		street_location_geo.setAlign(Alignment.LEFT);
 
 		listGrid.setFields(city_name_geo, street_name_geo, oldName,
@@ -237,7 +237,7 @@ public class TabFindStreets extends Tab {
 			if ((streetIndex == null || streetIndex.trim().equals(""))
 					&& (street_name_geo == null || street_name_geo.trim()
 							.equals(""))) {
-				SC.say(CallCenter.constants.plzEnterStreetNameOrIdx());
+				SC.say(CallCenterBK.constants.plzEnterStreetNameOrIdx());
 				return;
 			}
 

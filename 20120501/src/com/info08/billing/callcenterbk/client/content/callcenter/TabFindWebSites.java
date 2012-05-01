@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewWebSites;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
@@ -51,7 +51,7 @@ public class TabFindWebSites extends Tab {
 	private DataSource mainDetailDS;
 
 	public TabFindWebSites() {
-		setTitle(CallCenter.constants.findSites());
+		setTitle(CallCenterBK.constants.findSites());
 		setCanClose(true);
 
 		mainDetailDS = DataSource.get("MainDetailDS");
@@ -69,7 +69,7 @@ public class TabFindWebSites extends Tab {
 		mainLayout.addMember(searchForm);
 
 		siteGroupItem = new ComboBoxItem();
-		siteGroupItem.setTitle(CallCenter.constants.group());
+		siteGroupItem.setTitle(CallCenterBK.constants.group());
 		siteGroupItem.setWidth(250);
 		siteGroupItem.setName("main_detail_type_name_geo");
 		siteGroupItem.setFetchMissingValues(true);
@@ -102,12 +102,12 @@ public class TabFindWebSites extends Tab {
 		});
 
 		webSiteItem = new TextItem();
-		webSiteItem.setTitle(CallCenter.constants.webSite());
+		webSiteItem.setTitle(CallCenterBK.constants.webSite());
 		webSiteItem.setName("webSiteItem");
 		webSiteItem.setWidth(250);
 
 		siteDescrItem = new TextItem();
-		siteDescrItem.setTitle(CallCenter.constants.comment());
+		siteDescrItem.setTitle(CallCenterBK.constants.comment());
 		siteDescrItem.setName("siteDescrItem");
 		siteDescrItem.setWidth(250);
 
@@ -119,10 +119,10 @@ public class TabFindWebSites extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -142,15 +142,15 @@ public class TabFindWebSites extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField main_detail_type_name_geo = new ListGridField(
-				"main_detail_type_name_geo", CallCenter.constants.group());
+				"main_detail_type_name_geo", CallCenterBK.constants.group());
 		main_detail_type_name_geo.setAlign(Alignment.LEFT);
 
 		ListGridField main_detail_eng = new ListGridField("main_detail_eng",
-				CallCenter.constants.webSite());
+				CallCenterBK.constants.webSite());
 		main_detail_eng.setAlign(Alignment.LEFT);
 
 		ListGridField main_detail_geo = new ListGridField("main_detail_geo",
-				CallCenter.constants.information());
+				CallCenterBK.constants.information());
 		main_detail_geo.setAlign(Alignment.LEFT);
 
 		listGrid.setFields(main_detail_type_name_geo, main_detail_eng,

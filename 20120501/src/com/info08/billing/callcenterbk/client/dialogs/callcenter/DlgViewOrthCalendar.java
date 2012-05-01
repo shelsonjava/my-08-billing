@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -42,7 +42,7 @@ public class DlgViewOrthCalendar extends Window {
 			ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
-		setTitle(CallCenter.constants.orthCalendar());
+		setTitle(CallCenterBK.constants.orthCalendar());
 
 		setHeight(370);
 		setWidth(950);
@@ -70,7 +70,7 @@ public class DlgViewOrthCalendar extends Window {
 		mainLayout.addMember(toolStrip);
 
 		sendSMS = new ToolStripButton(
-				CallCenter.constants.smsOrthCalendarInfo(), "sms.png");
+				CallCenterBK.constants.smsOrthCalendarInfo(), "sms.png");
 		sendSMS.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS);
 
@@ -81,16 +81,16 @@ public class DlgViewOrthCalendar extends Window {
 		detailViewer.setHeight100();
 
 		DetailViewerField calendar_day = new DetailViewerField("fcalendar_day",
-				CallCenter.constants.date());
+				CallCenterBK.constants.date());
 
 		DetailViewerField event = new DetailViewerField("event",
-				CallCenter.constants.category());
+				CallCenterBK.constants.category());
 
 		DetailViewerField state = new DetailViewerField("state",
-				CallCenter.constants.type());
+				CallCenterBK.constants.type());
 
 		DetailViewerField calendar_description = new DetailViewerField(
-				"calendar_description", CallCenter.constants.information());
+				"calendar_description", CallCenterBK.constants.information());
 
 		detailViewer.viewSelectedData(listGrid);
 
@@ -104,7 +104,7 @@ public class DlgViewOrthCalendar extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -150,8 +150,8 @@ public class DlgViewOrthCalendar extends Window {
 			boolean isMobile = serverSession.isPhoneIsMobile();
 			if (isMobile) {
 				if (!smsSend) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.smsDidNotSent(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.smsDidNotSent(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -166,8 +166,8 @@ public class DlgViewOrthCalendar extends Window {
 			} else {
 				int chCount = chargePanel.getChrgCounter();
 				if (chCount <= 0) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.chargeDidNotMade(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chargeDidNotMade(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -191,16 +191,16 @@ public class DlgViewOrthCalendar extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);

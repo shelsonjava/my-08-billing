@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -41,8 +41,8 @@ public class DlgGetContractorsBilling extends Window {
 			this.full = full;
 			this.contract_id = contract_id;
 			this.is_budget = is_budget;
-			setTitle(full ? CallCenter.constants.contractorsBillingFull()
-					: CallCenter.constants.contractorsBilling());
+			setTitle(full ? CallCenterBK.constants.contractorsBillingFull()
+					: CallCenterBK.constants.contractorsBilling());
 
 			setHeight(140);
 			setWidth(400);
@@ -68,12 +68,12 @@ public class DlgGetContractorsBilling extends Window {
 			hLayout.addMember(dynamicForm);
 
 			ymItem = new TextItem();
-			ymItem.setTitle(CallCenter.constants.yearMonth());
+			ymItem.setTitle(CallCenterBK.constants.yearMonth());
 			ymItem.setName("ymItem");
 			ymItem.setWidth(200);
 
 			generateBillItem = new CheckboxItem();
-			generateBillItem.setTitle(CallCenter.constants.generateBillAgain());
+			generateBillItem.setTitle(CallCenterBK.constants.generateBillAgain());
 			generateBillItem.setName("generateBillItem");
 			generateBillItem.setWidth(200);
 
@@ -84,12 +84,12 @@ public class DlgGetContractorsBilling extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.download());
+			saveItem.setTitle(CallCenterBK.constants.download());
 			saveItem.setIcon("excel.gif");
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -128,20 +128,20 @@ public class DlgGetContractorsBilling extends Window {
 		try {
 			String yearMonthStr = ymItem.getValueAsString();
 			if (yearMonthStr == null || yearMonthStr.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterYearMonth());
+				SC.say(CallCenterBK.constants.plzEnterYearMonth());
 				return;
 			}
 			yearMonthStr = yearMonthStr.trim();
 
 			if (yearMonthStr.length() < 4) {
-				SC.say(CallCenter.constants.invalidYearMonth());
+				SC.say(CallCenterBK.constants.invalidYearMonth());
 				return;
 			}
 			final Integer ym;
 			try {
 				ym = Integer.parseInt(yearMonthStr);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidYearMonth());
+				SC.say(CallCenterBK.constants.invalidYearMonth());
 				return;
 			}
 

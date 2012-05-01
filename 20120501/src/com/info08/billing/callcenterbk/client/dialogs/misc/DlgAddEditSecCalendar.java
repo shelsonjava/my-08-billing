@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.misc;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
@@ -48,9 +48,9 @@ public class DlgAddEditSecCalendar extends Window {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
 			this.isCopy = isCopy;
-			setTitle(isCopy ? CallCenter.constants.copyCalendar()
-					: (pRecord == null ? CallCenter.constants.addSecCalendar()
-							: CallCenter.constants.editSecCalendar()));
+			setTitle(isCopy ? CallCenterBK.constants.copyCalendar()
+					: (pRecord == null ? CallCenterBK.constants.addSecCalendar()
+							: CallCenterBK.constants.editSecCalendar()));
 
 			setHeight(490);
 			setWidth(510);
@@ -76,7 +76,7 @@ public class DlgAddEditSecCalendar extends Window {
 			hLayout.addMember(dynamicForm);
 
 			calendarStateItem = new ComboBoxItem();
-			calendarStateItem.setTitle(CallCenter.constants.type());
+			calendarStateItem.setTitle(CallCenterBK.constants.type());
 			calendarStateItem.setWidth(380);
 			calendarStateItem.setName("calendar_state_id");
 			calendarStateItem.setValueMap(ClientMapUtil.getInstance()
@@ -84,7 +84,7 @@ public class DlgAddEditSecCalendar extends Window {
 			calendarStateItem.setAddUnknownValues(false);
 
 			secCalendarTypeItem = new ComboBoxItem();
-			secCalendarTypeItem.setTitle(CallCenter.constants.moonPhase());
+			secCalendarTypeItem.setTitle(CallCenterBK.constants.moonPhase());
 			secCalendarTypeItem.setWidth(380);
 			secCalendarTypeItem.setName("calendar_event_id");
 			secCalendarTypeItem.setValueMap(ClientMapUtil.getInstance()
@@ -92,20 +92,20 @@ public class DlgAddEditSecCalendar extends Window {
 			secCalendarTypeItem.setAddUnknownValues(false);
 
 			calendarDayItem = new DateItem();
-			calendarDayItem.setTitle(CallCenter.constants.date());
+			calendarDayItem.setTitle(CallCenterBK.constants.date());
 			calendarDayItem.setWidth(380);
 			calendarDayItem.setValue(new Date());
 			calendarDayItem.setName("calendar_day");
-			calendarDayItem.setHint(CallCenter.constants.choose());
+			calendarDayItem.setHint(CallCenterBK.constants.choose());
 
 			descriptionItem = new TextAreaItem();
-			descriptionItem.setTitle(CallCenter.constants.description());
+			descriptionItem.setTitle(CallCenterBK.constants.description());
 			descriptionItem.setName("calendar_description");
 			descriptionItem.setWidth(380);
 			descriptionItem.setHeight(50);
 
 			commentItem = new TextAreaItem();
-			commentItem.setTitle(CallCenter.constants.comment());
+			commentItem.setTitle(CallCenterBK.constants.comment());
 			commentItem.setName("calendar_comment");
 			commentItem.setWidth(380);
 			commentItem.setHeight(250);
@@ -115,7 +115,7 @@ public class DlgAddEditSecCalendar extends Window {
 					.setExpression("^(([0-1][0-9])|([2][0-3])):([0-5][0-9])/(([0-1][0-9])|([2][0-3])):([0-5][0-9])$");
 
 			sunRiseItem = new TextItem();
-			sunRiseItem.setTitle(CallCenter.constants.sunRise());
+			sunRiseItem.setTitle(CallCenterBK.constants.sunRise());
 			sunRiseItem.setName("sun_rise");
 			sunRiseItem.setWidth(295);
 			sunRiseItem.setValidators(regExpValidator);
@@ -129,11 +129,11 @@ public class DlgAddEditSecCalendar extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -188,25 +188,25 @@ public class DlgAddEditSecCalendar extends Window {
 			String calendar_state_id = calendarStateItem.getValueAsString();
 			if (calendar_state_id == null
 					|| calendar_state_id.trim().equals("")) {
-				SC.say(CallCenter.constants.chooseType());
+				SC.say(CallCenterBK.constants.chooseType());
 				return;
 			}
 			String calendar_event_id = secCalendarTypeItem.getValueAsString();
 			if (calendar_event_id == null
 					|| calendar_event_id.trim().equals("")) {
-				SC.say(CallCenter.constants.chooseMoonPhase());
+				SC.say(CallCenterBK.constants.chooseMoonPhase());
 				return;
 			}
 			Date calendar_day = calendarDayItem.getValueAsDate();
 			if (calendar_day == null) {
-				SC.say(CallCenter.constants.enterRateCoeff());
+				SC.say(CallCenterBK.constants.enterRateCoeff());
 				return;
 			}
 			String calendar_description = descriptionItem.getValueAsString();
 			String calendar_comment = commentItem.getValueAsString();
 
 			if (!sunRiseItem.validate()) {
-				SC.say(CallCenter.constants.enterSunRise());
+				SC.say(CallCenterBK.constants.enterSunRise());
 				return;
 			}
 			String sun_rise = sunRiseItem.getValueAsString();

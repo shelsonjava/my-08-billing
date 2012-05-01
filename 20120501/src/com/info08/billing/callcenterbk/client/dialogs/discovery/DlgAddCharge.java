@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.discovery;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -46,7 +46,7 @@ public class DlgAddCharge extends Window {
 
 	public DlgAddCharge(String phone, String sOperator, Date callDate) {
 		try {
-			setTitle(CallCenter.constants.addCharge());
+			setTitle(CallCenterBK.constants.addCharge());
 
 			setHeight(500);
 			setWidth(600);
@@ -72,20 +72,20 @@ public class DlgAddCharge extends Window {
 			hLayout.addMember(dynamicForm);
 
 			nmItem = new TextItem();
-			nmItem.setTitle(CallCenter.constants.phone());
+			nmItem.setTitle(CallCenterBK.constants.phone());
 			nmItem.setName("phoneItem");
 			nmItem.setWidth(250);
 			nmItem.setValue(phone);
 
 			dateItem = new DateItem();
 			dateItem.setUseTextField(true);
-			dateItem.setTitle(CallCenter.constants.date());
+			dateItem.setTitle(CallCenterBK.constants.date());
 			dateItem.setName("dateItem");
 			dateItem.setWidth(250);
 			dateItem.setValue(callDate);
 
 			operatorItem = new TextItem();
-			operatorItem.setTitle(CallCenter.constants.operator());
+			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setName("operatorItem");
 			operatorItem.setWidth(250);
 			operatorItem.setValue(sOperator);
@@ -98,12 +98,12 @@ public class DlgAddCharge extends Window {
 			buttonLayout.setAlign(Alignment.LEFT);
 
 			chargeButton = new IButton();
-			chargeButton.setTitle(CallCenter.constants.charge());
+			chargeButton.setTitle(CallCenterBK.constants.charge());
 			chargeButton.setIcon("moneySmall.png");
 			chargeButton.setWidth(150);
 			
 			chargeButton1 = new IButton();
-			chargeButton1.setTitle(CallCenter.constants.charge1());
+			chargeButton1.setTitle(CallCenterBK.constants.charge1());
 			chargeButton1.setIcon("moneySmall.png");
 			chargeButton1.setWidth(150);
 
@@ -112,10 +112,10 @@ public class DlgAddCharge extends Window {
 			buttonLayout.addMember(new LayoutSpacer());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			buttonLayout.addMember(findButton);
 			buttonLayout.addMember(clearButton);
@@ -143,21 +143,21 @@ public class DlgAddCharge extends Window {
 			hLayout.addMember(listGrid);
 
 			ListGridField phone_record = new ListGridField("phone",
-					CallCenter.constants.phone());
+					CallCenterBK.constants.phone());
 			// phone_record.setCanFilter(false);
 
 			ListGridField start_date = new ListGridField("start_date",
-					CallCenter.constants.recDate(), 150);
+					CallCenterBK.constants.recDate(), 150);
 			start_date.setAlign(Alignment.CENTER);
 			// start_date.setCanFilter(false);
 
 			ListGridField operator = new ListGridField("user_name",
-					CallCenter.constants.operator(), 100);
+					CallCenterBK.constants.operator(), 100);
 			operator.setAlign(Alignment.CENTER);
 			// operator.setCanFilter(true);
 
 			ListGridField duration = new ListGridField("duration",
-					CallCenter.constants.durationShort(), 130);
+					CallCenterBK.constants.durationShort(), 130);
 			duration.setAlign(Alignment.CENTER);
 			// duration.setCanFilter(false);
 
@@ -168,7 +168,7 @@ public class DlgAddCharge extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);
@@ -233,8 +233,8 @@ public class DlgAddCharge extends Window {
 		try {
 			ListGridRecord listGridRecord = listGrid.getSelectedRecord();
 			if (listGridRecord == null) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.pleaseSelrecord());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
 			String session_id = listGridRecord
@@ -242,14 +242,14 @@ public class DlgAddCharge extends Window {
 			Integer ym = listGridRecord.getAttributeAsInt("ym");
 			String phone = listGridRecord.getAttributeAsString("phone");
 			if (session_id == null || ym == null || phone == null) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.invalidRecord());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.invalidRecord());
 				return;
 			}
 			
 			if (!phone.startsWith("570") && CommonFunctions.isPhoneMobile(phone)) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.phoneIsMobileShort());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.phoneIsMobileShort());
 				return;
 			}
 
@@ -270,7 +270,7 @@ public class DlgAddCharge extends Window {
 
 			String phone = nmItem.getValueAsString();
 			if (phone == null || phone.trim().equals("")) {
-				SC.say(CallCenter.constants.pleaseEnterPhone());
+				SC.say(CallCenterBK.constants.pleaseEnterPhone());
 				return;
 			}
 

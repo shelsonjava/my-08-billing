@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
@@ -20,7 +20,7 @@ public class MainOrgActClientDS extends DataSource {
 		business_detail_id.setRequired(true);
 
 		DataSourceTextField business_detail_name_geo = new DataSourceTextField(
-				"business_detail_name_geo", CallCenter.constants.activity());
+				"business_detail_name_geo", CallCenterBK.constants.activity());
 
 		setFields(business_detail_id, business_detail_name_geo);
 		setClientOnly(true);

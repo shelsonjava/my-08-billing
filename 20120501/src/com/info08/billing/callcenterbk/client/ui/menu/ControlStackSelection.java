@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.control.TabControl;
 import com.info08.billing.callcenterbk.client.content.control.TabViewSMSLog;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -37,7 +37,7 @@ public class ControlStackSelection extends SectionStackSection {
 			employeeData[0] = callViewnode;
 
 			viewSmsLogNode = new MenuTreeNode("101", "1",
-					CallCenter.constants.smsLog(), true, "sms.png", false);
+					CallCenterBK.constants.smsLog(), true, "sms.png", false);
 			employeeData[1] = viewSmsLogNode;
 
 			Tree employeeTree = new Tree();

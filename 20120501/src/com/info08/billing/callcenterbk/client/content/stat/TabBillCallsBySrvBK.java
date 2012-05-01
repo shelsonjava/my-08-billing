@@ -5,7 +5,7 @@ import java.util.Date;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -95,7 +95,7 @@ public class TabBillCallsBySrvBK extends Tab {
 	public TabBillCallsBySrvBK(TabSet tabSet) {
 		try {
 
-			setTitle(CallCenter.constants.callsTotalBySrv());
+			setTitle(CallCenterBK.constants.callsTotalBySrv());
 			setCanClose(true);
 
 			mainLayout = new VLayout(5);
@@ -117,179 +117,179 @@ public class TabBillCallsBySrvBK extends Tab {
 			searchForm1.setTitleWidth(10);
 
 			chbItemOrg = new CheckboxItem();
-			chbItemOrg.setTitle(CallCenter.constants.organization());
+			chbItemOrg.setTitle(CallCenterBK.constants.organization());
 			chbItemOrg.setName("chbItemOrg");
 			chbItemOrg.setValue(true);
 			chbItemOrg.setWidth(100);
 
 			chbItemAbon = new CheckboxItem();
-			chbItemAbon.setTitle(CallCenter.constants.abonent());
+			chbItemAbon.setTitle(CallCenterBK.constants.abonent());
 			chbItemAbon.setName("chbItemAbon");
 			chbItemAbon.setValue(true);
 			chbItemAbon.setWidth(100);
 
 			chbItemFindByNum = new CheckboxItem();
-			chbItemFindByNum.setTitle(CallCenter.constants.findByNumber());
+			chbItemFindByNum.setTitle(CallCenterBK.constants.findByNumber());
 			chbItemFindByNum.setName("chbItemFindByNum");
 			chbItemFindByNum.setValue(true);
 			chbItemFindByNum.setWidth(100);
 
 			chbItemCodesInfo = new CheckboxItem();
-			chbItemCodesInfo.setTitle(CallCenter.constants.codesInfo());
+			chbItemCodesInfo.setTitle(CallCenterBK.constants.codesInfo());
 			chbItemCodesInfo.setName("chbItemCodesInfo");
 			chbItemCodesInfo.setValue(true);
 			chbItemCodesInfo.setWidth(100);
 
 			chbItemGadartva = new CheckboxItem();
-			chbItemGadartva.setTitle(CallCenter.constants.gadartva());
+			chbItemGadartva.setTitle(CallCenterBK.constants.gadartva());
 			chbItemGadartva.setName("chbItemGadartva");
 			chbItemGadartva.setValue(true);
 			chbItemGadartva.setWidth(100);
 
 			chbItemExactTime = new CheckboxItem();
-			chbItemExactTime.setTitle(CallCenter.constants.exactTime());
+			chbItemExactTime.setTitle(CallCenterBK.constants.exactTime());
 			chbItemExactTime.setName("checkboxItem6");
 			chbItemExactTime.setValue(true);
 			chbItemExactTime.setWidth(100);
 
 			chbItemTickReserv = new CheckboxItem();
-			chbItemTickReserv.setTitle(CallCenter.constants.ticketReserv());
+			chbItemTickReserv.setTitle(CallCenterBK.constants.ticketReserv());
 			chbItemTickReserv.setName("chbItemTickReserv");
 			chbItemTickReserv.setValue(true);
 			chbItemTickReserv.setWidth(100);
 
 			chbItemSportInfo = new CheckboxItem();
-			chbItemSportInfo.setTitle(CallCenter.constants.sport());
+			chbItemSportInfo.setTitle(CallCenterBK.constants.sport());
 			chbItemSportInfo.setName("chbItemSportInfo");
 			chbItemSportInfo.setValue(true);
 			chbItemSportInfo.setWidth(100);
 
 			chbItemCityTransp = new CheckboxItem();
-			chbItemCityTransp.setTitle(CallCenter.constants.cityTransport());
+			chbItemCityTransp.setTitle(CallCenterBK.constants.cityTransport());
 			chbItemCityTransp.setName("chbItemCityTransp");
 			chbItemCityTransp.setValue(true);
 			chbItemCityTransp.setWidth(100);
 
 			chbItemTransp = new CheckboxItem();
-			chbItemTransp.setTitle(CallCenter.constants.transport());
+			chbItemTransp.setTitle(CallCenterBK.constants.transport());
 			chbItemTransp.setName("chbItemTransp");
 			chbItemTransp.setValue(true);
 			chbItemTransp.setWidth(100);
 
 			chbItemAlarmClock = new CheckboxItem();
-			chbItemAlarmClock.setTitle(CallCenter.constants.alarmClock());
+			chbItemAlarmClock.setTitle(CallCenterBK.constants.alarmClock());
 			chbItemAlarmClock.setName("chbItemAlarmClock");
 			chbItemAlarmClock.setValue(true);
 			chbItemAlarmClock.setWidth(100);
 
 			chbItemCurrRate = new CheckboxItem();
-			chbItemCurrRate.setTitle(CallCenter.constants.currencyRate());
+			chbItemCurrRate.setTitle(CallCenterBK.constants.currencyRate());
 			chbItemCurrRate.setName("chbItemCurrRate");
 			chbItemCurrRate.setValue(true);
 			chbItemCurrRate.setWidth(100);
 
 			chbItemEntPoster = new CheckboxItem();
-			chbItemEntPoster.setTitle(CallCenter.constants.poster());
+			chbItemEntPoster.setTitle(CallCenterBK.constants.poster());
 			chbItemEntPoster.setName("chbItemEntPoster");
 			chbItemEntPoster.setValue(true);
 			chbItemEntPoster.setWidth(100);
 
 			chbItemStreetInfo = new CheckboxItem();
-			chbItemStreetInfo.setTitle(CallCenter.constants.streetInfoSrv());
+			chbItemStreetInfo.setTitle(CallCenterBK.constants.streetInfoSrv());
 			chbItemStreetInfo.setName("chbItemStreetInfo");
 			chbItemStreetInfo.setValue(true);
 			chbItemStreetInfo.setWidth(100);
 
 			chbItemEmail = new CheckboxItem();
-			chbItemEmail.setTitle(CallCenter.constants.eMail());
+			chbItemEmail.setTitle(CallCenterBK.constants.eMail());
 			chbItemEmail.setName("chbItemEmail");
 			chbItemEmail.setValue(true);
 			chbItemEmail.setWidth(100);
 
 			chbItemGeorgPostIdx = new CheckboxItem();
-			chbItemGeorgPostIdx.setTitle(CallCenter.constants
+			chbItemGeorgPostIdx.setTitle(CallCenterBK.constants
 					.georgPostIndexes());
 			chbItemGeorgPostIdx.setName("chbItemGeorgPostIdx");
 			chbItemGeorgPostIdx.setValue(true);
 			chbItemGeorgPostIdx.setWidth(100);
 
 			chbItemWeather = new CheckboxItem();
-			chbItemWeather.setTitle(CallCenter.constants.weatherShort());
+			chbItemWeather.setTitle(CallCenterBK.constants.weatherShort());
 			chbItemWeather.setName("chbItemWeather");
 			chbItemWeather.setValue(true);
 			chbItemWeather.setWidth(100);
 
 			chbItemWebSites = new CheckboxItem();
-			chbItemWebSites.setTitle(CallCenter.constants.webSiteSrv());
+			chbItemWebSites.setTitle(CallCenterBK.constants.webSiteSrv());
 			chbItemWebSites.setName("chbItemWebSites");
 			chbItemWebSites.setValue(true);
 			chbItemWebSites.setWidth(100);
 
 			chbItemIdxsInfo = new CheckboxItem();
-			chbItemIdxsInfo.setTitle(CallCenter.constants.indexesInfo());
+			chbItemIdxsInfo.setTitle(CallCenterBK.constants.indexesInfo());
 			chbItemIdxsInfo.setName("chbItemIdxsInfo");
 			chbItemIdxsInfo.setValue(true);
 			chbItemIdxsInfo.setWidth(100);
 
 			chbItemCalendar = new CheckboxItem();
-			chbItemCalendar.setTitle(CallCenter.constants.calendarShort());
+			chbItemCalendar.setTitle(CallCenterBK.constants.calendarShort());
 			chbItemCalendar.setName("chbItemCalendar");
 			chbItemCalendar.setValue(true);
 			chbItemCalendar.setWidth(100);
 
 			chbItemNonStandartInfo = new CheckboxItem();
-			chbItemNonStandartInfo.setTitle(CallCenter.constants
+			chbItemNonStandartInfo.setTitle(CallCenterBK.constants
 					.nonStandartQuest());
 			chbItemNonStandartInfo.setName("chbItemNonStandartInfo");
 			chbItemNonStandartInfo.setValue(true);
 			chbItemOrg.setWidth(100);
 
 			chbItemDistBetwCities = new CheckboxItem();
-			chbItemDistBetwCities.setTitle(CallCenter.constants
+			chbItemDistBetwCities.setTitle(CallCenterBK.constants
 					.distBetweenCities());
 			chbItemDistBetwCities.setName("chbItemDistBetwCities");
 			chbItemDistBetwCities.setValue(true);
 			chbItemDistBetwCities.setWidth(100);
 
 			chbItemOrthCalendar = new CheckboxItem();
-			chbItemOrthCalendar.setTitle(CallCenter.constants.orthCalendar());
+			chbItemOrthCalendar.setTitle(CallCenterBK.constants.orthCalendar());
 			chbItemOrthCalendar.setName("chbItemOrthCalendar");
 			chbItemOrthCalendar.setValue(true);
 			chbItemOrthCalendar.setWidth(100);
 
 			chbItemHourDateAndOther = new CheckboxItem();
-			chbItemHourDateAndOther.setTitle(CallCenter.constants
+			chbItemHourDateAndOther.setTitle(CallCenterBK.constants
 					.hourDateAndOther());
 			chbItemHourDateAndOther.setName("chbItemHourDateAndOther");
 			chbItemHourDateAndOther.setValue(true);
 			chbItemHourDateAndOther.setWidth(100);
 
 			chbItemAviaScheduler = new CheckboxItem();
-			chbItemAviaScheduler.setTitle(CallCenter.constants.aviaScheduler());
+			chbItemAviaScheduler.setTitle(CallCenterBK.constants.aviaScheduler());
 			chbItemAviaScheduler.setName("chbItemAviaScheduler");
 			chbItemAviaScheduler.setValue(true);
 			chbItemAviaScheduler.setWidth(100);
 
 			chbItemMonumGard = new CheckboxItem();
-			chbItemMonumGard.setTitle(CallCenter.constants.monumGard());
+			chbItemMonumGard.setTitle(CallCenterBK.constants.monumGard());
 			chbItemMonumGard.setName("chbItemMonumGard");
 			chbItemMonumGard.setValue(true);
 			chbItemMonumGard.setWidth(100);
 
 			chbItemSMSInfo = new CheckboxItem();
-			chbItemSMSInfo.setTitle(CallCenter.constants.smsInfo());
+			chbItemSMSInfo.setTitle(CallCenterBK.constants.smsInfo());
 			chbItemSMSInfo.setName("chbItemSMSInfo");
 			chbItemSMSInfo.setValue(true);
 			chbItemSMSInfo.setWidth(100);
 
 			chbItemCallRules = new CheckboxItem();
-			chbItemCallRules.setTitle(CallCenter.constants.callRules());
+			chbItemCallRules.setTitle(CallCenterBK.constants.callRules());
 			chbItemCallRules.setName("chbItemCallRules");
 			chbItemCallRules.setValue(true);
 			chbItemCallRules.setWidth(100);
 
 			chbItemRailScheduler = new CheckboxItem();
-			chbItemRailScheduler.setTitle(CallCenter.constants.railScheduler());
+			chbItemRailScheduler.setTitle(CallCenterBK.constants.railScheduler());
 			chbItemRailScheduler.setName("chbItemRailScheduler");
 			chbItemRailScheduler.setValue(true);
 			chbItemRailScheduler.setWidth(100);
@@ -314,18 +314,18 @@ public class TabBillCallsBySrvBK extends Tab {
 			mainLayout.addMember(hLayout);
 
 			dateItemStart = new DateItem();
-			dateItemStart.setTitle(CallCenter.constants.date());
+			dateItemStart.setTitle(CallCenterBK.constants.date());
 			dateItemStart.setName("dateItemStart");
 			Date date = new Date();
 			CalendarUtil.addDaysToDate(date, -7);
 			dateItemStart.setValue(date);
 
 			dateItemEnd = new DateItem();
-			dateItemEnd.setTitle(CallCenter.constants.date());
+			dateItemEnd.setTitle(CallCenterBK.constants.date());
 			dateItemEnd.setName("dateItemEnd");
 
 			typeItem = new SelectItem();
-			typeItem.setTitle(CallCenter.constants.type());
+			typeItem.setTitle(CallCenterBK.constants.type());
 			typeItem.setName("typeItem");
 			typeItem.setValueMap(ClientMapUtil.getInstance()
 					.getCallStatChargeTypes());
@@ -333,7 +333,7 @@ public class TabBillCallsBySrvBK extends Tab {
 			typeItem.setWidth(190);
 
 			callTypeItem = new SelectItem();
-			callTypeItem.setTitle(CallCenter.constants.type());
+			callTypeItem.setTitle(CallCenterBK.constants.type());
 			callTypeItem.setName("callTypeItem");
 			callTypeItem.setValueMap(ClientMapUtil.getInstance()
 					.getCallStatChargeTypes1());
@@ -349,28 +349,28 @@ public class TabBillCallsBySrvBK extends Tab {
 			buttonLayout.setAlign(Alignment.LEFT);
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			selectServices = new CheckboxItem();
-			selectServices.setTitle(CallCenter.constants.selectAllServices());
+			selectServices.setTitle(CallCenterBK.constants.selectAllServices());
 			selectServices.setName("selectServices");
 			selectServices.setValue(true);
 
 			autoRefresh = new CheckboxItem();
-			autoRefresh.setTitle(CallCenter.constants.autoRefresh());
+			autoRefresh.setTitle(CallCenterBK.constants.autoRefresh());
 			autoRefresh.setName("autoRefresh");
 			autoRefresh.setValue(false);
 
 			allServicesSum = new CheckboxItem();
-			allServicesSum.setTitle(CallCenter.constants.billAllSrvs());
+			allServicesSum.setTitle(CallCenterBK.constants.billAllSrvs());
 			allServicesSum.setName("allServicesSum");
 			allServicesSum.setValue(false);
 
 			allInMoney = new CheckboxItem();
-			allInMoney.setTitle(CallCenter.constants.allInMoney());
+			allInMoney.setTitle(CallCenterBK.constants.allInMoney());
 			allInMoney.setName("allInMoney");
 			allInMoney.setValue(false);
 
@@ -396,35 +396,35 @@ public class TabBillCallsBySrvBK extends Tab {
 					new Facet("service_name_geo", "service_name_geo"));
 			chart.setValueProperty("value");
 			chart.setChartType(ChartType.LINE);
-			chart.setTitle(CallCenter.constants.callsTotalBySrvTitle());
-			chart.setValueTitle(CallCenter.constants.callsCount());
+			chart.setTitle(CallCenterBK.constants.callsTotalBySrvTitle());
+			chart.setValueTitle(CallCenterBK.constants.callsCount());
 			chart.setShowDataPoints(true);
 			chart.setPointHoverCustomizer(new ChartPointHoverCustomizer() {
 				@Override
 				public String hoverHTML(Float value, Record record) {
 					return ("<b>"
-							+ CallCenter.constants.service()
+							+ CallCenterBK.constants.service()
 							+ " : </b> "
 							+ record.getAttribute("service_name_geo")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.date()
+							+ CallCenterBK.constants.date()
 							+ " : </b> "
 							+ record.getAttribute("bill_date_str")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.weekDay()
+							+ CallCenterBK.constants.weekDay()
 							+ " : </b> "
 							+ record.getAttribute("week_day")
 							+ "<br />"
 							+ "<b>"
-							+ (allInMoney.getValueAsBoolean().booleanValue() ? CallCenter.constants
+							+ (allInMoney.getValueAsBoolean().booleanValue() ? CallCenterBK.constants
 									.moneyInGel()
 									: ((record.getAttribute("count_type") != null && record
 											.getAttributeAsInt("count_type")
-											.equals(0)) ? CallCenter.constants
+											.equals(0)) ? CallCenterBK.constants
 											.callsCount()
-											: CallCenter.constants
+											: CallCenterBK.constants
 													.percentShort()))
 							+ " : </b> "
 							+ (record.getAttributeAsDouble("value") == null ? nf
@@ -531,14 +531,14 @@ public class TabBillCallsBySrvBK extends Tab {
 			Criteria criteria = new Criteria();
 			String typeStr = typeItem.getValueAsString();
 			if (typeStr == null || typeStr.trim().equals("")) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.chooseType());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.chooseType());
 				return;
 			}
 			String typeStr1 = callTypeItem.getValueAsString();
 			if (typeStr1 == null || typeStr1.trim().equals("")) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.chooseType());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.chooseType());
 				return;
 			}
 
@@ -681,8 +681,8 @@ public class TabBillCallsBySrvBK extends Tab {
 			}
 			if (!isSelMin1) {
 				if (value == null || !value.booleanValue()) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.selectOneService());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.selectOneService());
 					return;
 				}
 			}

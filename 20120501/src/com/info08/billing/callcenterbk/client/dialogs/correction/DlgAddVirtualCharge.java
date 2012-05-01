@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.correction;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
@@ -41,7 +41,7 @@ public class DlgAddVirtualCharge extends Window {
 			ListGridRecord listGridRecord) {
 		try {
 			this.listGridRecord = listGridRecord;
-			setTitle(CallCenter.constants.addCharge());
+			setTitle(CallCenterBK.constants.addCharge());
 
 			setHeight(260);
 			setWidth(620);
@@ -66,22 +66,22 @@ public class DlgAddVirtualCharge extends Window {
 			detailViewer.selectRecord(listGridRecord);
 
 			DetailViewerField phone = new DetailViewerField("phone",
-					CallCenter.constants.phone());
+					CallCenterBK.constants.phone());
 
 			DetailViewerField fullName = new DetailViewerField("fullName",
-					CallCenter.constants.dasaxeleba());
+					CallCenterBK.constants.dasaxeleba());
 
 			DetailViewerField orgOrAbonent = new DetailViewerField(
-					"orgOrAbonent", CallCenter.constants.type());
+					"orgOrAbonent", CallCenterBK.constants.type());
 
 			DetailViewerField city_name_geo = new DetailViewerField(
-					"city_name_geo", CallCenter.constants.city());
+					"city_name_geo", CallCenterBK.constants.city());
 
 			DetailViewerField streetName = new DetailViewerField("streetName",
-					CallCenter.constants.street());
+					CallCenterBK.constants.street());
 
 			DetailViewerField phone_status = new DetailViewerField(
-					"phone_status", CallCenter.constants.phoneStatus());
+					"phone_status", CallCenterBK.constants.phoneStatus());
 
 			detailViewer.setFields(phone, fullName, orgOrAbonent,
 					city_name_geo, streetName, phone_status);
@@ -100,7 +100,7 @@ public class DlgAddVirtualCharge extends Window {
 			hLayout.addMember(dynamicForm);
 
 			serviceItem = new ComboBoxItem();
-			serviceItem.setTitle(CallCenter.constants.service());
+			serviceItem.setTitle(CallCenterBK.constants.service());
 			serviceItem.setType("comboBox");
 			serviceItem.setName("serviceItem");
 			serviceItem.setWidth(230);
@@ -110,14 +110,14 @@ public class DlgAddVirtualCharge extends Window {
 			serviceItem.setValueField("serviceId");
 
 			typeItem = new SelectItem();
-			typeItem.setTitle(CallCenter.constants.type());
+			typeItem.setTitle(CallCenterBK.constants.type());
 			typeItem.setName("typeItem");
 			typeItem.setWidth(150);
 			typeItem.setDefaultToFirstOption(true);
 			typeItem.setValueMap(ClientMapUtil.getInstance().getCallTypes());
 
 			chargeCountItem = new TextItem();
-			chargeCountItem.setTitle(CallCenter.constants.chargeCount());
+			chargeCountItem.setTitle(CallCenterBK.constants.chargeCount());
 			chargeCountItem.setName("chargeCountItem");
 			chargeCountItem.setWidth(208);
 			chargeCountItem.setValue(1);
@@ -130,14 +130,14 @@ public class DlgAddVirtualCharge extends Window {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			chargeButton = new IButton();
-			chargeButton.setTitle(CallCenter.constants.charge());
+			chargeButton.setTitle(CallCenterBK.constants.charge());
 			chargeButton.setIcon("moneySmall.png");
 			chargeButton.setWidth(150);
 
 			buttonLayout.addMember(chargeButton);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			buttonLayout.addMember(cancItem);
@@ -170,50 +170,50 @@ public class DlgAddVirtualCharge extends Window {
 
 			String phone = listGridRecord.getAttributeAsString("phone");
 			if (phone == null || phone.trim().equals("")) {
-				SC.say(CallCenter.constants.invalidPhone());
+				SC.say(CallCenterBK.constants.invalidPhone());
 				return;
 			}
 			phone = phone.trim();
 			try {
 				Long.parseLong(phone);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidPhone());
+				SC.say(CallCenterBK.constants.invalidPhone());
 				return;
 			}
 			if (phone.length() == 7) {
 				phone = "32" + phone;
 			}
 			if (phone.length() != 9) {
-				SC.say(CallCenter.constants.phoneLengthMustBe9());
+				SC.say(CallCenterBK.constants.phoneLengthMustBe9());
 				return;
 			}
 
 			String serviceId_str = serviceItem.getValueAsString();
 			if (serviceId_str == null || serviceId_str.trim().equals("")) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.chooseService());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.chooseService());
 				return;
 			}
 			Integer serviceId = null;
 			try {
 				serviceId = Integer.parseInt(serviceId_str);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.invalidService());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.invalidService());
 				return;
 			}
 			String chargeCount_str = chargeCountItem.getValueAsString();
 			if (chargeCount_str == null || chargeCount_str.trim().equals("")) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.enterChargeCount());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.enterChargeCount());
 				return;
 			}
 			Integer chargeCount = null;
 			try {
 				chargeCount = Integer.parseInt(chargeCount_str);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.invalidChargeCount());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.invalidChargeCount());
 				return;
 			}
 

@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.misc;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.misc.DlgAddEditNonStandartInfo;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -60,7 +60,7 @@ public class TabNonStandartInfo extends Tab {
 
 	public TabNonStandartInfo() {
 		try {
-			setTitle(CallCenter.constants.menuMisc());
+			setTitle(CallCenterBK.constants.menuMisc());
 			setCanClose(true);
 
 			datasource = DataSource.get("MainDetailDS");
@@ -78,7 +78,7 @@ public class TabNonStandartInfo extends Tab {
 			mainLayout.addMember(searchForm);
 			
 			mainDetTypeItem = new ComboBoxItem();
-			mainDetTypeItem.setTitle(CallCenter.constants.group());
+			mainDetTypeItem.setTitle(CallCenterBK.constants.group());
 			mainDetTypeItem.setWidth(300);
 			mainDetTypeItem.setName("main_detail_type_name_geo");
 			mainDetTypeItem.setFetchMissingValues(true);
@@ -109,7 +109,7 @@ public class TabNonStandartInfo extends Tab {
 			});
 			
 			mainDetailGeoItem = new TextItem();
-			mainDetailGeoItem.setTitle(CallCenter.constants.description());
+			mainDetailGeoItem.setTitle(CallCenterBK.constants.description());
 			mainDetailGeoItem.setName("main_detail_geo");
 			mainDetailGeoItem.setWidth(300);
 			
@@ -121,10 +121,10 @@ public class TabNonStandartInfo extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -134,25 +134,25 @@ public class TabNonStandartInfo extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenter.constants.modify(),
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			disableBtn = new ToolStripButton(CallCenter.constants.disable(),
+			disableBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			disableBtn.setLayoutAlign(Alignment.LEFT);
 			disableBtn.setWidth(50);
 			toolStrip.addButton(disableBtn);
 
-			activateBtn = new ToolStripButton(CallCenter.constants.enable(),
+			activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
 					"restoreIcon.gif");
 			activateBtn.setLayoutAlign(Alignment.LEFT);
 			activateBtn.setWidth(50);
@@ -191,18 +191,18 @@ public class TabNonStandartInfo extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("main_detail_type_name_geo").setTitle(CallCenter.constants.group());
-			datasource.getField("main_detail_geo").setTitle(CallCenter.constants.description());
-			datasource.getField("rec_date").setTitle(CallCenter.constants.recDate());
-			datasource.getField("rec_user").setTitle(CallCenter.constants.recUser());
-			datasource.getField("upd_date").setTitle(CallCenter.constants.updDate());
-			datasource.getField("upd_user").setTitle(CallCenter.constants.updUser());
+			datasource.getField("main_detail_type_name_geo").setTitle(CallCenterBK.constants.group());
+			datasource.getField("main_detail_geo").setTitle(CallCenterBK.constants.description());
+			datasource.getField("rec_date").setTitle(CallCenterBK.constants.recDate());
+			datasource.getField("rec_user").setTitle(CallCenterBK.constants.recUser());
+			datasource.getField("upd_date").setTitle(CallCenterBK.constants.updDate());
+			datasource.getField("upd_user").setTitle(CallCenterBK.constants.updUser());
 			datasource.getField("main_detail_note_geo").setHidden(true);
 			datasource.getField("main_detail_note_eng").setHidden(true);
 			datasource.getField("main_detail_eng").setHidden(true);
 
-			ListGridField main_detail_type_name_geo = new ListGridField("main_detail_type_name_geo",CallCenter.constants.group(), 180);
-			ListGridField main_detail_geo = new ListGridField("main_detail_geo",CallCenter.constants.description(), 550);
+			ListGridField main_detail_type_name_geo = new ListGridField("main_detail_type_name_geo",CallCenterBK.constants.group(), 180);
+			ListGridField main_detail_geo = new ListGridField("main_detail_geo",CallCenterBK.constants.description(), 550);
 			
 			main_detail_type_name_geo.setAlign(Alignment.LEFT);
 			main_detail_geo.setAlign(Alignment.LEFT);
@@ -238,7 +238,7 @@ public class TabNonStandartInfo extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditNonStandartInfo dlgAddEditNonStandartInfo = new DlgAddEditNonStandartInfo(
@@ -252,16 +252,16 @@ public class TabNonStandartInfo extends Tab {
 					final ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
+						SC.say(CallCenterBK.constants.recordAlrDisabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -278,16 +278,16 @@ public class TabNonStandartInfo extends Tab {
 					final ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrEnabled());
+						SC.say(CallCenterBK.constants.recordAlrEnabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForEnable(),
+					SC.ask(CallCenterBK.constants.askForEnable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -301,7 +301,7 @@ public class TabNonStandartInfo extends Tab {
 
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(780);
-			Tab tabDetViewer = new Tab(CallCenter.constants.view());
+			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
 			final DetailViewer detailViewer = new DetailViewer();
 			detailViewer.setDataSource(datasource);
 			detailViewer.setWidth(750);
@@ -319,7 +319,7 @@ public class TabNonStandartInfo extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditNonStandartInfo dlgAddEditNonStandartInfo = new DlgAddEditNonStandartInfo(

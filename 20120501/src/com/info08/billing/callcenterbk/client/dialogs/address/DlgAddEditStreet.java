@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
@@ -144,7 +144,7 @@ public class DlgAddEditStreet extends Window {
 			streetLocationGeoItem.setName("street_location_geo");
 
 			streetOldNameItem = new TextAreaItem();
-			streetOldNameItem.setTitle(CallCenter.constants.oldStreetName());
+			streetOldNameItem.setTitle(CallCenterBK.constants.oldStreetName());
 			streetOldNameItem.setWidth("100%");
 			streetOldNameItem.setHeight(80);
 			streetOldNameItem.setName("streetOldNameItem");

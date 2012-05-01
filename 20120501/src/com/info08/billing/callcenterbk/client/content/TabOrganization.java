@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.content;
 
 import java.util.TreeMap;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditMainOrg;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgOrgStatusChange;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgSortOrderOrgs;
@@ -89,7 +89,7 @@ public class TabOrganization extends Tab {
 	private TabOrganization instance;
 
 	public TabOrganization() {
-		setTitle(CallCenter.constants.manageOrgs());
+		setTitle(CallCenterBK.constants.manageOrgs());
 		setCanClose(true);
 
 		orgDS = DataSource.get("OrgDS");
@@ -106,82 +106,82 @@ public class TabOrganization extends Tab {
 		mainLayout.addMember(searchForm);
 
 		orgNameGeoItem = new TextItem();
-		orgNameGeoItem.setTitle(CallCenter.constants.orgName());
+		orgNameGeoItem.setTitle(CallCenterBK.constants.orgName());
 		orgNameGeoItem.setWidth(245);
 		orgNameGeoItem.setName("org_name_geo");
 		orgNameGeoItem.setValue("");
 
 		orgCommentItem = new TextItem();
-		orgCommentItem.setTitle(CallCenter.constants.comment());
+		orgCommentItem.setTitle(CallCenterBK.constants.comment());
 		orgCommentItem.setWidth(245);
 		orgCommentItem.setName("org_comment");
 
 		orgDirectorItem = new TextItem();
-		orgDirectorItem.setTitle(CallCenter.constants.director());
+		orgDirectorItem.setTitle(CallCenterBK.constants.director());
 		orgDirectorItem.setWidth(245);
 		orgDirectorItem.setName("org_director");
 
 		orgLegalAddressItem = new TextItem();
-		orgLegalAddressItem.setTitle(CallCenter.constants.legalAddress());
+		orgLegalAddressItem.setTitle(CallCenterBK.constants.legalAddress());
 		orgLegalAddressItem.setWidth(245);
 		orgLegalAddressItem.setName("org_legal_address");
 
 		orgIdentCodeItem = new TextItem();
-		orgIdentCodeItem.setTitle(CallCenter.constants.identCodeAndNew());
+		orgIdentCodeItem.setTitle(CallCenterBK.constants.identCodeAndNew());
 		orgIdentCodeItem.setWidth(245);
 		orgIdentCodeItem.setName("org_ident_code");
 
 		orgWebAddressItem = new TextItem();
-		orgWebAddressItem.setTitle(CallCenter.constants.webaddress());
+		orgWebAddressItem.setTitle(CallCenterBK.constants.webaddress());
 		orgWebAddressItem.setWidth(245);
 		orgWebAddressItem.setName("org_web_address");
 
 		orgEmailItem = new TextItem();
-		orgEmailItem.setTitle(CallCenter.constants.eMail());
+		orgEmailItem.setTitle(CallCenterBK.constants.eMail());
 		orgEmailItem.setWidth(245);
 		orgEmailItem.setName("org_email");
 
 		orgWorkingHoursItem = new TextItem();
-		orgWorkingHoursItem.setTitle(CallCenter.constants.workinghours());
+		orgWorkingHoursItem.setTitle(CallCenterBK.constants.workinghours());
 		orgWorkingHoursItem.setWidth(245);
 		orgWorkingHoursItem.setName("org_working_hours");
 
 		orgDayOffsItem = new TextItem();
-		orgDayOffsItem.setTitle(CallCenter.constants.dayOffs());
+		orgDayOffsItem.setTitle(CallCenterBK.constants.dayOffs());
 		orgDayOffsItem.setWidth(245);
 		orgDayOffsItem.setName("org_day_offs");
 
 		orgDepartmentItem = new TextItem();
-		orgDepartmentItem.setTitle(CallCenter.constants.department());
+		orgDepartmentItem.setTitle(CallCenterBK.constants.department());
 		orgDepartmentItem.setWidth(245);
 		orgDepartmentItem.setName("org_department");
 
 		orgFoundedStartItem = new DateItem();
-		orgFoundedStartItem.setTitle(CallCenter.constants.orgFoundDateStart());
+		orgFoundedStartItem.setTitle(CallCenterBK.constants.orgFoundDateStart());
 		orgFoundedStartItem.setWidth(245);
 		orgFoundedStartItem.setName("org_dound_date_start");
 		// orgFoundedStartItem.setHint(CallCenter.constants.choose());
 		orgFoundedStartItem.setUseTextField(true);
 
 		orgFoundedEndItem = new DateItem();
-		orgFoundedEndItem.setTitle(CallCenter.constants.orgFoundDateEnd());
+		orgFoundedEndItem.setTitle(CallCenterBK.constants.orgFoundDateEnd());
 		orgFoundedEndItem.setWidth(245);
 		orgFoundedEndItem.setName("org_dound_date_end");
 		// orgFoundedEndItem.setHint(CallCenter.constants.choose());
 		orgFoundedEndItem.setUseTextField(true);
 
 		streetItem = new TextItem();
-		streetItem.setTitle(CallCenter.constants.street());
+		streetItem.setTitle(CallCenterBK.constants.street());
 		streetItem.setName("street_name_geo");
 		streetItem.setWidth(245);
 
 		adressItem = new TextItem();
-		adressItem.setTitle(CallCenter.constants.number());
+		adressItem.setTitle(CallCenterBK.constants.number());
 		adressItem.setName("adressItem");
 		adressItem.setWidth(245);
 
 		citiesItem = new ComboBoxItem();
-		citiesItem.setTitle(CallCenter.constants.city());
+		citiesItem.setTitle(CallCenterBK.constants.city());
 		citiesItem.setName("city_name_geo");
 		citiesItem.setWidth(245);
 		citiesItem.setFetchMissingValues(true);
@@ -212,7 +212,7 @@ public class TabOrganization extends Tab {
 		});
 
 		regionItem = new ComboBoxItem();
-		regionItem.setTitle(CallCenter.constants.cityRegion());
+		regionItem.setTitle(CallCenterBK.constants.cityRegion());
 		regionItem.setName("city_region_name_geo");
 		regionItem.setWidth(245);
 		regionItem.setFetchMissingValues(true);
@@ -255,10 +255,10 @@ public class TabOrganization extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -268,31 +268,31 @@ public class TabOrganization extends Tab {
 		toolStrip.setPadding(5);
 		mainLayout.addMember(toolStrip);
 
-		addBtn = new ToolStripButton(CallCenter.constants.addChildOrg(),
+		addBtn = new ToolStripButton(CallCenterBK.constants.addChildOrg(),
 				"addIcon.png");
 		addBtn.setLayoutAlign(Alignment.LEFT);
 		addBtn.setWidth(50);
 		toolStrip.addButton(addBtn);
 
-		addNewOrgBtn = new ToolStripButton(CallCenter.constants.addNewOrg(),
+		addNewOrgBtn = new ToolStripButton(CallCenterBK.constants.addNewOrg(),
 				"addIcon.png");
 		addNewOrgBtn.setLayoutAlign(Alignment.LEFT);
 		addNewOrgBtn.setWidth(50);
 		toolStrip.addButton(addNewOrgBtn);
 
-		editBtn = new ToolStripButton(CallCenter.constants.modify(),
+		editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 				"editIcon.png");
 		editBtn.setLayoutAlign(Alignment.LEFT);
 		editBtn.setWidth(50);
 		toolStrip.addButton(editBtn);
 
-		disableBtn = new ToolStripButton(CallCenter.constants.disable(),
+		disableBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 				"deleteIcon.png");
 		disableBtn.setLayoutAlign(Alignment.LEFT);
 		disableBtn.setWidth(50);
 		toolStrip.addButton(disableBtn);
 
-		activateBtn = new ToolStripButton(CallCenter.constants.enable(),
+		activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
 				"restoreIcon.gif");
 		activateBtn.setLayoutAlign(Alignment.LEFT);
 		activateBtn.setWidth(50);
@@ -300,18 +300,18 @@ public class TabOrganization extends Tab {
 
 		toolStrip.addSeparator();
 
-		statusBtn = new ToolStripButton(CallCenter.constants.state(),
+		statusBtn = new ToolStripButton(CallCenterBK.constants.state(),
 				"gnome_status.png");
 		statusBtn.setLayoutAlign(Alignment.LEFT);
 		statusBtn.setWidth(50);
 		toolStrip.addButton(statusBtn);
 
-		sortBtn = new ToolStripButton(CallCenter.constants.sort(), "sort.png");
+		sortBtn = new ToolStripButton(CallCenterBK.constants.sort(), "sort.png");
 		sortBtn.setLayoutAlign(Alignment.LEFT);
 		sortBtn.setWidth(50);
 		toolStrip.addButton(sortBtn);
 
-		supperOrgBtn = new ToolStripButton(CallCenter.constants.supperOrg(),
+		supperOrgBtn = new ToolStripButton(CallCenterBK.constants.supperOrg(),
 				"folder_classic_up.png");
 		supperOrgBtn.setLayoutAlign(Alignment.LEFT);
 		supperOrgBtn.setWidth(50);
@@ -370,10 +370,10 @@ public class TabOrganization extends Tab {
 		orgTreeGrid.setAutoFetchData(false);
 		orgTreeGrid.setCanReorderRecords(true);
 		orgTreeGrid.setCanAcceptDroppedRecords(true);
-		orgTreeGrid.setCantDragIntoChildMessage(CallCenter.constants
+		orgTreeGrid.setCantDragIntoChildMessage(CallCenterBK.constants
 				.cantDropItself());
 		orgTreeGrid.setAutoSaveEdits(false);
-		orgTreeGrid.setParentAlreadyContainsChildMessage(CallCenter.constants
+		orgTreeGrid.setParentAlreadyContainsChildMessage(CallCenterBK.constants
 				.parrentAlrContChild());
 		orgTreeGrid.setCanSelectAll(false);
 		orgTreeGrid.setWrapCells(true);
@@ -400,11 +400,11 @@ public class TabOrganization extends Tab {
 		tree_org_child.setCanFilter(false);
 
 		TreeGridField org_name = new TreeGridField("org_name",
-				CallCenter.constants.orgName());
+				CallCenterBK.constants.orgName());
 		org_name.setTreeField(true);
 
 		ListGridField real_address = new ListGridField(
-				"full_address_not_hidden", CallCenter.constants.realAddress(),
+				"full_address_not_hidden", CallCenterBK.constants.realAddress(),
 				400);
 		orgTreeGrid.setFields(org_name, real_address, tree_org_parrent,
 				tree_org_child);
@@ -447,8 +447,8 @@ public class TabOrganization extends Tab {
 					final TreeNode draged[] = event.getNodes();
 					final TreeNode destFolder = event.getFolder();
 					event.cancel();
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.askForNodeChange(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.askForNodeChange(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -468,22 +468,22 @@ public class TabOrganization extends Tab {
 			public void onClick(ClickEvent event) {
 				ListGridRecord records[] = orgTreeGrid.getSelectedRecords();
 				if (records == null || records.length <= 0) {
-					SC.say(CallCenter.constants.pleaseSelrecord());
+					SC.say(CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
 				if (records.length > 1) {
-					SC.say(CallCenter.constants.pleaseSelOnerecord());
+					SC.say(CallCenterBK.constants.pleaseSelOnerecord());
 					return;
 				}
 				Integer main_id = null;
 				try {
 					main_id = records[0].getAttributeAsInt("main_id");
 				} catch (Exception e) {
-					SC.say(CallCenter.constants.invalidTreeRecord());
+					SC.say(CallCenterBK.constants.invalidTreeRecord());
 					return;
 				}
 				if (main_id == null) {
-					SC.say(CallCenter.constants.invalidTreeRecord());
+					SC.say(CallCenterBK.constants.invalidTreeRecord());
 					return;
 				}
 				try {
@@ -497,7 +497,7 @@ public class TabOrganization extends Tab {
 								Object rawData, DSRequest request) {
 							Record records[] = response.getData();
 							if (records == null || records.length <= 0) {
-								SC.say(CallCenter.constants.childListIsEmpty());
+								SC.say(CallCenterBK.constants.childListIsEmpty());
 								return;
 							} else {
 								DlgSortOrderOrgs dlgSortOrderOrgs = new DlgSortOrderOrgs(
@@ -518,15 +518,15 @@ public class TabOrganization extends Tab {
 				final ListGridRecord listGridRecord = orgTreeGrid
 						.getSelectedRecord();
 				if (listGridRecord == null) {
-					SC.say(CallCenter.constants.pleaseSelrecord());
+					SC.say(CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
 				Integer deleted = listGridRecord.getAttributeAsInt("deleted");
 				if (!deleted.equals(0)) {
-					SC.say(CallCenter.constants.recordAlrDisabled());
+					SC.say(CallCenterBK.constants.recordAlrDisabled());
 					return;
 				}
-				SC.ask(CallCenter.constants.askForDisable(),
+				SC.ask(CallCenterBK.constants.askForDisable(),
 						new BooleanCallback() {
 							@Override
 							public void execute(Boolean value) {
@@ -543,15 +543,15 @@ public class TabOrganization extends Tab {
 				final ListGridRecord listGridRecord = orgTreeGrid
 						.getSelectedRecord();
 				if (listGridRecord == null) {
-					SC.say(CallCenter.constants.pleaseSelrecord());
+					SC.say(CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
 				Integer deleted = listGridRecord.getAttributeAsInt("deleted");
 				if (deleted.equals(0)) {
-					SC.say(CallCenter.constants.recordAlrEnabled());
+					SC.say(CallCenterBK.constants.recordAlrEnabled());
 					return;
 				}
-				SC.ask(CallCenter.constants.askForEnable(),
+				SC.ask(CallCenterBK.constants.askForEnable(),
 						new BooleanCallback() {
 							@Override
 							public void execute(Boolean value) {
@@ -569,12 +569,12 @@ public class TabOrganization extends Tab {
 				final ListGridRecord listGridRecord = orgTreeGrid
 						.getSelectedRecord();
 				if (listGridRecord == null) {
-					SC.say(CallCenter.constants.pleaseSelrecord());
+					SC.say(CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
 				Integer deleted = listGridRecord.getAttributeAsInt("deleted");
 				if (deleted.equals(1)) {
-					SC.say(CallCenter.constants.plsRestRecBefStatChange());
+					SC.say(CallCenterBK.constants.plsRestRecBefStatChange());
 					return;
 				}
 				DlgOrgStatusChange dlgOrgStatusChange = new DlgOrgStatusChange(
@@ -589,8 +589,8 @@ public class TabOrganization extends Tab {
 				final ListGridRecord listGridRecord = orgTreeGrid
 						.getSelectedRecord();
 				if (listGridRecord == null) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.pleaseSelrecord());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
 
@@ -614,8 +614,8 @@ public class TabOrganization extends Tab {
 			public void onClick(ClickEvent event) {
 				ListGridRecord listGridRecord = orgTreeGrid.getSelectedRecord();
 				if (listGridRecord == null) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.pleaseSelrecord());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
 				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(
@@ -726,15 +726,15 @@ public class TabOrganization extends Tab {
 			public void onClick(ClickEvent event) {
 				ListGridRecord listGridRecord = orgTreeGrid.getSelectedRecord();
 				if (listGridRecord == null) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.pleaseSelrecord());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
 				Integer main_id = listGridRecord.getAttributeAsInt("main_id");
 
 				if (main_id == null) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.invalidRecord());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.invalidRecord());
 					return;
 				}
 				findBySupperOrg(main_id);
@@ -756,8 +756,8 @@ public class TabOrganization extends Tab {
 						DSRequest request) {
 					Record[] records = response.getData();
 					if (records == null || records.length <= 0) {
-						SC.say(CallCenter.constants.warning(),
-								CallCenter.constants.supperOrgNotFound());
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.supperOrgNotFound());
 					}
 					Record record = records[0];
 					Integer ret_main_id = record.getAttributeAsInt("main_id");
@@ -942,8 +942,8 @@ public class TabOrganization extends Tab {
 					&& (webaddress == null || webaddress.trim().equals(""))
 					&& (mail == null || mail.trim().equals(""))
 					&& (street == null || street.trim().equals(""))) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.findOrgEnterAnyParam());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.findOrgEnterAnyParam());
 				return;
 			}
 

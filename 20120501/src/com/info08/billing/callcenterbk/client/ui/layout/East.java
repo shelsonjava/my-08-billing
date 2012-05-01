@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.ui.layout;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.BooleanCallback;
@@ -108,7 +108,7 @@ public class East extends VLayout {
 					public void execute(Boolean value) {
 						if (value) {
 							try {
-								CallCenter.initUI();
+								CallCenterBK.initUI();
 							} catch (Exception e) {
 								SC.say(e.toString());
 							}

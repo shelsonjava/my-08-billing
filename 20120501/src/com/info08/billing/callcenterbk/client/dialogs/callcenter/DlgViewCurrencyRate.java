@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -70,7 +70,7 @@ public class DlgViewCurrencyRate extends Window {
 		this.rates = rates;
 		this.amount = amount;
 
-		setTitle(CallCenter.constants.valute());
+		setTitle(CallCenterBK.constants.valute());
 
 		setHeight(730);
 		setWidth(950);
@@ -97,24 +97,24 @@ public class DlgViewCurrencyRate extends Window {
 		toolStrip.setPadding(5);
 		mainLayout.addMember(toolStrip);
 
-		sendSMS = new ToolStripButton(CallCenter.constants.smsCurrencyRate(),
+		sendSMS = new ToolStripButton(CallCenterBK.constants.smsCurrencyRate(),
 				"sms.png");
 		sendSMS.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS);
 
 		sendSMS1 = new ToolStripButton(
-				CallCenter.constants.smsCurrencyAmountRate(), "sms.png");
+				CallCenterBK.constants.smsCurrencyAmountRate(), "sms.png");
 		sendSMS1.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS1);
 		toolStrip.addFill();
 
 		sendSMS2 = new ToolStripButton(
-				CallCenter.constants.smsCurrencyRateBank(), "sms.png");
+				CallCenterBK.constants.smsCurrencyRateBank(), "sms.png");
 		sendSMS2.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS2);
 
 		sendSMS3 = new ToolStripButton(
-				CallCenter.constants.smsCurrencyAmountRateBank(), "sms.png");
+				CallCenterBK.constants.smsCurrencyAmountRateBank(), "sms.png");
 		sendSMS3.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS3);
 
@@ -125,7 +125,7 @@ public class DlgViewCurrencyRate extends Window {
 		// labelSMSWarning.setHeight(20);
 		// toolStrip.addMember(labelSMSWarning);
 
-		Label label1 = new Label(CallCenter.constants.currFrom());
+		Label label1 = new Label(CallCenterBK.constants.currFrom());
 		label1.setWidth100();
 		label1.setStyleName("fontRed");
 		label1.setHeight(20);
@@ -137,13 +137,13 @@ public class DlgViewCurrencyRate extends Window {
 		detailViewer.setWidth100();
 
 		DetailViewerField country_name_geo = new DetailViewerField(
-				"country_name_geo", CallCenter.constants.country());
+				"country_name_geo", CallCenterBK.constants.country());
 
 		DetailViewerField curr_name_geo = new DetailViewerField(
-				"curr_name_geo", CallCenter.constants.currencyName());
+				"curr_name_geo", CallCenterBK.constants.currencyName());
 
 		DetailViewerField curr_abbrev = new DetailViewerField("curr_abbrev",
-				CallCenter.constants.currencyAbbrShort());
+				CallCenterBK.constants.currencyAbbrShort());
 
 		detailViewer.selectRecord(recordFrom);
 		ListGridRecord arr[] = new ListGridRecord[1];
@@ -154,7 +154,7 @@ public class DlgViewCurrencyRate extends Window {
 
 		mainLayout.addMember(detailViewer);
 
-		Label label2 = new Label(CallCenter.constants.currTo());
+		Label label2 = new Label(CallCenterBK.constants.currTo());
 		label2.setWidth100();
 		label2.setStyleName("fontRed");
 		label2.setHeight(20);
@@ -166,13 +166,13 @@ public class DlgViewCurrencyRate extends Window {
 		detailViewer1.setWidth100();
 
 		DetailViewerField country_name_geo1 = new DetailViewerField(
-				"country_name_geo", CallCenter.constants.country());
+				"country_name_geo", CallCenterBK.constants.country());
 
 		DetailViewerField curr_name_geo1 = new DetailViewerField(
-				"curr_name_geo", CallCenter.constants.currencyName());
+				"curr_name_geo", CallCenterBK.constants.currencyName());
 
 		DetailViewerField curr_abbrev1 = new DetailViewerField("curr_abbrev",
-				CallCenter.constants.currencyAbbrShort());
+				CallCenterBK.constants.currencyAbbrShort());
 
 		detailViewer1.selectRecord(recordTo);
 		ListGridRecord arr1[] = new ListGridRecord[1];
@@ -185,7 +185,7 @@ public class DlgViewCurrencyRate extends Window {
 		mainLayout.addMember(detailViewer1);
 
 		IButton iButtonCalc = new IButton();
-		iButtonCalc.setTitle(CallCenter.constants.calculate());
+		iButtonCalc.setTitle(CallCenterBK.constants.calculate());
 		mainLayout.addMember(iButtonCalc);
 
 		searchForm = new DynamicForm();
@@ -197,28 +197,28 @@ public class DlgViewCurrencyRate extends Window {
 		searchForm.setPadding(10);
 
 		amountItem = new TextItem();
-		amountItem.setTitle(CallCenter.constants.amount());
+		amountItem.setTitle(CallCenterBK.constants.amount());
 		amountItem.setName("amountItem");
 		amountItem.setWidth("100%");
 		amountItem.setTextBoxStyle("fontRedAndBoldNoBorder");
 		amountItem.setCanFocus(false);
 
 		unitCalcAmmNatItem = new TextItem();
-		unitCalcAmmNatItem.setTitle(CallCenter.constants.unitCalcAmmNat());
+		unitCalcAmmNatItem.setTitle(CallCenterBK.constants.unitCalcAmmNat());
 		unitCalcAmmNatItem.setName("unitCalcAmmNatItem");
 		unitCalcAmmNatItem.setWidth("100%");
 		unitCalcAmmNatItem.setCanEdit(false);
 		unitCalcAmmNatItem.setCanFocus(false);
 
 		calcAmountNatItem = new TextItem();
-		calcAmountNatItem.setTitle(CallCenter.constants.calcAmountNat());
+		calcAmountNatItem.setTitle(CallCenterBK.constants.calcAmountNat());
 		calcAmountNatItem.setName("calcAmountNatItem");
 		calcAmountNatItem.setWidth("100%");
 		calcAmountNatItem.setCanEdit(false);
 		calcAmountNatItem.setCanFocus(false);
 
 		unitCalcAmmBankItem = new TextAreaItem();
-		unitCalcAmmBankItem.setTitle(CallCenter.constants.unitCalcAmmBank());
+		unitCalcAmmBankItem.setTitle(CallCenterBK.constants.unitCalcAmmBank());
 		unitCalcAmmBankItem.setName("unitCalcAmmBankItem");
 		unitCalcAmmBankItem.setWidth("100%");
 		unitCalcAmmBankItem.setCanEdit(false);
@@ -227,7 +227,7 @@ public class DlgViewCurrencyRate extends Window {
 		unitCalcAmmBankItem.setHeight(50);
 
 		calcAmountBankItem = new TextAreaItem();
-		calcAmountBankItem.setTitle(CallCenter.constants.calcAmountBank());
+		calcAmountBankItem.setTitle(CallCenterBK.constants.calcAmountBank());
 		calcAmountBankItem.setName("calcAmountBankItem");
 		calcAmountBankItem.setWidth("100%");
 		calcAmountBankItem.setCanEdit(false);
@@ -252,7 +252,7 @@ public class DlgViewCurrencyRate extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -323,14 +323,14 @@ public class DlgViewCurrencyRate extends Window {
 		try {
 			String entText = amountItem.getValueAsString();
 			if (entText == null || entText.trim().equals("")) {
-				SC.say(CallCenter.constants.enterAmount());
+				SC.say(CallCenterBK.constants.enterAmount());
 				return;
 			}
 			Double tmpAmount = null;
 			try {
 				tmpAmount = Double.parseDouble(entText);
 			} catch (NumberFormatException e) {
-				SC.say(CallCenter.constants.invalidAmount());
+				SC.say(CallCenterBK.constants.invalidAmount());
 				return;
 			}
 			amount = tmpAmount.doubleValue();
@@ -536,10 +536,10 @@ public class DlgViewCurrencyRate extends Window {
 					+ " "
 					+ curr_abbrev_to;
 
-			String unitRateStr = CallCenter.constants.marketRate() + " : "
+			String unitRateStr = CallCenterBK.constants.marketRate() + " : "
 					+ unitAmount + " " + curr_name_from + " = "
 					+ unitRateBankMStr + " " + curr_name_to + "  /  "
-					+ CallCenter.constants.salesMarketRate() + " : "
+					+ CallCenterBK.constants.salesMarketRate() + " : "
 					+ unitAmount + " " + curr_name_from + " = "
 					+ unitRateBankMSStr + " " + curr_name_to;
 
@@ -550,7 +550,7 @@ public class DlgViewCurrencyRate extends Window {
 					+ "gakidva: " + unitAmount + " " + curr_abbrev_from + " = "
 					+ unitRateBankMSStr + " " + curr_abbrev_to;
 
-			String amountRateStr = CallCenter.constants.marketRate()
+			String amountRateStr = CallCenterBK.constants.marketRate()
 					+ " : "
 					+ (amount > 0 ? (nf.format(((Number) amount).doubleValue()) + "")
 							: "-")
@@ -561,7 +561,7 @@ public class DlgViewCurrencyRate extends Window {
 					+ " "
 					+ curr_name_to
 					+ "  /  "
-					+ CallCenter.constants.salesMarketRate()
+					+ CallCenterBK.constants.salesMarketRate()
 					+ " : "
 					+ (amount > 0 ? (nf.format(((Number) amount).doubleValue()) + "")
 							: "-") + " " + curr_name_from + " = "
@@ -607,8 +607,8 @@ public class DlgViewCurrencyRate extends Window {
 			boolean isMobile = serverSession.isPhoneIsMobile();
 			if (isMobile) {
 				if (!smsSend) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.smsDidNotSent(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.smsDidNotSent(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -623,8 +623,8 @@ public class DlgViewCurrencyRate extends Window {
 			} else {
 				int chCount = chargePanel.getChrgCounter();
 				if (chCount <= 0) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.chargeDidNotMade(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chargeDidNotMade(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -648,16 +648,16 @@ public class DlgViewCurrencyRate extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
@@ -699,16 +699,16 @@ public class DlgViewCurrencyRate extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS1);
@@ -749,16 +749,16 @@ public class DlgViewCurrencyRate extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS2);
@@ -800,16 +800,16 @@ public class DlgViewCurrencyRate extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS3);

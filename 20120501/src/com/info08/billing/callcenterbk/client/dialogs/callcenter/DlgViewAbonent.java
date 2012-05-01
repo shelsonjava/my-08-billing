@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -42,7 +42,7 @@ public class DlgViewAbonent extends Window {
 			ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
-		setTitle(CallCenter.constants.findAbonent());
+		setTitle(CallCenterBK.constants.findAbonent());
 
 		setHeight(370);
 		setWidth(950);
@@ -71,7 +71,7 @@ public class DlgViewAbonent extends Window {
 		mainLayout.addMember(toolStrip);
 
 		sendAbonentInfoSMS = new ToolStripButton(
-				CallCenter.constants.abonentInfoSMS(), "sms.png");
+				CallCenterBK.constants.abonentInfoSMS(), "sms.png");
 		sendAbonentInfoSMS.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendAbonentInfoSMS);
 
@@ -84,15 +84,15 @@ public class DlgViewAbonent extends Window {
 		dataSource.getField("address").setHidden(false);
 
 		DetailViewerField firstname = new DetailViewerField("firstname",
-				CallCenter.constants.name());
+				CallCenterBK.constants.name());
 		DetailViewerField lastname = new DetailViewerField("lastname",
-				CallCenter.constants.lastName());
+				CallCenterBK.constants.lastName());
 		DetailViewerField city = new DetailViewerField("city",
-				CallCenter.constants.city());
+				CallCenterBK.constants.city());
 		DetailViewerField address = new DetailViewerField("address",
-				CallCenter.constants.address());
+				CallCenterBK.constants.address());
 		DetailViewerField phone = new DetailViewerField("phone",
-				CallCenter.constants.phone());
+				CallCenterBK.constants.phone());
 
 		detailViewer.viewSelectedData(listGrid);
 
@@ -104,7 +104,7 @@ public class DlgViewAbonent extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -151,8 +151,8 @@ public class DlgViewAbonent extends Window {
 			boolean isMobile = serverSession.isPhoneIsMobile();
 			if (isMobile) {
 				if (!smsSend) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.smsDidNotSent(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.smsDidNotSent(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -167,8 +167,8 @@ public class DlgViewAbonent extends Window {
 			} else {
 				int chCount = chargePanel.getChrgCounter();
 				if (chCount <= 0) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.chargeDidNotMade(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chargeDidNotMade(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -192,16 +192,16 @@ public class DlgViewAbonent extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendAbonentInfoSMS);

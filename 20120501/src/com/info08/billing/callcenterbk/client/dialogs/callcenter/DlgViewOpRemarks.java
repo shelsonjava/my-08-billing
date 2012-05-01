@@ -7,7 +7,7 @@ import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.bramosystems.oss.player.core.client.ui.FlashMediaPlayer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.data.Criteria;
@@ -46,7 +46,7 @@ public class DlgViewOpRemarks extends Window {
 	public DlgViewOpRemarks(ToolStripButton remarksBtn) {
 		try {
 			this.remarksBtn = remarksBtn;
-			setTitle(CallCenter.constants.remarks());
+			setTitle(CallCenterBK.constants.remarks());
 
 			setHeight(400);
 			setWidth(1000);
@@ -72,14 +72,14 @@ public class DlgViewOpRemarks extends Window {
 			hLayout.addMember(toolStrip);
 
 			ToolStripButton listenRecord = new ToolStripButton(
-					CallCenter.constants.listenRecord(), "play.png");
+					CallCenterBK.constants.listenRecord(), "play.png");
 
 			listenRecord.setLayoutAlign(Alignment.LEFT);
 			listenRecord.setWidth(50);
 			toolStrip.addButton(listenRecord);
 
 			ToolStripButton remarks = new ToolStripButton(
-					CallCenter.constants.agree(), "yes.png");
+					CallCenterBK.constants.agree(), "yes.png");
 
 			remarks.setLayoutAlign(Alignment.LEFT);
 			remarks.setWidth(50);
@@ -119,23 +119,23 @@ public class DlgViewOpRemarks extends Window {
 			listGrid.setAutoFetchData(true);
 
 			ListGridField note = new ListGridField("note",
-					CallCenter.constants.remark());
+					CallCenterBK.constants.remark());
 			note.setAlign(Alignment.LEFT);
 
 			ListGridField sender = new ListGridField("sender",
-					CallCenter.constants.sender(), 150);
+					CallCenterBK.constants.sender(), 150);
 			sender.setAlign(Alignment.LEFT);
 			ListGridField receiver = new ListGridField("receiver",
-					CallCenter.constants.receiver(), 150);
+					CallCenterBK.constants.receiver(), 150);
 			receiver.setAlign(Alignment.LEFT);
 
 			ListGridField rec_date = new ListGridField("rec_date",
-					CallCenter.constants.sendDate(), 130);
+					CallCenterBK.constants.sendDate(), 130);
 			rec_date.setAlign(Alignment.CENTER);
 			rec_date.setDateFormatter(DateDisplayFormat.TOUSSHORTDATETIME);
 
 			ListGridField phone = new ListGridField("phone",
-					CallCenter.constants.phone(), 80);
+					CallCenterBK.constants.phone(), 80);
 			phone.setAlign(Alignment.LEFT);
 
 			listGrid.setFields(sender, rec_date, receiver, phone, note);
@@ -147,7 +147,7 @@ public class DlgViewOpRemarks extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);
@@ -169,8 +169,8 @@ public class DlgViewOpRemarks extends Window {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.warning(),
-								CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					updatePersNote(listGridRecord);
@@ -183,8 +183,8 @@ public class DlgViewOpRemarks extends Window {
 
 					ListGridRecord editRecord = listGrid.getSelectedRecord();
 					if (editRecord == null) {
-						SC.say(CallCenter.constants.warning(),
-								CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 
@@ -193,13 +193,13 @@ public class DlgViewOpRemarks extends Window {
 					Date date = editRecord.getAttributeAsDate("start_date");
 
 					if (sessionId == null || sessionId.trim().equals("")) {
-						SC.say(CallCenter.constants.warning(),
-								CallCenter.constants.invalidSession());
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.invalidSession());
 						return;
 					}
 					if (date == null) {
-						SC.say(CallCenter.constants.warning(),
-								CallCenter.constants.invalidSessionDate());
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.invalidSessionDate());
 						return;
 					}
 					getURL(sessionId, date);
@@ -263,13 +263,13 @@ public class DlgViewOpRemarks extends Window {
 
 	private void getURL(String sessionId, Date date) {
 		try {
-			CallCenter.commonService.findSessionMp3ById(sessionId, date,
+			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
 					new AsyncCallback<String>() {
 
 						@Override
 						public void onSuccess(String result) {
 							if (result == null || result.trim().equals("")) {
-								SC.say(CallCenter.constants.sessionNotFound()
+								SC.say(CallCenterBK.constants.sessionNotFound()
 										+ result);
 								return;
 							}

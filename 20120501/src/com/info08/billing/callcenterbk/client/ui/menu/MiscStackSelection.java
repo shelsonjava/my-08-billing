@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.currency.TabRateCurrency;
 import com.info08.billing.callcenterbk.client.content.ent.TabEntPlace;
 import com.info08.billing.callcenterbk.client.content.ent.TabEntPoster;
@@ -29,37 +29,37 @@ public class MiscStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", CallCenter.constants.menuEntType(), true,"entertainment.png"),
-			new MenuNode("101", "1", CallCenter.constants.menuEntPlace(), true,"entertainment.png"),
-			new MenuNode("102", "1", CallCenter.constants.menuEntPoster(),true,"entertainment.png"),
-			new MenuNode("103", "1", CallCenter.constants.menuCurrency(), true,"currency.png"),
-			new MenuNode("104", "1", CallCenter.constants.menuCalendar(), true,"calendar.png"),
-			new MenuNode("105", "1", CallCenter.constants.menuOrthCalendar(),true, "calendar.png"),
-			new MenuNode("106", "1", CallCenter.constants.menuWebSiteGroup(),true, "web.png"),
-			new MenuNode("107", "1", CallCenter.constants.menuWebSites(), true,"web.png"),
-			new MenuNode("108", "1", CallCenter.constants.menuMiscCateg(),true, "palette.png"),
-			new MenuNode("109", "1", CallCenter.constants.menuMisc(), true,"palette.png")
+			new MenuNode("100", "1", CallCenterBK.constants.menuEntType(), true,"entertainment.png"),
+			new MenuNode("101", "1", CallCenterBK.constants.menuEntPlace(), true,"entertainment.png"),
+			new MenuNode("102", "1", CallCenterBK.constants.menuEntPoster(),true,"entertainment.png"),
+			new MenuNode("103", "1", CallCenterBK.constants.menuCurrency(), true,"currency.png"),
+			new MenuNode("104", "1", CallCenterBK.constants.menuCalendar(), true,"calendar.png"),
+			new MenuNode("105", "1", CallCenterBK.constants.menuOrthCalendar(),true, "calendar.png"),
+			new MenuNode("106", "1", CallCenterBK.constants.menuWebSiteGroup(),true, "web.png"),
+			new MenuNode("107", "1", CallCenterBK.constants.menuWebSites(), true,"web.png"),
+			new MenuNode("108", "1", CallCenterBK.constants.menuMiscCateg(),true, "palette.png"),
+			new MenuNode("109", "1", CallCenterBK.constants.menuMisc(), true,"palette.png")
 	};
 
 	private TreeGrid menuTreeGrid;
 
 	public MiscStackSelection(Body body) {
 		this.body = body;
-		setTitle(CallCenter.constants.miscActions());
+		setTitle(CallCenterBK.constants.miscActions());
 		setExpanded(false);
 		setCanCollapse(true);
 
 		Tree menuTree = new Tree();
 		menuTree.setModelType(TreeModelType.PARENT);
 		menuTree.setRootValue(1);
-		menuTree.setNameProperty(CallCenter.constants.actionsList());
+		menuTree.setNameProperty(CallCenterBK.constants.actionsList());
 		menuTree.setIdField("Id");
 		menuTree.setParentIdField("ReportsTo");
 		menuTree.setOpenProperty("isOpen");
 		menuTree.setData(menuData);
 
 		TreeGridField formattedField = new TreeGridField(
-				CallCenter.constants.actionsList());
+				CallCenterBK.constants.actionsList());
 		formattedField.setCellFormatter(new CellFormatter() {
 			public String format(Object value, ListGridRecord record,
 					int rowNum, int colNum) {

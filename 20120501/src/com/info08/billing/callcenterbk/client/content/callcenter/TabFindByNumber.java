@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewAbonentOrOrg;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -54,7 +54,7 @@ public class TabFindByNumber extends Tab {
 
 	public TabFindByNumber() {
 
-		setTitle(CallCenter.constants.findByNumber());
+		setTitle(CallCenterBK.constants.findByNumber());
 		setCanClose(true);
 
 		orgDS = DataSource.get("OrgDS");
@@ -72,7 +72,7 @@ public class TabFindByNumber extends Tab {
 		mainLayout.addMember(searchForm);
 
 		phoneItem = new TextItem();
-		phoneItem.setTitle(CallCenter.constants.phone());
+		phoneItem.setTitle(CallCenterBK.constants.phone());
 		phoneItem.setName("phoneItem");
 		phoneItem.setWidth(500);
 
@@ -84,10 +84,10 @@ public class TabFindByNumber extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -98,7 +98,7 @@ public class TabFindByNumber extends Tab {
 		mainLayout.addMember(toolStrip);
 
 		ToolStripButton viewOrg = new ToolStripButton(
-				CallCenter.constants.organization(), "organization.gif");
+				CallCenterBK.constants.organization(), "organization.gif");
 		viewOrg.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(viewOrg);
 
@@ -177,26 +177,26 @@ public class TabFindByNumber extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField fullName = new ListGridField("fullName",
-				CallCenter.constants.dasaxeleba());
+				CallCenterBK.constants.dasaxeleba());
 		fullName.setAlign(Alignment.LEFT);
 
 		ListGridField orgOrAbonent = new ListGridField("orgOrAbonent",
-				CallCenter.constants.type(), 50);
+				CallCenterBK.constants.type(), 50);
 		orgOrAbonent.setAlign(Alignment.CENTER);
 
 		ListGridField city_name_geo = new ListGridField("city_name_geo",
-				CallCenter.constants.city(), 100);
+				CallCenterBK.constants.city(), 100);
 		city_name_geo.setAlign(Alignment.LEFT);
 
 		ListGridField streetName = new ListGridField("streetName",
-				CallCenter.constants.street(), 350);
+				CallCenterBK.constants.street(), 350);
 		streetName.setAlign(Alignment.LEFT);
 
 		ListGridField phone = new ListGridField("phone",
-				CallCenter.constants.phone(), 80);
+				CallCenterBK.constants.phone(), 80);
 
 		ListGridField phone_status = new ListGridField("phone_status",
-				CallCenter.constants.phoneStatus(), 100);
+				CallCenterBK.constants.phoneStatus(), 100);
 
 		listGrid.setFields(fullName, orgOrAbonent, city_name_geo, streetName,
 				phone, phone_status);
@@ -247,19 +247,19 @@ public class TabFindByNumber extends Tab {
 		try {
 			ListGridRecord record = listGrid.getSelectedRecord();
 			if (record == null) {
-				SC.say(CallCenter.constants.pleaseSelrecord());
+				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
 			Integer service_id = record.getAttributeAsInt("service_id");
 			if (service_id == null
 					|| !service_id.equals(Constants.serviceOrganization)) {
-				SC.say(CallCenter.constants.selRecordIsNotOrg());
+				SC.say(CallCenterBK.constants.selRecordIsNotOrg());
 				return;
 			}
 
 			Integer mainID = record.getAttributeAsInt("mainID");
 			if (mainID == null) {
-				SC.say(CallCenter.constants.invalidOrganization());
+				SC.say(CallCenterBK.constants.invalidOrganization());
 				return;
 			}
 			Criteria criteria = new Criteria();
@@ -273,7 +273,7 @@ public class TabFindByNumber extends Tab {
 					try {
 						Record[] records = response.getData();
 						if (records == null || records.length <= 0) {
-							SC.say(CallCenter.constants.orgNotFound());
+							SC.say(CallCenterBK.constants.orgNotFound());
 							return;
 						}
 						Record record = records[0];
@@ -352,7 +352,7 @@ public class TabFindByNumber extends Tab {
 
 			String phone = phoneItem.getValueAsString();
 			if (phone == null || phone.trim().equals("")) {
-				SC.say(CallCenter.constants.pleaseEnterPhone());
+				SC.say(CallCenterBK.constants.pleaseEnterPhone());
 				return;
 			}
 			criteria.setAttribute("phone", phone);

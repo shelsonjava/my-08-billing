@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewPoster;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -61,7 +61,7 @@ public class TabFindPoster extends Tab {
 
 	public TabFindPoster() {
 
-		setTitle(CallCenter.constants.findPoster());
+		setTitle(CallCenterBK.constants.findPoster());
 		setCanClose(true);
 
 		entPosterDS = DataSource.get("EntPosterDS");
@@ -86,7 +86,7 @@ public class TabFindPoster extends Tab {
 		listGridEntType.setFetchOperation("searchAllEntTypesForCC");
 
 		ListGridField ent_type_geo = new ListGridField("ent_type_geo",
-				CallCenter.constants.entType());
+				CallCenterBK.constants.entType());
 		listGridEntType.setFields(ent_type_geo);
 
 		DataSource entPlaceDS = DataSource.get("EntPlaceDS");
@@ -102,7 +102,7 @@ public class TabFindPoster extends Tab {
 		listGridEntPlace.setFilterOnKeypress(true);
 
 		ListGridField ent_place_geo1 = new ListGridField("ent_place_geo",
-				CallCenter.constants.entPosterCategory());
+				CallCenterBK.constants.entPosterCategory());
 		ent_place_geo1.setCanFilter(true);
 
 		listGridEntPlace.setFields(ent_place_geo1);
@@ -145,13 +145,13 @@ public class TabFindPoster extends Tab {
 		mainLayout.addMember(searchForm);
 
 		entPostGeoAndComItem = new TextItem();
-		entPostGeoAndComItem.setTitle(CallCenter.constants
+		entPostGeoAndComItem.setTitle(CallCenterBK.constants
 				.entPosterNameAndComm());
 		entPostGeoAndComItem.setName("entPostGeoAndComItem");
 		entPostGeoAndComItem.setWidth(280);
 
 		posterDateStartItem = new DateItem();
-		posterDateStartItem.setTitle(CallCenter.constants.date());
+		posterDateStartItem.setTitle(CallCenterBK.constants.date());
 		posterDateStartItem.setWidth(280);
 		posterDateStartItem.setName("posterDateStartItem");
 		posterDateStartItem.setUseTextField(true);
@@ -164,10 +164,10 @@ public class TabFindPoster extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -178,7 +178,7 @@ public class TabFindPoster extends Tab {
 		mainLayout.addMember(toolStrip);
 
 		ToolStripButton viewOrg = new ToolStripButton(
-				CallCenter.constants.organization(), "organization.gif");
+				CallCenterBK.constants.organization(), "organization.gif");
 		viewOrg.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(viewOrg);
 
@@ -205,22 +205,22 @@ public class TabFindPoster extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField itemdate = new ListGridField("itemdate",
-				CallCenter.constants.date(), 90);
+				CallCenterBK.constants.date(), 90);
 		itemdate.setAlign(Alignment.LEFT);
 
 		ListGridField itemname = new ListGridField("itemname",
-				CallCenter.constants.poster(), 180);
+				CallCenterBK.constants.poster(), 180);
 		itemname.setAlign(Alignment.LEFT);
 
 		ListGridField price = new ListGridField("price",
-				CallCenter.constants.price(), 70);
+				CallCenterBK.constants.price(), 70);
 		price.setAlign(Alignment.CENTER);
 
 		ListGridField fullinfo = new ListGridField("info",
-				CallCenter.constants.comment());
+				CallCenterBK.constants.comment());
 
 		ListGridField ent_place_geo = new ListGridField("ent_place_geo",
-				CallCenter.constants.entPosterCategory(), 170);
+				CallCenterBK.constants.entPosterCategory(), 170);
 		price.setAlign(Alignment.CENTER);
 
 		listGrid.setFields(itemdate, ent_place_geo, itemname, price, fullinfo);
@@ -283,19 +283,19 @@ public class TabFindPoster extends Tab {
 		try {
 			ListGridRecord record = listGridEntPlace.getSelectedRecord();
 			if (record == null) {
-				SC.say(CallCenter.constants.pleaseSelrecord());
+				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
 			Integer service_id = record.getAttributeAsInt("service_id");
 			if (service_id == null
 					|| !service_id.equals(Constants.serviceOrganization)) {
-				SC.say(CallCenter.constants.selRecordIsNotOrg());
+				SC.say(CallCenterBK.constants.selRecordIsNotOrg());
 				return;
 			}
 
 			Integer main_id = record.getAttributeAsInt("main_id");
 			if (main_id == null) {
-				SC.say(CallCenter.constants.invalidOrganization());
+				SC.say(CallCenterBK.constants.invalidOrganization());
 				return;
 			}
 			Criteria criteria = new Criteria();
@@ -310,7 +310,7 @@ public class TabFindPoster extends Tab {
 					try {
 						Record[] records = response.getData();
 						if (records == null || records.length <= 0) {
-							SC.say(CallCenter.constants.orgNotFound());
+							SC.say(CallCenterBK.constants.orgNotFound());
 							return;
 						}
 						Record record = records[0];
@@ -429,7 +429,7 @@ public class TabFindPoster extends Tab {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				SC.say(CallCenter.constants.invalidDate());
+				SC.say(CallCenterBK.constants.invalidDate());
 				return;
 			}
 

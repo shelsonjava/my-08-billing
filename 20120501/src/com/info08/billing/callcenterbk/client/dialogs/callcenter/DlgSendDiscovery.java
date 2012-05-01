@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
@@ -43,7 +43,7 @@ public class DlgSendDiscovery extends Window {
 			Integer discoveryTypeId, String discovery_txt) {
 		this.chargePanel = chargePanel;
 		try {
-			setTitle(CallCenter.constants.sendDiscovery());
+			setTitle(CallCenterBK.constants.sendDiscovery());
 
 			setHeight(290);
 			setWidth(430);
@@ -71,7 +71,7 @@ public class DlgSendDiscovery extends Window {
 			hLayout.addMember(dynamicForm);
 
 			discoverTypeItem = new ComboBoxItem();
-			discoverTypeItem.setTitle(CallCenter.constants.discoveryType());
+			discoverTypeItem.setTitle(CallCenterBK.constants.discoveryType());
 			discoverTypeItem.setName("discover_type");
 			discoverTypeItem.setWidth(300);
 			discoverTypeItem.setFetchMissingValues(true);
@@ -109,7 +109,7 @@ public class DlgSendDiscovery extends Window {
 			// }
 
 			phoneItem = new TextItem();
-			phoneItem.setTitle(CallCenter.constants.phone());
+			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setName("phoneItem");
 			phoneItem.setWidth(300);
 			phoneItem.setKeyPressFilter("[0-9]");
@@ -123,18 +123,18 @@ public class DlgSendDiscovery extends Window {
 			}
 
 			contactPersonItem = new TextItem();
-			contactPersonItem.setTitle(CallCenter.constants.contactPerson());
+			contactPersonItem.setTitle(CallCenterBK.constants.contactPerson());
 			contactPersonItem.setName("contactPersonItem");
 			contactPersonItem.setWidth(300);
 
 			contactPhoneItem = new TextItem();
-			contactPhoneItem.setTitle(CallCenter.constants.contactPhone());
+			contactPhoneItem.setTitle(CallCenterBK.constants.contactPhone());
 			contactPhoneItem.setName("contactPhoneItem");
 			contactPhoneItem.setWidth(300);
 			contactPhoneItem.setKeyPressFilter("[0-9]");
 
 			messageItem = new TextAreaItem();
-			messageItem.setTitle(CallCenter.constants.message());
+			messageItem.setTitle(CallCenterBK.constants.message());
 			messageItem.setName("messageItem");
 			messageItem.setWidth(300);
 
@@ -150,11 +150,11 @@ public class DlgSendDiscovery extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.send());
+			saveItem.setTitle(CallCenterBK.constants.send());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -190,23 +190,23 @@ public class DlgSendDiscovery extends Window {
 	private void save() {
 		try {
 			if (sessionId == null || userName == null) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (sessionId.trim().equals("") || userName.trim().equals("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 
 			String phone = phoneItem.getValueAsString();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			try {
 				new Integer(phone);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.phoneMustBeNumeric());
+				SC.say(CallCenterBK.constants.phoneMustBeNumeric());
 				return;
 			}
 
@@ -230,26 +230,26 @@ public class DlgSendDiscovery extends Window {
 			String discover_type_id_str = discoverTypeItem.getValueAsString();
 			if (discover_type_id_str == null
 					|| discover_type_id_str.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.chooseDiscoveryType());
+				SC.say(CallCenterBK.constants.chooseDiscoveryType());
 				return;
 			}
 			Integer discover_type_id = null;
 			try {
 				discover_type_id = new Integer(discover_type_id_str);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.incorrDiscTypeSelected());
+				SC.say(CallCenterBK.constants.incorrDiscTypeSelected());
 				return;
 			}
 			if (discover_txt.equalsIgnoreCase("")
 					&& contact_phone.equalsIgnoreCase("")
 					&& contact_person.equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.enterSomeDiscoveryParam());
+				SC.say(CallCenterBK.constants.enterSomeDiscoveryParam());
 				return;
 			}
 
 			String discover_type = discoverTypeItem.getValueAsString();
 			if (discover_type == null || discover_type.trim().equals("")) {
-				SC.say(CallCenter.constants.enterType());
+				SC.say(CallCenterBK.constants.enterType());
 				return;
 			}
 			com.smartgwt.client.rpc.RPCManager.startQueue();

@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.currency;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -44,8 +44,8 @@ public class DlgAddEditRateCurr extends Window {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
 
-			setTitle(pRecord == null ? CallCenter.constants.addCurrencyTitle()
-					: CallCenter.constants.modifyCurrencyTitle());
+			setTitle(pRecord == null ? CallCenterBK.constants.addCurrencyTitle()
+					: CallCenterBK.constants.modifyCurrencyTitle());
 
 			setHeight(180);
 			setWidth(480);
@@ -71,7 +71,7 @@ public class DlgAddEditRateCurr extends Window {
 			hLayout.addMember(dynamicForm);
 
 			countryItem = new ComboBoxItem();
-			countryItem.setTitle(CallCenter.constants.country());
+			countryItem.setTitle(CallCenterBK.constants.country());
 			countryItem.setWidth(300);
 			countryItem.setName("country_id");
 			countryItem.setFetchMissingValues(true);
@@ -102,17 +102,17 @@ public class DlgAddEditRateCurr extends Window {
 			});
 
 			currNameGeoItem = new TextItem();
-			currNameGeoItem.setTitle(CallCenter.constants.currencyName());
+			currNameGeoItem.setTitle(CallCenterBK.constants.currencyName());
 			currNameGeoItem.setName("curr_name_geo");
 			currNameGeoItem.setWidth(300);
 
 			currAbbrItem = new TextItem();
-			currAbbrItem.setTitle(CallCenter.constants.currencyAbbr());
+			currAbbrItem.setTitle(CallCenterBK.constants.currencyAbbr());
 			currAbbrItem.setName("curr_abbrev");
 			currAbbrItem.setWidth(300);
 
 			currOrderItem = new SpinnerItem();
-			currOrderItem.setTitle(CallCenter.constants.order());
+			currOrderItem.setTitle(CallCenterBK.constants.order());
 			currOrderItem.setMin(0);
 			currOrderItem.setMax(10000);
 			currOrderItem.setStep(1);
@@ -127,11 +127,11 @@ public class DlgAddEditRateCurr extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -179,12 +179,12 @@ public class DlgAddEditRateCurr extends Window {
 			String country_id_str = countryItem.getValueAsString();
 			String curr_name_geo = currNameGeoItem.getValueAsString();
 			if (curr_name_geo == null || curr_name_geo.trim().equals("")) {
-				SC.say(CallCenter.constants.enterCurrencyName());
+				SC.say(CallCenterBK.constants.enterCurrencyName());
 				return;
 			}
 			String curr_abbrev = currAbbrItem.getValueAsString();
 			if (curr_abbrev == null || curr_abbrev.trim().equals("")) {
-				SC.say(CallCenter.constants.enterCurrencyAbbr());
+				SC.say(CallCenterBK.constants.enterCurrencyAbbr());
 				return;
 			}
 			String curr_order_str = currOrderItem.getValueAsString();
@@ -193,7 +193,7 @@ public class DlgAddEditRateCurr extends Window {
 				try {
 					curr_order = new Integer(curr_order_str);
 				} catch (NumberFormatException e) {
-					SC.say(CallCenter.constants.currOrderMustBeNum());
+					SC.say(CallCenterBK.constants.currOrderMustBeNum());
 					return;
 				}
 			}

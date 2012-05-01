@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.misc;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -40,8 +40,8 @@ public class DlgAddEditWebSite extends Window {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenter.constants.addSiteTitle()
-					: CallCenter.constants.editSiteTitle());
+			setTitle(pRecord == null ? CallCenterBK.constants.addSiteTitle()
+					: CallCenterBK.constants.editSiteTitle());
 
 			setHeight(160);
 			setWidth(430);
@@ -67,7 +67,7 @@ public class DlgAddEditWebSite extends Window {
 			hLayout.addMember(dynamicForm);
 
 			mainDetTypeItem = new ComboBoxItem();
-			mainDetTypeItem.setTitle(CallCenter.constants.group());
+			mainDetTypeItem.setTitle(CallCenterBK.constants.group());
 			mainDetTypeItem.setWidth(300);
 			mainDetTypeItem.setName("main_detail_type_name_geo");
 			mainDetTypeItem.setFetchMissingValues(true);
@@ -100,12 +100,12 @@ public class DlgAddEditWebSite extends Window {
 			});
 
 			mainDetailGeoItem = new TextItem();
-			mainDetailGeoItem.setTitle(CallCenter.constants.description());
+			mainDetailGeoItem.setTitle(CallCenterBK.constants.description());
 			mainDetailGeoItem.setName("main_detail_geo");
 			mainDetailGeoItem.setWidth(300);
 
 			mainDetailEngItem = new TextItem();
-			mainDetailEngItem.setTitle(CallCenter.constants.webSite());
+			mainDetailEngItem.setTitle(CallCenterBK.constants.webSite());
 			mainDetailEngItem.setName("main_detail_eng");
 			mainDetailEngItem.setWidth(300);
 
@@ -117,11 +117,11 @@ public class DlgAddEditWebSite extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -167,17 +167,17 @@ public class DlgAddEditWebSite extends Window {
 		try {
 			String main_detail_type_id_str = mainDetTypeItem.getValueAsString();
 			if (main_detail_type_id_str == null || main_detail_type_id_str.trim().equals("")) {
-				SC.say(CallCenter.constants.chooseSiteGroup());
+				SC.say(CallCenterBK.constants.chooseSiteGroup());
 				return;
 			}
 			String main_detail_geo = mainDetailGeoItem.getValueAsString();
 			if (main_detail_geo == null || main_detail_geo.trim().equals("")) {
-				SC.say(CallCenter.constants.enterDescription());
+				SC.say(CallCenterBK.constants.enterDescription());
 				return;
 			}
 			String main_detail_eng = mainDetailEngItem.getValueAsString();
 			if (main_detail_eng == null || main_detail_eng.trim().equals("")) {
-				SC.say(CallCenter.constants.enterWebSite());
+				SC.say(CallCenterBK.constants.enterWebSite());
 				return;
 			}
 

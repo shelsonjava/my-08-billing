@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
@@ -33,7 +33,7 @@ public class DlgOrgStatusChange extends Window {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
 			this.listGridRecord = listGridRecord;
-			setTitle(CallCenter.constants.sortOrgs());
+			setTitle(CallCenterBK.constants.sortOrgs());
 
 			setHeight(110);
 			setWidth(430);
@@ -59,7 +59,7 @@ public class DlgOrgStatusChange extends Window {
 			hLayout.addMember(dynamicForm);
 
 			orgStatusItem = new SelectItem();
-			orgStatusItem.setTitle(CallCenter.constants.status());
+			orgStatusItem.setTitle(CallCenterBK.constants.status());
 			orgStatusItem.setName("response_type");
 			orgStatusItem.setWidth(300);
 			orgStatusItem.setValueMap(ClientMapUtil.getInstance()
@@ -73,11 +73,11 @@ public class DlgOrgStatusChange extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);

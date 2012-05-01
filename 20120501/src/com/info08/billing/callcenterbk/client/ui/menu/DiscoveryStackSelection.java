@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.discovery.TabDiscovery;
 import com.info08.billing.callcenterbk.client.content.discovery.TabDiscoveryHist;
 import com.info08.billing.callcenterbk.client.content.discovery.TabDiscoveryRTypes;
@@ -23,29 +23,29 @@ public class DiscoveryStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", CallCenter.constants.menuDiscoveryStatuses(), true, "discovery.png"),
-			new MenuNode("101", "2", CallCenter.constants.menuDiscoveryTypes(), true, "discovery.png"),
-			new MenuNode("102", "3", CallCenter.constants.menuDiscovery(), true, "discovery.png"),
-			new MenuNode("103", "4", CallCenter.constants.menuDiscoveryHist(), true, "discovery.png")};
+			new MenuNode("100", "1", CallCenterBK.constants.menuDiscoveryStatuses(), true, "discovery.png"),
+			new MenuNode("101", "2", CallCenterBK.constants.menuDiscoveryTypes(), true, "discovery.png"),
+			new MenuNode("102", "3", CallCenterBK.constants.menuDiscovery(), true, "discovery.png"),
+			new MenuNode("103", "4", CallCenterBK.constants.menuDiscoveryHist(), true, "discovery.png")};
 
 	private TreeGrid employeeTreeGrid;
 
 	public DiscoveryStackSelection(Body body) {
 		this.body = body;
-		setTitle(CallCenter.constants.discoveryActions());
+		setTitle(CallCenterBK.constants.discoveryActions());
 		setExpanded(false);
 		setCanCollapse(true);
 
 		Tree employeeTree = new Tree();
 		employeeTree.setModelType(TreeModelType.PARENT);
 		employeeTree.setRootValue(1);
-		employeeTree.setNameProperty(CallCenter.constants.actionsList());
+		employeeTree.setNameProperty(CallCenterBK.constants.actionsList());
 		employeeTree.setIdField("Id");
 		employeeTree.setParentIdField("ReportsTo");
 		employeeTree.setOpenProperty("isOpen");
 		employeeTree.setData(menuData);
 
-		TreeGridField formattedField = new TreeGridField(CallCenter.constants.actionsList());
+		TreeGridField formattedField = new TreeGridField(CallCenterBK.constants.actionsList());
 		formattedField.setCellFormatter(new CellFormatter() {
 			public String format(Object value, ListGridRecord record,
 					int rowNum, int colNum) {

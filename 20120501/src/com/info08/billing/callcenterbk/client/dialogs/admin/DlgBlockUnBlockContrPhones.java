@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -45,8 +45,8 @@ public class DlgBlockUnBlockContrPhones extends Window {
 			this.listGridRecord = listGridRecord;
 			this.block = block;
 			this.contractorsGrid = contractorsGrid;
-			setTitle(block ? CallCenter.constants.blockPhone()
-					: CallCenter.constants.unBlockPhone());
+			setTitle(block ? CallCenterBK.constants.blockPhone()
+					: CallCenterBK.constants.unBlockPhone());
 
 			setHeight(700);
 			setWidth(1000);
@@ -72,12 +72,12 @@ public class DlgBlockUnBlockContrPhones extends Window {
 			hLayout.addMember(searchForm);
 
 			phoneListTypeItem = new CheckboxItem();
-			phoneListTypeItem.setTitle(CallCenter.constants.onlyThisNumbers());
+			phoneListTypeItem.setTitle(CallCenterBK.constants.onlyThisNumbers());
 			phoneListTypeItem.setWidth("100%");
 			phoneListTypeItem.setName("phoneListTypeItem");
 
 			phoneListItem = new TextAreaItem();
-			phoneListItem.setTitle(CallCenter.constants.phoneList());
+			phoneListItem.setTitle(CallCenterBK.constants.phoneList());
 			phoneListItem.setWidth("100%");
 			phoneListItem.setHeight(100);
 			phoneListItem.setName("phoneListItem");			
@@ -125,11 +125,11 @@ public class DlgBlockUnBlockContrPhones extends Window {
 			phonesGrid.setCanDragSelectText(true);
 
 			ListGridField orgName = new ListGridField("org_name",
-					CallCenter.constants.orgName());
+					CallCenterBK.constants.orgName());
 			ListGridField orgDepName = new ListGridField("main_detail_geo",
-					CallCenter.constants.department(), 300);
+					CallCenterBK.constants.department(), 300);
 			ListGridField phone = new ListGridField("phone",
-					CallCenter.constants.phone(), 80);
+					CallCenterBK.constants.phone(), 80);
 
 			orgName.setAlign(Alignment.LEFT);
 			orgDepName.setAlign(Alignment.LEFT);
@@ -144,11 +144,11 @@ public class DlgBlockUnBlockContrPhones extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);

@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import java.util.LinkedHashMap;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxEvent;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItemDataChangedHandler;
@@ -59,8 +59,8 @@ public class DlgAddEditBlockList extends Window {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenter.constants.addBlockList()
-					: CallCenter.constants.editBlockList());
+			setTitle(pRecord == null ? CallCenterBK.constants.addBlockList()
+					: CallCenterBK.constants.editBlockList());
 
 			setHeight(600);
 			setWidth(800);
@@ -79,7 +79,7 @@ public class DlgAddEditBlockList extends Window {
 			hLayout.setPadding(10);
 
 			myComboBoxItemOrg = new MyComboBoxItem("org_name",
-					CallCenter.constants.orgNameFull(), 168, 580);
+					CallCenterBK.constants.orgNameFull(), 168, 580);
 			myComboBoxItemOrg.setMyDlgHeight(400);
 			myComboBoxItemOrg.setMyDlgWidth(600);
 			DataSource orgDS = DataSource.get("OrgDS");
@@ -88,13 +88,13 @@ public class DlgAddEditBlockList extends Window {
 					.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
 			myComboBoxItemOrg.setMyIdField("main_id");
 			myComboBoxItemOrg.setMyDisplayField("org_name");
-			myComboBoxItemOrg.setMyChooserTitle(CallCenter.constants
+			myComboBoxItemOrg.setMyChooserTitle(CallCenterBK.constants
 					.organization());
 
 			hLayout.addMember(myComboBoxItemOrg);
 
 			myComboBoxItemOrgDetails = new MyComboBoxItem("main_detail_geo",
-					CallCenter.constants.department(), 168, 580);
+					CallCenterBK.constants.department(), 168, 580);
 			myComboBoxItemOrgDetails.setMyDlgHeight(400);
 			myComboBoxItemOrgDetails.setMyDlgWidth(600);
 			DataSource mainDetDS = DataSource.get("MainDetDS");
@@ -103,7 +103,7 @@ public class DlgAddEditBlockList extends Window {
 					.setMyDataSourceOperation("searchMainDetailsAdv");
 			myComboBoxItemOrgDetails.setMyIdField("main_detail_id");
 			myComboBoxItemOrgDetails.setMyDisplayField("main_detail_geo");
-			myComboBoxItemOrgDetails.setMyChooserTitle(CallCenter.constants
+			myComboBoxItemOrgDetails.setMyChooserTitle(CallCenterBK.constants
 					.department());
 			Criteria myCriteria = new Criteria();
 			myCriteria.setAttribute("main_id", -1000);
@@ -119,7 +119,7 @@ public class DlgAddEditBlockList extends Window {
 			hLayout.addMember(dynamicForm);
 
 			noteItem = new TextAreaItem();
-			noteItem.setTitle(CallCenter.constants.comment());
+			noteItem.setTitle(CallCenterBK.constants.comment());
 			noteItem.setWidth(600);
 			noteItem.setHeight(50);
 			noteItem.setName("noteItem");
@@ -136,10 +136,10 @@ public class DlgAddEditBlockList extends Window {
 			hLayout.addMember(dynamicForm1);
 
 			LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-			map.put("1", CallCenter.constants.contrPhonesAll());
-			map.put("2", CallCenter.constants.contrPhonesOnlyList());
-			map.put("3", CallCenter.constants.contrPhonesExceptList());
-			map.put("4", CallCenter.constants.onlyNumberList());
+			map.put("1", CallCenterBK.constants.contrPhonesAll());
+			map.put("2", CallCenterBK.constants.contrPhonesOnlyList());
+			map.put("3", CallCenterBK.constants.contrPhonesExceptList());
+			map.put("4", CallCenterBK.constants.onlyNumberList());
 			blockListType = new RadioGroupItem();
 			blockListType.setWidth(750);
 			blockListType.setVertical(false);
@@ -154,13 +154,13 @@ public class DlgAddEditBlockList extends Window {
 			toolStrip1.setPadding(5);
 			hLayout.addMember(toolStrip1);
 
-			addBtn1 = new ToolStripButton(CallCenter.constants.add(),
+			addBtn1 = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn1.setLayoutAlign(Alignment.LEFT);
 			addBtn1.setWidth(50);
 			toolStrip1.addButton(addBtn1);
 
-			deleteBtn1 = new ToolStripButton(CallCenter.constants.disable(),
+			deleteBtn1 = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			deleteBtn1.setLayoutAlign(Alignment.LEFT);
 			deleteBtn1.setWidth(50);
@@ -200,7 +200,7 @@ public class DlgAddEditBlockList extends Window {
 			listGridPhones.setCanDragSelectText(true);
 
 			ListGridField phone = new ListGridField("phone",
-					CallCenter.constants.phone());
+					CallCenterBK.constants.phone());
 			phone.setAlign(Alignment.CENTER);
 			listGridPhones.setFields(phone);
 			hLayout.addMember(listGridPhones);
@@ -210,11 +210,11 @@ public class DlgAddEditBlockList extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -247,10 +247,10 @@ public class DlgAddEditBlockList extends Window {
 					final ListGridRecord records[] = listGridPhones
 							.getSelectedRecords();
 					if (records == null || records.length <= 0) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					SC.ask(CallCenter.constants.deleteConfirm(),
+					SC.ask(CallCenterBK.constants.deleteConfirm(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -366,7 +366,7 @@ public class DlgAddEditBlockList extends Window {
 		try {
 			Integer main_id = myComboBoxItemOrg.getMyId();
 			if (main_id == null || main_id.intValue() <= 0) {
-				SC.say(CallCenter.constants.plzSelectOrg());
+				SC.say(CallCenterBK.constants.plzSelectOrg());
 				return;
 			}
 			Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
@@ -377,7 +377,7 @@ public class DlgAddEditBlockList extends Window {
 
 			RecordList recordList = listGridPhones.getDataAsRecordList();
 			if (recordList == null || recordList.isEmpty()) {
-				SC.say(CallCenter.constants.phonesListIsEmpty());
+				SC.say(CallCenterBK.constants.phonesListIsEmpty());
 				return;
 			}
 			int length = recordList.getLength();

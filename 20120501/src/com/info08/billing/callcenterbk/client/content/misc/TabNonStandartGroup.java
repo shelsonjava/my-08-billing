@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.misc;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.misc.DlgAddEditNonStandartInfoGroup;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -56,7 +56,7 @@ public class TabNonStandartGroup extends Tab {
 
 	public TabNonStandartGroup() {
 		try {
-			setTitle(CallCenter.constants.menuMiscCateg());
+			setTitle(CallCenterBK.constants.menuMiscCateg());
 			setCanClose(true);
 
 			datasource = DataSource.get("MainDetTypeDS");
@@ -74,7 +74,7 @@ public class TabNonStandartGroup extends Tab {
 			mainLayout.addMember(searchForm);
 
 			mainDetTypeNameGeoItem = new TextItem();
-			mainDetTypeNameGeoItem.setTitle(CallCenter.constants.description());
+			mainDetTypeNameGeoItem.setTitle(CallCenterBK.constants.description());
 			mainDetTypeNameGeoItem.setName("main_detail_type_name_geo");
 			mainDetTypeNameGeoItem.setWidth(300);
 
@@ -86,10 +86,10 @@ public class TabNonStandartGroup extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -99,25 +99,25 @@ public class TabNonStandartGroup extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenter.constants.modify(),
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			disableBtn = new ToolStripButton(CallCenter.constants.disable(),
+			disableBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			disableBtn.setLayoutAlign(Alignment.LEFT);
 			disableBtn.setWidth(50);
 			toolStrip.addButton(disableBtn);
 
-			activateBtn = new ToolStripButton(CallCenter.constants.enable(),
+			activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
 					"restoreIcon.gif");
 			activateBtn.setLayoutAlign(Alignment.LEFT);
 			activateBtn.setWidth(50);
@@ -156,18 +156,18 @@ public class TabNonStandartGroup extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("main_detail_type_name_geo").setTitle(CallCenter.constants.description());
-			datasource.getField("service_name_geo").setTitle(CallCenter.constants.service());
-			datasource.getField("rec_date").setTitle(CallCenter.constants.recDate());
-			datasource.getField("rec_user").setTitle(CallCenter.constants.recUser());
-			datasource.getField("upd_date").setTitle(CallCenter.constants.updDate());
-			datasource.getField("upd_user").setTitle(CallCenter.constants.updUser());
+			datasource.getField("main_detail_type_name_geo").setTitle(CallCenterBK.constants.description());
+			datasource.getField("service_name_geo").setTitle(CallCenterBK.constants.service());
+			datasource.getField("rec_date").setTitle(CallCenterBK.constants.recDate());
+			datasource.getField("rec_user").setTitle(CallCenterBK.constants.recUser());
+			datasource.getField("upd_date").setTitle(CallCenterBK.constants.updDate());
+			datasource.getField("upd_user").setTitle(CallCenterBK.constants.updUser());
 
-			ListGridField main_detail_type_name_geo = new ListGridField("main_detail_type_name_geo",CallCenter.constants.description(), 210);
-			ListGridField rec_date = new ListGridField("rec_date",CallCenter.constants.recDate(), 150);
-			ListGridField rec_user = new ListGridField("rec_user",CallCenter.constants.recUser(), 100);
-			ListGridField upd_date = new ListGridField("upd_date",CallCenter.constants.updDate(), 150);
-			ListGridField upd_user = new ListGridField("upd_user",CallCenter.constants.updUser(), 120);
+			ListGridField main_detail_type_name_geo = new ListGridField("main_detail_type_name_geo",CallCenterBK.constants.description(), 210);
+			ListGridField rec_date = new ListGridField("rec_date",CallCenterBK.constants.recDate(), 150);
+			ListGridField rec_user = new ListGridField("rec_user",CallCenterBK.constants.recUser(), 100);
+			ListGridField upd_date = new ListGridField("upd_date",CallCenterBK.constants.updDate(), 150);
+			ListGridField upd_user = new ListGridField("upd_user",CallCenterBK.constants.updUser(), 120);
 			
 
 			main_detail_type_name_geo.setAlign(Alignment.LEFT);
@@ -206,7 +206,7 @@ public class TabNonStandartGroup extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditNonStandartInfoGroup dlgAddEditNonStandartInfo = new DlgAddEditNonStandartInfoGroup(
@@ -220,18 +220,18 @@ public class TabNonStandartGroup extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
+						SC.say(CallCenterBK.constants.recordAlrDisabled());
 						return;
 					}
 					final Integer main_detail_type_id = listGridRecord
 							.getAttributeAsInt("main_detail_type_id");
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -248,18 +248,18 @@ public class TabNonStandartGroup extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrEnabled());
+						SC.say(CallCenterBK.constants.recordAlrEnabled());
 						return;
 					}
 					final Integer main_detail_type_id = listGridRecord
 							.getAttributeAsInt("main_detail_type_id");
-					SC.ask(CallCenter.constants.askForEnable(),
+					SC.ask(CallCenterBK.constants.askForEnable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -273,7 +273,7 @@ public class TabNonStandartGroup extends Tab {
 
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(780);
-			Tab tabDetViewer = new Tab(CallCenter.constants.view());
+			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
 			final DetailViewer detailViewer = new DetailViewer();
 			detailViewer.setDataSource(datasource);
 			detailViewer.setWidth(750);
@@ -291,7 +291,7 @@ public class TabNonStandartGroup extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditNonStandartInfoGroup dlgAddEditNonStandartInfo = new DlgAddEditNonStandartInfoGroup(

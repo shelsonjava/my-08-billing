@@ -30,7 +30,7 @@
   <inherits name="com.smartclient.theme.enterpriseblue.EnterpriseBlueResources"/>
   
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='com.info08.billing.callcenter.client.CallCenter'/>
+  <entry-point class='com.info08.billing.callcenterbk.client.CallCenterBK'/>
   
   <extend-property name="locale" values="en"/>
   <set-property-fallback name="locale" value="en"/>

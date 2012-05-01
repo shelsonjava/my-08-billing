@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.misc;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -39,8 +39,8 @@ public class DlgAddEditNonStandartInfo extends Window {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenter.constants
-					.addNonStandInfoTitle() : CallCenter.constants
+			setTitle(pRecord == null ? CallCenterBK.constants
+					.addNonStandInfoTitle() : CallCenterBK.constants
 					.editNonStandInfoTitle());
 
 			setHeight(235);
@@ -67,7 +67,7 @@ public class DlgAddEditNonStandartInfo extends Window {
 			hLayout.addMember(dynamicForm);
 
 			mainDetTypeItem = new ComboBoxItem();
-			mainDetTypeItem.setTitle(CallCenter.constants.group());
+			mainDetTypeItem.setTitle(CallCenterBK.constants.group());
 			mainDetTypeItem.setWidth(300);
 			mainDetTypeItem.setName("main_detail_type_name_geo");
 			mainDetTypeItem.setFetchMissingValues(true);
@@ -99,7 +99,7 @@ public class DlgAddEditNonStandartInfo extends Window {
 			});
 
 			mainDetailGeoItem = new TextAreaItem();
-			mainDetailGeoItem.setTitle(CallCenter.constants.description());
+			mainDetailGeoItem.setTitle(CallCenterBK.constants.description());
 			mainDetailGeoItem.setName("main_detail_geo");
 			mainDetailGeoItem.setWidth(300);
 			mainDetailGeoItem.setHeight(130);
@@ -111,11 +111,11 @@ public class DlgAddEditNonStandartInfo extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -163,12 +163,12 @@ public class DlgAddEditNonStandartInfo extends Window {
 			String main_detail_type_id_str = mainDetTypeItem.getValueAsString();
 			if (main_detail_type_id_str == null
 					|| main_detail_type_id_str.trim().equals("")) {
-				SC.say(CallCenter.constants.chooseSiteGroup());
+				SC.say(CallCenterBK.constants.chooseSiteGroup());
 				return;
 			}
 			String main_detail_geo = mainDetailGeoItem.getValueAsString();
 			if (main_detail_geo == null || main_detail_geo.trim().equals("")) {
-				SC.say(CallCenter.constants.enterDescription());
+				SC.say(CallCenterBK.constants.enterDescription());
 				return;
 			}
 			com.smartgwt.client.rpc.RPCManager.startQueue();

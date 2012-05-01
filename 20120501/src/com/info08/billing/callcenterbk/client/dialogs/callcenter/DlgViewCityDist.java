@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -42,7 +42,7 @@ public class DlgViewCityDist extends Window {
 			ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
-		setTitle(CallCenter.constants.distBetweenCities());
+		setTitle(CallCenterBK.constants.distBetweenCities());
 
 		setHeight(370);
 		setWidth(950);
@@ -70,7 +70,7 @@ public class DlgViewCityDist extends Window {
 		toolStrip.setPadding(5);
 		mainLayout.addMember(toolStrip);
 
-		sendSMS = new ToolStripButton(CallCenter.constants.smsCityDistance(),
+		sendSMS = new ToolStripButton(CallCenterBK.constants.smsCityDistance(),
 				"sms.png");
 		sendSMS.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS);
@@ -82,19 +82,19 @@ public class DlgViewCityDist extends Window {
 		detailViewer.setHeight100();
 
 		DetailViewerField cityStart = new DetailViewerField("cityStart",
-				CallCenter.constants.cityFrom());
+				CallCenterBK.constants.cityFrom());
 
 		DetailViewerField cityEnd = new DetailViewerField("cityEnd",
-				CallCenter.constants.cityTo());
+				CallCenterBK.constants.cityTo());
 
 		DetailViewerField cityDistTypeDesc = new DetailViewerField(
-				"cityDistTypeDesc", CallCenter.constants.type());
+				"cityDistTypeDesc", CallCenterBK.constants.type());
 
 		DetailViewerField city_distance_geo = new DetailViewerField(
-				"city_distance_geo", CallCenter.constants.distance());
+				"city_distance_geo", CallCenterBK.constants.distance());
 
 		DetailViewerField note_geo = new DetailViewerField("note_geo",
-				CallCenter.constants.comment());
+				CallCenterBK.constants.comment());
 
 		detailViewer.viewSelectedData(listGrid);
 
@@ -108,7 +108,7 @@ public class DlgViewCityDist extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -154,8 +154,8 @@ public class DlgViewCityDist extends Window {
 			boolean isMobile = serverSession.isPhoneIsMobile();
 			if (isMobile) {
 				if (!smsSend) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.smsDidNotSent(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.smsDidNotSent(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -170,8 +170,8 @@ public class DlgViewCityDist extends Window {
 			} else {
 				int chCount = chargePanel.getChrgCounter();
 				if (chCount <= 0) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.chargeDidNotMade(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chargeDidNotMade(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -195,16 +195,16 @@ public class DlgViewCityDist extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);

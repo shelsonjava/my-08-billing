@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
@@ -33,8 +33,8 @@ public class DlgAddEditTelCompInd extends Window {
 		try {
 			this.listGrid = listGrid;
 			this.listGridRecord = listGridRecord;
-			setTitle(listGridRecord == null ? CallCenter.constants
-					.addTelCompInd() : CallCenter.constants.editTelCompInd());
+			setTitle(listGridRecord == null ? CallCenterBK.constants
+					.addTelCompInd() : CallCenterBK.constants.editTelCompInd());
 
 			setHeight(180);
 			setWidth(400);
@@ -60,17 +60,17 @@ public class DlgAddEditTelCompInd extends Window {
 			hLayout.addMember(dynamicForm);
 
 			startIndexItem = new TextItem();
-			startIndexItem.setTitle(CallCenter.constants.startIndex());
+			startIndexItem.setTitle(CallCenterBK.constants.startIndex());
 			startIndexItem.setName("startIndexItem");
 			startIndexItem.setWidth(250);
 
 			endIndexItem = new TextItem();
-			endIndexItem.setTitle(CallCenter.constants.endIndex());
+			endIndexItem.setTitle(CallCenterBK.constants.endIndex());
 			endIndexItem.setName("endIndexItem");
 			endIndexItem.setWidth(250);
 
 			typeItem = new SelectItem();
-			typeItem.setTitle(CallCenter.constants.type());
+			typeItem.setTitle(CallCenterBK.constants.type());
 			typeItem.setName("typeItem");
 			typeItem.setWidth(250);
 			typeItem.setDefaultToFirstOption(true);
@@ -78,7 +78,7 @@ public class DlgAddEditTelCompInd extends Window {
 					.getTelCompIndTypes());
 
 			typeItem1 = new SelectItem();
-			typeItem1.setTitle(CallCenter.constants.type());
+			typeItem1.setTitle(CallCenterBK.constants.type());
 			typeItem1.setName("typeItem1");
 			typeItem1.setWidth(250);
 			typeItem1.setDefaultToFirstOption(true);
@@ -93,11 +93,11 @@ public class DlgAddEditTelCompInd extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -142,14 +142,14 @@ public class DlgAddEditTelCompInd extends Window {
 		try {
 			String startIndexStr = startIndexItem.getValueAsString();
 			if (startIndexStr == null || startIndexStr.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterStartIndex());
+				SC.say(CallCenterBK.constants.plzEnterStartIndex());
 				return;
 			}
 			startIndexStr = startIndexStr.trim();
 
 			String endIndexStr = endIndexItem.getValueAsString();
 			if (endIndexStr == null || endIndexStr.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterEndIndex());
+				SC.say(CallCenterBK.constants.plzEnterEndIndex());
 				return;
 			}
 			endIndexStr = endIndexStr.trim();
@@ -158,7 +158,7 @@ public class DlgAddEditTelCompInd extends Window {
 			try {
 				startIndex = Integer.parseInt(startIndexStr);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidStartIndex());
+				SC.say(CallCenterBK.constants.invalidStartIndex());
 				return;
 			}
 
@@ -166,20 +166,20 @@ public class DlgAddEditTelCompInd extends Window {
 			try {
 				endIndex = Integer.parseInt(endIndexStr);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidEndIndex());
+				SC.say(CallCenterBK.constants.invalidEndIndex());
 				return;
 			}
 
 			if (startIndexStr.length() < 6) {
-				SC.say(CallCenter.constants.invalidStartIndex());
+				SC.say(CallCenterBK.constants.invalidStartIndex());
 				return;
 			}
 			if (endIndexStr.length() < 6) {
-				SC.say(CallCenter.constants.invalidEndIndex());
+				SC.say(CallCenterBK.constants.invalidEndIndex());
 				return;
 			}
 			if (startIndex.intValue() >= endIndex.intValue()) {
-				SC.say(CallCenter.constants.invalidEndIndex());
+				SC.say(CallCenterBK.constants.invalidEndIndex());
 				return;
 			}
 
@@ -207,11 +207,11 @@ public class DlgAddEditTelCompInd extends Window {
 					Integer end_ind = item.getAttributeAsInt("end_ind");
 					if (startIndex.intValue() >= st_ind
 							&& startIndex <= end_ind) {
-						SC.say(CallCenter.constants.invalidStartIndex());
+						SC.say(CallCenterBK.constants.invalidStartIndex());
 						return;
 					}
 					if (endIndex.intValue() >= st_ind && endIndex <= end_ind) {
-						SC.say(CallCenter.constants.invalidEndIndex());
+						SC.say(CallCenterBK.constants.invalidEndIndex());
 						return;
 					}
 				}

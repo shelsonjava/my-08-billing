@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.stat.TabBillCallsBySrvBK;
 import com.info08.billing.callcenterbk.client.content.stat.TabStatByTelComp;
 import com.info08.billing.callcenterbk.client.content.stat.TabStatFull;
@@ -23,31 +23,31 @@ public class StatStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-		new MenuNode("100", "1", CallCenter.constants.callsTotalBySrv(), true,"stats.png") ,
-		new MenuNode("101", "1", CallCenter.constants.statisticFullDay(), true,"stats.png"),
-		new MenuNode("102", "1", CallCenter.constants.statisticFullMonth(), true,"stats.png"),
-		new MenuNode("103", "1", CallCenter.constants.statisticByTelComp(), true,"stats.png")
+		new MenuNode("100", "1", CallCenterBK.constants.callsTotalBySrv(), true,"stats.png") ,
+		new MenuNode("101", "1", CallCenterBK.constants.statisticFullDay(), true,"stats.png"),
+		new MenuNode("102", "1", CallCenterBK.constants.statisticFullMonth(), true,"stats.png"),
+		new MenuNode("103", "1", CallCenterBK.constants.statisticByTelComp(), true,"stats.png")
 	};
 
 	private TreeGrid menuTreeGrid;
 
 	public StatStackSelection(Body body) {
 		this.body = body;
-		setTitle(CallCenter.constants.menuStat());
+		setTitle(CallCenterBK.constants.menuStat());
 		setExpanded(false);
 		setCanCollapse(true);
 
 		Tree menuTree = new Tree();
 		menuTree.setModelType(TreeModelType.PARENT);
 		menuTree.setRootValue(1);
-		menuTree.setNameProperty(CallCenter.constants.actionsList());
+		menuTree.setNameProperty(CallCenterBK.constants.actionsList());
 		menuTree.setIdField("Id");
 		menuTree.setParentIdField("ReportsTo");
 		menuTree.setOpenProperty("isOpen");
 		menuTree.setData(menuData);
 
 		TreeGridField formattedField = new TreeGridField(
-				CallCenter.constants.actionsList());
+				CallCenterBK.constants.actionsList());
 		formattedField.setCellFormatter(new CellFormatter() {
 			public String format(Object value, ListGridRecord record,
 					int rowNum, int colNum) {

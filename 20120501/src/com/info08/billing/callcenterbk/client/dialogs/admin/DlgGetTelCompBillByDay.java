@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -34,7 +34,7 @@ public class DlgGetTelCompBillByDay extends Window {
 	public DlgGetTelCompBillByDay(Integer tel_comp_id) {
 		try {
 			this.tel_comp_id = tel_comp_id;
-			setTitle(CallCenter.constants.telCombBillByDay());
+			setTitle(CallCenterBK.constants.telCombBillByDay());
 
 			setHeight(110);
 			setWidth(400);
@@ -60,7 +60,7 @@ public class DlgGetTelCompBillByDay extends Window {
 			hLayout.addMember(dynamicForm);
 
 			dateItem = new DateItem();
-			dateItem.setTitle(CallCenter.constants.chooseDate());
+			dateItem.setTitle(CallCenterBK.constants.chooseDate());
 			dateItem.setName("dateItem");
 			dateItem.setWidth(200);
 			dateItem.setValue(new Date());
@@ -72,12 +72,12 @@ public class DlgGetTelCompBillByDay extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.download());
+			saveItem.setTitle(CallCenterBK.constants.download());
 			saveItem.setIcon("excel.gif");
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -107,7 +107,7 @@ public class DlgGetTelCompBillByDay extends Window {
 		try {
 			Date date_param = dateItem.getValueAsDate();
 			if (date_param == null) {
-				SC.say(CallCenter.constants.plzEnterDate());
+				SC.say(CallCenterBK.constants.plzEnterDate());
 				return;
 			}
 

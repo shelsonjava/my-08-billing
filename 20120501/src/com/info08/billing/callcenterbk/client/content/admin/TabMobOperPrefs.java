@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditMobOperPref;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -51,7 +51,7 @@ public class TabMobOperPrefs extends Tab {
 	public TabMobOperPrefs() {
 		try {
 
-			setTitle(CallCenter.constants.mobOpIndexes());
+			setTitle(CallCenterBK.constants.mobOpIndexes());
 			setCanClose(true);
 
 			mobOperPrefDS = DataSource.get("MobOpPrefDS");
@@ -69,12 +69,12 @@ public class TabMobOperPrefs extends Tab {
 			mainLayout.addMember(searchForm);
 
 			operatorItem = new TextItem();
-			operatorItem.setTitle(CallCenter.constants.mobOperator());
+			operatorItem.setTitle(CallCenterBK.constants.mobOperator());
 			operatorItem.setWidth(250);
 			operatorItem.setName("operatorItem");
 
 			indexItem = new TextItem();
-			indexItem.setTitle(CallCenter.constants.mobOperatorIndex());
+			indexItem.setTitle(CallCenterBK.constants.mobOperatorIndex());
 			indexItem.setWidth(250);
 			indexItem.setName("indexItem");
 
@@ -86,10 +86,10 @@ public class TabMobOperPrefs extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -99,26 +99,26 @@ public class TabMobOperPrefs extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addMobOperPrefBtn = new ToolStripButton(CallCenter.constants.add(),
+			addMobOperPrefBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addMobOperPrefBtn.setLayoutAlign(Alignment.LEFT);
 			addMobOperPrefBtn.setWidth(50);
 			toolStrip.addButton(addMobOperPrefBtn);
 
 			editMobOperPrefBtn = new ToolStripButton(
-					CallCenter.constants.modify(), "editIcon.png");
+					CallCenterBK.constants.modify(), "editIcon.png");
 			editMobOperPrefBtn.setLayoutAlign(Alignment.LEFT);
 			editMobOperPrefBtn.setWidth(50);
 			toolStrip.addButton(editMobOperPrefBtn);
 
 			deleteMobOpepPrefBtn = new ToolStripButton(
-					CallCenter.constants.disable(), "deleteIcon.png");
+					CallCenterBK.constants.disable(), "deleteIcon.png");
 			deleteMobOpepPrefBtn.setLayoutAlign(Alignment.LEFT);
 			deleteMobOpepPrefBtn.setWidth(50);
 			toolStrip.addButton(deleteMobOpepPrefBtn);
 
 			restoreMobOperPrefBtn = new ToolStripButton(
-					CallCenter.constants.enable(), "restoreIcon.gif");
+					CallCenterBK.constants.enable(), "restoreIcon.gif");
 			restoreMobOperPrefBtn.setLayoutAlign(Alignment.LEFT);
 			restoreMobOperPrefBtn.setWidth(50);
 			toolStrip.addButton(restoreMobOperPrefBtn);
@@ -155,30 +155,30 @@ public class TabMobOperPrefs extends Tab {
 			mobOperPrefsGrid.setShowHoverComponents(true);
 
 			mobOperPrefDS.getField("oper").setTitle(
-					CallCenter.constants.mobOperator());
+					CallCenterBK.constants.mobOperator());
 			mobOperPrefDS.getField("prefix").setTitle(
-					CallCenter.constants.mobOperatorIndex());
+					CallCenterBK.constants.mobOperatorIndex());
 			mobOperPrefDS.getField("rec_date").setTitle(
-					CallCenter.constants.recDate());
+					CallCenterBK.constants.recDate());
 			mobOperPrefDS.getField("rec_user").setTitle(
-					CallCenter.constants.recUser());
+					CallCenterBK.constants.recUser());
 			mobOperPrefDS.getField("upd_date").setTitle(
-					CallCenter.constants.updDate());
+					CallCenterBK.constants.updDate());
 			mobOperPrefDS.getField("upd_user").setTitle(
-					CallCenter.constants.updUser());
+					CallCenterBK.constants.updUser());
 
 			ListGridField oper = new ListGridField("oper",
-					CallCenter.constants.mobOperator(), 157);
+					CallCenterBK.constants.mobOperator(), 157);
 			ListGridField prefix = new ListGridField("prefix",
-					CallCenter.constants.mobOperatorIndex(), 150);
+					CallCenterBK.constants.mobOperatorIndex(), 150);
 			ListGridField rec_date = new ListGridField("rec_date",
-					CallCenter.constants.recDate(), 130);
+					CallCenterBK.constants.recDate(), 130);
 			ListGridField rec_user = new ListGridField("rec_user",
-					CallCenter.constants.recUser(), 110);
+					CallCenterBK.constants.recUser(), 110);
 			ListGridField upd_date = new ListGridField("upd_date",
-					CallCenter.constants.updDate(), 130);
+					CallCenterBK.constants.updDate(), 130);
 			ListGridField upd_user = new ListGridField("upd_user",
-					CallCenter.constants.updUser(), 110);
+					CallCenterBK.constants.updUser(), 110);
 
 			rec_user.setAlign(Alignment.CENTER);
 			rec_date.setAlign(Alignment.CENTER);
@@ -228,16 +228,16 @@ public class TabMobOperPrefs extends Tab {
 					final ListGridRecord listGridRecord = mobOperPrefsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
+						SC.say(CallCenterBK.constants.recordAlrDisabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -254,16 +254,16 @@ public class TabMobOperPrefs extends Tab {
 					final ListGridRecord listGridRecord = mobOperPrefsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrEnabled());
+						SC.say(CallCenterBK.constants.recordAlrEnabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForEnable(),
+					SC.ask(CallCenterBK.constants.askForEnable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -277,7 +277,7 @@ public class TabMobOperPrefs extends Tab {
 
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(835);
-			Tab tabDetViewer = new Tab(CallCenter.constants.view());
+			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
 			final DetailViewer detailViewer = new DetailViewer();
 			detailViewer.setDataSource(mobOperPrefDS);
 			detailViewer.setWidth(800);

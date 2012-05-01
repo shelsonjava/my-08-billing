@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -42,7 +42,7 @@ public class DlgViewCalendar extends Window {
 			ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
-		setTitle(CallCenter.constants.calendar());
+		setTitle(CallCenterBK.constants.calendar());
 
 		setHeight(550);
 		setWidth(950);
@@ -69,7 +69,7 @@ public class DlgViewCalendar extends Window {
 		toolStrip.setPadding(5);
 		mainLayout.addMember(toolStrip);
 
-		sendSMS = new ToolStripButton(CallCenter.constants.smsCalendarInfo(),
+		sendSMS = new ToolStripButton(CallCenterBK.constants.smsCalendarInfo(),
 				"sms.png");
 		sendSMS.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS);
@@ -81,22 +81,22 @@ public class DlgViewCalendar extends Window {
 		detailViewer.setHeight100();
 
 		DetailViewerField calendar_day = new DetailViewerField("fcalendar_day",
-				CallCenter.constants.date());
+				CallCenterBK.constants.date());
 
 		DetailViewerField event = new DetailViewerField("event",
-				CallCenter.constants.moonPhase());
+				CallCenterBK.constants.moonPhase());
 
 		DetailViewerField state = new DetailViewerField("state",
-				CallCenter.constants.type());
+				CallCenterBK.constants.type());
 
 		DetailViewerField sun_rise = new DetailViewerField("sun_rise",
-				CallCenter.constants.sunRise());
+				CallCenterBK.constants.sunRise());
 
 		DetailViewerField calendar_description = new DetailViewerField(
-				"calendar_description", CallCenter.constants.information());
+				"calendar_description", CallCenterBK.constants.information());
 
 		DetailViewerField calendar_comment = new DetailViewerField(
-				"calendar_comment", CallCenter.constants.comment());
+				"calendar_comment", CallCenterBK.constants.comment());
 
 		detailViewer.viewSelectedData(listGrid);
 
@@ -110,7 +110,7 @@ public class DlgViewCalendar extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -156,8 +156,8 @@ public class DlgViewCalendar extends Window {
 			boolean isMobile = serverSession.isPhoneIsMobile();
 			if (isMobile) {
 				if (!smsSend) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.smsDidNotSent(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.smsDidNotSent(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -172,8 +172,8 @@ public class DlgViewCalendar extends Window {
 			} else {
 				int chCount = chargePanel.getChrgCounter();
 				if (chCount <= 0) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.chargeDidNotMade(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chargeDidNotMade(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -197,16 +197,16 @@ public class DlgViewCalendar extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
@@ -234,7 +234,7 @@ public class DlgViewCalendar extends Window {
 			}
 			String sun_rise = listGridRecord.getAttributeAsString("sun_rise");
 			if (sun_rise != null && !sun_rise.trim().equals("")) {
-				sms_text.append(CallCenter.constants.sunRise()).append(" : ")
+				sms_text.append(CallCenterBK.constants.sunRise()).append(" : ")
 						.append(sun_rise);
 			}
 

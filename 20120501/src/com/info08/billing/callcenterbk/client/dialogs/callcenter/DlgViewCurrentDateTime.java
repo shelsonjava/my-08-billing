@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -43,7 +43,7 @@ public class DlgViewCurrentDateTime extends Window {
 
 	public DlgViewCurrentDateTime() {
 
-		setTitle(CallCenter.constants.exactTime());
+		setTitle(CallCenterBK.constants.exactTime());
 
 		setHeight(280);
 		setWidth(950);
@@ -70,7 +70,7 @@ public class DlgViewCurrentDateTime extends Window {
 		toolStrip.setPadding(5);
 		mainLayout.addMember(toolStrip);
 
-		sendSMS = new ToolStripButton(CallCenter.constants.smsExactTime(),
+		sendSMS = new ToolStripButton(CallCenterBK.constants.smsExactTime(),
 				"sms.png");
 		sendSMS.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS);
@@ -82,7 +82,7 @@ public class DlgViewCurrentDateTime extends Window {
 		mainLayout.addMember(searchForm);
 
 		infoItem = new TextItem();
-		infoItem.setTitle(CallCenter.constants.exactTime());
+		infoItem.setTitle(CallCenterBK.constants.exactTime());
 		infoItem.setWidth("100%");
 		infoItem.setName("infoItem");
 		infoItem.setColSpan(3);
@@ -116,7 +116,7 @@ public class DlgViewCurrentDateTime extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -162,8 +162,8 @@ public class DlgViewCurrentDateTime extends Window {
 			boolean isMobile = serverSession.isPhoneIsMobile();
 			if (isMobile) {
 				if (!smsSend) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.smsDidNotSent(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.smsDidNotSent(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -178,8 +178,8 @@ public class DlgViewCurrentDateTime extends Window {
 			} else {
 				int chCount = chargePanel.getChrgCounter();
 				if (chCount <= 0) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.chargeDidNotMade(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chargeDidNotMade(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -203,16 +203,16 @@ public class DlgViewCurrentDateTime extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
@@ -220,10 +220,10 @@ public class DlgViewCurrentDateTime extends Window {
 
 			String currTime = infoItem.getValueAsString();
 			if (currTime == null || currTime.trim().equals("")) {
-				SC.say(CallCenter.constants.errorInvalidSystemTime());
+				SC.say(CallCenterBK.constants.errorInvalidSystemTime());
 				return;
 			}
-			sms_text.append(CallCenter.constants.currTimeIs()).append(currTime);
+			sms_text.append(CallCenterBK.constants.currTimeIs()).append(currTime);
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record recordParam = new Record();

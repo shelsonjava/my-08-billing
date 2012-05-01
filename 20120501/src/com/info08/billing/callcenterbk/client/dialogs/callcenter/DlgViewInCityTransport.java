@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -50,7 +50,7 @@ public class DlgViewInCityTransport extends Window {
 			final String toStreetId) {
 		this.listGridRecord = listGridRecord;
 
-		setTitle(CallCenter.constants.tbilisiTransport());
+		setTitle(CallCenterBK.constants.tbilisiTransport());
 
 		setHeight(800);
 		setWidth(950);
@@ -79,17 +79,17 @@ public class DlgViewInCityTransport extends Window {
 		mainLayout.addMember(toolStrip);
 
 		sendSMS3 = new ToolStripButton(
-				CallCenter.constants.smsInCityTranspInfo(), "sms.png");
+				CallCenterBK.constants.smsInCityTranspInfo(), "sms.png");
 		sendSMS3.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS3);
 
 		sendSMS1 = new ToolStripButton(
-				CallCenter.constants.smsRouteDirForward(), "sms.png");
+				CallCenterBK.constants.smsRouteDirForward(), "sms.png");
 		sendSMS1.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS1);
 
 		sendSMS2 = new ToolStripButton(
-				CallCenter.constants.smsRouteDirBackward(), "sms.png");
+				CallCenterBK.constants.smsRouteDirBackward(), "sms.png");
 		sendSMS2.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS2);
 
@@ -100,23 +100,23 @@ public class DlgViewInCityTransport extends Window {
 		detailViewer.setHeight(120);
 
 		DetailViewerField route_nm = new DetailViewerField("route_nm",
-				CallCenter.constants.routeNumber());
+				CallCenterBK.constants.routeNumber());
 
 		DetailViewerField service_descr = new DetailViewerField(
-				"service_descr", CallCenter.constants.transportType());
+				"service_descr", CallCenterBK.constants.transportType());
 
 		DetailViewerField icity_name_geo = new DetailViewerField(
-				"icity_name_geo", CallCenter.constants.stationTo());
+				"icity_name_geo", CallCenterBK.constants.stationTo());
 		icity_name_geo.setCellStyle("fontGreenWithBorder");
 
 		DetailViewerField start_place = new DetailViewerField("start_place",
-				CallCenter.constants.stationFrom());
+				CallCenterBK.constants.stationFrom());
 
 		DetailViewerField end_place = new DetailViewerField("end_place",
-				CallCenter.constants.stationTo());
+				CallCenterBK.constants.stationTo());
 
 		DetailViewerField round_descr = new DetailViewerField("round_descr",
-				CallCenter.constants.type());
+				CallCenterBK.constants.type());
 
 		detailViewer.selectRecord(listGridRecord);
 		ListGridRecord arr[] = new ListGridRecord[1];
@@ -174,19 +174,19 @@ public class DlgViewInCityTransport extends Window {
 		listGridInner.setCanResizeFields(false);
 
 		ListGridField route_order = new ListGridField("route_order",
-				CallCenter.constants.no(), 50);
+				CallCenterBK.constants.no(), 50);
 		route_order.setAlign(Alignment.LEFT);
 
 		ListGridField street_name = new ListGridField("street_name",
-				CallCenter.constants.street(), 300);
+				CallCenterBK.constants.street(), 300);
 		street_name.setAlign(Alignment.LEFT);
 
 		ListGridField notes = new ListGridField("notes",
-				CallCenter.constants.description());
+				CallCenterBK.constants.description());
 		notes.setAlign(Alignment.LEFT);
 
 		ListGridField route_dir_descr = new ListGridField("route_dir_descr",
-				CallCenter.constants.routeDirDescr(), 150);
+				CallCenterBK.constants.routeDirDescr(), 150);
 		route_dir_descr.setAlign(Alignment.CENTER);
 
 		listGridInner.setFields(route_order, route_dir_descr, street_name,
@@ -199,7 +199,7 @@ public class DlgViewInCityTransport extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -257,8 +257,8 @@ public class DlgViewInCityTransport extends Window {
 			boolean isMobile = serverSession.isPhoneIsMobile();
 			if (isMobile) {
 				if (!smsSend) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.smsDidNotSent(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.smsDidNotSent(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -273,8 +273,8 @@ public class DlgViewInCityTransport extends Window {
 			} else {
 				int chCount = chargePanel.getChrgCounter();
 				if (chCount <= 0) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.chargeDidNotMade(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chargeDidNotMade(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -298,16 +298,16 @@ public class DlgViewInCityTransport extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 
@@ -354,8 +354,8 @@ public class DlgViewInCityTransport extends Window {
 				RecordList recordList = listGridInner.getDataAsRecordList();
 				int length = recordList.getLength();
 				if (length <= 0) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.errorRoutePartsNotFound());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.errorRoutePartsNotFound());
 					return;
 				}
 				StringBuilder cust_sms_text = new StringBuilder();
@@ -376,8 +376,8 @@ public class DlgViewInCityTransport extends Window {
 				}
 				if (cust_sms_text == null
 						|| cust_sms_text.toString().trim().equals("")) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.errorRoutePartsNotFound1());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.errorRoutePartsNotFound1());
 				}
 				String cust_sms = cust_sms_text.toString().trim();
 				sms_text.append(cust_sms);

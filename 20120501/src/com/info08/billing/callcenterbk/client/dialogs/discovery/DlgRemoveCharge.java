@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.discovery;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -48,7 +48,7 @@ public class DlgRemoveCharge extends Window {
 
 	public DlgRemoveCharge(String phone, String sOperator, Date callDate) {
 		try {
-			setTitle(CallCenter.constants.manageCharges());
+			setTitle(CallCenterBK.constants.manageCharges());
 
 			setHeight(500);
 			setWidth(700);
@@ -75,20 +75,20 @@ public class DlgRemoveCharge extends Window {
 			hLayout.addMember(dynamicForm);
 
 			nmItem = new TextItem();
-			nmItem.setTitle(CallCenter.constants.phone());
+			nmItem.setTitle(CallCenterBK.constants.phone());
 			nmItem.setName("phoneItem");
 			nmItem.setWidth(250);
 			nmItem.setValue(phone);
 
 			dateItem = new DateItem();
 			dateItem.setUseTextField(true);
-			dateItem.setTitle(CallCenter.constants.date());
+			dateItem.setTitle(CallCenterBK.constants.date());
 			dateItem.setName("dateItem");
 			dateItem.setWidth(250);
 			dateItem.setValue(callDate);
 
 			serviceItem = new ComboBoxItem();
-			serviceItem.setTitle(CallCenter.constants.service());
+			serviceItem.setTitle(CallCenterBK.constants.service());
 			serviceItem.setType("comboBox");
 			serviceItem.setName("serviceItem");
 			serviceItem.setWidth(250);
@@ -98,7 +98,7 @@ public class DlgRemoveCharge extends Window {
 			serviceItem.setValueField("serviceId");
 
 			operatorItem = new TextItem();
-			operatorItem.setTitle(CallCenter.constants.operator());
+			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setName("operatorItem");
 			operatorItem.setWidth(250);
 			operatorItem.setValue(sOperator);
@@ -111,7 +111,7 @@ public class DlgRemoveCharge extends Window {
 			buttonLayout.setAlign(Alignment.LEFT);
 
 			removeChargeButton = new IButton();
-			removeChargeButton.setTitle(CallCenter.constants.removeCharge());
+			removeChargeButton.setTitle(CallCenterBK.constants.removeCharge());
 			removeChargeButton.setIcon("removeCharge.png");
 			removeChargeButton.setWidth(150);
 
@@ -119,10 +119,10 @@ public class DlgRemoveCharge extends Window {
 			buttonLayout.addMember(new LayoutSpacer());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			buttonLayout.addMember(findButton);
 			buttonLayout.addMember(clearButton);
@@ -150,26 +150,26 @@ public class DlgRemoveCharge extends Window {
 			hLayout.addMember(listGrid);
 
 			ListGridField service_name_geo = new ListGridField(
-					"service_name_geo", CallCenter.constants.service());
+					"service_name_geo", CallCenterBK.constants.service());
 			// service_name_geo.setCanFilter(true);
 
 			ListGridField rec_date = new ListGridField("rec_date_time",
-					CallCenter.constants.recDate(), 150);
+					CallCenterBK.constants.recDate(), 150);
 			rec_date.setAlign(Alignment.CENTER);
 			// rec_date.setCanFilter(false);
 
 			ListGridField price = new ListGridField("price",
-					CallCenter.constants.price(), 70);
+					CallCenterBK.constants.price(), 70);
 			price.setAlign(Alignment.CENTER);
 			// price.setCanFilter(false);
 
 			ListGridField operator = new ListGridField("user_name",
-					CallCenter.constants.operator(), 100);
+					CallCenterBK.constants.operator(), 100);
 			operator.setAlign(Alignment.CENTER);
 			// operator.setCanFilter(true);
 
 			ListGridField upd_user = new ListGridField("upd_user",
-					CallCenter.constants.updUser(), 100);
+					CallCenterBK.constants.updUser(), 100);
 			upd_user.setAlign(Alignment.CENTER);
 			// upd_user.setCanFilter(true);
 
@@ -181,7 +181,7 @@ public class DlgRemoveCharge extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);
@@ -202,14 +202,14 @@ public class DlgRemoveCharge extends Window {
 						ListGridRecord listGridRecord = listGrid
 								.getSelectedRecord();
 						if (listGridRecord == null) {
-							SC.say(CallCenter.constants.warning(),
-									CallCenter.constants.pleaseSelrecord());
+							SC.say(CallCenterBK.constants.warning(),
+									CallCenterBK.constants.pleaseSelrecord());
 							return;
 						}
 						Integer id = listGridRecord.getAttributeAsInt("id");
 						if (id == null) {
-							SC.say(CallCenter.constants.warning(),
-									CallCenter.constants.invalidRecord());
+							SC.say(CallCenterBK.constants.warning(),
+									CallCenterBK.constants.invalidRecord());
 							return;
 						}
 
@@ -282,7 +282,7 @@ public class DlgRemoveCharge extends Window {
 
 			String phone = nmItem.getValueAsString();
 			if (phone == null || phone.trim().equals("")) {
-				SC.say(CallCenter.constants.pleaseEnterPhone());
+				SC.say(CallCenterBK.constants.pleaseEnterPhone());
 				return;
 			}
 

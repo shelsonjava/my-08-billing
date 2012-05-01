@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -43,7 +43,7 @@ public class DlgViewIndex extends Window {
 			ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
-		setTitle(CallCenter.constants.codes());
+		setTitle(CallCenterBK.constants.codes());
 
 		setHeight(430);
 		setWidth(950);
@@ -72,12 +72,12 @@ public class DlgViewIndex extends Window {
 		mainLayout.addMember(toolStrip);
 
 		sendCountryInfoSMS = new ToolStripButton(
-				CallCenter.constants.smsIndexInfo(), "sms.png");
+				CallCenterBK.constants.smsIndexInfo(), "sms.png");
 		sendCountryInfoSMS.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendCountryInfoSMS);
 
 		sendCountryInfoSMS1 = new ToolStripButton(
-				CallCenter.constants.smsIndexInfo1(), "sms.png");
+				CallCenterBK.constants.smsIndexInfo1(), "sms.png");
 		sendCountryInfoSMS1.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendCountryInfoSMS1);
 
@@ -97,22 +97,22 @@ public class DlgViewIndex extends Window {
 		dataSource.getField("country_name_geo").setHidden(false);
 
 		DetailViewerField cityName = new DetailViewerField("cityName",
-				CallCenter.constants.city());
+				CallCenterBK.constants.city());
 		DetailViewerField countrycode = new DetailViewerField("countrycode",
-				CallCenter.constants.countryCode());
+				CallCenterBK.constants.countryCode());
 		DetailViewerField countryregion = new DetailViewerField(
-				"countryregion", CallCenter.constants.region());
+				"countryregion", CallCenterBK.constants.region());
 		DetailViewerField code = new DetailViewerField("code",
-				CallCenter.constants.oldCode());
+				CallCenterBK.constants.oldCode());
 		DetailViewerField city_new_code = new DetailViewerField(
-				"city_new_code", CallCenter.constants.newCode());
+				"city_new_code", CallCenterBK.constants.newCode());
 
 		DetailViewerField gmtoff = new DetailViewerField("gmtoff",
-				CallCenter.constants.gmtoff());
+				CallCenterBK.constants.gmtoff());
 		DetailViewerField gmtoffwinter = new DetailViewerField("gmtoffwinter",
-				CallCenter.constants.gmtoffwinter());
+				CallCenterBK.constants.gmtoffwinter());
 		DetailViewerField ctm = new DetailViewerField("ctm",
-				CallCenter.constants.ctm());
+				CallCenterBK.constants.ctm());
 
 		detailViewer.viewSelectedData(listGrid);
 
@@ -125,7 +125,7 @@ public class DlgViewIndex extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -179,8 +179,8 @@ public class DlgViewIndex extends Window {
 			boolean isMobile = serverSession.isPhoneIsMobile();
 			if (isMobile) {
 				if (!smsSend) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.smsDidNotSent(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.smsDidNotSent(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -195,8 +195,8 @@ public class DlgViewIndex extends Window {
 			} else {
 				int chCount = chargePanel.getChrgCounter();
 				if (chCount <= 0) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.chargeDidNotMade(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chargeDidNotMade(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -220,16 +220,16 @@ public class DlgViewIndex extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendCountryInfoSMS);
@@ -318,16 +318,16 @@ public class DlgViewIndex extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendCountryInfoSMS1);

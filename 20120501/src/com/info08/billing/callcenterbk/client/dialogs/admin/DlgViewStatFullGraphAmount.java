@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 import java.util.ArrayList;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ChartType;
@@ -28,7 +28,7 @@ public class DlgViewStatFullGraphAmount extends Window {
 	public DlgViewStatFullGraphAmount(ListGridRecord records[]) {
 		try {
 			this.records = records;
-			setTitle(CallCenter.constants.graphAmount());
+			setTitle(CallCenterBK.constants.graphAmount());
 
 			setHeight(700);
 			setWidth(1200);
@@ -57,29 +57,29 @@ public class DlgViewStatFullGraphAmount extends Window {
 
 			chart.setValueProperty("value");
 			chart.setChartType(ChartType.LINE);
-			chart.setTitle(CallCenter.constants.statisticFull());
-			chart.setValueTitle(CallCenter.constants.callsCount());
+			chart.setTitle(CallCenterBK.constants.statisticFull());
+			chart.setValueTitle(CallCenterBK.constants.callsCount());
 			chart.setShowDataPoints(true);
 			chart.setPointHoverCustomizer(new ChartPointHoverCustomizer() {
 				@Override
 				public String hoverHTML(Float value, Record record) {
 					return ("<b>"
-							+ CallCenter.constants.service()
+							+ CallCenterBK.constants.service()
 							+ " : </b> "
 							+ record.getAttribute("service_name")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.date()
+							+ CallCenterBK.constants.date()
 							+ " : </b> "
 							+ record.getAttribute("date_str")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.weekDay()
+							+ CallCenterBK.constants.weekDay()
 							+ " : </b> "
 							+ record.getAttribute("week_day_descr")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.amount()
+							+ CallCenterBK.constants.amount()
 							+ " : </b> "
 							+ (record.getAttributeAsDouble("value") == null ? nf
 									.format(0) : nf.format(record
@@ -94,7 +94,7 @@ public class DlgViewStatFullGraphAmount extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);
@@ -126,7 +126,7 @@ public class DlgViewStatFullGraphAmount extends Window {
 				all_amount.setAttribute("date_str",
 						record.getAttributeAsString("date_str"));
 				all_amount.setAttribute("service_name",
-						CallCenter.constants.amount());
+						CallCenterBK.constants.amount());
 				all_amount.setAttribute("value",
 						record.getAttributeAsDouble("all_amount"));
 				all_amount.setAttribute("week_day_descr",

@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import java.util.LinkedHashMap;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -56,8 +56,8 @@ public class DlgAddEditTelComp extends Window {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenter.constants.addTelComp()
-					: CallCenter.constants.editTelComp());
+			setTitle(pRecord == null ? CallCenterBK.constants.addTelComp()
+					: CallCenterBK.constants.editTelComp());
 
 			setHeight(600);
 			setWidth(800);
@@ -76,18 +76,18 @@ public class DlgAddEditTelComp extends Window {
 			hLayout.setPadding(10);
 
 			telCompNameItem = new TextItem();
-			telCompNameItem.setTitle(CallCenter.constants.companyNameFull());
+			telCompNameItem.setTitle(CallCenterBK.constants.companyNameFull());
 			telCompNameItem.setWidth("100%");
 			telCompNameItem.setName("telCompNameItem");
 
 			telCompOurPercentItem = new TextItem();
-			telCompOurPercentItem.setTitle(CallCenter.constants.ourPercent());
+			telCompOurPercentItem.setTitle(CallCenterBK.constants.ourPercent());
 			telCompOurPercentItem.setWidth("100%");
 			telCompOurPercentItem.setName("telCompOurPercentItem");
 			telCompOurPercentItem.setKeyPressFilter("[0-9\\.]");
 
 			hasCalcItem = new SelectItem();
-			hasCalcItem.setTitle(CallCenter.constants.hasCalculation());
+			hasCalcItem.setTitle(CallCenterBK.constants.hasCalculation());
 			hasCalcItem.setWidth("100%");
 			hasCalcItem.setName("hasCalcItem");
 			hasCalcItem.setDefaultToFirstOption(true);
@@ -95,7 +95,7 @@ public class DlgAddEditTelComp extends Window {
 					.getHasCalculations1());
 
 			callPriceItem = new TextItem();
-			callPriceItem.setTitle(CallCenter.constants.callPrice());
+			callPriceItem.setTitle(CallCenterBK.constants.callPrice());
 			callPriceItem.setWidth("100%");
 			callPriceItem.setName("callPriceItem");
 			callPriceItem.setKeyPressFilter("[0-9\\.]");
@@ -123,19 +123,19 @@ public class DlgAddEditTelComp extends Window {
 			toolStrip.setPadding(5);
 			hLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenter.constants.modify(),
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			deleteBtn = new ToolStripButton(CallCenter.constants.disable(),
+			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			deleteBtn.setLayoutAlign(Alignment.LEFT);
 			deleteBtn.setWidth(50);
@@ -158,19 +158,19 @@ public class DlgAddEditTelComp extends Window {
 			listGridIndexes.setShowRowNumbers(true);
 
 			ListGridField st_ind = new ListGridField("st_ind",
-					CallCenter.constants.startIndex());
+					CallCenterBK.constants.startIndex());
 			st_ind.setAlign(Alignment.CENTER);
 
 			ListGridField end_ind = new ListGridField("end_ind",
-					CallCenter.constants.endIndex());
+					CallCenterBK.constants.endIndex());
 			end_ind.setAlign(Alignment.CENTER);
 
 			ListGridField cr_descr = new ListGridField("cr_descr",
-					CallCenter.constants.type());
+					CallCenterBK.constants.type());
 			cr_descr.setAlign(Alignment.CENTER);
 
 			ListGridField count_type_descr = new ListGridField(
-					"count_type_descr", CallCenter.constants.type());
+					"count_type_descr", CallCenterBK.constants.type());
 			count_type_descr.setAlign(Alignment.CENTER);
 
 			listGridIndexes.setFields(st_ind, end_ind, cr_descr,
@@ -183,11 +183,11 @@ public class DlgAddEditTelComp extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -213,10 +213,10 @@ public class DlgAddEditTelComp extends Window {
 					final ListGridRecord records[] = listGridIndexes
 							.getSelectedRecords();
 					if (records == null || records.length <= 0) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					SC.ask(CallCenter.constants.deleteConfirm(),
+					SC.ask(CallCenterBK.constants.deleteConfirm(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -246,7 +246,7 @@ public class DlgAddEditTelComp extends Window {
 							.getSelectedRecord();
 
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 
@@ -322,14 +322,14 @@ public class DlgAddEditTelComp extends Window {
 			String tel_comp_name_geo = telCompNameItem.getValueAsString();
 			if (tel_comp_name_geo == null
 					|| tel_comp_name_geo.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterTelCompName());
+				SC.say(CallCenterBK.constants.plzEnterTelCompName());
 				return;
 			}
 			tel_comp_name_geo = tel_comp_name_geo.trim();
 
 			String our_percent_str = telCompOurPercentItem.getValueAsString();
 			if (our_percent_str == null || our_percent_str.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterOurPercent());
+				SC.say(CallCenterBK.constants.plzEnterOurPercent());
 				return;
 			}
 
@@ -340,28 +340,28 @@ public class DlgAddEditTelComp extends Window {
 			try {
 				our_percent = Double.parseDouble(our_percent_str);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidOurPercent());
+				SC.say(CallCenterBK.constants.invalidOurPercent());
 				return;
 			}
 			if (our_percent.intValue() <= 0 && our_percent.intValue() > 100) {
-				SC.say(CallCenter.constants.invalidOurPercent());
+				SC.say(CallCenterBK.constants.invalidOurPercent());
 				return;
 			}
 
 			String call_price_str = callPriceItem.getValueAsString();
 			if (call_price_str == null || call_price_str.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterCallPrice());
+				SC.say(CallCenterBK.constants.plzEnterCallPrice());
 				return;
 			}
 			Double call_price = null;
 			try {
 				call_price = Double.parseDouble(call_price_str);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidCallPrice());
+				SC.say(CallCenterBK.constants.invalidCallPrice());
 				return;
 			}
 			if (call_price.intValue() <= 0 && call_price.intValue() > 100) {
-				SC.say(CallCenter.constants.invalidCallPrice());
+				SC.say(CallCenterBK.constants.invalidCallPrice());
 				return;
 			}
 

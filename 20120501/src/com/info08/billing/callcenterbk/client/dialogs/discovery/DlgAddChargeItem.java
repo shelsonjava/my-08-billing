@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.discovery;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -44,7 +44,7 @@ public class DlgAddChargeItem extends Window {
 			this.listGridRecord = listGridRecord;
 			this.listGrid = listGrid;
 			this.dlgAddCharge = dlgAddCharge;
-			setTitle(CallCenter.constants.addCharge());
+			setTitle(CallCenterBK.constants.addCharge());
 
 			setHeight(215);
 			setWidth(620);
@@ -69,17 +69,17 @@ public class DlgAddChargeItem extends Window {
 			detailViewer.selectRecord(listGridRecord);
 
 			DetailViewerField phone = new DetailViewerField("phone",
-					CallCenter.constants.phone());
+					CallCenterBK.constants.phone());
 
 			DetailViewerField start_date = new DetailViewerField("start_date",
-					CallCenter.constants.time());
+					CallCenterBK.constants.time());
 			start_date.setDateFormatter(DateDisplayFormat.TOSERIALIZEABLEDATE);
 
 			DetailViewerField operator = new DetailViewerField("operator",
-					CallCenter.constants.operator());
+					CallCenterBK.constants.operator());
 
 			DetailViewerField duration = new DetailViewerField("duration",
-					CallCenter.constants.durationShort());
+					CallCenterBK.constants.durationShort());
 
 			detailViewer.setFields(phone, start_date, operator, duration);
 
@@ -97,7 +97,7 @@ public class DlgAddChargeItem extends Window {
 			hLayout.addMember(dynamicForm);
 
 			serviceItem = new ComboBoxItem();
-			serviceItem.setTitle(CallCenter.constants.service());
+			serviceItem.setTitle(CallCenterBK.constants.service());
 			serviceItem.setType("comboBox");
 			serviceItem.setName("serviceItem");
 			serviceItem.setWidth(300);
@@ -107,7 +107,7 @@ public class DlgAddChargeItem extends Window {
 			serviceItem.setValueField("serviceId");
 
 			chargeCountItem = new TextItem();
-			chargeCountItem.setTitle(CallCenter.constants.chargeCount());
+			chargeCountItem.setTitle(CallCenterBK.constants.chargeCount());
 			chargeCountItem.setName("chargeCountItem");
 			chargeCountItem.setWidth(288);
 			chargeCountItem.setValue(1);
@@ -120,14 +120,14 @@ public class DlgAddChargeItem extends Window {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			chargeButton = new IButton();
-			chargeButton.setTitle(CallCenter.constants.charge());
+			chargeButton.setTitle(CallCenterBK.constants.charge());
 			chargeButton.setIcon("moneySmall.png");
 			chargeButton.setWidth(150);
 
 			buttonLayout.addMember(chargeButton);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			buttonLayout.addMember(cancItem);
@@ -159,30 +159,30 @@ public class DlgAddChargeItem extends Window {
 		try {
 			String serviceId_str = serviceItem.getValueAsString();
 			if (serviceId_str == null || serviceId_str.trim().equals("")) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.chooseService());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.chooseService());
 				return;
 			}
 			Integer serviceId = null;
 			try {
 				serviceId = Integer.parseInt(serviceId_str);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.invalidService());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.invalidService());
 				return;
 			}
 			String chargeCount_str = chargeCountItem.getValueAsString();
 			if (chargeCount_str == null || chargeCount_str.trim().equals("")) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.enterChargeCount());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.enterChargeCount());
 				return;
 			}
 			Integer chargeCount = null;
 			try {
 				chargeCount = Integer.parseInt(chargeCount_str);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.invalidChargeCount());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.invalidChargeCount());
 				return;
 			}
 

@@ -5,7 +5,7 @@ import java.util.Date;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatByTelCompGraph;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -56,7 +56,7 @@ public class TabStatByTelComp extends Tab {
 
 			statsByTelCompDS = DataSource.get("StatisticsByTelCompDS");
 
-			setTitle(CallCenter.constants.statisticByTelComp());
+			setTitle(CallCenterBK.constants.statisticByTelComp());
 			setCanClose(true);
 
 			mainLayout = new VLayout(5);
@@ -75,7 +75,7 @@ public class TabStatByTelComp extends Tab {
 			CalendarUtil.addMonthsToDate(date, -1);
 
 			dateItem = new DateItem();
-			dateItem.setTitle(CallCenter.constants.date());
+			dateItem.setTitle(CallCenterBK.constants.date());
 			dateItem.setName("dateItem");
 			dateItem.setValue(date);
 			dateItem.setWidth(200);
@@ -88,10 +88,10 @@ public class TabStatByTelComp extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -101,7 +101,7 @@ public class TabStatByTelComp extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			statN1Btn = new ToolStripButton(CallCenter.constants.graph(),
+			statN1Btn = new ToolStripButton(CallCenterBK.constants.graph(),
 					"stats.png");
 			statN1Btn.setLayoutAlign(Alignment.LEFT);
 			statN1Btn.setWidth(50);
@@ -131,13 +131,13 @@ public class TabStatByTelComp extends Tab {
 			listGrid.setShowAllRecords(true);
 
 			ListGridField tel_comp_name_geo = new ListGridField(
-					"tel_comp_name_geo", CallCenter.constants.telComps(), 250);
+					"tel_comp_name_geo", CallCenterBK.constants.telComps(), 250);
 
 			ListGridField calls_cnt = new ListGridField("calls_cnt",
-					CallCenter.constants.count(), 100);
+					CallCenterBK.constants.count(), 100);
 
 			ListGridField calls_amm = new ListGridField("calls_amm",
-					CallCenter.constants.amount(), 100);
+					CallCenterBK.constants.amount(), 100);
 
 			tel_comp_name_geo.setAlign(Alignment.LEFT);
 			calls_cnt.setAlign(Alignment.CENTER);
@@ -147,14 +147,14 @@ public class TabStatByTelComp extends Tab {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
-					return CallCenter.constants.sum();
+					return CallCenterBK.constants.sum();
 				}
 			});
 			tel_comp_name_geo.addSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
-					return CallCenter.constants.avarage();
+					return CallCenterBK.constants.avarage();
 				}
 			});
 
@@ -227,7 +227,7 @@ public class TabStatByTelComp extends Tab {
 		try {
 			ListGridRecord records[] = listGrid.getRecords();
 			if (records == null || records.length <= 0) {
-				SC.say(CallCenter.constants.pleaseSearchData());
+				SC.say(CallCenterBK.constants.pleaseSearchData());
 				return;
 			}
 			DlgViewStatByTelCompGraph dlgViewStatFullGraph = new DlgViewStatByTelCompGraph(
@@ -242,7 +242,7 @@ public class TabStatByTelComp extends Tab {
 		try {
 			final Date date = dateItem.getValueAsDate();
 			if (date == null) {
-				SC.say(CallCenter.constants.invalidDate());
+				SC.say(CallCenterBK.constants.invalidDate());
 				return;
 			}
 			DateTimeFormat dateFormatter = DateTimeFormat.getFormat("yyMM");

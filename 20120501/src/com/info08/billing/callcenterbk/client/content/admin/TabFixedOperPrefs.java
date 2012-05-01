@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditFixedOperPref;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -50,7 +50,7 @@ public class TabFixedOperPrefs extends Tab {
 	public TabFixedOperPrefs() {
 		try {
 
-			setTitle(CallCenter.constants.fixedOpIndexes());
+			setTitle(CallCenterBK.constants.fixedOpIndexes());
 			setCanClose(true);
 
 			fixedOperPrefDS = DataSource.get("FixedOpPrefDS");
@@ -68,7 +68,7 @@ public class TabFixedOperPrefs extends Tab {
 			mainLayout.addMember(searchForm);
 
 			indexItem = new TextItem();
-			indexItem.setTitle(CallCenter.constants.index());
+			indexItem.setTitle(CallCenterBK.constants.index());
 			indexItem.setWidth(250);
 			indexItem.setName("indexItem");
 
@@ -80,10 +80,10 @@ public class TabFixedOperPrefs extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -94,25 +94,25 @@ public class TabFixedOperPrefs extends Tab {
 			mainLayout.addMember(toolStrip);
 
 			addFixedOperPrefBtn = new ToolStripButton(
-					CallCenter.constants.add(), "addIcon.png");
+					CallCenterBK.constants.add(), "addIcon.png");
 			addFixedOperPrefBtn.setLayoutAlign(Alignment.LEFT);
 			addFixedOperPrefBtn.setWidth(50);
 			toolStrip.addButton(addFixedOperPrefBtn);
 
 			editFixedOperPrefBtn = new ToolStripButton(
-					CallCenter.constants.modify(), "editIcon.png");
+					CallCenterBK.constants.modify(), "editIcon.png");
 			editFixedOperPrefBtn.setLayoutAlign(Alignment.LEFT);
 			editFixedOperPrefBtn.setWidth(50);
 			toolStrip.addButton(editFixedOperPrefBtn);
 
 			deleteFixedOperPrefBtn = new ToolStripButton(
-					CallCenter.constants.disable(), "deleteIcon.png");
+					CallCenterBK.constants.disable(), "deleteIcon.png");
 			deleteFixedOperPrefBtn.setLayoutAlign(Alignment.LEFT);
 			deleteFixedOperPrefBtn.setWidth(50);
 			toolStrip.addButton(deleteFixedOperPrefBtn);
 
 			restoreFixedOperPrefBtn = new ToolStripButton(
-					CallCenter.constants.enable(), "restoreIcon.gif");
+					CallCenterBK.constants.enable(), "restoreIcon.gif");
 			restoreFixedOperPrefBtn.setLayoutAlign(Alignment.LEFT);
 			restoreFixedOperPrefBtn.setWidth(50);
 			toolStrip.addButton(restoreFixedOperPrefBtn);
@@ -149,26 +149,26 @@ public class TabFixedOperPrefs extends Tab {
 			fixedOperPrefsGrid.setShowHoverComponents(true);
 
 			fixedOperPrefDS.getField("prefix").setTitle(
-					CallCenter.constants.index());
+					CallCenterBK.constants.index());
 			fixedOperPrefDS.getField("rec_date").setTitle(
-					CallCenter.constants.recDate());
+					CallCenterBK.constants.recDate());
 			fixedOperPrefDS.getField("rec_user").setTitle(
-					CallCenter.constants.recUser());
+					CallCenterBK.constants.recUser());
 			fixedOperPrefDS.getField("upd_date").setTitle(
-					CallCenter.constants.updDate());
+					CallCenterBK.constants.updDate());
 			fixedOperPrefDS.getField("upd_user").setTitle(
-					CallCenter.constants.updUser());
+					CallCenterBK.constants.updUser());
 
 			ListGridField prefix = new ListGridField("prefix",
-					CallCenter.constants.index(), 307);
+					CallCenterBK.constants.index(), 307);
 			ListGridField rec_date = new ListGridField("rec_date",
-					CallCenter.constants.recDate(), 130);
+					CallCenterBK.constants.recDate(), 130);
 			ListGridField rec_user = new ListGridField("rec_user",
-					CallCenter.constants.recUser(), 110);
+					CallCenterBK.constants.recUser(), 110);
 			ListGridField upd_date = new ListGridField("upd_date",
-					CallCenter.constants.updDate(), 130);
+					CallCenterBK.constants.updDate(), 130);
 			ListGridField upd_user = new ListGridField("upd_user",
-					CallCenter.constants.updUser(), 110);
+					CallCenterBK.constants.updUser(), 110);
 
 			rec_user.setAlign(Alignment.CENTER);
 			rec_date.setAlign(Alignment.CENTER);
@@ -217,16 +217,16 @@ public class TabFixedOperPrefs extends Tab {
 					final ListGridRecord listGridRecord = fixedOperPrefsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
+						SC.say(CallCenterBK.constants.recordAlrDisabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -243,16 +243,16 @@ public class TabFixedOperPrefs extends Tab {
 					final ListGridRecord listGridRecord = fixedOperPrefsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrEnabled());
+						SC.say(CallCenterBK.constants.recordAlrEnabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForEnable(),
+					SC.ask(CallCenterBK.constants.askForEnable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -266,7 +266,7 @@ public class TabFixedOperPrefs extends Tab {
 
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(835);
-			Tab tabDetViewer = new Tab(CallCenter.constants.view());
+			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
 			final DetailViewer detailViewer = new DetailViewer();
 			detailViewer.setDataSource(fixedOperPrefDS);
 			detailViewer.setWidth(800);

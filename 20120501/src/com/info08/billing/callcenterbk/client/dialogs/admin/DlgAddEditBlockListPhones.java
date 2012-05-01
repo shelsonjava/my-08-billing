@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import java.util.TreeSet;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
@@ -29,7 +29,7 @@ public class DlgAddEditBlockListPhones extends Window {
 	public DlgAddEditBlockListPhones(ListGrid listGrid) {
 		try {
 			this.listGrid = listGrid;
-			setTitle(CallCenter.constants.addBlockListPhones());
+			setTitle(CallCenterBK.constants.addBlockListPhones());
 
 			setHeight(400);
 			setWidth(600);
@@ -56,7 +56,7 @@ public class DlgAddEditBlockListPhones extends Window {
 			hLayout.addMember(dynamicForm);
 
 			phonesItem = new TextAreaItem();
-			phonesItem.setTitle(CallCenter.constants.phoneList());
+			phonesItem.setTitle(CallCenterBK.constants.phoneList());
 			phonesItem.setName("phonesItem");
 			phonesItem.setWidth(568);
 			phonesItem.setHeight(305);
@@ -68,11 +68,11 @@ public class DlgAddEditBlockListPhones extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -103,18 +103,18 @@ public class DlgAddEditBlockListPhones extends Window {
 		try {
 			String phonesStr = phonesItem.getValueAsString();
 			if (phonesStr == null || phonesStr.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterStartPhoneList());
+				SC.say(CallCenterBK.constants.plzEnterStartPhoneList());
 				return;
 			}
 			phonesStr = phonesStr.trim();
 			String phoneListArr[] = phonesStr.split(",");
 			if (phoneListArr == null || phoneListArr.length <= 0) {
-				SC.say(CallCenter.constants.plzEnterStartPhoneList());
+				SC.say(CallCenterBK.constants.plzEnterStartPhoneList());
 				return;
 			}
 			TreeSet<String> phones = new TreeSet<String>();
-			String error1 = CallCenter.constants.invalidPhone() + " : ";
-			String error2 = CallCenter.constants.phoneAlreadyExists() + " : ";
+			String error1 = CallCenterBK.constants.invalidPhone() + " : ";
+			String error2 = CallCenterBK.constants.phoneAlreadyExists() + " : ";
 
 			ListGridRecord oldRecords[] = listGrid.getRecords();
 

@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.stat;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatFullGraphAmountByMonth;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatFullGraphByMonth;
 import com.smartgwt.client.data.Criteria;
@@ -57,7 +57,7 @@ public class TabStatFullByMonth extends Tab {
 
 			statisticsDS = DataSource.get("StatisticsDS");
 
-			setTitle(CallCenter.constants.statisticFull());
+			setTitle(CallCenterBK.constants.statisticFull());
 			setCanClose(true);
 
 			mainLayout = new VLayout(5);
@@ -74,12 +74,12 @@ public class TabStatFullByMonth extends Tab {
 			mainLayout.addMember(searchForm);
 
 			ymStartItem = new TextItem();
-			ymStartItem.setTitle(CallCenter.constants.ymStart());
+			ymStartItem.setTitle(CallCenterBK.constants.ymStart());
 			ymStartItem.setName("ymStartItem");
 			ymStartItem.setWidth(200);
 
 			ymEndItem = new TextItem();
-			ymEndItem.setTitle(CallCenter.constants.ymEnd());
+			ymEndItem.setTitle(CallCenterBK.constants.ymEnd());
 			ymEndItem.setName("ymEndItem");
 			ymEndItem.setWidth(200);
 
@@ -91,10 +91,10 @@ public class TabStatFullByMonth extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -104,13 +104,13 @@ public class TabStatFullByMonth extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			statN1Btn = new ToolStripButton(CallCenter.constants.graph(),
+			statN1Btn = new ToolStripButton(CallCenterBK.constants.graph(),
 					"stats.png");
 			statN1Btn.setLayoutAlign(Alignment.LEFT);
 			statN1Btn.setWidth(50);
 			toolStrip.addButton(statN1Btn);
 
-			statN2Btn = new ToolStripButton(CallCenter.constants.graphAmount(),
+			statN2Btn = new ToolStripButton(CallCenterBK.constants.graphAmount(),
 					"stats.png");
 			statN2Btn.setLayoutAlign(Alignment.LEFT);
 			statN2Btn.setWidth(50);
@@ -154,47 +154,47 @@ public class TabStatFullByMonth extends Tab {
 			listGrid.setShowAllRecords(true);
 
 			ListGridField ym = new ListGridField("ym",
-					CallCenter.constants.yearMonthOnly(), 100);
+					CallCenterBK.constants.yearMonthOnly(), 100);
 
 			ListGridField abonent_cnt = new ListGridField("abonent_cnt",
-					CallCenter.constants.abonent(), 80);
+					CallCenterBK.constants.abonent(), 80);
 
 			ListGridField org_contr_comm_cnt = new ListGridField(
-					"org_contr_comm_cnt", CallCenter.constants.direct(), 100);
+					"org_contr_comm_cnt", CallCenterBK.constants.direct(), 100);
 
 			ListGridField org_non_contr_cnt = new ListGridField(
-					"org_non_contr_cnt", CallCenter.constants.nonDirect(), 100);
+					"org_non_contr_cnt", CallCenterBK.constants.nonDirect(), 100);
 
 			ListGridField org_contr_gov_cnt = new ListGridField(
-					"org_contr_gov_cnt", CallCenter.constants.government(), 100);
+					"org_contr_gov_cnt", CallCenterBK.constants.government(), 100);
 
 			ListGridField org_sum = new ListGridField("org_sum",
-					CallCenter.constants.sum(), 100);
+					CallCenterBK.constants.sum(), 100);
 
 			ListGridField magti_cnt = new ListGridField("magti_cnt",
-					CallCenter.constants.magti(), 100);
+					CallCenterBK.constants.magti(), 100);
 
 			ListGridField geocell_cnt = new ListGridField("geocell_cnt",
-					CallCenter.constants.geocell(), 100);
+					CallCenterBK.constants.geocell(), 100);
 
 			ListGridField beeline_cnt = new ListGridField("beeline_cnt",
-					CallCenter.constants.beeline(), 100);
+					CallCenterBK.constants.beeline(), 100);
 
 			ListGridField org_contr_email_srv_cnt = new ListGridField(
-					"org_contr_email_srv_cnt", CallCenter.constants.direct(),
+					"org_contr_email_srv_cnt", CallCenterBK.constants.direct(),
 					100);
 
 			ListGridField org_email_srv_cnt = new ListGridField(
-					"org_email_srv_cnt", CallCenter.constants.nonDirect(), 100);
+					"org_email_srv_cnt", CallCenterBK.constants.nonDirect(), 100);
 
 			ListGridField all_sum = new ListGridField("all_sum",
-					CallCenter.constants.sum(), 100);
+					CallCenterBK.constants.sum(), 100);
 
 			ListGridField all_amount = new ListGridField("all_amount",
-					CallCenter.constants.amount(), 100);
+					CallCenterBK.constants.amount(), 100);
 
 			ListGridField cnt_percent = new ListGridField("cnt_percent",
-					CallCenter.constants.percentage(), 100);
+					CallCenterBK.constants.percentage(), 100);
 
 			ym.setAlign(Alignment.CENTER);
 			abonent_cnt.setAlign(Alignment.CENTER);
@@ -215,14 +215,14 @@ public class TabStatFullByMonth extends Tab {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
-					return CallCenter.constants.sum();
+					return CallCenterBK.constants.sum();
 				}
 			});
 			ym.addSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
-					return CallCenter.constants.avarage();
+					return CallCenterBK.constants.avarage();
 				}
 			});
 
@@ -466,13 +466,13 @@ public class TabStatFullByMonth extends Tab {
 					org_email_srv_cnt, all_sum, all_amount, cnt_percent);
 
 			listGrid.setHeaderSpans(
-					new HeaderSpan(CallCenter.constants.organization(),
+					new HeaderSpan(CallCenterBK.constants.organization(),
 							new String[] { "org_contr_comm_cnt",
 									"org_non_contr_cnt", "org_contr_gov_cnt",
 									"org_sum" }),
-					new HeaderSpan(CallCenter.constants.mobile(), new String[] {
+					new HeaderSpan(CallCenterBK.constants.mobile(), new String[] {
 							"magti_cnt", "geocell_cnt", "beeline_cnt" }),
-					new HeaderSpan(CallCenter.constants.eMail(), new String[] {
+					new HeaderSpan(CallCenterBK.constants.eMail(), new String[] {
 							"org_contr_email_srv_cnt", "org_email_srv_cnt" }));
 
 			mainLayout.addMember(listGrid);
@@ -533,7 +533,7 @@ public class TabStatFullByMonth extends Tab {
 		try {
 			ListGridRecord records[] = listGrid.getRecords();
 			if (records == null || records.length <= 0) {
-				SC.say(CallCenter.constants.pleaseSearchData());
+				SC.say(CallCenterBK.constants.pleaseSearchData());
 				return;
 			}
 			DlgViewStatFullGraphAmountByMonth dlgViewStatFullGraphAmount = new DlgViewStatFullGraphAmountByMonth(
@@ -548,7 +548,7 @@ public class TabStatFullByMonth extends Tab {
 		try {
 			ListGridRecord records[] = listGrid.getRecords();
 			if (records == null || records.length <= 0) {
-				SC.say(CallCenter.constants.pleaseSearchData());
+				SC.say(CallCenterBK.constants.pleaseSearchData());
 				return;
 			}
 			DlgViewStatFullGraphByMonth dlgViewStatFullGraph = new DlgViewStatFullGraphByMonth(
@@ -563,27 +563,27 @@ public class TabStatFullByMonth extends Tab {
 		try {
 			String ymStart = ymStartItem.getValueAsString();
 			if (ymStart == null || ymStart.trim().length() != 4) {
-				SC.say(CallCenter.constants.plzEnterStartMonthCorrectly());
+				SC.say(CallCenterBK.constants.plzEnterStartMonthCorrectly());
 				return;
 			}
 			Integer ymStartI = null;
 			try {
 				ymStartI = Integer.parseInt(ymStart);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.plzEnterStartMonthCorrectly());
+				SC.say(CallCenterBK.constants.plzEnterStartMonthCorrectly());
 				return;
 			}
 
 			String ymEnd = ymEndItem.getValueAsString();
 			if (ymEnd == null || ymEnd.trim().length() != 4) {
-				SC.say(CallCenter.constants.plzEnterEndMonthCorrectly());
+				SC.say(CallCenterBK.constants.plzEnterEndMonthCorrectly());
 				return;
 			}
 			Integer ymEndI = null;
 			try {
 				ymEndI = Integer.parseInt(ymEnd);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.plzEnterEndMonthCorrectly());
+				SC.say(CallCenterBK.constants.plzEnterEndMonthCorrectly());
 				return;
 			}
 

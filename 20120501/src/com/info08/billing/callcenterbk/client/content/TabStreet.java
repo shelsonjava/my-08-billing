@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditStreet;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -223,7 +223,7 @@ public class TabStreet extends Tab {
 					"street_name_geo", "დასახელება (ქართულად)", 250);
 
 			ListGridField oldName = new ListGridField("oldName",
-					CallCenter.constants.oldStreetName(), 250);
+					CallCenterBK.constants.oldStreetName(), 250);
 			oldName.setAlign(Alignment.LEFT);
 
 			ListGridField street_location_geo = new ListGridField(

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.info.TabInfoPortal;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.MainLayout;
@@ -114,7 +114,7 @@ public class LoginDialog extends Window {
 		}
 		try {
 			buttonItem.setDisabled(true);
-			CallCenter.commonService.login(userName, password, null,
+			CallCenterBK.commonService.login(userName, password, null,
 					new AsyncCallback<ServerSession>() {
 						@Override
 						public void onSuccess(ServerSession serverSession) {

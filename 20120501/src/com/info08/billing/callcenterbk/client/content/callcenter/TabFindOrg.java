@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
@@ -75,7 +75,7 @@ public class TabFindOrg extends Tab {
 
 	public TabFindOrg() {
 		try {
-			setTitle(CallCenter.constants.findOrg());
+			setTitle(CallCenterBK.constants.findOrg());
 			setCanClose(true);
 
 			datasource = DataSource.get("OrgDS");
@@ -93,81 +93,81 @@ public class TabFindOrg extends Tab {
 			mainLayout.addMember(searchForm);
 
 			orgNameGeoItem = new TextItem();
-			orgNameGeoItem.setTitle(CallCenter.constants.orgName());
+			orgNameGeoItem.setTitle(CallCenterBK.constants.orgName());
 			orgNameGeoItem.setWidth(245);
 			orgNameGeoItem.setName("org_name_geo");
 			orgNameGeoItem.setValue("");
 
 			orgCommentItem = new TextItem();
-			orgCommentItem.setTitle(CallCenter.constants.comment());
+			orgCommentItem.setTitle(CallCenterBK.constants.comment());
 			orgCommentItem.setWidth(245);
 			orgCommentItem.setName("org_comment");
 
 			orgDirectorItem = new TextItem();
-			orgDirectorItem.setTitle(CallCenter.constants.director());
+			orgDirectorItem.setTitle(CallCenterBK.constants.director());
 			orgDirectorItem.setWidth(245);
 			orgDirectorItem.setName("org_director");
 
 			orgLegalAddressItem = new TextItem();
-			orgLegalAddressItem.setTitle(CallCenter.constants.legalAddress());
+			orgLegalAddressItem.setTitle(CallCenterBK.constants.legalAddress());
 			orgLegalAddressItem.setWidth(245);
 			orgLegalAddressItem.setName("org_legal_address");
 
 			orgIdentCodeItem = new TextItem();
-			orgIdentCodeItem.setTitle(CallCenter.constants.identCodeAndNew());
+			orgIdentCodeItem.setTitle(CallCenterBK.constants.identCodeAndNew());
 			orgIdentCodeItem.setWidth(245);
 			orgIdentCodeItem.setName("org_ident_code");
 
 			orgWebAddressItem = new TextItem();
-			orgWebAddressItem.setTitle(CallCenter.constants.webaddress());
+			orgWebAddressItem.setTitle(CallCenterBK.constants.webaddress());
 			orgWebAddressItem.setWidth(245);
 			orgWebAddressItem.setName("org_web_address");
 
 			orgEmailItem = new TextItem();
-			orgEmailItem.setTitle(CallCenter.constants.eMail());
+			orgEmailItem.setTitle(CallCenterBK.constants.eMail());
 			orgEmailItem.setWidth(245);
 			orgEmailItem.setName("org_email");
 
 			orgWorkingHoursItem = new TextItem();
-			orgWorkingHoursItem.setTitle(CallCenter.constants.workinghours());
+			orgWorkingHoursItem.setTitle(CallCenterBK.constants.workinghours());
 			orgWorkingHoursItem.setWidth(245);
 			orgWorkingHoursItem.setName("org_working_hours");
 
 			orgDayOffsItem = new TextItem();
-			orgDayOffsItem.setTitle(CallCenter.constants.dayOffs());
+			orgDayOffsItem.setTitle(CallCenterBK.constants.dayOffs());
 			orgDayOffsItem.setWidth(245);
 			orgDayOffsItem.setName("org_day_offs");
 
 			orgDepartmentItem = new TextItem();
-			orgDepartmentItem.setTitle(CallCenter.constants.department());
+			orgDepartmentItem.setTitle(CallCenterBK.constants.department());
 			orgDepartmentItem.setWidth(245);
 			orgDepartmentItem.setName("org_department");
 
 			orgFoundedStartItem = new DateItem();
-			orgFoundedStartItem.setTitle(CallCenter.constants
+			orgFoundedStartItem.setTitle(CallCenterBK.constants
 					.orgFoundDateStart());
 			orgFoundedStartItem.setWidth(245);
 			orgFoundedStartItem.setName("org_dound_date_start");
-			orgFoundedStartItem.setHint(CallCenter.constants.choose());
+			orgFoundedStartItem.setHint(CallCenterBK.constants.choose());
 
 			orgFoundedEndItem = new DateItem();
-			orgFoundedEndItem.setTitle(CallCenter.constants.orgFoundDateEnd());
+			orgFoundedEndItem.setTitle(CallCenterBK.constants.orgFoundDateEnd());
 			orgFoundedEndItem.setWidth(245);
 			orgFoundedEndItem.setName("org_dound_date_end");
-			orgFoundedEndItem.setHint(CallCenter.constants.choose());
+			orgFoundedEndItem.setHint(CallCenterBK.constants.choose());
 
 			streetItem = new TextItem();
-			streetItem.setTitle(CallCenter.constants.street());
+			streetItem.setTitle(CallCenterBK.constants.street());
 			streetItem.setName("street_name_geo");
 			streetItem.setWidth(245);
 
 			adressItem = new TextItem();
-			adressItem.setTitle(CallCenter.constants.number());
+			adressItem.setTitle(CallCenterBK.constants.number());
 			adressItem.setName("adressItem");
 			adressItem.setWidth(245);
 
 			citiesItem = new ComboBoxItem();
-			citiesItem.setTitle(CallCenter.constants.city());
+			citiesItem.setTitle(CallCenterBK.constants.city());
 			citiesItem.setName("city_name_geo");
 			citiesItem.setWidth(245);
 			citiesItem.setFetchMissingValues(true);
@@ -198,7 +198,7 @@ public class TabFindOrg extends Tab {
 			});
 
 			regionItem = new ComboBoxItem();
-			regionItem.setTitle(CallCenter.constants.cityRegion());
+			regionItem.setTitle(CallCenterBK.constants.cityRegion());
 			regionItem.setName("city_region_name_geo");
 			regionItem.setWidth(245);
 			regionItem.setFetchMissingValues(true);
@@ -243,10 +243,10 @@ public class TabFindOrg extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -333,25 +333,25 @@ public class TabFindOrg extends Tab {
 			tree_org_child.setCanFilter(false);
 
 			ListGridField org_name = new ListGridField("org_name",
-					CallCenter.constants.orgName(), 200);
+					CallCenterBK.constants.orgName(), 200);
 			ListGridField real_address = new ListGridField("real_address",
-					CallCenter.constants.realAddress(), 170);
+					CallCenterBK.constants.realAddress(), 170);
 			ListGridField note = new ListGridField("note",
-					CallCenter.constants.comment());
+					CallCenterBK.constants.comment());
 
 			ListGridField director = new ListGridField("director",
-					CallCenter.constants.director(), 120);
+					CallCenterBK.constants.director(), 120);
 			ListGridField workinghours = new ListGridField("workinghours",
-					CallCenter.constants.workinghours(), 120);
+					CallCenterBK.constants.workinghours(), 120);
 			ListGridField dayoffs = new ListGridField("dayoffs",
-					CallCenter.constants.dayOffs(), 120);
+					CallCenterBK.constants.dayOffs(), 120);
 
 			listGrid.setFields(tree_org_child, tree_org_parrent, org_name,
 					real_address, note, director, workinghours, dayoffs);
 			mainLayout.addMember(listGrid);
 
 			Label commentLabel = new Label(
-					CallCenter.constants.orgGridComment());
+					CallCenterBK.constants.orgGridComment());
 			commentLabel.setWidth100();
 			commentLabel.setHeight(15);
 			commentLabel.setStyleName("fontRed");
@@ -678,8 +678,8 @@ public class TabFindOrg extends Tab {
 					&& (webaddress == null || webaddress.trim().equals(""))
 					&& (mail == null || mail.trim().equals(""))
 					&& (street == null || street.trim().equals(""))) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.findOrgEnterAnyParam());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.findOrgEnterAnyParam());
 				return;
 			}
 

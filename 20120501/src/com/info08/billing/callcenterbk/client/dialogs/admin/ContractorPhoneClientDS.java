@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
@@ -18,9 +18,9 @@ public class ContractorPhoneClientDS extends DataSource {
 		prcId.setRequired(true);
 
 		DataSourceTextField phone = new DataSourceTextField("phone",
-				CallCenter.constants.phone());
+				CallCenterBK.constants.phone());
 		DataSourceTextField deleted = new DataSourceTextField("deleted",
-				CallCenter.constants.status());
+				CallCenterBK.constants.status());
 		deleted.setHidden(true);
 
 		setFields(prcId, phone, deleted);

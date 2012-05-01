@@ -76,7 +76,7 @@ import com.smartgwt.client.util.SC;
  * @since 1.0.0.1
  * 
  */
-public class CallCenter implements EntryPoint {
+public class CallCenterBK implements EntryPoint {
 
 	/**
 	 * სერვერის ფუნქციონების მქონე კლასის აღწერა რომლიც მეშვეობითაც ხდება მაგ.:

@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditBlockList;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -53,7 +53,7 @@ public class TabBlockList extends Tab {
 	public TabBlockList() {
 		try {
 
-			setTitle(CallCenter.constants.blockPhone());
+			setTitle(CallCenterBK.constants.blockPhone());
 			setCanClose(true);
 
 			blockListDS = DataSource.get("BlockListDS");
@@ -71,17 +71,17 @@ public class TabBlockList extends Tab {
 			mainLayout.addMember(searchForm);
 
 			orgNameItem = new TextItem();
-			orgNameItem.setTitle(CallCenter.constants.orgNameFull());
+			orgNameItem.setTitle(CallCenterBK.constants.orgNameFull());
 			orgNameItem.setWidth(250);
 			orgNameItem.setName("orgNameItem");
 
 			phoneItem = new TextItem();
-			phoneItem.setTitle(CallCenter.constants.phone());
+			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setWidth(250);
 			phoneItem.setName("phoneItem");
 
 			noteItem = new TextItem();
-			noteItem.setTitle(CallCenter.constants.comment());
+			noteItem.setTitle(CallCenterBK.constants.comment());
 			noteItem.setWidth(250);
 			noteItem.setName("noteItem");
 
@@ -93,10 +93,10 @@ public class TabBlockList extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -106,25 +106,25 @@ public class TabBlockList extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenter.constants.modify(),
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			deleteBtn = new ToolStripButton(CallCenter.constants.disable(),
+			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			deleteBtn.setLayoutAlign(Alignment.LEFT);
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton(CallCenter.constants.enable(),
+			restoreBtn = new ToolStripButton(CallCenterBK.constants.enable(),
 					"restoreIcon.gif");
 			restoreBtn.setLayoutAlign(Alignment.LEFT);
 			restoreBtn.setWidth(50);
@@ -133,7 +133,7 @@ public class TabBlockList extends Tab {
 			toolStrip.addSeparator();
 
 			viewCallCntBtn = new ToolStripButton(
-					CallCenter.constants.charges(), "moneySmall.png");
+					CallCenterBK.constants.charges(), "moneySmall.png");
 			viewCallCntBtn.setLayoutAlign(Alignment.LEFT);
 			viewCallCntBtn.setWidth(50);
 			toolStrip.addButton(viewCallCntBtn);
@@ -173,11 +173,11 @@ public class TabBlockList extends Tab {
 			blockListGrid.setCanDragSelectText(true);
 
 			ListGridField orgName = new ListGridField("orgName",
-					CallCenter.constants.orgNameFull());
+					CallCenterBK.constants.orgNameFull());
 			ListGridField orgDepName = new ListGridField("orgDepName",
-					CallCenter.constants.department(), 300);
+					CallCenterBK.constants.department(), 300);
 			ListGridField note = new ListGridField("note",
-					CallCenter.constants.comment(), 300);
+					CallCenterBK.constants.comment(), 300);
 
 			blockListGrid.setFields(orgName, orgDepName, note);
 
@@ -221,7 +221,7 @@ public class TabBlockList extends Tab {
 							.getSelectedRecord();
 
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 
@@ -236,16 +236,16 @@ public class TabBlockList extends Tab {
 					final ListGridRecord listGridRecord = blockListGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
+						SC.say(CallCenterBK.constants.recordAlrDisabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -262,16 +262,16 @@ public class TabBlockList extends Tab {
 					final ListGridRecord listGridRecord = blockListGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrEnabled());
+						SC.say(CallCenterBK.constants.recordAlrEnabled());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForEnable(),
+					SC.ask(CallCenterBK.constants.askForEnable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -302,7 +302,7 @@ public class TabBlockList extends Tab {
 					ListGridRecord listGridRecord = blockListGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer id = listGridRecord.getAttributeAsInt("id");
@@ -340,7 +340,7 @@ public class TabBlockList extends Tab {
 						if (call_cnt == null) {
 							call_cnt = 0;
 						}
-						SC.say((CallCenter.constants.contractorCallCnt() + call_cnt));
+						SC.say((CallCenterBK.constants.contractorCallCnt() + call_cnt));
 					}
 				}
 			}, req);

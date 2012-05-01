@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewTransport;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -73,7 +73,7 @@ public class TabFindTransport extends Tab {
 	private DataSource transportDS;
 
 	public TabFindTransport() {
-		setTitle(CallCenter.constants.findTransport());
+		setTitle(CallCenterBK.constants.findTransport());
 		setCanClose(true);
 
 		transportDS = DataSource.get("FindTransportDS");
@@ -91,7 +91,7 @@ public class TabFindTransport extends Tab {
 		mainLayout.addMember(searchForm);
 
 		transportTypeItem = new SelectItem();
-		transportTypeItem.setTitle(CallCenter.constants.transportType());
+		transportTypeItem.setTitle(CallCenterBK.constants.transportType());
 		transportTypeItem.setWidth(250);
 		transportTypeItem.setName("transport_type_name_geo");
 		transportTypeItem.setValueMap(ClientMapUtil.getInstance()
@@ -146,13 +146,13 @@ public class TabFindTransport extends Tab {
 		});
 
 		routeNumItem = new TextItem();
-		routeNumItem.setTitle(CallCenter.constants.routeNumber());
+		routeNumItem.setTitle(CallCenterBK.constants.routeNumber());
 		routeNumItem.setWidth(250);
 		routeNumItem.setName("routeNumItem");
 
 		dateItem = new DateItem();
 		dateItem.setCellStyle("fontRed");
-		dateItem.setTitle(CallCenter.constants.currentDate());
+		dateItem.setTitle(CallCenterBK.constants.currentDate());
 		dateItem.setWidth(250);
 		dateItem.setName("dateItem");
 		dateItem.setCanFocus(false);
@@ -160,7 +160,7 @@ public class TabFindTransport extends Tab {
 		dateItem.setUseTextField(true);
 
 		cityFromItem = new ComboBoxItem();
-		cityFromItem.setTitle(CallCenter.constants.cityFrom());
+		cityFromItem.setTitle(CallCenterBK.constants.cityFrom());
 		cityFromItem.setName("cityFromItem");
 		cityFromItem.setWidth(250);
 		cityFromItem.setFetchMissingValues(true);
@@ -193,7 +193,7 @@ public class TabFindTransport extends Tab {
 		});
 
 		cityToItem = new ComboBoxItem();
-		cityToItem.setTitle(CallCenter.constants.cityTo());
+		cityToItem.setTitle(CallCenterBK.constants.cityTo());
 		cityToItem.setName("cityToItem");
 		cityToItem.setWidth(250);
 		cityToItem.setFetchMissingValues(true);
@@ -225,7 +225,7 @@ public class TabFindTransport extends Tab {
 		});
 
 		countryFromItem = new ComboBoxItem();
-		countryFromItem.setTitle(CallCenter.constants.countryFrom());
+		countryFromItem.setTitle(CallCenterBK.constants.countryFrom());
 		countryFromItem.setName("countryFromItem");
 		countryFromItem.setWidth(250);
 		countryFromItem.setFetchMissingValues(true);
@@ -258,7 +258,7 @@ public class TabFindTransport extends Tab {
 		});
 
 		countryToItem = new ComboBoxItem();
-		countryToItem.setTitle(CallCenter.constants.countryTo());
+		countryToItem.setTitle(CallCenterBK.constants.countryTo());
 		countryToItem.setName("countryToItem");
 		countryToItem.setWidth(250);
 		countryToItem.setFetchMissingValues(true);
@@ -293,14 +293,14 @@ public class TabFindTransport extends Tab {
 		cityDaysItem.setName("cityDaysItem");
 		cityDaysItem.setValueMap(ClientMapUtil.getInstance().getWeekDays());
 		cityDaysItem.setWidth(250);
-		cityDaysItem.setTitle(CallCenter.constants.days());
+		cityDaysItem.setTitle(CallCenterBK.constants.days());
 		cityDaysItem.setDefaultToFirstOption(true);
 
 		countryDaysItem = new SelectItem();
 		countryDaysItem.setName("countryDaysItem");
 		countryDaysItem.setValueMap(ClientMapUtil.getInstance().getWeekDays());
 		countryDaysItem.setWidth(250);
-		countryDaysItem.setTitle(CallCenter.constants.days());
+		countryDaysItem.setTitle(CallCenterBK.constants.days());
 		countryDaysItem.setDefaultToFirstOption(true);
 
 		SpacerItem spacerItem = new SpacerItem();
@@ -326,23 +326,23 @@ public class TabFindTransport extends Tab {
 		spacer.setWidth(20);
 
 		findButtonByRoute = new IButton();
-		findButtonByRoute.setTitle(CallCenter.constants.findTranspByRoute());
+		findButtonByRoute.setTitle(CallCenterBK.constants.findTranspByRoute());
 
 		findButtonByCity = new IButton();
-		findButtonByCity.setTitle(CallCenter.constants.findTranspByCity());
+		findButtonByCity.setTitle(CallCenterBK.constants.findTranspByCity());
 
 		findButtonByCountry = new IButton();
 		findButtonByCountry
-				.setTitle(CallCenter.constants.findTranspByCountry());
+				.setTitle(CallCenterBK.constants.findTranspByCountry());
 
 		clear = new IButton();
-		clear.setTitle(CallCenter.constants.clear());
+		clear.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButtonByCity, spacer, findButtonByCountry,
 				spacer, findButtonByRoute, spacer, clear);
 		mainLayout.addMember(buttonLayout);
 
-		commentLabel = new Label(CallCenter.constants.transportTextConstant());
+		commentLabel = new Label(CallCenterBK.constants.transportTextConstant());
 		commentLabel.setWidth100();
 		commentLabel.setHeight(15);
 		commentLabel.setStyleName("fontRed");
@@ -390,59 +390,59 @@ public class TabFindTransport extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField trip_criteria = new ListGridField("trip_criteria",
-				CallCenter.constants.routeNumber(), 60);
+				CallCenterBK.constants.routeNumber(), 60);
 		trip_criteria.setAlign(Alignment.LEFT);
 		trip_criteria.setCanFilter(true);
 
 		ListGridField ocity_name_geo = new ListGridField("ocity_name_geo",
-				CallCenter.constants.stationFrom(), 100);
+				CallCenterBK.constants.stationFrom(), 100);
 		ocity_name_geo.setAlign(Alignment.LEFT);
 		ocity_name_geo.setCanFilter(true);
 
 		ListGridField icity_name_geo = new ListGridField("icity_name_geo",
-				CallCenter.constants.stationTo(), 100);
+				CallCenterBK.constants.stationTo(), 100);
 		icity_name_geo.setAlign(Alignment.LEFT);
 		icity_name_geo.setCanFilter(true);
 
 		ListGridField ostation = new ListGridField("ostation",
-				CallCenter.constants.station(), 100);
+				CallCenterBK.constants.station(), 100);
 		ostation.setAlign(Alignment.LEFT);
 		ostation.setCanFilter(true);
 
 		ListGridField istation = new ListGridField("istation",
-				CallCenter.constants.station(), 100);
+				CallCenterBK.constants.station(), 100);
 		istation.setAlign(Alignment.LEFT);
 		istation.setCanFilter(true);
 
 		ListGridField out_time = new ListGridField("c_out_time",
-				CallCenter.constants.outTime(), 70);
+				CallCenterBK.constants.outTime(), 70);
 		out_time.setAlign(Alignment.CENTER);
 		out_time.setCanFilter(false);
 
 		ListGridField in_time = new ListGridField("c_in_time",
-				CallCenter.constants.inTime(), 70);
+				CallCenterBK.constants.inTime(), 70);
 		in_time.setAlign(Alignment.CENTER);
 		in_time.setCanFilter(false);
 
 		ListGridField cmt = new ListGridField("cmt",
-				CallCenter.constants.ctm(), 70);
+				CallCenterBK.constants.ctm(), 70);
 		cmt.setAlign(Alignment.CENTER);
 		cmt.setCanFilter(false);
 
 		ListGridField transport_company_geo = new ListGridField(
 				"transport_company_geo",
-				CallCenter.constants.transportCompShort(), 100);
+				CallCenterBK.constants.transportCompShort(), 100);
 		transport_company_geo.setAlign(Alignment.LEFT);
 		transport_company_geo.setCanFilter(true);
 
 		ListGridField transport_plane_geo = new ListGridField(
 				"transport_plane_geo",
-				CallCenter.constants.transportTypeShort(), 100);
+				CallCenterBK.constants.transportTypeShort(), 100);
 		transport_plane_geo.setAlign(Alignment.CENTER);
 		transport_plane_geo.setCanFilter(true);
 
 		ListGridField days_descr = new ListGridField("days_descr",
-				CallCenter.constants.days());
+				CallCenterBK.constants.days());
 		days_descr.setAlign(Alignment.LEFT);
 		days_descr.setCanFilter(true);
 
@@ -543,8 +543,8 @@ public class TabFindTransport extends Tab {
 				if (o_city_id != null && !o_city_id.trim().equals("")
 						&& i_city_id != null && !i_city_id.trim().equals("")
 						&& o_city_id.equals(i_city_id)) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.chooseDifCities());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chooseDifCities());
 					return;
 				}
 
@@ -570,8 +570,8 @@ public class TabFindTransport extends Tab {
 						&& i_country_id != null
 						&& !i_country_id.trim().equals("")
 						&& o_country_id.equals(i_country_id)) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.chooseDifCountries());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chooseDifCountries());
 					return;
 				}
 

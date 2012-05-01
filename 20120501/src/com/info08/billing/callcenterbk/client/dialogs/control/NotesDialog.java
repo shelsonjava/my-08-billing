@@ -7,7 +7,7 @@ import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.bramosystems.oss.player.core.client.ui.FlashMediaPlayer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -179,14 +179,14 @@ public class NotesDialog extends Window {
 			public void onClick(ClickEvent event) {
 				ListGridRecord record = notesGrid.getSelectedRecord();
 				if (record == null) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.pleaseSelrecord());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
 				String sessionId = record.getAttributeAsString("sessionId");
 				if (sessionId == null || sessionId.trim().equals("")) {
-					SC.say(CallCenter.constants.warning(),
-							CallCenter.constants.invalidSession());
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.invalidSession());
 					return;
 				}
 				Date date = record.getAttributeAsDate("start_date");
@@ -200,7 +200,7 @@ public class NotesDialog extends Window {
 
 	private void getURL(String sessionId, Date date) {
 		try {
-			CallCenter.commonService.findSessionMp3ById(sessionId, date,
+			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
 					new AsyncCallback<String>() {
 
 						@Override

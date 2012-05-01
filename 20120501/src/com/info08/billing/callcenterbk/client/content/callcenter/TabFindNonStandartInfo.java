@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewNonStandInfo;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
@@ -51,7 +51,7 @@ public class TabFindNonStandartInfo extends Tab {
 
 	public TabFindNonStandartInfo() {
 
-		setTitle(CallCenter.constants.wiki());
+		setTitle(CallCenterBK.constants.wiki());
 		setCanClose(true);
 
 		mainDetailDS = DataSource.get("MainDetailDS");
@@ -69,7 +69,7 @@ public class TabFindNonStandartInfo extends Tab {
 		mainLayout.addMember(searchForm);
 
 		infoGroupItem = new ComboBoxItem();
-		infoGroupItem.setTitle(CallCenter.constants.group());
+		infoGroupItem.setTitle(CallCenterBK.constants.group());
 		infoGroupItem.setWidth(250);
 		infoGroupItem.setName("main_detail_type_name_geo");
 		infoGroupItem.setFetchMissingValues(true);
@@ -102,7 +102,7 @@ public class TabFindNonStandartInfo extends Tab {
 		});
 
 		infoDescrItem = new TextItem();
-		infoDescrItem.setTitle(CallCenter.constants.comment());
+		infoDescrItem.setTitle(CallCenterBK.constants.comment());
 		infoDescrItem.setName("infoDescrItem");
 		infoDescrItem.setWidth(250);
 
@@ -114,10 +114,10 @@ public class TabFindNonStandartInfo extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -139,12 +139,12 @@ public class TabFindNonStandartInfo extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField main_detail_type_name_geo = new ListGridField(
-				"main_detail_type_name_geo", CallCenter.constants.category(),
+				"main_detail_type_name_geo", CallCenterBK.constants.category(),
 				150);
 		main_detail_type_name_geo.setAlign(Alignment.LEFT);
 
 		ListGridField main_detail_geo = new ListGridField("main_detail_geo",
-				CallCenter.constants.information());
+				CallCenterBK.constants.information());
 		main_detail_geo.setAlign(Alignment.LEFT);
 
 		listGrid.setFields(main_detail_type_name_geo, main_detail_geo);

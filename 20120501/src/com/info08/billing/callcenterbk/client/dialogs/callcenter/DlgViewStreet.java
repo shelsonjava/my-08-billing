@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -40,7 +40,7 @@ public class DlgViewStreet extends Window {
 	public DlgViewStreet(DataSource dataSource, ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
-		setTitle(CallCenter.constants.streetInfo());
+		setTitle(CallCenterBK.constants.streetInfo());
 
 		setHeight(430);
 		setWidth(950);
@@ -67,7 +67,7 @@ public class DlgViewStreet extends Window {
 		toolStrip.setPadding(5);
 		mainLayout.addMember(toolStrip);
 
-		sendSMS = new ToolStripButton(CallCenter.constants.smsStreetInfo(),
+		sendSMS = new ToolStripButton(CallCenterBK.constants.smsStreetInfo(),
 				"sms.png");
 		sendSMS.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendSMS);
@@ -79,23 +79,23 @@ public class DlgViewStreet extends Window {
 		detailViewer.setHeight100();
 
 		DetailViewerField city_name_geo = new DetailViewerField(
-				"city_name_geo", CallCenter.constants.city());
+				"city_name_geo", CallCenterBK.constants.city());
 
 		DetailViewerField street_name_geo = new DetailViewerField(
-				"street_name_geo", CallCenter.constants.street());
+				"street_name_geo", CallCenterBK.constants.street());
 
 		DetailViewerField oldName = new DetailViewerField("oldName",
-				CallCenter.constants.oldStreetName());
+				CallCenterBK.constants.oldStreetName());
 
 		DetailViewerField streetIndex = new DetailViewerField("streetIndex",
-				CallCenter.constants.indexes());
+				CallCenterBK.constants.indexes());
 		streetIndex.setCellStyle("fontRedWithBorder");
 
 		DetailViewerField streetDistrict = new DetailViewerField(
-				"streetDistrict", CallCenter.constants.district());
+				"streetDistrict", CallCenterBK.constants.district());
 
 		DetailViewerField street_location_geo = new DetailViewerField(
-				"street_location_geo", CallCenter.constants.streetDescr());
+				"street_location_geo", CallCenterBK.constants.streetDescr());
 
 		detailViewer.selectRecord(listGridRecord);
 		ListGridRecord arr[] = new ListGridRecord[1];
@@ -112,7 +112,7 @@ public class DlgViewStreet extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -158,8 +158,8 @@ public class DlgViewStreet extends Window {
 			boolean isMobile = serverSession.isPhoneIsMobile();
 			if (isMobile) {
 				if (!smsSend) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.smsDidNotSent(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.smsDidNotSent(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -174,8 +174,8 @@ public class DlgViewStreet extends Window {
 			} else {
 				int chCount = chargePanel.getChrgCounter();
 				if (chCount <= 0) {
-					SC.ask(CallCenter.constants.warning(),
-							CallCenter.constants.chargeDidNotMade(),
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.chargeDidNotMade(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -199,16 +199,16 @@ public class DlgViewStreet extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);

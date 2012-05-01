@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.misc;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -45,8 +45,8 @@ public class DlgAddEditChurchCalendar extends Window {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenter.constants.addSecCalendar()
-					: CallCenter.constants.editSecCalendar());
+			setTitle(pRecord == null ? CallCenterBK.constants.addSecCalendar()
+					: CallCenterBK.constants.editSecCalendar());
 
 			setHeight(470);
 			setWidth(510);
@@ -72,7 +72,7 @@ public class DlgAddEditChurchCalendar extends Window {
 			hLayout.addMember(dynamicForm);
 
 			calendarStateItem = new ComboBoxItem();
-			calendarStateItem.setTitle(CallCenter.constants.type());
+			calendarStateItem.setTitle(CallCenterBK.constants.type());
 			calendarStateItem.setWidth(330);
 			calendarStateItem.setName("calendar_state_id");
 			calendarStateItem.setValueMap(ClientMapUtil.getInstance()
@@ -80,7 +80,7 @@ public class DlgAddEditChurchCalendar extends Window {
 			calendarStateItem.setAddUnknownValues(false);
 
 			secCalendarTypeItem = new ComboBoxItem();
-			secCalendarTypeItem.setTitle(CallCenter.constants.chruchCalEvent());
+			secCalendarTypeItem.setTitle(CallCenterBK.constants.chruchCalEvent());
 			secCalendarTypeItem.setWidth(330);
 			secCalendarTypeItem.setName("event");
 			secCalendarTypeItem.setFetchMissingValues(true);
@@ -109,14 +109,14 @@ public class DlgAddEditChurchCalendar extends Window {
 			});
 
 			calendarDayItem = new DateItem();
-			calendarDayItem.setTitle(CallCenter.constants.date());
+			calendarDayItem.setTitle(CallCenterBK.constants.date());
 			calendarDayItem.setWidth(330);
 			calendarDayItem.setValue(new Date());
 			calendarDayItem.setName("calendar_day");
-			calendarDayItem.setHint(CallCenter.constants.choose());
+			calendarDayItem.setHint(CallCenterBK.constants.choose());
 
 			descriptionItem = new TextAreaItem();
-			descriptionItem.setTitle(CallCenter.constants.description());
+			descriptionItem.setTitle(CallCenterBK.constants.description());
 			descriptionItem.setName("calendar_description");
 			descriptionItem.setWidth(330);
 			descriptionItem.setHeight(300);
@@ -128,11 +128,11 @@ public class DlgAddEditChurchCalendar extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -184,18 +184,18 @@ public class DlgAddEditChurchCalendar extends Window {
 			String calendar_state_id = calendarStateItem.getValueAsString();
 			if (calendar_state_id == null
 					|| calendar_state_id.trim().equals("")) {
-				SC.say(CallCenter.constants.chooseType());
+				SC.say(CallCenterBK.constants.chooseType());
 				return;
 			}
 			String calendar_event_id = secCalendarTypeItem.getValueAsString();
 			if (calendar_event_id == null
 					|| calendar_event_id.trim().equals("")) {
-				SC.say(CallCenter.constants.chooseMoonPhase());
+				SC.say(CallCenterBK.constants.chooseMoonPhase());
 				return;
 			}
 			Date calendar_day = calendarDayItem.getValueAsDate();
 			if (calendar_day == null) {
-				SC.say(CallCenter.constants.enterRateCoeff());
+				SC.say(CallCenterBK.constants.enterRateCoeff());
 				return;
 			}
 			String calendar_description = descriptionItem.getValueAsString();

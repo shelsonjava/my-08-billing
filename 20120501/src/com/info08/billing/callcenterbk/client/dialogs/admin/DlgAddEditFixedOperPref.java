@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -33,8 +33,8 @@ public class DlgAddEditFixedOperPref extends Window {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenter.constants
-					.addMobOperatorPref() : CallCenter.constants
+			setTitle(pRecord == null ? CallCenterBK.constants
+					.addMobOperatorPref() : CallCenterBK.constants
 					.editMobOperatorPref());
 
 			setHeight(110);
@@ -61,7 +61,7 @@ public class DlgAddEditFixedOperPref extends Window {
 			hLayout.addMember(dynamicForm);
 
 			indexItem = new TextItem();
-			indexItem.setTitle(CallCenter.constants.index());
+			indexItem.setTitle(CallCenterBK.constants.index());
 			indexItem.setName("indexItem");
 			indexItem.setWidth(250);
 
@@ -72,11 +72,11 @@ public class DlgAddEditFixedOperPref extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -120,17 +120,17 @@ public class DlgAddEditFixedOperPref extends Window {
 		try {
 			String prefix = indexItem.getValueAsString();
 			if (prefix == null || prefix.trim().equals("")) {
-				SC.say(CallCenter.constants.enterMobOperatorPrefix());
+				SC.say(CallCenterBK.constants.enterMobOperatorPrefix());
 				return;
 			}
 			if (prefix.length() < 2 || prefix.length() > 3) {
-				SC.say(CallCenter.constants.mobOperPrefIs3Digit());
+				SC.say(CallCenterBK.constants.mobOperPrefIs3Digit());
 				return;
 			}
 			try {
 				new Integer(prefix);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.mobOperPrefIs3Digit());
+				SC.say(CallCenterBK.constants.mobOperPrefIs3Digit());
 				return;
 			}
 

@@ -7,7 +7,7 @@ import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.bramosystems.oss.player.core.client.ui.FlashMediaPlayer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.control.NotesDialog;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
@@ -45,7 +45,7 @@ public class DlgDiscoveryManagerHist extends Window {
 			final ListGridRecord pRecord) {
 		try {
 			this.editRecord = pRecord;
-			setTitle(CallCenter.constants.resolveDiscovery());
+			setTitle(CallCenterBK.constants.resolveDiscovery());
 
 			setHeight(330);
 			setWidth(850);
@@ -69,35 +69,35 @@ public class DlgDiscoveryManagerHist extends Window {
 			hLayout.addMember(toolStrip);
 
 			saveRecordBtn = new ToolStripButton(
-					CallCenter.constants.saveRecord(), "save.png");
+					CallCenterBK.constants.saveRecord(), "save.png");
 			saveRecordBtn.setLayoutAlign(Alignment.LEFT);
 			saveRecordBtn.setWidth(50);
 			toolStrip.addButton(saveRecordBtn);
 
 			listenRecordBtn = new ToolStripButton(
-					CallCenter.constants.listenRecord(), "play.png");
+					CallCenterBK.constants.listenRecord(), "play.png");
 			listenRecordBtn.setLayoutAlign(Alignment.LEFT);
 			listenRecordBtn.setWidth(50);
 			toolStrip.addButton(listenRecordBtn);
 
-			chargeBtn = new ToolStripButton(CallCenter.constants.charge(),
+			chargeBtn = new ToolStripButton(CallCenterBK.constants.charge(),
 					"moneySmall.png");
 			chargeBtn.setLayoutAlign(Alignment.LEFT);
 			chargeBtn.setWidth(50);
 			toolStrip.addButton(chargeBtn);
 
 			removeChargeBtn = new ToolStripButton(
-					CallCenter.constants.removeCharge(), "removeCharge.png");
+					CallCenterBK.constants.removeCharge(), "removeCharge.png");
 			removeChargeBtn.setLayoutAlign(Alignment.LEFT);
 			removeChargeBtn.setWidth(50);
 			toolStrip.addButton(removeChargeBtn);
 
-			smsBtn = new ToolStripButton(CallCenter.constants.sms(), "sms.png");
+			smsBtn = new ToolStripButton(CallCenterBK.constants.sms(), "sms.png");
 			smsBtn.setLayoutAlign(Alignment.LEFT);
 			smsBtn.setWidth(50);
 			toolStrip.addButton(smsBtn);
 
-			commentBtn = new ToolStripButton(CallCenter.constants.comment(),
+			commentBtn = new ToolStripButton(CallCenterBK.constants.comment(),
 					"comment.png");
 			commentBtn.setLayoutAlign(Alignment.LEFT);
 			commentBtn.setWidth(50);
@@ -110,21 +110,21 @@ public class DlgDiscoveryManagerHist extends Window {
 			detailViewer.setHeight100();
 			detailViewer.selectRecord(pRecord);
 			DetailViewerField discover_type = new DetailViewerField(
-					"discover_type", CallCenter.constants.type());
+					"discover_type", CallCenterBK.constants.type());
 			DetailViewerField phone = new DetailViewerField("phone",
-					CallCenter.constants.phone());
+					CallCenterBK.constants.phone());
 			DetailViewerField contact_phone = new DetailViewerField(
-					"contact_phone", CallCenter.constants.contactPhone());
+					"contact_phone", CallCenterBK.constants.contactPhone());
 			DetailViewerField contact_person = new DetailViewerField(
-					"contact_person", CallCenter.constants.contactPerson());
+					"contact_person", CallCenterBK.constants.contactPerson());
 			DetailViewerField discover_txt = new DetailViewerField(
-					"discover_txt", CallCenter.constants.message());
+					"discover_txt", CallCenterBK.constants.message());
 			DetailViewerField rec_user = new DetailViewerField("rec_user",
-					CallCenter.constants.operator());
+					CallCenterBK.constants.operator());
 			DetailViewerField rec_date = new DetailViewerField("rec_date",
-					CallCenter.constants.time());
+					CallCenterBK.constants.time());
 			DetailViewerField status_descr = new DetailViewerField(
-					"status_descr", CallCenter.constants.status());
+					"status_descr", CallCenterBK.constants.status());
 
 			rec_date.setDateFormatter(DateDisplayFormat.TOSERIALIZEABLEDATE);
 
@@ -143,7 +143,7 @@ public class DlgDiscoveryManagerHist extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);
@@ -173,13 +173,13 @@ public class DlgDiscoveryManagerHist extends Window {
 						Date date = editRecord.getAttributeAsDate("start_date");
 
 						if (sessionId == null || sessionId.trim().equals("")) {
-							SC.say(CallCenter.constants.warning(),
-									CallCenter.constants.invalidSession());
+							SC.say(CallCenterBK.constants.warning(),
+									CallCenterBK.constants.invalidSession());
 							return;
 						}
 						if (date == null) {
-							SC.say(CallCenter.constants.warning(),
-									CallCenter.constants.invalidSessionDate());
+							SC.say(CallCenterBK.constants.warning(),
+									CallCenterBK.constants.invalidSessionDate());
 							return;
 						}
 						getURL(sessionId, date);
@@ -251,13 +251,13 @@ public class DlgDiscoveryManagerHist extends Window {
 
 	private void getURL(String sessionId, Date date) {
 		try {
-			CallCenter.commonService.findSessionMp3ById(sessionId, date,
+			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
 					new AsyncCallback<String>() {
 
 						@Override
 						public void onSuccess(String result) {
 							if (result == null || result.trim().equals("")) {
-								SC.say(CallCenter.constants.sessionNotFound()
+								SC.say(CallCenterBK.constants.sessionNotFound()
 										+ result);
 								return;
 							}

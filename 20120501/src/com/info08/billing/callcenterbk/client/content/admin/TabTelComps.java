@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditTelComp;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetTelCompBillByDay;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetTelCompBillByMonth;
@@ -58,7 +58,7 @@ public class TabTelComps extends Tab {
 	public TabTelComps() {
 		try {
 
-			setTitle(CallCenter.constants.telComps());
+			setTitle(CallCenterBK.constants.telComps());
 			setCanClose(true);
 
 			telCompsDS = DataSource.get("TelCompsDS");
@@ -76,17 +76,17 @@ public class TabTelComps extends Tab {
 			mainLayout.addMember(searchForm);
 
 			telCompNameItem = new TextItem();
-			telCompNameItem.setTitle(CallCenter.constants.companyName());
+			telCompNameItem.setTitle(CallCenterBK.constants.companyName());
 			telCompNameItem.setWidth(250);
 			telCompNameItem.setName("telCompNameItem");
 
 			phoneIndexItem = new TextItem();
-			phoneIndexItem.setTitle(CallCenter.constants.index());
+			phoneIndexItem.setTitle(CallCenterBK.constants.index());
 			phoneIndexItem.setWidth(250);
 			phoneIndexItem.setName("phoneIndexItem");
 
 			hasCalcItem = new SelectItem();
-			hasCalcItem.setTitle(CallCenter.constants.hasCalculation());
+			hasCalcItem.setTitle(CallCenterBK.constants.hasCalculation());
 			hasCalcItem.setWidth(250);
 			hasCalcItem.setName("hasCalcItem");
 			hasCalcItem.setDefaultToFirstOption(true);
@@ -101,10 +101,10 @@ public class TabTelComps extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -114,19 +114,19 @@ public class TabTelComps extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenter.constants.modify(),
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			deleteBtn = new ToolStripButton(CallCenter.constants.disable(),
+			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			deleteBtn.setLayoutAlign(Alignment.LEFT);
 			deleteBtn.setWidth(50);
@@ -135,13 +135,13 @@ public class TabTelComps extends Tab {
 			toolStrip.addSeparator();
 
 			telCompBillByDayBtn = new ToolStripButton(
-					CallCenter.constants.telCombBillByDay(), "billing.png");
+					CallCenterBK.constants.telCombBillByDay(), "billing.png");
 			telCompBillByDayBtn.setLayoutAlign(Alignment.LEFT);
 			telCompBillByDayBtn.setWidth(50);
 			toolStrip.addButton(telCompBillByDayBtn);
 
 			telCompBillByMonthBtn = new ToolStripButton(
-					CallCenter.constants.telCombBillByMonth(), "billing.png");
+					CallCenterBK.constants.telCombBillByMonth(), "billing.png");
 			telCompBillByMonthBtn.setLayoutAlign(Alignment.LEFT);
 			telCompBillByMonthBtn.setWidth(50);
 			toolStrip.addButton(telCompBillByMonthBtn);
@@ -166,17 +166,17 @@ public class TabTelComps extends Tab {
 			telCompsGrid.setCanDragSelectText(true);
 
 			ListGridField tel_comp_name_geo = new ListGridField(
-					"tel_comp_name_geo", CallCenter.constants.companyName());
+					"tel_comp_name_geo", CallCenterBK.constants.companyName());
 
 			ListGridField our_percent = new ListGridField("our_percent",
-					CallCenter.constants.ourPercent(), 150);
+					CallCenterBK.constants.ourPercent(), 150);
 
 			ListGridField has_calculation_descr = new ListGridField(
 					"has_calculation_descr",
-					CallCenter.constants.hasCalculation(), 150);
+					CallCenterBK.constants.hasCalculation(), 150);
 
 			ListGridField call_price = new ListGridField("call_price",
-					CallCenter.constants.callPrice(), 150);
+					CallCenterBK.constants.callPrice(), 150);
 
 			our_percent.setAlign(Alignment.CENTER);
 			has_calculation_descr.setAlign(Alignment.CENTER);
@@ -234,7 +234,7 @@ public class TabTelComps extends Tab {
 							.getSelectedRecord();
 
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 
@@ -249,10 +249,10 @@ public class TabTelComps extends Tab {
 					final ListGridRecord listGridRecord = telCompsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -284,7 +284,7 @@ public class TabTelComps extends Tab {
 					final ListGridRecord listGridRecord = telCompsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer tel_comp_id = listGridRecord
@@ -299,7 +299,7 @@ public class TabTelComps extends Tab {
 					final ListGridRecord listGridRecord = telCompsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer tel_comp_id = listGridRecord
@@ -347,7 +347,7 @@ public class TabTelComps extends Tab {
 				try {
 					new Long(phoneIndex);
 				} catch (Exception e) {
-					SC.say(CallCenter.constants.invalidPhone());
+					SC.say(CallCenterBK.constants.invalidPhone());
 					return;
 				}
 

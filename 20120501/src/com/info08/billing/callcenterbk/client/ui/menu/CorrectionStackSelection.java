@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.TabAbonent;
 import com.info08.billing.callcenterbk.client.content.TabAbonentLastNames;
 import com.info08.billing.callcenterbk.client.content.TabAbonentNames;
@@ -28,7 +28,7 @@ public class CorrectionStackSelection extends SectionStackSection {
 			new MenuNode("101", "2", "აბონენტები", true, "person.png"),
 			new MenuNode("102", "3", "სახელები", true, "person.png"),
 			new MenuNode("103", "4", "გვარები", true, "person.png"),
-			new MenuNode("104", "5", CallCenter.constants.virtualCharge(),
+			new MenuNode("104", "5", CallCenterBK.constants.virtualCharge(),
 					true, "moneySmall.png") };
 
 	private TreeGrid menuTreeGrid;

@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
@@ -32,8 +32,8 @@ public class DlgAddEditContractorPrice extends Window {
 		try {
 			this.listGrid = listGrid;
 			this.record = record;
-			setTitle(record == null ? CallCenter.constants.addContractor()
-					: CallCenter.constants.editContractor());
+			setTitle(record == null ? CallCenterBK.constants.addContractor()
+					: CallCenterBK.constants.editContractor());
 
 			setHeight(160);
 			setWidth(400);
@@ -59,19 +59,19 @@ public class DlgAddEditContractorPrice extends Window {
 			hLayout.addMember(dynamicForm);
 
 			priceCountStartItem = new TextItem();
-			priceCountStartItem.setTitle(CallCenter.constants.startCount());
+			priceCountStartItem.setTitle(CallCenterBK.constants.startCount());
 			priceCountStartItem.setName("priceCountStartItem");
 			priceCountStartItem.setWidth(200);
 			priceCountStartItem.setKeyPressFilter("[0-9]");
 
 			priceCountEndItem = new TextItem();
-			priceCountEndItem.setTitle(CallCenter.constants.endCount());
+			priceCountEndItem.setTitle(CallCenterBK.constants.endCount());
 			priceCountEndItem.setName("priceCountEndItem");
 			priceCountEndItem.setWidth(200);
 			priceCountEndItem.setKeyPressFilter("[0-9]");
 
 			priceItem = new TextItem();
-			priceItem.setTitle(CallCenter.constants.price());
+			priceItem.setTitle(CallCenterBK.constants.price());
 			priceItem.setName("priceItem");
 			priceItem.setWidth(200);
 			priceItem.setKeyPressFilter("[0-9\\.]");
@@ -84,11 +84,11 @@ public class DlgAddEditContractorPrice extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -137,57 +137,57 @@ public class DlgAddEditContractorPrice extends Window {
 			String priceCountStartStr = priceCountStartItem.getValueAsString();
 			if (priceCountStartStr == null
 					|| priceCountStartStr.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterStartPrice());
+				SC.say(CallCenterBK.constants.plzEnterStartPrice());
 				return;
 			}
 			Integer startPriceCount = null;
 			try {
 				startPriceCount = Integer.parseInt(priceCountStartStr);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidStartPrice());
+				SC.say(CallCenterBK.constants.invalidStartPrice());
 				return;
 			}
 
 			if (startPriceCount.intValue() < 0) {
-				SC.say(CallCenter.constants.invalidStartPrice());
+				SC.say(CallCenterBK.constants.invalidStartPrice());
 				return;
 			}
 
 			String priceCountEndStr = priceCountEndItem.getValueAsString();
 			if (priceCountEndStr == null || priceCountEndStr.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterEndPrice());
+				SC.say(CallCenterBK.constants.plzEnterEndPrice());
 				return;
 			}
 			Integer endPriceCount = null;
 			try {
 				endPriceCount = Integer.parseInt(priceCountEndStr);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidEndPrice());
+				SC.say(CallCenterBK.constants.invalidEndPrice());
 				return;
 			}
 			if (endPriceCount.intValue() <= 0) {
-				SC.say(CallCenter.constants.invalidEndPrice());
+				SC.say(CallCenterBK.constants.invalidEndPrice());
 				return;
 			}
 
 			String priceStr = priceItem.getValueAsString();
 			if (priceStr == null || priceStr.trim().equals("")) {
-				SC.say(CallCenter.constants.plzEnterPrice());
+				SC.say(CallCenterBK.constants.plzEnterPrice());
 				return;
 			}
 			try {
 				Double.parseDouble(priceStr);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidPrice());
+				SC.say(CallCenterBK.constants.invalidPrice());
 				return;
 			}
 			if (startPriceCount.intValue() >= endPriceCount.intValue()) {
-				SC.say(CallCenter.constants.endPriceMustBeMoreThenStartPrice());
+				SC.say(CallCenterBK.constants.endPriceMustBeMoreThenStartPrice());
 				return;
 			}
 
 			if ((startPriceCount.intValue() + 99) >= endPriceCount.intValue()) {
-				SC.say(CallCenter.constants.priceRangeMustBeMoreThen99());
+				SC.say(CallCenterBK.constants.priceRangeMustBeMoreThen99());
 				return;
 			}
 
@@ -204,13 +204,13 @@ public class DlgAddEditContractorPrice extends Window {
 							.intValue()
 							&& startPriceCount.intValue() <= call_count_end
 									.intValue()) {
-						SC.say(CallCenter.constants.invalidPriceRange());
+						SC.say(CallCenterBK.constants.invalidPriceRange());
 						return;
 					}
 					if (endPriceCount.intValue() >= call_count_start.intValue()
 							&& endPriceCount.intValue() <= call_count_end
 									.intValue()) {
-						SC.say(CallCenter.constants.invalidPriceRange());
+						SC.say(CallCenterBK.constants.invalidPriceRange());
 						return;
 					}
 				}

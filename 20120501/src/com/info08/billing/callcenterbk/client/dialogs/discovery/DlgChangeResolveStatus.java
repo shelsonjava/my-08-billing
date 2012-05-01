@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.discovery;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -38,7 +38,7 @@ public class DlgChangeResolveStatus extends Window {
 		try {
 			this.listGridRecord = listGridRecord;
 			this.listGrid = listGrid;
-			setTitle(CallCenter.constants.changeStatus());
+			setTitle(CallCenterBK.constants.changeStatus());
 
 			setHeight(130);
 			setWidth(400);
@@ -64,7 +64,7 @@ public class DlgChangeResolveStatus extends Window {
 			hLayout.addMember(dynamicForm);
 
 			discResponseType = new SelectItem();
-			discResponseType.setTitle(CallCenter.constants.status());
+			discResponseType.setTitle(CallCenterBK.constants.status());
 			discResponseType.setName("discResponseType");
 			discResponseType.setWidth("100%");
 
@@ -83,13 +83,13 @@ public class DlgChangeResolveStatus extends Window {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			sendSMSButton = new IButton();
-			sendSMSButton.setTitle(CallCenter.constants.save());
+			sendSMSButton.setTitle(CallCenterBK.constants.save());
 			sendSMSButton.setWidth(100);
 
 			buttonLayout.addMember(sendSMSButton);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			buttonLayout.addMember(cancItem);
@@ -122,8 +122,8 @@ public class DlgChangeResolveStatus extends Window {
 			String response_type_id_str = discResponseType.getValueAsString();
 			if (response_type_id_str == null
 					|| response_type_id_str.trim().equals("")) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.chooseStatus());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.chooseStatus());
 				return;
 			}
 

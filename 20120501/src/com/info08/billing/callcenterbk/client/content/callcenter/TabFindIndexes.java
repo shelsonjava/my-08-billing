@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewCallRules;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewCountryOpers;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewIndex;
@@ -65,7 +65,7 @@ public class TabFindIndexes extends Tab {
 	private DataSource localCityDS;
 
 	public TabFindIndexes() {
-		setTitle(CallCenter.constants.findCodes());
+		setTitle(CallCenterBK.constants.findCodes());
 		setCanClose(true);
 
 		localCityDS = DataSource.get("CityDS");
@@ -83,7 +83,7 @@ public class TabFindIndexes extends Tab {
 		mainLayout.addMember(searchForm);
 
 		countryItem = new ComboBoxItem();
-		countryItem.setTitle(CallCenter.constants.country());
+		countryItem.setTitle(CallCenterBK.constants.country());
 		countryItem.setName("countryItem");
 		countryItem.setWidth(400);
 		countryItem.setFetchMissingValues(true);
@@ -129,18 +129,18 @@ public class TabFindIndexes extends Tab {
 		});
 
 		countyCodeItem = new TextItem();
-		countyCodeItem.setTitle(CallCenter.constants.countryCode());
+		countyCodeItem.setTitle(CallCenterBK.constants.countryCode());
 		countyCodeItem.setWidth(350);
 		countyCodeItem.setName("countyCodeItem");
 		countyCodeItem.setCanEdit(false);
 
 		cityItem = new TextItem();
-		cityItem.setTitle(CallCenter.constants.city());
+		cityItem.setTitle(CallCenterBK.constants.city());
 		cityItem.setName("cityItem");
 		cityItem.setWidth(400);
 
 		codeItem = new TextItem();
-		codeItem.setTitle(CallCenter.constants.code());
+		codeItem.setTitle(CallCenterBK.constants.code());
 		codeItem.setWidth(350);
 		codeItem.setName("codeItem");
 
@@ -153,20 +153,20 @@ public class TabFindIndexes extends Tab {
 		buttonLayout.setAlign(Alignment.LEFT);
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 		clearButton.setWidth(110);
 
 		findByCountryBtn = new IButton();
-		findByCountryBtn.setTitle(CallCenter.constants.findByCountry());
+		findByCountryBtn.setTitle(CallCenterBK.constants.findByCountry());
 
 		findByCityBtn = new IButton();
-		findByCityBtn.setTitle(CallCenter.constants.findByCity());
+		findByCityBtn.setTitle(CallCenterBK.constants.findByCity());
 
 		findByOperBtn = new IButton();
-		findByOperBtn.setTitle(CallCenter.constants.findByOperator());
+		findByOperBtn.setTitle(CallCenterBK.constants.findByOperator());
 
 		callInfoBtn = new IButton();
-		callInfoBtn.setTitle(CallCenter.constants.callInfo());
+		callInfoBtn.setTitle(CallCenterBK.constants.callInfo());
 
 		buttonLayout.addMember(callInfoBtn);
 		buttonLayout.addMember(new LayoutSpacer());
@@ -183,8 +183,8 @@ public class TabFindIndexes extends Tab {
 		tabSet.setHeight100();
 		mainLayout.addMember(tabSet);
 
-		Tab tabMainInfo = new Tab(CallCenter.constants.maininfo());
-		Tab tabOpersInfo = new Tab(CallCenter.constants.operators());
+		Tab tabMainInfo = new Tab(CallCenterBK.constants.maininfo());
+		Tab tabOpersInfo = new Tab(CallCenterBK.constants.operators());
 
 		tabSet.setTabs(tabMainInfo, tabOpersInfo);
 
@@ -228,21 +228,21 @@ public class TabFindIndexes extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField cityName = new ListGridField("cityName",
-				CallCenter.constants.city(), 200);
+				CallCenterBK.constants.city(), 200);
 		ListGridField countrycode = new ListGridField("countrycode",
-				CallCenter.constants.countryCodeShort(), 80);
+				CallCenterBK.constants.countryCodeShort(), 80);
 		ListGridField countryregion = new ListGridField("countryregion",
-				CallCenter.constants.region());
+				CallCenterBK.constants.region());
 		ListGridField code = new ListGridField("code",
-				CallCenter.constants.oldCode(), 230);
+				CallCenterBK.constants.oldCode(), 230);
 		ListGridField city_new_code = new ListGridField("city_new_code",
-				CallCenter.constants.newCode(), 230);
+				CallCenterBK.constants.newCode(), 230);
 		ListGridField gmtoff = new ListGridField("gmtoff",
-				CallCenter.constants.gmtoff(), 80);
+				CallCenterBK.constants.gmtoff(), 80);
 		ListGridField gmtoffwinter = new ListGridField("gmtoffwinter",
-				CallCenter.constants.gmtoffwinter(), 80);
+				CallCenterBK.constants.gmtoffwinter(), 80);
 		ListGridField ctm = new ListGridField("ctm",
-				CallCenter.constants.ctm(), 80);
+				CallCenterBK.constants.ctm(), 80);
 
 		cityName.setAlign(Alignment.LEFT);
 		countrycode.setAlign(Alignment.CENTER);
@@ -283,9 +283,9 @@ public class TabFindIndexes extends Tab {
 		listGridOperators.setFilterOnKeypress(true);
 
 		ListGridField stringOne = new ListGridField("stringOne",
-				CallCenter.constants.operator());
+				CallCenterBK.constants.operator());
 		ListGridField stringTwo = new ListGridField("stringTwo",
-				CallCenter.constants.codes());
+				CallCenterBK.constants.codes());
 
 		listGridOperators.setFields(stringOne, stringTwo);
 
@@ -400,8 +400,8 @@ public class TabFindIndexes extends Tab {
 					&& (city_name_geo == null || city_name_geo.trim()
 							.equals(""))
 					&& (code == null || code.trim().equals(""))) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.enterIndexSearchParams());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.enterIndexSearchParams());
 				return;
 			}
 			if (searchType == 3) {

@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.currency;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -38,7 +38,7 @@ public class DlgAddEditRate extends Window {
 	public DlgAddEditRate(ListGridRecord pRecord) {
 		try {
 			this.editRecord = pRecord;
-			setTitle(CallCenter.constants.rates());
+			setTitle(CallCenterBK.constants.rates());
 
 			setHeight(235);
 			setWidth(480);
@@ -64,38 +64,38 @@ public class DlgAddEditRate extends Window {
 			hLayout.addMember(dynamicForm);
 
 			currNameGeoItem = new TextItem();
-			currNameGeoItem.setTitle(CallCenter.constants.currencyName());
+			currNameGeoItem.setTitle(CallCenterBK.constants.currencyName());
 			currNameGeoItem.setName("curr_name_geo");
 			currNameGeoItem.setWidth(300);
 			currNameGeoItem.setCanEdit(false);
 
 			currAbbrItem = new TextItem();
-			currAbbrItem.setTitle(CallCenter.constants.currencyAbbr());
+			currAbbrItem.setTitle(CallCenterBK.constants.currencyAbbr());
 			currAbbrItem.setName("curr_abbrev");
 			currAbbrItem.setWidth(300);
 			currAbbrItem.setCanEdit(false);
 
 			rateCoeffItem = new FloatItem();
-			rateCoeffItem.setTitle(CallCenter.constants.rateCoeff());
+			rateCoeffItem.setTitle(CallCenterBK.constants.rateCoeff());
 			rateCoeffItem.setName("rate_coeff");
 			rateCoeffItem.setWidth(300);
 			rateCoeffItem.setKeyPressFilter("[0-9]");
 			
 			rateItem = new FloatItem();
-			rateItem.setTitle(CallCenter.constants.rate());
+			rateItem.setTitle(CallCenterBK.constants.rate());
 			rateItem.setName("rate");
 			rateItem.setWidth(300);
 			rateItem.setKeyPressFilter("[0-9\\.]");
 
 			marketRateItem = new FloatItem();
-			marketRateItem.setTitle(CallCenter.constants.marketRate());
+			marketRateItem.setTitle(CallCenterBK.constants.marketRate());
 			marketRateItem.setName("market_rate");
 			marketRateItem.setWidth(300);
 			marketRateItem.setKeyPressFilter("[0-9\\.]");
 
 			salesMarketRateItem = new FloatItem();
 			salesMarketRateItem
-					.setTitle(CallCenter.constants.salesMarketRate());
+					.setTitle(CallCenterBK.constants.salesMarketRate());
 			salesMarketRateItem.setName("sale_market_rate");
 			salesMarketRateItem.setWidth(300);
 			salesMarketRateItem.setKeyPressFilter("[0-9\\.]");
@@ -110,11 +110,11 @@ public class DlgAddEditRate extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -207,17 +207,17 @@ public class DlgAddEditRate extends Window {
 		try {
 			String curr_name_geo = currNameGeoItem.getValueAsString();
 			if (curr_name_geo == null || curr_name_geo.trim().equals("")) {
-				SC.say(CallCenter.constants.enterCurrencyName());
+				SC.say(CallCenterBK.constants.enterCurrencyName());
 				return;
 			}
 			String curr_abbrev = currAbbrItem.getValueAsString();
 			if (curr_abbrev == null || curr_abbrev.trim().equals("")) {
-				SC.say(CallCenter.constants.enterCurrencyAbbr());
+				SC.say(CallCenterBK.constants.enterCurrencyAbbr());
 				return;
 			}
 			String rate_coeff_str = rateCoeffItem.getValueAsString();
 			if (rate_coeff_str == null || rate_coeff_str.trim().equals("")) {
-				SC.say(CallCenter.constants.enterRateCoeff());
+				SC.say(CallCenterBK.constants.enterRateCoeff());
 				return;
 			}
 			if (!rateCoeffItem.validate()) {
@@ -236,21 +236,21 @@ public class DlgAddEditRate extends Window {
 			try {
 				rate_coeff = new Integer(rate_coeff_str);
 			} catch (NumberFormatException e) {
-				SC.say(CallCenter.constants.rateCoeffIsInteger());
+				SC.say(CallCenterBK.constants.rateCoeffIsInteger());
 				return;
 			}
 			String rate_str = rateItem.getValueAsString();
 			try {
 				new Float(rate_str);
 			} catch (NumberFormatException e) {
-				SC.say(CallCenter.constants.rateIsFloat());
+				SC.say(CallCenterBK.constants.rateIsFloat());
 				return;
 			}
 			String market_rate_str = marketRateItem.getValueAsString();
 			try {
 				new Float(market_rate_str);
 			} catch (NumberFormatException e) {
-				SC.say(CallCenter.constants.marketRateIsFloat());
+				SC.say(CallCenterBK.constants.marketRateIsFloat());
 				return;
 			}
 			String sale_market_rate_str = salesMarketRateItem
@@ -258,7 +258,7 @@ public class DlgAddEditRate extends Window {
 			try {
 				new Float(sale_market_rate_str);
 			} catch (NumberFormatException e) {
-				SC.say(CallCenter.constants.saleMarketRateIsFloat());
+				SC.say(CallCenterBK.constants.saleMarketRateIsFloat());
 				return;
 			}
 

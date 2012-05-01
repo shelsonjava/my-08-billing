@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.TabOrganization;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
@@ -32,7 +32,7 @@ public class DlgSortOrderOrgs extends Window {
 	public DlgSortOrderOrgs(TabOrganization tabOrganization, Record records[]) {
 		try {
 			this.tabOrganization = tabOrganization;
-			setTitle(CallCenter.constants.sortOrgs());
+			setTitle(CallCenterBK.constants.sortOrgs());
 
 			setHeight(710);
 			setWidth(1000);
@@ -101,16 +101,16 @@ public class DlgSortOrderOrgs extends Window {
 			listGrid.setData(records);
 
 			ListGridField nameField = new ListGridField("org_name",
-					CallCenter.constants.orgName(), 400);
+					CallCenterBK.constants.orgName(), 400);
 
 			ListGridField identcode = new ListGridField("identcode",
-					CallCenter.constants.identCode(), 150);
+					CallCenterBK.constants.identCode(), 150);
 
 			ListGridField director = new ListGridField("director",
-					CallCenter.constants.director(), 150);
+					CallCenterBK.constants.director(), 150);
 
 			ListGridField real_address = new ListGridField("real_address",
-					CallCenter.constants.orgAddress(), 230);
+					CallCenterBK.constants.orgAddress(), 230);
 
 			identcode.setAlign(Alignment.CENTER);
 			director.setAlign(Alignment.CENTER);
@@ -125,11 +125,11 @@ public class DlgSortOrderOrgs extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);

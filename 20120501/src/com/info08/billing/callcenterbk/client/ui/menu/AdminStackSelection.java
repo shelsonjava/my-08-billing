@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.admin.TabAdmin;
 import com.info08.billing.callcenterbk.client.content.admin.TabBlockList;
 import com.info08.billing.callcenterbk.client.content.admin.TabContractors;
@@ -25,32 +25,32 @@ public class AdminStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] { 
-			new MenuNode("100", "1", CallCenter.constants.users(), true, "person.png"),
-			new MenuNode("101", "1", CallCenter.constants.mobOpIndexes(), true, "mobile.png"),
-			new MenuNode("102", "1", CallCenter.constants.fixedOpIndexes(), true, "phone.png"),
-			new MenuNode("103", "1", CallCenter.constants.contractors(), true, "contracts.png"),
-			new MenuNode("104", "1", CallCenter.constants.blockPhone(), true, "telephone_delete.png"),
-			new MenuNode("105", "1", CallCenter.constants.telComps(), true, "phone.png"),
+			new MenuNode("100", "1", CallCenterBK.constants.users(), true, "person.png"),
+			new MenuNode("101", "1", CallCenterBK.constants.mobOpIndexes(), true, "mobile.png"),
+			new MenuNode("102", "1", CallCenterBK.constants.fixedOpIndexes(), true, "phone.png"),
+			new MenuNode("103", "1", CallCenterBK.constants.contractors(), true, "contracts.png"),
+			new MenuNode("104", "1", CallCenterBK.constants.blockPhone(), true, "telephone_delete.png"),
+			new MenuNode("105", "1", CallCenterBK.constants.telComps(), true, "phone.png"),
 	};
 
 	private TreeGrid menuTreeGrid;
 
 	public AdminStackSelection(Body body) {
 		this.body = body;
-		setTitle(CallCenter.constants.menuAdmin());
+		setTitle(CallCenterBK.constants.menuAdmin());
 		setExpanded(false);
 		setCanCollapse(true);
 
 		Tree menuTree = new Tree();
 		menuTree.setModelType(TreeModelType.PARENT);
 		menuTree.setRootValue(1);
-		menuTree.setNameProperty(CallCenter.constants.actionsList());
+		menuTree.setNameProperty(CallCenterBK.constants.actionsList());
 		menuTree.setIdField("Id");
 		menuTree.setParentIdField("ReportsTo");
 		menuTree.setOpenProperty("isOpen");
 		menuTree.setData(menuData);
 
-		TreeGridField formattedField = new TreeGridField(CallCenter.constants.actionsList());
+		TreeGridField formattedField = new TreeGridField(CallCenterBK.constants.actionsList());
 		formattedField.setCellFormatter(new CellFormatter() {
 			public String format(Object value, ListGridRecord record,
 					int rowNum, int colNum) {

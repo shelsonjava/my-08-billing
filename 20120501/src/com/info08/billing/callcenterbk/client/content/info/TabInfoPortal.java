@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.info;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOpRemarks;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -64,7 +64,7 @@ public class TabInfoPortal extends Tab {
 			spacerItem1.setHeight(5);
 
 			final TextAreaItem commentItem = new TextAreaItem();
-			commentItem.setTitle(CallCenter.constants.mainNews());
+			commentItem.setTitle(CallCenterBK.constants.mainNews());
 			commentItem.setCanFocus(false);
 			commentItem.setName("commentItem");
 			commentItem.setWidth(770);
@@ -106,10 +106,10 @@ public class TabInfoPortal extends Tab {
 				ToolStripButton remarks = null;
 				if (persNotesCount == null || persNotesCount.longValue() <= 0) {
 					remarks = new ToolStripButton(
-							CallCenter.constants.remarks(), "information.png");
+							CallCenterBK.constants.remarks(), "information.png");
 				} else {
 					remarks = new ToolStripButton(
-							CallCenter.constants.remarks(), "remarks.png");
+							CallCenterBK.constants.remarks(), "remarks.png");
 				}
 				final ToolStripButton remarksBtn = remarks;
 				remarksBtn.setLayoutAlign(Alignment.LEFT);
@@ -126,7 +126,7 @@ public class TabInfoPortal extends Tab {
 									.getUnreadPersNotesCount();
 							if (myPersNotesCount == null
 									|| myPersNotesCount.longValue() <= 0) {
-								SC.say(CallCenter.constants.persNotesIsEmpty());
+								SC.say(CallCenterBK.constants.persNotesIsEmpty());
 								return;
 							} else {
 								DlgViewOpRemarks dlgViewOpRemarks = new DlgViewOpRemarks(

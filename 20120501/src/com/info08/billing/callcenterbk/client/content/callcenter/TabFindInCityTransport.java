@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewInCityTransport;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.smartgwt.client.data.Criteria;
@@ -53,7 +53,7 @@ public class TabFindInCityTransport extends Tab {
 	private DataSource busRouteDS;
 
 	public TabFindInCityTransport() {
-		setTitle(CallCenter.constants.findInCityTransport());
+		setTitle(CallCenterBK.constants.findInCityTransport());
 		setCanClose(true);
 
 		busRouteDS = DataSource.get("BusRouteDS");
@@ -71,7 +71,7 @@ public class TabFindInCityTransport extends Tab {
 		mainLayout.addMember(searchForm);
 
 		transportTypeItem = new SelectItem();
-		transportTypeItem.setTitle(CallCenter.constants.transportType());
+		transportTypeItem.setTitle(CallCenterBK.constants.transportType());
 		transportTypeItem.setWidth(250);
 		transportTypeItem.setName("transport_type_name_geo");
 		transportTypeItem.setValueMap(ClientMapUtil.getInstance()
@@ -79,17 +79,17 @@ public class TabFindInCityTransport extends Tab {
 		transportTypeItem.setDefaultToFirstOption(true);
 
 		routeNumItem = new TextItem();
-		routeNumItem.setTitle(CallCenter.constants.routeNumber());
+		routeNumItem.setTitle(CallCenterBK.constants.routeNumber());
 		routeNumItem.setWidth(250);
 		routeNumItem.setName("routeNumItem");
 
 		streetFromItem = new TextItem();
-		streetFromItem.setTitle(CallCenter.constants.street());
+		streetFromItem.setTitle(CallCenterBK.constants.street());
 		streetFromItem.setName("streetFromItem");
 		streetFromItem.setWidth(250);
 
 		streetToItem = new TextItem();
-		streetToItem.setTitle(CallCenter.constants.street());
+		streetToItem.setTitle(CallCenterBK.constants.street());
 		streetToItem.setName("streetToItem");
 		streetToItem.setWidth(250);
 
@@ -102,10 +102,10 @@ public class TabFindInCityTransport extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findBtn = new IButton();
-		findBtn.setTitle(CallCenter.constants.find());
+		findBtn.setTitle(CallCenterBK.constants.find());
 
 		clearBtn = new IButton();
-		clearBtn.setTitle(CallCenter.constants.clear());
+		clearBtn.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findBtn, clearBtn);
 		mainLayout.addMember(buttonLayout);
@@ -135,19 +135,19 @@ public class TabFindInCityTransport extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField route_nm = new ListGridField("route_nm",
-				CallCenter.constants.routeNumber(), 70);
+				CallCenterBK.constants.routeNumber(), 70);
 
 		ListGridField service_descr = new ListGridField("service_descr",
-				CallCenter.constants.transportType(), 120);
+				CallCenterBK.constants.transportType(), 120);
 
 		ListGridField start_place = new ListGridField("start_place",
-				CallCenter.constants.stationFrom(), 280);
+				CallCenterBK.constants.stationFrom(), 280);
 
 		ListGridField end_place = new ListGridField("end_place",
-				CallCenter.constants.stationTo());
+				CallCenterBK.constants.stationTo());
 
 		ListGridField round_descr = new ListGridField("round_descr",
-				CallCenter.constants.type(), 100);
+				CallCenterBK.constants.type(), 100);
 
 		listGrid.setFields(service_descr, route_nm, start_place, end_place,
 				round_descr);

@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.ent;
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -62,8 +62,8 @@ public class DlgAddEditEntPoster extends Window {
 			this.ent_place_id = ent_place_id;
 			this.ent_type_id = ent_type_id;
 
-			setTitle(pRecord == null ? CallCenter.constants.addEntPoster()
-					: CallCenter.constants.modifyEntPoster());
+			setTitle(pRecord == null ? CallCenterBK.constants.addEntPoster()
+					: CallCenterBK.constants.modifyEntPoster());
 
 			setHeight(360);
 			setWidth(800);
@@ -89,7 +89,7 @@ public class DlgAddEditEntPoster extends Window {
 			hLayout.addMember(dynamicForm);
 
 			entTypeItem = new ComboBoxItem();
-			entTypeItem.setTitle(CallCenter.constants.entType());
+			entTypeItem.setTitle(CallCenterBK.constants.entType());
 			entTypeItem.setWidth(250);
 			entTypeItem.setName("ent_type_geo");
 			entTypeItem.setFetchMissingValues(true);
@@ -121,7 +121,7 @@ public class DlgAddEditEntPoster extends Window {
 			entTypeItem.setValue(this.ent_type_id);
 
 			entPlacesItem = new ComboBoxItem();
-			entPlacesItem.setTitle(CallCenter.constants.entPlace());
+			entPlacesItem.setTitle(CallCenterBK.constants.entPlace());
 			entPlacesItem.setWidth(250);
 			entPlacesItem.setName("ent_place_id");
 			entPlacesItem.setFetchMissingValues(true);
@@ -153,26 +153,26 @@ public class DlgAddEditEntPoster extends Window {
 			entPlacesItem.setValue(this.ent_place_id);
 
 			entPosterGeoItem = new TextAreaItem();
-			entPosterGeoItem.setTitle(CallCenter.constants.entPosterName());
+			entPosterGeoItem.setTitle(CallCenterBK.constants.entPosterName());
 			entPosterGeoItem.setName("ent_poster_geo");
 			entPosterGeoItem.setWidth(250);
 			entPosterGeoItem.setHeight(100);
 
 			entCommentGeoItem = new TextAreaItem();
-			entCommentGeoItem.setTitle(CallCenter.constants.comment());
+			entCommentGeoItem.setTitle(CallCenterBK.constants.comment());
 			entCommentGeoItem.setName("comment_geo");
 			entCommentGeoItem.setWidth(250);
 			entCommentGeoItem.setHeight(100);
 
 			posterDateItem = new DateItem();
-			posterDateItem.setTitle(CallCenter.constants.date());
+			posterDateItem.setTitle(CallCenterBK.constants.date());
 			posterDateItem.setWidth("100%");
 			posterDateItem.setValue(new Date());
 			posterDateItem.setName("poster_date");
-			posterDateItem.setHint(CallCenter.constants.choose());
+			posterDateItem.setHint(CallCenterBK.constants.choose());
 
 			postTimeItem = new TimeItem("poster_time", "Time");
-			postTimeItem.setTitle(CallCenter.constants.time());
+			postTimeItem.setTitle(CallCenterBK.constants.time());
 			postTimeItem.setWidth(250);
 			postTimeItem.setName("poster_time");
 			postTimeItem.setHint("");
@@ -181,24 +181,24 @@ public class DlgAddEditEntPoster extends Window {
 			postTimeItem.setMask("00:00");
 
 			entPriceGeoItem = new TextAreaItem();
-			entPriceGeoItem.setTitle(CallCenter.constants.price());
+			entPriceGeoItem.setTitle(CallCenterBK.constants.price());
 			entPriceGeoItem.setName("poster_price_geo");
 			entPriceGeoItem.setWidth(250);
 			entPriceGeoItem.setHeight(100);
 
 			entSMSCommentItem = new TextAreaItem();
-			entSMSCommentItem.setTitle(CallCenter.constants.smsComment());
+			entSMSCommentItem.setTitle(CallCenterBK.constants.smsComment());
 			entSMSCommentItem.setName("sms_comment");
 			entSMSCommentItem.setWidth(250);
 			entSMSCommentItem.setHeight(100);
 
 			dtCritItem = new CheckboxItem();
-			dtCritItem.setTitle(CallCenter.constants.timeCrit());
+			dtCritItem.setTitle(CallCenterBK.constants.timeCrit());
 			dtCritItem.setName("dt_crit");
 			dtCritItem.setWidth(250);
 
 			dtViewCritItem = new CheckboxItem();
-			dtViewCritItem.setTitle(CallCenter.constants.dtViewCrit());
+			dtViewCritItem.setTitle(CallCenterBK.constants.dtViewCrit());
 			dtViewCritItem.setName("dtViewCrit");
 			dtViewCritItem.setWidth(250);
 
@@ -211,11 +211,11 @@ public class DlgAddEditEntPoster extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -282,17 +282,17 @@ public class DlgAddEditEntPoster extends Window {
 		try {
 			String ent_type_id_str = entTypeItem.getValueAsString();
 			if (ent_type_id_str == null || ent_type_id_str.trim().equals("")) {
-				SC.say(CallCenter.constants.chooseEntType());
+				SC.say(CallCenterBK.constants.chooseEntType());
 				return;
 			}
 			String ent_place_id_str = entPlacesItem.getValueAsString();
 			if (ent_place_id_str == null || ent_place_id_str.trim().equals("")) {
-				SC.say(CallCenter.constants.chooseEntPlace());
+				SC.say(CallCenterBK.constants.chooseEntPlace());
 				return;
 			}
 			String ent_poster_geo = entPosterGeoItem.getValueAsString();
 			if (ent_poster_geo == null || ent_poster_geo.trim().equals("")) {
-				SC.say(CallCenter.constants.enterEntPosterGeo());
+				SC.say(CallCenterBK.constants.enterEntPosterGeo());
 				return;
 			}
 			String comment_geo = entCommentGeoItem.getValueAsString();

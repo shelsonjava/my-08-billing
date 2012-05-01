@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.discovery;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -33,8 +33,8 @@ public class DlgAddEditDiscoveryType extends Window {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenter.constants.addType()
-					: CallCenter.constants.editType());
+			setTitle(pRecord == null ? CallCenterBK.constants.addType()
+					: CallCenterBK.constants.editType());
 
 			setHeight(100);
 			setWidth(430);
@@ -60,7 +60,7 @@ public class DlgAddEditDiscoveryType extends Window {
 			hLayout.addMember(dynamicForm);
 
 			discoverTypeItem = new TextItem();
-			discoverTypeItem.setTitle(CallCenter.constants.type());
+			discoverTypeItem.setTitle(CallCenterBK.constants.type());
 			discoverTypeItem.setName("discover_type");
 			discoverTypeItem.setWidth(300);
 
@@ -71,11 +71,11 @@ public class DlgAddEditDiscoveryType extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -119,7 +119,7 @@ public class DlgAddEditDiscoveryType extends Window {
 		try {
 			String discover_type = discoverTypeItem.getValueAsString();
 			if (discover_type == null || discover_type.trim().equals("")) {
-				SC.say(CallCenter.constants.enterType());
+				SC.say(CallCenterBK.constants.enterType());
 				return;
 			}
 			com.smartgwt.client.rpc.RPCManager.startQueue();

@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.discovery;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
@@ -43,7 +43,7 @@ public class DlgSendDiscSMS extends Window {
 	public DlgSendDiscSMS(ListGridRecord record) {
 		try {
 			this.record = record;
-			setTitle(CallCenter.constants.sendSMS());
+			setTitle(CallCenterBK.constants.sendSMS());
 
 			setHeight(280);
 			setWidth(600);
@@ -69,19 +69,19 @@ public class DlgSendDiscSMS extends Window {
 			hLayout.addMember(dynamicForm);
 
 			phoneItem = new TextItem();
-			phoneItem.setTitle(CallCenter.constants.phone());
+			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setName("phoneItem");
 			phoneItem.setWidth("100%");
 			phoneItem.setValue(record.getAttributeAsString("phone"));
 
 			smsItem = new TextAreaItem();
-			smsItem.setTitle(CallCenter.constants.sms());
+			smsItem.setTitle(CallCenterBK.constants.sms());
 			smsItem.setName("smsItem");
 			smsItem.setWidth("100%");
 			smsItem.setHeight(100);
 
 			autoTextItem = new CheckboxItem();
-			autoTextItem.setTitle(CallCenter.constants.autoText());
+			autoTextItem.setTitle(CallCenterBK.constants.autoText());
 			autoTextItem.setName("autoTextItem");
 			autoTextItem.setWidth("100%");
 
@@ -95,14 +95,14 @@ public class DlgSendDiscSMS extends Window {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			sendSMSButton = new IButton();
-			sendSMSButton.setTitle(CallCenter.constants.send());
+			sendSMSButton.setTitle(CallCenterBK.constants.send());
 			sendSMSButton.setIcon("sms.png");
 			sendSMSButton.setWidth(150);
 
 			buttonLayout.addMember(sendSMSButton);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			buttonLayout.addMember(cancItem);
@@ -146,33 +146,33 @@ public class DlgSendDiscSMS extends Window {
 		try {
 			String sms_text = smsItem.getValueAsString();
 			if (sms_text == null || sms_text.trim().equals("")) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.smsTextIsEmpty());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.smsTextIsEmpty());
 				return;
 			}
 
 			String phone = phoneItem.getValueAsString();
 			if (phone == null || phone.trim().equals("")) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.invalidPhone());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.invalidPhone());
 				return;
 			}
 			if (!CommonFunctions.isPhoneMobile(phone)) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			phone = phone.trim();
 			try {
 				Long.parseLong(phone);
 			} catch (NumberFormatException e) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.invalidPhone());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.invalidPhone());
 				return;
 			}
 			if (phone.length() != 9) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.invalidPhone());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.invalidPhone());
 				return;
 			}
 			

@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -48,7 +48,7 @@ public class TabFindNews extends Tab {
 	private DataSource mainNewsDS;
 
 	public TabFindNews() {
-		setTitle(CallCenter.constants.news());
+		setTitle(CallCenterBK.constants.news());
 		setCanClose(true);
 
 		mainNewsDS = DataSource.get("MainNewsDS");
@@ -66,14 +66,14 @@ public class TabFindNews extends Tab {
 		mainLayout.addMember(searchForm);
 
 		mnItem = new TextItem();
-		mnItem.setTitle(CallCenter.constants.description());
+		mnItem.setTitle(CallCenterBK.constants.description());
 		mnItem.setName("mnItem");
 		mnItem.setWidth(175);
 
 		dateItem = new DateItem();
 		dateItem.setName("dateItem");
 		dateItem.setWidth(175);
-		dateItem.setTitle(CallCenter.constants.date());
+		dateItem.setTitle(CallCenterBK.constants.date());
 		dateItem.setUseTextField(true);
 
 		SpacerItem spacerItem2 = new SpacerItem();
@@ -89,10 +89,10 @@ public class TabFindNews extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -113,16 +113,16 @@ public class TabFindNews extends Tab {
 		listGrid.setFixedRecordHeights(false);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField dt = new ListGridField("dt", CallCenter.constants.date(),
+		ListGridField dt = new ListGridField("dt", CallCenterBK.constants.date(),
 				70);
 		dt.setAlign(Alignment.LEFT);
 
-		ListGridField hr = new ListGridField("hr", CallCenter.constants.hour(),
+		ListGridField hr = new ListGridField("hr", CallCenterBK.constants.hour(),
 				70);
 		hr.setAlign(Alignment.LEFT);
 
 		ListGridField mn = new ListGridField("mn",
-				CallCenter.constants.description());
+				CallCenterBK.constants.description());
 		mn.setAlign(Alignment.LEFT);
 
 		listGrid.setFields(dt, hr, mn);

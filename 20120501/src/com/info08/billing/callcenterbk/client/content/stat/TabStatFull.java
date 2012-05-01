@@ -5,7 +5,7 @@ import java.util.Date;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatFullGraph;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatFullGraphAmount;
 import com.smartgwt.client.data.Criteria;
@@ -63,7 +63,7 @@ public class TabStatFull extends Tab {
 
 			statisticsDS = DataSource.get("StatisticsDS");
 
-			setTitle(CallCenter.constants.statisticFull());
+			setTitle(CallCenterBK.constants.statisticFull());
 			setCanClose(true);
 
 			mainLayout = new VLayout(5);
@@ -79,7 +79,7 @@ public class TabStatFull extends Tab {
 			mainLayout.addMember(searchForm);
 
 			dateItem = new DateItem();
-			dateItem.setTitle(CallCenter.constants.date());
+			dateItem.setTitle(CallCenterBK.constants.date());
 			dateItem.setName("dateItem");
 			dateItem.setValue(new Date());
 			dateItem.setWidth(200);
@@ -92,10 +92,10 @@ public class TabStatFull extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -105,20 +105,20 @@ public class TabStatFull extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			statN1Btn = new ToolStripButton(CallCenter.constants.graph(),
+			statN1Btn = new ToolStripButton(CallCenterBK.constants.graph(),
 					"stats.png");
 			statN1Btn.setLayoutAlign(Alignment.LEFT);
 			statN1Btn.setWidth(50);
 			toolStrip.addButton(statN1Btn);
 
-			statN2Btn = new ToolStripButton(CallCenter.constants.graphAmount(),
+			statN2Btn = new ToolStripButton(CallCenterBK.constants.graphAmount(),
 					"stats.png");
 			statN2Btn.setLayoutAlign(Alignment.LEFT);
 			statN2Btn.setWidth(50);
 			toolStrip.addButton(statN2Btn);
 
 			printPreviewBtn = new ToolStripButton(
-					CallCenter.constants.printPreview(), "printer.png");
+					CallCenterBK.constants.printPreview(), "printer.png");
 			printPreviewBtn.setLayoutAlign(Alignment.LEFT);
 			printPreviewBtn.setWidth(50);
 			toolStrip.addButton(printPreviewBtn);
@@ -183,44 +183,44 @@ public class TabStatFull extends Tab {
 			listGrid.setShowAllRecords(true);
 
 			ListGridField stat_date = new ListGridField("stat_date",
-					CallCenter.constants.date(), 80);
+					CallCenterBK.constants.date(), 80);
 
 			ListGridField abonent_cnt = new ListGridField("abonent_cnt",
-					CallCenter.constants.abonent(), 80);
+					CallCenterBK.constants.abonent(), 80);
 
 			ListGridField org_contr_comm_cnt = new ListGridField(
-					"org_contr_comm_cnt", CallCenter.constants.direct(), 100);
+					"org_contr_comm_cnt", CallCenterBK.constants.direct(), 100);
 
 			ListGridField org_non_contr_cnt = new ListGridField(
-					"org_non_contr_cnt", CallCenter.constants.nonDirect(), 100);
+					"org_non_contr_cnt", CallCenterBK.constants.nonDirect(), 100);
 
 			ListGridField org_contr_gov_cnt = new ListGridField(
-					"org_contr_gov_cnt", CallCenter.constants.government(), 100);
+					"org_contr_gov_cnt", CallCenterBK.constants.government(), 100);
 
 			ListGridField org_sum = new ListGridField("org_sum",
-					CallCenter.constants.sum(), 100);
+					CallCenterBK.constants.sum(), 100);
 
 			ListGridField magti_cnt = new ListGridField("magti_cnt",
-					CallCenter.constants.magti(), 100);
+					CallCenterBK.constants.magti(), 100);
 
 			ListGridField geocell_cnt = new ListGridField("geocell_cnt",
-					CallCenter.constants.geocell(), 100);
+					CallCenterBK.constants.geocell(), 100);
 
 			ListGridField beeline_cnt = new ListGridField("beeline_cnt",
-					CallCenter.constants.beeline(), 100);
+					CallCenterBK.constants.beeline(), 100);
 
 			ListGridField org_contr_email_srv_cnt = new ListGridField(
-					"org_contr_email_srv_cnt", CallCenter.constants.direct(),
+					"org_contr_email_srv_cnt", CallCenterBK.constants.direct(),
 					100);
 
 			ListGridField org_email_srv_cnt = new ListGridField(
-					"org_email_srv_cnt", CallCenter.constants.nonDirect(), 100);
+					"org_email_srv_cnt", CallCenterBK.constants.nonDirect(), 100);
 
 			ListGridField all_sum = new ListGridField("all_sum",
-					CallCenter.constants.sum(), 100);
+					CallCenterBK.constants.sum(), 100);
 
 			ListGridField all_amount = new ListGridField("all_amount",
-					CallCenter.constants.amount(), 100);
+					CallCenterBK.constants.amount(), 100);
 
 			stat_date.setAlign(Alignment.CENTER);
 			abonent_cnt.setAlign(Alignment.CENTER);
@@ -240,21 +240,21 @@ public class TabStatFull extends Tab {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
-					return CallCenter.constants.sum();
+					return CallCenterBK.constants.sum();
 				}
 			});
 			stat_date.addSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
-					return CallCenter.constants.avarage();
+					return CallCenterBK.constants.avarage();
 				}
 			});
 			stat_date.addSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
-					return CallCenter.constants.prevMonthPercent();
+					return CallCenterBK.constants.prevMonthPercent();
 				}
 			});
 
@@ -568,13 +568,13 @@ public class TabStatFull extends Tab {
 					org_email_srv_cnt, all_sum, all_amount);
 
 			listGrid.setHeaderSpans(
-					new HeaderSpan(CallCenter.constants.organization(),
+					new HeaderSpan(CallCenterBK.constants.organization(),
 							new String[] { "org_contr_comm_cnt",
 									"org_non_contr_cnt", "org_contr_gov_cnt",
 									"org_sum" }),
-					new HeaderSpan(CallCenter.constants.mobile(), new String[] {
+					new HeaderSpan(CallCenterBK.constants.mobile(), new String[] {
 							"magti_cnt", "geocell_cnt", "beeline_cnt" }),
-					new HeaderSpan(CallCenter.constants.eMail(), new String[] {
+					new HeaderSpan(CallCenterBK.constants.eMail(), new String[] {
 							"org_contr_email_srv_cnt", "org_email_srv_cnt" }));
 
 			mainLayout.addMember(listGrid);
@@ -678,7 +678,7 @@ public class TabStatFull extends Tab {
 		try {
 			ListGridRecord records[] = listGrid.getRecords();
 			if (records == null || records.length <= 0) {
-				SC.say(CallCenter.constants.pleaseSearchData());
+				SC.say(CallCenterBK.constants.pleaseSearchData());
 				return;
 			}
 			DlgViewStatFullGraphAmount dlgViewStatFullGraphAmount = new DlgViewStatFullGraphAmount(
@@ -693,7 +693,7 @@ public class TabStatFull extends Tab {
 		try {
 			ListGridRecord records[] = listGrid.getRecords();
 			if (records == null || records.length <= 0) {
-				SC.say(CallCenter.constants.pleaseSearchData());
+				SC.say(CallCenterBK.constants.pleaseSearchData());
 				return;
 			}
 			DlgViewStatFullGraph dlgViewStatFullGraph = new DlgViewStatFullGraph(
@@ -708,7 +708,7 @@ public class TabStatFull extends Tab {
 		try {
 			final Date date = dateItem.getValueAsDate();
 			if (date == null) {
-				SC.say(CallCenter.constants.invalidDate());
+				SC.say(CallCenterBK.constants.invalidDate());
 				return;
 			}
 			DateTimeFormat dateFormatter = DateTimeFormat.getFormat("yyMM");

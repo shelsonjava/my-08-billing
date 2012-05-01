@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.discovery;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.discovery.DlgDiscoveryManager;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -46,7 +46,7 @@ public class TabDiscovery extends Tab {
 
 	public TabDiscovery() {
 		try {
-			setTitle(CallCenter.constants.menuDiscovery());
+			setTitle(CallCenterBK.constants.menuDiscovery());
 			setCanClose(true);
 
 			datasource = DataSource.get("DiscoveryDS");
@@ -64,7 +64,7 @@ public class TabDiscovery extends Tab {
 			mainLayout.addMember(searchForm);
 
 			discoveryTypeItem = new SelectItem();
-			discoveryTypeItem.setTitle(CallCenter.constants.discoveryType());
+			discoveryTypeItem.setTitle(CallCenterBK.constants.discoveryType());
 			discoveryTypeItem.setWidth(300);
 			discoveryTypeItem.setName("discoveryTypeItem");
 
@@ -100,10 +100,10 @@ public class TabDiscovery extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -114,7 +114,7 @@ public class TabDiscovery extends Tab {
 			mainLayout.addMember(toolStrip);
 
 			resolveDiscBtn = new ToolStripButton(
-					CallCenter.constants.resolve(), "yes.png");
+					CallCenterBK.constants.resolve(), "yes.png");
 			resolveDiscBtn.setLayoutAlign(Alignment.LEFT);
 			resolveDiscBtn.setWidth(50);
 			toolStrip.addButton(resolveDiscBtn);
@@ -148,21 +148,21 @@ public class TabDiscovery extends Tab {
 			listGrid.setShowRowNumbers(true);
 
 			ListGridField discover_type = new ListGridField("discover_type",
-					CallCenter.constants.type(), 100);
+					CallCenterBK.constants.type(), 100);
 			ListGridField phone = new ListGridField("phone",
-					CallCenter.constants.phone(), 80);
+					CallCenterBK.constants.phone(), 80);
 			ListGridField contact_phone = new ListGridField("contact_phone",
-					CallCenter.constants.contactPhone(), 120);
+					CallCenterBK.constants.contactPhone(), 120);
 			ListGridField contact_person = new ListGridField("contact_person",
-					CallCenter.constants.contactPerson(), 150);
+					CallCenterBK.constants.contactPerson(), 150);
 			ListGridField discover_txt = new ListGridField("discover_txt",
-					CallCenter.constants.message());
+					CallCenterBK.constants.message());
 			ListGridField rec_user = new ListGridField("rec_user",
-					CallCenter.constants.shortOp(), 50);
+					CallCenterBK.constants.shortOp(), 50);
 			ListGridField rec_date = new ListGridField("rec_date",
-					CallCenter.constants.time(), 100);
+					CallCenterBK.constants.time(), 100);
 			ListGridField upd_user = new ListGridField("upd_user",
-					CallCenter.constants.updUser(), 100);
+					CallCenterBK.constants.updUser(), 100);
 
 			discover_type.setAlign(Alignment.LEFT);
 			phone.setAlign(Alignment.LEFT);
@@ -181,7 +181,7 @@ public class TabDiscovery extends Tab {
 				public void onClick(ClickEvent event) {
 					ListGridRecord gridRecord = listGrid.getSelectedRecord();
 					if (gridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					lockDiscRecord(gridRecord);

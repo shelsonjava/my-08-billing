@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -45,7 +45,7 @@ public class DlgViewTransport extends Window {
 			ListGridRecord listGridRecord, Integer transportTypeId) {
 		this.listGridRecord = listGridRecord;
 
-		setTitle(CallCenter.constants.transport());
+		setTitle(CallCenterBK.constants.transport());
 
 		setHeight(650);
 		setWidth(950);
@@ -74,7 +74,7 @@ public class DlgViewTransport extends Window {
 		mainLayout.addMember(toolStrip);
 
 		sendTransportInfoSMS = new ToolStripButton(
-				CallCenter.constants.smsCountryInfo(), "sms.png");
+				CallCenterBK.constants.smsCountryInfo(), "sms.png");
 		sendTransportInfoSMS.setLayoutAlign(Alignment.LEFT);
 		toolStrip.addButton(sendTransportInfoSMS);
 
@@ -99,52 +99,52 @@ public class DlgViewTransport extends Window {
 		dataSource.getField("transport_price_geo").setHidden(false);
 
 		DetailViewerField trip_criteria = new DetailViewerField(
-				"trip_criteria", CallCenter.constants.routeNumber());
+				"trip_criteria", CallCenterBK.constants.routeNumber());
 
 		DetailViewerField ocity_name_geo = new DetailViewerField(
-				"ocity_name_geo", CallCenter.constants.stationFrom());
+				"ocity_name_geo", CallCenterBK.constants.stationFrom());
 		ocity_name_geo.setCellStyle("fontRedWithBorder");
 
 		DetailViewerField icity_name_geo = new DetailViewerField(
-				"icity_name_geo", CallCenter.constants.stationTo());
+				"icity_name_geo", CallCenterBK.constants.stationTo());
 		icity_name_geo.setCellStyle("fontGreenWithBorder");
 
 		DetailViewerField ostation = new DetailViewerField("ostation",
-				CallCenter.constants.station());
+				CallCenterBK.constants.station());
 
 		DetailViewerField istation = new DetailViewerField("istation",
-				CallCenter.constants.station());
+				CallCenterBK.constants.station());
 
 		DetailViewerField out_time = new DetailViewerField("c_out_time",
-				CallCenter.constants.outTime());
+				CallCenterBK.constants.outTime());
 
 		DetailViewerField in_time = new DetailViewerField("c_in_time",
-				CallCenter.constants.inTime());
+				CallCenterBK.constants.inTime());
 
 		DetailViewerField cmt = new DetailViewerField("cmt",
-				CallCenter.constants.ctm());
+				CallCenterBK.constants.ctm());
 		cmt.setCellStyle("fontGreenWithBorder");
 
 		DetailViewerField transport_company_geo = new DetailViewerField(
 				"transport_company_geo",
-				CallCenter.constants.transportCompShort());
+				CallCenterBK.constants.transportCompShort());
 
 		DetailViewerField transport_plane_geo = new DetailViewerField(
 				"transport_plane_geo",
-				CallCenter.constants.transportTypeShort());
+				CallCenterBK.constants.transportTypeShort());
 
 		DetailViewerField note_geo = new DetailViewerField("note_geo",
-				CallCenter.constants.comment());
+				CallCenterBK.constants.comment());
 		Integer note_crit = listGridRecord.getAttributeAsInt("note_crit");
 		if (note_crit != null && note_crit.equals(-1)) {
 			note_geo.setCellStyle("fontRedWithBorder");
 		}
 
 		DetailViewerField days_descr = new DetailViewerField("days_descr",
-				CallCenter.constants.days());
+				CallCenterBK.constants.days());
 
 		DetailViewerField transport_price_geo = new DetailViewerField(
-				"transport_price_geo", CallCenter.constants.price());
+				"transport_price_geo", CallCenterBK.constants.price());
 
 		detailViewer.viewSelectedData(listGrid);
 
@@ -176,22 +176,22 @@ public class DlgViewTransport extends Window {
 		listGridInner.setFilterOnKeypress(true);
 
 		ListGridField outCity = new ListGridField("outCity",
-				CallCenter.constants.city());
+				CallCenterBK.constants.city());
 		outCity.setAlign(Alignment.LEFT);
 		outCity.setCanFilter(true);
 
 		ListGridField outPlace = new ListGridField("outPlace",
-				CallCenter.constants.outPlace());
+				CallCenterBK.constants.outPlace());
 		outPlace.setAlign(Alignment.LEFT);
 		outPlace.setCanFilter(true);
 
 		ListGridField in_timeF = new ListGridField("c_in_time",
-				CallCenter.constants.inTime());
+				CallCenterBK.constants.inTime());
 		in_timeF.setAlign(Alignment.LEFT);
 		in_timeF.setCanFilter(false);
 
 		ListGridField out_timeF = new ListGridField("c_out_time",
-				CallCenter.constants.outTime());
+				CallCenterBK.constants.outTime());
 		out_timeF.setAlign(Alignment.LEFT);
 		out_timeF.setCanFilter(false);
 
@@ -207,7 +207,7 @@ public class DlgViewTransport extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(cancItem);
@@ -295,16 +295,16 @@ public class DlgViewTransport extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendTransportInfoSMS);

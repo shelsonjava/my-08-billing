@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 import java.util.ArrayList;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ChartType;
@@ -28,7 +28,7 @@ public class DlgViewStatByTelCompGraph extends Window {
 	public DlgViewStatByTelCompGraph(ListGridRecord records[]) {
 		try {
 			this.records = records;
-			setTitle(CallCenter.constants.graph());
+			setTitle(CallCenterBK.constants.graph());
 
 			setHeight(700);
 			setWidth(1200);
@@ -55,19 +55,19 @@ public class DlgViewStatByTelCompGraph extends Window {
 
 			chart.setValueProperty("calls_amm");
 			chart.setChartType(ChartType.LINE);
-			chart.setTitle(CallCenter.constants.statisticFull());
-			chart.setValueTitle(CallCenter.constants.amount());
+			chart.setTitle(CallCenterBK.constants.statisticFull());
+			chart.setValueTitle(CallCenterBK.constants.amount());
 			chart.setShowDataPoints(true);
 			chart.setPointHoverCustomizer(new ChartPointHoverCustomizer() {
 				@Override
 				public String hoverHTML(Float value, Record record) {
 					return ("<b>"
-							+ CallCenter.constants.telComps()
+							+ CallCenterBK.constants.telComps()
 							+ " : </b> "
 							+ record.getAttribute("tel_comp_name_geo")
 							+ "<br />"
 							+ "<b>"
-							+ CallCenter.constants.amount()
+							+ CallCenterBK.constants.amount()
 							+ " : </b> "
 							+ (record.getAttributeAsDouble("calls_amm") == null ? nf
 									.format(0) : nf.format(record
@@ -82,7 +82,7 @@ public class DlgViewStatByTelCompGraph extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);
@@ -111,7 +111,7 @@ public class DlgViewStatByTelCompGraph extends Window {
 				ListGridRecord record = records[i];
 				ListGridRecord calls_amm = new ListGridRecord();
 				calls_amm.setAttribute("tel_comp_name_geo",
-						CallCenter.constants.telComps());
+						CallCenterBK.constants.telComps());
 				calls_amm.setAttribute("value",
 						record.getAttributeAsDouble("calls_amm"));
 				listData.add(calls_amm);

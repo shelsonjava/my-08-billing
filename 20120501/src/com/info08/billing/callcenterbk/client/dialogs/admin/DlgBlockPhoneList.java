@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
@@ -22,7 +22,7 @@ public class DlgBlockPhoneList extends Window {
 	public DlgBlockPhoneList(ListGridRecord listGridRecord) {
 		try {
 
-			setTitle(CallCenter.constants.blockPhoneList());
+			setTitle(CallCenterBK.constants.blockPhoneList());
 
 			setHeight(700);
 			setWidth(300);
@@ -117,7 +117,7 @@ public class DlgBlockPhoneList extends Window {
 			phoneList.setFetchOperation(fetchMethod);
 
 			ListGridField phone = new ListGridField("phone",
-					CallCenter.constants.phone());
+					CallCenterBK.constants.phone());
 			phone.setAlign(Alignment.CENTER);
 
 			phoneList.setFields(phone);
@@ -129,7 +129,7 @@ public class DlgBlockPhoneList extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);

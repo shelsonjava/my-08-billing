@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
 import java.util.LinkedHashMap;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.info08.billing.callcenterbk.shared.entity.callcenter.MyMobbase;
@@ -37,8 +37,8 @@ public class DlgAddMyMobBase extends Window {
 					.getServerSession();
 			final MyMobbase myMobbase = serverSession.getMyMobbase();
 
-			setTitle(myMobbase == null ? CallCenter.constants.addAbonentName()
-					: CallCenter.constants.editAbonentName());
+			setTitle(myMobbase == null ? CallCenterBK.constants.addAbonentName()
+					: CallCenterBK.constants.editAbonentName());
 
 			setHeight(160);
 			setWidth(430);
@@ -64,15 +64,15 @@ public class DlgAddMyMobBase extends Window {
 			hLayout.addMember(dynamicForm);
 
 			nmItem = new TextItem();
-			nmItem.setTitle(CallCenter.constants.abonentName());
+			nmItem.setTitle(CallCenterBK.constants.abonentName());
 			nmItem.setName("phoneItem");
 			nmItem.setWidth(250);
 
 			sexItem = new RadioGroupItem();
-			sexItem.setTitle(CallCenter.constants.sex());
+			sexItem.setTitle(CallCenterBK.constants.sex());
 			LinkedHashMap<String, String> sexMap = new LinkedHashMap<String, String>();
-			sexMap.put("1", CallCenter.constants.male());
-			sexMap.put("0", CallCenter.constants.female());
+			sexMap.put("1", CallCenterBK.constants.male());
+			sexMap.put("0", CallCenterBK.constants.female());
 			sexItem.setValueMap(sexMap);
 
 			if (myMobbase != null) {
@@ -87,11 +87,11 @@ public class DlgAddMyMobBase extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -123,26 +123,26 @@ public class DlgAddMyMobBase extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			String phone = serverSession.getPhone();
 			if (phone == null || phone.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.notCallCenterUser());
+				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			if (!serverSession.isPhoneIsMobile()) {
-				SC.say(CallCenter.constants.phoneIsNotMobile());
+				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
 			String sex = sexItem.getValueAsString();
 			if (sex == null || sex.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.plzSelectSex());
+				SC.say(CallCenterBK.constants.plzSelectSex());
 				return;
 			}
 			String nm = nmItem.getValueAsString();
 			if (nm == null || nm.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenter.constants.plzEnterAbonentName());
+				SC.say(CallCenterBK.constants.plzEnterAbonentName());
 				return;
 			}
 

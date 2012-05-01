@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewAbonent;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
@@ -57,7 +57,7 @@ public class TabFindAbonent extends Tab {
 	private DataSource datasource;
 
 	public TabFindAbonent() {
-		setTitle(CallCenter.constants.findAbonent());
+		setTitle(CallCenterBK.constants.findAbonent());
 		setCanClose(true);
 
 		datasource = DataSource.get("AbonentsDS");
@@ -75,27 +75,27 @@ public class TabFindAbonent extends Tab {
 		mainLayout.addMember(searchForm);
 
 		firstNameItem = new TextItem();
-		firstNameItem.setTitle(CallCenter.constants.name());
+		firstNameItem.setTitle(CallCenterBK.constants.name());
 		firstNameItem.setWidth(250);
 		firstNameItem.setName("firstNameItem");
 
 		lastNameItem = new TextItem();
-		lastNameItem.setTitle(CallCenter.constants.lastName());
+		lastNameItem.setTitle(CallCenterBK.constants.lastName());
 		lastNameItem.setWidth(250);
 		lastNameItem.setName("lastNameItem");
 
 		phoneItem = new TextItem();
-		phoneItem.setTitle(CallCenter.constants.phone());
+		phoneItem.setTitle(CallCenterBK.constants.phone());
 		phoneItem.setWidth(250);
 		phoneItem.setName("phone");
 
 		streetItem = new TextItem();
-		streetItem.setTitle(CallCenter.constants.street());
+		streetItem.setTitle(CallCenterBK.constants.street());
 		streetItem.setName("street_name_geo");
 		streetItem.setWidth(250);
 
 		citiesItem = new ComboBoxItem();
-		citiesItem.setTitle(CallCenter.constants.city());
+		citiesItem.setTitle(CallCenterBK.constants.city());
 		citiesItem.setName("city_name_geo");
 		citiesItem.setWidth(250);
 		citiesItem.setFetchMissingValues(true);
@@ -126,7 +126,7 @@ public class TabFindAbonent extends Tab {
 		});
 
 		regionItem = new ComboBoxItem();
-		regionItem.setTitle(CallCenter.constants.cityRegion());
+		regionItem.setTitle(CallCenterBK.constants.cityRegion());
 		regionItem.setName("city_region_name_geo");
 		regionItem.setWidth(250);
 		regionItem.setFetchMissingValues(true);
@@ -166,10 +166,10 @@ public class TabFindAbonent extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -207,23 +207,23 @@ public class TabFindAbonent extends Tab {
 		listGrid.setFilterOnKeypress(true);
 
 		ListGridField firstname = new ListGridField("firstname",
-				CallCenter.constants.name(), 120);
+				CallCenterBK.constants.name(), 120);
 		firstname.setCanFilter(true);
 		
 		ListGridField lastname = new ListGridField("lastname",
-				CallCenter.constants.lastName(), 150);
+				CallCenterBK.constants.lastName(), 150);
 		lastname.setCanFilter(true);
 		
 		ListGridField city = new ListGridField("city",
-				CallCenter.constants.city(), 140);
+				CallCenterBK.constants.city(), 140);
 		city.setCanFilter(false);
 		
 		ListGridField address = new ListGridField("address",
-				CallCenter.constants.address());
+				CallCenterBK.constants.address());
 		address.setCanFilter(true);
 		
 		ListGridField phone = new ListGridField("phone",
-				CallCenter.constants.phone(), 100);
+				CallCenterBK.constants.phone(), 100);
 		phone.setCanFilter(true);
 
 		firstname.setAlign(Alignment.LEFT);
@@ -348,8 +348,8 @@ public class TabFindAbonent extends Tab {
 					&& (phone == null || phone.trim().equals(""))
 					&& (street_id_str == null || street_id_str.trim()
 							.equals(""))) {
-				SC.say(CallCenter.constants.warning(),
-						CallCenter.constants.enterAbonentSearchParam());
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.enterAbonentSearchParam());
 				return;
 			}
 			Criteria criteria = new Criteria();

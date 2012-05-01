@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewGeoInd;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -49,7 +49,7 @@ public class TabFindGeoInd extends Tab {
 	private DataSource geoIndCountryDS;
 
 	public TabFindGeoInd() {
-		setTitle(CallCenter.constants.regIndexes());
+		setTitle(CallCenterBK.constants.regIndexes());
 		setCanClose(true);
 
 		geoIndCountryDS = DataSource.get("GeoIndCountryDS");
@@ -67,12 +67,12 @@ public class TabFindGeoInd extends Tab {
 		mainLayout.addMember(searchForm);
 
 		regCountryNameItem = new TextItem();
-		regCountryNameItem.setTitle(CallCenter.constants.regCountry());
+		regCountryNameItem.setTitle(CallCenterBK.constants.regCountry());
 		regCountryNameItem.setName("regCountryNameItem");
 		regCountryNameItem.setWidth(250);
 
 		indexItem = new TextItem();
-		indexItem.setTitle(CallCenter.constants.index());
+		indexItem.setTitle(CallCenterBK.constants.index());
 		indexItem.setName("indexItem");
 		indexItem.setWidth(250);
 
@@ -84,10 +84,10 @@ public class TabFindGeoInd extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -124,17 +124,17 @@ public class TabFindGeoInd extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField regionName = new ListGridField("regionName",
-				CallCenter.constants.region());
+				CallCenterBK.constants.region());
 		regionName.setAlign(Alignment.LEFT);
 		regionName.setCanFilter(false);
 
 		ListGridField geo_country_geo = new ListGridField("geo_country_geo",
-				CallCenter.constants.cityCountry());
+				CallCenterBK.constants.cityCountry());
 		geo_country_geo.setAlign(Alignment.LEFT);
 		geo_country_geo.setCanFilter(true);
 
 		ListGridField geo_index = new ListGridField("geo_index",
-				CallCenter.constants.index());
+				CallCenterBK.constants.index());
 		geo_index.setAlign(Alignment.LEFT);
 		geo_index.setCanFilter(true);
 

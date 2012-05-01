@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.common.components;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
@@ -35,7 +35,7 @@ public class DlgComboBoxItemChooser extends Window {
 		this.myIdField = myIdField;
 		this.myFieldName = myFieldName;
 		this.comboBoxItem = comboBoxItem;
-		setTitle(CallCenter.constants.shoose() + " : " + myChooserTitle + " !");
+		setTitle(CallCenterBK.constants.shoose() + " : " + myChooserTitle + " !");
 
 		setHeight(height);
 		setWidth(width);
@@ -82,11 +82,11 @@ public class DlgComboBoxItemChooser extends Window {
 		hLayoutItem.setAlign(Alignment.RIGHT);
 
 		IButton saveItem = new IButton();
-		saveItem.setTitle(CallCenter.constants.save());
+		saveItem.setTitle(CallCenterBK.constants.save());
 		saveItem.setWidth(100);
 
 		IButton cancItem = new IButton();
-		cancItem.setTitle(CallCenter.constants.close());
+		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
 		hLayoutItem.setMembers(saveItem, cancItem);
@@ -121,7 +121,7 @@ public class DlgComboBoxItemChooser extends Window {
 		try {
 			ListGridRecord listGridRecord = listGrid.getSelectedRecord();
 			if (listGridRecord == null) {
-				SC.say(CallCenter.constants.pleaseSelrecord());
+				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
 			Integer myId = listGridRecord.getAttributeAsInt(myIdField);

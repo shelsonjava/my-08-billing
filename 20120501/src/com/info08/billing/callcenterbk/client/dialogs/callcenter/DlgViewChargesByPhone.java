@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.data.Criteria;
@@ -37,7 +37,7 @@ public class DlgViewChargesByPhone extends Window {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 
-			setTitle(CallCenter.constants.viewNumberCharges());
+			setTitle(CallCenterBK.constants.viewNumberCharges());
 
 			setHeight(700);
 			setWidth(600);
@@ -63,7 +63,7 @@ public class DlgViewChargesByPhone extends Window {
 			hLayout.addMember(dynamicForm);
 
 			nmItem = new TextItem();
-			nmItem.setTitle(CallCenter.constants.phone());
+			nmItem.setTitle(CallCenterBK.constants.phone());
 			nmItem.setName("phoneItem");
 			nmItem.setWidth(250);
 			nmItem.setCanEdit(false);
@@ -94,15 +94,15 @@ public class DlgViewChargesByPhone extends Window {
 			hLayout.addMember(listGrid);
 
 			ListGridField rec_date = new ListGridField("rec_date",
-					CallCenter.constants.recDate(), 150);
+					CallCenterBK.constants.recDate(), 150);
 			ListGridField aprice = new ListGridField("aprice",
-					CallCenter.constants.price(), 70);
+					CallCenterBK.constants.price(), 70);
 			aprice.setAlign(Alignment.CENTER);
 			aprice.setShowGroupSummary(false);
 			aprice.setShowGridSummary(false);
 			
 			ListGridField amount = new ListGridField("amount",
-					CallCenter.constants.amount(), 100);
+					CallCenterBK.constants.amount(), 100);
 			amount.setSummaryFunction(SummaryFunctionType.SUM);
 			amount.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
@@ -119,11 +119,11 @@ public class DlgViewChargesByPhone extends Window {
 				}
 			});
 			ListGridField cnt = new ListGridField("cnt",
-					CallCenter.constants.cntShort(), 70);
+					CallCenterBK.constants.cntShort(), 70);
 			cnt.setAlign(Alignment.CENTER);
 
 			ListGridField service_name_geo = new ListGridField(
-					"service_name_geo", CallCenter.constants.service());
+					"service_name_geo", CallCenterBK.constants.service());
 			rec_date.setAlign(Alignment.CENTER);
 			amount.setAlign(Alignment.CENTER);
 			service_name_geo.setAlign(Alignment.CENTER);
@@ -135,7 +135,7 @@ public class DlgViewChargesByPhone extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			hLayoutItem.setMembers(cancItem);

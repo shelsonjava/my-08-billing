@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.content.control;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -57,7 +57,7 @@ public class TabViewSMSLog extends Tab {
 	public TabViewSMSLog() {
 		try {
 
-			setTitle(CallCenter.constants.findByNumber());
+			setTitle(CallCenterBK.constants.findByNumber());
 			setCanClose(true);
 
 			orgDS = DataSource.get("LogSMSDS");
@@ -75,12 +75,12 @@ public class TabViewSMSLog extends Tab {
 			mainLayout.addMember(searchForm);
 
 			phoneItem = new TextItem();
-			phoneItem.setTitle(CallCenter.constants.phone());
+			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setName("phoneItem");
 			phoneItem.setWidth(250);
 
 			dateItem = new DateItem();
-			dateItem.setTitle(CallCenter.constants.date());
+			dateItem.setTitle(CallCenterBK.constants.date());
 			dateItem.setName("dateItem");
 			dateItem.setWidth(250);
 			dateItem.setUseTextField(true);
@@ -89,14 +89,14 @@ public class TabViewSMSLog extends Tab {
 			statusItem = new SelectItem();
 			statusItem.setName("statusItem");
 			statusItem.setWidth(250);
-			statusItem.setTitle(CallCenter.constants.status());
+			statusItem.setTitle(CallCenterBK.constants.status());
 			statusItem
 					.setValueMap(ClientMapUtil.getInstance().getSmsStatuses());
 			statusItem.setDefaultToFirstOption(true);
 
 			DataSource persons = CommonSingleton.getInstance().getPersonsDS();
 			operatorItem = new ComboBoxItem();
-			operatorItem.setTitle(CallCenter.constants.operator());
+			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setType("comboBox");
 			operatorItem.setWidth(250);
 			operatorItem.setName("personelId");
@@ -113,10 +113,10 @@ public class TabViewSMSLog extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -157,27 +157,27 @@ public class TabViewSMSLog extends Tab {
 			listGrid.setCanDragSelectText(true);
 
 			ListGridField sms_type_descr = new ListGridField("sms_type_descr",
-					CallCenter.constants.type(), 100);
+					CallCenterBK.constants.type(), 100);
 			sms_type_descr.setAlign(Alignment.CENTER);
 
 			ListGridField status_descr = new ListGridField("status_descr",
-					CallCenter.constants.status(), 100);
+					CallCenterBK.constants.status(), 100);
 			status_descr.setAlign(Alignment.CENTER);
 
 			ListGridField phone = new ListGridField("phone",
-					CallCenter.constants.phone(), 80);
+					CallCenterBK.constants.phone(), 80);
 			phone.setAlign(Alignment.CENTER);
 
 			ListGridField sms_date = new ListGridField("sms_date",
-					CallCenter.constants.date(), 120);
+					CallCenterBK.constants.date(), 120);
 			sms_date.setAlign(Alignment.CENTER);
 
 			ListGridField rec_user = new ListGridField("rec_user",
-					CallCenter.constants.recUser(), 120);
+					CallCenterBK.constants.recUser(), 120);
 			rec_user.setAlign(Alignment.CENTER);
 
 			ListGridField sms_text = new ListGridField("sms_text",
-					CallCenter.constants.sms());
+					CallCenterBK.constants.sms());
 			sms_text.setAlign(Alignment.LEFT);
 
 			listGrid.setFields(sms_type_descr, status_descr, phone, sms_date,

@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.content.misc;
 
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.misc.DlgAddEditSecCalendar;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -68,7 +68,7 @@ public class TabCalendar extends Tab {
 
 	public TabCalendar() {
 		try {
-			setTitle(CallCenter.constants.menuCalendar());
+			setTitle(CallCenterBK.constants.menuCalendar());
 			setCanClose(true);
 
 			datasource = DataSource.get("CalSecDS");
@@ -86,7 +86,7 @@ public class TabCalendar extends Tab {
 			mainLayout.addMember(searchForm);
 
 			calendarStateItem = new ComboBoxItem();
-			calendarStateItem.setTitle(CallCenter.constants.type());
+			calendarStateItem.setTitle(CallCenterBK.constants.type());
 			calendarStateItem.setWidth(300);
 			calendarStateItem.setName("calendar_state_id");
 			calendarStateItem.setValueMap(ClientMapUtil.getInstance()
@@ -94,7 +94,7 @@ public class TabCalendar extends Tab {
 			calendarStateItem.setAddUnknownValues(false);
 
 			secCalendarTypeItem = new ComboBoxItem();
-			secCalendarTypeItem.setTitle(CallCenter.constants.moonPhase());
+			secCalendarTypeItem.setTitle(CallCenterBK.constants.moonPhase());
 			secCalendarTypeItem.setWidth(300);
 			secCalendarTypeItem.setName("calendar_event_id");
 			secCalendarTypeItem.setValueMap(ClientMapUtil.getInstance()
@@ -102,24 +102,24 @@ public class TabCalendar extends Tab {
 			secCalendarTypeItem.setAddUnknownValues(false);
 
 			calendarDayItem = new DateItem();
-			calendarDayItem.setTitle(CallCenter.constants.date());
+			calendarDayItem.setTitle(CallCenterBK.constants.date());
 			calendarDayItem.setWidth(300);
 			calendarDayItem.setValue(new Date());
 			calendarDayItem.setName("calendar_day");
-			calendarDayItem.setHint(CallCenter.constants.choose());
+			calendarDayItem.setHint(CallCenterBK.constants.choose());
 
 			descriptionItem = new TextItem();
-			descriptionItem.setTitle(CallCenter.constants.description());
+			descriptionItem.setTitle(CallCenterBK.constants.description());
 			descriptionItem.setName("calendar_description");
 			descriptionItem.setWidth(300);
 
 			commentItem = new TextItem();
-			commentItem.setTitle(CallCenter.constants.comment());
+			commentItem.setTitle(CallCenterBK.constants.comment());
 			commentItem.setName("calendar_comment");
 			commentItem.setWidth(300);
 
 			byCalendarDayItem = new CheckboxItem();
-			byCalendarDayItem.setTitle(CallCenter.constants.searchByDate());
+			byCalendarDayItem.setTitle(CallCenterBK.constants.searchByDate());
 			byCalendarDayItem.setWidth(300);
 			byCalendarDayItem.setName("buCalDaySearch");
 			byCalendarDayItem.setValue(false);
@@ -134,10 +134,10 @@ public class TabCalendar extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenter.constants.clear());
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenter.constants.find());
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -147,25 +147,25 @@ public class TabCalendar extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenter.constants.add(),
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
 					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenter.constants.modify(),
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
 					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			disableBtn = new ToolStripButton(CallCenter.constants.disable(),
+			disableBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 					"deleteIcon.png");
 			disableBtn.setLayoutAlign(Alignment.LEFT);
 			disableBtn.setWidth(50);
 			toolStrip.addButton(disableBtn);
 
-			activateBtn = new ToolStripButton(CallCenter.constants.enable(),
+			activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
 					"restoreIcon.gif");
 			activateBtn.setLayoutAlign(Alignment.LEFT);
 			activateBtn.setWidth(50);
@@ -173,7 +173,7 @@ public class TabCalendar extends Tab {
 
 			toolStrip.addSeparator();
 
-			copyBtn = new ToolStripButton(CallCenter.constants.copy(),
+			copyBtn = new ToolStripButton(CallCenterBK.constants.copy(),
 					"copy.png");
 			copyBtn.setLayoutAlign(Alignment.LEFT);
 			copyBtn.setWidth(50);
@@ -211,36 +211,36 @@ public class TabCalendar extends Tab {
 			listGrid.setShowHoverComponents(true);
 
 			datasource.getField("calendar_day").setTitle(
-					CallCenter.constants.date());
+					CallCenterBK.constants.date());
 			datasource.getField("event").setTitle(
-					CallCenter.constants.moonPhase());
-			datasource.getField("state").setTitle(CallCenter.constants.type());
+					CallCenterBK.constants.moonPhase());
+			datasource.getField("state").setTitle(CallCenterBK.constants.type());
 			datasource.getField("sun_rise").setTitle(
-					CallCenter.constants.order());
+					CallCenterBK.constants.order());
 			datasource.getField("calendar_description").setTitle(
-					CallCenter.constants.description());
+					CallCenterBK.constants.description());
 
 			datasource.getField("calendar_comment").setTitle(
-					CallCenter.constants.comment());
+					CallCenterBK.constants.comment());
 			datasource.getField("rec_date").setTitle(
-					CallCenter.constants.recDate());
+					CallCenterBK.constants.recDate());
 			datasource.getField("rec_user").setTitle(
-					CallCenter.constants.recUser());
+					CallCenterBK.constants.recUser());
 			datasource.getField("upd_date").setTitle(
-					CallCenter.constants.updDate());
+					CallCenterBK.constants.updDate());
 			datasource.getField("upd_user").setTitle(
-					CallCenter.constants.updUser());
+					CallCenterBK.constants.updUser());
 
 			ListGridField calendar_day = new ListGridField("calendar_day",
-					CallCenter.constants.date(), 150);
+					CallCenterBK.constants.date(), 150);
 			ListGridField event = new ListGridField("event",
-					CallCenter.constants.moonPhase(), 150);
+					CallCenterBK.constants.moonPhase(), 150);
 			ListGridField state = new ListGridField("state",
-					CallCenter.constants.type(), 80);
+					CallCenterBK.constants.type(), 80);
 			ListGridField sun_rise = new ListGridField("sun_rise",
-					CallCenter.constants.sunRise(), 100);
+					CallCenterBK.constants.sunRise(), 100);
 			ListGridField calendar_description = new ListGridField(
-					"calendar_description", CallCenter.constants.description(),
+					"calendar_description", CallCenterBK.constants.description(),
 					250);
 
 			calendar_day.setAlign(Alignment.LEFT);
@@ -283,7 +283,7 @@ public class TabCalendar extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditSecCalendar dlgEditSecCalendar = new DlgAddEditSecCalendar(
@@ -298,7 +298,7 @@ public class TabCalendar extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditSecCalendar dlgEditSecCalendar = new DlgAddEditSecCalendar(
@@ -313,18 +313,18 @@ public class TabCalendar extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (!deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrDisabled());
+						SC.say(CallCenterBK.constants.recordAlrDisabled());
 						return;
 					}
 					final Integer calendar_id = listGridRecord
 							.getAttributeAsInt("calendar_id");
-					SC.ask(CallCenter.constants.askForDisable(),
+					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -341,18 +341,18 @@ public class TabCalendar extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					Integer deleted = listGridRecord
 							.getAttributeAsInt("deleted");
 					if (deleted.equals(0)) {
-						SC.say(CallCenter.constants.recordAlrEnabled());
+						SC.say(CallCenterBK.constants.recordAlrEnabled());
 						return;
 					}
 					final Integer calendar_id = listGridRecord
 							.getAttributeAsInt("calendar_id");
-					SC.ask(CallCenter.constants.askForEnable(),
+					SC.ask(CallCenterBK.constants.askForEnable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
@@ -366,7 +366,7 @@ public class TabCalendar extends Tab {
 
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(780);
-			Tab tabDetViewer = new Tab(CallCenter.constants.view());
+			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
 			final DetailViewer detailViewer = new DetailViewer();
 			detailViewer.setDataSource(datasource);
 			detailViewer.setWidth(750);
@@ -384,7 +384,7 @@ public class TabCalendar extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenter.constants.pleaseSelrecord());
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 					DlgAddEditSecCalendar dlgEditSecCalendar = new DlgAddEditSecCalendar(

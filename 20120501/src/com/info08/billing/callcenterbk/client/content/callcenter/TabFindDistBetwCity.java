@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewCityDist;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -48,7 +48,7 @@ public class TabFindDistBetwCity extends Tab {
 	private DataSource citiesDistDS;
 
 	public TabFindDistBetwCity() {
-		setTitle(CallCenter.constants.distBetweenCities());
+		setTitle(CallCenterBK.constants.distBetweenCities());
 		setCanClose(true);
 
 		citiesDistDS = DataSource.get("CitiesDistDS");
@@ -66,7 +66,7 @@ public class TabFindDistBetwCity extends Tab {
 		mainLayout.addMember(searchForm);
 
 		cityFromItem = new ComboBoxItem();
-		cityFromItem.setTitle(CallCenter.constants.cityFrom());
+		cityFromItem.setTitle(CallCenterBK.constants.cityFrom());
 		cityFromItem.setName("cityFromItem");
 		cityFromItem.setWidth(375);
 		cityFromItem.setFetchMissingValues(true);
@@ -96,7 +96,7 @@ public class TabFindDistBetwCity extends Tab {
 		});
 
 		cityToItem = new ComboBoxItem();
-		cityToItem.setTitle(CallCenter.constants.cityTo());
+		cityToItem.setTitle(CallCenterBK.constants.cityTo());
 		cityToItem.setName("cityToItem");
 		cityToItem.setWidth(375);
 		cityToItem.setFetchMissingValues(true);
@@ -132,10 +132,10 @@ public class TabFindDistBetwCity extends Tab {
 		buttonLayout.setAlign(Alignment.RIGHT);
 
 		findButton = new IButton();
-		findButton.setTitle(CallCenter.constants.find());
+		findButton.setTitle(CallCenterBK.constants.find());
 
 		clearButton = new IButton();
-		clearButton.setTitle(CallCenter.constants.clear());
+		clearButton.setTitle(CallCenterBK.constants.clear());
 
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -159,27 +159,27 @@ public class TabFindDistBetwCity extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField cityStart = new ListGridField("cityStart",
-				CallCenter.constants.cityFrom(), 140);
+				CallCenterBK.constants.cityFrom(), 140);
 		cityStart.setAlign(Alignment.LEFT);
 		cityStart.setCanFilter(false);
 
 		ListGridField cityEnd = new ListGridField("cityEnd",
-				CallCenter.constants.cityTo(), 140);
+				CallCenterBK.constants.cityTo(), 140);
 		cityEnd.setAlign(Alignment.LEFT);
 		cityEnd.setCanFilter(false);
 
 		ListGridField cityDistTypeDesc = new ListGridField("cityDistTypeDesc",
-				CallCenter.constants.type(), 140);
+				CallCenterBK.constants.type(), 140);
 		cityDistTypeDesc.setAlign(Alignment.LEFT);
 		cityDistTypeDesc.setCanFilter(false);
 
 		ListGridField city_distance_geo = new ListGridField(
-				"city_distance_geo", CallCenter.constants.distance(), 180);
+				"city_distance_geo", CallCenterBK.constants.distance(), 180);
 		city_distance_geo.setAlign(Alignment.LEFT);
 		city_distance_geo.setCanFilter(false);
 
 		ListGridField note_geo = new ListGridField("note_geo",
-				CallCenter.constants.comment());
+				CallCenterBK.constants.comment());
 		note_geo.setAlign(Alignment.LEFT);
 		note_geo.setCanFilter(true);
 

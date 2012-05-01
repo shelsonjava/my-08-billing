@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -33,7 +33,7 @@ public class DlgUpdateContrCurrRangePrice extends Window {
 		try {
 			this.listGridRecord = listGridRecord;
 			this.listGrid = listGrid;
-			setTitle(CallCenter.constants.setCurrentPrice());
+			setTitle(CallCenterBK.constants.setCurrentPrice());
 
 			setHeight(110);
 			setWidth(350);
@@ -62,7 +62,7 @@ public class DlgUpdateContrCurrRangePrice extends Window {
 			hLayout.addMember(dynamicForm);
 
 			rangeCurrPriceItem = new TextItem();
-			rangeCurrPriceItem.setTitle(CallCenter.constants.setCurrentPrice());
+			rangeCurrPriceItem.setTitle(CallCenterBK.constants.setCurrentPrice());
 			rangeCurrPriceItem.setWidth("100%");
 			rangeCurrPriceItem.setName("rangeCurrPriceItem");
 			rangeCurrPriceItem.setKeyPressFilter("[0-9\\.]");
@@ -75,11 +75,11 @@ public class DlgUpdateContrCurrRangePrice extends Window {
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
 			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenter.constants.close());
+			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
 			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenter.constants.save());
+			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
 			hLayoutItem.setMembers(saveItem, cancItem);
@@ -111,13 +111,13 @@ public class DlgUpdateContrCurrRangePrice extends Window {
 		try {
 			String range_curr_price = rangeCurrPriceItem.getValueAsString();
 			if (range_curr_price == null || range_curr_price.trim().equals("")) {
-				SC.say(CallCenter.constants.enterAmount());
+				SC.say(CallCenterBK.constants.enterAmount());
 				return;
 			}
 			try {
 				Float.parseFloat(range_curr_price);
 			} catch (Exception e) {
-				SC.say(CallCenter.constants.invalidAmount());
+				SC.say(CallCenterBK.constants.invalidAmount());
 				return;
 			}
 			Record record = new Record();

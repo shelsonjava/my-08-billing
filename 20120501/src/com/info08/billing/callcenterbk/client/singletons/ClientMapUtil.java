@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.singletons;
 
 import java.util.LinkedHashMap;
 
-import com.info08.billing.callcenterbk.client.CallCenter;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 
 public class ClientMapUtil {
 	private static ClientMapUtil instance;
@@ -166,60 +166,60 @@ public class ClientMapUtil {
 		orgNoteCrits.put("0", "ჩვეულებრივი");
 		orgNoteCrits.put("-1", "გაწითლებული");
 
-		indexSearchTypes.put("1", CallCenter.constants.findByCountry());
-		indexSearchTypes.put("2", CallCenter.constants.findByCity());
-		indexSearchTypes.put("3", CallCenter.constants.findByOperator());
+		indexSearchTypes.put("1", CallCenterBK.constants.findByCountry());
+		indexSearchTypes.put("2", CallCenterBK.constants.findByCity());
+		indexSearchTypes.put("3", CallCenterBK.constants.findByOperator());
 
-		smsStatuses.put("2", CallCenter.constants.all());
-		smsStatuses.put("1", CallCenter.constants.smsDelivered());
-		smsStatuses.put("-1", CallCenter.constants.smsNotDelivered());
+		smsStatuses.put("2", CallCenterBK.constants.all());
+		smsStatuses.put("1", CallCenterBK.constants.smsDelivered());
+		smsStatuses.put("-1", CallCenterBK.constants.smsNotDelivered());
 
-		callStatChargeTypes.put("0", CallCenter.constants.all());
-		callStatChargeTypes.put("1", CallCenter.constants.abonent());
-		callStatChargeTypes.put("2", CallCenter.constants.organization());
+		callStatChargeTypes.put("0", CallCenterBK.constants.all());
+		callStatChargeTypes.put("1", CallCenterBK.constants.abonent());
+		callStatChargeTypes.put("2", CallCenterBK.constants.organization());
 
-		callStatChargeTypes1.put("0", CallCenter.constants.countity());
-		callStatChargeTypes1.put("1", CallCenter.constants.percentage());
+		callStatChargeTypes1.put("0", CallCenterBK.constants.countity());
+		callStatChargeTypes1.put("1", CallCenterBK.constants.percentage());
 
-		weekDays.put("0", CallCenter.constants.wdayEvery());
-		weekDays.put("1", CallCenter.constants.wdayMonday());
-		weekDays.put("2", CallCenter.constants.wdayTuesday());
-		weekDays.put("4", CallCenter.constants.wdayWednesday());
-		weekDays.put("8", CallCenter.constants.wdayThursday());
-		weekDays.put("16", CallCenter.constants.wdayFriday());
-		weekDays.put("32", CallCenter.constants.wdaySaturday());
-		weekDays.put("64", CallCenter.constants.wdaySunday());
+		weekDays.put("0", CallCenterBK.constants.wdayEvery());
+		weekDays.put("1", CallCenterBK.constants.wdayMonday());
+		weekDays.put("2", CallCenterBK.constants.wdayTuesday());
+		weekDays.put("4", CallCenterBK.constants.wdayWednesday());
+		weekDays.put("8", CallCenterBK.constants.wdayThursday());
+		weekDays.put("16", CallCenterBK.constants.wdayFriday());
+		weekDays.put("32", CallCenterBK.constants.wdaySaturday());
+		weekDays.put("64", CallCenterBK.constants.wdaySunday());
 
-		contractorTypes.put("-1", CallCenter.constants.all());
-		contractorTypes.put("0", CallCenter.constants.budget());
-		contractorTypes.put("1", CallCenter.constants.commercial());
+		contractorTypes.put("-1", CallCenterBK.constants.all());
+		contractorTypes.put("0", CallCenterBK.constants.budget());
+		contractorTypes.put("1", CallCenterBK.constants.commercial());
 
-		contractorTypes1.put("0", CallCenter.constants.budget());
-		contractorTypes1.put("1", CallCenter.constants.commercial());
+		contractorTypes1.put("0", CallCenterBK.constants.budget());
+		contractorTypes1.put("1", CallCenterBK.constants.commercial());
 
-		telCompIndTypes.put("0", CallCenter.constants.partial());
-		telCompIndTypes.put("1", CallCenter.constants.full());
+		telCompIndTypes.put("0", CallCenterBK.constants.partial());
+		telCompIndTypes.put("1", CallCenterBK.constants.full());
 
-		contractorPriceTypes.put("-1", CallCenter.constants.all());
-		contractorPriceTypes.put("0", CallCenter.constants.simple());
-		contractorPriceTypes.put("1", CallCenter.constants.advanced());
+		contractorPriceTypes.put("-1", CallCenterBK.constants.all());
+		contractorPriceTypes.put("0", CallCenterBK.constants.simple());
+		contractorPriceTypes.put("1", CallCenterBK.constants.advanced());
 
-		limitTypes.put("-1", CallCenter.constants.all());
-		limitTypes.put("0", CallCenter.constants.whithLimit());
-		limitTypes.put("1", CallCenter.constants.whithOutLimit());
+		limitTypes.put("-1", CallCenterBK.constants.all());
+		limitTypes.put("0", CallCenterBK.constants.whithLimit());
+		limitTypes.put("1", CallCenterBK.constants.whithOutLimit());
 
-		hasCalculations.put("-1", CallCenter.constants.all());
-		hasCalculations.put("1", CallCenter.constants.yes());
-		hasCalculations.put("0", CallCenter.constants.noInGeo());
+		hasCalculations.put("-1", CallCenterBK.constants.all());
+		hasCalculations.put("1", CallCenterBK.constants.yes());
+		hasCalculations.put("0", CallCenterBK.constants.noInGeo());
 
-		hasCalculations1.put("1", CallCenter.constants.yes());
-		hasCalculations1.put("0", CallCenter.constants.noInGeo());
+		hasCalculations1.put("1", CallCenterBK.constants.yes());
+		hasCalculations1.put("0", CallCenterBK.constants.noInGeo());
 		
-		telCompIndTypes1.put("0", CallCenter.constants.byCharges());
-		telCompIndTypes1.put("1", CallCenter.constants.byCalls());
+		telCompIndTypes1.put("0", CallCenterBK.constants.byCharges());
+		telCompIndTypes1.put("1", CallCenterBK.constants.byCalls());
 		
-		callTypes.put("11", CallCenter.constants.direct());
-		callTypes.put("12", CallCenter.constants.nonDirect());
+		callTypes.put("11", CallCenterBK.constants.direct());
+		callTypes.put("12", CallCenterBK.constants.nonDirect());
 
 	}
 	
