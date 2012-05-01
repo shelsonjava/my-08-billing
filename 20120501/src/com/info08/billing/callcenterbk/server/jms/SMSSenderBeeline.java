@@ -26,7 +26,7 @@ public class SMSSenderBeeline implements MessageListener {
 	private int count;
 	protected long start;
 	private Topic topic;
-	private String url = "tcp://localhost:61616";
+	private String url = "tcp://localhost:61617";
 	private SMSCManager beelineSMSCManager;
 	private String serverIPAddress = "91.184.98.58";
 	private int serverPort = 3333;

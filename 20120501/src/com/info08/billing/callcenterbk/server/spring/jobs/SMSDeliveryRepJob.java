@@ -22,7 +22,7 @@ public class SMSDeliveryRepJob extends TimerTask {
 
 	private Logger logger = Logger.getLogger(SMSDeliveryRepJob.class.getName());
 	private SMSDelRepMagti smsDelRepMagti;
-	private String url = "tcp://localhost:61616";
+	private String url = "tcp://localhost:61617";
 	private Connection connection;
 	private Session session;
 	private MessageProducer publisher;

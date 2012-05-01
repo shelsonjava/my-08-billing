@@ -37,7 +37,7 @@ public class SMSDelRepMagti implements MessageListener {
 	private int count;
 	protected long start;
 	private Topic topic;
-	private String url = "tcp://localhost:61616";
+	private String url = "tcp://localhost:61617";
 	private String urlMgt = "http://81.95.160.47/bi/track.php?username=jeocnobari&password=jeo123&client_id=414&service_id=%s&message_id=%s";
 	private String from = "16008";
 

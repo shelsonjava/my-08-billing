@@ -25,7 +25,7 @@ public class SMSDeliveryManagerJob extends TimerTask {
 	private Logger logger = Logger.getLogger(SMSDeliveryManagerJob.class
 			.getName());
 	private SMSSenderMagti magtiListener;
-	private String url = "tcp://localhost:61616";
+	private String url = "tcp://localhost:61617";
 	private Connection connection;
 	private Session session;
 	private MessageProducer publisher;

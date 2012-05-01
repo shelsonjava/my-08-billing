@@ -120,7 +120,6 @@
 					        and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))
 					) 
 					and info.getcontractorpricenew(t.phone)=-999999999
-					and t.phone like '322%'				 
 				]]>  
 			</whereClause> 
     	</operationBinding>
@@ -149,8 +148,7 @@
 					        and to_number(t.phone) >= to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind))
 					        and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))
 					) 
-					and info.getcontractorpricenew(t.phone)=-999999999						
-					and t.phone like '322%'
+					and info.getcontractorpricenew(t.phone)=-999999999
 				]]>  
 			</whereClause> 
     	</operationBinding>

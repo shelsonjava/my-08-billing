@@ -30,7 +30,7 @@ public class SMSSenderGeocell implements MessageListener {
 	private int count;
 	protected long start;
 	private Topic topic;
-	private String url = "tcp://localhost:61616";
+	private String url = "tcp://localhost:61617";
 	//private String geocellUrl = "http://91.151.128.64:7777/pls/sms/phttp2sms.Process/src=%s&dst=%s&txt=%s";
 	private String magtiUrl = "http://81.95.160.47/mt/sendsms?username=jeocnobari&password=jeo123&client_id=414&service_id=%s&to=%s&text=%s";
 	private String from = "11808";
