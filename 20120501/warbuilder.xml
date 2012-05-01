@@ -1,0 +1,13 @@
+<project name="CallCenter" basedir="." default="default">
+ 	<target name="default" depends="buildwar,deploy"></target>
+ 	<target name="buildwar">
+		<war basedir="war" destfile="CallCenter.war" webxml="war/WEB-INF/web.xml">			
+			<webinf dir="war/WEB-INF/">
+				<include name="**/*.jar" />
+			</webinf>
+		</war>
+	</target>
+	<target name="deploy">
+		<copy file="CallCenter.war" todir="." />
+	</target>
+</project>

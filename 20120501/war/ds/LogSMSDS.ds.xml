@@ -1,0 +1,63 @@
+<DataSource
+	ID="LogSMSDS"
+	serverType="sql"
+	tableName="info.log_sms"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="sms_id"				type="integer"		title="ID"		hidden="true" primaryKey="true" />
+		<field name="status"				type="integer"		title="status"/>
+		<field name="sms_type"				type="integer"		title="sms_type"/>
+		<field name="phone"					type="text" 		title="phone"/>
+		<field name="sms_text"				type="text" 		title="sms_text"/>
+		<field name="sms_date"				type="datetime" 	title="sms_date"/>
+		<field name="session_id"			type="text" 		title="session_id"/>
+		<field name="rec_user"				type="text" 		title="rec_user"/>
+		<field name="service_id"			type="integer"		title="service_id"/>
+		<field name="new_style"				type="integer"		title="new_style"/>
+		<field name="failed"				type="integer"		title="failed"/>
+		<field name="delivered"				type="integer"		title="delivered"/>
+		<field name="del_rep_fail_counter"	type="integer"		title="delivered"/>
+		<field name="smsc_message_id"		type="text" 		title="smsc_message_id"/>
+		<field name="operator"				type="text" 		title="operator"/>
+		<field name="service_name_geo"		type="text" 		title="service_name_geo"/>
+		<field name="sms_type_descr"		type="text" 		title="sms_type_descr"/>
+		<field name="status_descr"			type="text" 		title="status_descr"/>
+	</fields>
+	
+	<operationBindings>
+		<operationBinding operationId="findSMSLog" operationType="fetch">
+    		<selectClause>  
+    			t.sms_id,
+				t.status,
+				t.sms_type,
+				t.phone,
+				t.sms_text,
+				t.sms_date,
+				t.session_id,
+				t.rec_user,
+				t.service_id,
+				t.new_style,
+				t.failed,
+				t.delivered,
+				t.del_rep_fail_counter,
+				t.smsc_message_id,
+				s.service_name_geo,
+				decode(t.sms_type, 1, 'გარკვევა', 'ჩვეულებრივი') as sms_type_descr,
+				decode(t.status, 1, 'მიწოდებულია', 'მიუწოდებელია') as status_descr
+			</selectClause> 
+			<tableClause>log_sms t,info.services s, info.personnel tt</tableClause>
+			<whereClause><![CDATA[			 
+				t.service_id = s.service_id(+) and t.rec_user = tt.user_name(+)
+				#if($criteria.phone) and t.phone like '%'||$criteria.phone||'%' #end
+				#if($criteria.session_id) and t.session_id = $criteria.session_id #end
+				#if($criteria.sms_date) and trunc(t.sms_date) = trunc($criteria.sms_date) #end
+				#if($criteria.pStatDelivered) and t.status = 1 #end
+				#if($criteria.pStatNotDelivered) and t.status <> 1 #end
+				#if($criteria.personnel_id) and tt.personnel_id = $criteria.personnel_id #end
+				]]>				 
+			</whereClause> 
+			<orderClause>t.sms_date desc</orderClause>
+    	</operationBinding>    	
+    </operationBindings>	
+</DataSource>

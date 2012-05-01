@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<listener>
+		<listener-class>com.info08.billing.callcenter.server.listener.MyContextListener</listener-class>
+	</listener>
+
+	<context-param>
+      <param-name>brokerURI</param-name>
+      <param-value>/WEB-INF/activemq.xml</param-value>
+    </context-param>
+    <listener>
+      <listener-class>org.apache.activemq.web.SpringBrokerContextListener</listener-class>
+    </listener>
+	
+	<!-- standard spring configuration -->  
+    <context-param>  
+        <param-name>contextConfigLocation</param-name>  
+        <param-value>/WEB-INF/applicationContext.xml</param-value>  
+    </context-param>
+	 <!-- Note: The servlets/filters referenced here are documented in the SDK javadoc -->  
+  
+    <!-- //>FileLoader -->  
+    <!-- Dynamic Compression -->  
+    <filter>  
+        <filter-name>CompressionFilter</filter-name>  
+        <filter-class>com.isomorphic.servlet.CompressionFilter</filter-class>  
+    </filter>  
+    <!-- CompressionFilter for dynamic compression -->  
+    <filter-mapping>  
+        <filter-name>CompressionFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>  
+    <!-- //<FileLoader -->  
+  
+    <servlet>  
+        <servlet-name>context</servlet-name>  
+        <servlet-class>org.springframework.web.context.ContextLoaderServlet</servlet-class>  
+        <load-on-startup>1</load-on-startup>  
+    </servlet>  
+    
+    
+    <!-- Web Services -->
+    <!--  
+    <servlet>  
+    	<display-name>JAX-RS Rest Servlet</display-name>
+        <servlet-name>JAX-RS Rest Servlet</servlet-name>  
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>com.info08.billing.callcenter.server.ws</param-value>
+		</init-param>  
+        <load-on-startup>1</load-on-startup>  
+    </servlet>
+    <servlet-mapping>
+		<servlet-name>JAX-RS Rest Servlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+    -->
+  
+    <servlet>  
+        <servlet-name>callcenter</servlet-name>  
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
+        <load-on-startup>1</load-on-startup>  
+    </servlet>
+	<servlet-mapping>  
+         <servlet-name>callcenter</servlet-name>  
+         <url-pattern>*.do</url-pattern>  
+     </servlet-mapping>	
+	
+
+	<!--  Setting Character Encoding -->
+	<filter>
+		<filter-name>CharsetFilter</filter-name>
+		<filter-class>com.info08.billing.callcenter.server.servlets.SetCharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharsetFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- //>FileLoader Dynamic Compression -->
+	<filter>
+		<filter-name>CompressionFilter</filter-name>
+		<filter-class>com.isomorphic.servlet.CompressionFilter</filter-class>
+	</filter>
+	<!-- CompressionFilter for dynamic compression -->
+	<filter-mapping>
+		<filter-name>CompressionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- //<FileLoader Servlets -->
+	<servlet>
+		<servlet-name>IDACall</servlet-name>
+		<servlet-class>com.isomorphic.servlet.IDACall</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DataSourceLoader</servlet-name>
+		<servlet-class>com.isomorphic.servlet.DataSourceLoader</servlet-class>
+	</servlet>
+	<!-- The FileDownload servlet downloads static files, like a webserver -->
+	<servlet>
+		<servlet-name>FileDownload</servlet-name>
+		<init-param>
+           <param-name>expires</param-name>
+           <param-value>text/javascript:86400,image/gif:86400,image/png:86400</param-value>
+       	</init-param>
+		<servlet-class>com.isomorphic.servlet.FileDownload</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>MessagingServlet</servlet-name>
+		<servlet-class>com.isomorphic.messaging.MessagingServlet</servlet-class>
+	</servlet>
+		
+	<servlet>
+		<servlet-name>commonServiceServlet</servlet-name>
+		<servlet-class>com.info08.billing.callcenter.server.impl.CommonServiceImpl</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>callCenterServlet</servlet-name>
+		<servlet-class>com.info08.billing.callcenter.server.listener.CallCenterServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>discoveryServlet</servlet-name>
+		<servlet-class>com.info08.billing.callcenter.server.listener.DiscoveryServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>initAppServlet</servlet-name>
+		<servlet-class>com.info08.billing.callcenter.server.servlets.InitAppServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Init</servlet-name>
+		<servlet-class>com.isomorphic.base.Init</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>HttpProxy</servlet-name>
+		<servlet-class>com.isomorphic.servlet.HttpProxyServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>PreCache</servlet-name>
+		<servlet-class>com.isomorphic.servlet.PreCache</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<!-- RPCManager uses this URL by default for Built-in DataSource operations -->
+	<servlet-mapping>
+		<servlet-name>IDACall</servlet-name>
+		<url-pattern>/callcenter/sc/IDACall/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>IDACall</servlet-name>
+		<url-pattern>/callcenter/sc/IDACall.aspx/*</url-pattern>
+	</servlet-mapping>
+	<!-- DataSourceLoader requests -->
+	<servlet-mapping>
+		<servlet-name>DataSourceLoader</servlet-name>
+		<url-pattern>/callcenter/sc/DataSourceLoader</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>HttpProxy</servlet-name>
+		<url-pattern>/callcenter/sc/HttpProxy/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FileDownload</servlet-name>
+		<url-pattern>/callcenter/sc/skins/*</url-pattern>
+	</servlet-mapping>
+	<!-- serve ISC modules compressed, with expires headers -->
+	<servlet-mapping>
+		<servlet-name>FileDownload</servlet-name>
+		<url-pattern>/callcenter/sc/system/modules/*</url-pattern>
+	</servlet-mapping>
+	<!-- serve ISC development modules compressed, with expires headers -->
+	<servlet-mapping>
+		<servlet-name>FileDownload</servlet-name>
+		<url-pattern>/callcenter/sc/system/development/*</url-pattern>
+	</servlet-mapping>
+	<!-- server skin assets with expires headers -->
+	<servlet-mapping>
+		<servlet-name>FileDownload</servlet-name>
+		<url-pattern>/callcenter/sc/system/reference/skin/*</url-pattern>
+	</servlet-mapping>	 
+	<servlet-mapping>
+		<servlet-name>MessagingServlet</servlet-name>
+		<url-pattern>/callcenter/sc/messaging/*</url-pattern>
+	</servlet-mapping>
+		
+	<servlet-mapping>
+		<servlet-name>commonServiceServlet</servlet-name>
+		<url-pattern>/callcenter/commonService</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>callCenterServlet</servlet-name>
+		<url-pattern>/callcenter/callCenterServlet/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>discoveryServlet</servlet-name>
+		<url-pattern>/callcenter/discoveryServlet/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>initAppServlet</servlet-name>
+		<url-pattern>/callcenter/initAppServlet/*</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!-- General config -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<mime-mapping>
+		<extension>manifest</extension>
+		<mime-type>text/cache-manifest</mime-type>
+	</mime-mapping>
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>CallCenter.html</welcome-file>
+	</welcome-file-list>
+	<jsp-config>
+		<!-- Isomorphic JSP tags -->
+		<taglib>
+			<taglib-uri>isomorphic</taglib-uri>
+			<taglib-location>/WEB-INF/iscTaglib.xml</taglib-location>
+		</taglib>
+	</jsp-config>
+</web-app>

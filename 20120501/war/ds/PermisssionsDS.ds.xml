@@ -1,0 +1,55 @@
+<DataSource 
+	ID="PermisssionsDS"
+    serverType="sql"
+    tableName="info.personnel_access"      
+    qualifyColumnNames="false">
+	<fields>
+		<field name="access_id" 		type="integer"	title="ID"	hidden="true" 	primaryKey="true" />
+    	<field name="access_name" 		type="text" 	title="Access Name"/>
+        <field name="deleted" 			type="integer" 	title="Deleted"	hidden="true"/>
+        <field name="rec_date"  		type="datetime" title="Rec Date" hidden="true"/>        
+        <field name="rec_user"			type="text"  	title="Rec User" hidden="true"/>
+        <field name="new_billing"		type="integer"  title="New Billing" hidden="true"/>
+        <field name="is_main_perm"		type="integer"  title="Is Main Perm" hidden="true"/>        
+	</fields>
+
+	<operationBindings>
+        <operationBinding operationId="customPersSearch" operationType="fetch" customFields="access_id,access_name,deleted,rec_date,rec_user,new_billing,is_main_perm">
+            <selectClause>
+				t.access_id,
+				t.access_name,
+				t.deleted,
+				t.rec_date,
+				t.rec_user,
+				t.new_billing,
+				t.is_main_perm
+			</selectClause>
+			<tableClause>
+				personnel_access t
+			</tableClause>
+			<whereClause><![CDATA[ 
+					t.new_billing = 1
+				]]>
+			</whereClause>		
+			<orderClause>t.access_id</orderClause>	
+        </operationBinding>
+          <!-- Custom User Permissions Search -->
+        <operationBinding operationId="customUserPersSearch"  operationType="fetch" customFields="access_id, access_name">
+            <selectClause>
+				pa.access_id,
+				pa.access_name,
+				pa.is_main_perm
+			</selectClause>
+			<tableClause>
+				info.personnel_to_access t,
+				info.personnel_access pa
+			</tableClause>
+			<whereClause><![CDATA[ 
+					t.access_id = pa.access_id and pa.new_billing = 1
+					#if ($criteria.personelId) AND t.personnel_id = $criteria.personelId #end
+				]]>
+			</whereClause>
+			<orderClause>pa.access_id</orderClause>			
+        </operationBinding>
+    </operationBindings>
+</DataSource>

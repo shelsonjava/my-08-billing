@@ -1,0 +1,155 @@
+<DataSource
+	ID="DiscoveryDS"
+	serverType="sql"
+	tableName="info.discover"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="discover_id"			type="integer"			title="ID"							hidden="true" primaryKey="true" />
+		<field name="discover_type"			type="text"				title="discover_type"/>
+		<field name="response_type"			type="text"				title="response_type"/>
+		<field name="contact_person"		type="text"				title="contact_person"/>
+		<field name="contact_phone"			type="contact_phone"	title="Ent Type Geo"/>
+		<field name="discover_txt"			type="text"				title="discover_txt"/>
+		<field name="phone"					type="text"				title="phone"/>
+		<field name="rec_date"				type="datetime"			title="Record Date"/>
+		<field name="rec_user"				type="text"				title="Record User"/>
+		<field name="upd_date"				type="datetime"			title="upd_date"/>
+		<field name="upd_user"				type="text"				title="Update User"/>
+		<field name="response_type_id"		type="integer"			title="response_type_id" 			hidden="true"/>
+		<field name="iscorrect"				type="integer"			title="iscorrect" 					hidden="true"/>
+		<field name="execution_status"		type="integer"			title="execution_status" 			hidden="true"/>
+		<field name="discover_type_id"		type="integer"			title="discover_type_id" 			hidden="true"/>
+		<field name="deleted"				type="integer"			title="deleted" 					hidden="true"/>
+		<field name="ccr"					type="integer"			title="ccr" 						hidden="true"/>
+		<field name="call_id"				type="text"				title="call_id" 					hidden="true"/>
+		<field name="loggedUserName"		type="text"				title="Logged UserName" 			hidden="true" />
+		<field name="is_locked"				type="integer"			title="is_locked" 					hidden="true"/>
+		<field name="personnel_id"			type="integer"			title="personnel_id" 				hidden="true"/>
+		<field name="personnel_id1"			type="integer"			title="personnel_id1" 				hidden="true"/>
+		<field name="start_date"			type="datetime"			title="start_date"/>		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+		
+		
+		<!-- add New Discovery Record -->
+		<operationBinding operationId="resolveDiscovery" operationType="update">
+            <customSQL>
+            	 <![CDATA[
+            	 	update info.discover t set             	 		
+            	 		t.upd_date = sysdate,             	 		
+            	 		t.execution_status = 1,
+            	 		t.is_locked = 0,
+            	 		t.upd_user = $values.upd_user,
+            	 		t.response_type_id = $values.response_type_id
+            	 		where t.discover_id = $values.discover_id
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+		
+		<!-- add New Discovery Record -->
+		<operationBinding operationId="sendDiscovery" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	insert into info.DISCOVER
+            	 			(call_id,phone,discover_txt,contact_phone,contact_person,discover_type_id,rec_user)
+                	values  ($values.call_id,$values.phone,$values.discover_txt,$values.contact_phone,$values.contact_person,$values.discover_type_id,$values.rec_user)
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+
+		<!-- Discover Update -->
+		<operationBinding operationType="update" operationId="updateDiscoverItem" serverMethod="updateDiscoverItem">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+        </operationBinding>
+        
+        <!-- Discover Update -->
+		<operationBinding operationType="update" operationId="takeDiscover" serverMethod="takeDiscover">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.DiscoveryDMI"/>
+        </operationBinding>
+        
+        
+    	<operationBinding operationId="searchAllDiscovery" operationType="fetch">
+    		<selectClause>   			
+    			tt.discover_type, 
+		        r.response_type, 
+		        t.discover_id, 
+		        t.call_id, 
+		        t.phone, 
+		        t.discover_txt, 
+		        t.contact_phone, 
+		        t.discover_type_id, 
+		        t.rec_date, 
+		        t.rec_user, 
+		        t.deleted, 
+		        t.upd_date, 
+		        t.upd_user, 
+		        t.response_type_id, 
+		        t.contact_person,
+		        t.execution_status, 
+		        t.ccr,
+		        t.iscorrect,
+		        t.is_locked,
+		        ss.start_date,
+		        p.personnel_id		    
+			</selectClause> 
+			<tableClause>discover t,discover_types tt,info.discover_rtypes r, log_sessions ss, personnel p</tableClause>
+			<whereClause><![CDATA[
+				t.discover_type_id = tt.discover_type_id(+) and t.response_type_id = r.response_type_id(+) and t.call_id = ss.session_id(+) and
+				t.rec_user = p.user_name and t.discover_type_id <> 4 and trunc(t.rec_date) >= trunc(sysdate-14)
+				#if($criteria.execution_status) and t.execution_status = $criteria.execution_status #end
+				#if($criteria.discover_type_id) and tt.discover_type_id = $criteria.discover_type_id #end 				
+				#if($criteria.phone) and t.phone like '%'||$criteria.phone||'%' #end
+				#if($criteria.contact_phone) and t.contact_phone like '%'||$criteria.contact_phone||'%' #end
+				#if($criteria.personnel_id) and p.personnel_id = $criteria.personnel_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.rec_date desc</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllDiscoveryHist" operationType="fetch">
+    		<selectClause>   			
+    			tt.discover_type, 
+		        r.response_type, 
+		        t.discover_id, 
+		        t.call_id, 
+		        t.phone, 
+		        t.discover_txt, 
+		        t.contact_phone, 
+		        t.discover_type_id, 
+		        t.rec_date, 
+		        t.rec_user, 
+		        t.deleted, 
+		        t.upd_date, 
+		        t.upd_user, 
+		        t.response_type_id, 
+		        t.contact_person,
+		        t.execution_status, 
+		        t.ccr,
+		        t.iscorrect,
+		        t.is_locked,
+		        ss.start_date,
+		        p.personnel_id as personnel_id,
+		        p1.personnel_id as personnel_id1   
+			</selectClause> 
+			<tableClause>discover t,discover_types tt,info.discover_rtypes r, log_sessions ss, personnel p, personnel p1 </tableClause>
+			<whereClause><![CDATA[
+				t.discover_type_id = tt.discover_type_id(+) and t.response_type_id = r.response_type_id(+) and t.call_id = ss.session_id(+) and
+				t.rec_user = p.user_name and t.discover_type_id <> 4 and t.upd_user = p1.user_name(+)
+				#if($criteria.execution_status) and t.execution_status = $criteria.execution_status #end
+				#if($criteria.discover_type_id) and tt.discover_type_id = $criteria.discover_type_id #end
+				#if($criteria.response_type_id) and t.response_type_id = $criteria.response_type_id #end
+				#if($criteria.rec_date) and trunc(t.rec_date) = trunc($criteria.rec_date) #end
+				#if($criteria.phone) and t.phone like '%'||$criteria.phone||'%' #end
+				#if($criteria.contact_phone) and t.contact_phone like '%'||$criteria.contact_phone||'%' #end
+				#if($criteria.personnel_id) and p.personnel_id = $criteria.personnel_id #end
+				#if($criteria.personnel_id1) and p1.personnel_id = $criteria.personnel_id1 #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.rec_date desc</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

@@ -1,0 +1,32 @@
+<DataSource
+	ID="MySQLSubsDS"
+	serverType="sql"
+	tableName="asteriskcdrdb.block"
+	qualifyColumnNames="false"
+	dropExtraFields = "false"
+	dbName="Mysql">
+	<fields>
+		<field name="code"		type="text"		title="text"	hidden="true" primaryKey="true" />
+		<field name="proriti"	type="integer"	title="proriti"/>
+		<field name="len"		type="integer"	title="len"/>
+	</fields>
+	
+	<operationBindings>
+		<operationBinding operationId="deletePhoneFromBlock" operationType="remove">
+            <customSQL>
+            	 <![CDATA[
+            	 	delete from asteriskcdrdb.block where code = $criteria.code and proriti = $criteria.proriti and len = $criteria.len            		
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
+        <operationBinding operationId="addPhoneToBlock" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	insert into asteriskcdrdb.block (code,proriti,len) values ($values.code,$values.proriti,$values.len)
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
+	</operationBindings>	
+</DataSource>

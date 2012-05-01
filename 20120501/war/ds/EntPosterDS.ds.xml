@@ -1,0 +1,238 @@
+<DataSource
+	ID="EntPosterDS"
+	serverType="sql"
+	tableName="info.ent_posters"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="ent_poster_id"				type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="ent_place_geo"				type="text"			title="ent_place_geo"/>
+		<field name="ent_poster_geo"			type="text"			title="ent_poster_geo"/>
+		<field name="comment_geo"				type="text"			title="Comment Geo"/>
+		<field name="poster_date"				type="datetime"		title="poster_date"/>
+		<field name="poster_price_geo"			type="text"			title="poster_price_geo"/>
+		<field name="poster_time"				type="text"			title="poster_time"/>
+		<field name="rec_date"					type="datetime"		title="rec_date"/>
+		<field name="rec_user"					type="text"			title="Record User"/>
+		<field name="upd_date"					type="datetime"		title="upd_date"/>
+		<field name="upd_user"					type="text"			title="Update User"/>
+		<field name="sms_comment"				type="text"			title="Sms Comment"/>
+		<field name="comment_eng"				type="text"			title="Comment Eng"					hidden="true"/>
+		<field name="poster_price_eng"			type="text"			title="poster_price_eng"			hidden="true"/>
+		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
+		<field name="dt_crit"					type="integer"		title="dt_crit" 					hidden="true"/>
+		<field name="dt_view_crit"				type="integer"		title="dt_crit" 					hidden="true"/>
+		<field name="ent_place_id"				type="integer"		title="ent_place_id" 				hidden="true"/>
+		<field name="ent_poster_eng"			type="text"			title="ent_poster_eng"				hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true"/>	
+		<field name="ent_type_id"				type="integer"		title="Ent Type Id" 				hidden="true"/>	
+		<field name="posterDateAndTime"			type="text"			title="posterDateAndTime"/>
+		<field name="scheduleitemid"			type="integer"		title="scheduleitemid" 				hidden="true"/>
+		<field name="scheduleplaceid"			type="integer"		title="scheduleplaceid" 			hidden="true"/>
+		<field name="itemname"					type="text"			title="itemname"/>
+		<field name="itemdate"					type="text"			title="itemdate"/>
+		<field name="info"						type="text"			title="info"/>
+		<field name="kkd"						type="datetime"		title="kkd"/>
+		<field name="price"						type="text"			title="price"/>
+		<field name="fullinfo"					type="text"			title="fullinfo"/>
+		<field name="morder"					type="text"			title="morder"						hidden="true"/>
+		<field name="main_id"					type="integer"		title="main_id" 					hidden="true"/>
+		<field name="service_id"				type="integer"		title="service_id" 					hidden="true"/>
+		<field name="new_itm_date"				type="text"			title="new_itm_date"/>
+		<field name="new_itm_date_time"			type="text"			title="new_itm_date_time"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+
+		<!-- Add EntPoster -->
+		<operationBinding operationType="add" operationId="addEntPoster" serverMethod="addEntPoster">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+        
+		<!-- EntPoster Update -->
+		<operationBinding operationType="update" operationId="updateEntPoster" serverMethod="updateEntPoster">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+        
+        <!-- EntPoster Status Update -->
+		<operationBinding operationType="update" operationId="updateEntPosterStatus" serverMethod="updateEntPosterStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+        
+        <!-- EntPoster Delete -->
+		<operationBinding operationType="remove" operationId="deleteEntPoster" serverMethod="deleteEntPoster">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.EntDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllEntPosters" operationType="fetch">
+    		<selectClause>   			
+    			t.ent_poster_id,
+				t.comment_eng,
+				t.comment_geo,
+				t.deleted,
+				t.dt_crit,
+				t.dt_view_crit,
+				t.ent_place_id,
+				t.ent_poster_eng,
+				t.ent_poster_geo,
+				t.poster_date,
+				t.poster_price_eng,
+				t.poster_price_geo,
+				t.poster_time,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user,    
+				ep.ent_place_geo,
+				t.sms_comment,
+				ep.ent_type_id,
+				trim(to_char(t.poster_date,'DD-MM-YYYY')||' '||t.poster_time) as posterDateAndTime
+			</selectClause> 
+			<tableClause>ent_posters t, ent_places ep</tableClause>
+			<whereClause><![CDATA[
+				t.ent_place_id = ep.ent_place_id
+				#if($criteria.ent_type_id) and ep.ent_type_id = $criteria.ent_type_id #end
+				#if($criteria.ent_place_id) and t.ent_place_id = $criteria.ent_place_id #end
+				#if($criteria.ent_poster_geo) and t.ent_poster_geo like ($criteria.ent_poster_geo)||'%' #end
+				#if($criteria.comment_geo) and t.comment_geo like ($criteria.comment_geo)||'%' #end
+				#if($criteria.poster_price_geo) and t.poster_price_geo like ($criteria.poster_price_geo)||'%' #end
+				#if($criteria.poster_date_start) and trunc(t.poster_date) >= trunc($criteria.poster_date_start) #end
+				#if($criteria.poster_date_end) and trunc(t.poster_date) <= trunc($criteria.poster_date_end) #end
+				#if($criteria.deleted) and t.deleted = $criteria.deleted #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.ent_poster_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchAllEntPostersForCallCenter" operationType="fetch">
+    		<selectClause>   			
+    			   t.scheduleitemid,
+			       t.scheduleplaceid,
+			       t.itemname,
+			       t.info,
+			       t.itemdate,
+			       t.kkd,
+			       t.price,
+			       t.fullinfo,
+			       t.morder,
+			       ep.ent_place_geo,
+       			   ep.main_id,
+       			   ms.service_id,
+       			   t.new_itm_date,
+       			   t.new_itm_date_time       			   
+			</selectClause> 
+			<tableClause>scheduleitems t, ent_places ep, main_services ms</tableClause>
+			<whereClause><![CDATA[
+				t.scheduleplaceid = ep.ent_place_id and ep.main_id = ms.main_id(+)
+				#if($criteria.scheduleplaceid) and t.scheduleplaceid = $criteria.scheduleplaceid #end
+				#if($criteria.kkd) and trunc(t.kkd) = trunc($criteria.kkd) #end
+				#if($criteria.entPostGeoAndCom) 
+					and (t.itemname like '%'||$criteria.entPostGeoAndCom||'%' or t.fullinfo like '%'||$criteria.entPostGeoAndCom||'%') 
+				#end
+				
+				]]>  
+			</whereClause> 
+			<orderClause>t.morder, t.itemdate, t.itemname</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchAllEntPostersForCallCenter1" operationType="fetch">
+    		<selectClause>   			
+    			t.ent_poster_id as scheduleItemID,
+				t.comment_eng,
+				nvl(t.comment_geo, '_') as info,
+				t.deleted,
+				t.dt_crit,
+				t.dt_view_crit,
+				t.ent_place_id as schedulePlaceID,
+				t.ent_poster_eng,
+				nvl(t.ent_poster_geo, '_') as itemName,
+				t.poster_date,
+				t.poster_price_eng,
+				t.poster_price_geo,
+				t.poster_time,
+				t.rec_date,
+				t.rec_user,
+				t.upd_date,
+				t.upd_user,    
+				ep.ent_place_geo,
+				t.sms_comment,
+				ep.ent_type_id,
+				trim(to_char(t.poster_date,'DD-MM-YYYY')||' '||t.poster_time) as posterDateAndTime,
+				decode(t.dt_view_crit, 0, TO_CHAR(t.poster_date, 'dd-mm-yy') || ' ' || t.poster_time, '--------------') itemDate,
+				to_date(t.poster_date || ':' || decode(t.poster_time, null, '00:01', t.poster_time), 'dd/mm/yy:HH24:mi') kkd,
+				nvl(t.poster_price_geo, '_') price,
+				t.ent_poster_geo || ' ' || t.comment_geo as fullInfo,
+				to_char(t.poster_date, 'mm/yy') morder
+				
+			</selectClause> 
+			<tableClause>ent_posters t, ent_places ep</tableClause>
+			<whereClause><![CDATA[
+				t.ent_place_id = ep.ent_place_id and t.deleted = 0
+				and (trunc(t.poster_date) >= trunc(sysdate) - 1 or t.dt_crit not in (0))
+				#if($criteria.ent_type_id) and ep.ent_type_id = $criteria.ent_type_id #end
+				#if($criteria.ent_place_id) and t.ent_place_id = $criteria.ent_place_id #end
+				#if($criteria.ent_poster_geo) and t.ent_poster_geo like ($criteria.ent_poster_geo)||'%' #end
+				#if($criteria.comment_geo) and t.comment_geo like ($criteria.comment_geo)||'%' #end
+				#if($criteria.poster_price_geo) and t.poster_price_geo like ($criteria.poster_price_geo)||'%' #end
+				#if($criteria.poster_date_start) and trunc(t.poster_date) >= trunc($criteria.poster_date_start) #end
+				#if($criteria.poster_date_end) and trunc(t.poster_date) <= trunc($criteria.poster_date_end) #end
+				
+				#if($criteria.poster_date_p) and (trunc(t.poster_date) = trunc($criteria.poster_date_p) or t.dt_crit not in (0)) #end
+				
+				#if($criteria.deleted) and t.deleted = $criteria.deleted #end
+				#if($criteria.scheduleplaceid) and t.ent_place_id = $criteria.scheduleplaceid #end
+				#if($criteria.entPostGeoAndCom) 
+					and (
+						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom||'%' or 
+						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom||'%'
+						) 
+				#end
+				
+				#if($criteria.entPostGeoAndCom1) 
+					and (
+						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom1||'%' or 
+						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom1||'%'
+						) 
+				#end
+				#if($criteria.entPostGeoAndCom2) 
+					and (
+						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom2||'%' or 
+						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom2||'%'
+						) 
+				#end
+				#if($criteria.entPostGeoAndCom3) 
+					and (
+						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom3||'%' or 
+						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom3||'%'
+						) 
+				#end
+				#if($criteria.entPostGeoAndCom4) 
+					and (
+						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom4||'%' or 
+						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom4||'%'
+						) 
+				#end
+				#if($criteria.entPostGeoAndCom5) 
+					and (
+						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom5||'%' or 
+						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom5||'%'
+						) 
+				#end
+				
+				
+				
+				]]>  
+			</whereClause> 
+			<orderClause>to_char(t.poster_date, 'mm/yy'), decode(t.dt_view_crit, 0, TO_CHAR(t.poster_date, 'dd-mm-yy') || ' ' || t.poster_time, '--------------'), nvl(t.ent_poster_geo, '_')</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    </operationBindings>	
+</DataSource>

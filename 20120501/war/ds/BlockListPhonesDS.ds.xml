@@ -1,0 +1,28 @@
+<DataSource
+	ID="BlockListPhonesDS"
+	serverType="sql"
+	tableName="info.block_list_phones"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="id"				type="integer"		title="id"				hidden="true" 	primaryKey="true" />
+		<field name="phone"				type="text"			title="phone"/>
+		<field name="block_list_id"		type="integer"		title="block_list_id"	hidden="true"/>
+	</fields>
+	<operationBindings>		
+    	<operationBinding operationId="searchBlockListPhones" operationType="fetch">
+    		<selectClause>
+    			    t.id,
+					t.phone,
+					t.block_list_id
+			</selectClause> 
+			<tableClause>info.block_list_phones t</tableClause>
+			<whereClause><![CDATA[
+				 t.block_list_id = $criteria.block_list_id 
+				]]>  
+			</whereClause> 
+			<orderClause>t.id</orderClause>
+    	</operationBinding>
+
+    </operationBindings>	
+</DataSource>

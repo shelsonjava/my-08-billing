@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  
+  <persistence-unit name="ds" transaction-type="RESOURCE_LOCAL">    
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <!--  
+    <jta-data-source>java:jboss/datasources/OracleDS</jta-data-source>
+    -->
+    <class>com.info08.billing.callcenter.shared.entity.City</class>
+    <class>com.info08.billing.callcenter.shared.entity.CityDistance</class>
+    <class>com.info08.billing.callcenter.shared.entity.CityRegion</class>
+    <class>com.info08.billing.callcenter.shared.entity.CityType</class>
+    <class>com.info08.billing.callcenter.shared.entity.GeoIndCountry</class>
+    <class>com.info08.billing.callcenter.shared.entity.GeoIndRegion</class>
+    <class>com.info08.billing.callcenter.shared.entity.LogSMS</class>
+    <class>com.info08.billing.callcenter.shared.entity.TmpLogSMS</class>
+    <class>com.info08.billing.callcenter.shared.entity.Person</class>
+    <class>com.info08.billing.callcenter.shared.entity.PersonToAccess</class>
+    <class>com.info08.billing.callcenter.shared.entity.Service</class>
+    <class>com.info08.billing.callcenter.shared.entity.StreetDescr</class>
+    <class>com.info08.billing.callcenter.shared.entity.StreetDistrict</class>
+    <class>com.info08.billing.callcenter.shared.entity.StreetEnt</class>
+    <class>com.info08.billing.callcenter.shared.entity.StreetIndex</class>
+    <class>com.info08.billing.callcenter.shared.entity.StreetsOldEnt</class>
+    <class>com.info08.billing.callcenter.shared.entity.StreetType</class>
+    <class>com.info08.billing.callcenter.shared.entity.WorldRegions</class>
+    <class>com.info08.billing.callcenter.shared.entity.Country</class>
+    <class>com.info08.billing.callcenter.shared.entity.calendar.ChurchCalendar</class>
+    <class>com.info08.billing.callcenter.shared.entity.calendar.SecularCalendar</class>
+    <class>com.info08.billing.callcenter.shared.entity.calendar.CalendarState</class>
+    <class>com.info08.billing.callcenter.shared.entity.calendar.ChurchCalendarEvent</class>
+    <class>com.info08.billing.callcenter.shared.entity.calendar.SecularCalendarEvent</class>
+    <class>com.info08.billing.callcenter.shared.entity.currency.Rate</class>
+    <class>com.info08.billing.callcenter.shared.entity.currency.RateCurr</class>
+    <class>com.info08.billing.callcenter.shared.entity.currency.RateLog</class>
+    <class>com.info08.billing.callcenter.shared.entity.transport.BusRoute</class>
+    <class>com.info08.billing.callcenter.shared.entity.transport.BusRouteStreet</class>
+    <class>com.info08.billing.callcenter.shared.entity.transport.Transport</class>
+    <class>com.info08.billing.callcenter.shared.entity.transport.TransportCompany</class>
+    <class>com.info08.billing.callcenter.shared.entity.transport.TransportDetail</class>
+    <class>com.info08.billing.callcenter.shared.entity.transport.TransportPlace</class>
+    <class>com.info08.billing.callcenter.shared.entity.transport.TransportType</class>
+    <class>com.info08.billing.callcenter.shared.entity.main.MainDetailType</class>
+    <class>com.info08.billing.callcenter.shared.entity.main.MainDetail</class>
+    <class>com.info08.billing.callcenter.shared.entity.callcenter.CallCenterQueue</class>
+    <class>com.info08.billing.callcenter.shared.entity.discovery.Discover</class>
+    <class>com.info08.billing.callcenter.shared.entity.discovery.DiscoverRtype</class>
+    <class>com.info08.billing.callcenter.shared.entity.discovery.DiscoverType</class>
+    <class>com.info08.billing.callcenter.shared.entity.discovery.DiscoverySmsHist</class>
+    <class>com.info08.billing.callcenter.shared.entity.ent.EntPlace</class>
+    <class>com.info08.billing.callcenter.shared.entity.ent.EntPoster</class>
+    <class>com.info08.billing.callcenter.shared.entity.ent.EntType</class>
+    <class>com.info08.billing.callcenter.shared.entity.org.MainOrg</class>
+    <class>com.info08.billing.callcenter.shared.entity.org.LegalStatus</class>
+    <class>com.info08.billing.callcenter.shared.entity.org.BusinessDetail</class>
+    <class>com.info08.billing.callcenter.shared.entity.org.BusinessSector</class>
+    <class>com.info08.billing.callcenter.shared.entity.org.BusinessUnion</class>
+    <class>com.info08.billing.callcenter.shared.entity.admin.FixedOperatorPrefixe</class>
+    <class>com.info08.billing.callcenter.shared.entity.admin.MobileOperatorPrefixe</class>
+    <class>com.info08.billing.callcenter.shared.entity.callcenter.MyMobbase</class>
+    <class>com.info08.billing.callcenter.shared.entity.callcenter.CcServiceLog</class>
+    <class>com.info08.billing.callcenter.shared.entity.MainNew</class>
+    <class>com.info08.billing.callcenter.shared.entity.session.LogSessionCharge</class>
+    <class>com.info08.billing.callcenter.shared.entity.session.LogSession</class>
+    <class>com.info08.billing.callcenter.shared.entity.control.LogPersonellNote</class>
+    <class>com.info08.billing.callcenter.shared.entity.contractors.Contract</class>
+    <class>com.info08.billing.callcenter.shared.entity.contractors.ContractPriceItem</class>
+    <class>com.info08.billing.callcenter.shared.entity.contractors.ContractorPhone</class>
+    <class>com.info08.billing.callcenter.shared.entity.contractors.ContractorBlockChecker</class>
+    <class>com.info08.billing.callcenter.shared.entity.block.BlockList</class>
+    <class>com.info08.billing.callcenter.shared.entity.block.BlockListPhone</class>
+    <class>com.info08.billing.callcenter.shared.entity.telcomps.TelComp</class>
+    <class>com.info08.billing.callcenter.shared.entity.telcomps.TelCompsInd</class>    
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+      <property name="hibernate.connection.username" value="info"/>
+      <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver"/>
+      <property name="hibernate.connection.password" value="sa"/>
+      <property name="hibernate.connection.url" value="jdbc:oracle:thin:@192.168.1.7:1521:ORCL"/>
+      <property name="hibernate.show_sql" value="false"/>
+      <property name="hibernate.format_sql" value="false"/>
+    </properties>
+  </persistence-unit>
+  
+  
+  <persistence-unit name="mysqlds" transaction-type="RESOURCE_LOCAL">    
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <!--  
+    <jta-data-source>java:jboss/datasources/OracleDS</jta-data-source>
+    -->
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+      <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+      <property name="hibernate.connection.username" value="kaxa"/>      
+      <property name="hibernate.connection.password" value="kaxa"/>
+      <property name="hibernate.connection.url" value="jdbc:mysql://192.168.1.251/asteriskcdrdb"/>
+      <property name="hibernate.show_sql" value="false"/>
+      <property name="hibernate.format_sql" value="false"/>
+    </properties>
+  </persistence-unit>
+  
+</persistence>

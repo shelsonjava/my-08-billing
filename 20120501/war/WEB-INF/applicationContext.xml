@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+
+
+	<!-- Factories -->
+	<!-- Discovery SMS Sender -->
+	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<!-- see the example above -->
+				<ref bean="scheduledTask" />
+			</list>
+		</property>
+	</bean>
+	<!-- Discovery SMS Sender -->
+	
+	<!--  Sms Sender-->
+	<bean id="timerFactorySMS" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<!-- see the example above -->
+				<ref bean="scheduledTaskSMS" />
+			</list>
+		</property>
+	</bean>
+	<!--  Sms Sender-->
+	
+	
+	<!-- Factories -->
+	
+
+	<!-- Job Classes -->
+	<!-- Discovery SMS Sender -->
+	<bean id="sendDiscoverySMSMessages"
+		class="com.info08.billing.callcenter.server.spring.jobs.DiscoverySMSSenderJob">
+	</bean>
+	<!-- Discovery SMS Sender -->
+	
+	<!--  Sms Sender-->
+	<bean id="sendSMSMessages"
+		class="com.info08.billing.callcenter.server.spring.jobs.SMSSenderJob">
+	</bean>
+	<!--  Sms Sender-->
+	
+	<!-- Job Classes -->
+
+	<!-- Schedulers -->
+	<!--  Sms Sender-->
+	<bean id="scheduledTaskSMS" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<!-- wait 1 minute (60000 millisecond) before starting repeated execution -->
+		<property name="delay" value="10000" />
+		<!-- run every 1 minute (60000 millisecond) -->
+		<property name="period" value="10000" />
+		<property name="timerTask" ref="sendSMSMessages" />
+	</bean>
+	<!--  Sms Sender-->
+
+	<!-- Discovery SMS Sender -->
+	<bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<!-- wait 1 minute (60000 millisecond) before starting repeated execution -->
+		<property name="delay" value="60000" />
+		<!-- run every 1 minute (60000 millisecond) -->
+		<property name="period" value="60000" />
+		<property name="timerTask" ref="sendDiscoverySMSMessages" />
+	</bean>
+	<!-- Discovery SMS Sender -->
+	
+	<!-- Schedulers -->
+	
+	
+	
+	<!-- Contractor Checker -->
+	<bean id="timerFactoryContrChecker" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<ref bean="scheduledTaskContrCheckerTask" />
+			</list>
+		</property>
+	</bean>
+	<bean id="scheduledTaskContrCheckerTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<!-- wait 1 minute (60000 millisecond) before starting repeated execution -->
+		<property name="delay" value="60000" />
+		<!-- run every 1 minute (60000 millisecond) -->
+		<property name="period" value="60000" />
+		<property name="timerTask" ref="contractorCheckerJob" />
+	</bean>
+	<bean id="contractorCheckerJob"
+		class="com.info08.billing.callcenter.server.spring.jobs.ContractorCheckerJob">
+	</bean>
+	<!-- Contractor Checker -->
+	
+</beans>  

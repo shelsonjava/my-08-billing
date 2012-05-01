@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<List>
+	<weekday>
+	    <day_id>0</day_id>
+	    <day_name>ყოველდღიური</day_name>
+	</weekday>
+	<weekday>
+	    <day_id>1</day_id>
+	    <day_name>ორშაბათი</day_name>
+	</weekday>
+	<weekday>
+	    <day_id>2</day_id>
+	    <day_name>სამშაბათი</day_name>
+	</weekday>	
+	<weekday>
+	    <day_id>4</day_id>
+	    <day_name>ოთხშაბათი</day_name>
+	</weekday>
+	<weekday>
+	    <day_id>8</day_id>
+	    <day_name>ხუთშაბათი</day_name>
+	</weekday>
+	<weekday>
+	    <day_id>16</day_id>
+	    <day_name>პარასკევი</day_name>
+	</weekday>
+	<weekday>
+	    <day_id>32</day_id>
+	    <day_name>შაბათი</day_name>
+	</weekday>
+	<weekday>
+	    <day_id>64</day_id>
+	    <day_name>კვირა</day_name>
+	</weekday>
+</List>
+

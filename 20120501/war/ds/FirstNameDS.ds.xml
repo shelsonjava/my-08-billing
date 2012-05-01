@@ -1,0 +1,76 @@
+<DataSource
+	ID="FirstNameDS"
+	serverType="sql"
+	tableName="info.firstnames"
+	qualifyColumnNames="false">
+	<fields>
+		<field name="firstname_Id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="firstname"			type="text" 	title="Firstname"/>		
+	</fields>
+	
+	<operationBindings>
+		
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+		
+		<!-- Add FirstName -->
+		<operationBinding operationType="add" operationId="addFirstName" serverMethod="addFirstName">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+		<!-- FirstName Update -->
+		<operationBinding operationType="update" operationId="updateFirstName" serverMethod="updateFirstName">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- FirstName Status Update -->
+		<operationBinding operationType="update" operationId="updateFirstNameStatus" serverMethod="updateFirstNameStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+	
+		<operationBinding operationId="firstNameSearch" operationType="fetch" serverMethod="fetchFirstNames">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenter.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>    	
+    	<operationBinding operationId="searchFromDB" operationType="fetch" customFields="firstname_Id,firstname,rec_date,deleted,deletedText">
+    		<selectClause>   			
+    			t.firstname_Id,
+    			t.firstname,
+    			t.rec_date,
+    			t.deleted,
+    			decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText
+			</selectClause> 
+			<tableClause>firstnames t</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1
+				#if($criteria.firstname) AND t.firstname like ($criteria.firstname)||'%' #end
+				#if($criteria.deleted) AND t.deleted = $criteria.deleted #end				
+				]]>  
+			</whereClause> 
+    	</operationBinding>    	
+    	<operationBinding operationId="searchFromDB1" operationType="fetch" customFields="firstname_Id,firstname,rec_date,deleted,deletedText">
+    		<selectClause>   			
+    			t.firstname_Id,
+    			t.firstname,
+    			t.rec_date,
+    			t.deleted,
+    			decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText
+			</selectClause> 
+			<tableClause>firstnames t</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1
+				#if($criteria.firstname) AND t.firstname like ($criteria.firstname)||'%' #end
+				and t.deleted = 0				
+				]]>  
+			</whereClause> 
+    	</operationBinding> 	
+		<operationBinding operationId="searchFNamesFromDBCustomForCombos" operationType="fetch">
+    		<selectClause>   			
+    			t.firstname_Id,
+    			t.firstname
+			</selectClause> 
+			<tableClause>firstnames t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0
+			</whereClause>			
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>
