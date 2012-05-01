@@ -26,7 +26,7 @@ import javax.persistence.Transient;
 					query = "select count(e) from TmpLogSMS e where e.sessionId = :sessId")
 })
 @Entity
-@Table(name = "tmp_log_sms", schema = "info")
+@Table(name = "tmp_log_sms", schema = "PAATA")
 public class TmpLogSMS implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4653314952773716984L;

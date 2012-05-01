@@ -21,7 +21,7 @@ import javax.persistence.Transient;
 
 })
 @Entity
-@Table(name = "countries", schema = "info")
+@Table(name = "countries", schema = "PAATA")
 public class Country implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;

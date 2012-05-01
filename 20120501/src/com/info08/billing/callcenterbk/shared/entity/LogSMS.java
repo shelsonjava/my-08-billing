@@ -29,7 +29,7 @@ import javax.persistence.Transient;
 					query = "select count(e) from LogSMS e where e.session_id = :sessId")
 })
 @Entity
-@Table(name = "log_sms", schema = "info")
+@Table(name = "log_sms", schema = "PAATA")
 public class LogSMS implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4653314952773716984L;

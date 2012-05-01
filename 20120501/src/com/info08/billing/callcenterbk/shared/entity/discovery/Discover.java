@@ -25,7 +25,7 @@ import javax.persistence.Transient;
 					query = "select e from Discover e where e.discover_id = :discId and e.discover_type_id <> 4  and trunc(e.rec_date) >= trunc(sysdate-14) and e.execution_status = 0 ") 
 })
 @Entity
-@Table(name = "DISCOVER", schema = "INFO")
+@Table(name = "DISCOVER", schema = "PAATA")
 public class Discover implements Serializable {
 	private static final long serialVersionUID = 1L;
 

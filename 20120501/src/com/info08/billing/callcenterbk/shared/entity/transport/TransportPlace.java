@@ -27,7 +27,7 @@ import javax.persistence.Transient;
 })
 
 @Entity
-@Table(name = "TRANSPORT_PLACES", schema = "INFO")
+@Table(name = "TRANSPORT_PLACES", schema = "PAATA")
 public class TransportPlace implements Serializable {
 	private static final long serialVersionUID = 1L;
 

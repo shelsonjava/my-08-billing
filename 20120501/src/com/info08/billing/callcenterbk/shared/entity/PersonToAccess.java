@@ -21,7 +21,7 @@ import javax.persistence.Table;
 					
 })
 @Entity
-@Table(name = "personnel_to_access", schema = "info")
+@Table(name = "personnel_to_access", schema = "PAATA")
 public class PersonToAccess implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4653314952773716984L;

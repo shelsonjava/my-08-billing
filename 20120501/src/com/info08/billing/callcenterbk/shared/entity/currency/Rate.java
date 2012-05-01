@@ -29,7 +29,7 @@ import javax.persistence.Transient;
 })
 
 @Entity
-@Table(name = "RATE", schema = "INFO")
+@Table(name = "RATE", schema = "PAATA")
 public class Rate implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -24,7 +24,7 @@ import javax.persistence.Table;
 				query="select e from ContractorBlockChecker e where trunc(e.rec_date) >= trunc(sysdate-10) and e.status = 0 ")
 })
 @Entity
-@Table(name = "CONTRACTOR_BLOCK_CHECKER", schema = "INFO")
+@Table(name = "CONTRACTOR_BLOCK_CHECKER", schema = "PAATA")
 public class ContractorBlockChecker implements Serializable {
 	private static final long serialVersionUID = 1L;
 

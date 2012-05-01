@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 					query = "select e from City e where e.deleted = 0 order by e.city_id")
 })
 @Entity
-@Table(name = "cities", schema = "info")
+@Table(name = "cities", schema = "PAATA")
 public class City implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
