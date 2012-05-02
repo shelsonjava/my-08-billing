@@ -93,15 +93,15 @@ public class TabTransport extends Tab {
 			transportTypeItem.setName("transport_type_name_geo");
 			transportTypeItem.setCanEdit(false);
 			switch (transport_type_id) {
-			case 1:
+			case 1000005:
 				setTitle("განრიგის(ავიაცია) მართვა");
 				transportTypeItem.setValue("ავიაცია");
 				break;
-			case 2:
+			case 1000003:
 				setTitle("განრიგის(რკინიგზა) მართვა");
 				transportTypeItem.setValue("რკინიგზა");
 				break;
-			case 3:
+			case 1000004:
 				setTitle("განრიგის(ავტობუსი) მართვა");
 				transportTypeItem.setValue("ავტობუსი");
 				break;
@@ -122,15 +122,15 @@ public class TabTransport extends Tab {
 			DataSource transpPlaceDS = DataSource.get("TranspPlaceDS");
 
 			switch (transport_type_id) {
-			case 1:
+			case 1000005:
 				transportPlaceOutItem
 						.setOptionOperationId("searchAllTransportPlacesForCBAv");
 				break;
-			case 2:
+			case 1000003:
 				transportPlaceOutItem
 						.setOptionOperationId("searchAllTransportPlacesForCBRk");
 				break;
-			case 3:
+			case 1000004:
 				transportPlaceOutItem
 						.setOptionOperationId("searchAllTransportPlacesForCBAvt");
 				break;
@@ -172,15 +172,15 @@ public class TabTransport extends Tab {
 			DataSource transpPlaceDS1 = DataSource.get("TranspPlaceDS");
 
 			switch (transport_type_id) {
-			case 1:
+			case 1000005:
 				transportPlaceInItem
 						.setOptionOperationId("searchAllTransportPlacesForCBAv");
 				break;
-			case 2:
+			case 1000003:
 				transportPlaceInItem
 						.setOptionOperationId("searchAllTransportPlacesForCBRk");
 				break;
-			case 3:
+			case 1000004:
 				transportPlaceInItem
 						.setOptionOperationId("searchAllTransportPlacesForCBAvt");
 				break;
@@ -221,15 +221,15 @@ public class TabTransport extends Tab {
 
 			DataSource transpPlaneDS = DataSource.get("TranspPlaneDS");
 			switch (transport_type_id) {
-			case 1:
+			case 1000005:
 				transportPlaneItem
 						.setOptionOperationId("searchAllTranspPlanesForCombosAv");
 				break;
-			case 2:
+			case 1000003:
 				transportPlaneItem
 						.setOptionOperationId("searchAllTranspPlanesForCombosRail");
 				break;
-			case 3:
+			case 1000004:
 				transportPlaneItem
 						.setOptionOperationId("searchAllTranspPlanesForCombosAvt");
 				break;
@@ -269,15 +269,15 @@ public class TabTransport extends Tab {
 
 			DataSource transpCompDS = DataSource.get("TranspCompDS");
 			switch (transport_type_id) {
-			case 1:
+			case 1000005:
 				transportCompanyItem
 						.setOptionOperationId("searchAllTransportCompsForCBAv");
 				break;
-			case 2:
+			case 1000003:
 				transportCompanyItem
 						.setOptionOperationId("searchAllTransportCompsForCBRail");
 				break;
-			case 3:
+			case 1000004:
 				transportCompanyItem
 						.setOptionOperationId("searchAllTransportCompsForCBAvt");
 				break;

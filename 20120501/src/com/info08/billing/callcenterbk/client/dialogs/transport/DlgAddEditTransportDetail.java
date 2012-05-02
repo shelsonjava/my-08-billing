@@ -80,23 +80,23 @@ public class DlgAddEditTransportDetail extends Window {
 		DataSource transpPlaceDS = DataSource.get("TranspPlaceDS");
 
 		switch (transport_type_id) {
-		case 1: // Aviation
+		case 1000005: // Aviation
 			transportPlaceOutItem
 					.setOptionOperationId("searchAllTransportPlacesForCBAv");
 			break;
-		case 2: // Railway
+		case 1000003: // Railway
 			transportPlaceOutItem
 					.setOptionOperationId("searchAllTransportPlacesForCBRk");
 			break;
-		case 3: // Autobus
+		case 1000004: // Autobus
 			transportPlaceOutItem
 					.setOptionOperationId("searchAllTransportPlacesForCBAvt");
 			break;
-		case 5: // Autobus1
+		case 1000002: // Autobus1
 			transportPlaceOutItem
 					.setOptionOperationId("searchAllTransportPlacesForCBAvt1");
 			break;
-		case 6: // Tax
+		case 1000001: // Tax
 			transportPlaceOutItem
 					.setOptionOperationId("searchAllTransportPlacesForCBMarsh");
 			break;

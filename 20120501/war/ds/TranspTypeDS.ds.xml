@@ -65,7 +65,8 @@
 			<tableClause>transport_types t</tableClause>	
 			<whereClause>
 				($defaultWhereClause) AND t.deleted = 0
-			</whereClause>			
+			</whereClause>
+			<orderClause>t.transport_type_id</orderClause>			
     	</operationBinding>
     	
     	<operationBinding operationId="searchAllTransportTypesForCombos1" operationType="fetch">

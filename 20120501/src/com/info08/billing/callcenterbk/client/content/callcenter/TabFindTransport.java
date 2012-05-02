@@ -96,7 +96,7 @@ public class TabFindTransport extends Tab {
 		transportTypeItem.setName("transport_type_name_geo");
 		transportTypeItem.setValueMap(ClientMapUtil.getInstance()
 				.getTranspTypeCustom1());
-		transportTypeItem.setDefaultToFirstOption(true);
+		transportTypeItem.setDefaultValue(new Integer(1000005));
 
 		transportTypeItem.addChangedHandler(new ChangedHandler() {
 			@Override
@@ -174,7 +174,7 @@ public class TabFindTransport extends Tab {
 		cityFromItem.setValueField("city_id");
 		cityFromItem.setDisplayField("city_name_geo");
 		Criteria criteriaFromCity = new Criteria();
-		criteriaFromCity.setAttribute("transport_type_id", 1);
+		criteriaFromCity.setAttribute("transport_type_id", 1000005);
 		cityFromItem.setOptionCriteria(criteriaFromCity);
 		cityFromItem.setAutoFetchData(false);
 
@@ -206,7 +206,7 @@ public class TabFindTransport extends Tab {
 		cityToItem.setValueField("city_id");
 		cityToItem.setDisplayField("city_name_geo");
 		Criteria criteriaToCity = new Criteria();
-		criteriaToCity.setAttribute("transport_type_id", 1);
+		criteriaToCity.setAttribute("transport_type_id", 1000005);
 		cityToItem.setOptionCriteria(criteriaToCity);
 		cityToItem.setAutoFetchData(false);
 
@@ -239,7 +239,7 @@ public class TabFindTransport extends Tab {
 		countryFromItem.setValueField("country_id");
 		countryFromItem.setDisplayField("country_name_geo");
 		Criteria criteriaFromCountry = new Criteria();
-		criteriaFromCountry.setAttribute("transport_type_id", 1);
+		criteriaFromCountry.setAttribute("transport_type_id", 1000005);
 		countryFromItem.setOptionCriteria(criteriaFromCountry);
 		countryFromItem.setAutoFetchData(false);
 
@@ -271,7 +271,7 @@ public class TabFindTransport extends Tab {
 		countryToItem.setValueField("country_id");
 		countryToItem.setDisplayField("country_name_geo");
 		Criteria criteriaToCountry = new Criteria();
-		criteriaToCountry.setAttribute("transport_type_id", 1);
+		criteriaToCountry.setAttribute("transport_type_id", 1000005);
 		countryToItem.setOptionCriteria(criteriaToCountry);
 		countryToItem.setAutoFetchData(false);
 

@@ -88,7 +88,7 @@
 			</selectClause> 
 			<tableClause>transport_places t</tableClause>
 			<whereClause><![CDATA[
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000005
 				]]>  
 			</whereClause> 
 			<orderClause>t.transport_place_id</orderClause>
@@ -101,7 +101,7 @@
 			</selectClause> 
 			<tableClause>transport_places t</tableClause>
 			<whereClause><![CDATA[
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 2
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000003
 				]]>  
 			</whereClause> 
 			<orderClause>t.transport_place_id</orderClause>
@@ -114,7 +114,7 @@
 			</selectClause> 
 			<tableClause>transport_places t</tableClause>
 			<whereClause><![CDATA[
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 3
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000004
 				]]>  
 			</whereClause> 
 			<orderClause>t.transport_place_id</orderClause>
@@ -127,7 +127,7 @@
 			</selectClause> 
 			<tableClause>transport_places t</tableClause>
 			<whereClause><![CDATA[
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 5
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000002
 				]]>  
 			</whereClause> 
 			<orderClause>t.transport_place_id</orderClause>
@@ -140,7 +140,7 @@
 			</selectClause> 
 			<tableClause>transport_places t</tableClause>
 			<whereClause><![CDATA[
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 6
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000001
 				]]>  
 			</whereClause> 
 			<orderClause>t.transport_place_id</orderClause>

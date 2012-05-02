@@ -132,12 +132,12 @@ public class ClientMapUtil {
 		transpRoundType.put("1", "ჩვეულებრივი");
 		transpRoundType.put("2", "წრიული");
 
-		transpTypeCustom.put("5", "ავტობუსი");
-		transpTypeCustom.put("6", "სამარშრუტო ტაქსი");
+		transpTypeCustom.put("1000001", "თბილისის მიკრო ავტობუსების განრიგი");
+		transpTypeCustom.put("1000002", "თბილისის ავტობუსების განრიგი");
 
-		transpTypeCustom1.put("1", "ავიაცია");
-		transpTypeCustom1.put("2", "რკინიგზა");
-		transpTypeCustom1.put("3", "ავტობუსი");
+		transpTypeCustom1.put("1000003", "სარკინიგზო განრიგი");
+		transpTypeCustom1.put("1000005", "საავიაციო განრიგი");
+		transpTypeCustom1.put("1000004", "საქალაქთაშორისო განრიგი");
 
 		routeDirTypes.put("1", "წინ");
 		routeDirTypes.put("2", "უკან");

@@ -151,13 +151,13 @@ public class TransportStackSelection extends SectionStackSection {
 			TabTransportCityBusStreet tabTransportCityBusStreet = new TabTransportCityBusStreet();
 			body.addTab(tabTransportCityBusStreet);
 		} else if (menuId.equals("105")) {
-			TabTransport transport = new TabTransport(1);
+			TabTransport transport = new TabTransport(1000005);
 			body.addTab(transport);
 		} else if (menuId.equals("106")) {
-			TabTransport transport = new TabTransport(2);
+			TabTransport transport = new TabTransport(1000003);
 			body.addTab(transport);
 		} else if (menuId.equals("107")) {
-			TabTransport transport = new TabTransport(3);
+			TabTransport transport = new TabTransport(1000004);
 			body.addTab(transport);
 		}
 	}

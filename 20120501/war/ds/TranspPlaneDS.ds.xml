@@ -37,7 +37,7 @@
 			</selectClause> 
 			<tableClause>transport_plane t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000005
 			</whereClause>			
     	</operationBinding>
     	<operationBinding operationId="searchAllTranspPlanesForCombosRail" operationType="fetch">
@@ -48,7 +48,7 @@
 			</selectClause> 
 			<tableClause>transport_plane t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 2
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000003
 			</whereClause>			
     	</operationBinding>
     	<operationBinding operationId="searchAllTranspPlanesForCombosAvt" operationType="fetch">
@@ -59,7 +59,7 @@
 			</selectClause> 
 			<tableClause>transport_plane t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 3
+				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000004
 			</whereClause>			
     	</operationBinding>
     </operationBindings>	
