@@ -2734,7 +2734,7 @@ public class CommonDMI implements QueryConstants {
 			connection.setAutoCommit(false);
 
 			insertStatement = connection
-					.prepareCall("{ call info.newBillSupport2.saveOrUpdateFirstName( ?,?,?,?,?,? ) }");
+					.prepareCall("{ call paata.newBillSupport2.saveOrUpdateFirstName( ?,?,?,?,?,? ) }");
 			insertStatement.setInt(1, -100);
 			insertStatement.setString(2, firstName);
 			insertStatement.setTimestamp(3, recDate);
@@ -3028,7 +3028,7 @@ public class CommonDMI implements QueryConstants {
 			connection.setAutoCommit(false);
 
 			insertStatement = connection
-					.prepareCall("{ call info.newBillSupport2.saveOrUpdateLastName( ?,?,?,?,?,? ) }");
+					.prepareCall("{ call paata.newBillSupport2.saveOrUpdateLastName( ?,?,?,?,?,? ) }");
 			insertStatement.setInt(1, -100);
 			insertStatement.setString(2, lastName);
 			insertStatement.setTimestamp(3, recDate);
