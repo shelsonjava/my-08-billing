@@ -1,7 +1,7 @@
 <DataSource
 	ID="TelCompsDS"
 	serverType="sql"
-	tableName="paata.tel_comps"
+	tableName="ccare.tel_comps"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	
@@ -80,12 +80,12 @@
 					decode(t.has_calculation,1,'დიახ',0,'არა','ყველა') as has_calculation_descr,
 					t.call_price					
 			</selectClause> 
-			<tableClause>paata.tel_comps t</tableClause>
+			<tableClause>ccare.tel_comps t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				 #if($criteria.tel_comp_name_geo) and t.tel_comp_name_geo like '%'||($criteria.tel_comp_name_geo)||'%' #end
 				 #if($criteria.phoneIndex)
-				 	and t.tel_comp_id in (select tt.tel_comp_id from paata.tel_comps_ind tt where $criteria.phoneIndex between tt.st_ind and end_ind) 				 	
+				 	and t.tel_comp_id in (select tt.tel_comp_id from ccare.tel_comps_ind tt where $criteria.phoneIndex between tt.st_ind and end_ind) 				 	
 				 #end
 				 #if($criteria.has_calculation) and t.has_calculation = $criteria.has_calculation #end
 				]]>  
@@ -104,7 +104,7 @@
 				        ch.price/100 as rate,
 				        ch.price/100 as price
 			</selectClause> 
-			<tableClause>paata.log_sessions t, paata.log_session_charges ch</tableClause>
+			<tableClause>ccare.log_sessions t, ccare.log_session_charges ch</tableClause>
 			<whereClause><![CDATA[
 				 t.session_id  = ch.session_id and 
 				 trunc(t.start_date) = trunc($criteria.date_param) and
@@ -113,13 +113,13 @@
 					  select 
 					    to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind)),
 					    to_number(decode(length(i.end_ind),7,'32'||i.st_ind,i.end_ind))
-					  from paata.tel_comps tc 
-					         inner join paata.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id
+					  from ccare.tel_comps tc 
+					         inner join ccare.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id
 					  where tc.tel_comp_id = $criteria.tel_comp_id
 					        and to_number(t.phone) >= to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind))
 					        and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))
 					) 
-					and paata.getcontractorpricenew(t.phone)=-999999999
+					and ccare.getcontractorpricenew(t.phone)=-999999999
 				]]>  
 			</whereClause> 
     	</operationBinding>
@@ -134,7 +134,7 @@
 				        ch.price/100 as rate,
 				        ch.price/100 as price
 			</selectClause> 
-			<tableClause>paata.log_sessions t, paata.log_session_charges ch</tableClause>
+			<tableClause>ccare.log_sessions t, ccare.log_session_charges ch</tableClause>
 			<whereClause><![CDATA[
 				 t.session_id  = ch.session_id and 
 				 t.ym = $criteria.ym and ch.ym = $criteria.ym and
@@ -142,13 +142,13 @@
 					  select 
 					    to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind)),
 					    to_number(decode(length(i.end_ind),7,'32'||i.st_ind,i.end_ind))
-					  from paata.tel_comps tc 
-					         inner join paata.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id
+					  from ccare.tel_comps tc 
+					         inner join ccare.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id
 					  where tc.tel_comp_id = $criteria.tel_comp_id
 					        and to_number(t.phone) >= to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind))
 					        and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))
 					) 
-					and paata.getcontractorpricenew(t.phone)=-999999999
+					and ccare.getcontractorpricenew(t.phone)=-999999999
 				]]>  
 			</whereClause> 
     	</operationBinding>

@@ -73,10 +73,10 @@
     <class>com.info08.billing.callcenterbk.shared.entity.telcomps.TelCompsInd</class>    
     <properties>
       <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
-      <property name="hibernate.connection.username" value="paata"/>
+      <property name="hibernate.connection.username" value="ccare"/>
       <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver"/>
-      <property name="hibernate.connection.password" value="sa"/>
-      <property name="hibernate.connection.url" value="jdbc:oracle:thin:@192.168.1.7:1521:ORCL"/>
+      <property name="hibernate.connection.password" value="ccare"/>
+      <property name="hibernate.connection.url" value="jdbc:oracle:thin:@192.168.1.5:1522:ORCL"/>
       <property name="hibernate.show_sql" value="false"/>
       <property name="hibernate.format_sql" value="false"/>
     </properties>

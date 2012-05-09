@@ -1,7 +1,7 @@
 <DataSource
 	ID="ContractorsPhonesDS"
 	serverType="sql"
-	tableName="paata.contractor_phones"
+	tableName="ccare.contractor_phones"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -34,7 +34,7 @@
 					t.upd_user,
 					t.contract_id
 			</selectClause> 
-			<tableClause>paata.contractor_phones t</tableClause>
+			<tableClause>ccare.contractor_phones t</tableClause>
 			<whereClause><![CDATA[
 				 t.contract_id = $criteria.contract_id 
 				]]>  

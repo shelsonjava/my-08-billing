@@ -1,7 +1,7 @@
 <DataSource
 	ID="TelCompIndDS"
 	serverType="sql"
-	tableName="paata.tel_comps_ind"
+	tableName="ccare.tel_comps_ind"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -29,7 +29,7 @@
 					t.count_type,
 					decode(t.count_type, 1, 'ზარებით', 'დარიცხვებით') as count_type_descr
 			</selectClause> 
-			<tableClause>paata.tel_comps_ind t</tableClause>
+			<tableClause>ccare.tel_comps_ind t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				 #if($criteria.tel_comp_id) and t.tel_comp_id = $criteria.tel_comp_id #end				 

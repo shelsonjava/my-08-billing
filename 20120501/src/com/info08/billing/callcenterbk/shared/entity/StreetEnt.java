@@ -29,7 +29,7 @@ import javax.persistence.Transient;
 })
 
 @Entity
-@Table(name="STREETS",schema="PAATA")
+@Table(name="STREETS",schema="ccare")
 public class StreetEnt implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

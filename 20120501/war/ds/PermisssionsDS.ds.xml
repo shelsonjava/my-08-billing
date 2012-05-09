@@ -1,7 +1,7 @@
 <DataSource 
 	ID="PermisssionsDS"
     serverType="sql"
-    tableName="paata.personnel_access"      
+    tableName="ccare.personnel_access"      
     qualifyColumnNames="false">
 	<fields>
 		<field name="access_id" 		type="integer"	title="ID"	hidden="true" 	primaryKey="true" />
@@ -41,8 +41,8 @@
 				pa.is_main_perm
 			</selectClause>
 			<tableClause>
-				paata.personnel_to_access t,
-				paata.personnel_access pa
+				ccare.personnel_to_access t,
+				ccare.personnel_access pa
 			</tableClause>
 			<whereClause><![CDATA[ 
 					t.access_id = pa.access_id and pa.new_billing = 1

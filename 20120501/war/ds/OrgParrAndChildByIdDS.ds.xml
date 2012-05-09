@@ -1,7 +1,7 @@
 <DataSource 
 	ID="OrgParrAndChildByIdDS"
     serverType="sql"
-    tableName="paata.main_services"      
+    tableName="ccare.main_services"      
     qualifyColumnNames="false"
     dropExtraFields = "false">
     
@@ -90,7 +90,7 @@
 			        t.partnerbank_id,
 			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.city_name_geo||' / '|| getDistrict(t.street_id)||' / '||t.street_name_geo||' '||t.address_suffix_geo)) as full_address
 			</selectClause>
-			<tableClause>paata.nb_org_search t, org_partnerbank_lists p</tableClause>
+			<tableClause>ccare.nb_org_search t, org_partnerbank_lists p</tableClause>
 			<whereClause>
 				 <![CDATA[
 				 		t.partnerbank_id = p.main_id(+) and level > 1
@@ -152,7 +152,7 @@
 			        t.partnerbank_id,
 			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.city_name_geo||' / '|| getDistrict(t.street_id)||' / '||t.street_name_geo||' '||t.address_suffix_geo)) as full_address
 			</selectClause>
-			<tableClause>paata.nb_org_search t, org_partnerbank_lists p</tableClause>
+			<tableClause>ccare.nb_org_search t, org_partnerbank_lists p</tableClause>
 			<whereClause>
 				 <![CDATA[
 				 		t.partnerbank_id = p.main_id(+) and level = 2

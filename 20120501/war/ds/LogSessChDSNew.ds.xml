@@ -1,7 +1,7 @@
 <DataSource
     ID="LogSessChDSNew"
     serverType="sql"
-    tableName="paata.log_session_charges"      
+    tableName="ccare.log_session_charges"      
     qualifyColumnNames="false"
     >
     <fields>
@@ -43,7 +43,7 @@
     	<operationBinding operationId="deleteSessionCharge" operationType="update">
             <customSQL>
             	 <![CDATA[
-            	 	update paata.log_session_charges t 
+            	 	update ccare.log_session_charges t 
             	 		set t.deleted = 1, 
             	 			t.upd_user = $values.upd_user
 					where t.id = $values.id
@@ -59,9 +59,9 @@
             	 <![CDATA[
             	 	select min(s.ym) as ym, trunc(t.rec_date) as rec_date, min(t.price / 100) as aprice,sum(t.price / 100) as amount, ss.service_name_geo,count(1) as cnt
 					  from log_session_charges t
-					 inner join paata.log_sessions s
+					 inner join ccare.log_sessions s
 					    on s.session_id = t.session_id
-					 inner join paata.services ss
+					 inner join ccare.services ss
 					    on ss.service_id = t.service_id
 					 where s.phone = $criteria.phone
 					   and s.ym = to_char(sysdate, 'YYmm')
@@ -86,8 +86,8 @@
 			</selectClause> 
 			<tableClause>
 				log_session_charges t
-					 inner join paata.log_sessions s on s.session_id = t.session_id
- 					 inner join paata.services ss on ss.service_id = t.service_id
+					 inner join ccare.log_sessions s on s.session_id = t.session_id
+ 					 inner join ccare.services ss on ss.service_id = t.service_id
 			</tableClause>
 			<whereClause><![CDATA[ 
 					(s.ym = to_char(sysdate, 'YYmm') or (s.ym+1) = to_char(sysdate, 'YYmm') ) and 

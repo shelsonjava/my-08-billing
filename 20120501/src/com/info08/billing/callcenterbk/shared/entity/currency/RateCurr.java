@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="RATE_CURR",schema="PAATA")
+@Table(name="RATE_CURR",schema="ccare")
 public class RateCurr implements Serializable {
 	private static final long serialVersionUID = 1L;
 

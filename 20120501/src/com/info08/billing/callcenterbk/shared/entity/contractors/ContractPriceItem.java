@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * 
  */
 @Entity
-@Table(name="CONTRACT_PRICE_ITEMS",schema="PAATA")
+@Table(name="CONTRACT_PRICE_ITEMS",schema="ccare")
 public class ContractPriceItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 

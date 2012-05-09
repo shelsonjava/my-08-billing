@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "TEL_COMPS", schema = "PAATA")
+@Table(name = "TEL_COMPS", schema = "ccare")
 public class TelComp implements Serializable {
 	private static final long serialVersionUID = 1L;
 

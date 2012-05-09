@@ -15,7 +15,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "LOG_SESSION_CHARGES", schema = "PAATA")
+@Table(name = "LOG_SESSION_CHARGES", schema = "ccare")
 public class LogSessionCharge implements Serializable {
 	private static final long serialVersionUID = 1L;
 

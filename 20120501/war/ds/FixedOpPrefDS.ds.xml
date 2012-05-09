@@ -1,7 +1,7 @@
 <DataSource
 	ID="FixedOpPrefDS"
 	serverType="sql"
-	tableName="paata.fixed_operator_prefixes"
+	tableName="ccare.fixed_operator_prefixes"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 

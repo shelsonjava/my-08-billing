@@ -1,7 +1,7 @@
 <DataSource
 	ID="WorldRegionDS"
 	serverType="sql"
-	tableName="paata.world_regions"
+	tableName="ccare.world_regions"
 	qualifyColumnNames="false" dropExtraFields = "false">
 	<fields>
 		<field name="world_region_id"			type="integer"	title="ID"	hidden="true" primaryKey="true" />

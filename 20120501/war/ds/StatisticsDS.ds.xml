@@ -1,7 +1,7 @@
 <DataSource
 	ID="StatisticsDS"
 	serverType="sql"
-	tableName="paata.statistic"
+	tableName="ccare.statistic"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	
@@ -70,10 +70,10 @@
 				   	(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt) as org_sum,
 				   	(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
 				   	(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount,
-				   	paata.getFormatedDate(t.stat_date) as date_str,
-				   	paata.Getweekdaybydate(t.stat_date) as week_day_descr				   	
+				   	ccare.getFormatedDate(t.stat_date) as date_str,
+				   	ccare.Getweekdaybydate(t.stat_date) as week_day_descr				   	
 			</selectClause> 
-			<tableClause>paata.statistic t</tableClause>
+			<tableClause>ccare.statistic t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				 #if($criteria.ym) and t.ym = $criteria.ym #end
@@ -114,7 +114,7 @@
   					sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt),
   					(LAG((sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt)), 1, 0) OVER (ORDER BY YM))) - 100),2) as cnt_percent				   	
 			</selectClause> 
-			<tableClause>paata.statistic t</tableClause>
+			<tableClause>ccare.statistic t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				 #if($criteria.ym) and t.ym = $criteria.ym #end
@@ -144,7 +144,7 @@
 			          avg(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
 			          avg(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount				   	
 			</selectClause> 
-			<tableClause>paata.statistic t</tableClause>
+			<tableClause>ccare.statistic t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				 #if($criteria.ym) and t.ym = $criteria.ym #end

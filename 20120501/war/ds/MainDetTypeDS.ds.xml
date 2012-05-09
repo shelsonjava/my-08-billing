@@ -1,7 +1,7 @@
 <DataSource
 	ID="MainDetTypeDS"
 	serverType="sql"
-	tableName="paata.main_detail_types"
+	tableName="ccare.main_detail_types"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

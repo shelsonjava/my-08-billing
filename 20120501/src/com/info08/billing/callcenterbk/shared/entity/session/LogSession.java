@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="LOG_SESSIONS", schema="PAATA")
+@Table(name="LOG_SESSIONS", schema="ccare")
 public class LogSession implements Serializable {
 	private static final long serialVersionUID = 1L;
 

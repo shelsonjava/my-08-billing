@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name = "RATE_LOG", schema = "PAATA")
+@Table(name = "RATE_LOG", schema = "ccare")
 public class RateLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 

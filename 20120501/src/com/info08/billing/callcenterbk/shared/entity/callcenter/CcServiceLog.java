@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="CC_SERVICE_LOG", schema="PAATA")
+@Table(name="CC_SERVICE_LOG", schema="ccare")
 public class CcServiceLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 

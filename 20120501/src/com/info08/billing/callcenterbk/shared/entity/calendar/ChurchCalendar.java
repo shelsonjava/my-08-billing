@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "CHURCH_CALENDAR", schema = "PAATA")
+@Table(name = "CHURCH_CALENDAR", schema = "ccare")
 public class ChurchCalendar implements Serializable {
 	private static final long serialVersionUID = 1L;
 

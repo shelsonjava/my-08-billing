@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="SECULAR_CALENDAR", schema="PAATA")
+@Table(name="SECULAR_CALENDAR", schema="ccare")
 public class SecularCalendar implements Serializable {
 	private static final long serialVersionUID = 1L;
 

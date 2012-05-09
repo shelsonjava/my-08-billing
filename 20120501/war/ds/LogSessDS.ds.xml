@@ -1,5 +1,5 @@
 <DataSource ID="LogSessDS" serverType="sql"
-	tableName="paata.log_sessions" qualifyColumnNames="false">
+	tableName="ccare.log_sessions" qualifyColumnNames="false">
 	<fields>
 		<field name="session_id" type="text" title="Session ID"  hidden="true" primaryKey="true" />
 		<field name="ym" type="integer" title="Year/Month" hidden="true" />
@@ -52,7 +52,7 @@
 			<tableClause> <![CDATA[ 
 				log_sessions s,
 				log_session_charges ch,
-				paata.personnel p				
+				ccare.personnel p				
 				]]>
 			</tableClause>
 			<whereClause><![CDATA[ 
@@ -71,7 +71,7 @@
 				#if ($criteria.serviceId) AND
 					(ch.service_id = $criteria.serviceId or 
 						(						
-							select count(1) from paata.log_sms sms where s.session_id = sms.session_id and sms.service_id = $criteria.serviceId 
+							select count(1) from ccare.log_sms sms where s.session_id = sms.session_id and sms.service_id = $criteria.serviceId 
 						) > 0 
 					)
 				#end	

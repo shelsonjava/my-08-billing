@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="DISCOVER_TYPES",schema="PAATA")
+@Table(name="DISCOVER_TYPES",schema="ccare")
 public class DiscoverType implements Serializable {
 	private static final long serialVersionUID = 1L;
 

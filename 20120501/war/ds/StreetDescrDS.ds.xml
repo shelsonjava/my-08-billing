@@ -1,7 +1,7 @@
 <DataSource
 	ID="StreetDescrDS"
 	serverType="sql"
-	tableName="paata.street_descr"
+	tableName="ccare.street_descr"
 	qualifyColumnNames="false">
 	<fields>
 		<field name="street_descr_id"		type="integer"	title="ID"				hidden="true" primaryKey="true" />

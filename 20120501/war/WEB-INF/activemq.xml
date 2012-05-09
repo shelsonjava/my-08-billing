@@ -28,10 +28,10 @@
   
   <bean id="oracle-ds" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-    <property name="url" value="jdbc:oracle:thin:@192.168.1.7:1521:ORCL"/>
-    <!-- ACTIVEMQP,activemq -->
-    <property name="username" value="ACTIVEMQP"/>
-    <property name="password" value="ACTIVEMQP"/>
+    <property name="url" value="jdbc:oracle:thin:@192.168.1.5:1522:ORCL"/>
+    <!-- activemqp,activemqp1 -->
+    <property name="username" value="activemqp"/>
+    <property name="password" value="activemqp"/>
     <property name="poolPreparedStatements" value="true"/>
   </bean>
   

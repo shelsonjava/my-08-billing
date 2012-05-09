@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="STREET_INDEX",schema="PAATA")
+@Table(name="STREET_INDEX",schema="ccare")
 public class StreetIndex implements Serializable {
 	private static final long serialVersionUID = 1L;
 

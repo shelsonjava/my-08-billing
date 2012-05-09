@@ -1,7 +1,7 @@
 <DataSource
 	ID="ContractorsDS"
 	serverType="sql"
-	tableName="paata.contracts"
+	tableName="ccare.contracts"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -113,7 +113,7 @@
 				  md.main_detail_geo as orgDepName,
 				  decode(t.price_type,0,'მარტ.','რთული') as price_type_descr
 			</selectClause> 
-			<tableClause>paata.contracts t, paata.main_orgs mo1, paata.main_details md</tableClause>
+			<tableClause>ccare.contracts t, ccare.main_orgs mo1, ccare.main_details md</tableClause>
 			<whereClause><![CDATA[
 				 t.main_id = mo1.main_id and t.main_detail_id = md.main_detail_id (+) and t.deleted = 0
 				 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
@@ -134,7 +134,7 @@
 				 #if($criteria.deleted) and t.deleted = $criteria.deleted #end
 				 #if($criteria.price_type) and t.price_type = $criteria.price_type #end
 				 #if($criteria.phone)
-				 	and t.contract_id in (select tt.contract_id from paata.contractor_phones tt where tt.phone = $criteria.phone) 				 	
+				 	and t.contract_id in (select tt.contract_id from ccare.contractor_phones tt where tt.phone = $criteria.phone) 				 	
 				 #end
 				 #if($criteria.limitType && $criteria.limitType == 0 ) and t.critical_number <> -999999999 #end
 				 #if($criteria.limitType && $criteria.limitType == 1 ) and t.critical_number =  -999999999 #end
@@ -152,36 +152,36 @@
 				<![CDATA[
 				 (select /*+ index(p PHN_PRY_KS001)*/
 					distinct p.phone 
-				      from paata.abonents a 
-					    inner join paata.phones p on p.phone_id = a.phone_id 
+				      from ccare.abonents a 
+					    inner join ccare.phones p on p.phone_id = a.phone_id 
 				      where a.main_detail_id in 
 					      ( 
 						select 
 						      t.main_detail_id 
-						from paata.main_details t 
+						from ccare.main_details t 
 						  start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
 						  connect by prior t.main_detail_id = t.main_detail_master_id 
 						) 
 				      and p.deleted = 0 and a.deleted = 0 and p.phone not in ( 
 					      select 
 						    /*+ index(p PHN_PRY_KS001)*/ p.phone 
-					      from paata.abonents a 
-						  inner join paata.phones p on p.phone_id = a.phone_id 
+					      from ccare.abonents a 
+						  inner join ccare.phones p on p.phone_id = a.phone_id 
 					      where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in ( 
 						select 
 						      c.main_detail_id 
-						from paata.contracts c 
+						from ccare.contracts c 
 						where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate) < trunc(c.end_date) and c.main_detail_id in 
 						  ( 
 						    select 
 							  t.main_detail_id 
-						    from paata.main_details t 
+						    from ccare.main_details t 
 						    where level>1 
 						    start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
 						    connect by prior t.main_detail_id = t.main_detail_master_id 
 						  ) 
 					      ) 
-						) and paata.isPhoneChargeable(p.phone) = 1
+						) and ccare.isPhoneChargeable(p.phone) = 1
 				      ) tt
 			       ]]>
 			</tableClause>
@@ -201,30 +201,30 @@
 				<![CDATA[
     				 ( select
 					        /*+ index(p PHN_PRY_KS001)*/ distinct p.phone 
-					  from paata.abonents a 
-					       inner join paata.phones p on p.phone_id = a.phone_id 
+					  from ccare.abonents a 
+					       inner join ccare.phones p on p.phone_id = a.phone_id 
 					  where a.main_detail_id in 
 					         ( 
 					           select 
 					                 t.main_detail_id 
-					           from paata.main_details t 
+					           from ccare.main_details t 
 					             start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
 					             connect by prior t.main_detail_id = t.main_detail_master_id 
 					           ) 
 					    and p.deleted = 0 and a.deleted = 0 and p.phone not in ( 
 					         select 
 					               /*+ index(p PHN_PRY_KS001)*/ p.phone 
-					         from paata.abonents a 
-					              inner join paata.phones p on p.phone_id = a.phone_id 
+					         from ccare.abonents a 
+					              inner join ccare.phones p on p.phone_id = a.phone_id 
 					         where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in ( 
 					            select 
 					                  c.main_detail_id 
-					            from paata.contracts c 
+					            from ccare.contracts c 
 					            where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_detail_id in 
 					              ( 
 					                select 
 					                      t.main_detail_id 
-					                from paata.main_details t 
+					                from ccare.main_details t 
 					                where level>1 
 					                start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
 					                connect by prior t.main_detail_id = t.main_detail_master_id 
@@ -232,9 +232,9 @@
 					          ) 
 					    ) 
 					    and p.phone not in ( 
-					        select tt.phone from paata.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
+					        select tt.phone from ccare.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
 					    )
-					    and paata.isPhoneChargeable(p.phone) = 1
+					    and ccare.isPhoneChargeable(p.phone) = 1
 					) tt
 					]]>   
 			</tableClause>
@@ -254,30 +254,30 @@
 				 <![CDATA[
     				 ( select
 					        /*+ index(p PHN_PRY_KS001)*/ distinct p.phone 
-					  from paata.abonents a 
-					       inner join paata.phones p on p.phone_id = a.phone_id 
+					  from ccare.abonents a 
+					       inner join ccare.phones p on p.phone_id = a.phone_id 
 					  where a.main_detail_id in 
 					         ( 
 					           select 
 					                 t.main_detail_id 
-					           from paata.main_details t 
+					           from ccare.main_details t 
 					             start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
 					             connect by prior t.main_detail_id = t.main_detail_master_id 
 					           ) 
 					    and p.deleted = 0 and a.deleted = 0 and p.phone not in ( 
 					         select 
 					               /*+ index(p PHN_PRY_KS001)*/ p.phone 
-					         from paata.abonents a 
-					              inner join paata.phones p on p.phone_id = a.phone_id 
+					         from ccare.abonents a 
+					              inner join ccare.phones p on p.phone_id = a.phone_id 
 					         where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in ( 
 					            select 
 					                  c.main_detail_id 
-					            from paata.contracts c 
+					            from ccare.contracts c 
 					            where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_detail_id in 
 					              ( 
 					                select 
 					                      t.main_detail_id 
-					                from paata.main_details t 
+					                from ccare.main_details t 
 					                where level>1 
 					                start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
 					                connect by prior t.main_detail_id = t.main_detail_master_id 
@@ -285,9 +285,9 @@
 					          ) 
 					    ) 
 					    and p.phone in ( 
-					        select tt.phone from paata.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
+					        select tt.phone from ccare.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
 					    )
-					    and paata.isPhoneChargeable(p.phone) = 1
+					    and ccare.isPhoneChargeable(p.phone) = 1
 					) tt      
 					]]>  
 			</tableClause>
@@ -307,24 +307,24 @@
 			<tableClause>
 				<![CDATA[
 					(select distinct p.phone from (
-						       select ms.main_id from paata.main_services ms 
+						       select ms.main_id from ccare.main_services ms 
 						       start with ms.main_id = $criteria.main_id and ms.service_id = 3 
 						       connect by prior ms.main_id = ms.main_master_id) r 
-						inner join paata.abonents a on a.main_id = r.main_id 
-						inner join paata.phones p on p.phone_id = a.phone_id 
+						inner join ccare.abonents a on a.main_id = r.main_id 
+						inner join ccare.phones p on p.phone_id = a.phone_id 
 						where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
 						    select p.phone from ( 
 						    select 
 						      t.main_id 
-						    from paata.main_services t 
+						    from ccare.main_services t 
 						    start with t.main_id in ( 
 						          select 
 						               c.main_id 
-						          from paata.contracts c 
+						          from ccare.contracts c 
 						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in ( 
 						                select 
 						                      t.main_id 
-						                from paata.main_services t 
+						                from ccare.main_services t 
 						                where level>1 
 						          start with t.main_id = $criteria.main_id and t.service_id = 3 
 						          connect by prior t.main_id = t.main_master_id 
@@ -332,26 +332,26 @@
 						    ) and t.service_id = 3 
 						    connect by prior t.main_id = t.main_master_id 
 						    ) a1 
-						    inner join paata.abonents a on a.main_id = a1.main_id 
-						    inner join paata.phones p on p.phone_id = a.phone_id 
+						    inner join ccare.abonents a on a.main_id = a1.main_id 
+						    inner join ccare.phones p on p.phone_id = a.phone_id 
 						    where a.deleted = 0 and p.deleted = 0 
 						) and p.phone not in ( 
 						    select 
 						      /*+ index(p PHN_PRY_KS001)*/ p.phone 
-						    from paata.abonents a 
-						         inner join paata.phones p on p.phone_id = a.phone_id 
+						    from ccare.abonents a 
+						         inner join ccare.phones p on p.phone_id = a.phone_id 
 						    where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in 
 						          (select 
 						                 t.main_detail_id 
-						           from paata.main_details t 
+						           from ccare.main_details t 
 						           start with t.main_detail_id in 
 						                 (select 
 						                        c.main_detail_id 
-						                  from paata.contracts c 
+						                  from ccare.contracts c 
 						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in 
 						                        (select 
 						                               t.main_id 
-						                         from paata.main_services t 
+						                         from ccare.main_services t 
 						                         where level>1 
 						                         start with t.main_id = $criteria.main_id and t.service_id = 3 
 						                         connect by prior t.main_id = t.main_master_id 
@@ -360,7 +360,7 @@
 						                  ) and t.deleted = 0 
 						           connect by prior t.main_detail_id = t.main_detail_master_id) 
 						)
-						and paata.isPhoneChargeable(p.phone) = 1
+						and ccare.isPhoneChargeable(p.phone) = 1
 					) tt
 			       ]]>
 			</tableClause>
@@ -380,24 +380,24 @@
 			<tableClause>
 				<![CDATA[
 					 	(select distinct p.phone from (
-						       select ms.main_id from paata.main_services ms 
+						       select ms.main_id from ccare.main_services ms 
 						       start with ms.main_id = $criteria.main_id and ms.service_id = 3 
 						       connect by prior ms.main_id = ms.main_master_id) r 
-						inner join paata.abonents a on a.main_id = r.main_id 
-						inner join paata.phones p on p.phone_id = a.phone_id 
+						inner join ccare.abonents a on a.main_id = r.main_id 
+						inner join ccare.phones p on p.phone_id = a.phone_id 
 						where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
 						    select p.phone from ( 
 						    select 
 						      t.main_id 
-						    from paata.main_services t 
+						    from ccare.main_services t 
 						    start with t.main_id in ( 
 						          select 
 						               c.main_id 
-						          from paata.contracts c 
+						          from ccare.contracts c 
 						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in ( 
 						                select 
 						                      t.main_id 
-						                from paata.main_services t 
+						                from ccare.main_services t 
 						                where level>1 
 						          start with t.main_id = $criteria.main_id and t.service_id = 3 
 						          connect by prior t.main_id = t.main_master_id 
@@ -405,26 +405,26 @@
 						    ) and t.service_id = 3 
 						    connect by prior t.main_id = t.main_master_id 
 						    ) a1 
-						    inner join paata.abonents a on a.main_id = a1.main_id 
-						    inner join paata.phones p on p.phone_id = a.phone_id 
+						    inner join ccare.abonents a on a.main_id = a1.main_id 
+						    inner join ccare.phones p on p.phone_id = a.phone_id 
 						    where a.deleted = 0 and p.deleted = 0 
 						) and p.phone not in ( 
 						    select 
 						      /*+ index(p PHN_PRY_KS001)*/ p.phone 
-						    from paata.abonents a 
-						         inner join paata.phones p on p.phone_id = a.phone_id 
+						    from ccare.abonents a 
+						         inner join ccare.phones p on p.phone_id = a.phone_id 
 						    where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in 
 						          (select 
 						                 t.main_detail_id 
-						           from paata.main_details t 
+						           from ccare.main_details t 
 						           start with t.main_detail_id in 
 						                 (select 
 						                        c.main_detail_id 
-						                  from paata.contracts c 
+						                  from ccare.contracts c 
 						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in 
 						                        (select 
 						                               t.main_id 
-						                         from paata.main_services t 
+						                         from ccare.main_services t 
 						                         where level>1 
 						                         start with t.main_id = $criteria.main_id and t.service_id = 3 
 						                         connect by prior t.main_id = t.main_master_id 
@@ -434,9 +434,9 @@
 						           connect by prior t.main_detail_id = t.main_detail_master_id) 
 						) 
 						and p.phone not in ( 
-						      select tt.phone from paata.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
+						      select tt.phone from ccare.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
 						)
-						and paata.isPhoneChargeable(p.phone) = 1
+						and ccare.isPhoneChargeable(p.phone) = 1
 						) tt
 			       ]]>
 			</tableClause>
@@ -456,24 +456,24 @@
 			<tableClause>
 				<![CDATA[
 					 	(select distinct p.phone from (
-						       select ms.main_id from paata.main_services ms 
+						       select ms.main_id from ccare.main_services ms 
 						       start with ms.main_id = $criteria.main_id and ms.service_id = 3 
 						       connect by prior ms.main_id = ms.main_master_id) r 
-						inner join paata.abonents a on a.main_id = r.main_id 
-						inner join paata.phones p on p.phone_id = a.phone_id 
+						inner join ccare.abonents a on a.main_id = r.main_id 
+						inner join ccare.phones p on p.phone_id = a.phone_id 
 						where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
 						    select p.phone from ( 
 						    select 
 						      t.main_id 
-						    from paata.main_services t 
+						    from ccare.main_services t 
 						    start with t.main_id in ( 
 						          select 
 						               c.main_id 
-						          from paata.contracts c 
+						          from ccare.contracts c 
 						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in ( 
 						                select 
 						                      t.main_id 
-						                from paata.main_services t 
+						                from ccare.main_services t 
 						                where level>1 
 						          start with t.main_id = $criteria.main_id and t.service_id = 3 
 						          connect by prior t.main_id = t.main_master_id 
@@ -481,26 +481,26 @@
 						    ) and t.service_id = 3 
 						    connect by prior t.main_id = t.main_master_id 
 						    ) a1 
-						    inner join paata.abonents a on a.main_id = a1.main_id 
-						    inner join paata.phones p on p.phone_id = a.phone_id 
+						    inner join ccare.abonents a on a.main_id = a1.main_id 
+						    inner join ccare.phones p on p.phone_id = a.phone_id 
 						    where a.deleted = 0 and p.deleted = 0 
 						) and p.phone not in ( 
 						    select 
 						      /*+ index(p PHN_PRY_KS001)*/ p.phone 
-						    from paata.abonents a 
-						         inner join paata.phones p on p.phone_id = a.phone_id 
+						    from ccare.abonents a 
+						         inner join ccare.phones p on p.phone_id = a.phone_id 
 						    where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in 
 						          (select 
 						                 t.main_detail_id 
-						           from paata.main_details t 
+						           from ccare.main_details t 
 						           start with t.main_detail_id in 
 						                 (select 
 						                        c.main_detail_id 
-						                  from paata.contracts c 
+						                  from ccare.contracts c 
 						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in 
 						                        (select 
 						                               t.main_id 
-						                         from paata.main_services t 
+						                         from ccare.main_services t 
 						                         where level>1 
 						                         start with t.main_id = $criteria.main_id and t.service_id = 3 
 						                         connect by prior t.main_id = t.main_master_id 
@@ -510,9 +510,9 @@
 						           connect by prior t.main_detail_id = t.main_detail_master_id) 
 						) 
 						and p.phone in ( 
-							  select tt.phone from paata.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0
+							  select tt.phone from ccare.contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0
 						)
-						and paata.isPhoneChargeable(p.phone) = 1
+						and ccare.isPhoneChargeable(p.phone) = 1
 						) tt
 			       ]]>
 			</tableClause>
@@ -526,7 +526,7 @@
     	
     	<operationBinding operationId="getCallsCountByMainDetAndYM" operationType="fetch">
     		<selectClause>   		
-    			  paata.getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_detail_id)	as contractor_call_cnt 			  
+    			  ccare.getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_detail_id)	as contractor_call_cnt 			  
 			</selectClause> 
 			<tableClause>dual</tableClause>
 			<whereClause><![CDATA[
@@ -538,7 +538,7 @@
     	
     	<operationBinding operationId="getCallsCountByMainAndYM" operationType="fetch">
     		<selectClause>   		
-    			  paata.getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_id)	as contractor_call_cnt 			  
+    			  ccare.getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_id)	as contractor_call_cnt 			  
 			</selectClause> 
 			<tableClause>dual</tableClause>
 			<whereClause><![CDATA[
@@ -564,7 +564,7 @@
 			      t.price,
 			      t.amount
 			</selectClause> 
-			<tableClause>paata.contractor_bill t, paata.contracts c, paata.main_orgs mo, paata.main_details md </tableClause>
+			<tableClause>ccare.contractor_bill t, ccare.contracts c, ccare.main_orgs mo, ccare.main_details md </tableClause>
 			<whereClause><![CDATA[
 				 t.contractor_id = c.contract_id and c.main_id = mo.main_id and c.main_detail_id = md.main_detail_id(+) 
 				 and t.ym = $criteria.ym
@@ -586,7 +586,7 @@
 					      bi.charge_date,
 					      bi.price
 			</selectClause> 
-			<tableClause> paata.contractor_bill_items bi, paata.contracts c, paata.main_orgs mo, paata.main_details md, paata.tel_comps tc, paata.services s </tableClause>
+			<tableClause> ccare.contractor_bill_items bi, ccare.contracts c, ccare.main_orgs mo, ccare.main_details md, ccare.tel_comps tc, ccare.services s </tableClause>
 			<whereClause><![CDATA[
 				 bi.contractor_id = c.contract_id and c.main_id = mo.main_id and c.main_detail_id = md.main_detail_id(+) and 
 				 bi.tel_comp_id = tc.tel_comp_id and  bi.service_id = s.service_id  and bi.ym = $criteria.ym

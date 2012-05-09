@@ -1,7 +1,7 @@
 <DataSource
 	ID="GeoIndCountryDS"
 	serverType="sql"
-	tableName="paata.geo_ind_country"
+	tableName="ccare.geo_ind_country"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

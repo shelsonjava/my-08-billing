@@ -1,7 +1,7 @@
 <DataSource
 	ID="CalChurchDS"
 	serverType="sql"
-	tableName="paata.church_calendar"
+	tableName="ccare.church_calendar"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -89,7 +89,7 @@
     			ce.event_id,
     			ce.event 
 			</selectClause> 
-			<tableClause>paata.church_calendar_events ce</tableClause>	
+			<tableClause>ccare.church_calendar_events ce</tableClause>	
 			<whereClause>
 				   ($defaultWhereClause)
 			</whereClause>	

@@ -28,7 +28,7 @@ import javax.persistence.Transient;
 })
 
 @Entity
-@Table(name="TRANSPORT_DETAILS",schema="PAATA")
+@Table(name="TRANSPORT_DETAILS",schema="ccare")
 public class TransportDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 

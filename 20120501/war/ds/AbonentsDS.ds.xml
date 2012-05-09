@@ -1,7 +1,7 @@
 <DataSource 
 	ID="AbonentsDS" 
 	serverType="sql"
-	tableName="paata.main_services" 
+	tableName="ccare.main_services" 
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

@@ -1,7 +1,7 @@
 <DataSource
 	ID="RateCurrDS"
 	serverType="sql"
-	tableName="paata.rate_curr"
+	tableName="ccare.rate_curr"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

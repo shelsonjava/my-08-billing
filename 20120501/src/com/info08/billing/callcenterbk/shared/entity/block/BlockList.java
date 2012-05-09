@@ -20,7 +20,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="BLOCK_LIST", schema="PAATA")
+@Table(name="BLOCK_LIST", schema="ccare")
 public class BlockList implements Serializable {
 	private static final long serialVersionUID = 1L;
 

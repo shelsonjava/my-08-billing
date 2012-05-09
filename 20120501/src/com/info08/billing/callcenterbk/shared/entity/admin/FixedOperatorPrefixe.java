@@ -26,7 +26,7 @@ import javax.persistence.Transient;
 				query="select e from FixedOperatorPrefixe e where e.deleted = 0")
 })
 @Entity
-@Table(name="FIXED_OPERATOR_PREFIXES", schema="PAATA")
+@Table(name="FIXED_OPERATOR_PREFIXES", schema="ccare")
 public class FixedOperatorPrefixe implements Serializable {
 	private static final long serialVersionUID = 1L;
 

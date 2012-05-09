@@ -1,5 +1,5 @@
 <DataSource ID="StreetsDS" serverType="sql"
-	tableName="paata.streets" qualifyColumnNames="false">
+	tableName="ccare.streets" qualifyColumnNames="false">
 	<fields>
 		<field name="street_district_id" 	type="integer"	title="City District ID"	hidden="true"  primaryKey="true" />
 	    <field name="street_id" 			type="integer"	title="Street ID"			hidden="true"/>

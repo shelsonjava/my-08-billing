@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="GEO_IND_COUNTRY",schema="PAATA")
+@Table(name="GEO_IND_COUNTRY",schema="ccare")
 public class GeoIndCountry implements Serializable {
 	private static final long serialVersionUID = 1L;
 

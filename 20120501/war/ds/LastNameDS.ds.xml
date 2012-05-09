@@ -1,7 +1,7 @@
 <DataSource
 	ID="LastNameDS"
 	serverType="sql"
-	tableName="paata.lastnames"
+	tableName="ccare.lastnames"
 	qualifyColumnNames="false">
 	<fields>
 		<field name="lastname_Id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />

@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="MAIN_ORGS",schema="PAATA")
+@Table(name="MAIN_ORGS",schema="ccare")
 public class MainOrg implements Serializable {
 	private static final long serialVersionUID = 1L;
 

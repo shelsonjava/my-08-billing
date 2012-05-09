@@ -22,7 +22,7 @@ import javax.persistence.Table;
 		@NamedQuery(name = "CallCenterQueue.getByUserName", query = "select e from CallCenterQueue e where e.op_user_name = :userName"),
 		@NamedQuery(name = "CallCenterQueue.getByStatus", query = "select e from CallCenterQueue e where e.status = :status order by e.upd_date") })
 @Entity
-@Table(name = "CALL_CENTER_QUEUE", schema = "PAATA")
+@Table(name = "CALL_CENTER_QUEUE", schema = "ccare")
 public class CallCenterQueue implements Serializable {
 	private static final long serialVersionUID = 1L;
 

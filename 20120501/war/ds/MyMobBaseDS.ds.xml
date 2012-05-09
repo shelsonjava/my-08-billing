@@ -1,7 +1,7 @@
 <DataSource
 	ID="MyMobBaseDS"
 	serverType="sql"
-	tableName="paata.my_mobbase"
+	tableName="ccare.my_mobbase"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -22,7 +22,7 @@
 		<operationBinding operationId="addMyMobBaseRecord" operationType="add">
             <customSQL>
             	 <![CDATA[
-            	 	insert into paata.my_mobbase 
+            	 	insert into ccare.my_mobbase 
             	 			(nm, phone, rec_user,sex,rec_date)
             		values 
             				($values.nm,$values.phone,$values.rec_user,$values.sex, sysdate)
@@ -34,7 +34,7 @@
 		<operationBinding operationId="updateMyMobBaseRecord" operationType="update">
             <customSQL>
             	 <![CDATA[
-            	 	update paata.my_mobbase t set 
+            	 	update ccare.my_mobbase t set 
             	 		t.phone = $values.phone, t.nm = $values.nm, t.upd_date = sysdate, t.upd_user = $values.upd_user 
             	 		where t. id = $values.id
             	 ]]>

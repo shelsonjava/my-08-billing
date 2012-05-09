@@ -1,7 +1,7 @@
 <DataSource
 	ID="CallCenterDS"
 	serverType="sql"
-	tableName="paata.call_center_queue"
+	tableName="ccare.call_center_queue"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

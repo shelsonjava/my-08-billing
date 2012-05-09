@@ -50,7 +50,7 @@ import org.jsmpp.util.InvalidDeliveryReceiptException;
 import org.jsmpp.util.TimeFormatter;
 
 /**
- * @author paata
+ * @author ccare
  * 
  */
 public class SMSCManager implements MessageReceiverListener {

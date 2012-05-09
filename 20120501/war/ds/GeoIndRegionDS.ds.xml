@@ -1,7 +1,7 @@
 <DataSource
 	ID="GeoIndRegionDS"
 	serverType="sql"
-	tableName="paata.geo_ind_region"
+	tableName="ccare.geo_ind_region"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -48,7 +48,7 @@
     			t.deleted,
     			s.service_name_geo as serviceName    			
 			</selectClause> 
-			<tableClause>geo_ind_region t,paata.services s</tableClause>
+			<tableClause>geo_ind_region t,ccare.services s</tableClause>
 			<whereClause><![CDATA[ 
 				t.service_id = s.service_id and t.service_id = 48
 				#if($criteria.region_name_geo) and t.region_name_geo like ($criteria.region_name_geo)||'%' #end

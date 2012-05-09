@@ -25,7 +25,7 @@ import javax.persistence.Transient;
 				query="select e from CityRegion e where e.deleted = 0 order by e.city_region_id")
 })
 @Entity
-@Table(name="CITY_REGIONS", schema="PAATA")
+@Table(name="CITY_REGIONS", schema="ccare")
 public class CityRegion implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

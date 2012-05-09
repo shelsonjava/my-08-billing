@@ -1,7 +1,7 @@
 <DataSource
 	ID="CityDS"
 	serverType="sql"
-	tableName="paata.cities"
+	tableName="ccare.cities"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	
@@ -164,7 +164,7 @@
     			t.city_new_code,
     			t.city_name_geo			
 			</selectClause> 
-			<tableClause>paata.countrycitycodes_view t</tableClause>
+			<tableClause>ccare.countrycitycodes_view t</tableClause>
 			<whereClause><![CDATA[ 
 				 1 = 1 and t.deleted = 0
 				 #if($criteria.countryid) and t.countryid = $criteria.countryid #end
@@ -192,7 +192,7 @@
     			t.country_id,
     			t.country_detail_id
 			</selectClause> 
-			<tableClause>paata.countrymobilecodes_view t</tableClause>
+			<tableClause>ccare.countrymobilecodes_view t</tableClause>
 			<whereClause><![CDATA[ 
 				 1 = 1
 				 #if($criteria.country_id) and t.country_id = $criteria.country_id #end

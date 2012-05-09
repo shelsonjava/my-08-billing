@@ -1,7 +1,7 @@
 <DataSource
     ID="LogSessChDS"
     serverType="sql"
-    tableName="paata.log_session_charges"      
+    tableName="ccare.log_session_charges"      
     qualifyColumnNames="false"
     >
     <fields>
@@ -78,10 +78,10 @@
         <operationBinding operationId="LogSMSDisc" operationType="add">
             <customSQL>
             	 <![CDATA[
-            	 	insert into paata.log_sms 
+            	 	insert into ccare.log_sms 
             	 		(session_id,sms_type,sms_text,phone,rec_user) 
             	 	values 
-            	 		($values.session_id,$values.sms_type,paata.trsms($values.sms_text),trim($values.phone),$values.rec_user)
+            	 		($values.session_id,$values.sms_type,ccare.trsms($values.sms_text),trim($values.phone),$values.rec_user)
             	 ]]>
             </customSQL> 
         </operationBinding>

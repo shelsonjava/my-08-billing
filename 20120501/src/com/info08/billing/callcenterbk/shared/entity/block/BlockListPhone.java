@@ -9,7 +9,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="BLOCK_LIST_PHONES", schema="PAATA")
+@Table(name="BLOCK_LIST_PHONES", schema="ccare")
 public class BlockListPhone implements Serializable {
 	private static final long serialVersionUID = 1L;
 

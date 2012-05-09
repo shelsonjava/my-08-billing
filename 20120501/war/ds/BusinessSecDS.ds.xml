@@ -1,7 +1,7 @@
 <DataSource
 	ID="BusinessSecDS"
 	serverType="sql"
-	tableName="paata.business_sector"
+	tableName="ccare.business_sector"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

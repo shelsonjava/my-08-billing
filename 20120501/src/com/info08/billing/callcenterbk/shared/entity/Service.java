@@ -16,7 +16,7 @@ import javax.persistence.Table;
 				query = "select e from Service e where e.deleted = 0 order by e.serviceId ")
 })
 @Entity
-@Table(name = "services", schema = "PAATA")
+@Table(name = "services", schema = "ccare")
 public class Service implements Serializable {
 
 	private static final long serialVersionUID = -1569784555696331538L;

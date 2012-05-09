@@ -27,7 +27,7 @@ import javax.persistence.Transient;
 })
 
 @Entity
-@Table(name="STREET_TYPES", schema="PAATA")
+@Table(name="STREET_TYPES", schema="ccare")
 public class StreetType implements Serializable {
 	private static final long serialVersionUID = 1L;
 

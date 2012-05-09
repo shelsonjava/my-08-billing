@@ -1,7 +1,7 @@
 <DataSource
 	ID="TranspPlaneDS"
 	serverType="sql"
-	tableName="paata.transport_plane"
+	tableName="ccare.transport_plane"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

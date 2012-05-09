@@ -1,7 +1,7 @@
 <DataSource
 	ID="CitiesDistDS"
 	serverType="sql"
-	tableName="paata.city_distances"
+	tableName="ccare.city_distances"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -62,7 +62,7 @@
     			c2.city_name_geo as cityEnd,
     			decode(t.city_distance_type,0,'სახმელეთო',1,'საჰაერო',2,'საზღვაო','უცნობია') as cityDistTypeDesc
 			</selectClause> 
-			<tableClause>city_distances t,paata.cities c1,paata.cities c2</tableClause>
+			<tableClause>city_distances t,ccare.cities c1,ccare.cities c2</tableClause>
 			<whereClause><![CDATA[ 
 				t.city_id_start = c1.city_id and
 				t.city_id_end = c2.city_id
@@ -98,7 +98,7 @@
     			c2.city_name_geo as cityEnd,
     			decode(t.city_distance_type,0,'სახმელეთო',1,'საჰაერო',2,'საზღვაო','უცნობია') as cityDistTypeDesc
 			</selectClause> 
-			<tableClause>city_distances t,paata.cities c1,paata.cities c2</tableClause>
+			<tableClause>city_distances t,ccare.cities c1,ccare.cities c2</tableClause>
 			<whereClause><![CDATA[ 
 				t.city_id_start = c1.city_id and
 				t.city_id_end = c2.city_id

@@ -1,7 +1,7 @@
 <DataSource
 	ID="EntPosterDS"
 	serverType="sql"
-	tableName="paata.ent_posters"
+	tableName="ccare.ent_posters"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

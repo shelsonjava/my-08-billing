@@ -25,7 +25,7 @@ import javax.persistence.Table;
 				query="select e from LogPersonellNote e where e.ym = to_char(sysdate, 'YYmm') and trunc(e.rec_date) >= trunc(sysdate - 10) and e.visible_options = 0 and e.received = 0 and e.user_name = :userName ")
 })
 @Entity
-@Table(name="LOG_PERSONELL_NOTES",schema="PAATA")
+@Table(name="LOG_PERSONELL_NOTES",schema="ccare")
 public class LogPersonellNote implements Serializable {
 	private static final long serialVersionUID = 1L;
 

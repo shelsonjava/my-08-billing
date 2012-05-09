@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name = "BUSINESS_UNION", schema = "PAATA")
+@Table(name = "BUSINESS_UNION", schema = "ccare")
 public class BusinessUnion implements Serializable {
 	private static final long serialVersionUID = 1L;
 

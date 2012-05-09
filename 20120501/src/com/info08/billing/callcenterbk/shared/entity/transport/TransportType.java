@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="TRANSPORT_TYPES",schema="PAATA")
+@Table(name="TRANSPORT_TYPES",schema="ccare")
 public class TransportType implements Serializable {
 	private static final long serialVersionUID = 1L;
 

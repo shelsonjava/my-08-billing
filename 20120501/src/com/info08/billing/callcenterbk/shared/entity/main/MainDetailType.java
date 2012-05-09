@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="MAIN_DETAIL_TYPES", schema="PAATA")
+@Table(name="MAIN_DETAIL_TYPES", schema="ccare")
 public class MainDetailType implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

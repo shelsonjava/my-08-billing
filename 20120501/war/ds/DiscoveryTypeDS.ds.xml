@@ -1,7 +1,7 @@
 <DataSource
 	ID="DiscoveryTypeDS"
 	serverType="sql"
-	tableName="paata.discover_types"
+	tableName="ccare.discover_types"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

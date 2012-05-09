@@ -1,7 +1,7 @@
 <DataSource 
 	ID="CityRegionDS" 
 	serverType="sql"
-	tableName="paata.city_regions" 
+	tableName="ccare.city_regions" 
 	qualifyColumnNames="false">
 	<fields>				
 	    <field name="city_region_id" 		type="integer"	title="City Region ID"		hidden="true" primaryKey="true" />

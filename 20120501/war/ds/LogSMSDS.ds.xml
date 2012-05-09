@@ -1,7 +1,7 @@
 <DataSource
 	ID="LogSMSDS"
 	serverType="sql"
-	tableName="paata.log_sms"
+	tableName="ccare.log_sms"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -46,7 +46,7 @@
 				decode(t.sms_type, 1, 'გარკვევა', 'ჩვეულებრივი') as sms_type_descr,
 				decode(t.status, 1, 'მიწოდებულია', 'მიუწოდებელია') as status_descr
 			</selectClause> 
-			<tableClause>log_sms t,paata.services s, paata.personnel tt</tableClause>
+			<tableClause>log_sms t,ccare.services s, ccare.personnel tt</tableClause>
 			<whereClause><![CDATA[			 
 				t.service_id = s.service_id(+) and t.rec_user = tt.user_name(+)
 				#if($criteria.phone) and t.phone like '%'||$criteria.phone||'%' #end

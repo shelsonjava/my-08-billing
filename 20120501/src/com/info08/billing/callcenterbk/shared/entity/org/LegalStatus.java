@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="LEGAL_STATUSES", schema="PAATA")
+@Table(name="LEGAL_STATUSES", schema="ccare")
 public class LegalStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 

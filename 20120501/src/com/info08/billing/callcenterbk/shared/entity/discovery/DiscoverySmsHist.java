@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="DISCOVERY_SMS_HIST", schema="PAATA")
+@Table(name="DISCOVERY_SMS_HIST", schema="ccare")
 public class DiscoverySmsHist implements Serializable {
 	private static final long serialVersionUID = 1L;
 

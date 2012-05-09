@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="CITY_DISTANCES",schema="PAATA")
+@Table(name="CITY_DISTANCES",schema="ccare")
 public class CityDistance implements Serializable {
 	private static final long serialVersionUID = 1L;
 

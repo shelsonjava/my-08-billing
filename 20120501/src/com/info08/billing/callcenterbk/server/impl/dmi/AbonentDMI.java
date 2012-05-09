@@ -97,7 +97,7 @@ public class AbonentDMI implements QueryConstants {
 
 			// insert abonent
 			insertStatement = connection
-					.prepareCall("{ call paata.newBillSupport2.saveOrUpdateAbonent( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) }");
+					.prepareCall("{ call ccare.newBillSupport2.saveOrUpdateAbonent( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) }");
 			insertStatement.setInt(1, main_id);
 			insertStatement.setInt(2, address_id);
 			insertStatement.setInt(3, abonent_id);
@@ -157,7 +157,7 @@ public class AbonentDMI implements QueryConstants {
 								.get("phone_type_id").toString());
 
 						insertStatement = connection
-								.prepareCall("{ call paata.newBillSupport2.saveOrUpdateAbonentPhones( ?,?,?,?,?,?,?,?,?,? ) }");
+								.prepareCall("{ call ccare.newBillSupport2.saveOrUpdateAbonentPhones( ?,?,?,?,?,?,?,?,?,? ) }");
 						insertStatement.setInt(1, phone_id);
 						insertStatement.setInt(2, retAbonentId);
 						insertStatement.setString(3, phone);

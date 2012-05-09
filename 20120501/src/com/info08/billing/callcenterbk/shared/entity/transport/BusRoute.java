@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="BUS_ROUTES",schema="PAATA")
+@Table(name="BUS_ROUTES",schema="ccare")
 public class BusRoute implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

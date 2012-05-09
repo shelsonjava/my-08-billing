@@ -1,7 +1,7 @@
 <DataSource
 	ID="MobOpPrefDS"
 	serverType="sql"
-	tableName="paata.mobile_operator_prefixes"
+	tableName="ccare.mobile_operator_prefixes"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

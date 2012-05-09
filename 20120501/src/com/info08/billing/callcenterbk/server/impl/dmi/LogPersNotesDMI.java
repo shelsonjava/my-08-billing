@@ -115,7 +115,7 @@ public class LogPersNotesDMI {
 			Timestamp callDate = resultSet.getTimestamp(3);
 
 			insertStatement = connection
-					.prepareCall("{ call paata.newBillSupport2.psaveOrUpdateLogPersNote( ?,?,?,?,?,?,?,?,?,?,? ) }");
+					.prepareCall("{ call ccare.newBillSupport2.psaveOrUpdateLogPersNote( ?,?,?,?,?,?,?,?,?,?,? ) }");
 
 			insertStatement.setInt(1, ym);
 			insertStatement.setString(2, sessionId);

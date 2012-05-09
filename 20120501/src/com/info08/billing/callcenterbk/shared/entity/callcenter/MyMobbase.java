@@ -27,7 +27,7 @@ import javax.persistence.Table;
 })
 
 @Entity
-@Table(name="MY_MOBBASE",schema="PAATA")
+@Table(name="MY_MOBBASE",schema="ccare")
 public class MyMobbase implements Serializable {
 	private static final long serialVersionUID = 1L;
 

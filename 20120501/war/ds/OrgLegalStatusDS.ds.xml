@@ -1,7 +1,7 @@
 <DataSource
 	ID="OrgLegalStatusDS"
 	serverType="sql"
-	tableName="paata.legal_statuses"
+	tableName="ccare.legal_statuses"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

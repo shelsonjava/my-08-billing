@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name = "BUSINESS_DETAILS", schema = "PAATA")
+@Table(name = "BUSINESS_DETAILS", schema = "ccare")
 public class BusinessDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 

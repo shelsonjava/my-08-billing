@@ -1,7 +1,7 @@
 <DataSource
 	ID="PersTypeDS"
 	serverType="sql"
-	tableName="paata.personnel_types"
+	tableName="ccare.personnel_types"
 	qualifyColumnNames="false" dropExtraFields = "false">
 	<fields>
 		<field name="personnel_type_id"			type="integer"	title="ID"	hidden="true" primaryKey="true" />

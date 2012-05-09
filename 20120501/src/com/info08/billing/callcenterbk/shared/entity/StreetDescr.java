@@ -28,7 +28,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="STREET_DESCR",schema="PAATA")
+@Table(name="STREET_DESCR",schema="ccare")
 public class StreetDescr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
