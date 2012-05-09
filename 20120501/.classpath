@@ -94,6 +94,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stax-api-1.0-2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xbean-spring-3.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-5.1.18-bin.jar"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
