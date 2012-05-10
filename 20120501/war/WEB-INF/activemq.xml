@@ -30,8 +30,8 @@
     <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
     <property name="url" value="jdbc:oracle:thin:@192.168.1.5:1522:ORCL"/>
     <!-- activemqp,activemqp1 -->
-    <property name="username" value="activemqp"/>
-    <property name="password" value="activemqp"/>
+    <property name="username" value="activemqp1"/>
+    <property name="password" value="activemqp1"/>
     <property name="poolPreparedStatements" value="true"/>
   </bean>
   

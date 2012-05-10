@@ -10,12 +10,12 @@
 		<field name="rec_date"					type="datetime"	title="Record Date"/>		
 		<field name="rec_user"					type="text"		title="Record User"/>		
 		<field name="deleted"					type="integer"	title="Deleted" 		hidden="true"/>
-		<field name="world_region_id"			type="integer"	title="World Region Id" hidden="true"/>
+		<field name="continent_id"				type="integer"	title="continent_id" 	hidden="true"/>
 		<field name="upd_user"					type="text"		title="Update User"/>
 		<field name="country_code"				type="text"		title="Country Code"/>
 		<field name="upd_date"					type="datetime"	title="Record Upd Date"/>
 		<field name="season_id"					type="integer"	title="Season Id" 		hidden="true"/>
-		<field name="worldRegion"				type="text"		title="World Region"/>			
+		<field name="continent"					type="text"		title="continent"/>			
 	</fields>
 
 	<operationBindings>
