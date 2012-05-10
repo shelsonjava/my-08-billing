@@ -90,13 +90,13 @@ public class TabCountry extends Tab {
 			continentItem = new ComboBoxItem();
 			continentItem.setTitle("კონტინენტი");
 			continentItem.setWidth(250);
-			continentItem.setName("world_region_id");
-			final DataSource worldRegionDS = DataSource.get("WorldRegionDS");
-			continentItem.setOptionOperationId("worldRegionsSearch");
+			continentItem.setName("continent_id");
+			final DataSource continentDS = DataSource.get("ContinentDS");
+			continentItem.setOptionOperationId("continentSearch");
 			continentItem.setAutoFetchData(true);
-			continentItem.setOptionDataSource(worldRegionDS);
-			continentItem.setValueField("world_region_id");
-			continentItem.setDisplayField("world_region_name_geo");
+			continentItem.setOptionDataSource(continentDS);
+			continentItem.setValueField("id");
+			continentItem.setDisplayField("name_descr");
 
 			searchForm.setFields(countryNameGeoItem, countryNameEngItem,
 					countryCodeItem, continentItem);
@@ -184,7 +184,7 @@ public class TabCountry extends Tab {
 			datasoutce.getField("country_name_eng").setTitle(
 					"დასახელება (ინგლ.)");
 			datasoutce.getField("country_code").setTitle("კოდი");
-			datasoutce.getField("worldRegion").setTitle("რეგიონი");
+			datasoutce.getField("continent").setTitle("კონტინენტი");
 			datasoutce.getField("rec_user").setTitle("შემქმნელი");
 			datasoutce.getField("rec_date").setTitle("თარიღი");
 			datasoutce.getField("upd_user").setTitle("განაახლა");
@@ -196,8 +196,8 @@ public class TabCountry extends Tab {
 					"country_name_eng", "დასახელება (ინგლ.)", 150);
 			ListGridField country_code = new ListGridField("country_code",
 					"კოდი", 60);
-			ListGridField worldRegion = new ListGridField("worldRegion",
-					"რეგიონი", 100);
+			ListGridField continent = new ListGridField("continent",
+					"კონტინენტი", 100);
 			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",
 					90);
 			ListGridField rec_date = new ListGridField("rec_date", "თარიღი",
@@ -212,7 +212,7 @@ public class TabCountry extends Tab {
 			rec_date.setAlign(Alignment.CENTER);
 
 			listGrid.setFields(country_name_geo, country_name_eng,
-					country_code, worldRegion, rec_user, rec_date, upd_user);
+					country_code, continent, rec_user, rec_date, upd_user);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -256,7 +256,7 @@ public class TabCountry extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					DlgAddEditCountry addEditUserNew = new DlgAddEditCountry(
-							listGrid, null, worldRegionDS);
+							listGrid, null, continentDS);
 					addEditUserNew.show();
 				}
 			});
@@ -272,7 +272,7 @@ public class TabCountry extends Tab {
 					}
 
 					DlgAddEditCountry addEditUserNew = new DlgAddEditCountry(
-							listGrid, listGridRecord, worldRegionDS);
+							listGrid, listGridRecord, continentDS);
 					addEditUserNew.show();
 				}
 			});
@@ -379,7 +379,7 @@ public class TabCountry extends Tab {
 					}
 
 					DlgAddEditCountry addEditUserNew = new DlgAddEditCountry(
-							listGrid, listGridRecord, worldRegionDS);
+							listGrid, listGridRecord, continentDS);
 					addEditUserNew.show();
 				}
 			});

@@ -53,8 +53,8 @@ public class Country implements java.io.Serializable {
 	private Long deleted;	
 	
 	@Basic
-	@Column(name = "WORLD_REGION_ID")
-	private Long world_region_id;
+	@Column(name = "CONTINENT_ID")
+	private Long continent_id;
 	
 	@Basic
 	@Column(name = "UPD_USER")
@@ -73,7 +73,7 @@ public class Country implements java.io.Serializable {
 	private Long season_id;
 	
 	@Transient
-	private String worldRegion;
+	private String continent;
 	
 	public Country() {
 	}
@@ -125,12 +125,12 @@ public class Country implements java.io.Serializable {
 		this.deleted = deleted;
 	}
 
-	public Long getWorld_region_id() {
-		return world_region_id;
+	public Long getContinent_id() {
+		return continent_id;
 	}
 
-	public void setWorld_region_id(Long world_region_id) {
-		this.world_region_id = world_region_id;
+	public void setContinent_id(Long continent_id) {
+		this.continent_id = continent_id;
 	}
 
 	public String getUpd_user() {
@@ -165,11 +165,11 @@ public class Country implements java.io.Serializable {
 		this.season_id = season_id;
 	}
 
-	public String getWorldRegion() {
-		return worldRegion;
+	public String getContinent() {
+		return continent;
 	}
 
-	public void setWorldRegion(String worldRegion) {
-		this.worldRegion = worldRegion;
+	public void setContinent(String continent) {
+		this.continent = continent;
 	}
 }

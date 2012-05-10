@@ -27,12 +27,12 @@ public class DlgAddEditCountry extends Window {
 	private TextItem countryNameGeoItem;
 	private TextItem countryNameEngItem;
 	private TextItem countryCodeItem;
-	private ComboBoxItem worldRegionItem;
+	private ComboBoxItem continentItem;
 	private ListGrid countryGrid;
 	private ListGridRecord countryRecord;
 
 	public DlgAddEditCountry(ListGrid countryGrid,
-			ListGridRecord countryRecord, DataSource worldRegionDS) {
+			ListGridRecord countryRecord, DataSource continentDS) {
 		this.countryGrid = countryGrid;
 		this.countryRecord = countryRecord;
 		setTitle(countryRecord == null ? "ახალი ქვეყნის დამატება"
@@ -75,17 +75,17 @@ public class DlgAddEditCountry extends Window {
 		countryCodeItem.setWidth(300);
 		countryCodeItem.setName("country_code");
 
-		worldRegionItem = new ComboBoxItem();
-		worldRegionItem.setWidth(300);
-		worldRegionItem.setTitle("რეგიონი");
-		worldRegionItem.setOptionOperationId("worldRegionsSearch");
-		worldRegionItem.setOptionDataSource(worldRegionDS);
-		worldRegionItem.setValueField("world_region_id");
-		worldRegionItem.setDisplayField("world_region_name_geo");
-		worldRegionItem.setAutoFetchData(true);
+		continentItem = new ComboBoxItem();
+		continentItem.setWidth(300);
+		continentItem.setTitle("კონტინენტი");
+		continentItem.setOptionOperationId("continentSearch");
+		continentItem.setOptionDataSource(continentDS);
+		continentItem.setValueField("id");
+		continentItem.setDisplayField("name_descr");
+		continentItem.setAutoFetchData(true);
 
 		dynamicForm.setFields(countryNameGeoItem, countryNameEngItem,
-				countryCodeItem, worldRegionItem);
+				countryCodeItem, continentItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -131,8 +131,7 @@ public class DlgAddEditCountry extends Window {
 					.getAttribute("country_name_eng"));
 			countryCodeItem
 					.setValue(countryRecord.getAttribute("country_code"));
-			worldRegionItem.setValue(countryRecord
-					.getAttribute("world_region_id"));
+			continentItem.setValue(countryRecord.getAttribute("continent_id"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -157,15 +156,13 @@ public class DlgAddEditCountry extends Window {
 				SC.say("შეიყვანეთ ქვეყნის კოდი !");
 				return;
 			}
-			ListGridRecord world_region_record = worldRegionItem
-					.getSelectedRecord();
-			if (world_region_record == null
-					|| world_region_record.getAttributeAsInt("world_region_id") == null) {
-				SC.say("გთხოვთ აირჩიოთ რეგიონი !");
+			ListGridRecord continent_record = continentItem.getSelectedRecord();
+			if (continent_record == null
+					|| continent_record.getAttributeAsInt("id") == null) {
+				SC.say("გთხოვთ აირჩიოთ კონტინენტი !");
 				return;
 			}
-			Integer world_region_id = world_region_record
-					.getAttributeAsInt("world_region_id");
+			Integer continent_id = continent_record.getAttributeAsInt("id");
 
 			if (countryNameGeo.length() > 155) {
 				SC.say("ქართული დასახელება შედგება მაქსიმუმ 155 სიმბოლოსაგან !");
@@ -191,7 +188,7 @@ public class DlgAddEditCountry extends Window {
 			record.setAttribute("country_name_geo", countryNameGeo);
 			record.setAttribute("country_name_eng", countryNameEng);
 			record.setAttribute("country_code", countryCode);
-			record.setAttribute("world_region_id", world_region_id);
+			record.setAttribute("continent_id", continent_id);
 
 			if (countryRecord != null) {
 				record.setAttribute("country_id",

@@ -1291,7 +1291,7 @@ public interface QueryConstants {
 			+ "       t.country_code = ?,\n"
 			+ "       t.upd_user = ?,\n"
 			+ "       t.upd_date = ?,\n"
-			+ "       t.world_region_id = ?\n"
+			+ "       t.continent_id = ?\n"
 			+ "where t.country_id = ?";
 
 	public static final String Q_UPDATE_PERSONNEL_STATUS = " update ccare.personnel t set \n"

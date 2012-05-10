@@ -29,7 +29,7 @@ import com.info08.billing.callcenterbk.shared.entity.StreetDistrict;
 import com.info08.billing.callcenterbk.shared.entity.StreetEnt;
 import com.info08.billing.callcenterbk.shared.entity.StreetType;
 import com.info08.billing.callcenterbk.shared.entity.StreetsOldEnt;
-import com.info08.billing.callcenterbk.shared.entity.WorldRegions;
+import com.info08.billing.callcenterbk.shared.entity.Continents;
 import com.info08.billing.callcenterbk.shared.entity.transport.TransportPlace;
 import com.info08.billing.callcenterbk.shared.entity.transport.TransportType;
 import com.info08.billing.callcenterbk.shared.items.FirstName;
@@ -48,7 +48,7 @@ public class CommonDMI implements QueryConstants {
 	private static TreeMap<Integer, FirstName> firstNames = new TreeMap<Integer, FirstName>();
 	private static TreeMap<Integer, LastName> lastNames = new TreeMap<Integer, LastName>();
 	private static TreeMap<Integer, PersonnelTypes> persTypes = new TreeMap<Integer, PersonnelTypes>();
-	private static TreeMap<Long, WorldRegions> worldRegions = new TreeMap<Long, WorldRegions>();
+	private static TreeMap<Long, Continents> continents = new TreeMap<Long, Continents>();
 	private static TreeMap<Long, Country> countries = new TreeMap<Long, Country>();
 	private static TreeMap<Long, CityType> cityTypes = new TreeMap<Long, CityType>();
 	private static TreeMap<Long, City> cities = new TreeMap<Long, City>();
@@ -2050,12 +2050,11 @@ public class CommonDMI implements QueryConstants {
 					.toString();
 			Timestamp rec_date = new Timestamp(System.currentTimeMillis());
 
-			Long world_region_id = new Long(dsRequest.getFieldValue(
-					"world_region_id").toString());
-			if (worldRegions.isEmpty()) {
-				fetchWorldRegions(dsRequest);
+			Long continent_id = new Long(dsRequest.getFieldValue("continent_id").toString());
+			if (continents.isEmpty()) {
+				fetchContinents(dsRequest);
 			}
-			WorldRegions worldRegion = worldRegions.get(world_region_id);
+			Continents continent = continents.get(continent_id);
 
 			Country country = new Country();
 			country.setCountry_name_geo(dsRequest.getFieldValue(
@@ -2064,13 +2063,12 @@ public class CommonDMI implements QueryConstants {
 					"country_name_eng").toString());
 			country.setCountry_code(dsRequest.getFieldValue("country_code")
 					.toString());
-			country.setWorld_region_id(world_region_id);
+			country.setContinent_id(continent_id);
 			country.setDeleted(0L);
 			country.setRec_date(rec_date);
 			country.setRec_user(loggedUserName);
 			country.setSeason_id(0L);
-			country.setWorldRegion(worldRegion != null ? worldRegion
-					.getWorld_region_name_geo() : null);
+			country.setContinent(continent != null ? continent.getName_descr() : null);
 
 			oracleManager.persist(country);
 
@@ -2119,20 +2117,19 @@ public class CommonDMI implements QueryConstants {
 					.setParameter(5, curr_date)
 					.setParameter(
 							6,
-							new Long(fieldValues.get("world_region_id")
+							new Long(fieldValues.get("continent_id")
 									.toString())).setParameter(7, country_id)
 					.executeUpdate();
 			oracleManager.flush();
 			Country country = oracleManager.find(Country.class, country_id);
-			Long world_region_id = country.getWorld_region_id();
-			if (world_region_id != null) {
-				if (worldRegions.isEmpty()) {
-					fetchWorldRegions(null);
+			Long continent_id = country.getContinent_id();
+			if (continent_id != null) {
+				if (continents.isEmpty()) {
+					fetchContinents(null);
 				}
-				WorldRegions worldRegion = worldRegions.get(world_region_id);
-				if (worldRegion != null) {
-					country.setWorldRegion(worldRegion
-							.getWorld_region_name_geo());
+				Continents continent = continents.get(continent_id);
+				if (continent != null) {
+					country.setContinent(continent.getName_descr());
 				}
 			}
 			countries.remove(country_id);
@@ -2180,15 +2177,14 @@ public class CommonDMI implements QueryConstants {
 
 			oracleManager.flush();
 			Country country = oracleManager.find(Country.class, country_id);
-			Long world_region_id = country.getWorld_region_id();
-			if (world_region_id != null) {
-				if (worldRegions.isEmpty()) {
-					fetchWorldRegions(null);
+			Long continent_id = country.getContinent_id();
+			if (continent_id != null) {
+				if (continents.isEmpty()) {
+					fetchContinents(null);
 				}
-				WorldRegions worldRegion = worldRegions.get(world_region_id);
-				if (worldRegion != null) {
-					country.setWorldRegion(worldRegion
-							.getWorld_region_name_geo());
+				Continents continent = continents.get(continent_id);
+				if (continent != null) {
+					country.setContinent(continent.getName_descr());
 				}
 			}
 			countries.remove(country_id);
@@ -2224,7 +2220,7 @@ public class CommonDMI implements QueryConstants {
 			Object country_name_eng = dsRequest
 					.getFieldValue("country_name_eng");
 			Object country_code = dsRequest.getFieldValue("country_code");
-			Object world_region_id = dsRequest.getFieldValue("world_region_id");
+			Object continent_id = dsRequest.getFieldValue("continent_id");
 
 			String query = "select e from Country e where 1 = 1 ";
 			if (country_name_geo != null
@@ -2242,9 +2238,9 @@ public class CommonDMI implements QueryConstants {
 				query += " and e.country_code like '" + country_code.toString()
 						+ "%'";
 			}
-			if (world_region_id != null) {
-				query += " and e.world_region_id = "
-						+ new Long(world_region_id.toString());
+			if (continent_id != null) {
+				query += " and e.continent_id = "
+						+ new Long(continent_id.toString());
 			}
 			query += " order by e.country_id ";
 
@@ -2253,15 +2249,14 @@ public class CommonDMI implements QueryConstants {
 					.createQuery(query).getResultList();
 			if (result != null && !result.isEmpty()) {
 				for (Country country : result) {
-					Long worldRegId = country.getWorld_region_id();
-					if (worldRegId != null) {
-						if (worldRegions.isEmpty()) {
-							fetchWorldRegions(dsRequest);
+					Long continentId = country.getContinent_id();
+					if (continentId != null) {
+						if (continents.isEmpty()) {
+							fetchContinents(dsRequest);
 						}
-						WorldRegions worldRegion = worldRegions.get(worldRegId);
-						if (worldRegion != null) {
-							country.setWorldRegion(worldRegion
-									.getWorld_region_name_geo());
+						Continents continent = continents.get(continentId);
+						if (continent != null) {
+							country.setContinent(continent.getName_descr());
 						}
 
 					}
@@ -2451,35 +2446,35 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<WorldRegions> fetchWorldRegions(DSRequest dsRequest)
+	public ArrayList<Continents> fetchContinents(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		try {
 
-			logger.info("getting WorldRegions ...");
+			logger.info("getting Continents ...");
 
-			if (worldRegions == null || worldRegions.isEmpty()) {
-				logger.info("getting worldRegions from DB. ");
-				worldRegions = new TreeMap<Long, WorldRegions>();
+			if (continents == null || continents.isEmpty()) {
+				logger.info("getting continents from DB. ");
+				continents = new TreeMap<Long, Continents>();
 				oracleManager = EMF.getEntityManager();
-				ArrayList<WorldRegions> result = (ArrayList<WorldRegions>) oracleManager
-						.createNamedQuery("WorldRegions.getAllWorldRegions")
+				ArrayList<Continents> result = (ArrayList<Continents>) oracleManager
+						.createNamedQuery("Continents.getAllContinents")
 						.getResultList();
 				if (result != null && !result.isEmpty()) {
-					for (WorldRegions worldRegion : result) {
-						Long id = worldRegion.getWorld_region_id();
-						worldRegions.put(id, worldRegion);
+					for (Continents continent : result) {
+						Long id = continent.getId();
+						continents.put(id, continent);
 					}
 				}
 			}
-			ArrayList<WorldRegions> ret = new ArrayList<WorldRegions>();
-			ret.addAll(worldRegions.values());
+			ArrayList<Continents> ret = new ArrayList<Continents>();
+			ret.addAll(continents.values());
 			return ret;
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Fetching WorldRegions From Database : ",
+			logger.error("Error While Fetching Continents From Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების წამოღებისას : "
 					+ e.toString());

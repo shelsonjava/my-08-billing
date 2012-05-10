@@ -23,7 +23,7 @@
     <class>com.info08.billing.callcenterbk.shared.entity.StreetIndex</class>
     <class>com.info08.billing.callcenterbk.shared.entity.StreetsOldEnt</class>
     <class>com.info08.billing.callcenterbk.shared.entity.StreetType</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.WorldRegions</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.Continents</class>
     <class>com.info08.billing.callcenterbk.shared.entity.Country</class>
     <class>com.info08.billing.callcenterbk.shared.entity.calendar.ChurchCalendar</class>
     <class>com.info08.billing.callcenterbk.shared.entity.calendar.SecularCalendar</class>
