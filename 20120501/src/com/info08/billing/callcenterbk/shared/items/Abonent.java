@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 public class Abonent implements Serializable {
 
+	
 	private static final long serialVersionUID = 7026086622425435823L;
 	private Integer main_id;
 	private Integer abonent_id;
