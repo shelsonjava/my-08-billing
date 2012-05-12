@@ -240,7 +240,7 @@
 				  t.note_crit,
 				  getdaysdescription(t.days) as days_descr
 			</selectClause> 
-			<tableClause>transports_found t</tableClause>
+			<tableClause>transp_schedule_view t</tableClause>
 			<whereClause><![CDATA[
 					1 = 1
 					#if($criteria.trip_criteria) and t.trip_criteria like '%'||($criteria.trip_criteria)||'%' #end
@@ -302,7 +302,7 @@
 				  t.note_crit,
 				  getdaysdescription(t.days) as days_descr       
 			</selectClause> 
-			<tableClause>transports_found_new t</tableClause>
+			<tableClause>transp_schedule_view_new t</tableClause>
 			<whereClause><![CDATA[
 					1 = 1
 					#if($criteria.transport_type_id) and (t.o_transport_type_id = $criteria.transport_type_id and t.i_transport_type_id = $criteria.transport_type_id)  #end
@@ -437,7 +437,7 @@
     			t.outCity,
     			t.outPlace
 			</selectClause> 
-			<tableClause>transport_stops_found t</tableClause>
+			<tableClause>search_transp_stops t</tableClause>
 			<whereClause><![CDATA[
 					1 = 1
 					#if($criteria.transport_id) and t.transport_id = $criteria.transport_id #end
