@@ -50,13 +50,13 @@ public class TabFindInCityTransport extends Tab {
 	private ListGrid listGrid;
 
 	// DataSource
-	private DataSource busRouteDS;
+	private DataSource pubTranspDirDS;
 
 	public TabFindInCityTransport() {
 		setTitle(CallCenterBK.constants.findInCityTransport());
 		setCanClose(true);
 
-		busRouteDS = DataSource.get("BusRouteDS");
+		pubTranspDirDS = DataSource.get("PubTranspDirDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -124,17 +124,17 @@ public class TabFindInCityTransport extends Tab {
 		listGrid.setWidth(900);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(busRouteDS);
+		listGrid.setDataSource(pubTranspDirDS);
 		listGrid.setAutoFetchData(false);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
 		listGrid.setCanRemoveRecords(false);
-		listGrid.setFetchOperation("searchAllBusRoutesForCallCenter");
+		listGrid.setFetchOperation("searchAllPublicTransportDirectionsForCallCenter");
 		listGrid.setCanSort(false);
 		listGrid.setCanResizeFields(false);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField route_nm = new ListGridField("route_nm",
+		ListGridField dir_num = new ListGridField("dir_num",
 				CallCenterBK.constants.routeNumber(), 70);
 
 		ListGridField service_descr = new ListGridField("service_descr",
@@ -146,11 +146,11 @@ public class TabFindInCityTransport extends Tab {
 		ListGridField end_place = new ListGridField("end_place",
 				CallCenterBK.constants.stationTo());
 
-		ListGridField round_descr = new ListGridField("round_descr",
+		ListGridField cycle_descr = new ListGridField("cycle_descr",
 				CallCenterBK.constants.type(), 100);
 
-		listGrid.setFields(service_descr, route_nm, start_place, end_place,
-				round_descr);
+		listGrid.setFields(service_descr, dir_num, start_place, end_place,
+				cycle_descr);
 
 		mainLayout.addMember(listGrid);
 
@@ -174,7 +174,7 @@ public class TabFindInCityTransport extends Tab {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 				DlgViewInCityTransport dlgViewTransport = new DlgViewInCityTransport(
-						busRouteDS, listGrid.getSelectedRecord(), fromStreetId,
+						pubTranspDirDS, listGrid.getSelectedRecord(), fromStreetId,
 						toStreetId);
 				dlgViewTransport.show();
 			}
@@ -260,7 +260,7 @@ public class TabFindInCityTransport extends Tab {
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId",
-					"searchAllBusRoutesForCallCenter");
+					"searchAllPublicTransportDirectionsForCallCenter");
 			listGrid.invalidateCache();
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override

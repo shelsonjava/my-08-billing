@@ -33,8 +33,8 @@
     <class>com.info08.billing.callcenterbk.shared.entity.currency.Rate</class>
     <class>com.info08.billing.callcenterbk.shared.entity.currency.RateCurr</class>
     <class>com.info08.billing.callcenterbk.shared.entity.currency.RateLog</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.transport.BusRoute</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.transport.BusRouteStreet</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirection</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirectionStreet</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.Transport</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.TransportCompany</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.TransportDetail</class>

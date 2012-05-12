@@ -45,7 +45,7 @@ public class TabTransportCityBusStreet extends Tab {
 	private ComboBoxItem routeItem;
 	private ComboBoxItem streetItem;
 	private ComboBoxItem routeDirItem;
-	private TextItem notesItem;
+	private TextItem remarksItem;
 
 	// actions
 	private IButton findButton;
@@ -66,7 +66,7 @@ public class TabTransportCityBusStreet extends Tab {
 			setTitle("მიკრო/ავტ. მარშუტების მართვა");
 			setCanClose(true);
 
-			datasource = DataSource.get("BusRouteStreetDS");
+			datasource = DataSource.get("PubTranspDirStreetDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -83,7 +83,7 @@ public class TabTransportCityBusStreet extends Tab {
 			routeItem = new ComboBoxItem();
 			routeItem.setTitle("მარშუტის ნომერი");
 			routeItem.setWidth(300);
-			routeItem.setName("route_descr");
+			routeItem.setName("descr");
 			routeItem.setFetchMissingValues(true);
 			routeItem.setFilterLocally(false);
 			routeItem.setAddUnknownValues(false);
@@ -93,10 +93,10 @@ public class TabTransportCityBusStreet extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = routeItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("route_id");
+						String oldAttr = criteria.getAttribute("pt_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("route_id", nullO);
+							criteria.setAttribute("pt_id", nullO);
 						}
 					}
 				}
@@ -126,18 +126,18 @@ public class TabTransportCityBusStreet extends Tab {
 
 			routeDirItem = new ComboBoxItem();
 			routeDirItem.setTitle("მიმართულება");
-			routeDirItem.setName("route_dir");
+			routeDirItem.setName("dir");
 			routeDirItem.setWidth(300);
 			routeDirItem.setValueMap(ClientMapUtil.getInstance()
 					.getRouteDirTypes());
 
-			notesItem = new TextItem();
-			notesItem.setTitle("კომენტარი");
-			notesItem.setName("notes");
-			notesItem.setWidth(300);
+			remarksItem = new TextItem();
+			remarksItem.setTitle("კომენტარი");
+			remarksItem.setName("remarks");
+			remarksItem.setWidth(300);
 
-			searchForm
-					.setFields(routeItem, streetItem, routeDirItem, notesItem);
+			searchForm.setFields(routeItem, streetItem, routeDirItem,
+					remarksItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(910);
@@ -205,45 +205,32 @@ public class TabTransportCityBusStreet extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchAllBusRouteStreets");
+			listGrid.setFetchOperation("searchAllPublicTransportDirectionstreets");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("route_descr").setTitle("მარშუტის N");
+			datasource.getField("descr").setTitle("მარშუტის N");
 			datasource.getField("street_name").setTitle("ქუჩა");
-			datasource.getField("notes").setTitle("კომენტარი");
-			datasource.getField("route_dir_descr").setTitle("მიმართულება");
-			datasource.getField("route_order").setTitle("ნუმ.");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
+			datasource.getField("remarks").setTitle("კომენტარი");
+			datasource.getField("dir_descr").setTitle("მიმართულება");
+			datasource.getField("dir_order").setTitle("ნუმ.");
 
-			ListGridField route_descr = new ListGridField("route_descr",
-					"მარშუტის N", 100);
+			ListGridField descr = new ListGridField("descr", "მარშუტის N", 100);
 			ListGridField street_name = new ListGridField("street_name",
 					"ქუჩა", 200);
-			ListGridField notes = new ListGridField("notes", "კომენტარი", 150);
-			ListGridField route_dir_descr = new ListGridField(
-					"route_dir_descr", "მიმართ.", 50);
-			ListGridField route_order = new ListGridField("route_order",
-					"ნუმ.", 50);
-			ListGridField rec_date = new ListGridField("rec_date",
-					"შექმინის თარიღი", 130);
-			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",
-					80);
-			ListGridField upd_user = new ListGridField("upd_user",
-					"ვინ განაახლა", 100);
+			ListGridField remarks = new ListGridField("remarks", "კომენტარი",
+					150);
+			ListGridField dir_descr = new ListGridField("dir_descr", "მიმართ.",
+					50);
+			ListGridField dir_order = new ListGridField("dir_order", "ნუმ.", 50);
 
-			route_dir_descr.setAlign(Alignment.CENTER);
-			route_order.setAlign(Alignment.CENTER);
-			rec_date.setAlign(Alignment.CENTER);
-			rec_user.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
+			dir_descr.setAlign(Alignment.CENTER);
+			dir_order.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(route_descr, street_name, notes,
-					route_dir_descr, route_order, rec_date, rec_user, upd_user);
+			listGrid.setFields(descr, street_name, remarks, dir_descr,
+					dir_order);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -258,7 +245,7 @@ public class TabTransportCityBusStreet extends Tab {
 					routeItem.clearValue();
 					streetItem.clearValue();
 					routeDirItem.clearValue();
-					notesItem.clearValue();
+					remarksItem.clearValue();
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
@@ -391,11 +378,12 @@ public class TabTransportCityBusStreet extends Tab {
 
 	private void fillCombos() {
 		try {
-			DataSource busRouteDS = DataSource.get("BusRouteDS");
-			routeItem.setOptionOperationId("searchAllBusRoutesForCombos");
-			routeItem.setOptionDataSource(busRouteDS);
-			routeItem.setValueField("route_id");
-			routeItem.setDisplayField("route_nm");
+			DataSource PubTranspDirDS = DataSource.get("PubTranspDirDS");
+			routeItem
+					.setOptionOperationId("searchAllPublicTransportDirectionsForCombos");
+			routeItem.setOptionDataSource(PubTranspDirDS);
+			routeItem.setValueField("pt_id");
+			routeItem.setDisplayField("dir_num");
 
 			Criteria criteria = new Criteria();
 			routeItem.setOptionCriteria(criteria);
@@ -419,14 +407,14 @@ public class TabTransportCityBusStreet extends Tab {
 
 	private void search() {
 		try {
-			String route_id = routeItem.getValueAsString();
+			String id = routeItem.getValueAsString();
 			String street_id = streetItem.getValueAsString();
 			String route_dir = routeDirItem.getValueAsString();
-			String notes = notesItem.getValueAsString();
+			String remarks = remarksItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
-			if (route_id != null) {
-				criteria.setAttribute("route_id", new Integer(route_id));
+			if (id != null) {
+				criteria.setAttribute("pt_id", new Integer(id));
 			}
 			if (street_id != null) {
 				criteria.setAttribute("street_id", new Integer(street_id));
@@ -434,12 +422,13 @@ public class TabTransportCityBusStreet extends Tab {
 			if (route_dir != null) {
 				criteria.setAttribute("route_dir", new Integer(route_dir));
 			}
-			if (notes != null && !notes.trim().equals("")) {
-				criteria.setAttribute("notes", notes);
+			if (remarks != null && !remarks.trim().equals("")) {
+				criteria.setAttribute("remarks", remarks);
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllBusRouteStreets");
+			dsRequest.setAttribute("operationId",
+					"searchAllPublicTransportDirectionstreets");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -462,7 +451,8 @@ public class TabTransportCityBusStreet extends Tab {
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateBusRouteStreetStatus");
+			req.setAttribute("operationId",
+					"updatePublicTransportDirectionsStreetStatus");
 			listGrid.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

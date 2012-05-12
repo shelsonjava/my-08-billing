@@ -1,5 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.transport;
 
+import java.util.Map;
+
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -72,7 +74,7 @@ public class DlgAddEditBusRouteStreet extends Window {
 		routeItem = new ComboBoxItem();
 		routeItem.setTitle("მარშუტის ნომერი");
 		routeItem.setWidth(300);
-		routeItem.setName("route_id");
+		routeItem.setName("dir_id");
 		routeItem.setFetchMissingValues(true);
 		routeItem.setFilterLocally(false);
 		routeItem.setAddUnknownValues(false);
@@ -82,10 +84,10 @@ public class DlgAddEditBusRouteStreet extends Window {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = routeItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("route_id");
+					String oldAttr = criteria.getAttribute("dir_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("route_id", nullO);
+						criteria.setAttribute("dir_id", nullO);
 					}
 				}
 			}
@@ -93,7 +95,7 @@ public class DlgAddEditBusRouteStreet extends Window {
 
 		streetItem = new ComboBoxItem();
 		streetItem.setTitle("ქუჩა");
-		streetItem.setName("street_name_geo");
+		streetItem.setName("street_id");
 		streetItem.setWidth(300);
 		streetItem.setFetchMissingValues(true);
 		streetItem.setFilterLocally(false);
@@ -115,19 +117,19 @@ public class DlgAddEditBusRouteStreet extends Window {
 
 		routeDirItem = new ComboBoxItem();
 		routeDirItem.setTitle("მიმართულება");
-		routeDirItem.setName("route_dir");
+		routeDirItem.setName("dir");
 		routeDirItem.setWidth(300);
 		routeDirItem
 				.setValueMap(ClientMapUtil.getInstance().getRouteDirTypes());
 
 		notesItem = new TextItem();
 		notesItem.setTitle("კომენტარი");
-		notesItem.setName("notes");
+		notesItem.setName("remarks");
 		notesItem.setWidth(300);
 
 		routeOrderItem = new TextItem();
 		routeOrderItem.setTitle("ნუმერაცია");
-		routeOrderItem.setName("route_order");
+		routeOrderItem.setName("dir_order");
 		routeOrderItem.setWidth(300);
 
 		dynamicForm.setFields(routeItem, streetItem, routeDirItem, notesItem,
@@ -168,11 +170,12 @@ public class DlgAddEditBusRouteStreet extends Window {
 
 	private void fillFields() {
 		try {
-			DataSource busRouteDS = DataSource.get("BusRouteDS");
-			routeItem.setOptionOperationId("searchAllBusRoutesForCombos");
-			routeItem.setOptionDataSource(busRouteDS);
-			routeItem.setValueField("route_id");
-			routeItem.setDisplayField("route_nm");
+			DataSource PubTranspDirDS = DataSource.get("PubTranspDirDS");
+			routeItem
+					.setOptionOperationId("searchAllPublicTransportDirectionsForCombos");
+			routeItem.setOptionDataSource(PubTranspDirDS);
+			routeItem.setValueField("pt_id");
+			routeItem.setDisplayField("dir_num");
 
 			Criteria criteria = new Criteria();
 			routeItem.setOptionCriteria(criteria);
@@ -189,27 +192,31 @@ public class DlgAddEditBusRouteStreet extends Window {
 			streetItem.setAutoFetchData(false);
 
 			if (editRecord != null) {
-				Integer route_id = editRecord.getAttributeAsInt("route_id");
-				if (route_id != null) {
-					routeItem.setValue(route_id);
-				}
-				Integer street_id = editRecord.getAttributeAsInt("street_id");
-				if (route_id != null) {
-					streetItem.setValue(street_id);
-				}
-				Integer route_dir = editRecord.getAttributeAsInt("route_dir");
-				if (route_dir != null) {
-					routeDirItem.setValue(route_dir);
-				}
-				String notes = editRecord.getAttributeAsString("notes");
-				if (notes != null) {
-					notesItem.setValue(notes);
-				}
-				Integer route_order = editRecord
-						.getAttributeAsInt("route_order");
-				if (route_order != null) {
-					routeOrderItem.setValue(route_order);
-				}
+
+				Map mp = editRecord.toMap();
+				dynamicForm.setValues(mp);
+				// Integer dir_id = editRecord.getAttributeAsInt("dir_id");
+				// if (dir_id != null) {
+				// routeItem.setValue(dir_id);
+				// }
+				// Integer street_id =
+				// editRecord.getAttributeAsInt("street_id");
+				// if (street_id != null) {
+				// streetItem.setValue(street_id);
+				// }
+				// Integer dir = editRecord.getAttributeAsInt("dir");
+				// if (dir != null) {
+				// routeDirItem.setValue(dir);
+				// }
+				// String remarks = editRecord.getAttributeAsString("remarks");
+				// if (remarks != null) {
+				// notesItem.setValue(remarks);
+				// }
+				// Integer dir_order = editRecord
+				// .getAttributeAsInt("dir_order");
+				// if (dir_order != null) {
+				// routeOrderItem.setValue(dir_order);
+				// }
 			}
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -254,28 +261,29 @@ public class DlgAddEditBusRouteStreet extends Window {
 			String notes = notesItem.getValueAsString();
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
-			Record record = new Record();
+			Record record = new Record(dynamicForm.getValues());
 
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("route_id", new Integer(route_id));
+			record.setAttribute("dir_id", new Integer(route_id));
 			record.setAttribute("street_id", new Integer(street_id));
-			record.setAttribute("route_dir", new Integer(route_dir));
-			record.setAttribute("route_order", route_order);
-			record.setAttribute("notes", notes);
-			record.setAttribute("deleted", 0);
+			record.setAttribute("dir", new Integer(route_dir));
+			record.setAttribute("dir_order", route_order);
+			record.setAttribute("remarks", notes);
 			record.setAttribute("rec_user", loggedUser);
 
 			if (editRecord != null) {
-				record.setAttribute("route_street_id",
-						editRecord.getAttributeAsInt("route_street_id"));
+				record.setAttribute("pts_id",
+						editRecord.getAttributeAsInt("pts_id"));
 			}
+			// record.setattr ;
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addBusRouteStreet");
+				req.setAttribute("operationId",
+						"addPublicTransportDirectionsStreet");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -284,7 +292,8 @@ public class DlgAddEditBusRouteStreet extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateBusRouteStreet");
+				req.setAttribute("operationId",
+						"updatePublicTransportDirectionsStreet");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

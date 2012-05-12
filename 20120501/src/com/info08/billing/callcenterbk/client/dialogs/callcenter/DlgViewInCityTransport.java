@@ -99,7 +99,7 @@ public class DlgViewInCityTransport extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight(120);
 
-		DetailViewerField route_nm = new DetailViewerField("route_nm",
+		DetailViewerField dir_num = new DetailViewerField("dir_num",
 				CallCenterBK.constants.routeNumber());
 
 		DetailViewerField service_descr = new DetailViewerField(
@@ -115,7 +115,7 @@ public class DlgViewInCityTransport extends Window {
 		DetailViewerField end_place = new DetailViewerField("end_place",
 				CallCenterBK.constants.stationTo());
 
-		DetailViewerField round_descr = new DetailViewerField("round_descr",
+		DetailViewerField cycle_descr = new DetailViewerField("cycle_descr",
 				CallCenterBK.constants.type());
 
 		detailViewer.selectRecord(listGridRecord);
@@ -123,17 +123,17 @@ public class DlgViewInCityTransport extends Window {
 		arr[0] = listGridRecord;
 		detailViewer.setData(arr);
 
-		detailViewer.setFields(route_nm, service_descr, start_place, end_place,
-				round_descr);
+		detailViewer.setFields(dir_num, service_descr, start_place, end_place,
+				cycle_descr);
 
 		mainLayout.addMember(detailViewer);
 
-		dataSourceInner = DataSource.get("BusRouteStreetDS");
+		dataSourceInner = DataSource.get("PubTranspDirStreetDS");
 
 		Criteria criteria = new Criteria();
-		criteria.setAttribute("route_id",
-				listGridRecord.getAttributeAsInt("route_id"));
-		criteria.setAttribute("deleted", 0);
+		criteria.setAttribute("id",
+				listGridRecord.getAttributeAsInt("id"));
+		
 
 		listGridInner = new ListGrid() {
 			protected String getCellCSSText(ListGridRecord record, int rowNum,
@@ -169,28 +169,28 @@ public class DlgViewInCityTransport extends Window {
 		listGridInner.setShowFilterEditor(false);
 		listGridInner.setCanEdit(false);
 		listGridInner.setCanRemoveRecords(false);
-		listGridInner.setFetchOperation("searchAllBusRouteStreets");
+		listGridInner.setFetchOperation("searchAllPublicTransportDirectionstreets");
 		listGridInner.setCanSort(false);
 		listGridInner.setCanResizeFields(false);
 
-		ListGridField route_order = new ListGridField("route_order",
+		ListGridField dir_order = new ListGridField("dir_order",
 				CallCenterBK.constants.no(), 50);
-		route_order.setAlign(Alignment.LEFT);
+		dir_order.setAlign(Alignment.LEFT);
 
 		ListGridField street_name = new ListGridField("street_name",
 				CallCenterBK.constants.street(), 300);
 		street_name.setAlign(Alignment.LEFT);
 
-		ListGridField notes = new ListGridField("notes",
+		ListGridField remarks = new ListGridField("remarks",
 				CallCenterBK.constants.description());
-		notes.setAlign(Alignment.LEFT);
+		remarks.setAlign(Alignment.LEFT);
 
-		ListGridField route_dir_descr = new ListGridField("route_dir_descr",
+		ListGridField dir_descr = new ListGridField("dir_descr",
 				CallCenterBK.constants.routeDirDescr(), 150);
-		route_dir_descr.setAlign(Alignment.CENTER);
+		dir_descr.setAlign(Alignment.CENTER);
 
-		listGridInner.setFields(route_order, route_dir_descr, street_name,
-				notes);
+		listGridInner.setFields(dir_order, dir_descr, street_name,
+				remarks);
 
 		mainLayout.addMember(listGridInner);
 
@@ -327,9 +327,9 @@ public class DlgViewInCityTransport extends Window {
 				sms_text.append(service_descr).append(" : ");
 			}
 
-			String route_nm = listGridRecord.getAttributeAsString("route_nm");
-			if (route_nm != null && !route_nm.trim().equals("")) {
-				sms_text.append("N").append(route_nm).append(";");
+			String dir_num = listGridRecord.getAttributeAsString("dir_num");
+			if (dir_num != null && !dir_num.trim().equals("")) {
+				sms_text.append("N").append(dir_num).append(";");
 			}
 
 			if (routeDir == 3) {

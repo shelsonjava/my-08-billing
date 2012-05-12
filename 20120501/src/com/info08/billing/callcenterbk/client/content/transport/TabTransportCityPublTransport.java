@@ -33,15 +33,15 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabTransportCityBus extends Tab {
+public class TabTransportCityPublTransport extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
 
 	// form fields
-	private TextItem routeNMItem;
-	private TextItem routeOldNMItem;
-	private ComboBoxItem roundTypeItem;
+	private TextItem dirNMItem;
+	private TextItem dirOldNUMItem;
+	private ComboBoxItem cycleTypeItem;
 	private ComboBoxItem transpTypeItem;
 
 	// actions
@@ -58,12 +58,12 @@ public class TabTransportCityBus extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabTransportCityBus() {
+	public TabTransportCityPublTransport() {
 		try {
 			setTitle("ქალაქის მიკრო/ავტ. მართვა");
 			setCanClose(true);
 
-			datasource = DataSource.get("BusRouteDS");
+			datasource = DataSource.get("PubTranspDirDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -77,21 +77,21 @@ public class TabTransportCityBus extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			routeNMItem = new TextItem();
-			routeNMItem.setTitle("მარშუტის ნომერი");
-			routeNMItem.setWidth(350);
-			routeNMItem.setName("route_nm");
+			dirNMItem = new TextItem();
+			dirNMItem.setTitle("მარშუტის ნომერი");
+			dirNMItem.setWidth(350);
+			dirNMItem.setName("dir_num");
 
-			routeOldNMItem = new TextItem();
-			routeOldNMItem.setTitle("მარშუტის ძველი ნომერი");
-			routeOldNMItem.setWidth(350);
-			routeOldNMItem.setName("route_old_nm");
+			dirOldNUMItem = new TextItem();
+			dirOldNUMItem.setTitle("მარშუტის ძველი ნომერი");
+			dirOldNUMItem.setWidth(350);
+			dirOldNUMItem.setName("dir_old_num");
 
-			roundTypeItem = new ComboBoxItem();
-			roundTypeItem.setTitle("წრიული/ჩვეულებრივი");
-			roundTypeItem.setWidth(350);
-			roundTypeItem.setName("round_id");
-			roundTypeItem.setValueMap(ClientMapUtil.getInstance()
+			cycleTypeItem = new ComboBoxItem();
+			cycleTypeItem.setTitle("წრიული/ჩვეულებრივი");
+			cycleTypeItem.setWidth(350);
+			cycleTypeItem.setName("cycled_id");
+			cycleTypeItem.setValueMap(ClientMapUtil.getInstance()
 					.getTranspRoundType());
 
 			transpTypeItem = new ComboBoxItem();
@@ -101,7 +101,7 @@ public class TabTransportCityBus extends Tab {
 			transpTypeItem.setValueMap(ClientMapUtil.getInstance()
 					.getTranspTypeCustom());
 
-			searchForm.setFields(routeNMItem, routeOldNMItem, roundTypeItem,
+			searchForm.setFields(dirNMItem, dirOldNUMItem, cycleTypeItem,
 					transpTypeItem);
 
 			HLayout buttonLayout = new HLayout(5);
@@ -170,43 +170,32 @@ public class TabTransportCityBus extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchAllBusRoutes");
+			listGrid.setFetchOperation("searchAllPublicTransportDirections");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("route_nm").setTitle("მარშუტის ნომერი");
-			datasource.getField("route_old_nm").setTitle(
+			datasource.getField("dir_num").setTitle("მარშუტის ნომერი");
+			datasource.getField("dir_old_num").setTitle(
 					"მარშუტის ძველი ნომერი");
-			datasource.getField("round_descr").setTitle("წრიული/ჩვეულებრივი");
+			datasource.getField("cycle_descr").setTitle("წრიული/ჩვეულებრივი");
 			datasource.getField("service_descr").setTitle("სახეობა");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
 
-			ListGridField route_nm = new ListGridField("route_nm", "მარშ. N",
+
+			ListGridField dir_num = new ListGridField("dir_num", "მარშ. N",
 					80);
-			ListGridField route_old_nm = new ListGridField("route_old_nm",
+			ListGridField dir_old_num = new ListGridField("dir_old_num",
 					"ძვ.მარშ. N", 80);
-			ListGridField round_descr = new ListGridField("round_descr",
+			ListGridField cycle_descr = new ListGridField("cycle_descr",
 					"წრიული/ჩვ.", 120);
 			ListGridField service_descr = new ListGridField("service_descr",
 					"სახეობა", 150);
-			ListGridField rec_date = new ListGridField("rec_date",
-					"შექმინის თარიღი", 130);
-			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",
-					100);
-			ListGridField upd_user = new ListGridField("upd_user",
-					"ვინ განაახლა", 150);
 
-			round_descr.setAlign(Alignment.CENTER);
-			rec_date.setAlign(Alignment.CENTER);
-			rec_user.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
+			cycle_descr.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(route_nm, route_old_nm, round_descr,
-					service_descr, rec_date, rec_user, upd_user);
+			listGrid.setFields(dir_num, dir_old_num, cycle_descr,
+					service_descr);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -218,9 +207,9 @@ public class TabTransportCityBus extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					routeNMItem.clearValue();
-					routeOldNMItem.clearValue();
-					roundTypeItem.clearValue();
+					dirNMItem.clearValue();
+					dirOldNUMItem.clearValue();
+					cycleTypeItem.clearValue();
 					transpTypeItem.clearValue();
 				}
 			});
@@ -262,9 +251,9 @@ public class TabTransportCityBus extends Tab {
 						SC.say("ჩანაწერი უკვე გაუქმებულია !");
 						return;
 					}
-					final Integer route_id = listGridRecord
-							.getAttributeAsInt("route_id");
-					if (route_id == null) {
+					final Integer id = listGridRecord
+							.getAttributeAsInt("pt_id");
+					if (id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -274,7 +263,7 @@ public class TabTransportCityBus extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(route_id, 1);
+										changeStatus(id, 1);
 									}
 								}
 							});
@@ -295,9 +284,9 @@ public class TabTransportCityBus extends Tab {
 						SC.say("ჩანაწერი უკვე აღდგენილია !");
 						return;
 					}
-					final Integer route_id = listGridRecord
-							.getAttributeAsInt("route_id");
-					if (route_id == null) {
+					final Integer id = listGridRecord
+							.getAttributeAsInt("pt_id");
+					if (id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -307,7 +296,7 @@ public class TabTransportCityBus extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(route_id, 0);
+										changeStatus(id, 0);
 									}
 								}
 							});
@@ -353,23 +342,23 @@ public class TabTransportCityBus extends Tab {
 
 	private void search() {
 		try {
-			String route_nm = routeNMItem.getValueAsString();
-			String route_old_nm = routeOldNMItem.getValueAsString();
-			String round_id = roundTypeItem.getValueAsString();
+			String dir_num = dirNMItem.getValueAsString();
+			String dir_old_num = dirOldNUMItem.getValueAsString();
+			String cycled_id = cycleTypeItem.getValueAsString();
 			String service_id = transpTypeItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("route_nm", route_nm);
-			criteria.setAttribute("route_old_nm", route_old_nm);
-			if (round_id != null) {
-				criteria.setAttribute("round_id", new Integer(round_id));
+			criteria.setAttribute("dir_num", dir_num);
+			criteria.setAttribute("dir_old_num", dir_old_num);
+			if (cycled_id != null) {
+				criteria.setAttribute("cycled_id", new Integer(cycled_id));
 			}
 			if (service_id != null) {
 				criteria.setAttribute("service_id", new Integer(service_id));
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllBusRoutes");
+			dsRequest.setAttribute("operationId", "searchAllPublicTransportDirections");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -382,17 +371,17 @@ public class TabTransportCityBus extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer route_id, Integer deleted) {
+	private void changeStatus(Integer id, Integer deleted) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("deleted", deleted);
-			record.setAttribute("route_id", route_id);
+			record.setAttribute("pt_id", id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateBusRouteStatus");
+			req.setAttribute("operationId", "updatePublicTransportDirectionsStatus");
 			listGrid.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

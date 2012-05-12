@@ -1,5 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.transport;
 
+import java.util.Map;
+
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
@@ -66,17 +68,17 @@ public class DlgAddEditBusRoute extends Window {
 		routeNMItem = new TextItem();
 		routeNMItem.setTitle("მარშუტის ნომერი");
 		routeNMItem.setWidth(300);
-		routeNMItem.setName("route_nm");
+		routeNMItem.setName("dir_num");
 
 		routeOldNMItem = new TextItem();
 		routeOldNMItem.setTitle("მარშუტის ძველი ნომერი");
 		routeOldNMItem.setWidth(300);
-		routeOldNMItem.setName("route_old_nm");
+		routeOldNMItem.setName("dir_old_num");
 
 		roundTypeItem = new ComboBoxItem();
 		roundTypeItem.setTitle("წრიული/ჩვეულებრივი");
 		roundTypeItem.setWidth(300);
-		roundTypeItem.setName("round_id");
+		roundTypeItem.setName("cycled_id");
 		roundTypeItem.setValueMap(ClientMapUtil.getInstance()
 				.getTranspRoundType());
 
@@ -128,16 +130,18 @@ public class DlgAddEditBusRoute extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			routeNMItem.setValue(editRecord.getAttribute("route_nm"));
-			routeOldNMItem.setValue(editRecord.getAttribute("route_old_nm"));
-			Integer round_id = editRecord.getAttributeAsInt("round_id");
-			if (round_id != null) {
-				roundTypeItem.setValue(round_id);
-			}
-			Integer service_id = editRecord.getAttributeAsInt("service_id");
-			if (service_id != null) {
-				transpTypeItem.setValue(service_id);
-			}
+			Map mp = editRecord.toMap();
+			dynamicForm.setValues(mp);
+			// routeNMItem.setValue(editRecord.getAttribute("dir_num"));
+			// routeOldNMItem.setValue(editRecord.getAttribute("dir_old_num"));
+			// Integer cycled_id = editRecord.getAttributeAsInt("cycled_id");
+			// if (cycled_id != null) {
+			// roundTypeItem.setValue(cycled_id);
+			// }
+			// Integer service_id = editRecord.getAttributeAsInt("service_id");
+			// if (service_id != null) {
+			// transpTypeItem.setValue(service_id);
+			// }
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -145,15 +149,15 @@ public class DlgAddEditBusRoute extends Window {
 
 	private void save() {
 		try {
-			String route_nm = routeNMItem.getValueAsString();
-			if (route_nm == null || route_nm.trim().equalsIgnoreCase("")) {
+			String dir_num = routeNMItem.getValueAsString();
+			if (dir_num == null || dir_num.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ მარშუტის ნომერი !");
 				return;
 			}
-			String route_old_nm = routeOldNMItem.getValueAsString();
+			String dir_old_num = routeOldNMItem.getValueAsString();
 
-			String round_id = roundTypeItem.getValueAsString();
-			if (round_id == null || round_id.trim().equalsIgnoreCase("")) {
+			String cycled_id = roundTypeItem.getValueAsString();
+			if (cycled_id == null || cycled_id.trim().equalsIgnoreCase("")) {
 				SC.say("აირჩიეთ წრიული/ჩვეულებრივი !");
 				return;
 			}
@@ -169,22 +173,22 @@ public class DlgAddEditBusRoute extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("route_nm", route_nm);
-			record.setAttribute("route_old_nm", route_old_nm);
+			record.setAttribute("dir_num", dir_num);
+			record.setAttribute("dir_old_num", dir_old_num);
 			record.setAttribute("deleted", 0);
 			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("round_id", new Integer(round_id));
+			record.setAttribute("cycled_id", new Integer(cycled_id));
 			record.setAttribute("service_id", new Integer(service_id));
 
 			if (editRecord != null) {
-				record.setAttribute("route_id",
-						editRecord.getAttributeAsInt("route_id"));
+				record.setAttribute("pt_id",
+						editRecord.getAttributeAsInt("pt_id"));
 			}
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addBusRoute");
+				req.setAttribute("operationId", "addPublicTransportDirections");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -193,7 +197,8 @@ public class DlgAddEditBusRoute extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateBusRoute");
+				req.setAttribute("operationId",
+						"updatePublicTransportDirections");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
