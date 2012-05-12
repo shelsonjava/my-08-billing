@@ -50,7 +50,7 @@ public class TabTransportCityPublTransport extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
+	// private ToolStripButton restoreBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -138,10 +138,10 @@ public class TabTransportCityPublTransport extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "restoreIcon.gif");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
+			// restoreBtn = new ToolStripButton("აღდგენა", "restoreIcon.gif");
+			// restoreBtn.setLayoutAlign(Alignment.LEFT);
+			// restoreBtn.setWidth(50);
+			// toolStrip.addButton(restoreBtn);
 
 			toolStrip.addSeparator();
 
@@ -177,14 +177,12 @@ public class TabTransportCityPublTransport extends Tab {
 			listGrid.setShowHoverComponents(true);
 
 			datasource.getField("dir_num").setTitle("მარშუტის ნომერი");
-			datasource.getField("dir_old_num").setTitle(
-					"მარშუტის ძველი ნომერი");
+			datasource.getField("dir_old_num")
+					.setTitle("მარშუტის ძველი ნომერი");
 			datasource.getField("cycle_descr").setTitle("წრიული/ჩვეულებრივი");
 			datasource.getField("service_descr").setTitle("სახეობა");
 
-
-			ListGridField dir_num = new ListGridField("dir_num", "მარშ. N",
-					80);
+			ListGridField dir_num = new ListGridField("dir_num", "მარშ. N", 80);
 			ListGridField dir_old_num = new ListGridField("dir_old_num",
 					"ძვ.მარშ. N", 80);
 			ListGridField cycle_descr = new ListGridField("cycle_descr",
@@ -194,8 +192,7 @@ public class TabTransportCityPublTransport extends Tab {
 
 			cycle_descr.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(dir_num, dir_old_num, cycle_descr,
-					service_descr);
+			listGrid.setFields(dir_num, dir_old_num, cycle_descr, service_descr);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -245,12 +242,12 @@ public class TabTransportCityPublTransport extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
+					// Integer deleted = listGridRecord
+					// .getAttributeAsInt("deleted");
+					// if (!deleted.equals(0)) {
+					// SC.say("ჩანაწერი უკვე გაუქმებულია !");
+					// return;
+					// }
 					final Integer id = listGridRecord
 							.getAttributeAsInt("pt_id");
 					if (id == null) {
@@ -269,39 +266,39 @@ public class TabTransportCityPublTransport extends Tab {
 							});
 				}
 			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer id = listGridRecord
-							.getAttributeAsInt("pt_id");
-					if (id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(id, 0);
-									}
-								}
-							});
-				}
-			});
+			// restoreBtn.addClickHandler(new ClickHandler() {
+			// @Override
+			// public void onClick(ClickEvent event) {
+			// ListGridRecord listGridRecord = listGrid
+			// .getSelectedRecord();
+			// if (listGridRecord == null) {
+			// SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+			// return;
+			// }
+			// Integer deleted = listGridRecord
+			// .getAttributeAsInt("deleted");
+			// if (deleted.equals(0)) {
+			// SC.say("ჩანაწერი უკვე აღდგენილია !");
+			// return;
+			// }
+			// final Integer id = listGridRecord
+			// .getAttributeAsInt("pt_id");
+			// if (id == null) {
+			// SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
+			// return;
+			// }
+			//
+			// SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
+			// new BooleanCallback() {
+			// @Override
+			// public void execute(Boolean value) {
+			// if (value) {
+			// changeStatus(id, 0);
+			// }
+			// }
+			// });
+			// }
+			// });
 
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(880);
@@ -358,7 +355,8 @@ public class TabTransportCityPublTransport extends Tab {
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllPublicTransportDirections");
+			dsRequest.setAttribute("operationId",
+					"searchAllPublicTransportDirections");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -377,11 +375,13 @@ public class TabTransportCityPublTransport extends Tab {
 			Record record = new Record();
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("pt_id", id);
-			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+			String loggedUserName = CommonSingleton.getInstance()
+					.getSessionPerson().getUserName();
+			record.setAttribute("loggedUserName", loggedUserName);
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updatePublicTransportDirectionsStatus");
+			req.setAttribute("operationId",
+					"updatePublicTransportDirectionsStatus");
 			listGrid.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

@@ -53,7 +53,7 @@ public class TabTransportCityBusStreet extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
+	// private ToolStripButton restoreBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -173,10 +173,10 @@ public class TabTransportCityBusStreet extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "restoreIcon.gif");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
+			// restoreBtn = new ToolStripButton("აღდგენა", "restoreIcon.gif");
+			// restoreBtn.setLayoutAlign(Alignment.LEFT);
+			// restoreBtn.setWidth(50);
+			// toolStrip.addButton(restoreBtn);
 
 			toolStrip.addSeparator();
 
@@ -304,39 +304,39 @@ public class TabTransportCityBusStreet extends Tab {
 							});
 				}
 			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer route_street_id = listGridRecord
-							.getAttributeAsInt("route_street_id");
-					if (route_street_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(route_street_id, 0);
-									}
-								}
-							});
-				}
-			});
+			// restoreBtn.addClickHandler(new ClickHandler() {
+			// @Override
+			// public void onClick(ClickEvent event) {
+			// ListGridRecord listGridRecord = listGrid
+			// .getSelectedRecord();
+			// if (listGridRecord == null) {
+			// SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+			// return;
+			// }
+			// Integer deleted = listGridRecord
+			// .getAttributeAsInt("deleted");
+			// if (deleted.equals(0)) {
+			// SC.say("ჩანაწერი უკვე აღდგენილია !");
+			// return;
+			// }
+			// final Integer route_street_id = listGridRecord
+			// .getAttributeAsInt("route_street_id");
+			// if (route_street_id == null) {
+			// SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
+			// return;
+			// }
+			//
+			// SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
+			// new BooleanCallback() {
+			// @Override
+			// public void execute(Boolean value) {
+			// if (value) {
+			// changeStatus(route_street_id, 0);
+			// }
+			// }
+			// });
+			// }
+			// });
 
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(910);
