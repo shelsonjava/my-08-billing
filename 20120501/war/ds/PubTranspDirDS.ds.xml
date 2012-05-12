@@ -1,20 +1,16 @@
 <DataSource
-	ID="BusRouteDS"
+	ID="PubTranspDirDS"
 	serverType="sql"
-	tableName="ccare.bus_routes"
+	tableName="ccare.PUBLIC_TRANSP_DIR"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="route_id"			type="integer"		title="ID"							hidden="true" primaryKey="true" />
-		<field name="route_nm"			type="text"			title="Route Number"/>		
-		<field name="route_old_nm"		type="text"			title="Route Old Number"/>
-		<field name="round_descr"		type="text"			title="Round Description"/>
+		<field name="pt_id"				type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="dir_num"			type="text"			title="Direction Number"/>		
+		<field name="dir_old_num"		type="text"			title="Direction Old Number"/>
+		<field name="cycle_descr"		type="text"			title="Cycle Description"/>
 		<field name="service_descr"		type="text"			title="Service Description"/>
-		<field name="rec_user"			type="text"			title="Record User"/>
-		<field name="rec_date"			type="datetime"		title="Record Date"/>
-		<field name="upd_user"			type="text"			title="Update User"/>
-		<field name="deleted"			type="integer"		title="Deleted" 					hidden="true"/>
-		<field name="round_id"			type="integer"		title="Round Id" 					hidden="true"/>
+		<field name="cycled_id"			type="integer"		title="Cycle Id" 					hidden="true"/>
 		<field name="service_id"		type="integer"		title="Service Id" 					hidden="true"/>
 		<field name="loggedUserName"	type="text"			title="Logged UserName" 			hidden="true" />
 		<field name="start_place"		type="text"			title="start_place"/>
@@ -28,78 +24,74 @@
 
 		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
 
-		<!-- Add BusRoute -->
-		<operationBinding operationType="add" operationId="addBusRoute" serverMethod="addBusRoute">
+		<!-- Add Public Transport Direction -->
+		<operationBinding operationType="add" operationId="addPublicTransportDirections" serverMethod="addPublicTransportDirections">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
-		<!-- BusRoute Update -->
-		<operationBinding operationType="update" operationId="updateBusRoute" serverMethod="updateBusRoute">
+		<!-- Public Transport Direction Update -->
+		<operationBinding operationType="update" operationId="updatePublicTransportDirections" serverMethod="updatePublicTransportDirections">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
-        <!-- BusRoute Status Update -->
-		<operationBinding operationType="update" operationId="updateBusRouteStatus" serverMethod="updateBusRouteStatus">
+        <!-- Public Transport Direction Status Update -->
+		<operationBinding operationType="update" operationId="updatePublicTransportDirectionsStatus" serverMethod="updatePublicTransportDirectionsStatus">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
 	
-    	<operationBinding operationId="searchAllBusRoutes" operationType="fetch">
+    	<operationBinding operationId="searchAllPublicTransportDirections" operationType="fetch">
     		<selectClause>   			
-    			t.route_id,
-				t.route_nm,
-				t.route_old_nm,
-				decode(t.round_id,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as round_descr,
-				tt.transport_type_name_geo as service_descr,
-				t.rec_user,
-				t.rec_date,
-				t.upd_user,
-				t.deleted,
-				t.round_id,	
+    			t.pt_id,
+				t.dir_num,
+				t.dir_old_num,
+				decode(t.cycled_id,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as cycle_descr,
+				tt.NAME_DESCR as service_descr,
+				t.cycled_id,	
 				t.service_id
 			</selectClause> 
-			<tableClause>bus_routes t, transport_types tt</tableClause>
+			<tableClause>PUBLIC_TRANSP_DIR t, transp_types tt</tableClause>
 			<whereClause><![CDATA[
-				t.service_id = tt.transport_type_id 
-				#if($criteria.route_id) and t.route_id = $criteria.route_id #end
-				#if($criteria.route_nm) and t.route_nm = $criteria.route_nm #end
-				#if($criteria.route_old_nm) and t.route_old_nm = $criteria.route_old_nm #end
-				#if($criteria.round_id) and t.round_id = $criteria.round_id #end
+				t.service_id = tt.TRANSP_TYPE_ID 
+				#if($criteria.id) and t.id = $criteria.id #end
+				#if($criteria.dir_num) and t.dir_num = $criteria.dir_num #end
+				#if($criteria.dir_old_num) and t.dir_old_num = $criteria.dir_old_num #end
+				#if($criteria.cycled_id) and t.cycled_id = $criteria.cycled_id #end
 				#if($criteria.service_id) and t.service_id = $criteria.service_id #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.route_nm</orderClause>
+			<orderClause>t.dir_num</orderClause>
     	</operationBinding>
     	
-    	<operationBinding operationId="searchAllBusRoutesForCombos" operationType="fetch">
+    	<operationBinding operationId="searchAllPublicTransportDirectionsForCombos" operationType="fetch">
     		<selectClause>   			
-    			t.route_id,
-				t.route_nm || ' ( '|| tt.transport_type_name_geo||' ) ' as route_nm
+    			t.pt_id,
+				t.dir_num || ' ( '|| tt.NAME_DESCR||' ) ' as dir_num
 			</selectClause> 
-			<tableClause>bus_routes t, transport_types tt</tableClause>
+			<tableClause>PUBLIC_TRANSP_DIR t, transp_types tt</tableClause>
 			<whereClause><![CDATA[
-				($defaultWhereClause) AND t.service_id = tt.transport_type_id AND t.deleted = 0				
+				($defaultWhereClause) AND t.service_id = tt.TRANSP_TYPE_ID				
 				]]>  
 			</whereClause> 
-			<orderClause>t.route_nm</orderClause>
+			<orderClause>t.dir_num</orderClause>
     	</operationBinding>
     	
     	
     	
-    	<operationBinding operationId="searchAllBusRoutesForCallCenter" operationType="fetch">
+    	<operationBinding operationId="searchAllPublicTransportDirectionsForCallCenter" operationType="fetch">
     		<selectClause>
-    			   tt.transport_type_name_geo as service_descr,
-    			   t.transportid as route_id,
-			       t.transportno as route_nm,
+    			   tt.NAME_DESCR as service_descr,
+    			   t.transportid as pt_id,
+			       t.transportno as dir_num,
 			       getminbusstop(t.transportid) start_place,
 			       getminbusstop_id(t.transportid) start_place_id,
 			       getmaxbusstop(t.transportid) end_place,
 			       getmaxbusstop_id(t.transportid) end_place_id,
 			       t.direction,
-			       decode(t.direction,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as round_descr
+			       decode(t.direction,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as cycle_descr
 			</selectClause> 
-			<tableClause>incity_transport_view_new t, ccare.transport_types tt</tableClause>
+			<tableClause>incity_transport_view_new t, ccare.transp_types tt</tableClause>
 			<whereClause><![CDATA[
-				t.transport_type_id = tt.transport_type_id
+				t.transport_type_id = tt.id
 				#if($criteria.transport_type_id) and t.transport_type_id = $criteria.transport_type_id #end
 				#if($criteria.transportno) and (t.transportno = $criteria.transportno) #end
 				
@@ -146,7 +138,7 @@
 				#end					
 				]]>  
 			</whereClause> 
-			<groupClause>tt.transport_type_name_geo, t.transportid, t.transportno, t.direction</groupClause>
+			<groupClause>tt.NAME_DESCR, t.transportid, t.transportno, t.direction</groupClause>
 			<orderClause>t.transportno</orderClause>
     	</operationBinding>
     	
