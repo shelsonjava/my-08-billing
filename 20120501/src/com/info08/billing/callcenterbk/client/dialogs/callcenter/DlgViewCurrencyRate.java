@@ -139,10 +139,10 @@ public class DlgViewCurrencyRate extends Window {
 		DetailViewerField country_name_geo = new DetailViewerField(
 				"country_name_geo", CallCenterBK.constants.country());
 
-		DetailViewerField curr_name_geo = new DetailViewerField(
-				"curr_name_geo", CallCenterBK.constants.currencyName());
+		DetailViewerField name_descr = new DetailViewerField("name_descr",
+				CallCenterBK.constants.currencyName());
 
-		DetailViewerField curr_abbrev = new DetailViewerField("curr_abbrev",
+		DetailViewerField code = new DetailViewerField("code",
 				CallCenterBK.constants.currencyAbbrShort());
 
 		detailViewer.selectRecord(recordFrom);
@@ -150,7 +150,7 @@ public class DlgViewCurrencyRate extends Window {
 		arr[0] = recordFrom;
 		detailViewer.setData(arr);
 
-		detailViewer.setFields(country_name_geo, curr_name_geo, curr_abbrev);
+		detailViewer.setFields(country_name_geo, name_descr, code);
 
 		mainLayout.addMember(detailViewer);
 
@@ -168,10 +168,10 @@ public class DlgViewCurrencyRate extends Window {
 		DetailViewerField country_name_geo1 = new DetailViewerField(
 				"country_name_geo", CallCenterBK.constants.country());
 
-		DetailViewerField curr_name_geo1 = new DetailViewerField(
-				"curr_name_geo", CallCenterBK.constants.currencyName());
+		DetailViewerField name_descr1 = new DetailViewerField("name_descr",
+				CallCenterBK.constants.currencyName());
 
-		DetailViewerField curr_abbrev1 = new DetailViewerField("curr_abbrev",
+		DetailViewerField code1 = new DetailViewerField("code",
 				CallCenterBK.constants.currencyAbbrShort());
 
 		detailViewer1.selectRecord(recordTo);
@@ -179,8 +179,7 @@ public class DlgViewCurrencyRate extends Window {
 		arr1[0] = recordTo;
 		detailViewer1.setData(arr1);
 
-		detailViewer1
-				.setFields(country_name_geo1, curr_name_geo1, curr_abbrev1);
+		detailViewer1.setFields(country_name_geo1, name_descr1, code1);
 
 		mainLayout.addMember(detailViewer1);
 
@@ -362,21 +361,20 @@ public class DlgViewCurrencyRate extends Window {
 			Record rateToRecord = null;
 
 			// currencies
-			Integer curr_id_from = recordFrom.getAttributeAsInt("curr_id");
+			Integer curr_id_from = recordFrom.getAttributeAsInt("currency_id");
 			String curr_name_from = recordFrom
-					.getAttributeAsString("curr_name_geo");
+					.getAttributeAsString("name_descr");
 			String curr_abbrev_from = recordFrom
 					.getAttributeAsString("curr_abbrev");
 
-			Integer curr_id_to = recordTo.getAttributeAsInt("curr_id");
-			String curr_name_to = recordTo
-					.getAttributeAsString("curr_name_geo");
+			Integer curr_id_to = recordTo.getAttributeAsInt("currency_id");
+			String curr_name_to = recordTo.getAttributeAsString("name_descr");
 			String curr_abbrev_to = recordTo
 					.getAttributeAsString("curr_abbrev");
 
 			// find
 			for (Record recItem : rates) {
-				Integer curr_id_it = recItem.getAttributeAsInt("curr_id");
+				Integer curr_id_it = recItem.getAttributeAsInt("currency_id");
 				if (curr_id_from.equals(curr_id_it)) {
 					rateFromRecord = recItem;
 				} else if (curr_id_to.equals(curr_id_it)) {
@@ -393,35 +391,35 @@ public class DlgViewCurrencyRate extends Window {
 				amountRateBankMSStr = "-";
 			} else {
 
-				Double rate_coeff_from = rateFromRecord
-						.getAttributeAsDouble("rate_coeff");
-				Double rate_coeff_to = rateToRecord
-						.getAttributeAsDouble("rate_coeff");
-				if (rate_coeff_from == null) {
-					rate_coeff_from = 1.0;
+				Double coefficient_from = rateFromRecord
+						.getAttributeAsDouble("coefficient");
+				Double coefficient_to = rateToRecord
+						.getAttributeAsDouble("coefficient");
+				if (coefficient_from == null) {
+					coefficient_from = 1.0;
 				}
-				if (rate_coeff_to == null) {
-					rate_coeff_to = 1.0;
+				if (coefficient_to == null) {
+					coefficient_to = 1.0;
 				}
 
 				// Calculate National Rate - START
 
-				Double dRateFrom = rateFromRecord.getAttributeAsDouble("rate");
-				Double dRateTo = rateToRecord.getAttributeAsDouble("rate");
-				if (dRateFrom == null || dRateTo == null) {
+				Double nationalCourseFrom = rateFromRecord.getAttributeAsDouble("national_course");
+				Double nationalCourseTo = rateToRecord.getAttributeAsDouble("national_course");
+				if (nationalCourseFrom == null || nationalCourseTo == null) {
 					unitRateNatStr = "-";
 					amountRateNatStr = "-";
-				} else if ((dRateFrom.doubleValue() < 0.0001 && dRateFrom
+				} else if ((nationalCourseFrom.doubleValue() < 0.0001 && nationalCourseFrom
 						.doubleValue() > -0.0001)
-						|| (dRateTo.doubleValue() < 0.0001 && dRateTo
+						|| (nationalCourseTo.doubleValue() < 0.0001 && nationalCourseTo
 								.doubleValue() > -0.0001)) {
 					unitRateNatStr = "-";
 					amountRateNatStr = "-";
 				} else {
 
-					double resultUnitCalcAmNat = dRateFrom.doubleValue()
-							* rate_coeff_to / dRateTo.doubleValue()
-							/ rate_coeff_from;
+					double resultUnitCalcAmNat = nationalCourseFrom.doubleValue()
+							* coefficient_to / nationalCourseTo.doubleValue()
+							/ coefficient_from;
 					unitRateNatStr = nf.format(((Number) resultUnitCalcAmNat)
 							.doubleValue());
 					if (amount > 0.0) {
@@ -439,9 +437,9 @@ public class DlgViewCurrencyRate extends Window {
 
 				// Bank Market Rate Calculation For Unit - START
 				Double dUnitMarketRateFrom = rateFromRecord
-						.getAttributeAsDouble("market_rate");
+						.getAttributeAsDouble("bank_buy_course");
 				Double dUnitMarketRateTo = rateToRecord
-						.getAttributeAsDouble("market_rate");
+						.getAttributeAsDouble("bank_buy_course");
 				if (dUnitMarketRateFrom == null || dUnitMarketRateTo == null) {
 					unitRateBankMStr = "-";
 				} else if ((dUnitMarketRateFrom.doubleValue() < 0.0001 && dUnitMarketRateFrom
@@ -452,8 +450,8 @@ public class DlgViewCurrencyRate extends Window {
 				} else {
 					double resultUnitMarkRate = dUnitMarketRateFrom
 							.doubleValue()
-							* rate_coeff_to
-							/ dUnitMarketRateTo.doubleValue() / rate_coeff_from;
+							* coefficient_to
+							/ dUnitMarketRateTo.doubleValue() / coefficient_from;
 
 					unitRateBankMStr = nf.format(((Number) resultUnitMarkRate)
 							.doubleValue());
@@ -474,9 +472,9 @@ public class DlgViewCurrencyRate extends Window {
 
 				// Bank Sales Market Rate Calculation For Unit - START
 				Double dUnitSalesMarketRateFrom = rateFromRecord
-						.getAttributeAsDouble("sale_market_rate");
+						.getAttributeAsDouble("bank_sell_course");
 				Double dUnitSalesMarketRateTo = rateToRecord
-						.getAttributeAsDouble("sale_market_rate");
+						.getAttributeAsDouble("bank_sell_course");
 				if (dUnitSalesMarketRateFrom == null
 						|| dUnitSalesMarketRateTo == null) {
 					unitRateBankMSStr = "-";
@@ -488,9 +486,9 @@ public class DlgViewCurrencyRate extends Window {
 				} else {
 					double resultUnitSalesMarkRate = dUnitSalesMarketRateFrom
 							.doubleValue()
-							* rate_coeff_to
+							* coefficient_to
 							/ dUnitSalesMarketRateTo.doubleValue()
-							/ rate_coeff_from;
+							/ coefficient_from;
 
 					unitRateBankMSStr = nf
 							.format(((Number) resultUnitSalesMarkRate)

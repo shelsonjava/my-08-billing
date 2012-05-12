@@ -1,0 +1,29 @@
+/*
+rate        -     currency_course
+rate_curr   -     currency
+currency_hist, currency_course_hist
+*/
+
+/*
+BKP
+ed_rate_curr
+
+*/
+
+
+rate_curr old fileds
+curr_id, 
+curr_name_geo, 
+curr_name_eng, 
+rec_date, 
+rec_user, 
+country_id, 
+curr_abbrev, 
+deleted, 
+upd_user, 
+curr_order, 
+upd_date, 
+custom_order
+
+
+CURR_ID_SEQ - SEQ_CURRENCY

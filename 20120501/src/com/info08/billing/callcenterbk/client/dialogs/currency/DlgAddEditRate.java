@@ -1,7 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.currency;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -65,38 +64,38 @@ public class DlgAddEditRate extends Window {
 
 			currNameGeoItem = new TextItem();
 			currNameGeoItem.setTitle(CallCenterBK.constants.currencyName());
-			currNameGeoItem.setName("curr_name_geo");
+			currNameGeoItem.setName("name_descr");
 			currNameGeoItem.setWidth(300);
 			currNameGeoItem.setCanEdit(false);
 
 			currAbbrItem = new TextItem();
 			currAbbrItem.setTitle(CallCenterBK.constants.currencyAbbr());
-			currAbbrItem.setName("curr_abbrev");
+			currAbbrItem.setName("code");
 			currAbbrItem.setWidth(300);
 			currAbbrItem.setCanEdit(false);
 
 			rateCoeffItem = new FloatItem();
 			rateCoeffItem.setTitle(CallCenterBK.constants.rateCoeff());
-			rateCoeffItem.setName("rate_coeff");
+			rateCoeffItem.setName("coefficient");
 			rateCoeffItem.setWidth(300);
 			rateCoeffItem.setKeyPressFilter("[0-9]");
-			
+
 			rateItem = new FloatItem();
 			rateItem.setTitle(CallCenterBK.constants.rate());
-			rateItem.setName("rate");
+			rateItem.setName("national_course");
 			rateItem.setWidth(300);
 			rateItem.setKeyPressFilter("[0-9\\.]");
 
 			marketRateItem = new FloatItem();
 			marketRateItem.setTitle(CallCenterBK.constants.marketRate());
-			marketRateItem.setName("market_rate");
+			marketRateItem.setName("bank_buy_course");
 			marketRateItem.setWidth(300);
 			marketRateItem.setKeyPressFilter("[0-9\\.]");
 
 			salesMarketRateItem = new FloatItem();
-			salesMarketRateItem
-					.setTitle(CallCenterBK.constants.salesMarketRate());
-			salesMarketRateItem.setName("sale_market_rate");
+			salesMarketRateItem.setTitle(CallCenterBK.constants
+					.salesMarketRate());
+			salesMarketRateItem.setName("bank_sell_course");
 			salesMarketRateItem.setWidth(300);
 			salesMarketRateItem.setKeyPressFilter("[0-9\\.]");
 
@@ -149,18 +148,17 @@ public class DlgAddEditRate extends Window {
 				return;
 			}
 			currNameGeoItem.setValue(editRecord
-					.getAttributeAsString("curr_name_geo"));
-			currAbbrItem.setValue(editRecord
-					.getAttributeAsString("curr_abbrev"));
+					.getAttributeAsString("name_descr"));
+			currAbbrItem.setValue(editRecord.getAttributeAsString("code"));
 
-			DataSource rateDS = DataSource.get("RateDS");
+			DataSource rateDS = DataSource.get("CurrencyCourseDS");
 			Criteria criteria = new Criteria();
-			Integer curr_id = editRecord.getAttributeAsInt("curr_id");
-			if (curr_id != null) {
-				criteria.setAttribute("curr_id", curr_id);
+			Integer currency_id = editRecord.getAttributeAsInt("currency_id");
+			if (currency_id != null) {
+				criteria.setAttribute("currency_id", currency_id);
 			}
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("searchAllRates");
+			dsRequest.setOperationId("searchAllCurrencyCourse");
 			rateDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
@@ -169,29 +167,31 @@ public class DlgAddEditRate extends Window {
 					if (records != null && records.length > 0) {
 						Record record = records[records.length - 1];
 						if (record != null) {
-							String rate_coeff = record
-									.getAttributeAsString("rate_coeff");
-							if (rate_coeff != null
-									&& !rate_coeff.trim().equalsIgnoreCase("")) {
-								rateCoeffItem.setValue(rate_coeff);
+							String coefficient = record
+									.getAttributeAsString("coefficient");
+							if (coefficient != null
+									&& !coefficient.trim().equalsIgnoreCase("")) {
+								rateCoeffItem.setValue(coefficient);
 							}
-							String rate = record.getAttributeAsString("rate");
+							String rate = record
+									.getAttributeAsString("national_course");
 							if (rate != null
 									&& !rate.trim().equalsIgnoreCase("")) {
 								rateItem.setValue(rate);
 							}
-							String market_rate = record
-									.getAttributeAsString("market_rate");
-							if (market_rate != null
-									&& !market_rate.trim().equalsIgnoreCase("")) {
-								marketRateItem.setValue(market_rate);
-							}
-							String sale_market_rate = record
-									.getAttributeAsString("sale_market_rate");
-							if (sale_market_rate != null
-									&& !sale_market_rate.trim()
+							String bank_buy_course = record
+									.getAttributeAsString("bank_buy_course");
+							if (bank_buy_course != null
+									&& !bank_buy_course.trim()
 											.equalsIgnoreCase("")) {
-								salesMarketRateItem.setValue(sale_market_rate);
+								marketRateItem.setValue(bank_buy_course);
+							}
+							String bank_sell_course = record
+									.getAttributeAsString("bank_sell_course");
+							if (bank_sell_course != null
+									&& !bank_sell_course.trim()
+											.equalsIgnoreCase("")) {
+								salesMarketRateItem.setValue(bank_sell_course);
 							}
 						}
 					}
@@ -205,18 +205,18 @@ public class DlgAddEditRate extends Window {
 
 	private void save() {
 		try {
-			String curr_name_geo = currNameGeoItem.getValueAsString();
-			if (curr_name_geo == null || curr_name_geo.trim().equals("")) {
+			String name_descr = currNameGeoItem.getValueAsString();
+			if (name_descr == null || name_descr.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterCurrencyName());
 				return;
 			}
-			String curr_abbrev = currAbbrItem.getValueAsString();
-			if (curr_abbrev == null || curr_abbrev.trim().equals("")) {
+			String code = currAbbrItem.getValueAsString();
+			if (code == null || code.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterCurrencyAbbr());
 				return;
 			}
-			String rate_coeff_str = rateCoeffItem.getValueAsString();
-			if (rate_coeff_str == null || rate_coeff_str.trim().equals("")) {
+			String coefficient_str = rateCoeffItem.getValueAsString();
+			if (coefficient_str == null || coefficient_str.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterRateCoeff());
 				return;
 			}
@@ -232,31 +232,31 @@ public class DlgAddEditRate extends Window {
 			if (!salesMarketRateItem.validate()) {
 				return;
 			}
-			Integer rate_coeff = null;
+			Integer coefficient = null;
 			try {
-				rate_coeff = new Integer(rate_coeff_str);
+				coefficient = new Integer(coefficient_str);
 			} catch (NumberFormatException e) {
 				SC.say(CallCenterBK.constants.rateCoeffIsInteger());
 				return;
 			}
-			String rate_str = rateItem.getValueAsString();
+			String national_course_str = rateItem.getValueAsString();
 			try {
-				new Float(rate_str);
+				new Float(national_course_str);
 			} catch (NumberFormatException e) {
 				SC.say(CallCenterBK.constants.rateIsFloat());
 				return;
 			}
-			String market_rate_str = marketRateItem.getValueAsString();
+			String bank_buy_course_str = marketRateItem.getValueAsString();
 			try {
-				new Float(market_rate_str);
+				new Float(bank_buy_course_str);
 			} catch (NumberFormatException e) {
 				SC.say(CallCenterBK.constants.marketRateIsFloat());
 				return;
 			}
-			String sale_market_rate_str = salesMarketRateItem
+			String bank_sell_course_str = salesMarketRateItem
 					.getValueAsString();
 			try {
-				new Float(sale_market_rate_str);
+				new Float(bank_sell_course_str);
 			} catch (NumberFormatException e) {
 				SC.say(CallCenterBK.constants.saleMarketRateIsFloat());
 				return;
@@ -265,23 +265,18 @@ public class DlgAddEditRate extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
-			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
-			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("curr_name_geo", curr_name_geo);
-			record.setAttribute("curr_abbrev", curr_abbrev);
-			record.setAttribute("rate_coeff", rate_coeff);
-			record.setAttribute("market_rate", market_rate_str);
-			record.setAttribute("sale_market_rate", sale_market_rate_str);
-			record.setAttribute("rate", rate_str);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("curr_id",
-					editRecord.getAttributeAsInt("curr_id"));
+			record.setAttribute("name_descr", name_descr);
+			record.setAttribute("code", code);
+			record.setAttribute("coefficient", coefficient);
+			record.setAttribute("bank_buy_course", bank_buy_course_str);
+			record.setAttribute("bank_sell_course", bank_sell_course_str);
+			record.setAttribute("national_course", national_course_str);
+			record.setAttribute("currency_id",
+					editRecord.getAttributeAsInt("currency_id"));
 
-			DataSource rateDS = DataSource.get("RateDS");
+			DataSource rateDS = DataSource.get("CurrencyCourseDS");
 			DSRequest req = new DSRequest();
-			req.setAttribute("operationId", "updateRate");
+			req.setAttribute("operationId", "updateCurrencyCourse");
 			rateDS.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

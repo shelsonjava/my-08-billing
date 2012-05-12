@@ -81,8 +81,8 @@ public class SMSSenderJob extends TimerTask {
 					.createNamedQuery("LogSMS.getForSending")
 					.getResultList();
 			if (resultList == null || resultList.isEmpty()) {
-				log.append("SMS Batch List Is Empty.");
-				logger.info(log.toString());
+				//log.append("SMS Batch List Is Empty.");
+				//logger.info(log.toString());
 				return;
 			}
 			

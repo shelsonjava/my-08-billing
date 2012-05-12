@@ -3,7 +3,6 @@ package com.info08.billing.callcenterbk.client.content.currency;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.currency.DlgAddEditRate;
 import com.info08.billing.callcenterbk.client.dialogs.currency.DlgAddEditRateCurr;
-import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -37,7 +36,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabRateCurrency extends Tab {
+public class TabCurrency extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
@@ -46,7 +45,6 @@ public class TabRateCurrency extends Tab {
 	private ComboBoxItem countryItem;
 	private TextItem currNameGeoItem;
 	private TextItem currAbbrItem;
-	private ComboBoxItem deletedItem;
 
 	// actions
 	private IButton findButton;
@@ -63,12 +61,12 @@ public class TabRateCurrency extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabRateCurrency() {
+	public TabCurrency() {
 		try {
 			setTitle(CallCenterBK.constants.manageCurrency());
 			setCanClose(true);
 
-			datasource = DataSource.get("RateCurrDS");
+			datasource = DataSource.get("CurrencyDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -115,23 +113,15 @@ public class TabRateCurrency extends Tab {
 
 			currNameGeoItem = new TextItem();
 			currNameGeoItem.setTitle(CallCenterBK.constants.currencyName());
-			currNameGeoItem.setName("curr_name_geo");
+			currNameGeoItem.setName("name_descr");
 			currNameGeoItem.setWidth(300);
 
 			currAbbrItem = new TextItem();
 			currAbbrItem.setTitle(CallCenterBK.constants.currencyAbbr());
-			currAbbrItem.setName("curr_abbrev");
+			currAbbrItem.setName("code");
 			currAbbrItem.setWidth(300);
 
-			deletedItem = new ComboBoxItem();
-			deletedItem.setTitle(CallCenterBK.constants.status());
-			deletedItem.setWidth(300);
-			deletedItem.setName("deleted_curr_rates");
-			deletedItem.setValueMap(ClientMapUtil.getInstance().getStatuses());
-			deletedItem.setDefaultToFirstOption(true);
-
-			searchForm.setFields(countryItem, currNameGeoItem, currAbbrItem,
-					deletedItem);
+			searchForm.setFields(countryItem, currNameGeoItem, currAbbrItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -191,13 +181,9 @@ public class TabRateCurrency extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+
+					return super.getCellCSSText(record, rowNum, colNum);
+
 				};
 			};
 
@@ -209,7 +195,7 @@ public class TabRateCurrency extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchAllRateCurrs");
+			listGrid.setFetchOperation("searchAllCurrency");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
@@ -217,37 +203,28 @@ public class TabRateCurrency extends Tab {
 
 			datasource.getField("country_name_geo").setTitle(
 					CallCenterBK.constants.country());
-			datasource.getField("curr_name_geo").setTitle(
+			datasource.getField("name_descr").setTitle(
 					CallCenterBK.constants.currencyName());
-			datasource.getField("curr_abbrev").setTitle(
+			datasource.getField("code").setTitle(
 					CallCenterBK.constants.currencyAbbr());
-			datasource.getField("curr_order").setTitle(
+			datasource.getField("sort_order").setTitle(
 					CallCenterBK.constants.order());
-			datasource.getField("rec_date").setTitle(
-					CallCenterBK.constants.recDate());
-			datasource.getField("rec_user").setTitle(
-					CallCenterBK.constants.recUser());
-			datasource.getField("upd_date").setTitle(
-					CallCenterBK.constants.updDate());
-			datasource.getField("upd_user").setTitle(
-					CallCenterBK.constants.updUser());
 
 			ListGridField country_name_geo = new ListGridField(
 					"country_name_geo", CallCenterBK.constants.country(), 250);
-			ListGridField curr_name_geo = new ListGridField("curr_name_geo",
+			ListGridField name_descr = new ListGridField("name_descr",
 					CallCenterBK.constants.currencyName(), 250);
-			ListGridField curr_abbrev = new ListGridField("curr_abbrev",
+			ListGridField code = new ListGridField("code",
 					CallCenterBK.constants.currencyAbbr(), 150);
-			ListGridField curr_order = new ListGridField("curr_order",
+			ListGridField sort_order = new ListGridField("sort_order",
 					CallCenterBK.constants.order(), 70);
 
 			country_name_geo.setAlign(Alignment.LEFT);
-			curr_name_geo.setAlign(Alignment.LEFT);
-			curr_abbrev.setAlign(Alignment.CENTER);
-			curr_order.setAlign(Alignment.CENTER);
+			name_descr.setAlign(Alignment.LEFT);
+			code.setAlign(Alignment.CENTER);
+			sort_order.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(country_name_geo, curr_name_geo, curr_abbrev,
-					curr_order);
+			listGrid.setFields(country_name_geo, name_descr, code, sort_order);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -296,14 +273,9 @@ public class TabRateCurrency extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrDisabled());
-						return;
-					}
+
 					final Integer curr_id = listGridRecord
-							.getAttributeAsInt("curr_id");
+							.getAttributeAsInt("currency_id");
 					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
@@ -324,14 +296,9 @@ public class TabRateCurrency extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrEnabled());
-						return;
-					}
+					
 					final Integer curr_id = listGridRecord
-							.getAttributeAsInt("curr_id");
+							.getAttributeAsInt("currency_id");
 					SC.ask(CallCenterBK.constants.askForEnable(),
 							new BooleanCallback() {
 								@Override
@@ -404,21 +371,17 @@ public class TabRateCurrency extends Tab {
 			if (country_id != null && !country_id.trim().equals("")) {
 				criteria.setAttribute("country_id", new Integer(country_id));
 			}
-			String curr_name_geo = currNameGeoItem.getValueAsString();
-			if (curr_name_geo != null && !curr_name_geo.trim().equals("")) {
-				criteria.setAttribute("curr_name_geo", curr_name_geo);
+			String name_descr = currNameGeoItem.getValueAsString();
+			if (name_descr != null && !name_descr.trim().equals("")) {
+				criteria.setAttribute("name_descr", name_descr);
 			}
-			String curr_abbrev = currAbbrItem.getValueAsString();
-			if (curr_abbrev != null && !curr_abbrev.trim().equals("")) {
-				criteria.setAttribute("curr_abbrev", curr_abbrev);
-			}
-			String deleted_str = deletedItem.getValueAsString();
-			if (deleted_str != null && !deleted_str.trim().equals("")) {
-				criteria.setAttribute("deleted", new Integer(deleted_str));
+			String code = currAbbrItem.getValueAsString();
+			if (code != null && !code.trim().equals("")) {
+				criteria.setAttribute("code", code);
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllRateCurrs");
+			dsRequest.setAttribute("operationId", "searchAllCurrency");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -435,13 +398,12 @@ public class TabRateCurrency extends Tab {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("curr_id", curr_id);
+			record.setAttribute("currency_id", curr_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateRateCurrStatus");
+			req.setAttribute("operationId", "updateCurrencyStatus");
 			listGrid.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

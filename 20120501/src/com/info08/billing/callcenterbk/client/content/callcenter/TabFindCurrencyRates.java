@@ -43,7 +43,7 @@ public class TabFindCurrencyRates extends Tab {
 	// main content layout
 	private VLayout mainLayout;
 
-	private DataSource rateCurrDS;
+	private DataSource CurrencyDS;
 
 	public TabFindCurrencyRates() {
 		setTitle(CallCenterBK.constants.valute());
@@ -86,7 +86,7 @@ public class TabFindCurrencyRates extends Tab {
 		gridsLayout.setWidth100();
 		gridsLayout.setHeight100();
 
-		rateCurrDS = DataSource.get("RateCurrDS");
+		CurrencyDS = DataSource.get("CurrencyDS");
 
 		SectionStack sectionStack1 = new SectionStack();
 		sectionStack1.setWidth(500);
@@ -110,12 +110,12 @@ public class TabFindCurrencyRates extends Tab {
 		listGridFrom.setWidth100();
 		listGridFrom.setHeight100();
 		listGridFrom.setAlternateRecordStyles(true);
-		listGridFrom.setDataSource(rateCurrDS);
+		listGridFrom.setDataSource(CurrencyDS);
 		listGridFrom.setAutoFetchData(true);
 		listGridFrom.setShowFilterEditor(false);
 		listGridFrom.setCanEdit(false);
 		listGridFrom.setCanRemoveRecords(false);
-		listGridFrom.setFetchOperation("searchAllRateCurrsForCallCenter");
+		listGridFrom.setFetchOperation("searchAllCurrencyForCallCenter");
 		listGridFrom.setCanHover(true);
 		listGridFrom.setShowHover(true);
 		listGridFrom.setShowHoverComponents(true);
@@ -124,7 +124,7 @@ public class TabFindCurrencyRates extends Tab {
 		listGridFrom.setWrapCells(true);
 		listGridFrom.setFixedRecordHeights(false);
 
-		ListGridField flag1 = new ListGridField("curr_abbrev", " ", 30);
+		ListGridField flag1 = new ListGridField("code", " ", 30);
 		flag1.setAlign(Alignment.CENTER);
 		flag1.setType(ListGridFieldType.IMAGE);
 		flag1.setImageURLPrefix("flags/");
@@ -136,16 +136,15 @@ public class TabFindCurrencyRates extends Tab {
 				CallCenterBK.constants.country(), 200);
 		country_name_geo.setAlign(Alignment.LEFT);
 
-		ListGridField curr_name_geo = new ListGridField("curr_name_geo",
+		ListGridField name_descr = new ListGridField("name_descr",
 				CallCenterBK.constants.currencyName());
-		curr_name_geo.setAlign(Alignment.LEFT);
+		name_descr.setAlign(Alignment.LEFT);
 
-		ListGridField curr_abbrev = new ListGridField("curr_abbrev",
+		ListGridField code = new ListGridField("code",
 				CallCenterBK.constants.currencyAbbrShort(), 50);
-		curr_abbrev.setAlign(Alignment.LEFT);
+		code.setAlign(Alignment.LEFT);
 
-		listGridFrom.setFields(flag1, country_name_geo, curr_name_geo,
-				curr_abbrev);
+		listGridFrom.setFields(flag1, country_name_geo, name_descr, code);
 		section1.setItems(listGridFrom);
 		sectionStack1.setSections(section1);
 
@@ -153,12 +152,12 @@ public class TabFindCurrencyRates extends Tab {
 		listGridTo.setWidth(500);
 		listGridTo.setHeight100();
 		listGridTo.setAlternateRecordStyles(true);
-		listGridTo.setDataSource(rateCurrDS);
+		listGridTo.setDataSource(CurrencyDS);
 		listGridTo.setAutoFetchData(true);
 		listGridTo.setShowFilterEditor(false);
 		listGridTo.setCanEdit(false);
 		listGridTo.setCanRemoveRecords(false);
-		listGridTo.setFetchOperation("searchAllRateCurrsForCallCenter");
+		listGridTo.setFetchOperation("searchAllCurrencyForCallCenter");
 		listGridTo.setCanHover(true);
 		listGridTo.setShowHover(true);
 		listGridTo.setShowHoverComponents(true);
@@ -167,7 +166,7 @@ public class TabFindCurrencyRates extends Tab {
 		listGridTo.setWrapCells(true);
 		listGridTo.setFixedRecordHeights(false);
 
-		ListGridField flag = new ListGridField("curr_abbrev", " ", 30);
+		ListGridField flag = new ListGridField("code", " ", 30);
 		flag.setAlign(Alignment.CENTER);
 		flag.setType(ListGridFieldType.IMAGE);
 		flag.setImageURLPrefix("flags/");
@@ -179,16 +178,16 @@ public class TabFindCurrencyRates extends Tab {
 				CallCenterBK.constants.country(), 200);
 		country_name_geo1.setAlign(Alignment.LEFT);
 
-		ListGridField curr_name_geo1 = new ListGridField("curr_name_geo",
+		ListGridField name_descr1 = new ListGridField("name_descr",
 				CallCenterBK.constants.currencyName());
-		curr_name_geo1.setAlign(Alignment.LEFT);
+		name_descr1.setAlign(Alignment.LEFT);
 
-		ListGridField curr_abbrev1 = new ListGridField("curr_abbrev",
+		ListGridField code1 = new ListGridField("code",
 				CallCenterBK.constants.currencyAbbrShort(), 50);
-		curr_abbrev1.setAlign(Alignment.LEFT);
+		code1.setAlign(Alignment.LEFT);
 
-		listGridTo.setFields(flag, country_name_geo1, curr_name_geo1,
-				curr_abbrev1);
+		listGridTo
+				.setFields(flag, country_name_geo1, name_descr1, code1);
 
 		section2.setItems(listGridTo);
 		sectionStack2.setSections(section2);
@@ -254,8 +253,8 @@ public class TabFindCurrencyRates extends Tab {
 			}
 
 			Integer form_curr_id = listGridRecordFrom
-					.getAttributeAsInt("curr_id");
-			Integer to_curr_id = listGridRecordTo.getAttributeAsInt("curr_id");
+					.getAttributeAsInt("currency_id");
+			Integer to_curr_id = listGridRecordTo.getAttributeAsInt("currency_id");
 
 			if (form_curr_id.equals(to_curr_id)) {
 				SC.say(CallCenterBK.constants.warning(),
@@ -263,13 +262,13 @@ public class TabFindCurrencyRates extends Tab {
 				return;
 			}
 
-			DataSource dataSourceRate = DataSource.get("RateDS");
+			DataSource dataSourceRate = DataSource.get("CurrencyCourseDS");
 
 			Criteria criteria1 = new Criteria();
-			criteria1.setAttribute("curr_id", form_curr_id);
-			criteria1.setAttribute("curr_id1", to_curr_id);
+			criteria1.setAttribute("currency_id", form_curr_id);
+			criteria1.setAttribute("currency_id1", to_curr_id);
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("searchAllRatesForCallCenter");
+			dsRequest.setOperationId("searchAllCurrencyCourseForCallCenter");
 			dataSourceRate.fetchData(criteria1, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
@@ -281,7 +280,7 @@ public class TabFindCurrencyRates extends Tab {
 					}
 
 					DlgViewCurrencyRate dlgViewCurrencyRate = new DlgViewCurrencyRate(
-							rateCurrDS, listGridRecordFrom, listGridRecordTo,
+							CurrencyDS, listGridRecordFrom, listGridRecordTo,
 							pAmount, records);
 					dlgViewCurrencyRate.show();
 				}

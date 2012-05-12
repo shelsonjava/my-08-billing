@@ -1,10 +1,6 @@
 package com.info08.billing.callcenterbk.server.impl.dmi;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -14,9 +10,8 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.shared.entity.Country;
-import com.info08.billing.callcenterbk.shared.entity.currency.Rate;
-import com.info08.billing.callcenterbk.shared.entity.currency.RateCurr;
-import com.info08.billing.callcenterbk.shared.entity.currency.RateLog;
+import com.info08.billing.callcenterbk.shared.entity.currency.Currency;
+import com.info08.billing.callcenterbk.shared.entity.currency.CurrencyCourse;
 import com.isomorphic.jpa.EMF;
 
 public class CurrencyDMI implements QueryConstants {
@@ -30,40 +25,32 @@ public class CurrencyDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public RateCurr addRateCurr(RateCurr rateCurr) throws Exception {
+	public Currency addCurrency(Currency currency) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addRateCurr.";
+			String log = "Method:CommonDMI.addCurrency.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			String loggedUserName = rateCurr.getLoggedUserName();
-			rateCurr.setRec_date(recDate);
-			rateCurr.setRec_user(loggedUserName);
-			rateCurr.setCustom_order(1000L);
-
-			oracleManager.persist(rateCurr);
+			oracleManager.persist(currency);
 			oracleManager.flush();
 
-			rateCurr = oracleManager
-					.find(RateCurr.class, rateCurr.getCurr_id());
+			currency = oracleManager.find(Currency.class,
+					currency.getCurrency_id());
 
-			rateCurr.setLoggedUserName(loggedUserName);
-			Long country_id = rateCurr.getCountry_id();
+			Long country_id = currency.getCountry_id();
 			if (country_id != null) {
 				Country country = oracleManager.find(Country.class, country_id);
 				if (country != null) {
-					rateCurr.setCountry_name_geo(country.getCountry_name_geo());
+					currency.setCountry_name_geo(country.getCountry_name_geo());
 				}
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return rateCurr;
+			return currency;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -87,52 +74,47 @@ public class CurrencyDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public RateCurr updateRateCurr(Map record) throws Exception {
+	public Currency updateCurrency(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateRateCurr.";
+			String log = "Method:CommonDMI.updateCurrency.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp currDate = new Timestamp(System.currentTimeMillis());
-			Long curr_id = new Long(record.get("curr_id").toString());
+			Long id = new Long(record.get("currency_id").toString());
 			Long country_id = record.get("country_id") == null ? null
 					: new Long(record.get("country_id").toString());
-			Long curr_order = record.get("curr_order") == null ? null
-					: new Long(record.get("curr_order").toString());
-			String curr_abbrev = record.get("curr_abbrev") == null ? null
-					: record.get("curr_abbrev").toString();
-			String curr_name_geo = record.get("curr_name_geo") == null ? null
-					: record.get("curr_name_geo").toString();
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long sort_order = record.get("sort_order") == null ? null
+					: new Long(record.get("sort_order").toString());
+			String code = record.get("code") == null ? null : record
+					.get("code").toString();
+			String name_descr = record.get("name_descr") == null ? null
+					: record.get("name_descr").toString();
 
-			RateCurr rateCurr = oracleManager.find(RateCurr.class, curr_id);
+			Currency currency = oracleManager.find(Currency.class, id);
 
-			rateCurr.setCountry_id(country_id);
-			rateCurr.setUpd_user(loggedUserName);
-			rateCurr.setCurr_abbrev(curr_abbrev);
-			rateCurr.setUpd_date(currDate);
-			rateCurr.setCurr_name_geo(curr_name_geo);
-			rateCurr.setCurr_order(curr_order);
+			currency.setCountry_id(country_id);
+			currency.setCode(code);
+			currency.setName_descr(name_descr);
+			currency.setSort_order(sort_order);
 
-			oracleManager.merge(rateCurr);
+			oracleManager.merge(currency);
 			oracleManager.flush();
 
-			rateCurr = oracleManager.find(RateCurr.class, curr_id);
+			currency = oracleManager.find(Currency.class, id);
 
-			rateCurr.setUpd_user(loggedUserName);
 			if (country_id != null) {
 				Country country = oracleManager.find(Country.class, country_id);
 				if (country != null) {
-					rateCurr.setCountry_name_geo(country.getCountry_name_geo());
+					currency.setCountry_name_geo(country.getCountry_name_geo());
 				}
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return rateCurr;
+			return currency;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -156,43 +138,35 @@ public class CurrencyDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public RateCurr updateRateCurrStatus(Map record) throws Exception {
+	public Currency updateCurrencyStatus(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateRateCurrStatus.";
+			String log = "Method:CommonDMI.updateCurrencyStatus.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp curr_date = new Timestamp(System.currentTimeMillis());
-			Long curr_id = new Long(record.get("curr_id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long id = new Long(record.get("currency_id").toString());
 
-			RateCurr rateCurr = oracleManager.find(RateCurr.class, curr_id);
+			Currency currency = oracleManager.find(Currency.class, id);
 
-			rateCurr.setDeleted(deleted);
-			rateCurr.setUpd_user(loggedUserName);
-			rateCurr.setUpd_date(curr_date);
-
-			oracleManager.merge(rateCurr);
+			oracleManager.merge(currency);
 			oracleManager.flush();
 
-			rateCurr = oracleManager.find(RateCurr.class, curr_id);
+			currency = oracleManager.find(Currency.class, id);
 
-			rateCurr.setLoggedUserName(loggedUserName);
-			Long country_id = rateCurr.getCountry_id();
+			Long country_id = currency.getCountry_id();
 			if (country_id != null) {
 				Country country = oracleManager.find(Country.class, country_id);
 				if (country != null) {
-					rateCurr.setCountry_name_geo(country.getCountry_name_geo());
+					currency.setCountry_name_geo(country.getCountry_name_geo());
 				}
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return rateCurr;
+			return currency;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -217,88 +191,52 @@ public class CurrencyDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Rate updateRate(Map record) throws Exception {
+	@SuppressWarnings({ "rawtypes" })
+	public CurrencyCourse updateCurrencyCourse(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateRate.";
+			String log = "Method:CommonDMI.updateCurrencyCourse.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp currDate = new Timestamp(System.currentTimeMillis());
-			Long curr_id = record.get("curr_id") == null ? null : new Long(
-					record.get("curr_id").toString());
-			Long deleted = record.get("deleted") == null ? null : new Long(
-					record.get("deleted").toString());
-			BigDecimal market_rate = record.get("market_rate") == null ? null
-					: new BigDecimal(record.get("market_rate").toString());
-			BigDecimal rate = record.get("rate") == null ? null
-					: new BigDecimal(record.get("rate").toString());
-			Long rate_coeff = record.get("rate_coeff") == null ? null
-					: new Long(record.get("rate_coeff").toString());
-			BigDecimal sale_market_rate = record.get("sale_market_rate") == null ? null
-					: new BigDecimal(record.get("sale_market_rate").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
-			ArrayList<Rate> ratesOld = (ArrayList<Rate>) oracleManager
-					.createNamedQuery("Rate.getRateByCurr")
-					.setParameter("curr_id", curr_id).getResultList();
-			if (ratesOld != null && !ratesOld.isEmpty()) {
-				for (Rate rateOld : ratesOld) {
-					oracleManager.remove(rateOld);
-					RateLog rateLog = new RateLog();
-					rateLog.setCurr_id(rateOld.getCurr_id());
-					rateLog.setDeleted(rateOld.getDeleted());
-					rateLog.setMarket_rate(rateOld.getMarket_rate());
-					rateLog.setRate(rateOld.getRate());
-					rateLog.setRate_coeff(rateOld.getRate_coeff());
-					rateLog.setRec_date(currDate);
-					rateLog.setRec_user(loggedUserName);
-					rateLog.setSale_market_rate(rateOld.getSale_market_rate());
-					rateLog.setUpd_date(currDate);
-					rateLog.setUpd_user(loggedUserName);
+			Long currency_id = record.get("currency_id") == null ? null
+					: new Long(record.get("currency_id").toString());
+			BigDecimal bank_buy_course = record.get("bank_buy_course") == null ? null
+					: new BigDecimal(record.get("bank_buy_course").toString());
+			BigDecimal national_course = record.get("national_course") == null ? null
+					: new BigDecimal(record.get("national_course").toString());
+			Long coefficient = record.get("coefficient") == null ? null
+					: new Long(record.get("coefficient").toString());
+			BigDecimal bank_sell_course = record.get("bank_sell_course") == null ? null
+					: new BigDecimal(record.get("bank_sell_course").toString());
 
-					Calendar calendar = new GregorianCalendar();
-					calendar.setTimeInMillis(currDate.getTime());
-					calendar.add(Calendar.DAY_OF_YEAR, -1);
-					rateLog.setDt(new Timestamp(calendar.getTimeInMillis()));
+			CurrencyCourse currencyCourseObject = new CurrencyCourse();
+			currencyCourseObject.setCurrency_id(currency_id);
+			currencyCourseObject.setBank_buy_course(bank_buy_course);
+			currencyCourseObject.setNational_course(national_course);
+			currencyCourseObject.setCoefficient(coefficient);
+			currencyCourseObject.setBank_sell_course(bank_sell_course);
 
-					oracleManager.persist(rateLog);
-				}
-			}
-
+			oracleManager.persist(currencyCourseObject);
 			oracleManager.flush();
 
-			Rate rateObject = new Rate();
-			rateObject.setCurr_id(curr_id);
-			rateObject.setMarket_rate(market_rate);
-			rateObject.setRate(rate);
-			rateObject.setRate_coeff(rate_coeff);
-			rateObject.setSale_market_rate(sale_market_rate);
-			rateObject.setUpd_date(currDate);
-			rateObject.setUpd_user(loggedUserName);
-			rateObject.setRec_date(currDate);
-			rateObject.setRec_user(loggedUserName);
-			rateObject.setDeleted(deleted);
+			currencyCourseObject = oracleManager.find(CurrencyCourse.class,
+					currencyCourseObject.getCurrency_course_id());
 
-			oracleManager.persist(rateObject);
-			oracleManager.flush();
-
-			rateObject = oracleManager
-					.find(Rate.class, rateObject.getRate_id());
-
-			rateObject.setUpd_user(loggedUserName);
-			if (curr_id != null) {
-				RateCurr rateCurr = oracleManager.find(RateCurr.class, curr_id);
-				if (rateCurr != null) {
-					rateObject.setCurr_name_geo(rateCurr.getCountry_name_geo());
+			if (currency_id != null) {
+				Currency currency = oracleManager.find(Currency.class,
+						currency_id);
+				if (currency != null) {
+					currencyCourseObject.setName_descr(currency
+							.getCountry_name_geo());
 				}
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return rateObject;
+			return currencyCourseObject;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {

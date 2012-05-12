@@ -44,8 +44,9 @@ public class DlgAddEditRateCurr extends Window {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
 
-			setTitle(pRecord == null ? CallCenterBK.constants.addCurrencyTitle()
-					: CallCenterBK.constants.modifyCurrencyTitle());
+			setTitle(pRecord == null ? CallCenterBK.constants
+					.addCurrencyTitle() : CallCenterBK.constants
+					.modifyCurrencyTitle());
 
 			setHeight(180);
 			setWidth(480);
@@ -103,12 +104,12 @@ public class DlgAddEditRateCurr extends Window {
 
 			currNameGeoItem = new TextItem();
 			currNameGeoItem.setTitle(CallCenterBK.constants.currencyName());
-			currNameGeoItem.setName("curr_name_geo");
+			currNameGeoItem.setName("name_descr");
 			currNameGeoItem.setWidth(300);
 
 			currAbbrItem = new TextItem();
 			currAbbrItem.setTitle(CallCenterBK.constants.currencyAbbr());
-			currAbbrItem.setName("curr_abbrev");
+			currAbbrItem.setName("code");
 			currAbbrItem.setWidth(300);
 
 			currOrderItem = new SpinnerItem();
@@ -117,7 +118,7 @@ public class DlgAddEditRateCurr extends Window {
 			currOrderItem.setMax(10000);
 			currOrderItem.setStep(1);
 			currOrderItem.setWidth(300);
-			currOrderItem.setName("curr_order");
+			currOrderItem.setName("sort_order");
 
 			dynamicForm.setFields(countryItem, currNameGeoItem, currAbbrItem,
 					currOrderItem);
@@ -166,9 +167,11 @@ public class DlgAddEditRateCurr extends Window {
 				return;
 			}
 			countryItem.setValue(editRecord.getAttributeAsString("country_id"));
-			currNameGeoItem.setValue(editRecord.getAttributeAsString("curr_name_geo"));
-			currAbbrItem.setValue(editRecord.getAttributeAsString("curr_abbrev"));
-			currOrderItem.setValue(editRecord.getAttributeAsString("curr_order"));
+			currNameGeoItem.setValue(editRecord
+					.getAttributeAsString("name_descr"));
+			currAbbrItem.setValue(editRecord.getAttributeAsString("code"));
+			currOrderItem.setValue(editRecord
+					.getAttributeAsString("sort_order"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -177,21 +180,21 @@ public class DlgAddEditRateCurr extends Window {
 	private void save() {
 		try {
 			String country_id_str = countryItem.getValueAsString();
-			String curr_name_geo = currNameGeoItem.getValueAsString();
-			if (curr_name_geo == null || curr_name_geo.trim().equals("")) {
+			String name_descr = currNameGeoItem.getValueAsString();
+			if (name_descr == null || name_descr.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterCurrencyName());
 				return;
 			}
-			String curr_abbrev = currAbbrItem.getValueAsString();
-			if (curr_abbrev == null || curr_abbrev.trim().equals("")) {
+			String code = currAbbrItem.getValueAsString();
+			if (code == null || code.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterCurrencyAbbr());
 				return;
 			}
-			String curr_order_str = currOrderItem.getValueAsString();
-			Integer curr_order = null;
-			if (curr_order_str != null) {
+			String sort_order_str = currOrderItem.getValueAsString();
+			Integer sort_order = null;
+			if (sort_order_str != null) {
 				try {
-					curr_order = new Integer(curr_order_str);
+					sort_order = new Integer(sort_order_str);
 				} catch (NumberFormatException e) {
 					SC.say(CallCenterBK.constants.currOrderMustBeNum());
 					return;
@@ -205,23 +208,23 @@ public class DlgAddEditRateCurr extends Window {
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
 			if (country_id_str != null && !country_id_str.trim().equals("")) {
-				record.setAttribute("country_id", new Integer(country_id_str));	
+				record.setAttribute("country_id", new Integer(country_id_str));
 			}
-			record.setAttribute("curr_name_geo", curr_name_geo);
-			record.setAttribute("curr_abbrev", curr_abbrev);
-			record.setAttribute("curr_order", curr_order);
+			record.setAttribute("name_descr", name_descr);
+			record.setAttribute("code", code);
+			record.setAttribute("sort_order", sort_order);
 			record.setAttribute("deleted", 0);
 			record.setAttribute("rec_user", loggedUser);
 
 			if (editRecord != null) {
-				record.setAttribute("curr_id",
-						editRecord.getAttributeAsInt("curr_id"));
+				record.setAttribute("currency_id",
+						editRecord.getAttributeAsInt("currency_id"));
 			}
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addRateCurr");
+				req.setAttribute("operationId", "addCurrency");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -230,7 +233,7 @@ public class DlgAddEditRateCurr extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateRateCurr");
+				req.setAttribute("operationId", "updateCurrency");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

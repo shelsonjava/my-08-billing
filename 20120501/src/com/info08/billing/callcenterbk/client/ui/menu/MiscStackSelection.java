@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.content.currency.TabRateCurrency;
+import com.info08.billing.callcenterbk.client.content.currency.TabCurrency;
 import com.info08.billing.callcenterbk.client.content.ent.TabEntPlace;
 import com.info08.billing.callcenterbk.client.content.ent.TabEntPoster;
 import com.info08.billing.callcenterbk.client.content.ent.TabEntType;
@@ -151,7 +151,7 @@ public class MiscStackSelection extends SectionStackSection {
 			TabEntPoster tabEntPoster = new TabEntPoster();
 			body.addTab(tabEntPoster);
 		} else if (menuId.equals("103")) {
-			TabRateCurrency tabRateCurrency = new TabRateCurrency();
+			TabCurrency tabRateCurrency = new TabCurrency();
 			body.addTab(tabRateCurrency);
 		} else if (menuId.equals("104")) {
 			TabCalendar tabCalendar = new TabCalendar();
