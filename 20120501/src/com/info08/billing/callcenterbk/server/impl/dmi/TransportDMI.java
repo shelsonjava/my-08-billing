@@ -675,14 +675,12 @@ public class TransportDMI implements QueryConstants {
 			// sysdate
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 			String loggedUserName = busRoute.getLoggedUserName();
-			busRoute.setRec_date(recDate);
-			busRoute.setRec_user(loggedUserName);
 
 			oracleManager.persist(busRoute);
 			oracleManager.flush();
 
 			busRoute = oracleManager.find(BusRoute.class,
-					busRoute.getRoute_id());
+					busRoute.getId());
 
 			busRoute.setLoggedUserName(loggedUserName);
 			Long transpTypeId = busRoute.getService_id();
@@ -692,13 +690,13 @@ public class TransportDMI implements QueryConstants {
 				busRoute.setService_descr(transportType
 						.getTransport_type_name_geo());
 			}
-			Long round_id = busRoute.getRound_id();
+			Long round_id = busRoute.getCycle_id();
 			switch (round_id.intValue()) {
 			case 1:
-				busRoute.setRound_descr("ჩვეულებრივი");
+				busRoute.setСycle_descr("ჩვეულებრივი");
 				break;
 			case 2:
-				busRoute.setRound_descr("წრიული");
+				busRoute.setСycle_descr("წრიული");
 				break;
 			default:
 				break;
@@ -750,11 +748,9 @@ public class TransportDMI implements QueryConstants {
 
 			BusRoute busRoute = oracleManager.find(BusRoute.class, route_id);
 
-			busRoute.setDeleted(0L);
-			busRoute.setUpd_user(loggedUserName);
-			busRoute.setRound_id(round_id);
-			busRoute.setRoute_nm(route_nm);
-			busRoute.setRoute_old_nm(route_old_nm);
+			busRoute.setCycle_id(round_id);
+			busRoute.setDir_num(route_nm);
+			busRoute.setDir_old_num(route_old_nm);
 			busRoute.setService_id(service_id);
 
 			oracleManager.merge(busRoute);
@@ -772,10 +768,10 @@ public class TransportDMI implements QueryConstants {
 			}
 			switch (round_id.intValue()) {
 			case 1:
-				busRoute.setRound_descr("ჩვეულებრივი");
+				busRoute.setСycle_descr("ჩვეულებრივი");
 				break;
 			case 2:
-				busRoute.setRound_descr("წრიული");
+				busRoute.setСycle_descr("წრიული");
 				break;
 			default:
 				break;
@@ -822,8 +818,6 @@ public class TransportDMI implements QueryConstants {
 
 			BusRoute busRoute = oracleManager.find(BusRoute.class, route_id);
 
-			busRoute.setDeleted(deleted);
-			busRoute.setUpd_user(loggedUserName);
 
 			oracleManager.merge(busRoute);
 			oracleManager.flush();
@@ -838,13 +832,13 @@ public class TransportDMI implements QueryConstants {
 				busRoute.setService_descr(transportType
 						.getTransport_type_name_geo());
 			}
-			Long round_id = busRoute.getRound_id();
+			Long round_id = busRoute.getCycle_id();
 			switch (round_id.intValue()) {
 			case 1:
-				busRoute.setRound_descr("ჩვეულებრივი");
+				busRoute.setСycle_descr("ჩვეულებრივი");
 				break;
 			case 2:
-				busRoute.setRound_descr("წრიული");
+				busRoute.setСycle_descr("წრიული");
 				break;
 			default:
 				break;
@@ -914,7 +908,7 @@ public class TransportDMI implements QueryConstants {
 				BusRoute busRoute = oracleManager
 						.find(BusRoute.class, route_id);
 				if (busRoute != null) {
-					busRouteStreet.setRoute_descr(busRoute.getRoute_nm());
+					busRouteStreet.setRoute_descr(busRoute.getDir_num());
 				}
 			}
 			Long route_dir = busRouteStreet.getRoute_dir();
@@ -1008,7 +1002,7 @@ public class TransportDMI implements QueryConstants {
 				BusRoute busRoute = oracleManager
 						.find(BusRoute.class, route_id);
 				if (busRoute != null) {
-					busRouteStreet.setRoute_descr(busRoute.getRoute_nm());
+					busRouteStreet.setRoute_descr(busRoute.getDir_num());
 				}
 			}
 			if (route_dir != null) {
@@ -1094,7 +1088,7 @@ public class TransportDMI implements QueryConstants {
 				BusRoute busRoute = oracleManager
 						.find(BusRoute.class, route_id);
 				if (busRoute != null) {
-					busRouteStreet.setRoute_descr(busRoute.getRoute_nm());
+					busRouteStreet.setRoute_descr(busRoute.getDir_num());
 				}
 			}
 			Long route_dir = busRouteStreet.getRoute_dir();
