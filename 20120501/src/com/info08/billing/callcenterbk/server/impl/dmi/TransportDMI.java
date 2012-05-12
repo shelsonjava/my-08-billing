@@ -659,7 +659,10 @@ public class TransportDMI implements QueryConstants {
 
 			// sysdate
 			String loggedUserName = busRoute.getLoggedUserName();
-
+			
+			RCNGenerator.getInstance().initRcn(oracleManager,
+					new Timestamp(System.currentTimeMillis()), loggedUserName,
+					"Add Public Transport Directions");
 			oracleManager.persist(busRoute);
 			oracleManager.flush();
 
@@ -730,6 +733,10 @@ public class TransportDMI implements QueryConstants {
 					: record.get("dir_old_num").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
+			RCNGenerator.getInstance().initRcn(oracleManager,
+					new Timestamp(System.currentTimeMillis()), loggedUserName,
+					"Update Public Transport Directions");
+
 			PublicTranspDirection busRoute = oracleManager.find(
 					PublicTranspDirection.class, id);
 
@@ -797,41 +804,29 @@ public class TransportDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long route_id = new Long(record.get("route_id").toString());
+			Long pt_id = new Long(record.get("pt_id").toString());
+
 			String loggedUserName = record.get("loggedUserName").toString();
 
+			RCNGenerator.getInstance().initRcn(oracleManager,
+					new Timestamp(System.currentTimeMillis()), loggedUserName,
+					"remove Public Transport Directions");
+			oracleManager
+					.createNativeQuery(
+							"delete from public_transp_dir_street where DIR_ID=?")
+					.setParameter(1, pt_id).executeUpdate();
+			oracleManager.flush();
 			PublicTranspDirection busRoute = oracleManager.find(
-					PublicTranspDirection.class, route_id);
+					PublicTranspDirection.class, pt_id);
 
-			oracleManager.merge(busRoute);
+			oracleManager.remove(busRoute);
 			oracleManager.flush();
 
-			busRoute = oracleManager
-					.find(PublicTranspDirection.class, route_id);
-
-			busRoute.setLoggedUserName(loggedUserName);
-			Long transpTypeId = busRoute.getService_id();
-			TranspType transportType = oracleManager.find(TranspType.class,
-					transpTypeId);
-			if (transportType != null) {
-				busRoute.setService_descr(transportType.getName_descr());
-			}
-			Long cycled_id = busRoute.getCycled_id();
-			switch (cycled_id.intValue()) {
-			case 1:
-				busRoute.setСycle_descr("ჩვეულებრივი");
-				break;
-			case 2:
-				busRoute.setСycle_descr("წრიული");
-				break;
-			default:
-				break;
-			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return busRoute;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -867,7 +862,9 @@ public class TransportDMI implements QueryConstants {
 
 			// sysdate
 			String loggedUserName = busRouteStreet.getLoggedUserName();
-
+			RCNGenerator.getInstance().initRcn(oracleManager,
+					new Timestamp(System.currentTimeMillis()), loggedUserName,
+					"Add Public Transport Direction Street");
 			oracleManager.persist(busRouteStreet);
 			oracleManager.flush();
 
@@ -953,7 +950,9 @@ public class TransportDMI implements QueryConstants {
 			Long route_order = new Long(record.get("dir_order").toString());
 			Long street_id = new Long(record.get("street_id").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
-
+			RCNGenerator.getInstance().initRcn(oracleManager,
+					new Timestamp(System.currentTimeMillis()), loggedUserName,
+					"update Public Transport Direction Street");
 			PublicTranspDirectionStreet busRouteStreet = oracleManager.find(
 					PublicTranspDirectionStreet.class, route_street_id);
 
@@ -1038,53 +1037,55 @@ public class TransportDMI implements QueryConstants {
 
 			Long route_street_id = new Long(record.get("pt_id").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
-
+			RCNGenerator.getInstance().initRcn(oracleManager,
+					new Timestamp(System.currentTimeMillis()), loggedUserName,
+					"Remove Public Transport Direction Street");
 			PublicTranspDirectionStreet busRouteStreet = oracleManager.find(
 					PublicTranspDirectionStreet.class, route_street_id);
 
-			oracleManager.merge(busRouteStreet);
+			oracleManager.remove(busRouteStreet);
 			oracleManager.flush();
 
-			busRouteStreet = oracleManager.find(
-					PublicTranspDirectionStreet.class, route_street_id);
-
-			busRouteStreet.setLoggedUserName(loggedUserName);
-			Long streetId = busRouteStreet.getStreet_id();
-			if (streetId != null) {
-				StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
-						streetId);
-				if (streetEnt != null) {
-					busRouteStreet.setStreet_name(streetEnt
-							.getStreet_name_geo());
-				}
-			}
-			Long route_id = busRouteStreet.getDir_id();
-			if (route_id != null) {
-				PublicTranspDirection busRoute = oracleManager.find(
-						PublicTranspDirection.class, route_id);
-				if (busRoute != null) {
-					busRouteStreet.setDescr(busRoute.getDir_num());
-				}
-			}
-			Long route_dir = busRouteStreet.getDir();
-			if (route_dir != null) {
-				switch (route_dir.intValue()) {
-				case 1:
-					busRouteStreet.setDir_descr("წინ");
-					break;
-				case 2:
-					busRouteStreet.setDir_descr("უკან");
-					break;
-				default:
-					busRouteStreet.setDir_descr("უცნობი");
-					break;
-				}
-			}
-
-			EMF.commitTransaction(transaction);
-			log += ". Status Updating Finished SuccessFully. ";
+			// busRouteStreet = oracleManager.find(
+			// PublicTranspDirectionStreet.class, route_street_id);
+			//
+			// busRouteStreet.setLoggedUserName(loggedUserName);
+			// Long streetId = busRouteStreet.getStreet_id();
+			// if (streetId != null) {
+			// StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
+			// streetId);
+			// if (streetEnt != null) {
+			// busRouteStreet.setStreet_name(streetEnt
+			// .getStreet_name_geo());
+			// }
+			// }
+			// Long route_id = busRouteStreet.getDir_id();
+			// if (route_id != null) {
+			// PublicTranspDirection busRoute = oracleManager.find(
+			// PublicTranspDirection.class, route_id);
+			// if (busRoute != null) {
+			// busRouteStreet.setDescr(busRoute.getDir_num());
+			// }
+			// }
+			// Long route_dir = busRouteStreet.getDir();
+			// if (route_dir != null) {
+			// switch (route_dir.intValue()) {
+			// case 1:
+			// busRouteStreet.setDir_descr("წინ");
+			// break;
+			// case 2:
+			// busRouteStreet.setDir_descr("უკან");
+			// break;
+			// default:
+			// busRouteStreet.setDir_descr("უცნობი");
+			// break;
+			// }
+			// }
+			//
+			// EMF.commitTransaction(transaction);
+			log += ". Remove Finished SuccessFully. ";
 			logger.info(log);
-			return busRouteStreet;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
