@@ -128,6 +128,7 @@ public class ClientMapUtil {
 
 		transpTypeInt.put("0", "საქალაქო");
 		transpTypeInt.put("1", "საქალაქთაშორისო");
+		transpTypeInt.put("2", "საერთაშორისო");
 
 		transpRoundType.put("1", "ჩვეულებრივი");
 		transpRoundType.put("2", "წრიული");

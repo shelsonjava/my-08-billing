@@ -1,61 +1,51 @@
 <DataSource
 	ID="TranspTypeDS"
 	serverType="sql"
-	tableName="ccare.transport_types"
+	tableName="ccare.transp_types"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="transport_type_id"			type="integer"		title="ID"				hidden="true" primaryKey="true" />
-		<field name="transport_type_name_geo"	type="text"			title="Transport Type Name Geo"/>
-		<field name="intercityDescr"			type="text"			title="Intercity Description"/>
-		<field name="transport_type_name_eng"	type="text"			title="Region Name Eng" hidden="true"/>
-		<field name="rec_user"					type="text"			title="Record User"/>
-		<field name="rec_date"					type="datetime"		title="Record Date"/>
-		<field name="upd_user"					type="text"			title="Update User"/>
-		<field name="intercity"					type="integer"		title="Intercity" 		hidden="true"/>
-		<field name="deleted"					type="integer"		title="Deleted" 		hidden="true"/>
-		<field name="loggedUserName"			type="text"			title="Logged UserName" hidden="true" />
+		<field name="transp_type_id"			type="integer"		title="ID"				hidden="true" primaryKey="true" />
+		<field name="name_descr"				type="text"			title="name_descr"/>
+		<field name="kind"						type="integer"		title="kind"/>
+		<field name="kindDescr"					type="text"			title="kindDescr"/>
+		<field name="loggedUserName"			type="text"			title="loggedUserName"/>
 	</fields>
 
 	<operationBindings>		
 
 		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
 
-		<!-- Add TransportType -->
+		<!-- Add TranspType -->
 		<operationBinding operationType="add" operationId="addTransportType" serverMethod="addTransportType">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
-		<!-- TransportType Update -->
+		<!-- TranspType Update -->
 		<operationBinding operationType="update" operationId="updateTransportType" serverMethod="updateTransportType">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
-        <!-- TransportType Status Update -->
-		<operationBinding operationType="update" operationId="updateTransportTypeStatus" serverMethod="updateTransportTypeStatus">
+        <!-- TranspType Delete -->
+		<operationBinding operationType="remove" operationId="removeTransportType" serverMethod="removeTransportType">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
 	
-    	<operationBinding operationId="searchAllTransportTypes" operationType="fetch">
+    	<operationBinding operationId="searchAllTranspTypes" operationType="fetch">
     		<selectClause>   			
-    			t.transport_type_id,
-				t.transport_type_name_geo,
-				t.transport_type_name_eng,
-				t.rec_date,
-				t.rec_user,
-				t.deleted,
-				t.intercity,
-				t.upd_user,
-				decode(t.intercity,0,'საქალაქო',1,'საქალაქთაშორისო','უცნობი') as intercityDescr	
+    			t.transp_type_id,
+				t.name_descr,
+				t.kind,
+				decode(t.kind,0,'საქალაქო',1,'საქალაქთაშორისო',2,'საერთაშორისო','უცნობი') as kindDescr	
 			</selectClause> 
-			<tableClause>transport_types t</tableClause>
+			<tableClause>transp_types t</tableClause>
 			<whereClause><![CDATA[
 				1 = 1
 				#if($criteria.intercity) and t.intercity = $criteria.intercity #end
 				#if($criteria.transport_type_name_geo) and t.transport_type_name_geo like ($criteria.transport_type_name_geo)||'%' #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.transport_type_id</orderClause>
+			<orderClause>t.transp_type_id</orderClause>
     	</operationBinding>
     	<operationBinding operationId="searchAllTransportTypesForCombos" operationType="fetch">
     		<selectClause>   			

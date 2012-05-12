@@ -93,7 +93,7 @@ public class TabFindTransport extends Tab {
 		transportTypeItem = new SelectItem();
 		transportTypeItem.setTitle(CallCenterBK.constants.transportType());
 		transportTypeItem.setWidth(250);
-		transportTypeItem.setName("transport_type_name_geo");
+		transportTypeItem.setName("name_descr");
 		transportTypeItem.setValueMap(ClientMapUtil.getInstance()
 				.getTranspTypeCustom1());
 		transportTypeItem.setDefaultValue(new Integer(1000005));
@@ -101,40 +101,40 @@ public class TabFindTransport extends Tab {
 		transportTypeItem.addChangedHandler(new ChangedHandler() {
 			@Override
 			public void onChanged(ChangedEvent event) {
-				String transport_type_id_str = transportTypeItem
+				String transp_type_id_str = transportTypeItem
 						.getValueAsString();
-				if (transport_type_id_str != null
-						&& !transport_type_id_str.trim().equals("")) {
+				if (transp_type_id_str != null
+						&& !transp_type_id_str.trim().equals("")) {
 					try {
-						Integer transport_type_id = Integer
-								.parseInt(transport_type_id_str);
+						Integer transp_type_id = Integer
+								.parseInt(transp_type_id_str);
 
-						commentLabel.setVisible((transport_type_id.intValue() == 1));
+						commentLabel.setVisible((transp_type_id.intValue() == 1));
 
 						Criteria lCriteria = cityFromItem.getOptionCriteria();
 						if (lCriteria != null) {
-							lCriteria.setAttribute("transport_type_id",
-									transport_type_id);
+							lCriteria.setAttribute("transp_type_id",
+									transp_type_id);
 							cityFromItem.setOptionCriteria(lCriteria);
 						}
 						Criteria lCriteria1 = cityToItem.getOptionCriteria();
 						if (lCriteria1 != null) {
-							lCriteria1.setAttribute("transport_type_id",
-									transport_type_id);
+							lCriteria1.setAttribute("transp_type_id",
+									transp_type_id);
 							cityToItem.setOptionCriteria(lCriteria1);
 						}
 
 						Criteria lCriteria2 = countryFromItem
 								.getOptionCriteria();
 						if (lCriteria2 != null) {
-							lCriteria2.setAttribute("transport_type_id",
-									transport_type_id);
+							lCriteria2.setAttribute("transp_type_id",
+									transp_type_id);
 							countryFromItem.setOptionCriteria(lCriteria2);
 						}
 						Criteria lCriteria3 = countryToItem.getOptionCriteria();
 						if (lCriteria3 != null) {
-							lCriteria3.setAttribute("transport_type_id",
-									transport_type_id);
+							lCriteria3.setAttribute("transp_type_id",
+									transp_type_id);
 							countryToItem.setOptionCriteria(lCriteria3);
 						}
 
@@ -174,7 +174,7 @@ public class TabFindTransport extends Tab {
 		cityFromItem.setValueField("city_id");
 		cityFromItem.setDisplayField("city_name_geo");
 		Criteria criteriaFromCity = new Criteria();
-		criteriaFromCity.setAttribute("transport_type_id", 1000005);
+		criteriaFromCity.setAttribute("transp_type_id", 1000005);
 		cityFromItem.setOptionCriteria(criteriaFromCity);
 		cityFromItem.setAutoFetchData(false);
 
@@ -206,7 +206,7 @@ public class TabFindTransport extends Tab {
 		cityToItem.setValueField("city_id");
 		cityToItem.setDisplayField("city_name_geo");
 		Criteria criteriaToCity = new Criteria();
-		criteriaToCity.setAttribute("transport_type_id", 1000005);
+		criteriaToCity.setAttribute("transp_type_id", 1000005);
 		cityToItem.setOptionCriteria(criteriaToCity);
 		cityToItem.setAutoFetchData(false);
 
@@ -239,7 +239,7 @@ public class TabFindTransport extends Tab {
 		countryFromItem.setValueField("country_id");
 		countryFromItem.setDisplayField("country_name_geo");
 		Criteria criteriaFromCountry = new Criteria();
-		criteriaFromCountry.setAttribute("transport_type_id", 1000005);
+		criteriaFromCountry.setAttribute("transp_type_id", 1000005);
 		countryFromItem.setOptionCriteria(criteriaFromCountry);
 		countryFromItem.setAutoFetchData(false);
 
@@ -271,7 +271,7 @@ public class TabFindTransport extends Tab {
 		countryToItem.setValueField("country_id");
 		countryToItem.setDisplayField("country_name_geo");
 		Criteria criteriaToCountry = new Criteria();
-		criteriaToCountry.setAttribute("transport_type_id", 1000005);
+		criteriaToCountry.setAttribute("transp_type_id", 1000005);
 		countryToItem.setOptionCriteria(criteriaToCountry);
 		countryToItem.setAutoFetchData(false);
 
@@ -332,8 +332,8 @@ public class TabFindTransport extends Tab {
 		findButtonByCity.setTitle(CallCenterBK.constants.findTranspByCity());
 
 		findButtonByCountry = new IButton();
-		findButtonByCountry
-				.setTitle(CallCenterBK.constants.findTranspByCountry());
+		findButtonByCountry.setTitle(CallCenterBK.constants
+				.findTranspByCountry());
 
 		clear = new IButton();
 		clear.setTitle(CallCenterBK.constants.clear());
@@ -517,11 +517,10 @@ public class TabFindTransport extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("deleted", 0);
 			DSRequest dsRequest = new DSRequest();
-			String transport_type_id = transportTypeItem.getValueAsString();
-			if (transport_type_id != null
-					&& !transport_type_id.trim().equals("")) {
-				criteria.setAttribute("transport_type_id", new Integer(
-						transport_type_id));
+			String transp_type_id = transportTypeItem.getValueAsString();
+			if (transp_type_id != null && !transp_type_id.trim().equals("")) {
+				criteria.setAttribute("transp_type_id", new Integer(
+						transp_type_id));
 			}
 			switch (type) {
 			case 1: // route

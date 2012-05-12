@@ -63,12 +63,12 @@ public class DlgAddEditTransportType extends Window {
 		transportTypeNameGeoItem = new TextItem();
 		transportTypeNameGeoItem.setTitle("დასახელება (ქართულად)");
 		transportTypeNameGeoItem.setWidth(300);
-		transportTypeNameGeoItem.setName("transport_type_name_geo");
+		transportTypeNameGeoItem.setName("name_descr");
 
 		interCityItem = new SelectItem();
 		interCityItem.setTitle("ტიპი");
 		interCityItem.setWidth(300);
-		interCityItem.setName("intercity");
+		interCityItem.setName("kind");
 		interCityItem.setValueMap(ClientMapUtil.getInstance()
 				.getTranspTypeInt());
 
@@ -112,8 +112,9 @@ public class DlgAddEditTransportType extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			transportTypeNameGeoItem.setValue(editRecord.getAttribute("transport_type_name_geo"));
-			interCityItem.setValue(editRecord.getAttribute("intercity"));
+			transportTypeNameGeoItem.setValue(editRecord
+					.getAttribute("name_descr"));
+			interCityItem.setValue(editRecord.getAttribute("kind"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -121,13 +122,13 @@ public class DlgAddEditTransportType extends Window {
 
 	private void save() {
 		try {
-			String transport_type_name_geo = transportTypeNameGeoItem.getValueAsString();
-			if (transport_type_name_geo == null || transport_type_name_geo.trim().equalsIgnoreCase("")) {
+			String name_descr = transportTypeNameGeoItem.getValueAsString();
+			if (name_descr == null || name_descr.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ ქართული დასახელება !");
 				return;
 			}
 			String intercity = interCityItem.getValueAsString();
-			if (intercity==null ||intercity.trim().equalsIgnoreCase("")) {
+			if (intercity == null || intercity.trim().equalsIgnoreCase("")) {
 				SC.say("აირჩიეთ ტიპი !");
 				return;
 			}
@@ -138,14 +139,12 @@ public class DlgAddEditTransportType extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("transport_type_name_geo", transport_type_name_geo);
-			record.setAttribute("deleted", 0);			
-			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("intercity", new Integer(intercity));
+			record.setAttribute("name_descr", name_descr);
+			record.setAttribute("kind", new Integer(intercity));
 
 			if (editRecord != null) {
-				record.setAttribute("transport_type_id",
-						editRecord.getAttributeAsInt("transport_type_id"));
+				record.setAttribute("transp_type_id",
+						editRecord.getAttributeAsInt("transp_type_id"));
 			}
 
 			DSRequest req = new DSRequest();

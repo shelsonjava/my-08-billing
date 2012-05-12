@@ -48,8 +48,7 @@ public class TabTransportType extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
-
+	
 	// ListGrid
 	private ListGrid listGrid;
 
@@ -78,12 +77,12 @@ public class TabTransportType extends Tab {
 			transportTypeNameGeoItem = new TextItem();
 			transportTypeNameGeoItem.setTitle("დასახელება(ქართ.)");
 			transportTypeNameGeoItem.setWidth(350);
-			transportTypeNameGeoItem.setName("transport_type_name_geo");
+			transportTypeNameGeoItem.setName("name_descr");
 
 			interCityItem = new SelectItem();
 			interCityItem.setTitle("ტიპი");
 			interCityItem.setWidth(350);
-			interCityItem.setName("intercity");
+			interCityItem.setName("kind");
 			interCityItem.setValueMap(ClientMapUtil.getInstance()
 					.getTranspTypeInt());
 
@@ -123,11 +122,6 @@ public class TabTransportType extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "restoreIcon.gif");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			listGrid = new ListGrid() {
@@ -161,30 +155,15 @@ public class TabTransportType extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("transport_type_name_geo").setTitle(
+			datasource.getField("name_descr").setTitle("დასახელება (ქართ.)");
+			datasource.getField("kind").setTitle("ტიპი");
+
+			ListGridField name_descr = new ListGridField("name_descr",
 					"დასახელება (ქართ.)");
-			datasource.getField("intercityDescr").setTitle("ტიპი");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
+			ListGridField intercityDescr = new ListGridField("kindDescr",
+					"ტიპი", 250);
 
-			ListGridField transport_type_name_geo = new ListGridField(
-					"transport_type_name_geo", "დასახელება (ქართ.)", 150);
-			ListGridField intercityDescr = new ListGridField("intercityDescr",
-					"ტიპი", 150);
-			ListGridField rec_date = new ListGridField("rec_date",
-					"შექმინის თარიღი", 130);
-			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",
-					100);
-			ListGridField upd_user = new ListGridField("upd_user",
-					"ვინ განაახლა", 150);
-
-			rec_date.setAlign(Alignment.CENTER);
-			rec_user.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
-
-			listGrid.setFields(transport_type_name_geo, intercityDescr,
-					rec_date, rec_user, upd_user);
+			listGrid.setFields(name_descr, intercityDescr);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -233,15 +212,8 @@ public class TabTransportType extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
-					final Integer transport_type_id = listGridRecord
-							.getAttributeAsInt("transport_type_id");
-					if (transport_type_id == null) {
+					final Integer transp_type_id = listGridRecord.getAttributeAsInt("transp_type_id");
+					if (transp_type_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -251,46 +223,12 @@ public class TabTransportType extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(transport_type_id, 1);
+										changeStatus(transp_type_id, 1);
 									}
 								}
 							});
 				}
 			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer transport_type_id = listGridRecord
-							.getAttributeAsInt("transport_type_id");
-					if (transport_type_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(transport_type_id, 0);
-									}
-								}
-							});
-				}
-			});
-
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(730);
 			Tab tabDetViewer = new Tab("დათვალიერება");
@@ -335,14 +273,13 @@ public class TabTransportType extends Tab {
 					.getValueAsString();
 			String intercity = interCityItem.getValueAsString();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("transport_type_name_geo",
-					transport_type_name_geo);
+			criteria.setAttribute("name_descr", transport_type_name_geo);
 			if (intercity != null) {
-				criteria.setAttribute("intercity", intercity);
+				criteria.setAttribute("kind", intercity);
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllTransportTypes");
+			dsRequest.setAttribute("operationId", "searchAllTranspTypes");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -355,18 +292,18 @@ public class TabTransportType extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer transport_type_id, Integer deleted) {
+	private void changeStatus(Integer transp_type_id, Integer deleted) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("deleted", deleted);
-			record.setAttribute("transport_type_id", transport_type_id);
+			record.setAttribute("transp_type_id", transp_type_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateTransportTypeStatus");
-			listGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "removeTransportType");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
