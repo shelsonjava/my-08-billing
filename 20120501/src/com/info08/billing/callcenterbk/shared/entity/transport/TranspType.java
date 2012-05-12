@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 
 
 /**
- * The persistent class for the TRANSPORT_TYPES database table.
+ * The persistent class for the TRANSP_TYPES database table.
  * 
  */
 @Entity

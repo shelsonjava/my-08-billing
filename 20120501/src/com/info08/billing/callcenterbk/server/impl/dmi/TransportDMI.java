@@ -109,7 +109,7 @@ public class TransportDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long transport_type_id = new Long(record.get("transp_type_id")
+			Long transp_type_id = new Long(record.get("transp_type_id")
 					.toString());
 			Long kind = new Long(record.get("kind").toString());
 			String name_descr = record.get("name_descr") == null ? null
@@ -118,7 +118,7 @@ public class TransportDMI implements QueryConstants {
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
 			TranspType transportType = oracleManager.find(TranspType.class,
-					transport_type_id);
+					transp_type_id);
 
 			transportType.setKind(kind);
 			transportType.setName_descr(name_descr);
@@ -130,7 +130,7 @@ public class TransportDMI implements QueryConstants {
 			oracleManager.flush();
 
 			transportType = oracleManager.find(TranspType.class,
-					transport_type_id);
+					transp_type_id);
 
 			transportType.setLoggedUserName(loggedUserName);
 			switch (kind.intValue()) {
@@ -184,12 +184,12 @@ public class TransportDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			Long transport_type_id = new Long(record.get("transport_type_id")
+			Long transp_type_id = new Long(record.get("transp_type_id")
 					.toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 
 			TranspType transportType = oracleManager.find(TranspType.class,
-					transport_type_id);
+					transp_type_id);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
 					loggedUserName, "Remove Transport Type.");

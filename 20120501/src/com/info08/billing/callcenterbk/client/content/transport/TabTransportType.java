@@ -48,7 +48,7 @@ public class TabTransportType extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	
+
 	// ListGrid
 	private ListGrid listGrid;
 
@@ -212,7 +212,8 @@ public class TabTransportType extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					final Integer transp_type_id = listGridRecord.getAttributeAsInt("transp_type_id");
+					final Integer transp_type_id = listGridRecord
+							.getAttributeAsInt("transp_type_id");
 					if (transp_type_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
@@ -269,11 +270,10 @@ public class TabTransportType extends Tab {
 
 	private void search() {
 		try {
-			String transport_type_name_geo = transportTypeNameGeoItem
-					.getValueAsString();
+			String name_descr = transportTypeNameGeoItem.getValueAsString();
 			String intercity = interCityItem.getValueAsString();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("name_descr", transport_type_name_geo);
+			criteria.setAttribute("name_descr", name_descr);
 			if (intercity != null) {
 				criteria.setAttribute("kind", intercity);
 			}

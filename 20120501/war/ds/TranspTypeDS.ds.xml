@@ -42,45 +42,45 @@
 			<whereClause><![CDATA[
 				1 = 1
 				#if($criteria.intercity) and t.intercity = $criteria.intercity #end
-				#if($criteria.transport_type_name_geo) and t.transport_type_name_geo like ($criteria.transport_type_name_geo)||'%' #end
+				#if($criteria.name_descr) and t.name_descr like ($criteria.name_descr)||'%' #end
 				]]>  
 			</whereClause> 
 			<orderClause>t.transp_type_id</orderClause>
     	</operationBinding>
     	<operationBinding operationId="searchAllTransportTypesForCombos" operationType="fetch">
     		<selectClause>   			
-    			t.transport_type_id,
-    			t.transport_type_name_geo||' ( '||decode(t.intercity,0,'საქალაქო',1,'საქალაქთაშორისო','უცნობი')||' ) ' as transport_type_name_geo 
+    			t.transp_type_id,
+    			t.name_descr||' ( '||decode(t.kind,0,'საქალაქო',1,'საქალაქთაშორისო',2,'საერთაშორისო','უცნობი')||' ) ' as name_descr 
 			</selectClause> 
-			<tableClause>transport_types t</tableClause>	
+			<tableClause>transp_types t</tableClause>	
 			<whereClause>
 				($defaultWhereClause) AND t.deleted = 0
 			</whereClause>
-			<orderClause>t.transport_type_id</orderClause>			
+			<orderClause>t.transp_type_id</orderClause>			
     	</operationBinding>
     	
     	<operationBinding operationId="searchAllTransportTypesForCombos1" operationType="fetch">
     		<selectClause>   			
-    			t.transport_type_id,
-    			t.transport_type_name_geo 
+    			t.transp_type_id,
+    			t.transp_type_name_geo 
 			</selectClause> 
-			<tableClause>transport_types t</tableClause>	
+			<tableClause>transp_types t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0 AND t.intercity = 1
+				($defaultWhereClause) AND t.kind = 1
 			</whereClause>
-			<orderClause>t.transport_type_id</orderClause>			
+			<orderClause>t.transp_type_id</orderClause>			
     	</operationBinding>
     	
     	<operationBinding operationId="searchAllTransportTypesForCombos2" operationType="fetch">
     		<selectClause>   			
-    			t.transport_type_id,
-    			t.transport_type_name_geo 
+    			t.transp_type_id,
+    			t.transp_type_name_geo 
 			</selectClause> 
-			<tableClause>transport_types t</tableClause>	
+			<tableClause>transp_types t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0 AND t.intercity = 0
+				($defaultWhereClause) AND t.kind = 0
 			</whereClause>
-			<orderClause>t.transport_type_id</orderClause>			
+			<orderClause>t.transp_type_id</orderClause>			
     	</operationBinding>
     	
     </operationBindings>	
