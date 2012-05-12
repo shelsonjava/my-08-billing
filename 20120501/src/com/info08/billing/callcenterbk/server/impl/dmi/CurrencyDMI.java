@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.server.impl.dmi;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
+import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.Country;
 import com.info08.billing.callcenterbk.shared.entity.currency.Currency;
 import com.info08.billing.callcenterbk.shared.entity.currency.CurrencyCourse;
@@ -33,6 +35,10 @@ public class CurrencyDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
+			String loggedUserName = currency.getLoggedUserName();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Adding Currency.");
 			oracleManager.persist(currency);
 			oracleManager.flush();
 
@@ -94,6 +100,11 @@ public class CurrencyDMI implements QueryConstants {
 
 			Currency currency = oracleManager.find(Currency.class, id);
 
+			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Updating Currency.");
+
 			currency.setCountry_id(country_id);
 			currency.setCode(code);
 			currency.setName_descr(name_descr);
@@ -138,7 +149,7 @@ public class CurrencyDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public Currency updateCurrencyStatus(Map record) throws Exception {
+	public Currency removeCurrency(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -146,27 +157,22 @@ public class CurrencyDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
+			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing Currency.");
+
 			Long id = new Long(record.get("currency_id").toString());
 
 			Currency currency = oracleManager.find(Currency.class, id);
 
-			oracleManager.merge(currency);
+			oracleManager.remove(currency);
 			oracleManager.flush();
-
-			currency = oracleManager.find(Currency.class, id);
-
-			Long country_id = currency.getCountry_id();
-			if (country_id != null) {
-				Country country = oracleManager.find(Country.class, country_id);
-				if (country != null) {
-					currency.setCountry_name_geo(country.getCountry_name_geo());
-				}
-			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return currency;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -217,6 +223,11 @@ public class CurrencyDMI implements QueryConstants {
 			currencyCourseObject.setNational_course(national_course);
 			currencyCourseObject.setCoefficient(coefficient);
 			currencyCourseObject.setBank_sell_course(bank_sell_course);
+
+			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Updating Currency Course.");
 
 			oracleManager.persist(currencyCourseObject);
 			oracleManager.flush();

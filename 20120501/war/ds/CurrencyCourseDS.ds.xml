@@ -12,6 +12,7 @@
 		<field name="coefficient"		 type="integer"		title="coefficient"/>
 		<field name="bank_sell_course"	 type="any"			title="bank_sell_course"/>
 		<field name="currency_id"		 type="integer"		title="currency_id" 				hidden="true"/>
+		<field name="loggedUserName"	 type="text"		title="loggedUserName"		hidden="true"/>
 	</fields>
 
 	<operationBindings>		

@@ -296,7 +296,7 @@ public class TabCurrency extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					
+
 					final Integer curr_id = listGridRecord
 							.getAttributeAsInt("currency_id");
 					SC.ask(CallCenterBK.constants.askForEnable(),
@@ -403,8 +403,8 @@ public class TabCurrency extends Tab {
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateCurrencyStatus");
-			listGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "removeCurrency");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

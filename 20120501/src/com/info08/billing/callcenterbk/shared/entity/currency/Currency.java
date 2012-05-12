@@ -46,6 +46,9 @@ public class Currency implements Serializable {
 	@Transient
 	private String country_name_geo;
 
+	@Transient
+	private String loggedUserName;
+
 	public Currency() {
 	}
 
@@ -96,4 +99,13 @@ public class Currency implements Serializable {
 	public void setCountry_name_geo(String country_name_geo) {
 		this.country_name_geo = country_name_geo;
 	}
+
+	public String getLoggedUserName() {
+		return loggedUserName;
+	}
+
+	public void setLoggedUserName(String loggedUserName) {
+		this.loggedUserName = loggedUserName;
+	}
+
 }

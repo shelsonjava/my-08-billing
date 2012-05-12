@@ -55,6 +55,9 @@ public class CurrencyCourse implements Serializable {
 	@Transient
 	private String name_descr;
 
+	@Transient
+	private String loggedUserName;
+
 	public CurrencyCourse() {
 	}
 
@@ -112,6 +115,14 @@ public class CurrencyCourse implements Serializable {
 
 	public void setName_descr(String name_descr) {
 		this.name_descr = name_descr;
+	}
+
+	public String getLoggedUserName() {
+		return loggedUserName;
+	}
+
+	public void setLoggedUserName(String loggedUserName) {
+		this.loggedUserName = loggedUserName;
 	}
 
 }

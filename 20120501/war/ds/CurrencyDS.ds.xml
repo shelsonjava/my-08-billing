@@ -11,6 +11,7 @@
 		<field name="sort_order"				type="integer"		title="sort_order"/>
 		<field name="country_name_geo"			type="integer"		title="country_name_geo"/>
 		<field name="country_id"				type="text"			title="country_id"					hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="loggedUserName"		hidden="true"/>
 	</fields>
 
 	<operationBindings>		
@@ -28,7 +29,7 @@
         </operationBinding>
         
         <!-- Currency Status Update -->
-		<operationBinding operationType="update" operationId="updateCurrencyStatus" serverMethod="updateCurrencyStatus">
+		<operationBinding operationType="remove" operationId="removeCurrency" serverMethod="removeCurrency">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
         </operationBinding>
 	
