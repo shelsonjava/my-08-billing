@@ -47,6 +47,7 @@
 				t.country_id = c.country_id(+)
 				#if($criteria.name_descr) and t.name_descr like ($criteria.name_descr)||'%' #end
 				#if($criteria.code) and t.code like ($criteria.code)||'%' #end
+				#if($criteria.country_id) and t.country_id = $criteria.country_id #end
 				]]>  
 			</whereClause> 
 			<orderClause>t.sort_order</orderClause>
