@@ -86,12 +86,12 @@
 			       getminbusstop_id(t.transportid) start_place_id,
 			       getmaxbusstop(t.transportid) end_place,
 			       getmaxbusstop_id(t.transportid) end_place_id,
-			       t.direction,
-			       decode(t.direction,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as cycle_descr
+			       t.CYCLED_ID direction,
+			       decode(t.CYCLED_ID,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as cycle_descr
 			</selectClause> 
 			<tableClause>incity_transport_view_new t, ccare.transp_types tt</tableClause>
 			<whereClause><![CDATA[
-				t.transport_type_id = tt.id
+				t.transport_type_id = tt.transp_type_id
 				#if($criteria.transport_type_id) and t.transport_type_id = $criteria.transport_type_id #end
 				#if($criteria.transportno) and (t.transportno = $criteria.transportno) #end
 				
@@ -138,7 +138,7 @@
 				#end					
 				]]>  
 			</whereClause> 
-			<groupClause>tt.NAME_DESCR, t.transportid, t.transportno, t.direction</groupClause>
+			<groupClause>tt.NAME_DESCR, t.transportid, t.transportno, t.CYCLED_ID</groupClause>
 			<orderClause>t.transportno</orderClause>
     	</operationBinding>
     	
