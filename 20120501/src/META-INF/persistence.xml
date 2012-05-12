@@ -30,9 +30,8 @@
     <class>com.info08.billing.callcenterbk.shared.entity.calendar.CalendarState</class>
     <class>com.info08.billing.callcenterbk.shared.entity.calendar.ChurchCalendarEvent</class>
     <class>com.info08.billing.callcenterbk.shared.entity.calendar.SecularCalendarEvent</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.currency.Rate</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.currency.RateCurr</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.currency.RateLog</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.currency.CurrencyCourse</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.currency.Currency</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirection</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirectionStreet</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.Transport</class>
