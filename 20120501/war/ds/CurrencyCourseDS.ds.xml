@@ -1,0 +1,68 @@
+<DataSource
+	ID="CurrencyCourseDS"
+	serverType="sql"
+	tableName="ccare.currency_course"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="currency_course_id" type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="name_descr"		 type="text"		title="name_descr"/>
+		<field name="bank_buy_course"	 type="any"			title="bank_buy_course"/>
+		<field name="national_course"	 type="any"			title="national_course"/>
+		<field name="coefficient"		 type="integer"		title="coefficient"/>
+		<field name="bank_sell_course"	 type="any"			title="bank_sell_course"/>
+		<field name="currency_id"		 type="integer"		title="currency_id" 				hidden="true"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
+
+		<!-- CurrencyCourse Update -->
+		<operationBinding operationType="update" operationId="updateCurrencyCourse" serverMethod="updateCurrencyCourse">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchAllCurrencyCourse" operationType="fetch">
+    		<selectClause>   			
+    			t.currency_course_id,
+				t.currency_id,
+				t.bank_buy_course,
+				t.national_course,
+				t.coefficient,
+				t.bank_sell_course,
+				r.name_descr
+			</selectClause> 
+			<tableClause>currency_course t, currency r</tableClause>
+			<whereClause><![CDATA[
+				t.currency_id = r.currency_id
+				#if($criteria.currency_id) and t.currency_id = $criteria.currency_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.currency_course_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchAllCurrencyCourseForCallCenter" operationType="fetch">
+    		<selectClause>   			
+    			t.currency_course_id,
+				t.currency_id,
+				t.bank_buy_course,
+				t.national_course,
+				t.coefficient,
+				t.bank_sell_course,
+				r.name_descr
+			</selectClause> 
+			<tableClause>currency_course t, currency r</tableClause>
+			<whereClause><![CDATA[
+				t.currency_id = r.currency_id
+				#if($criteria.currency_id) 
+					and t.currency_id in ($criteria.currency_id,$criteria.currency_id1) 
+				#end
+				]]>  
+			</whereClause> 
+			<orderClause>t.currency_course_id</orderClause>
+    	</operationBinding>
+
+    </operationBindings>	
+</DataSource>

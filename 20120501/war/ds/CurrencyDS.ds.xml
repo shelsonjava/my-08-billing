@@ -1,0 +1,88 @@
+<DataSource
+	ID="CurrencyDS"
+	serverType="sql"
+	tableName="ccare.currency"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="currency_id"				type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="code"						type="text"			title="code"/>
+		<field name="name_descr"				type="text"			title="name_descr"/>
+		<field name="sort_order"				type="integer"		title="sort_order"/>
+		<field name="country_name_geo"			type="integer"		title="country_name_geo"/>
+		<field name="country_id"				type="text"			title="country_id"					hidden="true"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
+
+		<!-- Add Currency -->
+		<operationBinding operationType="add" operationId="addCurrency" serverMethod="addCurrency">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
+        </operationBinding>
+        
+		<!-- Currency Update -->
+		<operationBinding operationType="update" operationId="updateCurrency" serverMethod="updateCurrency">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
+        </operationBinding>
+        
+        <!-- Currency Status Update -->
+		<operationBinding operationType="update" operationId="updateCurrencyStatus" serverMethod="updateCurrencyStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllCurrency" operationType="fetch">
+    		<selectClause>   			
+    			t.currency_id,
+				t.country_id,
+				t.code,
+				t.name_descr,
+				t.sort_order,
+				c.country_name_geo
+			</selectClause> 
+			<tableClause>currency t, countries c</tableClause>
+			<whereClause><![CDATA[
+				t.country_id = c.country_id(+)
+				#if($criteria.name_descr) and t.name_descr like ($criteria.name_descr)||'%' #end
+				#if($criteria.code) and t.code like ($criteria.code)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.sort_order</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllCurrencyForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.currency_id,
+    			t.name_descr 
+			</selectClause> 
+			<tableClause>currency t</tableClause>	
+			<whereClause>
+				($defaultWhereClause)
+			</whereClause>
+			<orderClause>t.sort_order</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchAllCurrencyForCallCenter" operationType="fetch">
+    		<selectClause>   			
+    			t.currency_id,
+				t.country_id,
+				t.code,
+				t.name_descr,
+				t.sort_order,
+				c.country_name_geo
+			</selectClause> 
+			<tableClause>currency t, countries c</tableClause>
+			<whereClause><![CDATA[
+				t.country_id = c.country_id(+)
+				#if($criteria.name_descr) and t.name_descr like '%'||($criteria.name_descr)||'%' #end
+				#if($criteria.code) and upper(t.code) like UPPER('%'||($criteria.code)||'%') #end
+				#if($criteria.country_name_geo) and c.country_name_geo like '%'||($criteria.country_name_geo)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.sort_order</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
