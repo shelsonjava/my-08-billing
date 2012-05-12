@@ -29,7 +29,7 @@
         </operationBinding>
         
         <!-- Currency Status Update -->
-		<operationBinding operationType="remove" operationId="removeCurrency" serverMethod="removeCurrency">
+		<operationBinding operationType="update" operationId="removeCurrency" serverMethod="removeCurrency">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
         </operationBinding>
 	

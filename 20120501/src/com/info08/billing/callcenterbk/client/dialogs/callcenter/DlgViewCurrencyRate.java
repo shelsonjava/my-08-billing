@@ -365,12 +365,12 @@ public class DlgViewCurrencyRate extends Window {
 			String curr_name_from = recordFrom
 					.getAttributeAsString("name_descr");
 			String curr_abbrev_from = recordFrom
-					.getAttributeAsString("curr_abbrev");
+					.getAttributeAsString("code");
 
 			Integer curr_id_to = recordTo.getAttributeAsInt("currency_id");
 			String curr_name_to = recordTo.getAttributeAsString("name_descr");
 			String curr_abbrev_to = recordTo
-					.getAttributeAsString("curr_abbrev");
+					.getAttributeAsString("code");
 
 			// find
 			for (Record recItem : rates) {

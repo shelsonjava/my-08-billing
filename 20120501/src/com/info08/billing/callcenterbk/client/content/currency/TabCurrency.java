@@ -52,7 +52,6 @@ public class TabCurrency extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton disableBtn;
-	private ToolStripButton activateBtn;
 	private ToolStripButton reteBtn;
 
 	// ListGrid
@@ -159,12 +158,6 @@ public class TabCurrency extends Tab {
 			disableBtn.setLayoutAlign(Alignment.LEFT);
 			disableBtn.setWidth(50);
 			toolStrip.addButton(disableBtn);
-
-			activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
-					"restoreIcon.gif");
-			activateBtn.setLayoutAlign(Alignment.LEFT);
-			activateBtn.setWidth(50);
-			toolStrip.addButton(activateBtn);
 
 			toolStrip.addSeparator();
 
@@ -287,29 +280,6 @@ public class TabCurrency extends Tab {
 							});
 				}
 			});
-			activateBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
-						return;
-					}
-
-					final Integer curr_id = listGridRecord
-							.getAttributeAsInt("currency_id");
-					SC.ask(CallCenterBK.constants.askForEnable(),
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(curr_id, 0);
-									}
-								}
-							});
-				}
-			});
 
 			reteBtn.addClickHandler(new ClickHandler() {
 				@Override
@@ -397,17 +367,18 @@ public class TabCurrency extends Tab {
 	private void changeStatus(Integer curr_id, Integer deleted) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
-			Record record = new Record();
+			final Record record = new Record();
 			record.setAttribute("currency_id", curr_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeCurrency");
-			listGrid.removeData(record, new DSCallback() {
+			listGrid.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
+					listGrid.removeData(record);
 				}
 			}, req);
 			com.smartgwt.client.rpc.RPCManager.sendQueue();

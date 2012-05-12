@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.currency;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -273,6 +274,9 @@ public class DlgAddEditRate extends Window {
 			record.setAttribute("national_course", national_course_str);
 			record.setAttribute("currency_id",
 					editRecord.getAttributeAsInt("currency_id"));
+			String loggedUser = CommonSingleton.getInstance()
+					.getSessionPerson().getUserName();
+			record.setAttribute("loggedUserName", loggedUser);
 
 			DataSource rateDS = DataSource.get("CurrencyCourseDS");
 			DSRequest req = new DSRequest();
