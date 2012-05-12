@@ -8,14 +8,14 @@
 	<fields>
 		<field name="transport_place_id"		type="integer"		title="ID"							hidden="true" primaryKey="true" />
 		<field name="transport_place_geo"		type="text"			title="Transport Place Geo"/>		
-		<field name="transport_type_name_geo"	type="text"			title="Transport Type Name Geo"/>
+		<field name="name_descr"	type="text"			title="Transport Type Name Geo"/>
 		<field name="city_name_geo"				type="text"			title="City Name Geo"/>
 		<field name="rec_user"					type="text"			title="Record User"/>
 		<field name="rec_date"					type="datetime"		title="Record Date"/>
 		<field name="upd_user"					type="text"			title="Update User"/>
 		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
 		<field name="transport_place_eng"		type="text"			title="Transport Place Eng"			hidden="true"/>
-		<field name="transport_type_id"			type="integer"		title="Transport Type Id" 			hidden="true"/>
+		<field name="transp_type_id"			type="integer"		title="Transport Type Id" 			hidden="true"/>
 		<field name="city_id"					type="integer"		title="City Id" 					hidden="true"/>
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true"/>
 		<field name="transport_place_geo_descr"	type="text"			title="Transport Place Geo Descr" 	hidden="true"/>		
@@ -44,7 +44,7 @@
     		<selectClause>   			
     			t.transport_place_id,
 				t.transport_place_geo,
-				tt.transport_type_name_geo,
+				tt.name_descr,
 				c.city_name_geo,
 				t.rec_user,
 				t.rec_date,

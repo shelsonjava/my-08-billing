@@ -323,14 +323,14 @@ public class InitAppServlet extends HttpServlet {
 
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
-			// response.sendRedirect(response
-			// .encodeRedirectURL("http://192.168.1.3:8888/CallCenter.html?gwt.codesvr=192.168.1.3:9997&sessionId="
-			// + sessionId));
+			 response.sendRedirect(response
+			 .encodeRedirectURL("http://192.168.1.3:8888/CallCenterBK.html?gwt.codesvr=192.168.1.3:9997&sessionId="
+			 + sessionId));
 			// } else {
 			// Live
-			response.sendRedirect(response
-					.encodeRedirectURL("http://192.168.1.5:18080/CallCenter/CallCenter.html?sessionId="
-							+ sessionId));
+//			response.sendRedirect(response
+//					.encodeRedirectURL("http://192.168.1.5:18080/CallCenter/CallCenter.html?sessionId="
+//							+ sessionId));
 			// }
 			time = System.currentTimeMillis() - time;
 			System.out.println("Servlet Initialize Time Is : " + time

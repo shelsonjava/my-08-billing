@@ -109,7 +109,7 @@ public class DlgAddEditTransport extends Window {
 		transportTypeItem = new TextItem();
 		transportTypeItem.setTitle("ტრანსპორტის ტიპი");
 		transportTypeItem.setWidth(250);
-		transportTypeItem.setName("transport_type_name_geo");
+		transportTypeItem.setName("name_descr");
 		transportTypeItem.setCanEdit(false);
 		switch (transport_type_id) {
 		case 1000005:
@@ -896,11 +896,11 @@ public class DlgAddEditTransport extends Window {
 
 			// check all transport type : t.transport_type_id
 			Integer out_tranp = transportPlaceOutItem.getSelectedRecord()
-					.getAttributeAsInt("transport_type_id");
+					.getAttributeAsInt("transp_type_id");
 			Integer in_tranp = transportPlaceInItem.getSelectedRecord()
-					.getAttributeAsInt("transport_type_id");
+					.getAttributeAsInt("transp_type_id");
 			Integer transp_pln = transportPlaneItem.getSelectedRecord()
-					.getAttributeAsInt("transport_type_id");
+					.getAttributeAsInt("transp_type_id");
 
 			if (!transport_type_id.equals(out_tranp)
 					|| !transport_type_id.equals(in_tranp)
@@ -982,7 +982,7 @@ public class DlgAddEditTransport extends Window {
 				record.setAttribute("transport_id",
 						editRecord.getAttributeAsInt("transport_id"));
 			}
-			record.setAttribute("transport_type_id", transport_type_id);
+			record.setAttribute("transp_type_id", transport_type_id);
 			record.setAttribute("out_transport_place_id",
 					out_transport_place_id);
 			record.setAttribute("in_transport_place_id", in_transport_place_id);

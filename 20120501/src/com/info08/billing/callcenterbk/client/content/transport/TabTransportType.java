@@ -122,8 +122,6 @@ public class TabTransportType extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			toolStrip.addSeparator();
-
 			listGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {

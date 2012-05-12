@@ -125,6 +125,7 @@ public class DlgAddEditBusRoute extends Window {
 		fillFields();
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void fillFields() {
 		try {
 			if (editRecord == null) {

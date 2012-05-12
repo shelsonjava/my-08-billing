@@ -1,7 +1,5 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
-import java.util.Map;
-
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
@@ -133,10 +131,8 @@ public class DlgViewInCityTransport extends Window {
 		dataSourceInner = DataSource.get("PubTranspDirStreetDS");
 
 		Criteria criteria = new Criteria();
-		Map mp=listGridRecord.toMap();
 		criteria.setAttribute("dir_id",
 				listGridRecord.getAttributeAsInt("pt_id"));
-		mp=criteria.getValues();
 
 		listGridInner = new ListGrid() {
 			protected String getCellCSSText(ListGridRecord record, int rowNum,
@@ -172,7 +168,8 @@ public class DlgViewInCityTransport extends Window {
 		listGridInner.setShowFilterEditor(false);
 		listGridInner.setCanEdit(false);
 		listGridInner.setCanRemoveRecords(false);
-		listGridInner.setFetchOperation("searchAllPublicTransportDirectionstreets");
+		listGridInner
+				.setFetchOperation("searchAllPublicTransportDirectionstreets");
 		listGridInner.setCanSort(false);
 		listGridInner.setCanResizeFields(false);
 
@@ -192,8 +189,7 @@ public class DlgViewInCityTransport extends Window {
 				CallCenterBK.constants.routeDirDescr(), 150);
 		dir_descr.setAlign(Alignment.CENTER);
 
-		listGridInner.setFields(dir_order, dir_descr, street_name,
-				remarks);
+		listGridInner.setFields(dir_order, dir_descr, street_name, remarks);
 
 		mainLayout.addMember(listGridInner);
 

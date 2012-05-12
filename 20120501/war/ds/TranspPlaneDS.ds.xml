@@ -6,7 +6,7 @@
 	dropExtraFields = "false">
 	<fields>
 		<field name="transport_plane_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
-		<field name="transport_type_id"				type="integer"		title="Transport Type Id" 	hidden="true"/>
+		<field name="transp_type_id"				type="integer"		title="Transport Type Id" 	hidden="true"/>
 		<field name="transport_plane_geo"			type="text"			title="Transport Plane Geo"/>		
 		<field name="transport_plane_geo_descr"		type="text"			title="Transport Plane Geo Descr"/>
 		<field name="transport_plane_eng"			type="text"			title="Transport Plane Eng" hidden="true"/>

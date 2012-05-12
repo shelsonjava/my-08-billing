@@ -90,7 +90,7 @@ public class TabTransport extends Tab {
 			transportTypeItem = new TextItem();
 			transportTypeItem.setTitle("ტრანსპორტის ტიპი");
 			transportTypeItem.setWidth(300);
-			transportTypeItem.setName("transport_type_name_geo");
+			transportTypeItem.setName("name_descr");
 			transportTypeItem.setCanEdit(false);
 			switch (transport_type_id) {
 			case 1000005:
@@ -404,7 +404,7 @@ public class TabTransport extends Tab {
 			final DateTimeFormat dateFormatter = DateTimeFormat
 					.getFormat("HH:mm");
 
-			datasource.getField("transport_type_name_geo").setTitle(
+			datasource.getField("name_descr").setTitle(
 					"ტრანსპორტის ტიპი");
 			datasource.getField("transport_place_geo_out").setTitle(
 					"გასვლის პუნქტი");
@@ -423,8 +423,8 @@ public class TabTransport extends Tab {
 			datasource.getField("upd_date").setTitle("განახლების თარიღი");
 			datasource.getField("upd_user").setTitle("ვინ განაახლა");
 
-			ListGridField transport_type_name_geo = new ListGridField(
-					"transport_type_name_geo", "ტრანსპ. ტიპი", 80);
+			ListGridField name_descr = new ListGridField(
+					"name_descr", "ტრანსპ. ტიპი", 80);
 			ListGridField transport_place_geo_out = new ListGridField(
 					"transport_place_geo_out", "გასვლის პუნქტი", 180);
 			ListGridField transport_place_geo_in = new ListGridField(
@@ -473,7 +473,7 @@ public class TabTransport extends Tab {
 				}
 			});
 
-			listGrid.setFields(transport_type_name_geo,
+			listGrid.setFields(name_descr,
 					transport_place_geo_out, transport_place_geo_in,
 					transport_company_geo, transport_plane_geo, trip_criteria,
 					outTime, in_time);
@@ -649,7 +649,7 @@ public class TabTransport extends Tab {
 
 			Criteria criteria = new Criteria();
 			if (transport_type_id != null) {
-				criteria.setAttribute("transport_type_id", new Integer(
+				criteria.setAttribute("transp_type_id", new Integer(
 						transport_type_id));
 			}
 			if (out_transport_place_id != null) {

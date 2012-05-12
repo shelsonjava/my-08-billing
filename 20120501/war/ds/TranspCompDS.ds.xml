@@ -9,12 +9,12 @@
 		<field name="transport_company_id"		type="integer"		title="ID"							hidden="true" primaryKey="true" />
 		<field name="main_id"					type="integer"		title="Main Id" 					hidden="true"/>
 		<field name="transport_company_geo"		type="text"			title="Transport Company Name Geo"/>		
-		<field name="transport_type_name_geo"	type="text"			title="Transport Type Name Geo"/>
+		<field name="transport_type"			type="text"		title="transport_type"/>
 		<field name="rec_user"					type="text"			title="Record User"/>
 		<field name="rec_date"					type="datetime"		title="Record Date"/>
 		<field name="upd_user"					type="text"			title="Update User"/>
 		<field name="transport_company_eng"		type="text"			title="Transport Company Name Eng"	hidden="true"/>
-		<field name="transport_type_id"			type="integer"		title="Transport Type Id" 			hidden="true"/>
+		<field name="transp_type_id"			type="integer"		title="Transport Type Id" 			hidden="true"/>
 		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true" />		
 	</fields>
@@ -49,7 +49,7 @@
 				t.rec_user,
 				t.deleted,
 				t.upd_user,
-				tt.transport_type_name_geo
+				tt.name_descr
 			</selectClause> 
 			<tableClause>transport_companies t, transport_types tt</tableClause>
 			<whereClause><![CDATA[

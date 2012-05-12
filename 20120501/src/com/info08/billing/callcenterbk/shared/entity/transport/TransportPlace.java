@@ -66,7 +66,7 @@ public class TransportPlace implements Serializable {
 	private String transport_place_geo_descr;
 
 	@Basic
-	@Column(name = "TRANSPORT_TYPE_ID")
+	@Column(name = "transp_type_id")
 	private Long transport_type_id;
 
 	@Basic
@@ -77,7 +77,7 @@ public class TransportPlace implements Serializable {
 	private String loggedUserName;
 
 	@Transient
-	private String transport_type_name_geo;
+	private String name_descr;
 
 	@Transient
 	private String city_name_geo;
@@ -165,12 +165,12 @@ public class TransportPlace implements Serializable {
 		this.loggedUserName = loggedUserName;
 	}
 
-	public String getTransport_type_name_geo() {
-		return transport_type_name_geo;
+	public String getname_descr() {
+		return name_descr;
 	}
 
-	public void setTransport_type_name_geo(String transport_type_name_geo) {
-		this.transport_type_name_geo = transport_type_name_geo;
+	public void setname_descr(String name_descr) {
+		this.name_descr = name_descr;
 	}
 
 	public String getCity_name_geo() {

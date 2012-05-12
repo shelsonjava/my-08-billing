@@ -168,6 +168,7 @@ public class DlgAddEditBusRouteStreet extends Window {
 		fillFields();
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void fillFields() {
 		try {
 			DataSource PubTranspDirDS = DataSource.get("PubTranspDirDS");

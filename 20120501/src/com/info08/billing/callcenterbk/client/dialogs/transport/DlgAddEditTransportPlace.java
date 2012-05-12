@@ -73,7 +73,7 @@ public class DlgAddEditTransportPlace extends Window {
 		transportTypeItem = new ComboBoxItem();
 		transportTypeItem.setTitle("ტრანსპორტის ტიპი");
 		transportTypeItem.setWidth(300);
-		transportTypeItem.setName("transport_type_name_geo");
+		transportTypeItem.setName("name_descr");
 		transportTypeItem.setFetchMissingValues(true);
 		transportTypeItem.setFilterLocally(false);
 		transportTypeItem.setAddUnknownValues(false);
@@ -82,8 +82,8 @@ public class DlgAddEditTransportPlace extends Window {
 		transportTypeItem
 				.setOptionOperationId("searchAllTransportTypesForCombos");
 		transportTypeItem.setOptionDataSource(firstNamesDS);
-		transportTypeItem.setValueField("transport_type_id");
-		transportTypeItem.setDisplayField("transport_type_name_geo");
+		transportTypeItem.setValueField("transp_type_id");
+		transportTypeItem.setDisplayField("name_descr");
 
 		Criteria criteria = new Criteria();
 		transportTypeItem.setOptionCriteria(criteria);
@@ -94,10 +94,10 @@ public class DlgAddEditTransportPlace extends Window {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = transportTypeItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("transport_type_id");
+					String oldAttr = criteria.getAttribute("transp_type_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("transport_type_id", nullO);
+						criteria.setAttribute("transp_type_id", nullO);
 					}
 				}
 			}
@@ -179,7 +179,7 @@ public class DlgAddEditTransportPlace extends Window {
 			transportPlaceGeoItem.setValue(editRecord
 					.getAttribute("transport_place_geo"));
 			Integer transport_type_id = editRecord
-					.getAttributeAsInt("transport_type_id");
+					.getAttributeAsInt("transp_type_id");
 			if (transport_type_id != null) {
 				transportTypeItem.setValue(transport_type_id);
 			}
@@ -222,7 +222,7 @@ public class DlgAddEditTransportPlace extends Window {
 			record.setAttribute("transport_place_geo", transport_place_geo);
 			record.setAttribute("deleted", 0);
 			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("transport_type_id", new Integer(
+			record.setAttribute("transp_type_id", new Integer(
 					transport_type_id));
 			record.setAttribute("city_id", new Integer(city_id));
 

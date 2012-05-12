@@ -6,7 +6,7 @@
 	dropExtraFields = "false">
 	<fields>
 		<field name="transport_id"				type="integer"		title="transport_id"			hidden="true"	primaryKey="true" />
-		<field name="transport_type_name_geo"	type="text"			title="transport_type_name_geo"/>
+		<field name="name_descr"	type="text"			title="name_descr"/>
 		<field name="transport_place_geo_out"	type="text"			title="transport_place_geo_out"/>
 		<field name="transport_place_geo_in"	type="text"			title="transport_place_geo_in"/>
 		<field name="transport_price_geo"		type="text"			title="transport_price_geo"/>
@@ -49,7 +49,7 @@
 				       t.transport_price_eng,
 				       t.transport_price_geo,
 				       t.trip_criteria,
-				       tt.transport_type_name_geo,
+				       tt.name_descr,
 				       oc.city_name_geo||' '||o.transport_place_geo as transport_place_geo_out,
 				       ic.city_name_geo||' '||i.transport_place_geo as transport_place_geo_in,
 				       tc.transport_company_geo,

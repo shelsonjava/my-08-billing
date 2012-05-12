@@ -84,7 +84,7 @@ public class TabTransportCompany extends Tab {
 			transportTypeItem = new ComboBoxItem();
 			transportTypeItem.setTitle("ტრანსპორტის ტიპი");
 			transportTypeItem.setWidth(350);
-			transportTypeItem.setName("transport_type_name_geo");
+			transportTypeItem.setName("name_descr");
 			transportTypeItem.setFetchMissingValues(true);
 			transportTypeItem.setFilterLocally(false);
 			transportTypeItem.setAddUnknownValues(false);
@@ -93,8 +93,8 @@ public class TabTransportCompany extends Tab {
 			transportTypeItem
 					.setOptionOperationId("searchAllTransportTypesForCombos");
 			transportTypeItem.setOptionDataSource(firstNamesDS);
-			transportTypeItem.setValueField("transport_type_id");
-			transportTypeItem.setDisplayField("transport_type_name_geo");
+			transportTypeItem.setValueField("transp_type_id");
+			transportTypeItem.setDisplayField("name_descr");
 
 			Criteria criteria = new Criteria();
 			transportTypeItem.setOptionCriteria(criteria);
@@ -106,10 +106,10 @@ public class TabTransportCompany extends Tab {
 					Criteria criteria = transportTypeItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("transport_type_id");
+								.getAttribute("transp_type_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("transport_type_id", nullO);
+							criteria.setAttribute("transp_type_id", nullO);
 						}
 					}
 				}
@@ -192,7 +192,7 @@ public class TabTransportCompany extends Tab {
 
 			datasource.getField("transport_company_geo").setTitle(
 					"დასახელება (ქართ.)");
-			datasource.getField("transport_type_name_geo").setTitle(
+			datasource.getField("name_descr").setTitle(
 					"ტრანსპორტის ტიპი");
 			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
 			datasource.getField("rec_user").setTitle("შემქმნელი");
@@ -200,8 +200,8 @@ public class TabTransportCompany extends Tab {
 
 			ListGridField transport_company_geo = new ListGridField(
 					"transport_company_geo", "დასახელება (ქართ.)", 150);
-			ListGridField transport_type_name_geo = new ListGridField(
-					"transport_type_name_geo", "ტრანსპორტის ტიპი", 150);
+			ListGridField name_descr = new ListGridField(
+					"name_descr", "ტრანსპორტის ტიპი", 150);
 			ListGridField rec_date = new ListGridField("rec_date",
 					"შექმინის თარიღი", 130);
 			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",
@@ -213,7 +213,7 @@ public class TabTransportCompany extends Tab {
 			rec_user.setAlign(Alignment.CENTER);
 			upd_user.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(transport_company_geo, transport_type_name_geo,
+			listGrid.setFields(transport_company_geo, name_descr,
 					rec_date, rec_user, upd_user);
 
 			mainLayout.addMember(listGrid);
@@ -367,7 +367,7 @@ public class TabTransportCompany extends Tab {
 			criteria.setAttribute("transport_company_geo",
 					transport_company_geo);
 			if (transport_type_id != null) {
-				criteria.setAttribute("transport_type_id", new Integer(
+				criteria.setAttribute("transp_type_id", new Integer(
 						transport_type_id));
 			}
 

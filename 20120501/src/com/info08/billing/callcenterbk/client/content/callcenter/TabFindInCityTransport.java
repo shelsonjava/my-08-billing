@@ -73,7 +73,7 @@ public class TabFindInCityTransport extends Tab {
 		transportTypeItem = new SelectItem();
 		transportTypeItem.setTitle(CallCenterBK.constants.transportType());
 		transportTypeItem.setWidth(250);
-		transportTypeItem.setName("transport_type_name_geo");
+		transportTypeItem.setName("name_descr");
 		transportTypeItem.setValueMap(ClientMapUtil.getInstance()
 				.getTranspTypeCustom());
 		transportTypeItem.setDefaultToFirstOption(true);
@@ -221,7 +221,7 @@ public class TabFindInCityTransport extends Tab {
 			String transport_type_id = transportTypeItem.getValueAsString();
 			if (transport_type_id != null
 					&& !transport_type_id.trim().equals("")) {
-				criteria.setAttribute("transport_type_id", transport_type_id);
+				criteria.setAttribute("transp_type_id", transport_type_id);
 			}
 			String transportno = routeNumItem.getValueAsString();
 			if (transportno != null && !transportno.trim().equals("")) {

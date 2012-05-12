@@ -54,7 +54,7 @@
 			</selectClause> 
 			<tableClause>transp_types t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0
+				($defaultWhereClause)
 			</whereClause>
 			<orderClause>t.transp_type_id</orderClause>			
     	</operationBinding>

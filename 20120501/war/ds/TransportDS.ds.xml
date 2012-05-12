@@ -6,7 +6,7 @@
 	dropExtraFields = "false">
 	<fields>
 		<field name="transport_id"				type="integer"		title="ID"						hidden="true"	primaryKey="true" />
-		<field name="transport_type_name_geo"	type="text"			title="Transport Type Name Geo"/>
+		<field name="name_descr"	type="text"			title="Transport Type Name Geo"/>
 		<field name="transport_place_geo_out"	type="text"			title="Transport Place Geo Out"/>
 		<field name="transport_place_geo_in"	type="text"			title="Transport Place Geo In"/>
 		<field name="transport_price_geo"		type="text"			title="Transport Price Geo"/>
@@ -31,7 +31,7 @@
 		<field name="transport_no"				type="text"			title="Transport No"			hidden="true"/>
 		<field name="transport_plane_id"		type="integer"		title="Transport Plane Id" 		hidden="true"/>		
 		<field name="transport_price_eng"		type="text"			title="Transport Price Eng" 	hidden="true"/>
-		<field name="transport_type_id"			type="integer"		title="Transport Type Id" 		hidden="true"/>						
+		<field name="transp_type_id"			type="integer"		title="Transport Type Id" 		hidden="true"/>						
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 		hidden="true" />
 		<field name="ocity_name_geo"			type="text"			title="ocity_name_geo" 			hidden="true" />
 		<field name="icity_name_geo"			type="text"			title="icity_name_geo" 			hidden="true" />
@@ -87,7 +87,7 @@
 				t.trip_criteria,
 				t.upd_date,
 				t.upd_user,
-				tt.transport_type_name_geo,
+				tt.name_descr,
 				oc.city_name_geo||' '||o.transport_place_geo as transport_place_geo_out,
 				ic.city_name_geo||' '||i.transport_place_geo as transport_place_geo_in,
 				tc.transport_company_geo,
@@ -161,7 +161,7 @@
 				t.trip_criteria,
 				t.upd_date,
 				t.upd_user,
-				tt.transport_type_name_geo,
+				tt.name_descr,
 				oc.city_name_geo||' '||o.transport_place_geo as transport_place_geo_out,
 				ic.city_name_geo||' '||i.transport_place_geo as transport_place_geo_in,
 				tc.transport_company_geo,
@@ -339,7 +339,7 @@
 				       t.transport_price_eng,
 				       t.transport_price_geo,
 				       t.trip_criteria,
-				       tt.transport_type_name_geo,
+				       tt.name_descr,
 				       oc.city_name_geo||' '||o.transport_place_geo as transport_place_geo_out,
 				       ic.city_name_geo||' '||i.transport_place_geo as transport_place_geo_in,
 				       tc.transport_company_geo,

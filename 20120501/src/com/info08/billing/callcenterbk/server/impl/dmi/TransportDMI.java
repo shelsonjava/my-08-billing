@@ -19,7 +19,7 @@ import com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirec
 import com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirectionStreet;
 import com.info08.billing.callcenterbk.shared.entity.transport.TranspType;
 import com.info08.billing.callcenterbk.shared.entity.transport.Transport;
-import com.info08.billing.callcenterbk.shared.entity.transport.TransportCompany;
+import com.info08.billing.callcenterbk.shared.entity.transport.TranspCompany;
 import com.info08.billing.callcenterbk.shared.entity.transport.TransportDetail;
 import com.info08.billing.callcenterbk.shared.entity.transport.TransportPlace;
 import com.isomorphic.datasource.DSRequest;
@@ -129,8 +129,8 @@ public class TransportDMI implements QueryConstants {
 			oracleManager.merge(transportType);
 			oracleManager.flush();
 
-			transportType = oracleManager.find(TranspType.class,
-					transp_type_id);
+			transportType = oracleManager
+					.find(TranspType.class, transp_type_id);
 
 			transportType.setLoggedUserName(loggedUserName);
 			switch (kind.intValue()) {
@@ -174,8 +174,7 @@ public class TransportDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public TranspType removeTransportType(Map record) throws Exception {
+	public TranspType removeTransportType(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -184,9 +183,10 @@ public class TransportDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			Long transp_type_id = new Long(record.get("transp_type_id")
-					.toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long transp_type_id = new Long(dsRequest.getOldValues()
+					.get("transp_type_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
 
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transp_type_id);
@@ -200,7 +200,7 @@ public class TransportDMI implements QueryConstants {
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return transportType;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -225,8 +225,8 @@ public class TransportDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public TransportCompany addTransportCompany(
-			TransportCompany transportCompany) throws Exception {
+	public TranspCompany addTransportCompany(TranspCompany transportCompany)
+			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -235,23 +235,20 @@ public class TransportDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 			String loggedUserName = transportCompany.getLoggedUserName();
-			transportCompany.setRec_date(recDate);
-			transportCompany.setRec_user(loggedUserName);
 
 			oracleManager.persist(transportCompany);
 			oracleManager.flush();
 
-			transportCompany = oracleManager.find(TransportCompany.class,
-					transportCompany.getTransport_company_id());
+			transportCompany = oracleManager.find(TranspCompany.class,
+					transportCompany.getTransp_comp_id());
 
 			transportCompany.setLoggedUserName(loggedUserName);
-			Long transpTypeId = transportCompany.getTransport_type_id();
+			Long transpTypeId = transportCompany.getTransp_comp_id();
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transpTypeId);
 			if (transportType != null) {
-				transportCompany.setTransport_type_name_geo(transportType
+				transportCompany.setTransport_type(transportType
 						.getName_descr());
 			}
 
@@ -283,7 +280,7 @@ public class TransportDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public TransportCompany updateTransportCompany(Map record) throws Exception {
+	public TranspCompany updateTransportCompany(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -293,34 +290,30 @@ public class TransportDMI implements QueryConstants {
 
 			Long transport_company_id = new Long(record.get(
 					"transport_company_id").toString());
-			Long transport_type_id = new Long(record.get("transport_type_id")
+			Long transport_type_id = new Long(record.get("transp_type_id")
 					.toString());
 			String transport_company_geo = record.get("transport_company_geo") == null ? null
 					: record.get("transport_company_geo").toString();
-			String transport_company_eng = record.get("transport_company_eng") == null ? null
-					: record.get("transport_company_eng").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			TransportCompany transportCompany = oracleManager.find(
-					TransportCompany.class, transport_company_id);
+			TranspCompany transportCompany = oracleManager.find(
+					TranspCompany.class, transport_company_id);
 
-			transportCompany.setTransport_type_id(transport_type_id);
-			transportCompany.setTransport_company_geo(transport_company_geo);
-			transportCompany.setTransport_company_eng(transport_company_eng);
-			transportCompany.setUpd_user(loggedUserName);
+			transportCompany.setTransp_type_id(transport_type_id);
+			transportCompany.setName_descr(transport_company_geo);
 
 			oracleManager.merge(transportCompany);
 			oracleManager.flush();
 
-			transportCompany = oracleManager.find(TransportCompany.class,
+			transportCompany = oracleManager.find(TranspCompany.class,
 					transport_company_id);
 
 			transportCompany.setLoggedUserName(loggedUserName);
-			Long transpTypeId = transportCompany.getTransport_type_id();
+			Long transpTypeId = transportCompany.getTransp_comp_id();
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transpTypeId);
 			if (transportType != null) {
-				transportCompany.setTransport_type_name_geo(transportType
+				transportCompany.setTransport_type(transportType
 						.getName_descr());
 			}
 
@@ -352,7 +345,7 @@ public class TransportDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public TransportCompany updateTransportCompanyStatus(Map record)
+	public TranspCompany updateTransportCompanyStatus(Map record)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -363,27 +356,23 @@ public class TransportDMI implements QueryConstants {
 
 			Long transport_company_id = new Long(record.get(
 					"transport_company_id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			TransportCompany transportCompany = oracleManager.find(
-					TransportCompany.class, transport_company_id);
-
-			transportCompany.setDeleted(deleted);
-			transportCompany.setUpd_user(loggedUserName);
+			TranspCompany transportCompany = oracleManager.find(
+					TranspCompany.class, transport_company_id);
 
 			oracleManager.merge(transportCompany);
 			oracleManager.flush();
 
-			transportCompany = oracleManager.find(TransportCompany.class,
+			transportCompany = oracleManager.find(TranspCompany.class,
 					transport_company_id);
 
 			transportCompany.setLoggedUserName(loggedUserName);
-			Long transpTypeId = transportCompany.getTransport_type_id();
+			Long transpTypeId = transportCompany.getTransp_comp_id();
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transpTypeId);
 			if (transportType != null) {
-				transportCompany.setTransport_type_name_geo(transportType
+				transportCompany.setTransport_type(transportType
 						.getName_descr());
 			}
 
@@ -456,8 +445,7 @@ public class TransportDMI implements QueryConstants {
 			transportPlace.setLoggedUserName(loggedUserName);
 
 			if (transportType != null) {
-				transportPlace.setTransport_type_name_geo(transportType
-						.getName_descr());
+				transportPlace.setname_descr(transportType.getName_descr());
 			}
 
 			if (city != null) {
@@ -502,7 +490,7 @@ public class TransportDMI implements QueryConstants {
 
 			Long transport_place_id = new Long(record.get("transport_place_id")
 					.toString());
-			Long transport_type_id = new Long(record.get("transport_type_id")
+			Long transport_type_id = new Long(record.get("transp_type_id")
 					.toString());
 			Long city_id = new Long(record.get("city_id").toString());
 
@@ -545,8 +533,7 @@ public class TransportDMI implements QueryConstants {
 			transportPlace.setLoggedUserName(loggedUserName);
 
 			if (transportType != null) {
-				transportPlace.setTransport_type_name_geo(transportType
-						.getName_descr());
+				transportPlace.setname_descr(transportType.getName_descr());
 			}
 
 			if (city != null) {
@@ -611,8 +598,7 @@ public class TransportDMI implements QueryConstants {
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transportPlace.getTransport_type_id());
 			if (transportType != null) {
-				transportPlace.setTransport_type_name_geo(transportType
-						.getName_descr());
+				transportPlace.setname_descr(transportType.getName_descr());
 			}
 			City city = oracleManager.find(City.class,
 					transportPlace.getCity_id());
@@ -659,7 +645,7 @@ public class TransportDMI implements QueryConstants {
 
 			// sysdate
 			String loggedUserName = busRoute.getLoggedUserName();
-			
+
 			RCNGenerator.getInstance().initRcn(oracleManager,
 					new Timestamp(System.currentTimeMillis()), loggedUserName,
 					"Add Public Transport Directions");
@@ -821,7 +807,6 @@ public class TransportDMI implements QueryConstants {
 
 			oracleManager.remove(busRoute);
 			oracleManager.flush();
-
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
@@ -1123,9 +1108,8 @@ public class TransportDMI implements QueryConstants {
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
-			Long transport_type_id = dsRequest
-					.getFieldValue("transport_type_id") == null ? null
-					: new Long(dsRequest.getFieldValue("transport_type_id")
+			Long transport_type_id = dsRequest.getFieldValue("transp_type_id") == null ? null
+					: new Long(dsRequest.getFieldValue("transp_type_id")
 							.toString());
 			Long out_transport_place_id = dsRequest
 					.getFieldValue("out_transport_place_id") == null ? null
@@ -1250,8 +1234,8 @@ public class TransportDMI implements QueryConstants {
 				Object array[] = (Object[]) resultList.get(0);
 				String days_descr = array[0] == null ? null : array[0]
 						.toString();
-				String transport_type_name_geo = array[1] == null ? null
-						: array[1].toString();
+				String name_descr = array[1] == null ? null : array[1]
+						.toString();
 				String transport_place_geo_out = array[2] == null ? null
 						: array[2].toString();
 				String transport_place_geo_in = array[3] == null ? null
@@ -1261,7 +1245,7 @@ public class TransportDMI implements QueryConstants {
 				String transport_plane_geo = array[5] == null ? null : array[5]
 						.toString();
 				transport.setDays_descr(days_descr);
-				transport.setTransport_type_name_geo(transport_type_name_geo);
+				transport.setname_descr(name_descr);
 				transport.setTransport_place_geo_out(transport_place_geo_out);
 				transport.setTransport_place_geo_in(transport_place_geo_in);
 				transport.setTransport_company_geo(transport_company_geo);
@@ -1307,8 +1291,8 @@ public class TransportDMI implements QueryConstants {
 			String loggedUserName = record.get("loggedUserName").toString();
 			Long transport_id = record.get("transport_id") == null ? null
 					: new Long(record.get("transport_id").toString());
-			Long transport_type_id = record.get("transport_type_id") == null ? null
-					: new Long(record.get("transport_type_id").toString());
+			Long transport_type_id = record.get("transp_type_id") == null ? null
+					: new Long(record.get("transp_type_id").toString());
 			Long out_transport_place_id = record.get("out_transport_place_id") == null ? null
 					: new Long(record.get("out_transport_place_id").toString());
 			Long in_transport_place_id = record.get("in_transport_place_id") == null ? null
@@ -1453,8 +1437,8 @@ public class TransportDMI implements QueryConstants {
 				Object array[] = (Object[]) resultList.get(0);
 				String days_descr = array[0] == null ? null : array[0]
 						.toString();
-				String transport_type_name_geo = array[1] == null ? null
-						: array[1].toString();
+				String name_descr = array[1] == null ? null : array[1]
+						.toString();
 				String transport_place_geo_out = array[2] == null ? null
 						: array[2].toString();
 				String transport_place_geo_in = array[3] == null ? null
@@ -1464,7 +1448,7 @@ public class TransportDMI implements QueryConstants {
 				String transport_plane_geo = array[5] == null ? null : array[5]
 						.toString();
 				transport.setDays_descr(days_descr);
-				transport.setTransport_type_name_geo(transport_type_name_geo);
+				transport.setname_descr(name_descr);
 				transport.setTransport_place_geo_out(transport_place_geo_out);
 				transport.setTransport_place_geo_in(transport_place_geo_in);
 				transport.setTransport_company_geo(transport_company_geo);
@@ -1532,8 +1516,8 @@ public class TransportDMI implements QueryConstants {
 				Object array[] = (Object[]) resultList.get(0);
 				String days_descr = array[0] == null ? null : array[0]
 						.toString();
-				String transport_type_name_geo = array[1] == null ? null
-						: array[1].toString();
+				String name_descr = array[1] == null ? null : array[1]
+						.toString();
 				String transport_place_geo_out = array[2] == null ? null
 						: array[2].toString();
 				String transport_place_geo_in = array[3] == null ? null
@@ -1543,7 +1527,7 @@ public class TransportDMI implements QueryConstants {
 				String transport_plane_geo = array[5] == null ? null : array[5]
 						.toString();
 				transport.setDays_descr(days_descr);
-				transport.setTransport_type_name_geo(transport_type_name_geo);
+				transport.setname_descr(name_descr);
 				transport.setTransport_place_geo_out(transport_place_geo_out);
 				transport.setTransport_place_geo_in(transport_place_geo_in);
 				transport.setTransport_company_geo(transport_company_geo);
