@@ -38,7 +38,7 @@
     <class>com.info08.billing.callcenterbk.shared.entity.transport.TransportCompany</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.TransportDetail</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.TransportPlace</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.transport.TransportType</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.transport.TranspType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.main.MainDetailType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.main.MainDetail</class>
     <class>com.info08.billing.callcenterbk.shared.entity.callcenter.CallCenterQueue</class>

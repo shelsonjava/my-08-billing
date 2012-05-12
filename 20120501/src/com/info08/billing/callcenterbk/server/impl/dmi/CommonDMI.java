@@ -31,7 +31,7 @@ import com.info08.billing.callcenterbk.shared.entity.StreetEnt;
 import com.info08.billing.callcenterbk.shared.entity.StreetType;
 import com.info08.billing.callcenterbk.shared.entity.StreetsOldEnt;
 import com.info08.billing.callcenterbk.shared.entity.transport.TransportPlace;
-import com.info08.billing.callcenterbk.shared.entity.transport.TransportType;
+import com.info08.billing.callcenterbk.shared.entity.transport.TranspType;
 import com.info08.billing.callcenterbk.shared.items.FirstName;
 import com.info08.billing.callcenterbk.shared.items.LastName;
 import com.info08.billing.callcenterbk.shared.items.PersonnelTypes;
@@ -729,17 +729,20 @@ public class CommonDMI implements QueryConstants {
 
 			StreetEnt streetEntForGen = oracleManager.find(StreetEnt.class,
 					street_id);
-			
-			if(bSaveStreetHistOrNotItem!=null && bSaveStreetHistOrNotItem.booleanValue()){
+
+			if (bSaveStreetHistOrNotItem != null
+					&& bSaveStreetHistOrNotItem.booleanValue()) {
 				StreetsOldEnt streetsOldEnt = new StreetsOldEnt();
 				streetsOldEnt.setCity_id(streetEntForGen.getCity_id());
 				streetsOldEnt.setDeleted(streetEntForGen.getDeleted());
 				streetsOldEnt.setRec_date(recDate);
 				streetsOldEnt.setRec_user(streetEntForGen.getRec_user());
 				streetsOldEnt.setStreet_id(streetEntForGen.getStreet_id());
-				streetsOldEnt.setStreet_old_name_eng(streetEntForGen.getStreet_location_eng());
-				streetsOldEnt.setStreet_old_name_geo(streetEntForGen.getStreet_name_geo());
-				oracleManager.persist(streetsOldEnt);				
+				streetsOldEnt.setStreet_old_name_eng(streetEntForGen
+						.getStreet_location_eng());
+				streetsOldEnt.setStreet_old_name_geo(streetEntForGen
+						.getStreet_name_geo());
+				oracleManager.persist(streetsOldEnt);
 			}
 
 			streetEntForGen.setDescr_id_level_1(descr_id_level_1);
@@ -769,9 +772,6 @@ public class CommonDMI implements QueryConstants {
 			streetEntForGen.setUpd_user(loggedUserName);
 			streetEntForGen.setRecord_type(1L);
 			oracleManager.merge(streetEntForGen);
-			
-			
-			
 
 			oracleManager
 					.createNativeQuery(Q_DELETE_STREET_DISCTRICTS_BY_STREET_ID)
@@ -1922,15 +1922,14 @@ public class CommonDMI implements QueryConstants {
 						for (TransportPlace transportPlace : trPlaces) {
 							Long transpTypeId = transportPlace
 									.getTransport_type_id();
-							TransportType transportType = oracleManager.find(
-									TransportType.class, transpTypeId);
+							TranspType transportType = oracleManager.find(
+									TranspType.class, transpTypeId);
 							String newDescr = newCityName
 									+ " "
 									+ transportPlace.getTransport_place_geo()
 									+ " ( "
 									+ (transportType == null ? "NULL"
-											: transportType
-													.getTransport_type_name_geo())
+											: transportType.getName_descr())
 									+ " ) ";
 							transportPlace
 									.setTransport_place_geo_descr(newDescr);
@@ -2050,7 +2049,8 @@ public class CommonDMI implements QueryConstants {
 					.toString();
 			Timestamp rec_date = new Timestamp(System.currentTimeMillis());
 
-			Long continent_id = new Long(dsRequest.getFieldValue("continent_id").toString());
+			Long continent_id = new Long(dsRequest
+					.getFieldValue("continent_id").toString());
 			if (continents.isEmpty()) {
 				fetchContinents(dsRequest);
 			}
@@ -2068,7 +2068,8 @@ public class CommonDMI implements QueryConstants {
 			country.setRec_date(rec_date);
 			country.setRec_user(loggedUserName);
 			country.setSeason_id(0L);
-			country.setContinent(continent != null ? continent.getName_descr() : null);
+			country.setContinent(continent != null ? continent.getName_descr()
+					: null);
 
 			oracleManager.persist(country);
 
@@ -2117,9 +2118,8 @@ public class CommonDMI implements QueryConstants {
 					.setParameter(5, curr_date)
 					.setParameter(
 							6,
-							new Long(fieldValues.get("continent_id")
-									.toString())).setParameter(7, country_id)
-					.executeUpdate();
+							new Long(fieldValues.get("continent_id").toString()))
+					.setParameter(7, country_id).executeUpdate();
 			oracleManager.flush();
 			Country country = oracleManager.find(Country.class, country_id);
 			Long continent_id = country.getContinent_id();
@@ -2474,8 +2474,7 @@ public class CommonDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Fetching Continents From Database : ",
-					e);
+			logger.error("Error While Fetching Continents From Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების წამოღებისას : "
 					+ e.toString());
 		} finally {
@@ -3232,12 +3231,6 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	
-	
-	
-	
-	
-	
 	private LastName getLastName(Integer lastNameId, String loggedUserName,
 			Connection connection) throws CallCenterException {
 		PreparedStatement selectNote = null;
@@ -3279,22 +3272,7 @@ public class CommonDMI implements QueryConstants {
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * Update LastName Status
 	 * 
@@ -3307,12 +3285,12 @@ public class CommonDMI implements QueryConstants {
 		Connection connection = null;
 		PreparedStatement updateStatement = null;
 		try {
-			
+
 			Object session_my_id = record.get("session_my_id");
-			System.out.println("session_my_id = "+session_my_id);
-			
+			System.out.println("session_my_id = " + session_my_id);
+
 			String session_my_idI = session_my_id.toString();
-			
+
 			DataSource ds = DataSourceManager.get("LogSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
@@ -3320,10 +3298,10 @@ public class CommonDMI implements QueryConstants {
 			connection.setAutoCommit(false);
 
 			updateStatement = connection.prepareStatement(Q_UPDATE_LOCK_STATUS);
-			updateStatement.setString(1, session_my_idI);			
+			updateStatement.setString(1, session_my_idI);
 			updateStatement.executeUpdate();
 			connection.commit();
-			
+
 			return "OK";
 		} catch (Exception e) {
 			try {
@@ -3358,5 +3336,5 @@ public class CommonDMI implements QueryConstants {
 			}
 		}
 	}
-	
+
 }
