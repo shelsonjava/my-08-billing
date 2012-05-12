@@ -1,5 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
+import java.util.Map;
+
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
@@ -131,9 +133,10 @@ public class DlgViewInCityTransport extends Window {
 		dataSourceInner = DataSource.get("PubTranspDirStreetDS");
 
 		Criteria criteria = new Criteria();
-		criteria.setAttribute("id",
-				listGridRecord.getAttributeAsInt("id"));
-		
+		Map mp=listGridRecord.toMap();
+		criteria.setAttribute("dir_id",
+				listGridRecord.getAttributeAsInt("pt_id"));
+		mp=criteria.getValues();
 
 		listGridInner = new ListGrid() {
 			protected String getCellCSSText(ListGridRecord record, int rowNum,
@@ -361,7 +364,7 @@ public class DlgViewInCityTransport extends Window {
 				StringBuilder cust_sms_text = new StringBuilder();
 				for (int i = 0; i < length; i++) {
 					Record record = recordList.get(i);
-					Integer route_dir = record.getAttributeAsInt("route_dir");
+					Integer route_dir = record.getAttributeAsInt("dir");
 					if (route_dir == null) {
 						continue;
 					}
