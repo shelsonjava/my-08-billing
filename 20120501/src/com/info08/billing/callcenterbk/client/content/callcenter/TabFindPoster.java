@@ -5,7 +5,6 @@ import java.util.Date;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewPoster;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -285,13 +284,7 @@ public class TabFindPoster extends Tab {
 			if (record == null) {
 				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
-			}
-			Integer service_id = record.getAttributeAsInt("service_id");
-			if (service_id == null
-					|| !service_id.equals(Constants.serviceOrganization)) {
-				SC.say(CallCenterBK.constants.selRecordIsNotOrg());
-				return;
-			}
+			}			
 
 			Integer main_id = record.getAttributeAsInt("main_id");
 			if (main_id == null) {
