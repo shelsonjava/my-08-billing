@@ -38,8 +38,6 @@ public class MiscStackSelection extends SectionStackSection {
 					true, "currency.png"),
 			new MenuNode("104", "1", CallCenterBK.constants.menuCalendar(),
 					true, "calendar.png"),
-			new MenuNode("105", "1", CallCenterBK.constants.menuOrthCalendar(),
-					true, "calendar.png"),
 			new MenuNode("106", "1", CallCenterBK.constants.menuWebSiteGroup(),
 					true, "web.png"),
 			new MenuNode("107", "1", CallCenterBK.constants.menuWebSites(),
