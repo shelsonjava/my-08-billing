@@ -39,7 +39,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabEntPoster extends Tab {
+public class TabEvent extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
@@ -70,7 +70,7 @@ public class TabEntPoster extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabEntPoster() {
+	public TabEvent() {
 		try {
 			setTitle("აფიშა-ღონისძიებების მართვა");
 			setCanClose(true);

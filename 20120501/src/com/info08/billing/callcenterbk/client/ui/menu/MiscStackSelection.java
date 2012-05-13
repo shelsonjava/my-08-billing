@@ -2,9 +2,9 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.currency.TabCurrency;
-import com.info08.billing.callcenterbk.client.content.ent.TabEntPlace;
-import com.info08.billing.callcenterbk.client.content.ent.TabEntPoster;
-import com.info08.billing.callcenterbk.client.content.ent.TabEntType;
+import com.info08.billing.callcenterbk.client.content.ent.TabEventOwner;
+import com.info08.billing.callcenterbk.client.content.ent.TabEvent;
+import com.info08.billing.callcenterbk.client.content.ent.TabEventCategory;
 import com.info08.billing.callcenterbk.client.content.misc.TabCalendar;
 import com.info08.billing.callcenterbk.client.content.misc.TabChurchCalendar;
 import com.info08.billing.callcenterbk.client.content.misc.TabNonStandartGroup;
@@ -29,17 +29,26 @@ public class MiscStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", CallCenterBK.constants.menuEntType(), true,"entertainment.png"),
-			new MenuNode("101", "1", CallCenterBK.constants.menuEntPlace(), true,"entertainment.png"),
-			new MenuNode("102", "1", CallCenterBK.constants.menuEntPoster(),true,"entertainment.png"),
-			new MenuNode("103", "1", CallCenterBK.constants.menuCurrency(), true,"currency.png"),
-			new MenuNode("104", "1", CallCenterBK.constants.menuCalendar(), true,"calendar.png"),
-			new MenuNode("105", "1", CallCenterBK.constants.menuOrthCalendar(),true, "calendar.png"),
-			new MenuNode("106", "1", CallCenterBK.constants.menuWebSiteGroup(),true, "web.png"),
-			new MenuNode("107", "1", CallCenterBK.constants.menuWebSites(), true,"web.png"),
-			new MenuNode("108", "1", CallCenterBK.constants.menuMiscCateg(),true, "palette.png"),
-			new MenuNode("109", "1", CallCenterBK.constants.menuMisc(), true,"palette.png")
-	};
+			new MenuNode("100", "1", CallCenterBK.constants.menuEntType(),
+					true, "entertainment.png"),
+			new MenuNode("101", "1", CallCenterBK.constants.menuEntPlace(),
+					true, "entertainment.png"),
+			new MenuNode("102", "1", CallCenterBK.constants.menuEntPoster(),
+					true, "entertainment.png"),
+			new MenuNode("103", "1", CallCenterBK.constants.menuCurrency(),
+					true, "currency.png"),
+			new MenuNode("104", "1", CallCenterBK.constants.menuCalendar(),
+					true, "calendar.png"),
+			new MenuNode("105", "1", CallCenterBK.constants.menuOrthCalendar(),
+					true, "calendar.png"),
+			new MenuNode("106", "1", CallCenterBK.constants.menuWebSiteGroup(),
+					true, "web.png"),
+			new MenuNode("107", "1", CallCenterBK.constants.menuWebSites(),
+					true, "web.png"),
+			new MenuNode("108", "1", CallCenterBK.constants.menuMiscCateg(),
+					true, "palette.png"),
+			new MenuNode("109", "1", CallCenterBK.constants.menuMisc(), true,
+					"palette.png") };
 
 	private TreeGrid menuTreeGrid;
 
@@ -125,9 +134,9 @@ public class MiscStackSelection extends SectionStackSection {
 					.hasPermission("306000");
 			menuData[6].setAttribute("enabled", hasWebSitePerm);
 			menuData[7].setAttribute("enabled", hasWebSitePerm);
-			
-			boolean hasMiscPerm = CommonSingleton.getInstance()
-					.hasPermission("307000");
+
+			boolean hasMiscPerm = CommonSingleton.getInstance().hasPermission(
+					"307000");
 			menuData[8].setAttribute("enabled", hasMiscPerm);
 			menuData[9].setAttribute("enabled", hasMiscPerm);
 
@@ -142,14 +151,14 @@ public class MiscStackSelection extends SectionStackSection {
 			return;
 		}
 		if (menuId.equals("100")) {
-			TabEntType tabEntType = new TabEntType();
-			body.addTab(tabEntType);
+			TabEventCategory tabEventCategory = new TabEventCategory();
+			body.addTab(tabEventCategory);
 		} else if (menuId.equals("101")) {
-			TabEntPlace tabEntPlace = new TabEntPlace();
-			body.addTab(tabEntPlace);
+			TabEventOwner tabEventOwner = new TabEventOwner();
+			body.addTab(tabEventOwner);
 		} else if (menuId.equals("102")) {
-			TabEntPoster tabEntPoster = new TabEntPoster();
-			body.addTab(tabEntPoster);
+			TabEvent tabEvent = new TabEvent();
+			body.addTab(tabEvent);
 		} else if (menuId.equals("103")) {
 			TabCurrency tabRateCurrency = new TabCurrency();
 			body.addTab(tabRateCurrency);
@@ -165,10 +174,10 @@ public class MiscStackSelection extends SectionStackSection {
 		} else if (menuId.equals("107")) {
 			TabWebSite tabWebSite = new TabWebSite();
 			body.addTab(tabWebSite);
-		}else if (menuId.equals("108")) {
+		} else if (menuId.equals("108")) {
 			TabNonStandartGroup tabNonStandartGroup = new TabNonStandartGroup();
 			body.addTab(tabNonStandartGroup);
-		}else if (menuId.equals("109")) {
+		} else if (menuId.equals("109")) {
 			TabNonStandartInfo tabNonStandartInfo = new TabNonStandartInfo();
 			body.addTab(tabNonStandartInfo);
 		}

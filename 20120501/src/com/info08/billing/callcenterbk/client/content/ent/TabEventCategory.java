@@ -31,7 +31,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabEntType extends Tab {
+public class TabEventCategory extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
@@ -53,7 +53,7 @@ public class TabEntType extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabEntType() {
+	public TabEventCategory() {
 		try {
 			setTitle("აფიშა-კატეგორიების მართვა");
 			setCanClose(true);

@@ -34,7 +34,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabEntPlace extends Tab {
+public class TabEventOwner extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
@@ -57,7 +57,7 @@ public class TabEntPlace extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabEntPlace() {
+	public TabEventOwner() {
 		try {
 			setTitle("აფიშა-რესურსები მართვა");
 			setCanClose(true);
