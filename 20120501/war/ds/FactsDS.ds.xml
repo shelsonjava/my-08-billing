@@ -1,0 +1,94 @@
+<DataSource
+	ID="FactsDS"
+	serverType="sql"
+	tableName="ccare.facts"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="fact_id"				type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="fact_type_name"						type="text"			title="fact_type_name"/>
+		<field name="fact_status_name"						type="text"			title="fact_status_name"/>
+		<field name="calendar_comment"			type="text"			title="calendar_comment"/>
+		<field name="calendar_day"				type="datetime"		title="calendar_day"/>
+		<field name="calendar_description"		type="text"			title="calendar_description"/>
+		<field name="sun_rise"					type="text"			title="sun_rise"/>
+		<field name="calendar_event_id"			type="integer"		title="calendar_event_id"			hidden="true"/>
+		<field name="calendar_state_id"			type="integer"		title="calendar_state_id"			hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true"/>	
+		<field name="fcalendar_day"				type="text"			title="fcalendar_day"/>	
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+
+		<!-- Add SecularCalendar -->
+		<operationBinding operationType="add" operationId="addSecularCalendar" serverMethod="addSecularCalendar">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+		<!-- SecularCalendar Update -->
+		<operationBinding operationType="update" operationId="updateSecularCalendar" serverMethod="updateSecularCalendar">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+        <!-- SecularCalendar Status Update -->
+		<operationBinding operationType="update" operationId="updateSecularCalendarStatus" serverMethod="updateSecularCalendarStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllSecularCalendars" operationType="fetch">
+    		<selectClause>   			
+    			t.fact_id,
+				t.calendar_comment,
+				t.calendar_day,
+				t.calendar_description,
+				t.calendar_event_id,
+				t.calendar_state_id,
+				t.rec_date,
+				t.rec_user,
+				t.sun_rise,
+				t.upd_date,
+				t.upd_user,
+				t.deleted,
+				ce.fact_type_name,
+				cs.fact_status_name,
+				to_char(t.calendar_day,'DD/MM/YYYY') as fcalendar_day
+			</selectClause> 
+			<tableClause>secular_calendar t, secular_calendar_events ce, calendar_state cs</tableClause>
+			<whereClause><![CDATA[
+				t.calendar_event_id = ce.event_id(+) and t.calendar_state_id = cs.state_id(+)
+				#if($criteria.calendar_state_id) AND t.calendar_state_id = $criteria.calendar_state_id #end
+				#if($criteria.calendar_event_id) AND t.calendar_event_id = $criteria.calendar_event_id #end
+				
+				
+				
+				#if($criteria.calendar_day && $criteria.byMonth && $criteria.byMonth == 1) 
+					 AND to_char(trunc(t.calendar_day),'YYYYMM') = to_char(trunc($criteria.calendar_day),'YYYYMM')
+				#elseif($criteria.calendar_day)
+					 AND trunc(t.calendar_day) = trunc($criteria.calendar_day)
+				#end
+				
+				
+				#if($criteria.calendar_description) AND t.calendar_description like '%'||($criteria.calendar_description)||'%' #end						
+				#if($criteria.calendar_comment) AND t.calendar_comment like '%'||($criteria.calendar_comment)||'%' #end
+				
+				#if($criteria.calDescOrComm)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm ||'%' #end
+				#if($criteria.calDescOrComm1)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm1 ||'%' #end
+				#if($criteria.calDescOrComm2)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm2 ||'%' #end
+				#if($criteria.calDescOrComm3)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm3 ||'%' #end
+				#if($criteria.calDescOrComm4)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm4 ||'%' #end
+				#if($criteria.calDescOrComm5)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm5 ||'%' #end
+				#if($criteria.calDescOrComm6)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm6 ||'%' #end
+				#if($criteria.calDescOrComm7)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm7 ||'%' #end
+				#if($criteria.calDescOrComm8)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm8 ||'%' #end
+				#if($criteria.calDescOrComm9)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm9 ||'%' #end
+				#if($criteria.calDescOrComm10)  AND t.calendar_description || ' '|| t.calendar_comment like '%'||$criteria.calDescOrComm10 ||'%' #end
+				
+				
+				]]>  
+			</whereClause> 
+			<orderClause>t.fact_id</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>
