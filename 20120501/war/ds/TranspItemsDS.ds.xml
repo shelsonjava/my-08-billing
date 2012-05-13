@@ -1,7 +1,7 @@
 <DataSource
-	ID="TransportDetailsDS"
+	ID="TranspItemsDS"
 	serverType="sql"
-	tableName="ccare.transport_details"
+	tableName="ccare.transp_items"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

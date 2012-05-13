@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -21,15 +19,9 @@ import javax.persistence.Transient;
  * 
  */
 
-@NamedQueries({
-	@NamedQuery(
-				name="TransportDetail.getByTransportId",
-				query="select e from TransportDetail e where e.transport_id = :transport_id")
-})
-
 @Entity
-@Table(name="TRANSPORT_DETAILS",schema="ccare")
-public class TransportDetail implements Serializable {
+@Table(name="TRANSP_ITEMS")
+public class TranspItems implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -95,7 +87,7 @@ public class TransportDetail implements Serializable {
 	@Transient
     private String transport_place_geo_out;
 
-    public TransportDetail() {
+    public TranspItems() {
     }
 
 	public Long getTransport_detail_id() {

@@ -6,7 +6,7 @@
 	dropExtraFields = "false">
 	<fields>
 		<field name="transport_id"				type="integer"		title="transport_id"			hidden="true"	primaryKey="true" />
-		<field name="name_descr"	type="text"			title="name_descr"/>
+		<field name="name_descr"				type="text"			title="name_descr"/>
 		<field name="transport_place_geo_out"	type="text"			title="transport_place_geo_out"/>
 		<field name="transport_place_geo_in"	type="text"			title="transport_place_geo_in"/>
 		<field name="transport_price_geo"		type="text"			title="transport_price_geo"/>

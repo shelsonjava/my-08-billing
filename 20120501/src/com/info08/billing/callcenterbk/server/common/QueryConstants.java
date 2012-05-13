@@ -1405,5 +1405,5 @@ public interface QueryConstants {
 			"   and ms.service_id = 3\n" + 
 			"   and ms.main_id = ?\n" + 
 			" order by ms.priority";
-	
+	public static final String Q_DELETE_TRANSPORT_ITEMS = "delete from transp_items t where t.transp_schedule_id = ? ";
 }
