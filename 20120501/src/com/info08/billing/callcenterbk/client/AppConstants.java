@@ -661,6 +661,7 @@ public interface AppConstants extends Constants {
 	String phoneLengthMustBe9();
 	String factType();
 	String factDescriptor();
+	String factStatus();
 }
 
 
