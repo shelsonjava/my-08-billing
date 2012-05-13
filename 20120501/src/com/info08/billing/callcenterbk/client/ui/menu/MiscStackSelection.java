@@ -125,17 +125,16 @@ public class MiscStackSelection extends SectionStackSection {
 			boolean hasCalendar = CommonSingleton.getInstance().hasPermission(
 					"305000");
 			menuData[4].setAttribute("enabled", hasCalendar);
-			menuData[5].setAttribute("enabled", hasCalendar);
 
 			boolean hasWebSitePerm = CommonSingleton.getInstance()
 					.hasPermission("306000");
+			menuData[5].setAttribute("enabled", hasWebSitePerm);
 			menuData[6].setAttribute("enabled", hasWebSitePerm);
-			menuData[7].setAttribute("enabled", hasWebSitePerm);
 
 			boolean hasMiscPerm = CommonSingleton.getInstance().hasPermission(
 					"307000");
+			menuData[7].setAttribute("enabled", hasMiscPerm);
 			menuData[8].setAttribute("enabled", hasMiscPerm);
-			menuData[9].setAttribute("enabled", hasMiscPerm);
 
 		} catch (Exception e) {
 			e.printStackTrace();
