@@ -659,6 +659,8 @@ public interface AppConstants extends Constants {
 	String invalidCallPrice();
 	String virtualCharge();
 	String phoneLengthMustBe9();
+	String factType();
+	String factDescriptor();
 }
 
 
