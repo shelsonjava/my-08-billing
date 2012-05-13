@@ -5,7 +5,8 @@
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="fact_type_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
-		<field name="fact_type_name"	type="text" 	title="City Type Geo"/>			
+		<field name="fact_type_id"				type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="fact_type_name"			type="text" 	title="City Type Geo"/>	
+		<field name="facts_descriptor_id"		type="integer" 	title="City Type Geo"/>		
 	</fields>
 </DataSource>

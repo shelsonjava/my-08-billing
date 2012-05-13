@@ -15,7 +15,8 @@
 		<field name="fact_type_id"				type="integer"		title="fact_type_id"			hidden="true"/>
 		<field name="fact_status_id"			type="integer"		title="fact_status_id"			hidden="true"/>
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true"/>	
-		<field name="ffact_date"				type="text"			title="ffact_date"/>	
+		<field name="ffact_date"				type="text"			title="ffact_date" hidden="true"/>
+		<field name="facts_descriptor_id"		type="integer" 	title="City Type Geo" hidden="true"/>		
 	</fields>
 
 	<operationBindings>		
@@ -23,17 +24,17 @@
 		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
 
 		<!-- Add SecularCalendar -->
-		<operationBinding operationType="add" operationId="addSecularCalendar" serverMethod="addSecularCalendar">
+		<operationBinding operationType="add" operationId="addFact" serverMethod="addFact">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
 		<!-- SecularCalendar Update -->
-		<operationBinding operationType="update" operationId="updateSecularCalendar" serverMethod="updateSecularCalendar">
+		<operationBinding operationType="update" operationId="updateFact" serverMethod="updateFact">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
         
         <!-- SecularCalendar Status Update -->
-		<operationBinding operationType="update" operationId="updateSecularCalendarStatus" serverMethod="updateSecularCalendarStatus">
+		<operationBinding operationType="remove" operationId="removeFacts" serverMethod="removeFacts">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
 	
@@ -48,7 +49,8 @@
 				t.sunup,
 				ce.fact_type_name,
 				cs.fact_status_name,
-				to_char(t.fact_date,'DD/MM/YYYY') as ffact_date
+				to_char(t.fact_date,'DD/MM/YYYY') as ffact_date,
+				ce.facts_descriptor_id
 			</selectClause> 
 			<tableClause>facts t, facts_type ce, FACTS_STATUSES cs</tableClause>
 			<whereClause><![CDATA[
