@@ -2,9 +2,9 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.currency.TabCurrency;
-import com.info08.billing.callcenterbk.client.content.ent.TabEventOwner;
-import com.info08.billing.callcenterbk.client.content.ent.TabEvent;
-import com.info08.billing.callcenterbk.client.content.ent.TabEventCategory;
+import com.info08.billing.callcenterbk.client.content.event.TabEvent;
+import com.info08.billing.callcenterbk.client.content.event.TabEventCategory;
+import com.info08.billing.callcenterbk.client.content.event.TabEventOwner;
 import com.info08.billing.callcenterbk.client.content.misc.TabFacts;
 import com.info08.billing.callcenterbk.client.content.misc.TabNonStandartGroup;
 import com.info08.billing.callcenterbk.client.content.misc.TabNonStandartInfo;
