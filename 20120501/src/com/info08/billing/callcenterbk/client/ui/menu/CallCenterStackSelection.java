@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindAbonent;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindByNumber;
-import com.info08.billing.callcenterbk.client.content.callcenter.TabFindCalendar;
+import com.info08.billing.callcenterbk.client.content.callcenter.TabFindFacts;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindCurrencyRates;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindDistBetwCity;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindGeoInd;
@@ -289,7 +289,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 		iButtonCalendar.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				TabFindCalendar findCalendar = new TabFindCalendar();
+				TabFindFacts findCalendar = new TabFindFacts();
 				body.addTab(findCalendar);
 			}
 		});
