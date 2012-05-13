@@ -374,11 +374,10 @@ public class TabCurrency extends Tab {
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeCurrency");
-			listGrid.updateData(record, new DSCallback() {
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
-					listGrid.removeData(record);
 				}
 			}, req);
 			com.smartgwt.client.rpc.RPCManager.sendQueue();
