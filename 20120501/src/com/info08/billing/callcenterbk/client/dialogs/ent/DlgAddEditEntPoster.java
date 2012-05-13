@@ -50,17 +50,17 @@ public class DlgAddEditEntPoster extends Window {
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	private Integer ent_place_id;
-	private Integer ent_type_id;
+	private Integer event_owner_id;
+	private Integer event_category_id;
 
 	public DlgAddEditEntPoster(ListGrid listGrid, ListGridRecord pRecord,
-			Integer ent_place_id, Integer ent_type_id) {
+			Integer event_owner_id, Integer event_category_id) {
 		try {
 
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			this.ent_place_id = ent_place_id;
-			this.ent_type_id = ent_type_id;
+			this.event_owner_id = event_owner_id;
+			this.event_category_id = event_category_id;
 
 			setTitle(pRecord == null ? CallCenterBK.constants.addEntPoster()
 					: CallCenterBK.constants.modifyEntPoster());
@@ -91,7 +91,7 @@ public class DlgAddEditEntPoster extends Window {
 			entTypeItem = new ComboBoxItem();
 			entTypeItem.setTitle(CallCenterBK.constants.entType());
 			entTypeItem.setWidth(250);
-			entTypeItem.setName("ent_type_geo");
+			entTypeItem.setName("event_category_name");
 			entTypeItem.setFetchMissingValues(true);
 			entTypeItem.setFilterLocally(false);
 			entTypeItem.setAddUnknownValues(false);
@@ -99,8 +99,8 @@ public class DlgAddEditEntPoster extends Window {
 			DataSource entTypeDS = DataSource.get("EntTypeDS");
 			entTypeItem.setOptionOperationId("searchAllEventCategoryForCB");
 			entTypeItem.setOptionDataSource(entTypeDS);
-			entTypeItem.setValueField("ent_type_id");
-			entTypeItem.setDisplayField("ent_type_geo");
+			entTypeItem.setValueField("event_category_id");
+			entTypeItem.setDisplayField("event_category_name");
 
 			entTypeItem.setOptionCriteria(new Criteria());
 			entTypeItem.setAutoFetchData(false);
@@ -110,20 +110,20 @@ public class DlgAddEditEntPoster extends Window {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = entTypeItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("ent_type_id");
+						String oldAttr = criteria.getAttribute("event_category_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("ent_type_id", nullO);
+							criteria.setAttribute("event_category_id", nullO);
 						}
 					}
 				}
 			});
-			entTypeItem.setValue(this.ent_type_id);
+			entTypeItem.setValue(this.event_category_id);
 
 			entPlacesItem = new ComboBoxItem();
 			entPlacesItem.setTitle(CallCenterBK.constants.entPlace());
 			entPlacesItem.setWidth(250);
-			entPlacesItem.setName("ent_place_id");
+			entPlacesItem.setName("event_owner_id");
 			entPlacesItem.setFetchMissingValues(true);
 			entPlacesItem.setFilterLocally(false);
 			entPlacesItem.setAddUnknownValues(false);
@@ -131,7 +131,7 @@ public class DlgAddEditEntPoster extends Window {
 			DataSource entPlaceDS = DataSource.get("EntPlaceDS");
 			entPlacesItem.setOptionOperationId("searchAllEntPlacesForCB");
 			entPlacesItem.setOptionDataSource(entPlaceDS);
-			entPlacesItem.setValueField("ent_place_id");
+			entPlacesItem.setValueField("event_owner_id");
 			entPlacesItem.setDisplayField("ent_place_geo");
 
 			entPlacesItem.setOptionCriteria(new Criteria());
@@ -142,15 +142,15 @@ public class DlgAddEditEntPoster extends Window {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = entPlacesItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("ent_place_id");
+						String oldAttr = criteria.getAttribute("event_owner_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("ent_place_id", nullO);
+							criteria.setAttribute("event_owner_id", nullO);
 						}
 					}
 				}
 			});
-			entPlacesItem.setValue(this.ent_place_id);
+			entPlacesItem.setValue(this.event_owner_id);
 
 			entPosterGeoItem = new TextAreaItem();
 			entPosterGeoItem.setTitle(CallCenterBK.constants.entPosterName());
@@ -280,13 +280,13 @@ public class DlgAddEditEntPoster extends Window {
 
 	private void save() {
 		try {
-			String ent_type_id_str = entTypeItem.getValueAsString();
-			if (ent_type_id_str == null || ent_type_id_str.trim().equals("")) {
+			String event_category_id_str = entTypeItem.getValueAsString();
+			if (event_category_id_str == null || event_category_id_str.trim().equals("")) {
 				SC.say(CallCenterBK.constants.chooseEntType());
 				return;
 			}
-			String ent_place_id_str = entPlacesItem.getValueAsString();
-			if (ent_place_id_str == null || ent_place_id_str.trim().equals("")) {
+			String event_owner_id_str = entPlacesItem.getValueAsString();
+			if (event_owner_id_str == null || event_owner_id_str.trim().equals("")) {
 				SC.say(CallCenterBK.constants.chooseEntPlace());
 				return;
 			}
@@ -319,8 +319,8 @@ public class DlgAddEditEntPoster extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("ent_type_id", new Integer(ent_type_id_str));
-			record.setAttribute("ent_place_id", new Integer(ent_place_id_str));
+			record.setAttribute("event_category_id", new Integer(event_category_id_str));
+			record.setAttribute("event_owner_id", new Integer(event_owner_id_str));
 			record.setAttribute("ent_poster_geo", ent_poster_geo);
 			record.setAttribute("comment_geo", comment_geo);
 			record.setAttribute("poster_price_geo", poster_price_geo);

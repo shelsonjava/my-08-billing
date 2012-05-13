@@ -70,7 +70,7 @@ public class DlgAddEditEndPlace extends Window {
 		entTypeItem = new ComboBoxItem();
 		entTypeItem.setTitle("აფიშა-კატეგორია");
 		entTypeItem.setWidth(400);
-		entTypeItem.setName("ent_type_id");
+		entTypeItem.setName("event_category_id");
 		entTypeItem.setFetchMissingValues(true);
 		entTypeItem.setFilterLocally(false);
 		entTypeItem.setAddUnknownValues(false);
@@ -78,8 +78,8 @@ public class DlgAddEditEndPlace extends Window {
 		DataSource entTypeDS = DataSource.get("EntTypeDS");
 		entTypeItem.setOptionOperationId("searchAllEventCategoryForCB");
 		entTypeItem.setOptionDataSource(entTypeDS);
-		entTypeItem.setValueField("ent_type_id");
-		entTypeItem.setDisplayField("ent_type_geo");
+		entTypeItem.setValueField("event_category_id");
+		entTypeItem.setDisplayField("event_category_name");
 
 		Criteria criteria = new Criteria();
 
@@ -91,10 +91,10 @@ public class DlgAddEditEndPlace extends Window {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = entTypeItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("ent_type_id");
+					String oldAttr = criteria.getAttribute("event_category_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("ent_type_id", nullO);
+						criteria.setAttribute("event_category_id", nullO);
 					}
 				}
 			}
@@ -117,7 +117,7 @@ public class DlgAddEditEndPlace extends Window {
 		mainOrgsItem = new ComboBoxItem();
 		mainOrgsItem.setTitle("ორგანიზაცია");
 		mainOrgsItem.setWidth(400);
-		mainOrgsItem.setName("ent_type_geo");
+		mainOrgsItem.setName("event_category_name");
 		mainOrgsItem.setFetchMissingValues(true);
 		mainOrgsItem.setFilterLocally(false);
 		mainOrgsItem.setAddUnknownValues(false);
@@ -186,9 +186,9 @@ public class DlgAddEditEndPlace extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			Integer ent_type_id = editRecord.getAttributeAsInt("ent_type_id");
-			if (ent_type_id != null) {
-				entTypeItem.setValue(ent_type_id);
+			Integer event_category_id = editRecord.getAttributeAsInt("event_category_id");
+			if (event_category_id != null) {
+				entTypeItem.setValue(event_category_id);
 			}
 			String ent_place_geo = editRecord
 					.getAttributeAsString("ent_place_geo");
@@ -210,12 +210,12 @@ public class DlgAddEditEndPlace extends Window {
 
 	private void save() {
 		try {
-			String ent_type_id_str = entTypeItem.getValueAsString();
-			if (ent_type_id_str == null || ent_type_id_str.trim().equals("")) {
+			String event_category_id_str = entTypeItem.getValueAsString();
+			if (event_category_id_str == null || event_category_id_str.trim().equals("")) {
 				SC.say("გთხოვთ აირჩიოთ კატეგორია");
 				return;
 			}
-			Integer ent_type_id = new Integer(ent_type_id_str);
+			Integer event_category_id = new Integer(event_category_id_str);
 			String ent_place_geo = entPlaceGeo.getValueAsString();
 			String reservation_str = reservationItem.getValueAsString();
 			if (reservation_str == null || reservation_str.trim().equals("")) {
@@ -235,7 +235,7 @@ public class DlgAddEditEndPlace extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("ent_type_id", ent_type_id);
+			record.setAttribute("event_category_id", event_category_id);
 			record.setAttribute("ent_place_geo", ent_place_geo);
 			record.setAttribute("reservation", reservation);
 			record.setAttribute("main_id", main_id);
@@ -243,8 +243,8 @@ public class DlgAddEditEndPlace extends Window {
 			record.setAttribute("rec_user", loggedUser);
 
 			if (editRecord != null) {
-				record.setAttribute("ent_place_id",
-						editRecord.getAttributeAsInt("ent_place_id"));
+				record.setAttribute("event_owner_id",
+						editRecord.getAttributeAsInt("event_owner_id"));
 			}
 
 			DSRequest req = new DSRequest();
@@ -259,7 +259,7 @@ public class DlgAddEditEndPlace extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateEntPlace");
+				req.setAttribute("operationId", "updateEventOwner");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

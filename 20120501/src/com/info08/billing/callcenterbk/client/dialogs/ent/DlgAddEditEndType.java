@@ -60,7 +60,7 @@ public class DlgAddEditEndType extends Window {
 		entTypeGeoItem = new TextItem();
 		entTypeGeoItem.setTitle("კატეგორიის დასახელება(ქართ.)");
 		entTypeGeoItem.setWidth(280);
-		entTypeGeoItem.setName("ent_type_geo");
+		entTypeGeoItem.setName("event_category_name");
 
 		dynamicForm.setFields(entTypeGeoItem);
 
@@ -102,7 +102,7 @@ public class DlgAddEditEndType extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			entTypeGeoItem.setValue(editRecord.getAttribute("ent_type_geo"));
+			entTypeGeoItem.setValue(editRecord.getAttribute("event_category_name"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -110,9 +110,9 @@ public class DlgAddEditEndType extends Window {
 
 	private void save() {
 		try {
-			String ent_type_geo = entTypeGeoItem.getValueAsString();
-			if (ent_type_geo == null
-					|| ent_type_geo.trim().equalsIgnoreCase("")) {
+			String event_category_name = entTypeGeoItem.getValueAsString();
+			if (event_category_name == null
+					|| event_category_name.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ დასახელება !");
 				return;
 			}
@@ -123,13 +123,13 @@ public class DlgAddEditEndType extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("ent_type_geo", ent_type_geo);
+			record.setAttribute("event_category_name", event_category_name);
 			record.setAttribute("deleted", 0);
 			record.setAttribute("rec_user", loggedUser);
 
 			if (editRecord != null) {
-				record.setAttribute("ent_type_id",
-						editRecord.getAttributeAsInt("ent_type_id"));
+				record.setAttribute("event_category_id",
+						editRecord.getAttributeAsInt("event_category_id"));
 			}
 
 			DSRequest req = new DSRequest();

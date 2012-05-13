@@ -21,13 +21,13 @@ public class EventDMI implements QueryConstants {
 	Logger logger = Logger.getLogger(EventDMI.class.getName());
 
 	/**
-	 * Adding New EntType
+	 * Adding New eventCategory
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	public EventCategory addEventCategory(EventCategory entType)
+	public EventCategory addEventCategory(EventCategory eventCategory)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -36,27 +36,27 @@ public class EventDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			String loggedUserName = entType.getLoggedUserName();
-			entType.setLoggedUserName(loggedUserName);
+			String loggedUserName = eventCategory.getLoggedUserName();
+			eventCategory.setLoggedUserName(loggedUserName);
 
-			oracleManager.persist(entType);
+			oracleManager.persist(eventCategory);
 			oracleManager.flush();
 
-			entType = oracleManager.find(EventCategory.class,
-					entType.getEvent_category_id());
+			eventCategory = oracleManager.find(EventCategory.class,
+					eventCategory.getEvent_category_id());
 
-			entType.setLoggedUserName(loggedUserName);
+			eventCategory.setLoggedUserName(loggedUserName);
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return entType;
+			return eventCategory;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert EntType Into Database : ", e);
+			logger.error("Error While Insert eventCategory Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -67,7 +67,7 @@ public class EventDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating EntType
+	 * Updating EventCategory
 	 * 
 	 * @param record
 	 * @return
@@ -82,32 +82,34 @@ public class EventDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long ent_type_id = new Long(record.get("ent_type_id").toString());
-			String ent_type_geo = record.get("ent_type_geo") == null ? null
-					: record.get("ent_type_geo").toString();
+			Long event_category_id = new Long(record.get("event_category_id")
+					.toString());
+			String event_category_name = record.get("event_category_name") == null ? null
+					: record.get("event_category_name").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			EventCategory entType = oracleManager.find(EventCategory.class,
-					ent_type_id);
+			EventCategory eventCategory = oracleManager.find(
+					EventCategory.class, event_category_id);
 
-			entType.setEvent_category_name(ent_type_geo);
-			entType.setLoggedUserName(loggedUserName);
+			eventCategory.setEvent_category_name(event_category_name);
+			eventCategory.setLoggedUserName(loggedUserName);
 
-			oracleManager.merge(entType);
+			oracleManager.merge(eventCategory);
 			oracleManager.flush();
 
-			entType = oracleManager.find(EventCategory.class, ent_type_id);
+			eventCategory = oracleManager.find(EventCategory.class,
+					event_category_id);
 
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return entType;
+			return eventCategory;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update EntType Into Database : ", e);
+			logger.error("Error While Update eventCategory Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -118,7 +120,7 @@ public class EventDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating EntType Status
+	 * Updating eventCategory Status
 	 * 
 	 * @param record
 	 * @return
@@ -129,33 +131,36 @@ public class EventDMI implements QueryConstants {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateTransportTypeStatus.";
+			String log = "Method:CommonDMI.removeEventCategory.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long ent_type_id = new Long(record.get("ent_type_id").toString());
+			Long event_category_id = new Long(record.get("event_category_id")
+					.toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			EventCategory entType = oracleManager.find(EventCategory.class,
-					ent_type_id);
-			entType.setLoggedUserName(loggedUserName);
+			EventCategory eventCategory = oracleManager.find(
+					EventCategory.class, event_category_id);
+			eventCategory.setLoggedUserName(loggedUserName);
 
-			oracleManager.merge(entType);
+			oracleManager.merge(eventCategory);
 			oracleManager.flush();
 
-			entType = oracleManager.find(EventCategory.class, ent_type_id);
+			eventCategory = oracleManager.find(EventCategory.class,
+					event_category_id);
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return entType;
+			return eventCategory;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			logger.error(
-					"Error While Update Status for EntType Into Database : ", e);
+					"Error While Update Status for eventCategory Into Database : ",
+					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -166,13 +171,13 @@ public class EventDMI implements QueryConstants {
 	}
 
 	/**
-	 * Adding New EntPlace
+	 * Adding New eventOwner
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	public EventOwner addEntPlace(EventOwner entPlace) throws Exception {
+	public EventOwner addEntPlace(EventOwner eventOwner) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -180,43 +185,43 @@ public class EventDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			String loggedUserName = entPlace.getLoggedUserName();
-			entPlace.setLoggedUserName(loggedUserName);
+			String loggedUserName = eventOwner.getLoggedUserName();
+			eventOwner.setLoggedUserName(loggedUserName);
 
-			oracleManager.persist(entPlace);
+			oracleManager.persist(eventOwner);
 			oracleManager.flush();
 
-			entPlace = oracleManager.find(EventOwner.class,
-					entPlace.getEvent_owner_id());
-			entPlace.setLoggedUserName(loggedUserName);
-			Long ent_type_id = entPlace.getEvent_category_id();
-			if (ent_type_id != null) {
-				EventCategory entType = oracleManager.find(EventCategory.class,
-						ent_type_id);
-				if (entType != null) {
-					entPlace.setEvent_category_name(entType
+			eventOwner = oracleManager.find(EventOwner.class,
+					eventOwner.getEvent_owner_id());
+			eventOwner.setLoggedUserName(loggedUserName);
+			Long event_category_id = eventOwner.getEvent_category_id();
+			if (event_category_id != null) {
+				EventCategory eventCategory = oracleManager.find(
+						EventCategory.class, event_category_id);
+				if (eventCategory != null) {
+					eventOwner.setEvent_category_name(eventCategory
 							.getEvent_category_name());
 				}
 			}
 
-			Long main_id = entPlace.getMain_id();
+			Long main_id = eventOwner.getMain_id();
 			if (main_id != null && main_id.longValue() > 0) {
 				MainOrg mainOrg = oracleManager.find(MainOrg.class, main_id);
 				if (mainOrg != null) {
-					entPlace.setOrg_name(mainOrg.getOrg_name());
+					eventOwner.setOrg_name(mainOrg.getOrg_name());
 				}
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return entPlace;
+			return eventOwner;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert EntPlace Into Database : ", e);
+			logger.error("Error While Insert eventOwner Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -227,23 +232,25 @@ public class EventDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating EntPlace
+	 * Updating eventOwner
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public EventOwner updateEntPlace(Map record) throws Exception {
+	public EventOwner updateEventOwner(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateEntPlace.";
+			String log = "Method:CommonDMI.updateEventOwner.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long ent_place_id = new Long(record.get("ent_place_id").toString());
-			Long ent_type_id = new Long(record.get("ent_type_id").toString());
+			Long event_owner_id = new Long(record.get("event_owner_id")
+					.toString());
+			Long event_category_id = new Long(record.get("event_category_id")
+					.toString());
 			Long main_id = record.get("main_id") == null ? null : new Long(
 					record.get("main_id").toString());
 			Long reservation = record.get("reservation") == null ? null
@@ -253,9 +260,9 @@ public class EventDMI implements QueryConstants {
 			String loggedUserName = record.get("loggedUserName").toString();
 
 			EventOwner entPlace = oracleManager.find(EventOwner.class,
-					ent_place_id);
+					event_owner_id);
 
-			entPlace.setEvent_category_id(ent_type_id);
+			entPlace.setEvent_category_id(event_category_id);
 			entPlace.setLoggedUserName(loggedUserName);
 			entPlace.setMain_id(main_id);
 			entPlace.setEvent_owner_name(ent_place_geo);
@@ -264,13 +271,13 @@ public class EventDMI implements QueryConstants {
 			oracleManager.merge(entPlace);
 			oracleManager.flush();
 
-			entPlace = oracleManager.find(EventOwner.class, ent_place_id);
+			entPlace = oracleManager.find(EventOwner.class, event_owner_id);
 			entPlace.setLoggedUserName(loggedUserName);
-			if (ent_type_id != null) {
-				EventCategory entType = oracleManager.find(EventCategory.class,
-						ent_type_id);
-				if (entType != null) {
-					entPlace.setEvent_category_name(entType
+			if (event_category_id != null) {
+				EventCategory eventCategory = oracleManager.find(
+						EventCategory.class, event_category_id);
+				if (eventCategory != null) {
+					entPlace.setEvent_category_name(eventCategory
 							.getEvent_category_name());
 				}
 			}
@@ -317,25 +324,26 @@ public class EventDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long ent_place_id = new Long(record.get("ent_place_id").toString());
+			Long event_owner_id = new Long(record.get("event_owner_id")
+					.toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 
 			EventOwner entPlace = oracleManager.find(EventOwner.class,
-					ent_place_id);
+					event_owner_id);
 
 			entPlace.setLoggedUserName(loggedUserName);
 
 			oracleManager.merge(entPlace);
 			oracleManager.flush();
 
-			entPlace = oracleManager.find(EventOwner.class, ent_place_id);
+			entPlace = oracleManager.find(EventOwner.class, event_owner_id);
 			entPlace.setLoggedUserName(loggedUserName);
-			Long ent_type_id = entPlace.getEvent_category_id();
-			if (ent_type_id != null) {
-				EventCategory entType = oracleManager.find(EventCategory.class,
-						ent_type_id);
-				if (entType != null) {
-					entPlace.setEvent_category_id(entType
+			Long event_category_id = entPlace.getEvent_category_id();
+			if (event_category_id != null) {
+				EventCategory eventCategory = oracleManager.find(
+						EventCategory.class, event_category_id);
+				if (eventCategory != null) {
+					entPlace.setEvent_category_id(eventCategory
 							.getEvent_category_id());
 				}
 			}
@@ -394,10 +402,10 @@ public class EventDMI implements QueryConstants {
 					.find(Event.class, entPoster.getEvent_id());
 			entPoster.setLoggedUserName(loggedUserName);
 
-			Long ent_place_id = entPoster.getEvent_owner_id();
-			if (ent_place_id != null) {
+			Long event_owner_id = entPoster.getEvent_owner_id();
+			if (event_owner_id != null) {
 				EventOwner entPlace = oracleManager.find(EventOwner.class,
-						ent_place_id);
+						event_owner_id);
 				if (entPlace != null) {
 					entPoster.setEvent_owner_name(entPlace
 							.getEvent_owner_name());
@@ -443,7 +451,8 @@ public class EventDMI implements QueryConstants {
 
 			Long ent_poster_id = new Long(record.get("ent_poster_id")
 					.toString());
-			Long ent_place_id = new Long(record.get("ent_place_id").toString());
+			Long event_owner_id = new Long(record.get("event_owner_id")
+					.toString());
 			String ent_poster_geo = record.get("ent_poster_geo") == null ? null
 					: record.get("ent_poster_geo").toString();
 			String comment_geo = record.get("comment_geo") == null ? null
@@ -467,7 +476,7 @@ public class EventDMI implements QueryConstants {
 			entPoster.setLoggedUserName(loggedUserName);
 
 			entPoster.setRemark(comment_geo);
-			entPoster.setEvent_owner_id(ent_place_id);
+			entPoster.setEvent_owner_id(event_owner_id);
 			entPoster.setEvent_name(ent_poster_geo);
 			entPoster.setSms_remark(sms_comment);
 			if (poster_date != null) {
@@ -484,9 +493,9 @@ public class EventDMI implements QueryConstants {
 			entPoster = oracleManager.find(Event.class, ent_poster_id);
 			entPoster.setLoggedUserName(loggedUserName);
 
-			if (ent_place_id != null) {
+			if (event_owner_id != null) {
 				EventOwner entPlace = oracleManager.find(EventOwner.class,
-						ent_place_id);
+						event_owner_id);
 				if (entPlace != null) {
 					entPoster.setEvent_owner_name(entPlace
 							.getEvent_owner_name());
@@ -530,10 +539,9 @@ public class EventDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			
 			Long ent_poster_id = new Long(record.get("ent_poster_id")
 					.toString());
-			
+
 			String loggedUserName = record.get("loggedUserName").toString();
 
 			Event entPoster = oracleManager.find(Event.class, ent_poster_id);
@@ -546,10 +554,10 @@ public class EventDMI implements QueryConstants {
 			entPoster = oracleManager.find(Event.class, ent_poster_id);
 			entPoster.setLoggedUserName(loggedUserName);
 
-			Long ent_place_id = entPoster.getEvent_owner_id();
-			if (ent_place_id != null) {
+			Long event_owner_id = entPoster.getEvent_owner_id();
+			if (event_owner_id != null) {
 				EventOwner entPlace = oracleManager.find(EventOwner.class,
-						ent_place_id);
+						event_owner_id);
 				if (entPlace != null) {
 					entPoster.setEvent_owner_name(entPlace
 							.getEvent_owner_name());

@@ -84,9 +84,9 @@ public class TabFindPoster extends Tab {
 		listGridEntType.setAutoFetchData(true);
 		listGridEntType.setFetchOperation("searchAllEventCategoryForCC");
 
-		ListGridField ent_type_geo = new ListGridField("ent_type_geo",
+		ListGridField event_category_name = new ListGridField("event_category_name",
 				CallCenterBK.constants.entType());
-		listGridEntType.setFields(ent_type_geo);
+		listGridEntType.setFields(event_category_name);
 
 		DataSource entPlaceDS = DataSource.get("EntPlaceDS");
 
@@ -116,13 +116,13 @@ public class TabFindPoster extends Tab {
 				if (listGridRecord == null) {
 					return;
 				}
-				Integer ent_type_id = listGridRecord
-						.getAttributeAsInt("ent_type_id");
-				if (ent_type_id == null) {
+				Integer event_category_id = listGridRecord
+						.getAttributeAsInt("event_category_id");
+				if (event_category_id == null) {
 					return;
 				}
 				Criteria criteria = new Criteria();
-				criteria.setAttribute("ent_type_id", ent_type_id);
+				criteria.setAttribute("event_category_id", event_category_id);
 				DSRequest dsRequest = new DSRequest();
 				dsRequest.setOperationId("searchAllEntPostersForCallCenter2");
 				listGridEntPlace.invalidateCache();
@@ -382,21 +382,21 @@ public class TabFindPoster extends Tab {
 
 			ListGridRecord listGridRecord = listGridEntType.getSelectedRecord();
 			if (listGridRecord != null) {
-				Integer ent_type_id = listGridRecord
-						.getAttributeAsInt("ent_type_id");
-				if (ent_type_id != null) {
-					criteria.setAttribute("ent_type_id", ent_type_id);
+				Integer event_category_id = listGridRecord
+						.getAttributeAsInt("event_category_id");
+				if (event_category_id != null) {
+					criteria.setAttribute("event_category_id", event_category_id);
 				}
 			}
 
 			ListGridRecord listGridRecordPl = listGridEntPlace
 					.getSelectedRecord();
 			if (listGridRecordPl != null) {
-				Integer ent_place_id = listGridRecordPl
-						.getAttributeAsInt("ent_place_id");
-				if (ent_place_id != null) {
+				Integer event_owner_id = listGridRecordPl
+						.getAttributeAsInt("event_owner_id");
+				if (event_owner_id != null) {
 					criteria.setAttribute("scheduleplaceid", new Integer(
-							ent_place_id));
+							event_owner_id));
 				}
 			}
 

@@ -92,7 +92,7 @@ public class TabEntPoster extends Tab {
 			entTypeItem = new ComboBoxItem();
 			entTypeItem.setTitle("აფიშა-კატეგორია");
 			entTypeItem.setWidth(300);
-			entTypeItem.setName("ent_type_geo");
+			entTypeItem.setName("event_category_name");
 			entTypeItem.setFetchMissingValues(true);
 			entTypeItem.setFilterLocally(false);
 			entTypeItem.setAddUnknownValues(false);
@@ -100,8 +100,8 @@ public class TabEntPoster extends Tab {
 			DataSource entTypeDS = DataSource.get("EntTypeDS");
 			entTypeItem.setOptionOperationId("searchAllEventCategoryForCB");
 			entTypeItem.setOptionDataSource(entTypeDS);
-			entTypeItem.setValueField("ent_type_id");
-			entTypeItem.setDisplayField("ent_type_geo");
+			entTypeItem.setValueField("event_category_id");
+			entTypeItem.setDisplayField("event_category_name");
 
 			entTypeItem.setOptionCriteria(new Criteria());
 			entTypeItem.setAutoFetchData(false);
@@ -111,10 +111,10 @@ public class TabEntPoster extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = entTypeItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("ent_type_id");
+						String oldAttr = criteria.getAttribute("event_category_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("ent_type_id", nullO);
+							criteria.setAttribute("event_category_id", nullO);
 						}
 					}
 				}
@@ -131,7 +131,7 @@ public class TabEntPoster extends Tab {
 			DataSource entPlaceDS = DataSource.get("EntPlaceDS");
 			entPlacesItem.setOptionOperationId("searchAllEntPlacesForCB");
 			entPlacesItem.setOptionDataSource(entPlaceDS);
-			entPlacesItem.setValueField("ent_place_id");
+			entPlacesItem.setValueField("event_owner_id");
 			entPlacesItem.setDisplayField("ent_place_geo");
 
 			entPlacesItem.setOptionCriteria(new Criteria());
@@ -142,10 +142,10 @@ public class TabEntPoster extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = entPlacesItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("ent_place_id");
+						String oldAttr = criteria.getAttribute("event_owner_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("ent_place_id", nullO);
+							criteria.setAttribute("event_owner_id", nullO);
 						}
 					}
 				}
@@ -323,13 +323,13 @@ public class TabEntPoster extends Tab {
 						SC.say("გთხოვთ აირჩიოთ აფიშა-რესურსი !");
 						return;
 					}
-					Integer ent_place_id = selEntPlaceRecord
-							.getAttributeAsInt("ent_place_id");
-					Integer ent_type_id = selEntPlaceRecord
-							.getAttributeAsInt("ent_type_id");
+					Integer event_owner_id = selEntPlaceRecord
+							.getAttributeAsInt("event_owner_id");
+					Integer event_category_id = selEntPlaceRecord
+							.getAttributeAsInt("event_category_id");
 
 					DlgAddEditEntPoster dlgAddEditEntPoster = new DlgAddEditEntPoster(
-							listGrid, null, ent_place_id, ent_type_id);
+							listGrid, null, event_owner_id, event_category_id);
 					dlgAddEditEntPoster.show();
 				}
 			});
@@ -343,12 +343,12 @@ public class TabEntPoster extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer ent_place_id = listGridRecord
-							.getAttributeAsInt("ent_place_id");
-					Integer ent_type_id = listGridRecord
-							.getAttributeAsInt("ent_type_id");
+					Integer event_owner_id = listGridRecord
+							.getAttributeAsInt("event_owner_id");
+					Integer event_category_id = listGridRecord
+							.getAttributeAsInt("event_category_id");
 					DlgAddEditEntPoster dlgAddEditEntPoster = new DlgAddEditEntPoster(
-							listGrid, listGridRecord, ent_place_id, ent_type_id);
+							listGrid, listGridRecord, event_owner_id, event_category_id);
 					dlgAddEditEntPoster.show();
 				}
 			});
@@ -429,15 +429,15 @@ public class TabEntPoster extends Tab {
 						return;
 					}
 
-					Integer ent_place_id = listGridRecord
-							.getAttributeAsInt("ent_place_id");
-					Integer ent_type_id = listGridRecord
-							.getAttributeAsInt("ent_type_id");
+					Integer event_owner_id = listGridRecord
+							.getAttributeAsInt("event_owner_id");
+					Integer event_category_id = listGridRecord
+							.getAttributeAsInt("event_category_id");
 					Object nullObj = null;
 					listGridRecord.setAttribute("ent_poster_id", nullObj);
 
 					DlgAddEditEntPoster dlgAddEditEntPoster = new DlgAddEditEntPoster(
-							listGrid, listGridRecord, ent_place_id, ent_type_id);
+							listGrid, listGridRecord, event_owner_id, event_category_id);
 					dlgAddEditEntPoster.show();
 				}
 			});
@@ -495,13 +495,13 @@ public class TabEntPoster extends Tab {
 						return;
 					}
 
-					Integer ent_place_id = listGridRecord
-							.getAttributeAsInt("ent_place_id");
-					Integer ent_type_id = listGridRecord
-							.getAttributeAsInt("ent_type_id");
+					Integer event_owner_id = listGridRecord
+							.getAttributeAsInt("event_owner_id");
+					Integer event_category_id = listGridRecord
+							.getAttributeAsInt("event_category_id");
 
 					DlgAddEditEntPoster dlgAddEditEntPoster = new DlgAddEditEntPoster(
-							listGrid, listGridRecord, ent_place_id, ent_type_id);
+							listGrid, listGridRecord, event_owner_id, event_category_id);
 					dlgAddEditEntPoster.show();
 				}
 			});
@@ -517,10 +517,10 @@ public class TabEntPoster extends Tab {
 
 	private void search() {
 		try {
-			String ent_place_id = entPlacesItem.getValueAsString();
+			String event_owner_id = entPlacesItem.getValueAsString();
 			Criteria criteria = new Criteria();
-			if (ent_place_id != null && !ent_place_id.trim().equals("")) {
-				criteria.setAttribute("ent_place_id", new Integer(ent_place_id));
+			if (event_owner_id != null && !event_owner_id.trim().equals("")) {
+				criteria.setAttribute("event_owner_id", new Integer(event_owner_id));
 			}
 			String ent_poster_geo = entPosterGeoItem.getValueAsString();
 			if (ent_poster_geo != null && !ent_poster_geo.trim().equals("")) {
@@ -542,9 +542,9 @@ public class TabEntPoster extends Tab {
 			if (poster_date_end != null) {
 				criteria.setAttribute("poster_date_end", poster_date_end);
 			}
-			String ent_type_id = entTypeItem.getValueAsString();
-			if (ent_type_id != null) {
-				criteria.setAttribute("ent_type_id", new Integer(ent_type_id));
+			String event_category_id = entTypeItem.getValueAsString();
+			if (event_category_id != null) {
+				criteria.setAttribute("event_category_id", new Integer(event_category_id));
 			}
 			String deleted = deletedItem.getValueAsString();
 			if (deleted != null) {

@@ -75,7 +75,7 @@ public class TabEntType extends Tab {
 			entTypeGeoItem = new TextItem();
 			entTypeGeoItem.setTitle("კატეგორიის დასახელება(ქართ.)");
 			entTypeGeoItem.setWidth(300);
-			entTypeGeoItem.setName("ent_type_geo");
+			entTypeGeoItem.setName("event_category_name");
 
 			searchForm.setFields(entTypeGeoItem);
 
@@ -151,12 +151,12 @@ public class TabEntType extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("ent_type_geo").setTitle("დასახელება (ქართ.)");
+			datasource.getField("event_category_name").setTitle("დასახელება (ქართ.)");
 			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
 			datasource.getField("rec_user").setTitle("შემქმნელი");
 			datasource.getField("upd_user").setTitle("ვინ განაახლა");
 
-			ListGridField ent_type_geo = new ListGridField("ent_type_geo", "დასახელება (ქართ.)", 300);
+			ListGridField event_category_name = new ListGridField("event_category_name", "დასახელება (ქართ.)", 300);
 			ListGridField rec_date = new ListGridField("rec_date","შექმინის თარიღი", 130);
 			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",100);
 			ListGridField upd_user = new ListGridField("upd_user","ვინ განაახლა", 150);
@@ -165,7 +165,7 @@ public class TabEntType extends Tab {
 			rec_user.setAlign(Alignment.CENTER);
 			upd_user.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(ent_type_geo, rec_date, rec_user, upd_user);
+			listGrid.setFields(event_category_name, rec_date, rec_user, upd_user);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -219,9 +219,9 @@ public class TabEntType extends Tab {
 						SC.say("ჩანაწერი უკვე გაუქმებულია !");
 						return;
 					}
-					final Integer ent_type_id = listGridRecord
-							.getAttributeAsInt("ent_type_id");
-					if (ent_type_id == null) {
+					final Integer event_category_id = listGridRecord
+							.getAttributeAsInt("event_category_id");
+					if (event_category_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -231,7 +231,7 @@ public class TabEntType extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(ent_type_id, 1);
+										changeStatus(event_category_id, 1);
 									}
 								}
 							});
@@ -252,9 +252,9 @@ public class TabEntType extends Tab {
 						SC.say("ჩანაწერი უკვე აღდგენილია !");
 						return;
 					}
-					final Integer ent_type_id = listGridRecord
-							.getAttributeAsInt("ent_type_id");
-					if (ent_type_id == null) {
+					final Integer event_category_id = listGridRecord
+							.getAttributeAsInt("event_category_id");
+					if (event_category_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -264,7 +264,7 @@ public class TabEntType extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(ent_type_id, 0);
+										changeStatus(event_category_id, 0);
 									}
 								}
 							});
@@ -311,11 +311,11 @@ public class TabEntType extends Tab {
 
 	private void search() {
 		try {
-			String ent_type_geo = entTypeGeoItem
+			String event_category_name = entTypeGeoItem
 					.getValueAsString();
 			
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("ent_type_geo", ent_type_geo);
+			criteria.setAttribute("event_category_name", event_category_name);
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "searchAllEventCategory");
@@ -331,12 +331,12 @@ public class TabEntType extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer ent_type_id, Integer deleted) {
+	private void changeStatus(Integer event_category_id, Integer deleted) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("deleted", deleted);
-			record.setAttribute("ent_type_id", ent_type_id);
+			record.setAttribute("event_category_id", event_category_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
