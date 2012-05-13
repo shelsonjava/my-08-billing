@@ -1,4 +1,4 @@
-package com.info08.billing.callcenterbk.shared.entity.calendar;
+package com.info08.billing.callcenterbk.shared.entity.facts;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -14,26 +14,25 @@ import javax.persistence.Table;
 
 
 /**
- * The persistent class for the CHURCH_CALENDAR_EVENTS database table.
+ * The persistent class for the SECULAR_CALENDAR_EVENTS database table.
  * 
  */
 @Entity
-@Table(name="CHURCH_CALENDAR_EVENTS", schema="ccare")
-public class ChurchCalendarEvent implements Serializable {
-	
+@Table(name="SECULAR_CALENDAR_EVENTS", schema="ccare")
+public class SecularCalendarEvent implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="CHURCH_CALENDAR_EVENTS_EVENTID_GENERATOR", sequenceName="TRANSPORT_PLACE_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CHURCH_CALENDAR_EVENTS_EVENTID_GENERATOR")
+	@SequenceGenerator(name="SECULAR_CALENDAR_EVENTS_EVENTID_GENERATOR", sequenceName="TRANSPORT_PLACE_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SECULAR_CALENDAR_EVENTS_EVENTID_GENERATOR")
 	@Column(name="EVENT_ID")
 	private Long event_id;
 
-	@Basic
+	@Basic	
 	@Column(name="DELETED")
 	private Long deleted;
 
-	@Basic
+	@Basic	
 	@Column(name="EVENT")
 	private String event;
 
@@ -45,7 +44,7 @@ public class ChurchCalendarEvent implements Serializable {
 	@Column(name="REC_USER")
 	private String rec_user;
 
-    public ChurchCalendarEvent() {
+    public SecularCalendarEvent() {
     }
 
 	public Long getEvent_id() {

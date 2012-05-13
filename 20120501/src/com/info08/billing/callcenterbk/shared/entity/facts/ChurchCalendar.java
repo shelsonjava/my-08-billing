@@ -1,4 +1,4 @@
-package com.info08.billing.callcenterbk.shared.entity.calendar;
+package com.info08.billing.callcenterbk.shared.entity.facts;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -13,66 +13,57 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 /**
- * The persistent class for the SECULAR_CALENDAR database table.
+ * The persistent class for the CHURCH_CALENDAR database table.
  * 
  */
 @Entity
-@Table(name="SECULAR_CALENDAR", schema="ccare")
-public class SecularCalendar implements Serializable {
+@Table(name = "CHURCH_CALENDAR", schema = "ccare")
+public class ChurchCalendar implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="SECULAR_CALENDAR_CALENDARID_GENERATOR", sequenceName="SEC_CALENDAR_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SECULAR_CALENDAR_CALENDARID_GENERATOR")
-	@Column(name="CALENDAR_ID")
+	@SequenceGenerator(name = "CHURCH_CALENDAR_CALENDARID_GENERATOR", sequenceName = "CALENDAR_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHURCH_CALENDAR_CALENDARID_GENERATOR")
+	@Column(name = "CALENDAR_ID")
 	private Long calendar_id;
 
 	@Basic
-	@Column(name="CALENDAR_COMMENT")
-	private String calendar_comment;
-
-	@Basic
-	@Column(name="CALENDAR_DAY")
+	@Column(name = "CALENDAR_DAY")
 	private Timestamp calendar_day;
 
 	@Basic
-	@Column(name="CALENDAR_DESCRIPTION")
+	@Column(name = "CALENDAR_DESCRIPTION")
 	private String calendar_description;
 
 	@Basic
-	@Column(name="CALENDAR_EVENT_ID")
+	@Column(name = "CALENDAR_EVENT_ID")
 	private Long calendar_event_id;
 
 	@Basic
-	@Column(name="CALENDAR_STATE_ID")
+	@Column(name = "CALENDAR_STATE_ID")
 	private Long calendar_state_id;
 
 	@Basic
-	@Column(name="REC_DATE")
+	@Column(name = "REC_DATE")
 	private Timestamp rec_date;
 
 	@Basic
-	@Column(name="REC_USER")
+	@Column(name = "REC_USER")
 	private String rec_user;
 
 	@Basic
-	@Column(name="SUN_RISE")
-	private String sun_rise;
-
-	@Basic
-	@Column(name="UPD_DATE")
+	@Column(name = "UPD_DATE")
 	private Timestamp upd_date;
 
 	@Basic
-	@Column(name="UPD_USER")
+	@Column(name = "UPD_USER")
 	private String upd_user;
-	
+
 	@Basic
-	@Column(name="DELETED")
+	@Column(name = "DELETED")
 	private Long deleted;
-	
+
 	@Transient
 	private String event;
 	
@@ -81,9 +72,9 @@ public class SecularCalendar implements Serializable {
 	
 	@Transient
 	private String loggedUserName;
-
-    public SecularCalendar() {
-    }
+	
+	public ChurchCalendar() {
+	}
 
 	public Long getCalendar_id() {
 		return calendar_id;
@@ -91,14 +82,6 @@ public class SecularCalendar implements Serializable {
 
 	public void setCalendar_id(Long calendar_id) {
 		this.calendar_id = calendar_id;
-	}
-
-	public String getCalendar_comment() {
-		return calendar_comment;
-	}
-
-	public void setCalendar_comment(String calendar_comment) {
-		this.calendar_comment = calendar_comment;
 	}
 
 	public Timestamp getCalendar_day() {
@@ -147,14 +130,6 @@ public class SecularCalendar implements Serializable {
 
 	public void setRec_user(String rec_user) {
 		this.rec_user = rec_user;
-	}
-
-	public String getSun_rise() {
-		return sun_rise;
-	}
-
-	public void setSun_rise(String sun_rise) {
-		this.sun_rise = sun_rise;
 	}
 
 	public Timestamp getUpd_date() {

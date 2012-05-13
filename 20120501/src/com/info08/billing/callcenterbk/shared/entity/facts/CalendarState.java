@@ -1,4 +1,4 @@
-package com.info08.billing.callcenterbk.shared.entity.calendar;
+package com.info08.billing.callcenterbk.shared.entity.facts;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
