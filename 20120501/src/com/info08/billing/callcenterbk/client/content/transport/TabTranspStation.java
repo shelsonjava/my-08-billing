@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.transport;
 
-import com.info08.billing.callcenterbk.client.dialogs.transport.DlgAddEditTransportPlace;
+import com.info08.billing.callcenterbk.client.dialogs.transport.DlgAddEditTranspStation;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -40,7 +40,7 @@ public class TabTranspStation extends Tab {
 	private VLayout mainLayout;
 
 	// form fields
-	private TextItem transportPlaceGeoItem;
+	private TextItem transpStatGeoItem;
 	private ComboBoxItem transportTypeItem;
 	private ComboBoxItem cityItem;
 
@@ -76,10 +76,10 @@ public class TabTranspStation extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			transportPlaceGeoItem = new TextItem();
-			transportPlaceGeoItem.setTitle("დასახელება(ქართ.)");
-			transportPlaceGeoItem.setWidth(350);
-			transportPlaceGeoItem.setName("transportPlaceGeoItem");
+			transpStatGeoItem = new TextItem();
+			transpStatGeoItem.setTitle("დასახელება(ქართ.)");
+			transpStatGeoItem.setWidth(350);
+			transpStatGeoItem.setName("transpStatGeoItem");
 
 			transportTypeItem = new ComboBoxItem();
 			transportTypeItem.setTitle("ტრანსპორტის ტიპი");
@@ -147,7 +147,7 @@ public class TabTranspStation extends Tab {
 				}
 			});
 
-			searchForm.setFields(transportPlaceGeoItem, transportTypeItem,
+			searchForm.setFields(transpStatGeoItem, transportTypeItem,
 					cityItem);
 
 			HLayout buttonLayout = new HLayout(5);
@@ -209,7 +209,7 @@ public class TabTranspStation extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchAllTransportPlaces");
+			listGrid.setFetchOperation("searchAllTransportStations");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
@@ -238,7 +238,7 @@ public class TabTranspStation extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					transportPlaceGeoItem.clearValue();
+					transpStatGeoItem.clearValue();
 					transportTypeItem.clearValue();
 					cityItem.clearValue();
 				}
@@ -246,9 +246,9 @@ public class TabTranspStation extends Tab {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditTransportPlace dlgAddEditTransportPlace = new DlgAddEditTransportPlace(
+					DlgAddEditTranspStation dlgAddEditTranspStation = new DlgAddEditTranspStation(
 							listGrid, null);
-					dlgAddEditTransportPlace.show();
+					dlgAddEditTranspStation.show();
 				}
 			});
 
@@ -261,9 +261,9 @@ public class TabTranspStation extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditTransportPlace dlgAddEditTransportPlace = new DlgAddEditTransportPlace(
+					DlgAddEditTranspStation dlgAddEditTranspStation = new DlgAddEditTranspStation(
 							listGrid, listGridRecord);
-					dlgAddEditTransportPlace.show();
+					dlgAddEditTranspStation.show();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
@@ -316,9 +316,9 @@ public class TabTranspStation extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditTransportPlace dlgAddEditTransportPlace = new DlgAddEditTransportPlace(
+					DlgAddEditTranspStation dlgAddEditTranspStation = new DlgAddEditTranspStation(
 							listGrid, listGridRecord);
-					dlgAddEditTransportPlace.show();
+					dlgAddEditTranspStation.show();
 				}
 			});
 
@@ -333,7 +333,7 @@ public class TabTranspStation extends Tab {
 
 	private void search() {
 		try {
-			String name_descr = transportPlaceGeoItem.getValueAsString();
+			String name_descr = transpStatGeoItem.getValueAsString();
 			String transp_type_id = transportTypeItem.getValueAsString();
 			String city_id = cityItem.getValueAsString();
 
@@ -347,7 +347,7 @@ public class TabTranspStation extends Tab {
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllTransportPlaces");
+			dsRequest.setAttribute("operationId", "searchAllTransportStations");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override

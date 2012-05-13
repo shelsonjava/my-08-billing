@@ -23,19 +23,19 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditTransportPlace extends Window {
+public class DlgAddEditTranspStation extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private TextItem transportPlaceGeoItem;
-	private ComboBoxItem transportTypeItem;
+	private TextItem transpStatNameDescrItem;
+	private ComboBoxItem transpTypeItem;
 	private ComboBoxItem cityItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditTransportPlace(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditTranspStation(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
@@ -65,34 +65,33 @@ public class DlgAddEditTransportPlace extends Window {
 		dynamicForm.setNumCols(2);
 		hLayout.addMember(dynamicForm);
 
-		transportPlaceGeoItem = new TextItem();
-		transportPlaceGeoItem.setTitle("დასახელება(ქართ.)");
-		transportPlaceGeoItem.setWidth(300);
-		transportPlaceGeoItem.setName("transport_place_geo");
+		transpStatNameDescrItem = new TextItem();
+		transpStatNameDescrItem.setTitle("დასახელება(ქართ.)");
+		transpStatNameDescrItem.setWidth(300);
+		transpStatNameDescrItem.setName("transpStatNameDescrItem");
 
-		transportTypeItem = new ComboBoxItem();
-		transportTypeItem.setTitle("ტრანსპორტის ტიპი");
-		transportTypeItem.setWidth(300);
-		transportTypeItem.setName("name_descr");
-		transportTypeItem.setFetchMissingValues(true);
-		transportTypeItem.setFilterLocally(false);
-		transportTypeItem.setAddUnknownValues(false);
+		transpTypeItem = new ComboBoxItem();
+		transpTypeItem.setTitle("ტრანსპორტის ტიპი");
+		transpTypeItem.setWidth(300);
+		transpTypeItem.setName("name_descr");
+		transpTypeItem.setFetchMissingValues(true);
+		transpTypeItem.setFilterLocally(false);
+		transpTypeItem.setAddUnknownValues(false);
 
 		DataSource firstNamesDS = DataSource.get("TranspTypeDS");
-		transportTypeItem
-				.setOptionOperationId("searchAllTransportTypesForCombos");
-		transportTypeItem.setOptionDataSource(firstNamesDS);
-		transportTypeItem.setValueField("transp_type_id");
-		transportTypeItem.setDisplayField("name_descr");
+		transpTypeItem.setOptionOperationId("searchAllTransportTypesForCombos");
+		transpTypeItem.setOptionDataSource(firstNamesDS);
+		transpTypeItem.setValueField("transp_type_id");
+		transpTypeItem.setDisplayField("name_descr");
 
 		Criteria criteria = new Criteria();
-		transportTypeItem.setOptionCriteria(criteria);
-		transportTypeItem.setAutoFetchData(false);
+		transpTypeItem.setOptionCriteria(criteria);
+		transpTypeItem.setAutoFetchData(false);
 
-		transportTypeItem.addKeyPressHandler(new KeyPressHandler() {
+		transpTypeItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = transportTypeItem.getOptionCriteria();
+				Criteria criteria = transpTypeItem.getOptionCriteria();
 				if (criteria != null) {
 					String oldAttr = criteria.getAttribute("transp_type_id");
 					if (oldAttr != null) {
@@ -135,7 +134,7 @@ public class DlgAddEditTransportPlace extends Window {
 			}
 		});
 
-		dynamicForm.setFields(transportPlaceGeoItem, transportTypeItem,
+		dynamicForm.setFields(transpStatNameDescrItem, transpTypeItem,
 				cityItem);
 
 		HLayout hLayoutItem = new HLayout(5);
@@ -176,12 +175,10 @@ public class DlgAddEditTransportPlace extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			transportPlaceGeoItem.setValue(editRecord
-					.getAttribute("transport_place_geo"));
-			Integer transport_type_id = editRecord
-					.getAttributeAsInt("transp_type_id");
+			transpStatNameDescrItem.setValue(editRecord.getAttribute("name_descr"));
+			Integer transport_type_id = editRecord.getAttributeAsInt("transp_type_id");
 			if (transport_type_id != null) {
-				transportTypeItem.setValue(transport_type_id);
+				transpTypeItem.setValue(transport_type_id);
 			}
 			Integer city_id = editRecord.getAttributeAsInt("city_id");
 			if (transport_type_id != null) {
@@ -194,16 +191,13 @@ public class DlgAddEditTransportPlace extends Window {
 
 	private void save() {
 		try {
-			String transport_place_geo = transportPlaceGeoItem
-					.getValueAsString();
-			if (transport_place_geo == null
-					|| transport_place_geo.trim().equalsIgnoreCase("")) {
+			String name_descr = transpStatNameDescrItem.getValueAsString();
+			if (name_descr == null || name_descr.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ ქართული დასახელება !");
 				return;
 			}
-			String transport_type_id = transportTypeItem.getValueAsString();
-			if (transport_type_id == null
-					|| transport_type_id.trim().equalsIgnoreCase("")) {
+			String transp_type_id = transpTypeItem.getValueAsString();
+			if (transp_type_id == null || transp_type_id.trim().equalsIgnoreCase("")) {
 				SC.say("აირჩიეთ ტრანსპორტის ტიპი !");
 				return;
 			}
@@ -219,22 +213,18 @@ public class DlgAddEditTransportPlace extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("transport_place_geo", transport_place_geo);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("transp_type_id", new Integer(
-					transport_type_id));
+			record.setAttribute("name_descr", name_descr);			
+			record.setAttribute("transp_type_id", new Integer(transp_type_id));
 			record.setAttribute("city_id", new Integer(city_id));
 
 			if (editRecord != null) {
-				record.setAttribute("transport_place_id",
-						editRecord.getAttributeAsInt("transport_place_id"));
+				record.setAttribute("transp_stat_id",editRecord.getAttributeAsInt("transp_stat_id"));
 			}
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addTransportPlace");
+				req.setAttribute("operationId", "addTransportStation");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -243,7 +233,7 @@ public class DlgAddEditTransportPlace extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateTransportPlace");
+				req.setAttribute("operationId", "updateTransportStation");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

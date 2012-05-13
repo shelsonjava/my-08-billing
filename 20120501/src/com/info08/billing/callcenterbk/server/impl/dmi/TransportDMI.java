@@ -1026,7 +1026,7 @@ public class TransportDMI implements QueryConstants {
 			// }
 			// }
 			//
-			// EMF.commitTransaction(transaction);
+			EMF.commitTransaction(transaction);
 			log += ". Remove Finished SuccessFully. ";
 			logger.info(log);
 			return null;

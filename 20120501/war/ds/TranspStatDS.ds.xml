@@ -34,7 +34,7 @@
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
 	
-    	<operationBinding operationId="searchAllTransportPlaces" operationType="fetch">
+    	<operationBinding operationId="searchAllTransportStations" operationType="fetch">
     		<selectClause>   			
     			t.transp_stat_id,
 				t.transp_type_id,
