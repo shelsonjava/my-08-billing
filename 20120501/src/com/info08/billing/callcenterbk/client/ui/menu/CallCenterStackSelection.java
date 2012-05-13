@@ -12,7 +12,6 @@ import com.info08.billing.callcenterbk.client.content.callcenter.TabFindIndexes;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindNews;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindNonStandartInfo;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindOrg;
-import com.info08.billing.callcenterbk.client.content.callcenter.TabFindOrthCalendar;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindPoster;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindStreets;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindTransport;
@@ -130,11 +129,6 @@ public class CallCenterStackSelection extends SectionStackSection {
 		iButtonCalendar.setWidth100();
 		iButtonCalendar.setAlign(Alignment.LEFT);
 
-		IButton iButtonOrthCalendar = new IButton();
-		iButtonOrthCalendar.setTitle(CallCenterBK.constants.orthCalendar());
-		iButtonOrthCalendar.setIcon("calendar.png");
-		iButtonOrthCalendar.setWidth100();
-		iButtonOrthCalendar.setAlign(Alignment.LEFT);
 
 		IButton iButtonWeb = new IButton();
 		iButtonWeb.setTitle(CallCenterBK.constants.sites());
@@ -164,7 +158,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 				iButtonTransport, iButtonCityTransp, iButtonPoster,
 				iButtonValute, iButtonStreets, iButtonRegInd, iButtonFindByNum,
 				iButtonCityDist, iButtonExactTime, iButtonCalendar,
-				iButtonOrthCalendar, iButtonWeb, iButtonSport, iButtonWiki,
+				iButtonWeb, iButtonSport, iButtonWiki,
 				iButtonWeather);
 
 		IButton iButtonNews = new IButton();
@@ -291,13 +285,6 @@ public class CallCenterStackSelection extends SectionStackSection {
 			public void onClick(ClickEvent event) {
 				TabFindFacts findCalendar = new TabFindFacts();
 				body.addTab(findCalendar);
-			}
-		});
-		iButtonOrthCalendar.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				TabFindOrthCalendar findOrthCalendar = new TabFindOrthCalendar();
-				body.addTab(findOrthCalendar);
 			}
 		});
 		iButtonWeb.addClickHandler(new ClickHandler() {
