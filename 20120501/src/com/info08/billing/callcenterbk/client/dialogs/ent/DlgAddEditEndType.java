@@ -135,7 +135,7 @@ public class DlgAddEditEndType extends Window {
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addEntType");
+				req.setAttribute("operationId", "addEventCategory");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -144,7 +144,7 @@ public class DlgAddEditEndType extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateEntType");
+				req.setAttribute("operationId", "updateEventCategory");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

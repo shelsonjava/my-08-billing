@@ -14,44 +14,5 @@
 	</fields>
 
 	<operationBindings>		
-
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EntDMI"/>
-
-		<!-- Add EntType -->
-		<operationBinding operationType="add" operationId="addEntType" serverMethod="addEntType">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EntDMI"/>
-        </operationBinding>
-        
-		<!-- EntType Update -->
-		<operationBinding operationType="update" operationId="updateEntType" serverMethod="updateEntType">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EntDMI"/>
-        </operationBinding>
-        
-        <!-- EntType Status Update -->
-		<operationBinding operationType="update" operationId="updateEntTypeStatus" serverMethod="updateEntTypeStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EntDMI"/>
-        </operationBinding>
-	
-    	<operationBinding operationId="searchAllEntTypes" operationType="fetch">
-    		<selectClause>   			
-    			t.ent_type_id,
-				t.deleted,
-				t.ent_type_eng,
-				t.ent_type_geo,
-				t.old_id,
-				t.rec_date,
-				t.rec_user,
-				t.service_id,
-				t.upd_user			    
-			</selectClause> 
-			<tableClause>ent_types t</tableClause>
-			<whereClause><![CDATA[
-				1=1
-				#if($criteria.ent_type_geo) and t.ent_type_geo like ($criteria.ent_type_geo)||'%' #end
-				]]>  
-			</whereClause> 
-			<orderClause>t.ent_type_id</orderClause>
-    	</operationBinding>
-    	
     </operationBindings>	
 </DataSource>

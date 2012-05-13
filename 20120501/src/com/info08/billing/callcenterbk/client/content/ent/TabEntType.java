@@ -145,7 +145,7 @@ public class TabEntType extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchAllEntTypes");
+			listGrid.setFetchOperation("searchAllEventCategory");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
@@ -318,7 +318,7 @@ public class TabEntType extends Tab {
 			criteria.setAttribute("ent_type_geo", ent_type_geo);
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllEntTypes");
+			dsRequest.setAttribute("operationId", "searchAllEventCategory");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -341,7 +341,7 @@ public class TabEntType extends Tab {
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateEntTypeStatus");
+			req.setAttribute("operationId", "removeEventCategory");
 			listGrid.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

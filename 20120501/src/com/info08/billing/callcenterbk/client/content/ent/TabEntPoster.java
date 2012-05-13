@@ -98,7 +98,7 @@ public class TabEntPoster extends Tab {
 			entTypeItem.setAddUnknownValues(false);
 
 			DataSource entTypeDS = DataSource.get("EntTypeDS");
-			entTypeItem.setOptionOperationId("searchAllEntTypesForCB");
+			entTypeItem.setOptionOperationId("searchAllEventCategoryForCB");
 			entTypeItem.setOptionDataSource(entTypeDS);
 			entTypeItem.setValueField("ent_type_id");
 			entTypeItem.setDisplayField("ent_type_geo");
@@ -269,7 +269,7 @@ public class TabEntPoster extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchAllEntTypes");
+			listGrid.setFetchOperation("searchAllEventCategory");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);

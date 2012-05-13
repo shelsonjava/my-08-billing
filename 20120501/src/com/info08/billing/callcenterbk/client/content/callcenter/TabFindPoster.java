@@ -82,7 +82,7 @@ public class TabFindPoster extends Tab {
 		listGridEntType.setHeight100();
 		listGridEntType.setDataSource(entTypeDS);
 		listGridEntType.setAutoFetchData(true);
-		listGridEntType.setFetchOperation("searchAllEntTypesForCC");
+		listGridEntType.setFetchOperation("searchAllEventCategoryForCC");
 
 		ListGridField ent_type_geo = new ListGridField("ent_type_geo",
 				CallCenterBK.constants.entType());
