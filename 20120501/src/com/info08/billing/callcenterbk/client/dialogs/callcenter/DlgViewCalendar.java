@@ -80,23 +80,23 @@ public class DlgViewCalendar extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		DetailViewerField calendar_day = new DetailViewerField("fcalendar_day",
+		DetailViewerField calendar_day = new DetailViewerField("ffact_date",
 				CallCenterBK.constants.date());
 
-		DetailViewerField event = new DetailViewerField("event",
+		DetailViewerField event = new DetailViewerField("fact_type_name",
 				CallCenterBK.constants.moonPhase());
 
-		DetailViewerField state = new DetailViewerField("state",
+		DetailViewerField state = new DetailViewerField("fact_status_name",
 				CallCenterBK.constants.type());
 
-		DetailViewerField sun_rise = new DetailViewerField("sun_rise",
+		DetailViewerField sun_rise = new DetailViewerField("sunup",
 				CallCenterBK.constants.sunRise());
 
 		DetailViewerField calendar_description = new DetailViewerField(
-				"calendar_description", CallCenterBK.constants.information());
+				"remark", CallCenterBK.constants.information());
 
 		DetailViewerField calendar_comment = new DetailViewerField(
-				"calendar_comment", CallCenterBK.constants.comment());
+				"additional_comment", CallCenterBK.constants.comment());
 
 		detailViewer.viewSelectedData(listGrid);
 
@@ -213,26 +213,26 @@ public class DlgViewCalendar extends Window {
 			StringBuilder sms_text = new StringBuilder();
 
 			String calendar_day = listGridRecord
-					.getAttributeAsString("fcalendar_day");
+					.getAttributeAsString("ffact_date");
 			if (calendar_day != null && !calendar_day.trim().equals("")) {
 				sms_text.append(calendar_day).append(" - ");
 			}
-			String event = listGridRecord.getAttributeAsString("event");
+			String event = listGridRecord.getAttributeAsString("fact_type_name");
 			if (event != null && !event.trim().equals("")) {
 				sms_text.append(event).append(".");
 			}
-			String state = listGridRecord.getAttributeAsString("state");
+			String state = listGridRecord.getAttributeAsString("fact_status_name");
 			if (state != null && !state.trim().equals("")) {
 				sms_text.append(state).append(".");
 			}
 
 			String calendar_description = listGridRecord
-					.getAttributeAsString("calendar_description");
+					.getAttributeAsString("remark");
 			if (calendar_description != null
 					&& !calendar_description.trim().equals("")) {
 				sms_text.append(calendar_description).append(".");
 			}
-			String sun_rise = listGridRecord.getAttributeAsString("sun_rise");
+			String sun_rise = listGridRecord.getAttributeAsString("sunup");
 			if (sun_rise != null && !sun_rise.trim().equals("")) {
 				sms_text.append(CallCenterBK.constants.sunRise()).append(" : ")
 						.append(sun_rise);
