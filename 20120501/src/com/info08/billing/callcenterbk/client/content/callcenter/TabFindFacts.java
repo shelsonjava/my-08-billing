@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import java.util.Date;
 
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewCalendar;
 import com.smartgwt.client.data.Criteria;
@@ -19,9 +20,11 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
-import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -39,8 +42,9 @@ public class TabFindFacts extends Tab {
 	private DynamicForm searchForm;
 
 	// fields
-	private ComboBoxItem factStatusItem;
-	private ComboBoxItem factTypeItem;
+	private SelectItem factStatusItem;
+	private SelectItem factDescriptorItem;
+	private SelectItem factTypeItem;
 	private CheckboxItem dayOrMonthItem;
 	private DateItem calendarDayItem;
 	private TextItem descriptionItem;
@@ -73,29 +77,50 @@ public class TabFindFacts extends Tab {
 		searchForm = new DynamicForm();
 		searchForm.setAutoFocus(true);
 		searchForm.setWidth(500);
-		searchForm.setNumCols(2);
+		searchForm.setNumCols(3);
 		searchForm.setTitleOrientation(TitleOrientation.TOP);
 		mainLayout.addMember(searchForm);
 
 		DataSource factStatusDS = DataSource.get("FactStatusDS");
-		factStatusItem = new ComboBoxItem();
-		factStatusItem.setTitle(CallCenterBK.constants.type());
+		factStatusItem = new SelectItem();
+		factStatusItem.setTitle(CallCenterBK.constants.factStatus());
 		factStatusItem.setWidth(250);
 		factStatusItem.setName("fact_status_id");
 		factStatusItem.setOptionDataSource(factStatusDS);
 		factStatusItem.setValueField("fact_status_id");
 		factStatusItem.setDisplayField("fact_status_name");
 		factStatusItem.setAddUnknownValues(false);
+		
+
+		DataSource factsDescriptorDS = DataSource.get("FactsDescriptorDS");
+		factDescriptorItem = new SelectItem();
+		factDescriptorItem.setTitle(CallCenterBK.constants.factDescriptor());
+		factDescriptorItem.setWidth(250);
+		factDescriptorItem.setName("facts_descriptor_id");
+		factDescriptorItem.setOptionDataSource(factsDescriptorDS);
+		factDescriptorItem.setValueField("facts_descriptor_id");
+		factDescriptorItem.setDisplayField("facts_descriptor_name");
+		factDescriptorItem.setAddUnknownValues(false);
+
+		factDescriptorItem.addChangedHandler(new ChangedHandler() {
+
+			@Override
+			public void onChanged(ChangedEvent event) {
+				descriptorChanged(event.getValue());
+			}
+		});
 
 		DataSource factTypeDS = DataSource.get("FactTypeDS");
-		factTypeItem = new ComboBoxItem();
-		factTypeItem.setTitle(CallCenterBK.constants.moonPhase());
+		factTypeItem = new SelectItem();
+		factTypeItem.setTitle(CallCenterBK.constants.factType());
 		factTypeItem.setWidth(250);
 		factTypeItem.setName("fact_type_id");
 		factTypeItem.setOptionDataSource(factTypeDS);
-		factTypeItem.setValueField("fact_status_id");
-		factTypeItem.setDisplayField("fact_status_name");
+		factTypeItem.setValueField("fact_type_id");
+		factTypeItem.setDisplayField("fact_type_name");
 		factTypeItem.setAddUnknownValues(false);
+
+		descriptorChanged(100001);
 
 		calendarDayItem = new DateItem();
 		calendarDayItem.setTitle(CallCenterBK.constants.date());
@@ -106,15 +131,15 @@ public class TabFindFacts extends Tab {
 		descriptionItem = new TextItem();
 		descriptionItem.setTitle(CallCenterBK.constants.descAndComment());
 		descriptionItem.setName("descrItem");
-		descriptionItem.setWidth(500);
-		descriptionItem.setColSpan(2);
+		descriptionItem.setWidth(750);
+		descriptionItem.setColSpan(3);
 
 		dayOrMonthItem = new CheckboxItem();
 		dayOrMonthItem.setName("dayOrMonthItem");
 		dayOrMonthItem.setWidth(250);
 		dayOrMonthItem.setTitle(CallCenterBK.constants.byMonth());
 
-		searchForm.setFields(factTypeItem, factStatusItem,
+		searchForm.setFields(factDescriptorItem, factTypeItem, factStatusItem,
 				dayOrMonthItem, calendarDayItem, descriptionItem);
 
 		HLayout buttonLayout = new HLayout(5);
@@ -147,7 +172,7 @@ public class TabFindFacts extends Tab {
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
 		listGrid.setCanRemoveRecords(false);
-		listGrid.setFetchOperation("searchAllSecularCalendars");
+		listGrid.setFetchOperation("searchAllFacts");
 		listGrid.setCanSort(false);
 		listGrid.setCanResizeFields(false);
 		listGrid.setShowFilterEditor(true);
@@ -175,13 +200,13 @@ public class TabFindFacts extends Tab {
 				CallCenterBK.constants.sunRise(), 100);
 		sunup.setCanFilter(false);
 
-		ListGridField remark = new ListGridField(
-				"remark", CallCenterBK.constants.information(), 200);
+		ListGridField remark = new ListGridField("remark",
+				CallCenterBK.constants.information(), 200);
 		remark.setAlign(Alignment.LEFT);
 		remark.setCanFilter(true);
 
-		ListGridField additional_comment = new ListGridField("additional_comment",
-				CallCenterBK.constants.comment());
+		ListGridField additional_comment = new ListGridField(
+				"additional_comment", CallCenterBK.constants.comment());
 		additional_comment.setAlign(Alignment.LEFT);
 		additional_comment.setCanFilter(true);
 		additional_comment.setOptionTextMatchStyle(TextMatchStyle.EXACT);
@@ -200,10 +225,12 @@ public class TabFindFacts extends Tab {
 		clearButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				
 				calendarDayItem.clearValue();
 				descriptionItem.clearValue();
 				factStatusItem.clearValue();
 				factTypeItem.clearValue();
+				dayOrMonthItem.clearValue();
 			}
 		});
 
@@ -227,20 +254,25 @@ public class TabFindFacts extends Tab {
 		setPane(mainLayout);
 	}
 
+	private void descriptorChanged(Object value) {
+		factTypeItem.setValue((Object)null);
+		Criteria cr = new Criteria();
+		cr.setAttribute("PKuni_", HTMLPanel.createUniqueId());
+		cr.setAttribute("facts_descriptor_id", value);
+		factTypeItem.setOptionCriteria(cr);
+	}
+
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
 			String fact_status_id = factStatusItem.getValueAsString();
-			if (fact_status_id != null
-					&& !fact_status_id.trim().equals("")) {
+			if (fact_status_id != null && !fact_status_id.trim().equals("")) {
 				criteria.setAttribute("fact_status_id", new Integer(
 						fact_status_id));
 			}
 			String fact_type_id = factTypeItem.getValueAsString();
-			if (fact_type_id != null
-					&& !fact_type_id.trim().equals("")) {
-				criteria.setAttribute("fact_type_id", new Integer(
-						fact_type_id));
+			if (fact_type_id != null && !fact_type_id.trim().equals("")) {
+				criteria.setAttribute("fact_type_id", new Integer(fact_type_id));
 			}
 			try {
 				Date fact_date = calendarDayItem.getValueAsDate();
@@ -253,8 +285,7 @@ public class TabFindFacts extends Tab {
 			}
 
 			String remark = descriptionItem.getValueAsString();
-			if (remark != null
-					&& !remark.trim().equals("")) {
+			if (remark != null && !remark.trim().equals("")) {
 				String tmp = remark.trim();
 				String arrStr[] = tmp.split(" ");
 				int i = 1;
@@ -270,7 +301,7 @@ public class TabFindFacts extends Tab {
 			Boolean byMonth = dayOrMonthItem.getValueAsBoolean();
 			if (byMonth != null && byMonth.booleanValue()) {
 				criteria.setAttribute("byMonth", 1);
-			}else{
+			} else {
 				criteria.setAttribute("byMonth", 0);
 			}
 
