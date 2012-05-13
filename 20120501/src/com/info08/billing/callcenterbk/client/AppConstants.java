@@ -662,6 +662,8 @@ public interface AppConstants extends Constants {
 	String factType();
 	String factDescriptor();
 	String factStatus();
+	String addFact();
+	String editFact();
 }
 
 
