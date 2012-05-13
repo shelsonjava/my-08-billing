@@ -219,7 +219,7 @@ public class TabTransport extends Tab {
 			transportPlaneItem.setFilterLocally(false);
 			transportPlaneItem.setAddUnknownValues(false);
 
-			DataSource transpPlaneDS = DataSource.get("TranspPlaneDS");
+			DataSource transpResDS = DataSource.get("TranspResDS");
 			switch (transport_type_id) {
 			case 1000005:
 				transportPlaneItem
@@ -237,7 +237,7 @@ public class TabTransport extends Tab {
 				break;
 			}
 
-			transportPlaneItem.setOptionDataSource(transpPlaneDS);
+			transportPlaneItem.setOptionDataSource(transpResDS);
 			transportPlaneItem.setValueField("transport_plane_id");
 			transportPlaneItem.setDisplayField("transport_plane_geo_descr");
 

@@ -1,5 +1,5 @@
 <DataSource
-	ID="TranspPlaneDS"
+	ID="TranspResDS"
 	serverType="sql"
 	tableName="transp_resource"
 	qualifyColumnNames="false"
