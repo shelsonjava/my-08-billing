@@ -1,4 +1,4 @@
-package com.info08.billing.callcenterbk.shared.entity.ent;
+package com.info08.billing.callcenterbk.shared.entity.event;
 
 import java.io.Serializable;
 
