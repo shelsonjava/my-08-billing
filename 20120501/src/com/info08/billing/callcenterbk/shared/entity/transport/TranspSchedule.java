@@ -55,8 +55,8 @@ public class TranspSchedule implements Serializable {
 	private String price_descr;
 	
 	@Basic
-	@Column(name="TRANSP_COMPANY_ID")
-	private Long transp_company_id;
+	@Column(name="TRANSP_COMP_ID")
+	private Long transp_comp_id;
 	
 	@Basic
 	@Column(name="transp_type_id")
@@ -157,13 +157,13 @@ public class TranspSchedule implements Serializable {
 	public void setPrice_descr(String price_descr) {
 		this.price_descr = price_descr;
 	}
-
-	public Long getTransp_company_id() {
-		return transp_company_id;
+	
+	public Long getTransp_comp_id() {
+		return transp_comp_id;
 	}
 
-	public void setTransp_company_id(Long transp_company_id) {
-		this.transp_company_id = transp_company_id;
+	public void setTransp_comp_id(Long transp_comp_id) {
+		this.transp_comp_id = transp_comp_id;
 	}
 
 	public Long getTransp_type_id() {

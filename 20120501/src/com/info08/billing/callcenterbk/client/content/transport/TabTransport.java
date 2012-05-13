@@ -355,7 +355,7 @@ public class TabTransport extends Tab {
 
 			listGrid = new ListGrid();
 
-			listGrid.setWidth(1000);
+			listGrid.setWidth(1300);
 			listGrid.setHeight(300);
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(datasource);
@@ -376,22 +376,17 @@ public class TabTransport extends Tab {
 			datasource.getField("depart_station").setTitle("გასვლის პუნქტი");
 			datasource.getField("arrival_station").setTitle("ჩასვლის პუნქტი");
 			datasource.getField("price_descr").setTitle("ფასი");
-			datasource.getField("transp_company_geo").setTitle(
-					"სატრანსპორტო კომპანია");
-			datasource.getField("transp_resource").setTitle(
-					"სატრანსპორტო საშუალება");
+			datasource.getField("transp_company").setTitle("სატრანსპორტო კომპანია");
+			datasource.getField("transp_resource").setTitle("სატრანსპორტო საშუალება");
 			datasource.getField("days_descr").setTitle("კვირის დღეები");
 			datasource.getField("transp_model_descr").setTitle("რეისი");
 			datasource.getField("remark").setTitle("კომენტარი");
 
-			ListGridField transport_type = new ListGridField("transport_type",
-					"ტრანსპ. ტიპი", 80);
-			ListGridField depart_station = new ListGridField("depart_station",
-					"გასვლის პუნქტი", 180);
-			ListGridField arrival_station = new ListGridField(
-					"arrival_station", "ჩასვლის პუნქტი", 180);
-			ListGridField transp_company_geo = new ListGridField(
-					"transp_company_geo", "სატრანსპ. კომპანია", 170);
+			ListGridField transport_type = new ListGridField("transport_type","ტრანსპ. ტიპი", 150);
+			ListGridField depart_station = new ListGridField("depart_station","გასვლის პუნქტი", 150);
+			ListGridField arrival_station = new ListGridField("arrival_station", "ჩასვლის პუნქტი", 150);
+			ListGridField transp_company = new ListGridField(
+					"transp_company", "სატრანსპ. კომპანია", 170);
 			ListGridField transp_resource = new ListGridField(
 					"transp_resource", "ტრანსპორტი", 120);
 			ListGridField transp_model_descr = new ListGridField(
@@ -435,7 +430,7 @@ public class TabTransport extends Tab {
 			});
 
 			listGrid.setFields(transport_type, depart_station, arrival_station,
-					transp_company_geo, transp_resource, transp_model_descr,
+					transp_company, transp_resource, transp_model_descr,
 					formated_depart_time, formated_arrival_time);
 
 			mainLayout.addMember(listGrid);
