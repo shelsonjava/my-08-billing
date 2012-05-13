@@ -16,15 +16,14 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
+import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.server.common.ServerSingleton;
 import com.info08.billing.callcenterbk.shared.entity.Service;
 import com.info08.billing.callcenterbk.shared.entity.admin.FixedOperatorPrefixe;
 import com.info08.billing.callcenterbk.shared.entity.admin.MobileOperatorPrefixe;
-import com.info08.billing.callcenterbk.shared.entity.facts.CalendarState;
-import com.info08.billing.callcenterbk.shared.entity.facts.ChurchCalendar;
-import com.info08.billing.callcenterbk.shared.entity.facts.ChurchCalendarEvent;
-import com.info08.billing.callcenterbk.shared.entity.facts.SecularCalendar;
-import com.info08.billing.callcenterbk.shared.entity.facts.SecularCalendarEvent;
+import com.info08.billing.callcenterbk.shared.entity.facts.FactStatus;
+import com.info08.billing.callcenterbk.shared.entity.facts.FactType;
+import com.info08.billing.callcenterbk.shared.entity.facts.Facts;
 import com.info08.billing.callcenterbk.shared.entity.main.MainDetail;
 import com.info08.billing.callcenterbk.shared.entity.main.MainDetailType;
 import com.isomorphic.datasource.DSRequest;
@@ -44,22 +43,21 @@ public class MiscDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public SecularCalendar addSecularCalendar(SecularCalendar secularCalendar)
-			throws Exception {
+	public Facts addFact(Facts fact) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addSecularCalendar.";
+			String log = "Method:MiscDMI.addFact.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
 			// sysdate
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			String loggedUserName = secularCalendar.getLoggedUserName();
-			secularCalendar.setRec_date(recDate);
-			secularCalendar.setRec_user(loggedUserName);
+			String loggedUserName = fact.getLoggedUserName();
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, log);
 
-			Timestamp calendar_day = secularCalendar.getCalendar_day();
+			Timestamp calendar_day = fact.getFact_date();
 			if (calendar_day != null) {
 				GregorianCalendar calendar = new GregorianCalendar();
 				calendar.setTimeInMillis(calendar_day.getTime());
@@ -67,44 +65,25 @@ public class MiscDMI implements QueryConstants {
 				calendar.set(Calendar.MINUTE, 0);
 				calendar.set(Calendar.SECOND, 0);
 				calendar.set(Calendar.MILLISECOND, 0);
-				secularCalendar.setCalendar_day(new Timestamp(calendar
-						.getTimeInMillis()));
+				fact.setFact_date(new Timestamp(calendar.getTimeInMillis()));
 			}
 
-			oracleManager.persist(secularCalendar);
+			oracleManager.persist(fact);
 			oracleManager.flush();
 
-			secularCalendar = oracleManager.find(SecularCalendar.class,
-					secularCalendar.getCalendar_id());
-			secularCalendar.setLoggedUserName(loggedUserName);
-			Long event_id = secularCalendar.getCalendar_event_id();
-			if (event_id != null) {
-				SecularCalendarEvent calendarEvent = oracleManager.find(
-						SecularCalendarEvent.class, event_id);
-				if (calendarEvent != null) {
-					secularCalendar.setEvent(calendarEvent.getEvent());
-				}
-			}
-			Long state_id = secularCalendar.getCalendar_state_id();
-			if (state_id != null) {
-				CalendarState calendarState = oracleManager.find(
-						CalendarState.class, state_id);
-				if (calendarState != null) {
-					secularCalendar.setState(calendarState.getState());
-				}
-			}
+			fact.setLoggedUserName(loggedUserName);
+			fact = refetchFact(fact, oracleManager);
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return secularCalendar;
+			return fact;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert SecularCalendar Into Database : ",
-					e);
+			logger.error("Error While Insert Facts Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -112,6 +91,30 @@ public class MiscDMI implements QueryConstants {
 				EMF.returnEntityManager(oracleManager);
 			}
 		}
+	}
+
+	private Facts refetchFact(Facts fact, EntityManager oracleManager) {
+		fact = oracleManager.find(Facts.class, fact.getFact_id());
+
+		Long event_id = fact.getFact_type_id();
+		if (event_id != null) {
+			FactType calendarEvent = oracleManager.find(FactType.class,
+					event_id);
+			if (calendarEvent != null) {
+				fact.setFact_type_name(calendarEvent.getFact_type_name());
+				fact.setFacts_descriptor_id(calendarEvent
+						.getFacts_descriptor_id());
+			}
+		}
+		Long state_id = fact.getFact_status_id();
+		if (state_id != null) {
+			FactStatus calendarState = oracleManager.find(FactStatus.class,
+					state_id);
+			if (calendarState != null) {
+				fact.setFact_status_name(calendarState.getFact_status_name());
+			}
+		}
+		return fact;
 	}
 
 	/**
@@ -122,41 +125,41 @@ public class MiscDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public SecularCalendar updateSecularCalendar(Map record) throws Exception {
+	public Facts updateFact(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateSecularCalendar.";
+			String log = "Method:CommonDMI.updateFact.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-
-			Timestamp currDate = new Timestamp(System.currentTimeMillis());
-			Long calendar_id = new Long(record.get("calendar_id").toString());
-			Long calendar_state_id = record.get("calendar_state_id") == null ? null
-					: new Long(record.get("calendar_state_id").toString());
-			Long calendar_event_id = record.get("calendar_event_id") == null ? null
-					: new Long(record.get("calendar_event_id").toString());
-			String calendar_comment = record.get("calendar_comment") == null ? null
-					: record.get("calendar_comment").toString();
-			Timestamp calendar_day = record.get("calendar_day") == null ? null
-					: new Timestamp(
-							((Date) record.get("calendar_day")).getTime());
-			String calendar_description = record.get("calendar_description") == null ? null
-					: record.get("calendar_description").toString();
-			String sun_rise = record.get("sun_rise") == null ? null : record
-					.get("sun_rise").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			SecularCalendar secularCalendar = oracleManager.find(
-					SecularCalendar.class, calendar_id);
-			secularCalendar.setCalendar_comment(calendar_comment);
-			secularCalendar.setCalendar_day(calendar_day);
-			secularCalendar.setCalendar_description(calendar_description);
-			secularCalendar.setCalendar_event_id(calendar_event_id);
-			secularCalendar.setCalendar_state_id(calendar_state_id);
-			secularCalendar.setSun_rise(sun_rise);
-			secularCalendar.setUpd_date(currDate);
-			secularCalendar.setUpd_user(loggedUserName);
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, log);
+
+			Long calendar_id = new Long(record.get("fact_id").toString());
+			Long calendar_state_id = record.get("fact_status_id") == null ? null
+					: new Long(record.get("fact_status_id").toString());
+			Long calendar_event_id = record.get("fact_type_id") == null ? null
+					: new Long(record.get("fact_type_id").toString());
+			String calendar_comment = record.get("additional_comment") == null ? null
+					: record.get("additional_comment").toString();
+			Timestamp calendar_day = record.get("fact_date") == null ? null
+					: new Timestamp(((Date) record.get("fact_date")).getTime());
+			String calendar_description = record.get("remark") == null ? null
+					: record.get("remark").toString();
+			String sun_rise = record.get("sunup") == null ? null : record.get(
+					"sunup").toString();
+
+			Facts fact = oracleManager.find(Facts.class, calendar_id);
+			fact.setAdditional_comment(calendar_comment);
+			fact.setFact_date(calendar_day);
+			fact.setRemark(calendar_description);
+			fact.setFact_type_id(calendar_event_id);
+			fact.setFact_status_id(calendar_state_id);
+			fact.setSunup(sun_rise);
+			fact.setLoggedUserName(loggedUserName);
 
 			if (calendar_day != null) {
 				GregorianCalendar calendar = new GregorianCalendar();
@@ -165,36 +168,17 @@ public class MiscDMI implements QueryConstants {
 				calendar.set(Calendar.MINUTE, 0);
 				calendar.set(Calendar.SECOND, 0);
 				calendar.set(Calendar.MILLISECOND, 0);
-				secularCalendar.setCalendar_day(new Timestamp(calendar
-						.getTimeInMillis()));
+				fact.setFact_date(new Timestamp(calendar.getTimeInMillis()));
 			}
 
-			oracleManager.merge(secularCalendar);
+			oracleManager.merge(fact);
 			oracleManager.flush();
+			fact = refetchFact(fact, oracleManager);
 
-			secularCalendar = oracleManager.find(SecularCalendar.class,
-					calendar_id);
-			secularCalendar.setLoggedUserName(loggedUserName);
-			Long event_id = secularCalendar.getCalendar_event_id();
-			if (event_id != null) {
-				SecularCalendarEvent calendarEvent = oracleManager.find(
-						SecularCalendarEvent.class, event_id);
-				if (calendarEvent != null) {
-					secularCalendar.setEvent(calendarEvent.getEvent());
-				}
-			}
-			Long state_id = secularCalendar.getCalendar_state_id();
-			if (state_id != null) {
-				CalendarState calendarState = oracleManager.find(
-						CalendarState.class, state_id);
-				if (calendarState != null) {
-					secularCalendar.setState(calendarState.getState());
-				}
-			}
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return secularCalendar;
+			return fact;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -219,8 +203,7 @@ public class MiscDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public SecularCalendar updateSecularCalendarStatus(Map record)
-			throws Exception {
+	public Facts removeFacts(DSRequest req) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -229,44 +212,20 @@ public class MiscDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			Timestamp currDate = new Timestamp(System.currentTimeMillis());
-			Long calendar_id = new Long(record.get("calendar_id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
+			Map record = req.getOldValues();
+			Long fact_id = new Long(record.get("fact_id").toString());
+
 			String loggedUserName = record.get("loggedUserName").toString();
-
-			SecularCalendar secularCalendar = oracleManager.find(
-					SecularCalendar.class, calendar_id);
-
-			secularCalendar.setDeleted(deleted);
-			secularCalendar.setUpd_user(loggedUserName);
-			secularCalendar.setUpd_date(currDate);
-
-			oracleManager.merge(secularCalendar);
+			RCNGenerator.getInstance().initRcn(oracleManager, currDate,
+					loggedUserName, log);
+			Facts fact = oracleManager.find(Facts.class, fact_id);
+			oracleManager.remove(fact);
 			oracleManager.flush();
-
-			secularCalendar = oracleManager.find(SecularCalendar.class,
-					calendar_id);
-			secularCalendar.setLoggedUserName(loggedUserName);
-			Long event_id = secularCalendar.getCalendar_event_id();
-			if (event_id != null) {
-				SecularCalendarEvent calendarEvent = oracleManager.find(
-						SecularCalendarEvent.class, event_id);
-				if (calendarEvent != null) {
-					secularCalendar.setEvent(calendarEvent.getEvent());
-				}
-			}
-			Long state_id = secularCalendar.getCalendar_state_id();
-			if (state_id != null) {
-				CalendarState calendarState = oracleManager.find(
-						CalendarState.class, state_id);
-				if (calendarState != null) {
-					secularCalendar.setState(calendarState.getState());
-				}
-			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return secularCalendar;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -274,247 +233,6 @@ public class MiscDMI implements QueryConstants {
 			}
 			logger.error(
 					"Error While Update Status for SecularCalendar Into Database : ",
-					e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	/**
-	 * Adding New ChurchCalendar
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	public ChurchCalendar addChurchCalendar(ChurchCalendar churchCalendar)
-			throws Exception {
-		EntityManager oracleManager = null;
-		Object transaction = null;
-		try {
-			String log = "Method:CommonDMI.addSecularCalendar.";
-			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
-
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			String loggedUserName = churchCalendar.getLoggedUserName();
-			churchCalendar.setRec_date(recDate);
-			churchCalendar.setRec_user(loggedUserName);
-
-			Timestamp calendar_day = churchCalendar.getCalendar_day();
-			if (calendar_day != null) {
-				GregorianCalendar calendar = new GregorianCalendar();
-				calendar.setTimeInMillis(calendar_day.getTime());
-				calendar.set(Calendar.HOUR_OF_DAY, 0);
-				calendar.set(Calendar.MINUTE, 0);
-				calendar.set(Calendar.SECOND, 0);
-				calendar.set(Calendar.MILLISECOND, 0);
-				churchCalendar.setCalendar_day(new Timestamp(calendar
-						.getTimeInMillis()));
-			}
-
-			oracleManager.persist(churchCalendar);
-			oracleManager.flush();
-
-			churchCalendar = oracleManager.find(ChurchCalendar.class,
-					churchCalendar.getCalendar_id());
-			churchCalendar.setLoggedUserName(loggedUserName);
-			Long event_id = churchCalendar.getCalendar_event_id();
-			if (event_id != null) {
-				ChurchCalendarEvent churchCalendarEvent = oracleManager.find(
-						ChurchCalendarEvent.class, event_id);
-				if (churchCalendarEvent != null) {
-					churchCalendar.setEvent(churchCalendarEvent.getEvent());
-				}
-			}
-			Long state_id = churchCalendar.getCalendar_state_id();
-			if (state_id != null) {
-				CalendarState calendarState = oracleManager.find(
-						CalendarState.class, state_id);
-				if (calendarState != null) {
-					churchCalendar.setState(calendarState.getState());
-				}
-			}
-
-			EMF.commitTransaction(transaction);
-			log += ". Inserting Finished SuccessFully. ";
-			logger.info(log);
-			return churchCalendar;
-		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error("Error While Insert ChurchCalendar Into Database : ",
-					e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	/**
-	 * Updating ChurchCalendar
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public ChurchCalendar updateChurchCalendar(Map record) throws Exception {
-		EntityManager oracleManager = null;
-		Object transaction = null;
-		try {
-			String log = "Method:CommonDMI.updateSecularCalendar.";
-			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
-
-			Timestamp currDate = new Timestamp(System.currentTimeMillis());
-			Long calendar_id = new Long(record.get("calendar_id").toString());
-			Long calendar_state_id = record.get("calendar_state_id") == null ? null
-					: new Long(record.get("calendar_state_id").toString());
-			Long calendar_event_id = record.get("calendar_event_id") == null ? null
-					: new Long(record.get("calendar_event_id").toString());
-			Timestamp calendar_day = record.get("calendar_day") == null ? null
-					: new Timestamp(
-							((Date) record.get("calendar_day")).getTime());
-			String calendar_description = record.get("calendar_description") == null ? null
-					: record.get("calendar_description").toString();
-			String loggedUserName = record.get("loggedUserName").toString();
-
-			ChurchCalendar churchCalendar = oracleManager.find(
-					ChurchCalendar.class, calendar_id);
-			churchCalendar.setCalendar_day(calendar_day);
-			churchCalendar.setCalendar_description(calendar_description);
-			churchCalendar.setCalendar_event_id(calendar_event_id);
-			churchCalendar.setCalendar_state_id(calendar_state_id);
-			churchCalendar.setUpd_date(currDate);
-			churchCalendar.setUpd_user(loggedUserName);
-
-			if (calendar_day != null) {
-				GregorianCalendar calendar = new GregorianCalendar();
-				calendar.setTimeInMillis(calendar_day.getTime());
-				calendar.set(Calendar.HOUR_OF_DAY, 0);
-				calendar.set(Calendar.MINUTE, 0);
-				calendar.set(Calendar.SECOND, 0);
-				calendar.set(Calendar.MILLISECOND, 0);
-				churchCalendar.setCalendar_day(new Timestamp(calendar
-						.getTimeInMillis()));
-			}
-
-			oracleManager.merge(churchCalendar);
-			oracleManager.flush();
-
-			churchCalendar = oracleManager.find(ChurchCalendar.class,
-					calendar_id);
-			churchCalendar.setLoggedUserName(loggedUserName);
-			Long event_id = churchCalendar.getCalendar_event_id();
-			if (event_id != null) {
-				ChurchCalendarEvent churchCalendarEvent = oracleManager.find(
-						ChurchCalendarEvent.class, event_id);
-				if (churchCalendarEvent != null) {
-					churchCalendar.setEvent(churchCalendarEvent.getEvent());
-				}
-			}
-			Long state_id = churchCalendar.getCalendar_state_id();
-			if (state_id != null) {
-				CalendarState calendarState = oracleManager.find(
-						CalendarState.class, state_id);
-				if (calendarState != null) {
-					churchCalendar.setState(calendarState.getState());
-				}
-			}
-			EMF.commitTransaction(transaction);
-			log += ". Updating Finished SuccessFully. ";
-			logger.info(log);
-			return churchCalendar;
-		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error("Error While Update ChurchCalendar Into Database : ",
-					e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	/**
-	 * Updating ChurchCalendar Status
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public ChurchCalendar updateChurchCalendarStatus(Map record)
-			throws Exception {
-		EntityManager oracleManager = null;
-		Object transaction = null;
-		try {
-			String log = "Method:CommonDMI.updateSecularCalendarStatus.";
-			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
-
-			Timestamp currDate = new Timestamp(System.currentTimeMillis());
-			Long calendar_id = new Long(record.get("calendar_id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
-
-			ChurchCalendar churchCalendar = oracleManager.find(
-					ChurchCalendar.class, calendar_id);
-
-			churchCalendar.setDeleted(deleted);
-			churchCalendar.setUpd_user(loggedUserName);
-			churchCalendar.setUpd_date(currDate);
-
-			oracleManager.merge(churchCalendar);
-			oracleManager.flush();
-
-			churchCalendar = oracleManager.find(ChurchCalendar.class,
-					calendar_id);
-			churchCalendar.setLoggedUserName(loggedUserName);
-			Long event_id = churchCalendar.getCalendar_event_id();
-			if (event_id != null) {
-				ChurchCalendarEvent churchCalendarEvent = oracleManager.find(
-						ChurchCalendarEvent.class, event_id);
-				if (churchCalendarEvent != null) {
-					churchCalendar.setEvent(churchCalendarEvent.getEvent());
-				}
-			}
-			Long state_id = churchCalendar.getCalendar_state_id();
-			if (state_id != null) {
-				CalendarState calendarState = oracleManager.find(
-						CalendarState.class, state_id);
-				if (calendarState != null) {
-					churchCalendar.setState(calendarState.getState());
-				}
-			}
-
-			EMF.commitTransaction(transaction);
-			log += ". Status Updating Finished SuccessFully. ";
-			logger.info(log);
-			return churchCalendar;
-		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error(
-					"Error While Update Status for ChurchCalendar Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
