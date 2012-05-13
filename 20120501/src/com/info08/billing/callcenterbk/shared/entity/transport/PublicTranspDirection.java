@@ -96,13 +96,6 @@ public class PublicTranspDirection implements Serializable {
 		this.service_id = service_id;
 	}
 
-	public String getСycle_descr() {
-		return cycle_descr;
-	}
-
-	public void setСycle_descr(String cycle_descr) {
-		this.cycle_descr = cycle_descr;
-	}
 
 	public String getService_descr() {
 		return service_descr;
@@ -118,5 +111,13 @@ public class PublicTranspDirection implements Serializable {
 
 	public void setLoggedUserName(String loggedUserName) {
 		this.loggedUserName = loggedUserName;
+	}
+
+	public String getCycle_descr() {
+		return cycle_descr;
+	}
+
+	public void setCycle_descr(String cycle_descr) {
+		this.cycle_descr = cycle_descr;
 	}
 }

@@ -620,11 +620,11 @@ public class TransportDMI implements QueryConstants {
 			}
 			Long cycled_id = busRoute.getCycled_id();
 			switch (cycled_id.intValue()) {
-			case 1:
-				busRoute.setСycle_descr("ჩვეულებრივი");
+			case 1:	   //setCycle_descr	
+				busRoute.setCycle_descr("ჩვეულებრივი");
 				break;
 			case 2:
-				busRoute.setСycle_descr("წრიული");
+				busRoute.setCycle_descr("წრიული");
 				break;
 			default:
 				break;
@@ -701,10 +701,10 @@ public class TransportDMI implements QueryConstants {
 			}
 			switch (cycled_id.intValue()) {
 			case 1:
-				busRoute.setСycle_descr("ჩვეულებრივი");
+				busRoute.setCycle_descr("ჩვეულებრივი");
 				break;
 			case 2:
-				busRoute.setСycle_descr("წრიული");
+				busRoute.setCycle_descr("წრიული");
 				break;
 			default:
 				break;

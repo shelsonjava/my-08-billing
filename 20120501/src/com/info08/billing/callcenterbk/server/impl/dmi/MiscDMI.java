@@ -194,7 +194,12 @@ public class MiscDMI implements QueryConstants {
 			}
 		}
 	}
-
+public static void main(String[] args) {
+	String s="setСycle_descr";
+	for (char c : s.toCharArray()) {
+		System.out.println((int)c+" "+c);
+	}
+}
 	/**
 	 * Updating SecularCalendar Status
 	 * 
