@@ -1,0 +1,208 @@
+<DataSource
+	ID="EventDS"
+	serverType="sql"
+	tableName="event"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="event_id"					type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="event_owner_name"			type="text"			title="event_owner_name"/>
+		<field name="event_name"				type="text"			title="event_name"/>
+		<field name="remark"					type="text"			title="Remark"/>
+		<field name="event_date"				type="datetime"		title="event_date"/>
+		<field name="event_price"				type="text"			title="event_price"/>
+		<field name="event_time"				type="text"			title="event_time"/>
+		<field name="sms_remark"				type="text"			title="Sms Remark"/>
+		<field name="date_criteria"				type="integer"		title="date_criteria" 				hidden="true"/>
+		<field name="date_visibility"			type="integer"		title="date_visibility" 			hidden="true"/>
+		<field name="event_owner_id"			type="integer"		title="event_owner_id" 				hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true"/>	
+		<field name="event_category_id"			type="integer"		title="Ent Type Id" 				hidden="true"/>	
+		<field name="eventDateTime"				type="text"			title="eventDateTime"/>
+		<field name="event_list_id"				type="integer"		title="event_list_id" 				hidden="true"/>
+		<field name="event_list_owner_id"		type="integer"		title="event_list_owner_id" 		hidden="true"/>
+		<field name="event_list_name"			type="text"			title="event_list_name"/>
+		<field name="event_list_date"			type="text"			title="event_list_date"/>
+		<field name="event_list_remark"			type="text"			title="event_list_remark"/>
+		<field name="event_list_time"			type="datetime"		title="event_list_time"/>
+		<field name="event_list_price"			type="text"			title="event_list_price"/>
+		<field name="event_list_info"			type="text"			title="event_list_info"/>
+		<field name="event_list_date_m_y"		type="text"			title="event_list_date_m_y"			hidden="true"/>
+		<field name="main_id"					type="integer"		title="main_id" 					hidden="true"/>
+		<field name="event_list_n_date"			type="text"			title="event_list_n_date"/>
+		<field name="event_list_n_time"			type="text"			title="event_list_n_time"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EventDMI"/>
+
+		<!-- Add EntPoster -->
+		<operationBinding operationType="add" operationId="addEvent" serverMethod="addEvent">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EventDMI"/>
+        </operationBinding>
+        
+		<!-- EntPoster Update -->
+		<operationBinding operationType="update" operationId="updateEvent" serverMethod="updateEvent">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EventDMI"/>
+        </operationBinding>
+        
+        <!-- EntPoster Delete -->
+		<operationBinding operationType="remove" operationId="removeEvent" serverMethod="removeEvent">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EventDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllEvent" operationType="fetch">
+    		<selectClause>   			
+    			t.event_id,
+				t.remark,
+				t.date_criteria,
+				t.date_visibility,
+				t.event_owner_id,
+				t.event_name,
+				t.event_date,
+				t.event_price,
+				t.event_time,
+				ep.event_owner_name,
+				t.sms_remark,
+				ep.event_category_id,
+				trim(to_char(t.event_date,'DD-MM-YYYY')||' '||t.event_time) as eventDateTime
+			</selectClause> 
+			<tableClause>event t, event_owner ep</tableClause>
+			<whereClause><![CDATA[
+				t.event_owner_id = ep.event_owner_id
+				#if($criteria.event_category_id) and ep.event_category_id = $criteria.event_category_id #end
+				#if($criteria.event_owner_id) and t.event_owner_id = $criteria.event_owner_id #end
+				#if($criteria.event_name) and t.event_name like ($criteria.event_name)||'%' #end
+				#if($criteria.remark) and t.remark like ($criteria.remark)||'%' #end
+				#if($criteria.event_price) and t.event_price like ($criteria.event_price)||'%' #end
+				#if($criteria.event_date_start) and trunc(t.event_date) >= trunc($criteria.event_date_start) #end
+				#if($criteria.event_date_end) and trunc(t.event_date) <= trunc($criteria.event_date_end) #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.event_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchAllEventForCallCenter" operationType="fetch">
+    		<selectClause>   			
+    			   t.event_id,
+			       t.event_owner_id,
+			       t.event_name,
+			       t.remark,
+			       t.event_date,
+			       t.event_time,
+			       t.event_price,
+			       t.event_info,
+			       t.event_date_m_y,
+			       ep.event_owner_name,
+       			   ep.main_id,
+       			   t.event_list_date,
+       			   t.event_list_time       			   
+			</selectClause> 
+			<tableClause>event_list_items t, event_owner ep</tableClause>
+			<whereClause><![CDATA[
+				t.event_owner_id = ep.event_owner_id
+				#if($criteria.event_owner_id) and t.event_owner_id = $criteria.event_owner_id #end
+				#if($criteria.event_time) and trunc(t.event_time) = trunc($criteria.event_time) #end
+				#if($criteria.entPostGeoAndCom) 
+					and (t.event_name like '%'||$criteria.entPostGeoAndCom||'%' or t.event_info like '%'||$criteria.entPostGeoAndCom||'%') 
+				#end
+				
+				]]>  
+			</whereClause> 
+			<orderClause>t.event_date_m_y, t.event_date, t.event_name</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchAllEventForCallCenter1" operationType="fetch">
+    		<selectClause>   			
+    			t.event_id as event_list_id,
+				t.comment_eng,
+				nvl(t.remark, '_') as event_list_remark,
+				t.date_criteria,
+				t.date_visibility,
+				t.event_owner_id as event_list_owner_id,
+				t.ent_poster_eng,
+				nvl(t.event_name, '_') as event_list_name,
+				t.event_date,
+				t.poster_price_eng,
+				t.event_price,
+				t.event_time,
+				ep.event_owner_name,
+				t.sms_remark,
+				ep.event_category_id,
+				trim(to_char(t.event_date,'DD-MM-YYYY')||' '||t.event_time) as eventDateTime,
+				decode(t.date_visibility, 0, TO_CHAR(t.event_date, 'dd-mm-yy') || ' ' || t.event_time, '--------------') event_list_date,
+				to_date(t.event_date || ':' || decode(t.event_time, null, '00:01', t.event_time), 'dd/mm/yy:HH24:mi') event_list_time,
+				nvl(t.event_price, '_') event_list_price,
+				t.event_name || ' ' || t.remark as event_list_info,
+				to_char(t.event_date, 'mm/yy') event_list_date_m_y
+				
+			</selectClause> 
+			<tableClause>event t, event_owner ep</tableClause>
+			<whereClause><![CDATA[
+				t.event_owner_id = ep.event_owner_id 
+				and (trunc(t.event_date) >= trunc(sysdate) - 1 or t.date_criteria not in (0))
+				#if($criteria.event_category_id) and ep.event_category_id = $criteria.event_category_id #end
+				#if($criteria.event_owner_id) and t.event_owner_id = $criteria.event_owner_id #end
+				#if($criteria.event_name) and t.event_name like ($criteria.event_name)||'%' #end
+				#if($criteria.remark) and t.remark like ($criteria.remark)||'%' #end
+				#if($criteria.event_price) and t.event_price like ($criteria.event_price)||'%' #end
+				#if($criteria.event_date_start) and trunc(t.event_date) >= trunc($criteria.event_date_start) #end
+				#if($criteria.event_date_end) and trunc(t.event_date) <= trunc($criteria.event_date_end) #end
+				
+				#if($criteria.event_date_p) and (trunc(t.event_date) = trunc($criteria.event_date_p) or t.date_criteria not in (0)) #end
+				
+				#if($criteria.event_list_owner_id) and t.event_owner_id = $criteria.event_list_owner_id #end
+				#if($criteria.entPostGeoAndCom) 
+					and (
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom||'%'
+						) 
+				#end
+				
+				#if($criteria.entPostGeoAndCom1) 
+					and (
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom1||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom1||'%'
+						) 
+				#end
+				#if($criteria.entPostGeoAndCom2) 
+					and (
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom2||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom2||'%'
+						) 
+				#end
+				#if($criteria.entPostGeoAndCom3) 
+					and (
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom3||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom3||'%'
+						) 
+				#end
+				#if($criteria.entPostGeoAndCom4) 
+					and (
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom4||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom4||'%'
+						) 
+				#end
+				#if($criteria.entPostGeoAndCom5) 
+					and (
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom5||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom5||'%'
+						) 
+				#end
+				
+				
+				
+				]]>  
+			</whereClause> 
+			<orderClause>to_char(t.event_date, 'mm/yy'), decode(t.date_visibility, 0, TO_CHAR(t.event_date, 'dd-mm-yy') || ' ' || t.event_time, '--------------'), nvl(t.event_name, '_')</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    </operationBindings>	
+</DataSource>
