@@ -3,8 +3,7 @@ package com.info08.billing.callcenterbk.client.content.ent;
 import java.util.Date;
 
 import com.google.gwt.user.datepicker.client.CalendarUtil;
-import com.info08.billing.callcenterbk.client.dialogs.ent.DlgAddEditEntPoster;
-import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
+import com.info08.billing.callcenterbk.client.dialogs.ent.DlgAddEditEvent;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -22,6 +21,8 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -52,7 +53,7 @@ public class TabEvent extends Tab {
 	private TextItem posterPriceGeoItem;
 	private DateItem posterDateStartItem;
 	private DateItem posterDateEndItem;
-	private ComboBoxItem deletedItem;
+	// private ComboBoxItem deletedItem;
 
 	// actions
 	private IButton findButton;
@@ -60,8 +61,6 @@ public class TabEvent extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton disableBtn;
-	private ToolStripButton activateBtn;
-	private ToolStripButton deleteBtn;
 	private ToolStripButton copyBtn;
 
 	// ListGrid
@@ -75,7 +74,7 @@ public class TabEvent extends Tab {
 			setTitle("აფიშა-ღონისძიებების მართვა");
 			setCanClose(true);
 
-			datasource = DataSource.get("EntPosterDS");
+			datasource = DataSource.get("EventDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -97,9 +96,9 @@ public class TabEvent extends Tab {
 			entTypeItem.setFilterLocally(false);
 			entTypeItem.setAddUnknownValues(false);
 
-			DataSource entTypeDS = DataSource.get("EntTypeDS");
+			DataSource EventCategoryDS = DataSource.get("EventCategoryDS");
 			entTypeItem.setOptionOperationId("searchAllEventCategoryForCB");
-			entTypeItem.setOptionDataSource(entTypeDS);
+			entTypeItem.setOptionDataSource(EventCategoryDS);
 			entTypeItem.setValueField("event_category_id");
 			entTypeItem.setDisplayField("event_category_name");
 
@@ -111,7 +110,8 @@ public class TabEvent extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = entTypeItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("event_category_id");
+						String oldAttr = criteria
+								.getAttribute("event_category_id");
 						if (oldAttr != null) {
 							Object nullO = null;
 							criteria.setAttribute("event_category_id", nullO);
@@ -120,19 +120,45 @@ public class TabEvent extends Tab {
 				}
 			});
 
+			entTypeItem.addChangedHandler(new ChangedHandler() {
+				@Override
+				public void onChanged(ChangedEvent event) {
+					String event_category_str = entTypeItem.getValueAsString();
+
+					if (event_category_str != null
+							&& !event_category_str.trim().equals("")) {
+						try {
+							Integer event_category_id = Integer
+									.parseInt(event_category_str);
+
+							Criteria criteria = entPlacesItem
+									.getOptionCriteria();
+							if (criteria != null) {
+								criteria.setAttribute("event_category_id",
+										event_category_id);
+								entPlacesItem.setOptionCriteria(criteria);
+							}
+
+						} catch (Exception e) {
+							return;
+						}
+					}
+				}
+			});
+
 			entPlacesItem = new ComboBoxItem();
 			entPlacesItem.setTitle("აფიშა-რესურსი");
 			entPlacesItem.setWidth(300);
-			entPlacesItem.setName("ent_place_geo");
+			entPlacesItem.setName("event_owner_name");
 			entPlacesItem.setFetchMissingValues(true);
 			entPlacesItem.setFilterLocally(false);
 			entPlacesItem.setAddUnknownValues(false);
 
-			DataSource entPlaceDS = DataSource.get("EntPlaceDS");
-			entPlacesItem.setOptionOperationId("searchAllEntPlacesForCB");
-			entPlacesItem.setOptionDataSource(entPlaceDS);
+			DataSource EventOwnerDS = DataSource.get("EventOwnerDS");
+			entPlacesItem.setOptionOperationId("searchAllEventOwnerForCB");
+			entPlacesItem.setOptionDataSource(EventOwnerDS);
 			entPlacesItem.setValueField("event_owner_id");
-			entPlacesItem.setDisplayField("ent_place_geo");
+			entPlacesItem.setDisplayField("event_owner_name");
 
 			entPlacesItem.setOptionCriteria(new Criteria());
 			entPlacesItem.setAutoFetchData(false);
@@ -142,7 +168,8 @@ public class TabEvent extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = entPlacesItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("event_owner_id");
+						String oldAttr = criteria
+								.getAttribute("event_owner_id");
 						if (oldAttr != null) {
 							Object nullO = null;
 							criteria.setAttribute("event_owner_id", nullO);
@@ -153,17 +180,17 @@ public class TabEvent extends Tab {
 
 			entPosterGeoItem = new TextItem();
 			entPosterGeoItem.setTitle("ღონისძიების დასახელება");
-			entPosterGeoItem.setName("ent_poster_geo");
+			entPosterGeoItem.setName("event_name");
 			entPosterGeoItem.setWidth(300);
 
 			commentGeoItem = new TextItem();
 			commentGeoItem.setTitle("კომენტარი");
-			commentGeoItem.setName("comment_geo");
+			commentGeoItem.setName("remark");
 			commentGeoItem.setWidth(300);
 
 			posterPriceGeoItem = new TextItem();
 			posterPriceGeoItem.setTitle("ფასი");
-			posterPriceGeoItem.setName("poster_price_geo");
+			posterPriceGeoItem.setName("event_price");
 			posterPriceGeoItem.setWidth(300);
 
 			Date startDate = new Date();
@@ -183,14 +210,14 @@ public class TabEvent extends Tab {
 			posterDateEndItem.setName("poster_date_end");
 			posterDateEndItem.setHint("აირჩიეთ");
 
-			deletedItem = new ComboBoxItem();
-			deletedItem.setTitle("სტატუსი");
-			deletedItem.setWidth(300);
-			deletedItem.setName("deleted_transport");
-			deletedItem.setValueMap(ClientMapUtil.getInstance().getStatuses());
+			// deletedItem = new ComboBoxItem();
+			// deletedItem.setTitle("სტატუსი");
+			// deletedItem.setWidth(300);
+			// deletedItem.setName("deleted_transport");
+			// deletedItem.setValueMap(ClientMapUtil.getInstance().getStatuses());
 
 			searchForm.setFields(entTypeItem, entPlacesItem, entPosterGeoItem,
-					commentGeoItem, posterPriceGeoItem, deletedItem,
+					commentGeoItem, posterPriceGeoItem, // deletedItem,
 					posterDateStartItem, posterDateEndItem);
 
 			HLayout buttonLayout = new HLayout(5);
@@ -227,22 +254,12 @@ public class TabEvent extends Tab {
 			disableBtn.setWidth(50);
 			toolStrip.addButton(disableBtn);
 
-			activateBtn = new ToolStripButton("აღდგენა", "restoreIcon.gif");
-			activateBtn.setLayoutAlign(Alignment.LEFT);
-			activateBtn.setWidth(50);
-			toolStrip.addButton(activateBtn);
-
 			toolStrip.addSeparator();
 
 			copyBtn = new ToolStripButton("კოპირება", "copy.png");
 			copyBtn.setLayoutAlign(Alignment.LEFT);
 			copyBtn.setWidth(50);
 			toolStrip.addButton(copyBtn);
-
-			deleteBtn = new ToolStripButton("წაშლა", "deleteIcon.png");
-			deleteBtn.setLayoutAlign(Alignment.LEFT);
-			deleteBtn.setWidth(50);
-			toolStrip.addButton(deleteBtn);
 
 			listGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -275,26 +292,21 @@ public class TabEvent extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("ent_place_geo").setTitle("რესურსი");
-			datasource.getField("ent_poster_geo").setTitle("ღონისძიება");
-			datasource.getField("comment_geo").setTitle("კომენტარი");
-			datasource.getField("poster_price_geo").setTitle("ფასი");
-			datasource.getField("poster_date").setTitle("თარიღი");
-			datasource.getField("poster_time").setTitle("დრო");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_date").setTitle("განახლების თარიღი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
-			datasource.getField("sms_comment").setTitle("SMS კომენტარი");
+			datasource.getField("event_owner_name").setTitle("რესურსი");
+			datasource.getField("event_name").setTitle("ღონისძიება");
+			datasource.getField("remark").setTitle("კომენტარი");
+			datasource.getField("event_price").setTitle("ფასი");
+			datasource.getField("event_date").setTitle("თარიღი");
+			datasource.getField("event_time").setTitle("დრო");
+			datasource.getField("sms_remark").setTitle("SMS კომენტარი");
 
-			ListGridField ent_place_geo = new ListGridField("ent_place_geo",
-					"რესურსი", 330);
-			ListGridField ent_poster_geo = new ListGridField("ent_poster_geo",
+			ListGridField event_owner_name = new ListGridField(
+					"event_owner_name", "რესურსი", 330);
+			ListGridField event_name = new ListGridField("event_name",
 					"ღონისძიება", 300);
-			ListGridField comment_geo = new ListGridField("comment_geo",
-					"კომენტარი", 250);
+			ListGridField remark = new ListGridField("remark", "კომენტარი", 250);
 
-			listGrid.setFields(ent_place_geo, ent_poster_geo, comment_geo);
+			listGrid.setFields(event_owner_name, event_name, remark);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -311,7 +323,7 @@ public class TabEvent extends Tab {
 					commentGeoItem.clearValue();
 					posterPriceGeoItem.clearValue();
 					entTypeItem.clearValue();
-					deletedItem.clearValue();
+					// deletedItem.clearValue();
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
@@ -328,9 +340,9 @@ public class TabEvent extends Tab {
 					Integer event_category_id = selEntPlaceRecord
 							.getAttributeAsInt("event_category_id");
 
-					DlgAddEditEntPoster dlgAddEditEntPoster = new DlgAddEditEntPoster(
+					DlgAddEditEvent dlgAddEditEvent = new DlgAddEditEvent(
 							listGrid, null, event_owner_id, event_category_id);
-					dlgAddEditEntPoster.show();
+					dlgAddEditEvent.show();
 				}
 			});
 
@@ -347,9 +359,10 @@ public class TabEvent extends Tab {
 							.getAttributeAsInt("event_owner_id");
 					Integer event_category_id = listGridRecord
 							.getAttributeAsInt("event_category_id");
-					DlgAddEditEntPoster dlgAddEditEntPoster = new DlgAddEditEntPoster(
-							listGrid, listGridRecord, event_owner_id, event_category_id);
-					dlgAddEditEntPoster.show();
+					DlgAddEditEvent dlgAddEditEvent = new DlgAddEditEvent(
+							listGrid, listGridRecord, event_owner_id,
+							event_category_id);
+					dlgAddEditEvent.show();
 				}
 			});
 			disableBtn.addClickHandler(new ClickHandler() {
@@ -361,15 +374,10 @@ public class TabEvent extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
-					final Integer ent_poster_id = listGridRecord
-							.getAttributeAsInt("ent_poster_id");
-					if (ent_poster_id == null) {
+
+					final Integer event_id = listGridRecord
+							.getAttributeAsInt("event_id");
+					if (event_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -379,40 +387,7 @@ public class TabEvent extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(ent_poster_id, 1);
-									}
-								}
-							});
-				}
-			});
-			activateBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer ent_poster_id = listGridRecord
-							.getAttributeAsInt("ent_poster_id");
-					if (ent_poster_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ ჩანაწერის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(ent_poster_id, 0);
+										delete(event_id);
 									}
 								}
 							});
@@ -434,11 +409,12 @@ public class TabEvent extends Tab {
 					Integer event_category_id = listGridRecord
 							.getAttributeAsInt("event_category_id");
 					Object nullObj = null;
-					listGridRecord.setAttribute("ent_poster_id", nullObj);
+					listGridRecord.setAttribute("event_id", nullObj);
 
-					DlgAddEditEntPoster dlgAddEditEntPoster = new DlgAddEditEntPoster(
-							listGrid, listGridRecord, event_owner_id, event_category_id);
-					dlgAddEditEntPoster.show();
+					DlgAddEditEvent dlgAddEditEvent = new DlgAddEditEvent(
+							listGrid, listGridRecord, event_owner_id,
+							event_category_id);
+					dlgAddEditEvent.show();
 				}
 			});
 
@@ -453,35 +429,6 @@ public class TabEvent extends Tab {
 			listGrid.addRecordClickHandler(new RecordClickHandler() {
 				public void onRecordClick(RecordClickEvent event) {
 					detailViewer.viewSelectedData(listGrid);
-				}
-			});
-
-			deleteBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecords[] = listGrid
-							.getSelectedRecords();
-					if (listGridRecords == null || listGridRecords.length <= 0) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი(ჩანაწერები) ცხრილში !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ ჩანაწერის(ჩანაწერების) წაშლა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										for (ListGridRecord listGridRecord : listGridRecords) {
-											final Integer ent_poster_id = listGridRecord
-													.getAttributeAsInt("ent_poster_id");
-											if (ent_poster_id == null) {
-												continue;
-											}
-											delete(ent_poster_id);
-										}
-									}
-								}
-							});
 				}
 			});
 
@@ -500,9 +447,10 @@ public class TabEvent extends Tab {
 					Integer event_category_id = listGridRecord
 							.getAttributeAsInt("event_category_id");
 
-					DlgAddEditEntPoster dlgAddEditEntPoster = new DlgAddEditEntPoster(
-							listGrid, listGridRecord, event_owner_id, event_category_id);
-					dlgAddEditEntPoster.show();
+					DlgAddEditEvent dlgAddEditEvent = new DlgAddEditEvent(
+							listGrid, listGridRecord, event_owner_id,
+							event_category_id);
+					dlgAddEditEvent.show();
 				}
 			});
 
@@ -520,19 +468,20 @@ public class TabEvent extends Tab {
 			String event_owner_id = entPlacesItem.getValueAsString();
 			Criteria criteria = new Criteria();
 			if (event_owner_id != null && !event_owner_id.trim().equals("")) {
-				criteria.setAttribute("event_owner_id", new Integer(event_owner_id));
+				criteria.setAttribute("event_owner_id", new Integer(
+						event_owner_id));
 			}
-			String ent_poster_geo = entPosterGeoItem.getValueAsString();
-			if (ent_poster_geo != null && !ent_poster_geo.trim().equals("")) {
-				criteria.setAttribute("ent_poster_geo", ent_poster_geo);
+			String event_name = entPosterGeoItem.getValueAsString();
+			if (event_name != null && !event_name.trim().equals("")) {
+				criteria.setAttribute("event_name", event_name);
 			}
-			String comment_geo = commentGeoItem.getValueAsString();
-			if (comment_geo != null && !comment_geo.trim().equals("")) {
-				criteria.setAttribute("comment_geo", comment_geo);
+			String remark = commentGeoItem.getValueAsString();
+			if (remark != null && !remark.trim().equals("")) {
+				criteria.setAttribute("remark", remark);
 			}
-			String poster_price_geo = posterPriceGeoItem.getValueAsString();
-			if (poster_price_geo != null && !poster_price_geo.trim().equals("")) {
-				criteria.setAttribute("poster_price_geo", poster_price_geo);
+			String event_price = posterPriceGeoItem.getValueAsString();
+			if (event_price != null && !event_price.trim().equals("")) {
+				criteria.setAttribute("event_price", event_price);
 			}
 			Date poster_date_start = posterDateStartItem.getValueAsDate();
 			if (poster_date_start != null) {
@@ -544,15 +493,12 @@ public class TabEvent extends Tab {
 			}
 			String event_category_id = entTypeItem.getValueAsString();
 			if (event_category_id != null) {
-				criteria.setAttribute("event_category_id", new Integer(event_category_id));
-			}
-			String deleted = deletedItem.getValueAsString();
-			if (deleted != null) {
-				criteria.setAttribute("deleted", new Integer(deleted));
+				criteria.setAttribute("event_category_id", new Integer(
+						event_category_id));
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllEntPosters");
+			dsRequest.setAttribute("operationId", "searchAllEvent");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -569,10 +515,12 @@ public class TabEvent extends Tab {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("ent_poster_id", ent_poster_id);
+			record.setAttribute("event_id", ent_poster_id);
+			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
+					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "deleteEntPoster");
+			req.setAttribute("operationId", "removeEvent");
 			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
@@ -585,26 +533,26 @@ public class TabEvent extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer ent_poster_id, Integer deleted) {
-		try {
-			com.smartgwt.client.rpc.RPCManager.startQueue();
-			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("ent_poster_id", ent_poster_id);
-			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
-			DSRequest req = new DSRequest();
-
-			req.setAttribute("operationId", "updateEntPosterStatus");
-			listGrid.updateData(record, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, req);
-			com.smartgwt.client.rpc.RPCManager.sendQueue();
-		} catch (Exception e) {
-			SC.say(e.toString());
-		}
-	}
+	// private void changeStatus(Integer ent_poster_id, Integer deleted) {
+	// try {
+	// com.smartgwt.client.rpc.RPCManager.startQueue();
+	// Record record = new Record();
+	//
+	// record.setAttribute("event_id", ent_poster_id);
+	// record.setAttribute("loggedUserName", CommonSingleton.getInstance()
+	// .getSessionPerson().getUserName());
+	// DSRequest req = new DSRequest();
+	//
+	// req.setAttribute("operationId", "updateEntPosterStatus");
+	// listGrid.updateData(record, new DSCallback() {
+	// @Override
+	// public void execute(DSResponse response, Object rawData,
+	// DSRequest request) {
+	// }
+	// }, req);
+	// com.smartgwt.client.rpc.RPCManager.sendQueue();
+	// } catch (Exception e) {
+	// SC.say(e.toString());
+	// }
+	// }
 }

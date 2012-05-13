@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.ent;
 
-import com.info08.billing.callcenterbk.client.dialogs.ent.DlgAddEditEndPlace;
+import com.info08.billing.callcenterbk.client.dialogs.ent.DlgAddEditEventOwner;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -49,7 +49,6 @@ public class TabEventOwner extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -62,7 +61,7 @@ public class TabEventOwner extends Tab {
 			setTitle("აფიშა-რესურსები მართვა");
 			setCanClose(true);
 
-			datasource = DataSource.get("EntPlaceDS");
+			datasource = DataSource.get("EventOwnerDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -86,9 +85,9 @@ public class TabEventOwner extends Tab {
 			entTypeItem.setFilterLocally(false);
 			entTypeItem.setAddUnknownValues(false);
 
-			DataSource entTypeDS = DataSource.get("EntTypeDS");
+			DataSource EventCategoryDS = DataSource.get("EventCategoryDS");
 			entTypeItem.setOptionOperationId("searchAllEventCategoryForCB");
-			entTypeItem.setOptionDataSource(entTypeDS);
+			entTypeItem.setOptionDataSource(EventCategoryDS);
 			entTypeItem.setValueField("event_category_id");
 			entTypeItem.setDisplayField("event_category_name");
 
@@ -100,7 +99,8 @@ public class TabEventOwner extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = entTypeItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("event_category_id");
+						String oldAttr = criteria
+								.getAttribute("event_category_id");
 						if (oldAttr != null) {
 							Object nullO = null;
 							criteria.setAttribute("event_category_id", nullO);
@@ -111,7 +111,7 @@ public class TabEventOwner extends Tab {
 
 			entPlaceGeo = new TextItem();
 			entPlaceGeo.setTitle("რესურსის დასახელება");
-			entPlaceGeo.setName("ent_place_geo");
+			entPlaceGeo.setName("event_owner_name");
 			entPlaceGeo.setWidth(300);
 
 			searchForm.setFields(entTypeItem, entPlaceGeo);
@@ -150,11 +150,6 @@ public class TabEventOwner extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "restoreIcon.gif");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			listGrid = new ListGrid() {
@@ -164,13 +159,9 @@ public class TabEventOwner extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+
+					return super.getCellCSSText(record, rowNum, colNum);
+
 				};
 			};
 
@@ -182,25 +173,25 @@ public class TabEventOwner extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchAllEntPlaces");
+			listGrid.setFetchOperation("searchAllEventOwner");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("ent_place_geo").setTitle("რესურსის დასახელება");
+			datasource.getField("event_owner_name").setTitle(
+					"რესურსის დასახელება");
 			datasource.getField("event_category_name").setTitle("კატეგორია");
 			datasource.getField("org_name").setTitle("ორგანიზაცია");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
 
-			ListGridField ent_place_geo = new ListGridField("ent_place_geo", "რესურსის დასახელება", 450);
-			ListGridField event_category_name = new ListGridField("event_category_name", "კატეგორია", 180);
-			ListGridField org_name = new ListGridField("org_name", "ორგანიზაცია", 250);
-			
+			ListGridField event_owner_name = new ListGridField(
+					"event_owner_name", "რესურსის დასახელება", 450);
+			ListGridField event_category_name = new ListGridField(
+					"event_category_name", "კატეგორია", 180);
+			ListGridField org_name = new ListGridField("org_name",
+					"ორგანიზაცია", 250);
 
-			listGrid.setFields(ent_place_geo,event_category_name,org_name);
+			listGrid.setFields(event_owner_name, event_category_name, org_name);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -219,9 +210,9 @@ public class TabEventOwner extends Tab {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditEndPlace dlgAddEditEndPlace = new DlgAddEditEndPlace(
+					DlgAddEditEventOwner dlgAddEditEventOwner = new DlgAddEditEventOwner(
 							listGrid, null);
-					dlgAddEditEndPlace.show();
+					dlgAddEditEventOwner.show();
 				}
 			});
 
@@ -235,9 +226,9 @@ public class TabEventOwner extends Tab {
 						return;
 					}
 
-					DlgAddEditEndPlace dlgAddEditEndPlace = new DlgAddEditEndPlace(
+					DlgAddEditEventOwner dlgAddEditEventOwner = new DlgAddEditEventOwner(
 							listGrid, listGridRecord);
-					dlgAddEditEndPlace.show();
+					dlgAddEditEventOwner.show();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
@@ -247,12 +238,6 @@ public class TabEventOwner extends Tab {
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
 						return;
 					}
 					final Integer event_owner_id = listGridRecord
@@ -267,40 +252,7 @@ public class TabEventOwner extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(event_owner_id, 1);
-									}
-								}
-							});
-				}
-			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer event_owner_id = listGridRecord
-							.getAttributeAsInt("event_owner_id");
-					if (event_owner_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(event_owner_id, 0);
+										changeStatus(event_owner_id);
 									}
 								}
 							});
@@ -329,9 +281,9 @@ public class TabEventOwner extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditEndPlace dlgAddEditEndPlace = new DlgAddEditEndPlace(
+					DlgAddEditEventOwner dlgAddEditEventOwner = new DlgAddEditEventOwner(
 							listGrid, listGridRecord);
-					dlgAddEditEndPlace.show();
+					dlgAddEditEventOwner.show();
 				}
 			});
 
@@ -347,18 +299,19 @@ public class TabEventOwner extends Tab {
 	private void search() {
 		try {
 			String event_category_id = entTypeItem.getValueAsString();
-			String ent_place_geo = entPlaceGeo.getValueAsString();
+			String event_owner_name = entPlaceGeo.getValueAsString();
 
 			Criteria criteria = new Criteria();
 			if (event_category_id != null) {
-				criteria.setAttribute("event_category_id", new Integer(event_category_id));
+				criteria.setAttribute("event_category_id", new Integer(
+						event_category_id));
 			}
-			if (ent_place_geo != null && !ent_place_geo.trim().equals("")) {
-				criteria.setAttribute("ent_place_geo", ent_place_geo);
+			if (event_owner_name != null && !event_owner_name.trim().equals("")) {
+				criteria.setAttribute("event_owner_name", event_owner_name);
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllEntPlaces");
+			dsRequest.setAttribute("operationId", "searchAllEventOwner");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -371,18 +324,17 @@ public class TabEventOwner extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer event_owner_id, Integer deleted) {
+	private void changeStatus(Integer event_owner_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
 			record.setAttribute("event_owner_id", event_owner_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateEntPlaceStatus");
-			listGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "removeEventOwner");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

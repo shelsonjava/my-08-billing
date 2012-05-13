@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.ent;
 
-import com.info08.billing.callcenterbk.client.dialogs.ent.DlgAddEditEndType;
+import com.info08.billing.callcenterbk.client.dialogs.ent.DlgAddEditEventCategory;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -45,7 +45,6 @@ public class TabEventCategory extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -58,7 +57,7 @@ public class TabEventCategory extends Tab {
 			setTitle("აფიშა-კატეგორიების მართვა");
 			setCanClose(true);
 
-			datasource = DataSource.get("EntTypeDS");
+			datasource = DataSource.get("EventCategoryDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -113,11 +112,6 @@ public class TabEventCategory extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "restoreIcon.gif");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			listGrid = new ListGrid() {
@@ -151,21 +145,13 @@ public class TabEventCategory extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("event_category_name").setTitle("დასახელება (ქართ.)");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
+			datasource.getField("event_category_name").setTitle(
+					"დასახელება (ქართ.)");
 
-			ListGridField event_category_name = new ListGridField("event_category_name", "დასახელება (ქართ.)", 300);
-			ListGridField rec_date = new ListGridField("rec_date","შექმინის თარიღი", 130);
-			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",100);
-			ListGridField upd_user = new ListGridField("upd_user","ვინ განაახლა", 150);
+			ListGridField event_category_name = new ListGridField(
+					"event_category_name", "დასახელება (ქართ.)", 300);
 
-			rec_date.setAlign(Alignment.CENTER);
-			rec_user.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
-
-			listGrid.setFields(event_category_name, rec_date, rec_user, upd_user);
+			listGrid.setFields(event_category_name);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -183,9 +169,9 @@ public class TabEventCategory extends Tab {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditEndType dlgAddEditEndType = new DlgAddEditEndType(
+					DlgAddEditEventCategory dlgAddEditEventCategory = new DlgAddEditEventCategory(
 							listGrid, null);
-					dlgAddEditEndType.show();
+					dlgAddEditEventCategory.show();
 				}
 			});
 
@@ -199,9 +185,9 @@ public class TabEventCategory extends Tab {
 						return;
 					}
 
-					DlgAddEditEndType dlgAddEditEndType = new DlgAddEditEndType(
+					DlgAddEditEventCategory dlgAddEditEventCategory = new DlgAddEditEventCategory(
 							listGrid, listGridRecord);
-					dlgAddEditEndType.show();
+					dlgAddEditEventCategory.show();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
@@ -213,12 +199,7 @@ public class TabEventCategory extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
+
 					final Integer event_category_id = listGridRecord
 							.getAttributeAsInt("event_category_id");
 					if (event_category_id == null) {
@@ -231,40 +212,7 @@ public class TabEventCategory extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(event_category_id, 1);
-									}
-								}
-							});
-				}
-			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer event_category_id = listGridRecord
-							.getAttributeAsInt("event_category_id");
-					if (event_category_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(event_category_id, 0);
+										changeStatus(event_category_id);
 									}
 								}
 							});
@@ -294,9 +242,9 @@ public class TabEventCategory extends Tab {
 						return;
 					}
 
-					DlgAddEditEndType dlgAddEditEndType = new DlgAddEditEndType(
+					DlgAddEditEventCategory dlgAddEditEventCategory = new DlgAddEditEventCategory(
 							listGrid, listGridRecord);
-					dlgAddEditEndType.show();
+					dlgAddEditEventCategory.show();
 				}
 			});
 
@@ -311,9 +259,8 @@ public class TabEventCategory extends Tab {
 
 	private void search() {
 		try {
-			String event_category_name = entTypeGeoItem
-					.getValueAsString();
-			
+			String event_category_name = entTypeGeoItem.getValueAsString();
+
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("event_category_name", event_category_name);
 
@@ -331,18 +278,18 @@ public class TabEventCategory extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer event_category_id, Integer deleted) {
+	private void changeStatus(Integer event_category_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
+
 			record.setAttribute("event_category_id", event_category_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeEventCategory");
-			listGrid.updateData(record, new DSCallback() {
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

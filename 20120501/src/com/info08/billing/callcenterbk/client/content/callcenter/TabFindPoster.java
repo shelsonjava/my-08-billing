@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
-import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewPoster;
+import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewEvent;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -56,14 +56,14 @@ public class TabFindPoster extends Tab {
 	private ListGrid listGridEntPlace;
 	private ListGrid listGridEntType;
 	// DataSource
-	private DataSource entPosterDS;
+	private DataSource EventDS;
 
 	public TabFindPoster() {
 
 		setTitle(CallCenterBK.constants.findPoster());
 		setCanClose(true);
 
-		entPosterDS = DataSource.get("EntPosterDS");
+		EventDS = DataSource.get("EventDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -75,36 +75,36 @@ public class TabFindPoster extends Tab {
 		gridsLayOut.setHeight(250);
 		mainLayout.addMember(gridsLayOut);
 
-		DataSource entTypeDS = DataSource.get("EntTypeDS");
+		DataSource EventCategoryDS = DataSource.get("EventCategoryDS");
 
 		listGridEntType = new ListGrid();
 		listGridEntType.setWidth(280);
 		listGridEntType.setHeight100();
-		listGridEntType.setDataSource(entTypeDS);
+		listGridEntType.setDataSource(EventCategoryDS);
 		listGridEntType.setAutoFetchData(true);
 		listGridEntType.setFetchOperation("searchAllEventCategoryForCC");
 
-		ListGridField event_category_name = new ListGridField("event_category_name",
-				CallCenterBK.constants.entType());
+		ListGridField event_category_name = new ListGridField(
+				"event_category_name", CallCenterBK.constants.entType());
 		listGridEntType.setFields(event_category_name);
 
-		DataSource entPlaceDS = DataSource.get("EntPlaceDS");
+		DataSource EventOwnerDS = DataSource.get("EventOwnerDS");
 
 		listGridEntPlace = new ListGrid();
 		listGridEntPlace.setWidth100();
 		listGridEntPlace.setHeight100();
-		listGridEntPlace.setDataSource(entPlaceDS);
+		listGridEntPlace.setDataSource(EventOwnerDS);
 		listGridEntPlace.setAutoFetchData(false);
 		listGridEntPlace.setCanRemoveRecords(false);
-		listGridEntPlace.setFetchOperation("searchAllEntPostersForCallCenter2");
+		listGridEntPlace.setFetchOperation("searchAllEventOwnerForCallCenter2");
 		listGridEntPlace.setShowFilterEditor(true);
 		listGridEntPlace.setFilterOnKeypress(true);
 
-		ListGridField ent_place_geo1 = new ListGridField("ent_place_geo",
+		ListGridField event_owner_name1 = new ListGridField("event_owner_name",
 				CallCenterBK.constants.entPosterCategory());
-		ent_place_geo1.setCanFilter(true);
+		event_owner_name1.setCanFilter(true);
 
-		listGridEntPlace.setFields(ent_place_geo1);
+		listGridEntPlace.setFields(event_owner_name1);
 
 		gridsLayOut.setMembers(listGridEntType, listGridEntPlace);
 
@@ -124,7 +124,7 @@ public class TabFindPoster extends Tab {
 				Criteria criteria = new Criteria();
 				criteria.setAttribute("event_category_id", event_category_id);
 				DSRequest dsRequest = new DSRequest();
-				dsRequest.setOperationId("searchAllEntPostersForCallCenter2");
+				dsRequest.setOperationId("searchAllEventOwnerForCallCenter2");
 				listGridEntPlace.invalidateCache();
 				listGridEntPlace.fetchData(criteria, new DSCallback() {
 					@Override
@@ -191,38 +191,38 @@ public class TabFindPoster extends Tab {
 		listGrid.setWidth(1040);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(entPosterDS);
+		listGrid.setDataSource(EventDS);
 		listGrid.setAutoFetchData(false);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
 		listGrid.setCanRemoveRecords(false);
-		listGrid.setFetchOperation("searchAllEntPostersForCallCenter1");
+		listGrid.setFetchOperation("searchAllEventForCallCenter1");
 		listGrid.setCanSort(false);
 		listGrid.setCanResizeFields(false);
 		listGrid.setWrapCells(true);
 		listGrid.setFixedRecordHeights(false);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField itemdate = new ListGridField("itemdate",
+		ListGridField itemdate = new ListGridField("event_list_date",
 				CallCenterBK.constants.date(), 90);
 		itemdate.setAlign(Alignment.LEFT);
 
-		ListGridField itemname = new ListGridField("itemname",
+		ListGridField itemname = new ListGridField("event_list_name",
 				CallCenterBK.constants.poster(), 180);
 		itemname.setAlign(Alignment.LEFT);
 
-		ListGridField price = new ListGridField("price",
+		ListGridField price = new ListGridField("event_list_price",
 				CallCenterBK.constants.price(), 70);
 		price.setAlign(Alignment.CENTER);
 
-		ListGridField fullinfo = new ListGridField("info",
+		ListGridField fullinfo = new ListGridField("event_list_info",
 				CallCenterBK.constants.comment());
 
-		ListGridField ent_place_geo = new ListGridField("ent_place_geo",
+		ListGridField event_owner_name = new ListGridField("event_owner_name",
 				CallCenterBK.constants.entPosterCategory(), 170);
 		price.setAlign(Alignment.CENTER);
 
-		listGrid.setFields(itemdate, ent_place_geo, itemname, price, fullinfo);
+		listGrid.setFields(itemdate, event_owner_name, itemname, price, fullinfo);
 
 		mainLayout.addMember(listGrid);
 
@@ -262,9 +262,9 @@ public class TabFindPoster extends Tab {
 		listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-				DlgViewPoster dlgViewPoster = new DlgViewPoster(entPosterDS,
+				DlgViewEvent dlgViewEvent = new DlgViewEvent(EventDS,
 						listGrid.getSelectedRecord());
-				dlgViewPoster.show();
+				dlgViewEvent.show();
 			}
 		});
 
@@ -284,7 +284,7 @@ public class TabFindPoster extends Tab {
 			if (record == null) {
 				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
-			}			
+			}
 
 			Integer main_id = record.getAttributeAsInt("main_id");
 			if (main_id == null) {
@@ -385,7 +385,8 @@ public class TabFindPoster extends Tab {
 				Integer event_category_id = listGridRecord
 						.getAttributeAsInt("event_category_id");
 				if (event_category_id != null) {
-					criteria.setAttribute("event_category_id", event_category_id);
+					criteria.setAttribute("event_category_id",
+							event_category_id);
 				}
 			}
 
@@ -428,7 +429,7 @@ public class TabFindPoster extends Tab {
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId",
-					"searchAllEntPostersForCallCenter1");
+					"searchAllEventForCallCenter1");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -442,7 +443,7 @@ public class TabFindPoster extends Tab {
 							.equals("")) || poster_date_p != null)) {
 				DSRequest dsRequest1 = new DSRequest();
 				dsRequest1.setAttribute("operationId",
-						"searchAllEntPostersForCallCenter2");
+						"searchAllEventOwnerForCallCenter2");
 				listGridEntPlace.invalidateCache();
 				listGridEntPlace.filterData(criteria, new DSCallback() {
 					@Override
