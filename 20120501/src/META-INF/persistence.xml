@@ -44,9 +44,9 @@
     <class>com.info08.billing.callcenterbk.shared.entity.discovery.DiscoverRtype</class>
     <class>com.info08.billing.callcenterbk.shared.entity.discovery.DiscoverType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.discovery.DiscoverySmsHist</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.ent.EntPlace</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.ent.EntPoster</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.ent.EntType</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.ent.EventOwner</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.ent.Event</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.ent.EventCategory</class>
     <class>com.info08.billing.callcenterbk.shared.entity.org.MainOrg</class>
     <class>com.info08.billing.callcenterbk.shared.entity.org.LegalStatus</class>
     <class>com.info08.billing.callcenterbk.shared.entity.org.BusinessDetail</class>
