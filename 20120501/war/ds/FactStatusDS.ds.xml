@@ -1,0 +1,11 @@
+<DataSource
+	ID="FactStatusDS"
+	serverType="sql"
+	tableName="ccare.facts_statuses"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="fact_status_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="fact_status_name"		type="text" 	title="City Type Geo"/>			
+	</fields>
+</DataSource>
