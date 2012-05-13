@@ -429,11 +429,10 @@ public class TabFindTransport extends Tab {
 		cmt.setAlign(Alignment.CENTER);
 		cmt.setCanFilter(false);
 
-		ListGridField transport_company_geo = new ListGridField(
-				"transport_company_geo",
+		ListGridField name_descr = new ListGridField("name_descr",
 				CallCenterBK.constants.transportCompShort(), 100);
-		transport_company_geo.setAlign(Alignment.LEFT);
-		transport_company_geo.setCanFilter(true);
+		name_descr.setAlign(Alignment.LEFT);
+		name_descr.setCanFilter(true);
 
 		ListGridField transport_plane_geo = new ListGridField(
 				"transport_plane_geo",
@@ -452,7 +451,7 @@ public class TabFindTransport extends Tab {
 
 		listGrid.setFields(trip_criteria, ocity_name_geo, ostation, out_time,
 				icity_name_geo, istation, in_time, cmt, transport_plane_geo,
-				transport_company_geo, days_descr, alarm);
+				name_descr, days_descr, alarm);
 
 		mainLayout.addMember(listGrid);
 

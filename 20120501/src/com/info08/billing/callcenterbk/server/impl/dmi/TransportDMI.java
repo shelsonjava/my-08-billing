@@ -235,7 +235,10 @@ public class TransportDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			// sysdate
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 			String loggedUserName = transportCompany.getLoggedUserName();
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Adding Transport Company.");
 
 			oracleManager.persist(transportCompany);
 			oracleManager.flush();
@@ -244,7 +247,7 @@ public class TransportDMI implements QueryConstants {
 					transportCompany.getTransp_comp_id());
 
 			transportCompany.setLoggedUserName(loggedUserName);
-			Long transpTypeId = transportCompany.getTransp_comp_id();
+			Long transpTypeId = transportCompany.getTransp_type_id();
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transpTypeId);
 			if (transportType != null) {
@@ -288,19 +291,23 @@ public class TransportDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long transport_company_id = new Long(record.get(
-					"transport_company_id").toString());
+			Long transport_company_id = new Long(record.get("transp_comp_id")
+					.toString());
 			Long transport_type_id = new Long(record.get("transp_type_id")
 					.toString());
-			String transport_company_geo = record.get("transport_company_geo") == null ? null
-					: record.get("transport_company_geo").toString();
+			String name_descr = record.get("name_descr") == null ? null
+					: record.get("name_descr").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
 			TranspCompany transportCompany = oracleManager.find(
 					TranspCompany.class, transport_company_id);
 
 			transportCompany.setTransp_type_id(transport_type_id);
-			transportCompany.setName_descr(transport_company_geo);
+			transportCompany.setName_descr(name_descr);
+
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Edit Transport Company.");
 
 			oracleManager.merge(transportCompany);
 			oracleManager.flush();
@@ -309,7 +316,7 @@ public class TransportDMI implements QueryConstants {
 					transport_company_id);
 
 			transportCompany.setLoggedUserName(loggedUserName);
-			Long transpTypeId = transportCompany.getTransp_comp_id();
+			Long transpTypeId = transportCompany.getTransp_type_id();
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transpTypeId);
 			if (transportType != null) {
@@ -344,8 +351,7 @@ public class TransportDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public TranspCompany updateTransportCompanyStatus(Map record)
+	public TranspCompany removeTransportCompany(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -354,32 +360,25 @@ public class TransportDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long transport_company_id = new Long(record.get(
-					"transport_company_id").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+			Long transport_company_id = new Long(dsRequest.getOldValues()
+					.get("transp_comp_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
 
 			TranspCompany transportCompany = oracleManager.find(
 					TranspCompany.class, transport_company_id);
 
-			oracleManager.merge(transportCompany);
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Remove Transport Company.");
+
+			oracleManager.remove(transportCompany);
 			oracleManager.flush();
-
-			transportCompany = oracleManager.find(TranspCompany.class,
-					transport_company_id);
-
-			transportCompany.setLoggedUserName(loggedUserName);
-			Long transpTypeId = transportCompany.getTransp_comp_id();
-			TranspType transportType = oracleManager.find(TranspType.class,
-					transpTypeId);
-			if (transportType != null) {
-				transportCompany.setTransport_type(transportType
-						.getName_descr());
-			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return transportCompany;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {

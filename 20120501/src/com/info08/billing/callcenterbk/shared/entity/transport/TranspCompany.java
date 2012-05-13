@@ -18,14 +18,14 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="TRANSP_COMPANIES", schema="ccare")
+@Table(name="TRANSP_COMPANIES")
 public class TranspCompany implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TRANSPORT_COMPANIES_TRANSPORTCOMPANYID_GENERATOR", sequenceName="TRANSPORT_COMPANY_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TRANSPORT_COMPANIES_TRANSPORTCOMPANYID_GENERATOR")
-	@Column(name="TRANSPORT_COMPANY_ID")
+	@SequenceGenerator(name="seq_transp_comp_id", sequenceName="seq_transp_comp_id")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_transp_comp_id")
+	@Column(name="TRANSP_COMP_ID")
 	private Long transp_comp_id;
 
 	@Basic

@@ -67,12 +67,12 @@ public class DlgAddEditTransportCompany extends Window {
 		transportCompanyNameGeoItem = new TextItem();
 		transportCompanyNameGeoItem.setTitle("დასახელება(ქართ.)");
 		transportCompanyNameGeoItem.setWidth(300);
-		transportCompanyNameGeoItem.setName("transport_company_geo");
+		transportCompanyNameGeoItem.setName("transportCompanyNameGeoItem");
 
 		transportTypeItem = new ComboBoxItem();
 		transportTypeItem.setTitle("ტრანსპორტის ტიპი");
 		transportTypeItem.setWidth(300);
-		transportTypeItem.setName("name_descr");
+		transportTypeItem.setName("transportTypeItem");
 		transportTypeItem.setFetchMissingValues(true);
 		transportTypeItem.setFilterLocally(false);
 		transportTypeItem.setAddUnknownValues(false);
@@ -142,12 +142,10 @@ public class DlgAddEditTransportCompany extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			transportCompanyNameGeoItem.setValue(editRecord
-					.getAttribute("transport_company_geo"));
-			Integer transport_type_id = editRecord
-					.getAttributeAsInt("transp_type_id");
-			if (transport_type_id != null) {
-				transportTypeItem.setValue(transport_type_id);
+			transportCompanyNameGeoItem.setValue(editRecord.getAttribute("name_descr"));
+			Integer transp_type_id = editRecord.getAttributeAsInt("transp_type_id");
+			if (transp_type_id != null) {
+				transportTypeItem.setValue(transp_type_id);
 			}
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -156,16 +154,14 @@ public class DlgAddEditTransportCompany extends Window {
 
 	private void save() {
 		try {
-			String transport_company_geo = transportCompanyNameGeoItem
-					.getValueAsString();
-			if (transport_company_geo == null
-					|| transport_company_geo.trim().equalsIgnoreCase("")) {
+			String name_descr = transportCompanyNameGeoItem.getValueAsString();
+			if (name_descr == null || name_descr.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ ქართული დასახელება !");
 				return;
 			}
-			String transport_type_id = transportTypeItem.getValueAsString();
-			if (transport_type_id == null
-					|| transport_type_id.trim().equalsIgnoreCase("")) {
+			String transp_type_id = transportTypeItem.getValueAsString();
+			if (transp_type_id == null
+					|| transp_type_id.trim().equalsIgnoreCase("")) {
 				SC.say("აირჩიეთ ტრანსპორტის ტიპი !");
 				return;
 			}
@@ -176,15 +172,14 @@ public class DlgAddEditTransportCompany extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("transport_company_geo", transport_company_geo);
+			record.setAttribute("name_descr", name_descr);
 			record.setAttribute("deleted", 0);
 			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("transp_type_id", new Integer(
-					transport_type_id));
+			record.setAttribute("transp_type_id", new Integer(transp_type_id));
 
 			if (editRecord != null) {
-				record.setAttribute("transport_company_id",
-						editRecord.getAttributeAsInt("transport_company_id"));
+				record.setAttribute("transp_comp_id",
+						editRecord.getAttributeAsInt("transp_comp_id"));
 			}
 
 			DSRequest req = new DSRequest();

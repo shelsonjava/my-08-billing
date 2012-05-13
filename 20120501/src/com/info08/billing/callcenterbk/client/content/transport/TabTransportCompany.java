@@ -49,7 +49,6 @@ public class TabTransportCompany extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -79,12 +78,12 @@ public class TabTransportCompany extends Tab {
 			transportCompanyNameGeoItem = new TextItem();
 			transportCompanyNameGeoItem.setTitle("დასახელება(ქართ.)");
 			transportCompanyNameGeoItem.setWidth(350);
-			transportCompanyNameGeoItem.setName("transport_company_geo");
+			transportCompanyNameGeoItem.setName("transportCompanyNameGeoItem");
 
 			transportTypeItem = new ComboBoxItem();
 			transportTypeItem.setTitle("ტრანსპორტის ტიპი");
 			transportTypeItem.setWidth(350);
-			transportTypeItem.setName("name_descr");
+			transportTypeItem.setName("transportTypeItem");
 			transportTypeItem.setFetchMissingValues(true);
 			transportTypeItem.setFilterLocally(false);
 			transportTypeItem.setAddUnknownValues(false);
@@ -152,13 +151,6 @@ public class TabTransportCompany extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "restoreIcon.gif");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
-			toolStrip.addSeparator();
-
 			listGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
@@ -190,31 +182,15 @@ public class TabTransportCompany extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("transport_company_geo").setTitle(
+			datasource.getField("name_descr").setTitle("დასახელება (ქართ.)");
+			datasource.getField("transport_type").setTitle("ტრანსპორტის ტიპი");
+
+			ListGridField name_descr = new ListGridField("name_descr",
 					"დასახელება (ქართ.)");
-			datasource.getField("name_descr").setTitle(
-					"ტრანსპორტის ტიპი");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
+			ListGridField transport_type = new ListGridField("transport_type",
+					"ტრანსპორტის ტიპი", 250);
 
-			ListGridField transport_company_geo = new ListGridField(
-					"transport_company_geo", "დასახელება (ქართ.)", 150);
-			ListGridField name_descr = new ListGridField(
-					"name_descr", "ტრანსპორტის ტიპი", 150);
-			ListGridField rec_date = new ListGridField("rec_date",
-					"შექმინის თარიღი", 130);
-			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",
-					100);
-			ListGridField upd_user = new ListGridField("upd_user",
-					"ვინ განაახლა", 150);
-
-			rec_date.setAlign(Alignment.CENTER);
-			rec_user.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
-
-			listGrid.setFields(transport_company_geo, name_descr,
-					rec_date, rec_user, upd_user);
+			listGrid.setFields(name_descr, transport_type);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -262,15 +238,9 @@ public class TabTransportCompany extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
-					final Integer transport_company_id = listGridRecord
-							.getAttributeAsInt("transport_company_id");
-					if (transport_company_id == null) {
+					final Integer transp_comp_id = listGridRecord
+							.getAttributeAsInt("transp_comp_id");
+					if (transp_comp_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -280,46 +250,12 @@ public class TabTransportCompany extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(transport_company_id, 1);
+										removeTranspCompany(transp_comp_id);
 									}
 								}
 							});
 				}
 			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer transport_company_id = listGridRecord
-							.getAttributeAsInt("transport_company_id");
-					if (transport_company_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(transport_company_id, 0);
-									}
-								}
-							});
-				}
-			});
-
 			TabSet tabSet = new TabSet();
 			tabSet.setWidth(730);
 			Tab tabDetViewer = new Tab("დათვალიერება");
@@ -359,16 +295,14 @@ public class TabTransportCompany extends Tab {
 
 	private void search() {
 		try {
-			String transport_company_geo = transportCompanyNameGeoItem
-					.getValueAsString();
-			String transport_type_id = transportTypeItem.getValueAsString();
+			String name_descr = transportCompanyNameGeoItem.getValueAsString();
+			String transp_type_id = transportTypeItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("transport_company_geo",
-					transport_company_geo);
-			if (transport_type_id != null) {
+			criteria.setAttribute("name_descr", name_descr);
+			if (transp_type_id != null) {
 				criteria.setAttribute("transp_type_id", new Integer(
-						transport_type_id));
+						transp_type_id));
 			}
 
 			DSRequest dsRequest = new DSRequest();
@@ -386,18 +320,17 @@ public class TabTransportCompany extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer transport_company_id, Integer deleted) {
+	private void removeTranspCompany(Integer transp_comp_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("transport_company_id", transport_company_id);
+			record.setAttribute("transp_comp_id", transp_comp_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateTransportCompanyStatus");
-			listGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "removeTransportCompany");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -405,6 +338,7 @@ public class TabTransportCompany extends Tab {
 			}, req);
 			com.smartgwt.client.rpc.RPCManager.sendQueue();
 		} catch (Exception e) {
+			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}

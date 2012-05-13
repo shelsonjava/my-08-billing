@@ -1,65 +1,59 @@
 <DataSource
 	ID="TranspPlaneDS"
 	serverType="sql"
-	tableName="ccare.transport_plane"
+	tableName="transp_resource"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="transport_plane_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
-		<field name="transp_type_id"				type="integer"		title="Transport Type Id" 	hidden="true"/>
-		<field name="transport_plane_geo"			type="text"			title="Transport Plane Geo"/>		
-		<field name="transport_plane_geo_descr"		type="text"			title="Transport Plane Geo Descr"/>
-		<field name="transport_plane_eng"			type="text"			title="Transport Plane Eng" hidden="true"/>
-		<field name="rec_user"						type="text"			title="Record User"/>
-		<field name="rec_date"						type="datetime"		title="Record Date"/>
-		<field name="upd_user"						type="text"			title="Update User"/>		
-		<field name="deleted"						type="integer"		title="Deleted" 			hidden="true"/>
+		<field name="transp_res_id"					type="integer"		title="transp_res_id"		hidden="true" primaryKey="true" />
+		<field name="transp_type_id"				type="integer"		title="transp_type_id" 		hidden="true"/>
+		<field name="name_descr"					type="text"			title="name_descr"/>				
 		<field name="loggedUserName"				type="text"			title="Logged UserName" 	hidden="true" />
 	</fields>
 
 	<operationBindings>		
     	<operationBinding operationId="searchAllTranspPlanesForCombos" operationType="fetch">
     		<selectClause>   			
-    			t.transport_plane_id,
-    			t.transport_type_id,
-    			t.transport_plane_geo_descr 
+    			t.transp_res_id,
+    			t.transp_type_id,
+    			t.name_descr 
 			</selectClause> 
-			<tableClause>transport_plane t</tableClause>	
+			<tableClause>transp_resource t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0
+				($defaultWhereClause)
 			</whereClause>			
     	</operationBinding>
     	<operationBinding operationId="searchAllTranspPlanesForCombosAv" operationType="fetch">
     		<selectClause>   			
-    			t.transport_plane_id,
-    			t.transport_type_id,
-    			t.transport_plane_geo_descr 
+    			t.transp_res_id,
+    			t.transp_type_id,
+    			t.name_descr 
 			</selectClause> 
-			<tableClause>transport_plane t</tableClause>	
+			<tableClause>transp_resource t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000005
+				($defaultWhereClause) and t.transp_type_id = 1000005
 			</whereClause>			
     	</operationBinding>
     	<operationBinding operationId="searchAllTranspPlanesForCombosRail" operationType="fetch">
     		<selectClause>   			
-    			t.transport_plane_id,
-    			t.transport_type_id,
-    			t.transport_plane_geo_descr 
+    			t.transp_res_id,
+    			t.transp_type_id,
+    			t.name_descr 
 			</selectClause> 
-			<tableClause>transport_plane t</tableClause>	
+			<tableClause>transp_resource t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000003
+				($defaultWhereClause) and t.transp_type_id = 1000003
 			</whereClause>			
     	</operationBinding>
     	<operationBinding operationId="searchAllTranspPlanesForCombosAvt" operationType="fetch">
     		<selectClause>   			
-    			t.transport_plane_id,
-    			t.transport_type_id,
-    			t.transport_plane_geo_descr 
+    			t.transp_res_id,
+    			t.transp_type_id,
+    			t.name_descr 
 			</selectClause> 
-			<tableClause>transport_plane t</tableClause>	
+			<tableClause>transp_resource t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0 and t.transport_type_id = 1000004
+				($defaultWhereClause) and t.transp_type_id = 1000004
 			</whereClause>			
     	</operationBinding>
     </operationBindings>	
