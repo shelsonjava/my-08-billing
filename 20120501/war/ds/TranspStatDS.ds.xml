@@ -1,0 +1,138 @@
+<DataSource
+	ID="TranspStatDS"
+	serverType="sql"
+	tableName="transp_stations"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+
+	<fields>
+		<field name="transp_stat_id"			type="integer"		title="transp_stat_id"			hidden="true" primaryKey="true" />
+		<field name="transp_type_id"			type="integer"		title="transp_type_id" 			hidden="true"/>
+		<field name="city_id"					type="integer"		title="city_id" 				hidden="true"/>		
+		<field name="name_descr"				type="text"			title="name_descr"/>
+		<field name="city_descr"				type="text"			title="city_descr"/>
+		<field name="transpport_type"			type="text"			title="transpport_type"/>
+		<field name="loggedUserName"			type="text"			title="loggedUserName" 			hidden="true"/>		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
+
+		<!-- Add Transport Station -->
+		<operationBinding operationType="add" operationId="addTransportStation" serverMethod="addTransportStation">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+        
+		<!-- TransportStation Update -->
+		<operationBinding operationType="update" operationId="updateTransportStation" serverMethod="updateTransportStation">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+        
+        <!-- TransportStation Remove -->
+		<operationBinding operationType="remove" operationId="removeTransportStation" serverMethod="removeTransportStation">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllTransportPlaces" operationType="fetch">
+    		<selectClause>   			
+    			t.transp_stat_id,
+				t.transp_type_id,
+				t.city_id,
+				t.name_descr,
+				c.city_name_geo as city_descr,
+				tt.name_descr as transpport_type
+			</selectClause> 
+			<tableClause>transp_stations t, transp_types tt, cities c</tableClause>
+			<whereClause><![CDATA[
+				t.transp_type_id = tt.transp_type_id and t.city_id = c.city_id 
+				#if($criteria.transp_type_id) and t.transp_type_id = $criteria.transp_type_id #end
+				#if($criteria.city_id) and t.city_id = $criteria.city_id #end
+				#if($criteria.name_descr) and t.name_descr like '%'||($criteria.name_descr)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.transp_stat_id</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllTransportPlacesForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.transp_stat_id,
+    			t.transp_type_id,
+				t.name_descr 				
+			</selectClause> 
+			<tableClause>transp_stations t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause)
+				]]>  
+			</whereClause> 
+			<orderClause>t.transp_stat_id</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllTransportPlacesForCBAv" operationType="fetch">
+    		<selectClause>   			
+    			t.transp_stat_id,
+    			t.transp_type_id,
+				t.name_descr 				
+			</selectClause> 
+			<tableClause>transp_stations t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) and t.transp_type_id = 1000005
+				]]>  
+			</whereClause> 
+			<orderClause>t.transp_stat_id</orderClause>
+    	</operationBinding>
+    	<operationBinding operationId="searchAllTransportPlacesForCBRk" operationType="fetch">
+    		<selectClause>   			
+    			t.transp_stat_id,
+    			t.transp_type_id,
+				t.name_descr 				
+			</selectClause> 
+			<tableClause>transp_stations t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) and t.transp_type_id = 1000003
+				]]>  
+			</whereClause> 
+			<orderClause>t.transp_stat_id</orderClause>
+    	</operationBinding>
+    	<operationBinding operationId="searchAllTransportPlacesForCBAvt" operationType="fetch">
+    		<selectClause>   			
+    			t.transp_stat_id,
+    			t.transp_type_id,
+				t.name_descr 				
+			</selectClause> 
+			<tableClause>transp_stations t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) and t.transp_type_id = 1000004
+				]]>  
+			</whereClause> 
+			<orderClause>t.transp_stat_id</orderClause>
+    	</operationBinding>
+    	<operationBinding operationId="searchAllTransportPlacesForCBAvt1" operationType="fetch">
+    		<selectClause>   			
+    			t.transp_stat_id,
+    			t.transp_type_id,
+				t.name_descr 				
+			</selectClause> 
+			<tableClause>transp_stations t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) and t.transp_type_id = 1000002
+				]]>  
+			</whereClause> 
+			<orderClause>t.transp_stat_id</orderClause>
+    	</operationBinding>
+    	<operationBinding operationId="searchAllTransportPlacesForCBMarsh" operationType="fetch">
+    		<selectClause>   			
+    			t.transp_stat_id,
+    			t.transp_type_id,
+				t.name_descr 				
+			</selectClause> 
+			<tableClause>transp_stations t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) and t.transp_type_id = 1000001
+				]]>  
+			</whereClause> 
+			<orderClause>t.transp_stat_id</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
