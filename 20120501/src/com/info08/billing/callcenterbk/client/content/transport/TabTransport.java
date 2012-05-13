@@ -383,18 +383,13 @@ public class TabTransport extends Tab {
 			datasource.getField("remark").setTitle("კომენტარი");
 
 			ListGridField transport_type = new ListGridField("transport_type","ტრანსპ. ტიპი", 150);
-			ListGridField depart_station = new ListGridField("depart_station","გასვლის პუნქტი", 150);
-			ListGridField arrival_station = new ListGridField("arrival_station", "ჩასვლის პუნქტი", 150);
-			ListGridField transp_company = new ListGridField(
-					"transp_company", "სატრანსპ. კომპანია", 170);
-			ListGridField transp_resource = new ListGridField(
-					"transp_resource", "ტრანსპორტი", 120);
-			ListGridField transp_model_descr = new ListGridField(
-					"transp_model_descr", "რეისი", 70);
-			ListGridField formated_depart_time = new ListGridField(
-					"formated_depart_time", "გასვ. დრო", 70);
-			ListGridField formated_arrival_time = new ListGridField(
-					"formated_arrival_time", "ჩასვ. დრო", 70);
+			ListGridField depart_station = new ListGridField("depart_station","გასვლის პუნქტი", 200);
+			ListGridField arrival_station = new ListGridField("arrival_station", "ჩასვლის პუნქტი", 200);
+			ListGridField transp_company = new ListGridField("transp_company", "სატრანსპ. კომპანია", 200);
+			ListGridField transp_resource = new ListGridField("transp_resource", "ტრანსპორტი", 120);
+			ListGridField transp_model_descr = new ListGridField("transp_model_descr", "რეისი", 70);
+			ListGridField formated_depart_time = new ListGridField("formated_depart_time", "გასვ. დრო", 70);
+			ListGridField formated_arrival_time = new ListGridField("formated_arrival_time", "ჩასვ. დრო", 70);
 
 			formated_depart_time.setCellFormatter(new CellFormatter() {
 				@Override
