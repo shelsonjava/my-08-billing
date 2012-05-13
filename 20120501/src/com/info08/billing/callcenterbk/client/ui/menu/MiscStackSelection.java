@@ -5,8 +5,7 @@ import com.info08.billing.callcenterbk.client.content.currency.TabCurrency;
 import com.info08.billing.callcenterbk.client.content.ent.TabEventOwner;
 import com.info08.billing.callcenterbk.client.content.ent.TabEvent;
 import com.info08.billing.callcenterbk.client.content.ent.TabEventCategory;
-import com.info08.billing.callcenterbk.client.content.misc.TabCalendar;
-import com.info08.billing.callcenterbk.client.content.misc.TabChurchCalendar;
+import com.info08.billing.callcenterbk.client.content.misc.TabFacts;
 import com.info08.billing.callcenterbk.client.content.misc.TabNonStandartGroup;
 import com.info08.billing.callcenterbk.client.content.misc.TabNonStandartInfo;
 import com.info08.billing.callcenterbk.client.content.misc.TabWebSite;
@@ -163,11 +162,8 @@ public class MiscStackSelection extends SectionStackSection {
 			TabCurrency tabRateCurrency = new TabCurrency();
 			body.addTab(tabRateCurrency);
 		} else if (menuId.equals("104")) {
-			TabCalendar tabCalendar = new TabCalendar();
+			TabFacts tabCalendar = new TabFacts();
 			body.addTab(tabCalendar);
-		} else if (menuId.equals("105")) {
-			TabChurchCalendar tabChurchCalendar = new TabChurchCalendar();
-			body.addTab(tabChurchCalendar);
 		} else if (menuId.equals("106")) {
 			TabWebSiteGroup tabWebSiteGroup = new TabWebSiteGroup();
 			body.addTab(tabWebSiteGroup);
