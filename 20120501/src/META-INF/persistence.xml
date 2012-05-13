@@ -32,9 +32,9 @@
     <class>com.info08.billing.callcenterbk.shared.entity.currency.Currency</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirection</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirectionStreet</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.transport.Transport</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.transport.TranspSchedule</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.TranspCompany</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.transport.TransportDetail</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.transport.TranspItems</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.TranspStation</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.TranspType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.main.MainDetailType</class>
