@@ -25,9 +25,9 @@
     <class>com.info08.billing.callcenterbk.shared.entity.StreetType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.Continents</class>
     <class>com.info08.billing.callcenterbk.shared.entity.Country</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.calendar.Facts</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.calendar.FactStatus</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.calendar.FactType</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.facts.Facts</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.facts.FactStatus</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.facts.FactType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.currency.CurrencyCourse</class>
     <class>com.info08.billing.callcenterbk.shared.entity.currency.Currency</class>
     <class>com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirection</class>
