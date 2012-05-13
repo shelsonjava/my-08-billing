@@ -50,7 +50,7 @@
 			</selectClause> 
 			<tableClause>event_category t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0
+				($defaultWhereClause)
 			</whereClause>	
 			<orderClause>t.event_category_name</orderClause>		
     	</operationBinding>

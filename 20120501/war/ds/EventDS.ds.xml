@@ -87,32 +87,32 @@
     	
     	<operationBinding operationId="searchAllEventForCallCenter" operationType="fetch">
     		<selectClause>   			
-    			   t.event_id,
-			       t.event_owner_id,
-			       t.event_name,
-			       t.remark,
-			       t.event_date,
-			       t.event_time,
-			       t.event_price,
-			       t.event_info,
-			       t.event_date_m_y,
+    			   t.event_list_id,
+			       t.event_list_owner_id,
+			       t.event_list_name,
+			       t.event_list_remark,
+			       t.event_list_date,
+			       t.event_list_time,
+			       t.event_list_price,
+			       t.event_list_info,
+			       t.event_list_date_m_y,
 			       ep.event_owner_name,
        			   ep.main_id,
-       			   t.event_list_date,
-       			   t.event_list_time       			   
+       			   t.event_list_n_date,
+       			   t.event_list_n_time       			   
 			</selectClause> 
 			<tableClause>event_list_items t, event_owner ep</tableClause>
 			<whereClause><![CDATA[
-				t.event_owner_id = ep.event_owner_id
-				#if($criteria.event_owner_id) and t.event_owner_id = $criteria.event_owner_id #end
-				#if($criteria.event_time) and trunc(t.event_time) = trunc($criteria.event_time) #end
+				t.event_list_owner_id = ep.event_owner_id
+				#if($criteria.event_list_id) and t.event_list_id = $criteria.event_list_id #end
+				#if($criteria.event_list_time) and trunc(t.event_list_time) = trunc($criteria.event_list_time) #end
 				#if($criteria.entPostGeoAndCom) 
-					and (t.event_name like '%'||$criteria.entPostGeoAndCom||'%' or t.event_info like '%'||$criteria.entPostGeoAndCom||'%') 
+					and (t.event_list_name like '%'||$criteria.entPostGeoAndCom||'%' or t.event_list_info like '%'||$criteria.entPostGeoAndCom||'%') 
 				#end
 				
 				]]>  
 			</whereClause> 
-			<orderClause>t.event_date_m_y, t.event_date, t.event_name</orderClause>
+			<orderClause>t.event_list_date_m_y, t.event_list_date, t.event_list_name</orderClause>
     	</operationBinding>
     	
     	
@@ -120,15 +120,12 @@
     	<operationBinding operationId="searchAllEventForCallCenter1" operationType="fetch">
     		<selectClause>   			
     			t.event_id as event_list_id,
-				t.comment_eng,
 				nvl(t.remark, '_') as event_list_remark,
 				t.date_criteria,
 				t.date_visibility,
 				t.event_owner_id as event_list_owner_id,
-				t.ent_poster_eng,
 				nvl(t.event_name, '_') as event_list_name,
 				t.event_date,
-				t.poster_price_eng,
 				t.event_price,
 				t.event_time,
 				ep.event_owner_name,

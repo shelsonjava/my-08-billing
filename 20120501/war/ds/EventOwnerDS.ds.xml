@@ -91,7 +91,7 @@
 							inner join event_owner ep on t.event_owner_id = ep.event_owner_id
 			</tableClause>
 			<whereClause><![CDATA[
-				t.deleted = 0
+				1=1
 				and (trunc(t.event_date) >= trunc(sysdate) - 1 or t.date_criteria not in (0))
 				#if($criteria.event_category_id) and ep.event_category_id = $criteria.event_category_id #end
 				#if($criteria.event_owner_name) and ep.event_owner_name like '%'||($criteria.event_owner_name)||'%' #end
