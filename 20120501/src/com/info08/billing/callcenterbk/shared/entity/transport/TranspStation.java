@@ -22,7 +22,7 @@ import javax.persistence.Transient;
 @NamedQueries({ 
 		@NamedQuery(
 					name = "TranspStation.getByCityId", 
-					query = "select e from TransportPlace e where e.city_id = :city_id ") 
+					query = "select e from TranspStation e where e.city_id = :city_id ") 
 })
 
 @Entity
