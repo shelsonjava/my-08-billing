@@ -1,7 +1,7 @@
 <DataSource
 	ID="CurrencyCourseDS"
 	serverType="sql"
-	tableName="ccare.currency_course"
+	tableName="currency_course"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

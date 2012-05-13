@@ -5,28 +5,20 @@
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="ent_poster_id"				type="integer"		title="ID"							hidden="true" primaryKey="true" />
-		<field name="ent_place_geo"				type="text"			title="ent_place_geo"/>
-		<field name="ent_poster_geo"			type="text"			title="ent_poster_geo"/>
-		<field name="comment_geo"				type="text"			title="Comment Geo"/>
-		<field name="poster_date"				type="datetime"		title="poster_date"/>
-		<field name="poster_price_geo"			type="text"			title="poster_price_geo"/>
+		<field name="event_id"				type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="event_owner_name"				type="text"			title="event_owner_name"/>
+		<field name="event_name"			type="text"			title="event_name"/>
+		<field name="remark"				type="text"			title="Remark"/>
+		<field name="event_date"				type="datetime"		title="event_date"/>
+		<field name="event_price"			type="text"			title="event_price"/>
 		<field name="poster_time"				type="text"			title="poster_time"/>
-		<field name="rec_date"					type="datetime"		title="rec_date"/>
-		<field name="rec_user"					type="text"			title="Record User"/>
-		<field name="upd_date"					type="datetime"		title="upd_date"/>
-		<field name="upd_user"					type="text"			title="Update User"/>
-		<field name="sms_comment"				type="text"			title="Sms Comment"/>
-		<field name="comment_eng"				type="text"			title="Comment Eng"					hidden="true"/>
-		<field name="poster_price_eng"			type="text"			title="poster_price_eng"			hidden="true"/>
-		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
-		<field name="dt_crit"					type="integer"		title="dt_crit" 					hidden="true"/>
-		<field name="dt_view_crit"				type="integer"		title="dt_crit" 					hidden="true"/>
-		<field name="ent_place_id"				type="integer"		title="ent_place_id" 				hidden="true"/>
-		<field name="ent_poster_eng"			type="text"			title="ent_poster_eng"				hidden="true"/>
+		<field name="sms_remark"				type="text"			title="Sms Remark"/>
+		<field name="date_criteria"					type="integer"		title="date_criteria" 					hidden="true"/>
+		<field name="date_visibility"				type="integer"		title="date_visibility" 					hidden="true"/>
+		<field name="event_owner_id"				type="integer"		title="event_owner_id" 				hidden="true"/>
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true"/>	
-		<field name="ent_type_id"				type="integer"		title="Ent Type Id" 				hidden="true"/>	
-		<field name="posterDateAndTime"			type="text"			title="posterDateAndTime"/>
+		<field name="event_category_id"				type="integer"		title="Ent Type Id" 				hidden="true"/>	
+		<field name="eventDateTime"			type="text"			title="eventDateTime"/>
 		<field name="scheduleitemid"			type="integer"		title="scheduleitemid" 				hidden="true"/>
 		<field name="scheduleplaceid"			type="integer"		title="scheduleplaceid" 			hidden="true"/>
 		<field name="itemname"					type="text"			title="itemname"/>
@@ -68,42 +60,40 @@
 	
     	<operationBinding operationId="searchAllEntPosters" operationType="fetch">
     		<selectClause>   			
-    			t.ent_poster_id,
+    			t.event_id,
 				t.comment_eng,
-				t.comment_geo,
-				t.deleted,
-				t.dt_crit,
-				t.dt_view_crit,
-				t.ent_place_id,
+				t.remark,
+				t.date_criteria,
+				t.date_visibility,
+				t.event_owner_id,
 				t.ent_poster_eng,
-				t.ent_poster_geo,
-				t.poster_date,
+				t.event_name,
+				t.event_date,
 				t.poster_price_eng,
-				t.poster_price_geo,
+				t.event_price,
 				t.poster_time,
 				t.rec_date,
 				t.rec_user,
 				t.upd_date,
 				t.upd_user,    
-				ep.ent_place_geo,
-				t.sms_comment,
-				ep.ent_type_id,
-				trim(to_char(t.poster_date,'DD-MM-YYYY')||' '||t.poster_time) as posterDateAndTime
+				ep.event_owner_name,
+				t.sms_remark,
+				ep.event_category_id,
+				trim(to_char(t.event_date,'DD-MM-YYYY')||' '||t.poster_time) as eventDateTime
 			</selectClause> 
 			<tableClause>ent_posters t, ent_places ep</tableClause>
 			<whereClause><![CDATA[
-				t.ent_place_id = ep.ent_place_id
-				#if($criteria.ent_type_id) and ep.ent_type_id = $criteria.ent_type_id #end
-				#if($criteria.ent_place_id) and t.ent_place_id = $criteria.ent_place_id #end
-				#if($criteria.ent_poster_geo) and t.ent_poster_geo like ($criteria.ent_poster_geo)||'%' #end
-				#if($criteria.comment_geo) and t.comment_geo like ($criteria.comment_geo)||'%' #end
-				#if($criteria.poster_price_geo) and t.poster_price_geo like ($criteria.poster_price_geo)||'%' #end
-				#if($criteria.poster_date_start) and trunc(t.poster_date) >= trunc($criteria.poster_date_start) #end
-				#if($criteria.poster_date_end) and trunc(t.poster_date) <= trunc($criteria.poster_date_end) #end
-				#if($criteria.deleted) and t.deleted = $criteria.deleted #end
+				t.event_owner_id = ep.event_owner_id
+				#if($criteria.event_category_id) and ep.event_category_id = $criteria.event_category_id #end
+				#if($criteria.event_owner_id) and t.event_owner_id = $criteria.event_owner_id #end
+				#if($criteria.event_name) and t.event_name like ($criteria.event_name)||'%' #end
+				#if($criteria.remark) and t.remark like ($criteria.remark)||'%' #end
+				#if($criteria.event_price) and t.event_price like ($criteria.event_price)||'%' #end
+				#if($criteria.event_date_start) and trunc(t.event_date) >= trunc($criteria.event_date_start) #end
+				#if($criteria.event_date_end) and trunc(t.event_date) <= trunc($criteria.event_date_end) #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.ent_poster_id</orderClause>
+			<orderClause>t.event_id</orderClause>
     	</operationBinding>
     	
     	
@@ -119,7 +109,7 @@
 			       t.price,
 			       t.fullinfo,
 			       t.morder,
-			       ep.ent_place_geo,
+			       ep.event_owner_name,
        			   ep.main_id,
        			   ms.service_id,
        			   t.new_itm_date,
@@ -127,7 +117,7 @@
 			</selectClause> 
 			<tableClause>scheduleitems t, ent_places ep, main_services ms</tableClause>
 			<whereClause><![CDATA[
-				t.scheduleplaceid = ep.ent_place_id and ep.main_id = ms.main_id(+)
+				t.scheduleplaceid = ep.event_owner_id and ep.main_id = ms.main_id(+)
 				#if($criteria.scheduleplaceid) and t.scheduleplaceid = $criteria.scheduleplaceid #end
 				#if($criteria.kkd) and trunc(t.kkd) = trunc($criteria.kkd) #end
 				#if($criteria.entPostGeoAndCom) 
@@ -143,85 +133,83 @@
     	
     	<operationBinding operationId="searchAllEntPostersForCallCenter1" operationType="fetch">
     		<selectClause>   			
-    			t.ent_poster_id as scheduleItemID,
+    			t.event_id as scheduleItemID,
 				t.comment_eng,
-				nvl(t.comment_geo, '_') as info,
-				t.deleted,
-				t.dt_crit,
-				t.dt_view_crit,
-				t.ent_place_id as schedulePlaceID,
+				nvl(t.remark, '_') as info,
+				t.date_criteria,
+				t.date_visibility,
+				t.event_owner_id as schedulePlaceID,
 				t.ent_poster_eng,
-				nvl(t.ent_poster_geo, '_') as itemName,
-				t.poster_date,
+				nvl(t.event_name, '_') as itemName,
+				t.event_date,
 				t.poster_price_eng,
-				t.poster_price_geo,
+				t.event_price,
 				t.poster_time,
 				t.rec_date,
 				t.rec_user,
 				t.upd_date,
 				t.upd_user,    
-				ep.ent_place_geo,
-				t.sms_comment,
-				ep.ent_type_id,
-				trim(to_char(t.poster_date,'DD-MM-YYYY')||' '||t.poster_time) as posterDateAndTime,
-				decode(t.dt_view_crit, 0, TO_CHAR(t.poster_date, 'dd-mm-yy') || ' ' || t.poster_time, '--------------') itemDate,
-				to_date(t.poster_date || ':' || decode(t.poster_time, null, '00:01', t.poster_time), 'dd/mm/yy:HH24:mi') kkd,
-				nvl(t.poster_price_geo, '_') price,
-				t.ent_poster_geo || ' ' || t.comment_geo as fullInfo,
-				to_char(t.poster_date, 'mm/yy') morder
+				ep.event_owner_name,
+				t.sms_remark,
+				ep.event_category_id,
+				trim(to_char(t.event_date,'DD-MM-YYYY')||' '||t.poster_time) as eventDateTime,
+				decode(t.date_visibility, 0, TO_CHAR(t.event_date, 'dd-mm-yy') || ' ' || t.poster_time, '--------------') itemDate,
+				to_date(t.event_date || ':' || decode(t.poster_time, null, '00:01', t.poster_time), 'dd/mm/yy:HH24:mi') kkd,
+				nvl(t.event_price, '_') price,
+				t.event_name || ' ' || t.remark as fullInfo,
+				to_char(t.event_date, 'mm/yy') morder
 				
 			</selectClause> 
 			<tableClause>ent_posters t, ent_places ep</tableClause>
 			<whereClause><![CDATA[
-				t.ent_place_id = ep.ent_place_id and t.deleted = 0
-				and (trunc(t.poster_date) >= trunc(sysdate) - 1 or t.dt_crit not in (0))
-				#if($criteria.ent_type_id) and ep.ent_type_id = $criteria.ent_type_id #end
-				#if($criteria.ent_place_id) and t.ent_place_id = $criteria.ent_place_id #end
-				#if($criteria.ent_poster_geo) and t.ent_poster_geo like ($criteria.ent_poster_geo)||'%' #end
-				#if($criteria.comment_geo) and t.comment_geo like ($criteria.comment_geo)||'%' #end
-				#if($criteria.poster_price_geo) and t.poster_price_geo like ($criteria.poster_price_geo)||'%' #end
-				#if($criteria.poster_date_start) and trunc(t.poster_date) >= trunc($criteria.poster_date_start) #end
-				#if($criteria.poster_date_end) and trunc(t.poster_date) <= trunc($criteria.poster_date_end) #end
+				t.event_owner_id = ep.event_owner_id 
+				and (trunc(t.event_date) >= trunc(sysdate) - 1 or t.date_criteria not in (0))
+				#if($criteria.event_category_id) and ep.event_category_id = $criteria.event_category_id #end
+				#if($criteria.event_owner_id) and t.event_owner_id = $criteria.event_owner_id #end
+				#if($criteria.event_name) and t.event_name like ($criteria.event_name)||'%' #end
+				#if($criteria.remark) and t.remark like ($criteria.remark)||'%' #end
+				#if($criteria.event_price) and t.event_price like ($criteria.event_price)||'%' #end
+				#if($criteria.event_date_start) and trunc(t.event_date) >= trunc($criteria.event_date_start) #end
+				#if($criteria.event_date_end) and trunc(t.event_date) <= trunc($criteria.event_date_end) #end
 				
-				#if($criteria.poster_date_p) and (trunc(t.poster_date) = trunc($criteria.poster_date_p) or t.dt_crit not in (0)) #end
+				#if($criteria.event_date_p) and (trunc(t.event_date) = trunc($criteria.event_date_p) or t.date_criteria not in (0)) #end
 				
-				#if($criteria.deleted) and t.deleted = $criteria.deleted #end
-				#if($criteria.scheduleplaceid) and t.ent_place_id = $criteria.scheduleplaceid #end
+				#if($criteria.scheduleplaceid) and t.event_owner_id = $criteria.scheduleplaceid #end
 				#if($criteria.entPostGeoAndCom) 
 					and (
-						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom||'%' or 
-						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom||'%'
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom||'%'
 						) 
 				#end
 				
 				#if($criteria.entPostGeoAndCom1) 
 					and (
-						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom1||'%' or 
-						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom1||'%'
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom1||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom1||'%'
 						) 
 				#end
 				#if($criteria.entPostGeoAndCom2) 
 					and (
-						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom2||'%' or 
-						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom2||'%'
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom2||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom2||'%'
 						) 
 				#end
 				#if($criteria.entPostGeoAndCom3) 
 					and (
-						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom3||'%' or 
-						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom3||'%'
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom3||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom3||'%'
 						) 
 				#end
 				#if($criteria.entPostGeoAndCom4) 
 					and (
-						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom4||'%' or 
-						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom4||'%'
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom4||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom4||'%'
 						) 
 				#end
 				#if($criteria.entPostGeoAndCom5) 
 					and (
-						  nvl(t.ent_poster_geo, '_') like '%'||$criteria.entPostGeoAndCom5||'%' or 
-						  (t.ent_poster_geo || ' ' || t.comment_geo) like '%'||$criteria.entPostGeoAndCom5||'%'
+						  nvl(t.event_name, '_') like '%'||$criteria.entPostGeoAndCom5||'%' or 
+						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom5||'%'
 						) 
 				#end
 				
@@ -229,7 +217,7 @@
 				
 				]]>  
 			</whereClause> 
-			<orderClause>to_char(t.poster_date, 'mm/yy'), decode(t.dt_view_crit, 0, TO_CHAR(t.poster_date, 'dd-mm-yy') || ' ' || t.poster_time, '--------------'), nvl(t.ent_poster_geo, '_')</orderClause>
+			<orderClause>to_char(t.event_date, 'mm/yy'), decode(t.date_visibility, 0, TO_CHAR(t.event_date, 'dd-mm-yy') || ' ' || t.poster_time, '--------------'), nvl(t.event_name, '_')</orderClause>
     	</operationBinding>
     	
     	

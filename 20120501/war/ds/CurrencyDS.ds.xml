@@ -1,7 +1,7 @@
 <DataSource
 	ID="CurrencyDS"
 	serverType="sql"
-	tableName="ccare.currency"
+	tableName="currency"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -28,8 +28,8 @@
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
         </operationBinding>
         
-        <!-- Currency Status Update -->
-		<operationBinding operationType="update" operationId="removeCurrency" serverMethod="removeCurrency">
+        <!-- Currency Remove -->
+		<operationBinding operationType="remove" operationId="removeCurrency" serverMethod="removeCurrency">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CurrencyDMI"/>
         </operationBinding>
 	

@@ -1,0 +1,72 @@
+<DataSource
+	ID="EventCategoryDS"
+	serverType="sql"
+	tableName="event_category"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="event_category_id"		type="integer"		title="ID"							hidden="true" primaryKey="true" />
+		<field name="event_category_name"	type="text"			title="event_category_name"/>
+		<field name="loggedUserName"		type="text"			title="Logged UserName" 			hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EventDMI"/>
+
+		<!-- Add EventCategory -->
+		<operationBinding operationType="add" operationId="addEventCategory" serverMethod="addEventCategory">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EventDMI"/>
+        </operationBinding>
+        
+		<!-- EventCategory Update -->
+		<operationBinding operationType="update" operationId="updateEventCategory" serverMethod="updateEventCategory">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EventDMI"/>
+        </operationBinding>
+        
+        <!-- EventCategory Remove -->
+		<operationBinding operationType="remove" operationId="removeEventCategory" serverMethod="removeEventCategory">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.EventDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllEventCategory" operationType="fetch">
+    		<selectClause>   			
+    			t.event_category_id,
+				t.event_category_name
+			</selectClause> 
+			<tableClause>event_category t</tableClause>
+			<whereClause><![CDATA[
+				1=1
+				#if($criteria.event_category_name) and t.event_category_name like ($criteria.event_category_name)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.event_category_id</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllEventCategoryForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.event_category_id,
+    			t.event_category_name 
+			</selectClause> 
+			<tableClause>event_category t</tableClause>	
+			<whereClause>
+				($defaultWhereClause) AND t.deleted = 0
+			</whereClause>	
+			<orderClause>t.event_category_name</orderClause>		
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllEventCategoryForCC" operationType="fetch">
+    		<selectClause>   			
+    			t.event_category_id,
+    			t.event_category_name 
+			</selectClause> 
+			<tableClause>event_category t</tableClause>	
+			<whereClause>
+				1=1
+				#if($criteria.event_category_name) and t.event_category_name like '%'||($criteria.event_category_name)||'%' #end
+			</whereClause>	
+			<orderClause>t.event_category_name</orderClause>		
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
