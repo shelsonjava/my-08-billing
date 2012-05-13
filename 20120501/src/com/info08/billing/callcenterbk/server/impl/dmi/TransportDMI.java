@@ -21,7 +21,7 @@ import com.info08.billing.callcenterbk.shared.entity.transport.TranspType;
 import com.info08.billing.callcenterbk.shared.entity.transport.Transport;
 import com.info08.billing.callcenterbk.shared.entity.transport.TranspCompany;
 import com.info08.billing.callcenterbk.shared.entity.transport.TransportDetail;
-import com.info08.billing.callcenterbk.shared.entity.transport.TransportPlace;
+import com.info08.billing.callcenterbk.shared.entity.transport.TranspStation;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 
@@ -397,13 +397,13 @@ public class TransportDMI implements QueryConstants {
 	}
 
 	/**
-	 * Adding New TransportPlace
+	 * Adding New Transport Station
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	public TransportPlace addTransportPlace(TransportPlace transportPlace)
+	public TranspStation addTransportStation(TranspStation transpStation)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -414,47 +414,38 @@ public class TransportDMI implements QueryConstants {
 
 			// sysdate
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			String loggedUserName = transportPlace.getLoggedUserName();
-			transportPlace.setRec_date(recDate);
-			transportPlace.setRec_user(loggedUserName);
+			String loggedUserName = transpStation.getLoggedUserName();
 
-			Long city_id = transportPlace.getCity_id();
+			Long city_id = transpStation.getCity_id();
 			City city = oracleManager.find(City.class, city_id);
-			String descr = "";
-			if (city != null && city.getCity_name_geo() != null) {
-				descr += city.getCity_name_geo() + " ";
-			}
-			descr += transportPlace.getTransport_place_geo();
 
-			Long transpTypeId = transportPlace.getTransport_type_id();
+			Long transpTypeId = transpStation.getTransp_type_id();
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transpTypeId);
-			if (transportType != null && transportType.getName_descr() != null) {
-				descr += " ( " + transportType.getName_descr() + " ) ";
-			}
 
-			transportPlace.setTransport_place_geo_descr(descr);
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Add Transport Station.");
 
-			oracleManager.persist(transportPlace);
+			oracleManager.persist(transpStation);
 			oracleManager.flush();
 
-			transportPlace = oracleManager.find(TransportPlace.class,
-					transportPlace.getTransport_place_id());
+			transpStation = oracleManager.find(TranspStation.class,
+					transpStation.getTransp_stat_id());
 
-			transportPlace.setLoggedUserName(loggedUserName);
+			transpStation.setLoggedUserName(loggedUserName);
 
 			if (transportType != null) {
-				transportPlace.setname_descr(transportType.getName_descr());
+				transpStation.setTranspport_type(transportType.getName_descr());
 			}
 
 			if (city != null) {
-				transportPlace.setCity_name_geo(city.getCity_name_geo());
+				transpStation.setCity_descr(city.getCity_name_geo());
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return transportPlace;
+			return transpStation;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -472,77 +463,63 @@ public class TransportDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating TransportPlace
+	 * Updating Transport Station
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public TransportPlace updateTransportPlace(Map record) throws Exception {
+	public TranspStation updateTransportStation(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateTransportPlace.";
+			String log = "Method:CommonDMI.updateTransportStation.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long transport_place_id = new Long(record.get("transport_place_id")
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+			Long transp_stat_id = new Long(record.get("transp_stat_id")
 					.toString());
-			Long transport_type_id = new Long(record.get("transp_type_id")
+			Long transp_type_id = new Long(record.get("transp_type_id")
 					.toString());
 			Long city_id = new Long(record.get("city_id").toString());
-
-			String transport_place_geo = record.get("transport_place_geo") == null ? null
-					: record.get("transport_place_geo").toString();
-			String transport_place_eng = record.get("transport_place_eng") == null ? null
-					: record.get("transport_place_eng").toString();
+			String name_descr = record.get("name_descr") == null ? null
+					: record.get("name_descr").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			TransportPlace transportPlace = oracleManager.find(
-					TransportPlace.class, transport_place_id);
+			TranspStation transpStation = oracleManager.find(
+					TranspStation.class, transp_stat_id);
 
-			transportPlace.setTransport_type_id(transport_type_id);
-			transportPlace.setCity_id(city_id);
-			transportPlace.setTransport_place_eng(transport_place_eng);
-			transportPlace.setTransport_place_geo(transport_place_geo);
-			transportPlace.setUpd_user(loggedUserName);
+			transpStation.setTransp_type_id(transp_type_id);
+			transpStation.setCity_id(city_id);
+			transpStation.setName_descr(name_descr);
 
 			City city = oracleManager.find(City.class, city_id);
-			String descr = "";
-			if (city != null && city.getCity_name_geo() != null) {
-				descr += city.getCity_name_geo() + " ";
-			}
-			descr += transportPlace.getTransport_place_geo();
-
 			TranspType transportType = oracleManager.find(TranspType.class,
-					transport_type_id);
-			if (transportType != null && transportType.getName_descr() != null) {
-				descr += " ( " + transportType.getName_descr() + " ) ";
-			}
+					transp_type_id);
 
-			transportPlace.setTransport_place_geo_descr(descr);
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Edit Transport Station.");
 
-			oracleManager.merge(transportPlace);
+			oracleManager.merge(transpStation);
 			oracleManager.flush();
 
-			transportPlace = oracleManager.find(TransportPlace.class,
-					transportPlace.getTransport_place_id());
-
-			transportPlace.setLoggedUserName(loggedUserName);
+			transpStation = oracleManager.find(TranspStation.class,
+					transpStation.getTransp_stat_id());
+			transpStation.setLoggedUserName(loggedUserName);
 
 			if (transportType != null) {
-				transportPlace.setname_descr(transportType.getName_descr());
+				transpStation.setTranspport_type(transportType.getName_descr());
 			}
-
 			if (city != null) {
-				transportPlace.setCity_name_geo(city.getCity_name_geo());
+				transpStation.setCity_descr(city.getCity_name_geo());
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return transportPlace;
+			return transpStation;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -560,14 +537,13 @@ public class TransportDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating TransportPlace Status
+	 * Remove Transport Station
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public TransportPlace updateTransportPlaceStatus(Map record)
+	public TranspStation removeTransportStation(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -576,39 +552,23 @@ public class TransportDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long transport_place_id = new Long(record.get("transport_place_id")
-					.toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+			Long transp_stat_id = new Long(dsRequest.getOldValues()
+					.get("transp_stat_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
 
-			TransportPlace transportPlace = oracleManager.find(
-					TransportPlace.class, transport_place_id);
-
-			transportPlace.setDeleted(deleted);
-			transportPlace.setUpd_user(loggedUserName);
-
-			oracleManager.merge(transportPlace);
+			TranspStation transportStation = oracleManager.find(
+					TranspStation.class, transp_stat_id);
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Remove Transport Station.");
+			oracleManager.remove(transportStation);
 			oracleManager.flush();
-
-			transportPlace = oracleManager.find(TransportPlace.class,
-					transport_place_id);
-
-			transportPlace.setLoggedUserName(loggedUserName);
-			TranspType transportType = oracleManager.find(TranspType.class,
-					transportPlace.getTransport_type_id());
-			if (transportType != null) {
-				transportPlace.setname_descr(transportType.getName_descr());
-			}
-			City city = oracleManager.find(City.class,
-					transportPlace.getCity_id());
-			if (city != null) {
-				transportPlace.setCity_name_geo(city.getCity_name_geo());
-			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return transportPlace;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {

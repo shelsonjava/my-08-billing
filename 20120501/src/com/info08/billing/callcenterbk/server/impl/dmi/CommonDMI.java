@@ -30,8 +30,6 @@ import com.info08.billing.callcenterbk.shared.entity.StreetDistrict;
 import com.info08.billing.callcenterbk.shared.entity.StreetEnt;
 import com.info08.billing.callcenterbk.shared.entity.StreetType;
 import com.info08.billing.callcenterbk.shared.entity.StreetsOldEnt;
-import com.info08.billing.callcenterbk.shared.entity.transport.TransportPlace;
-import com.info08.billing.callcenterbk.shared.entity.transport.TranspType;
 import com.info08.billing.callcenterbk.shared.items.FirstName;
 import com.info08.billing.callcenterbk.shared.items.LastName;
 import com.info08.billing.callcenterbk.shared.items.PersonnelTypes;
@@ -1827,7 +1825,7 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes"})
 	public City cityUpdate(Map fieldValues) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -1913,29 +1911,29 @@ public class CommonDMI implements QueryConstants {
 					changed = true;
 				}
 				if (changed) {
-					ArrayList<TransportPlace> trPlaces = (ArrayList<TransportPlace>) oracleManager
-							.createNamedQuery("TransportPlace.getByCityId")
-							.setParameter("city_id", city_id).getResultList();
-					if (trPlaces != null && !trPlaces.isEmpty()) {
-						String newCityName = fieldValues.get("city_name_geo")
-								.toString();
-						for (TransportPlace transportPlace : trPlaces) {
-							Long transpTypeId = transportPlace
-									.getTransport_type_id();
-							TranspType transportType = oracleManager.find(
-									TranspType.class, transpTypeId);
-							String newDescr = newCityName
-									+ " "
-									+ transportPlace.getTransport_place_geo()
-									+ " ( "
-									+ (transportType == null ? "NULL"
-											: transportType.getName_descr())
-									+ " ) ";
-							transportPlace
-									.setTransport_place_geo_descr(newDescr);
-							oracleManager.merge(transportPlace);
-						}
-					}
+//					ArrayList<TranspStation> trPlaces = (ArrayList<TranspStation>) oracleManager
+//							.createNamedQuery("TranspStation.getByCityId")
+//							.setParameter("city_id", city_id).getResultList();
+//					if (trPlaces != null && !trPlaces.isEmpty()) {
+//						String newCityName = fieldValues.get("city_name_geo")
+//								.toString();
+//						for (TranspStation transportPlace : trPlaces) {
+//							Long transpTypeId = transportPlace
+//									.getTransport_type_id();
+//							TranspType transportType = oracleManager.find(
+//									TranspType.class, transpTypeId);
+//							String newDescr = newCityName
+//									+ " "
+//									+ transportPlace.getTransport_place_geo()
+//									+ " ( "
+//									+ (transportType == null ? "NULL"
+//											: transportType.getName_descr())
+//									+ " ) ";
+//							transportPlace
+//									.setTransport_place_geo_descr(newDescr);
+//							oracleManager.merge(transportPlace);
+//						}
+//					}
 				}
 			}
 
