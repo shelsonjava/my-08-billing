@@ -334,7 +334,7 @@ public class TabTransport extends Tab {
 			mainLayout.addMember(buttonLayout);
 
 			ToolStrip toolStrip = new ToolStrip();
-			toolStrip.setWidth(1000);
+			toolStrip.setWidth(1140);
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
@@ -355,7 +355,7 @@ public class TabTransport extends Tab {
 
 			listGrid = new ListGrid();
 
-			listGrid.setWidth(1300);
+			listGrid.setWidth(1140);
 			listGrid.setHeight(300);
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(datasource);
@@ -499,7 +499,7 @@ public class TabTransport extends Tab {
 			});
 
 			TabSet tabSet = new TabSet();
-			tabSet.setWidth(1000);
+			tabSet.setWidth(1140);
 			Tab tabDetViewer = new Tab("დათვალიერება");
 			final DetailViewer detailViewer = new DetailViewer();
 			detailViewer.setDataSource(datasource);

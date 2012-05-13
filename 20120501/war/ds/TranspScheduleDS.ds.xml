@@ -79,8 +79,6 @@
 				tp.name_descr as transp_resource,
 				oc.city_name_geo as depart_city,
 				ic.city_name_geo as arrival_city,
-				o.name_descr as depart_station,
-				i.name_descr as arrival_station,
 				to_char((ts.arrival_time+ic.of_gmt/24),'HH24:mi') cmt,
 				to_char(ts.depart_time,'HH24:MI') formated_depart_time,
        			to_char(ts.arrival_time ,'HH24:MI') formated_arrival_time
