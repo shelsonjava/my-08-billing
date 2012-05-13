@@ -147,8 +147,8 @@ public class TabTranspStation extends Tab {
 				}
 			});
 
-			searchForm.setFields(transpStatGeoItem, transportTypeItem,
-					cityItem);
+			searchForm
+					.setFields(transpStatGeoItem, transportTypeItem, cityItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -340,7 +340,8 @@ public class TabTranspStation extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("name_descr", name_descr);
 			if (transp_type_id != null) {
-				criteria.setAttribute("transp_type_id", new Integer(transp_type_id));
+				criteria.setAttribute("transp_type_id", new Integer(
+						transp_type_id));
 			}
 			if (city_id != null) {
 				criteria.setAttribute("city_id", new Integer(city_id));
@@ -370,7 +371,7 @@ public class TabTranspStation extends Tab {
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeTransportStation");
-			listGrid.updateData(record, new DSCallback() {
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
