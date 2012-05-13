@@ -29,16 +29,21 @@ public class FactType implements Serializable {
 	@Basic
 	@Column(name = "FACT_TYPE_NAME")
 	private String fact_type_name;
+	
+	
+	@Basic
+	@Column(name = "facts_descriptor_id")
+	private Long facts_descriptor_id;
 
 	public FactType() {
 	}
 
-	public Long getEvent_id() {
+	public Long getFact_type_id() {
 		return fact_type_id;
 	}
 
-	public void setEvent_id(Long event_id) {
-		this.fact_type_id = event_id;
+	public void setFact_type_id(Long fact_type_id) {
+		this.fact_type_id = fact_type_id;
 	}
 
 	public String getFact_type_name() {
@@ -47,6 +52,14 @@ public class FactType implements Serializable {
 
 	public void setFact_type_name(String fact_type_name) {
 		this.fact_type_name = fact_type_name;
+	}
+
+	public Long getFacts_descriptor_id() {
+		return facts_descriptor_id;
+	}
+
+	public void setFacts_descriptor_id(Long facts_descriptor_id) {
+		this.facts_descriptor_id = facts_descriptor_id;
 	}
 
 }

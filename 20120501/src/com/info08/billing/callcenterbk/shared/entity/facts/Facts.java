@@ -54,6 +54,9 @@ public class Facts implements Serializable {
 
 	@Transient
 	private String fact_type_name;
+	
+	@Transient
+	private Long facts_descriptor_id;
 
 	@Transient
 	private String fact_status_name;
@@ -142,5 +145,13 @@ public class Facts implements Serializable {
 
 	public void setLoggedUserName(String loggedUserName) {
 		this.loggedUserName = loggedUserName;
+	}
+
+	public Long getFacts_descriptor_id() {
+		return facts_descriptor_id;
+	}
+
+	public void setFacts_descriptor_id(Long facts_descriptor_id) {
+		this.facts_descriptor_id = facts_descriptor_id;
 	}
 }
