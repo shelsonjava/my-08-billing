@@ -1,0 +1,11 @@
+<DataSource
+	ID="FactsDescriptorDS"
+	serverType="sql"
+	tableName="ccare.FACTS_DESCRIPTOR"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="facts_descriptor_id"				type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="facts_descriptor_name"				type="text" 	title="City Type Geo"/>	
+	</fields>
+</DataSource>
