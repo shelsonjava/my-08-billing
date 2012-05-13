@@ -4,7 +4,7 @@ import com.info08.billing.callcenterbk.client.content.transport.TabTransport;
 import com.info08.billing.callcenterbk.client.content.transport.TabTransportCityBusStreet;
 import com.info08.billing.callcenterbk.client.content.transport.TabTransportCityPublTransport;
 import com.info08.billing.callcenterbk.client.content.transport.TabTransportCompany;
-import com.info08.billing.callcenterbk.client.content.transport.TabTransportPlaces;
+import com.info08.billing.callcenterbk.client.content.transport.TabTranspStation;
 import com.info08.billing.callcenterbk.client.content.transport.TabTransportType;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
@@ -142,7 +142,7 @@ public class TransportStackSelection extends SectionStackSection {
 			TabTransportCompany transportCompany = new TabTransportCompany();
 			body.addTab(transportCompany);
 		} else if (menuId.equals("102")) {
-			TabTransportPlaces tabTransportPlaces = new TabTransportPlaces();
+			TabTranspStation tabTransportPlaces = new TabTranspStation();
 			body.addTab(tabTransportPlaces);
 		} else if (menuId.equals("103")) {
 			TabTransportCityPublTransport tabTransportCityBus = new TabTransportCityPublTransport();
