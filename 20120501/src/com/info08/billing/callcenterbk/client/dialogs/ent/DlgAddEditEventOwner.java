@@ -24,20 +24,20 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditEndPlace extends Window {
+public class DlgAddEditEventOwner extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
 	private ComboBoxItem entTypeItem;
 	private TextItem entPlaceGeo;
-	private ComboBoxItem reservationItem;
+	private ComboBoxItem reservableItem;
 	private ComboBoxItem mainOrgsItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditEndPlace(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditEventOwner(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
@@ -75,9 +75,9 @@ public class DlgAddEditEndPlace extends Window {
 		entTypeItem.setFilterLocally(false);
 		entTypeItem.setAddUnknownValues(false);
 
-		DataSource entTypeDS = DataSource.get("EntTypeDS");
+		DataSource EventCategoryDS = DataSource.get("EventCategoryDS");
 		entTypeItem.setOptionOperationId("searchAllEventCategoryForCB");
-		entTypeItem.setOptionDataSource(entTypeDS);
+		entTypeItem.setOptionDataSource(EventCategoryDS);
 		entTypeItem.setValueField("event_category_id");
 		entTypeItem.setDisplayField("event_category_name");
 
@@ -102,16 +102,16 @@ public class DlgAddEditEndPlace extends Window {
 
 		entPlaceGeo = new TextItem();
 		entPlaceGeo.setTitle("რესურსის დასახელება");
-		entPlaceGeo.setName("ent_place_geo");
+		entPlaceGeo.setName("event_owner_name");
 		entPlaceGeo.setWidth(400);
 
-		reservationItem = new ComboBoxItem();
-		reservationItem.setTitle("ჯავშანი");
-		reservationItem.setWidth(400);
-		reservationItem.setName("reservation");
-		reservationItem.setAddUnknownValues(false);
-		reservationItem.setDefaultToFirstOption(true);
-		reservationItem.setValueMap(ClientMapUtil.getInstance()
+		reservableItem = new ComboBoxItem();
+		reservableItem.setTitle("ჯავშანი");
+		reservableItem.setWidth(400);
+		reservableItem.setName("reservable");
+		reservableItem.setAddUnknownValues(false);
+		reservableItem.setDefaultToFirstOption(true);
+		reservableItem.setValueMap(ClientMapUtil.getInstance()
 				.getReservations());
 
 		mainOrgsItem = new ComboBoxItem();
@@ -122,9 +122,9 @@ public class DlgAddEditEndPlace extends Window {
 		mainOrgsItem.setFilterLocally(false);
 		mainOrgsItem.setAddUnknownValues(false);
 
-		DataSource entPlaceDS = DataSource.get("EntPlaceDS");
+		DataSource EventOwnerDS = DataSource.get("EventOwnerDS");
 		mainOrgsItem.setOptionOperationId("searchMainOrgsForCB");
-		mainOrgsItem.setOptionDataSource(entPlaceDS);
+		mainOrgsItem.setOptionDataSource(EventOwnerDS);
 		mainOrgsItem.setValueField("main_id");
 		mainOrgsItem.setDisplayField("org_name");
 
@@ -145,7 +145,7 @@ public class DlgAddEditEndPlace extends Window {
 			}
 		});
 
-		dynamicForm.setFields(entTypeItem, entPlaceGeo, reservationItem,
+		dynamicForm.setFields(entTypeItem, entPlaceGeo, reservableItem,
 				mainOrgsItem);
 
 		HLayout hLayoutItem = new HLayout(5);
@@ -190,14 +190,14 @@ public class DlgAddEditEndPlace extends Window {
 			if (event_category_id != null) {
 				entTypeItem.setValue(event_category_id);
 			}
-			String ent_place_geo = editRecord
-					.getAttributeAsString("ent_place_geo");
-			if (ent_place_geo != null) {
-				entPlaceGeo.setValue(ent_place_geo);
+			String event_owner_name = editRecord
+					.getAttributeAsString("event_owner_name");
+			if (event_owner_name != null) {
+				entPlaceGeo.setValue(event_owner_name);
 			}
-			Integer reservation = editRecord.getAttributeAsInt("reservation");
-			if (reservation != null) {
-				reservationItem.setValue(reservation);
+			Integer reservable = editRecord.getAttributeAsInt("reservable");
+			if (reservable != null) {
+				reservableItem.setValue(reservable);
 			}
 			Integer main_id = editRecord.getAttributeAsInt("main_id");
 			if (main_id != null) {
@@ -216,13 +216,13 @@ public class DlgAddEditEndPlace extends Window {
 				return;
 			}
 			Integer event_category_id = new Integer(event_category_id_str);
-			String ent_place_geo = entPlaceGeo.getValueAsString();
-			String reservation_str = reservationItem.getValueAsString();
-			if (reservation_str == null || reservation_str.trim().equals("")) {
+			String event_owner_name = entPlaceGeo.getValueAsString();
+			String reservable_str = reservableItem.getValueAsString();
+			if (reservable_str == null || reservable_str.trim().equals("")) {
 				SC.say("გთხოვთ აირჩიოთ ჯავშანი");
 				return;
 			}
-			Integer reservation = new Integer(reservation_str);
+			Integer reservable = new Integer(reservable_str);
 			Integer main_id = null;
 			String main_id_str = mainOrgsItem.getValueAsString();
 			if (main_id_str != null && !main_id_str.trim().equals("")) {
@@ -236,8 +236,8 @@ public class DlgAddEditEndPlace extends Window {
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("event_category_id", event_category_id);
-			record.setAttribute("ent_place_geo", ent_place_geo);
-			record.setAttribute("reservation", reservation);
+			record.setAttribute("event_owner_name", event_owner_name);
+			record.setAttribute("reservable", reservable);
 			record.setAttribute("main_id", main_id);
 			record.setAttribute("deleted", 0);
 			record.setAttribute("rec_user", loggedUser);
@@ -250,7 +250,7 @@ public class DlgAddEditEndPlace extends Window {
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addEntPlace");
+				req.setAttribute("operationId", "addEventOwner");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

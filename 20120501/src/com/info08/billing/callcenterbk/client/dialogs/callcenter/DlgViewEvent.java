@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgViewPoster extends Window {
+public class DlgViewEvent extends Window {
 
 	private VLayout mainLayout;
 
@@ -39,7 +39,7 @@ public class DlgViewPoster extends Window {
 	private ToolStripButton sendSMS;
 	private ToolStripButton sendSMS1;
 
-	public DlgViewPoster(final DataSource dataSource,
+	public DlgViewEvent(final DataSource dataSource,
 			ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
@@ -62,21 +62,21 @@ public class DlgViewPoster extends Window {
 		mainLayout.setPadding(10);
 
 		StringBuilder disc_txt = new StringBuilder();
-		String ent_place_geo_txt = listGridRecord
-				.getAttributeAsString("ent_place_geo");
-		if (ent_place_geo_txt != null) {
-			disc_txt.append(ent_place_geo_txt).append(" ");
+		String event_owner_name_txt = listGridRecord
+				.getAttributeAsString("event_owner_name");
+		if (event_owner_name_txt != null) {
+			disc_txt.append(event_owner_name_txt).append(" ");
 		}
 
-		String itemname_txt = listGridRecord.getAttributeAsString("itemname");
+		String itemname_txt = listGridRecord.getAttributeAsString("event_list_name");
 		if (itemname_txt != null && !itemname_txt.trim().equals("")) {
 			disc_txt.append(itemname_txt).append(" ");
 		}
-		String itemdate_txt = listGridRecord.getAttributeAsString("itemdate");
+		String itemdate_txt = listGridRecord.getAttributeAsString("event_list_date");
 		if (itemdate_txt != null && !itemdate_txt.trim().equals("")) {
 			disc_txt.append(itemdate_txt).append(" ");
 		}
-		String price_txt = listGridRecord.getAttributeAsString("price");
+		String price_txt = listGridRecord.getAttributeAsString("event_list_price");
 		if (price_txt != null && !price_txt.trim().equals("")) {
 			disc_txt.append(price_txt).append(" ");
 		}
@@ -109,19 +109,19 @@ public class DlgViewPoster extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		DetailViewerField ent_place_geo = new DetailViewerField(
-				"ent_place_geo", CallCenterBK.constants.entPosterCategory());
+		DetailViewerField event_owner_name = new DetailViewerField(
+				"event_owner_name", CallCenterBK.constants.entPosterCategory());
 
-		DetailViewerField itemdate = new DetailViewerField("itemdate",
+		DetailViewerField itemdate = new DetailViewerField("event_list_date",
 				CallCenterBK.constants.date());
 
-		DetailViewerField itemname = new DetailViewerField("itemname",
+		DetailViewerField itemname = new DetailViewerField("event_list_name",
 				CallCenterBK.constants.poster());
 
-		DetailViewerField price = new DetailViewerField("price",
+		DetailViewerField price = new DetailViewerField("event_list_price",
 				CallCenterBK.constants.price());
 
-		DetailViewerField fullinfo = new DetailViewerField("fullinfo",
+		DetailViewerField fullinfo = new DetailViewerField("event_list_info",
 				CallCenterBK.constants.comment());
 
 		detailViewer.selectRecord(listGridRecord);
@@ -129,7 +129,7 @@ public class DlgViewPoster extends Window {
 		arr[0] = listGridRecord;
 		detailViewer.setData(arr);
 
-		detailViewer.setFields(ent_place_geo, itemdate, itemname, price,
+		detailViewer.setFields(event_owner_name, itemdate, itemname, price,
 				fullinfo);
 
 		mainLayout.addMember(detailViewer);
@@ -177,7 +177,7 @@ public class DlgViewPoster extends Window {
 
 	private void destroyDlg() {
 		try {
-			final DlgViewPoster dlgViewIndex = this;
+			final DlgViewEvent dlgViewIndex = this;
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
@@ -248,13 +248,13 @@ public class DlgViewPoster extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS1);
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("scheduleplaceid",
-					listGridRecord.getAttributeAsInt("scheduleplaceid"));
-			criteria.setAttribute("kkd",
-					listGridRecord.getAttributeAsDate("kkd"));
+			criteria.setAttribute("event_list_id",
+					listGridRecord.getAttributeAsInt("event_list_id"));
+			criteria.setAttribute("event_list_time",
+					listGridRecord.getAttributeAsDate("event_list_time"));
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("searchAllEntPostersForCallCenter");
+			dsRequest.setOperationId("searchAllEventForCallCenter");
 			dataSource.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
@@ -280,30 +280,30 @@ public class DlgViewPoster extends Window {
 
 			for (Record record : records) {
 				if (i == 0) {
-					String ent_place_geo = record
-							.getAttributeAsString("ent_place_geo");
-					if (ent_place_geo != null
-							&& !ent_place_geo.trim().equals("")) {
-						sms_text.append(ent_place_geo).append(";");
+					String event_owner_name = record
+							.getAttributeAsString("event_owner_name");
+					if (event_owner_name != null
+							&& !event_owner_name.trim().equals("")) {
+						sms_text.append(event_owner_name).append(";");
 					}
 					String new_itm_date = record
-							.getAttributeAsString("new_itm_date");
+							.getAttributeAsString("event_list_n_date");
 					if (new_itm_date != null && !new_itm_date.trim().equals("")) {
 						sms_text.append(new_itm_date).append(";");
 					}
 				}
 
-				String new_itm_date_time = record.getAttributeAsString("new_itm_date_time");
+				String new_itm_date_time = record.getAttributeAsString("event_list_n_time");
 				if (new_itm_date_time != null && !new_itm_date_time.trim().equals("")) {
 					sms_text.append(new_itm_date_time).append("-");
 				}
 				
-				String itemname = record.getAttributeAsString("itemname");
+				String itemname = record.getAttributeAsString("event_list_name");
 				if (itemname != null && !itemname.trim().equals("")) {
 					sms_text.append(itemname).append(" ");
 				}
 				
-				String price = record.getAttributeAsString("price");
+				String price = record.getAttributeAsString("event_list_price");
 				if (price != null && !price.trim().equals("")) {
 					sms_text.append(price).append(";");
 				}
@@ -357,21 +357,21 @@ public class DlgViewPoster extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String ent_place_geo = listGridRecord
-					.getAttributeAsString("ent_place_geo");
-			if (ent_place_geo != null && !ent_place_geo.trim().equals("")) {
-				sms_text.append(ent_place_geo).append(";");
+			String event_owner_name = listGridRecord
+					.getAttributeAsString("event_owner_name");
+			if (event_owner_name != null && !event_owner_name.trim().equals("")) {
+				sms_text.append(event_owner_name).append(";");
 			}
 
-			String itemname = listGridRecord.getAttributeAsString("itemname");
+			String itemname = listGridRecord.getAttributeAsString("event_list_name");
 			if (itemname != null && !itemname.trim().equals("")) {
 				sms_text.append(itemname).append(";");
 			}
-			String itemdate = listGridRecord.getAttributeAsString("itemdate");
+			String itemdate = listGridRecord.getAttributeAsString("event_list_date");
 			if (itemdate != null && !itemdate.trim().equals("")) {
 				sms_text.append(itemdate).append(";");
 			}
-			String price = listGridRecord.getAttributeAsString("price");
+			String price = listGridRecord.getAttributeAsString("event_list_price");
 			if (price != null && !price.trim().equals("")) {
 				sms_text.append(price).append(";");
 			}

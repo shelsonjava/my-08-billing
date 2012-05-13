@@ -18,7 +18,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditEndType extends Window {
+public class DlgAddEditEventCategory extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -27,7 +27,7 @@ public class DlgAddEditEndType extends Window {
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditEndType(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditEventCategory(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 

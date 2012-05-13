@@ -31,7 +31,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditEntPoster extends Window {
+public class DlgAddEditEvent extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -53,7 +53,7 @@ public class DlgAddEditEntPoster extends Window {
 	private Integer event_owner_id;
 	private Integer event_category_id;
 
-	public DlgAddEditEntPoster(ListGrid listGrid, ListGridRecord pRecord,
+	public DlgAddEditEvent(ListGrid listGrid, ListGridRecord pRecord,
 			Integer event_owner_id, Integer event_category_id) {
 		try {
 
@@ -96,9 +96,9 @@ public class DlgAddEditEntPoster extends Window {
 			entTypeItem.setFilterLocally(false);
 			entTypeItem.setAddUnknownValues(false);
 
-			DataSource entTypeDS = DataSource.get("EntTypeDS");
+			DataSource EventCategoryDS = DataSource.get("EventCategoryDS");
 			entTypeItem.setOptionOperationId("searchAllEventCategoryForCB");
-			entTypeItem.setOptionDataSource(entTypeDS);
+			entTypeItem.setOptionDataSource(EventCategoryDS);
 			entTypeItem.setValueField("event_category_id");
 			entTypeItem.setDisplayField("event_category_name");
 
@@ -110,7 +110,8 @@ public class DlgAddEditEntPoster extends Window {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = entTypeItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("event_category_id");
+						String oldAttr = criteria
+								.getAttribute("event_category_id");
 						if (oldAttr != null) {
 							Object nullO = null;
 							criteria.setAttribute("event_category_id", nullO);
@@ -128,11 +129,11 @@ public class DlgAddEditEntPoster extends Window {
 			entPlacesItem.setFilterLocally(false);
 			entPlacesItem.setAddUnknownValues(false);
 
-			DataSource entPlaceDS = DataSource.get("EntPlaceDS");
-			entPlacesItem.setOptionOperationId("searchAllEntPlacesForCB");
-			entPlacesItem.setOptionDataSource(entPlaceDS);
+			DataSource EventOwnerDS = DataSource.get("EventOwnerDS");
+			entPlacesItem.setOptionOperationId("searchAllEventOwnerForCB");
+			entPlacesItem.setOptionDataSource(EventOwnerDS);
 			entPlacesItem.setValueField("event_owner_id");
-			entPlacesItem.setDisplayField("ent_place_geo");
+			entPlacesItem.setDisplayField("event_owner_name");
 
 			entPlacesItem.setOptionCriteria(new Criteria());
 			entPlacesItem.setAutoFetchData(false);
@@ -142,7 +143,8 @@ public class DlgAddEditEntPoster extends Window {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = entPlacesItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("event_owner_id");
+						String oldAttr = criteria
+								.getAttribute("event_owner_id");
 						if (oldAttr != null) {
 							Object nullO = null;
 							criteria.setAttribute("event_owner_id", nullO);
@@ -154,13 +156,13 @@ public class DlgAddEditEntPoster extends Window {
 
 			entPosterGeoItem = new TextAreaItem();
 			entPosterGeoItem.setTitle(CallCenterBK.constants.entPosterName());
-			entPosterGeoItem.setName("ent_poster_geo");
+			entPosterGeoItem.setName("event_name");
 			entPosterGeoItem.setWidth(250);
 			entPosterGeoItem.setHeight(100);
 
 			entCommentGeoItem = new TextAreaItem();
 			entCommentGeoItem.setTitle(CallCenterBK.constants.comment());
-			entCommentGeoItem.setName("comment_geo");
+			entCommentGeoItem.setName("remark");
 			entCommentGeoItem.setWidth(250);
 			entCommentGeoItem.setHeight(100);
 
@@ -168,13 +170,13 @@ public class DlgAddEditEntPoster extends Window {
 			posterDateItem.setTitle(CallCenterBK.constants.date());
 			posterDateItem.setWidth("100%");
 			posterDateItem.setValue(new Date());
-			posterDateItem.setName("poster_date");
+			posterDateItem.setName("event_date");
 			posterDateItem.setHint(CallCenterBK.constants.choose());
 
-			postTimeItem = new TimeItem("poster_time", "Time");
+			postTimeItem = new TimeItem("event_time", "Time");
 			postTimeItem.setTitle(CallCenterBK.constants.time());
 			postTimeItem.setWidth(250);
-			postTimeItem.setName("poster_time");
+			postTimeItem.setName("event_time");
 			postTimeItem.setHint("");
 			postTimeItem.setTimeFormatter(TimeDisplayFormat.TOSHORT24HOURTIME);
 			postTimeItem.setUseMask(true);
@@ -182,24 +184,24 @@ public class DlgAddEditEntPoster extends Window {
 
 			entPriceGeoItem = new TextAreaItem();
 			entPriceGeoItem.setTitle(CallCenterBK.constants.price());
-			entPriceGeoItem.setName("poster_price_geo");
+			entPriceGeoItem.setName("event_price");
 			entPriceGeoItem.setWidth(250);
 			entPriceGeoItem.setHeight(100);
 
 			entSMSCommentItem = new TextAreaItem();
 			entSMSCommentItem.setTitle(CallCenterBK.constants.smsComment());
-			entSMSCommentItem.setName("sms_comment");
+			entSMSCommentItem.setName("sms_remark");
 			entSMSCommentItem.setWidth(250);
 			entSMSCommentItem.setHeight(100);
 
 			dtCritItem = new CheckboxItem();
 			dtCritItem.setTitle(CallCenterBK.constants.timeCrit());
-			dtCritItem.setName("dt_crit");
+			dtCritItem.setName("date_criteria");
 			dtCritItem.setWidth(250);
 
 			dtViewCritItem = new CheckboxItem();
 			dtViewCritItem.setTitle(CallCenterBK.constants.dtViewCrit());
-			dtViewCritItem.setName("dtViewCrit");
+			dtViewCritItem.setName("date_visibility");
 			dtViewCritItem.setWidth(250);
 
 			dynamicForm.setFields(entTypeItem, entPlacesItem, entPosterGeoItem,
@@ -250,27 +252,27 @@ public class DlgAddEditEntPoster extends Window {
 				return;
 			}
 			entPosterGeoItem.setValue(editRecord
-					.getAttributeAsString("ent_poster_geo"));
+					.getAttributeAsString("event_name"));
 			entCommentGeoItem.setValue(editRecord
-					.getAttributeAsString("comment_geo"));
+					.getAttributeAsString("remark"));
 			entPriceGeoItem.setValue(editRecord
-					.getAttributeAsString("poster_price_geo"));
+					.getAttributeAsString("event_price"));
 			entSMSCommentItem.setValue(editRecord
-					.getAttributeAsString("sms_comment"));
-			Date posterDate = editRecord.getAttributeAsDate("poster_date");
+					.getAttributeAsString("sms_remark"));
+			Date posterDate = editRecord.getAttributeAsDate("event_date");
 			if (posterDate != null) {
 				posterDateItem.setValue(posterDate);
 			}
-			String posterTime = editRecord.getAttributeAsString("poster_time");
+			String posterTime = editRecord.getAttributeAsString("event_time");
 			if (posterTime != null) {
 				postTimeItem.setValue(posterTime);
 			}
-			Integer dt_crit = editRecord.getAttributeAsInt("dt_crit");
-			if (dt_crit != null && dt_crit.intValue() == -1) {
+			Integer date_criteria = editRecord.getAttributeAsInt("date_criteria");
+			if (date_criteria != null && date_criteria.intValue() == -1) {
 				dtCritItem.setValue(true);
 			}
-			Integer dt_view_crit = editRecord.getAttributeAsInt("dt_view_crit");
-			if (dt_view_crit != null && dt_view_crit.intValue() == -1) {
+			Integer date_visibility = editRecord.getAttributeAsInt("date_visibility");
+			if (date_visibility != null && date_visibility.intValue() == -1) {
 				dtViewCritItem.setValue(true);
 			}
 		} catch (Exception e) {
@@ -281,24 +283,26 @@ public class DlgAddEditEntPoster extends Window {
 	private void save() {
 		try {
 			String event_category_id_str = entTypeItem.getValueAsString();
-			if (event_category_id_str == null || event_category_id_str.trim().equals("")) {
+			if (event_category_id_str == null
+					|| event_category_id_str.trim().equals("")) {
 				SC.say(CallCenterBK.constants.chooseEntType());
 				return;
 			}
 			String event_owner_id_str = entPlacesItem.getValueAsString();
-			if (event_owner_id_str == null || event_owner_id_str.trim().equals("")) {
+			if (event_owner_id_str == null
+					|| event_owner_id_str.trim().equals("")) {
 				SC.say(CallCenterBK.constants.chooseEntPlace());
 				return;
 			}
-			String ent_poster_geo = entPosterGeoItem.getValueAsString();
-			if (ent_poster_geo == null || ent_poster_geo.trim().equals("")) {
+			String event_name = entPosterGeoItem.getValueAsString();
+			if (event_name == null || event_name.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterEntPosterGeo());
 				return;
 			}
-			String comment_geo = entCommentGeoItem.getValueAsString();
-			String poster_price_geo = entPriceGeoItem.getValueAsString();
-			String sms_comment = entSMSCommentItem.getValueAsString();
-			Date poster_date = posterDateItem.getValueAsDate();
+			String remark = entCommentGeoItem.getValueAsString();
+			String event_price = entPriceGeoItem.getValueAsString();
+			String sms_remark = entSMSCommentItem.getValueAsString();
+			Date event_date = posterDateItem.getValueAsDate();
 			Date time = (Date) postTimeItem.getValue();
 			String str_time = "";
 			if (time != null) {
@@ -307,11 +311,11 @@ public class DlgAddEditEntPoster extends Window {
 				str_time = dateFormatter.format(time);
 			}
 
-			boolean dt_crit_bool = dtCritItem.getValueAsBoolean();
-			boolean dt_view_crit_bool = dtViewCritItem.getValueAsBoolean();
+			boolean date_criteria_bool = dtCritItem.getValueAsBoolean();
+			boolean date_visibility_bool = dtViewCritItem.getValueAsBoolean();
 
-			Integer dt_crit = dt_crit_bool ? -1 : 0;
-			Integer dt_view_crit = dt_view_crit_bool ? -1 : 0;
+			Integer date_criteria = date_criteria_bool ? -1 : 0;
+			Integer date_visibility = date_visibility_bool ? -1 : 0;
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
@@ -319,31 +323,32 @@ public class DlgAddEditEntPoster extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("event_category_id", new Integer(event_category_id_str));
-			record.setAttribute("event_owner_id", new Integer(event_owner_id_str));
-			record.setAttribute("ent_poster_geo", ent_poster_geo);
-			record.setAttribute("comment_geo", comment_geo);
-			record.setAttribute("poster_price_geo", poster_price_geo);
-			record.setAttribute("sms_comment", sms_comment);
-			record.setAttribute("poster_date", poster_date);
-			record.setAttribute("poster_time", str_time == null ? null
+			record.setAttribute("event_category_id", new Integer(
+					event_category_id_str));
+			record.setAttribute("event_owner_id", new Integer(
+					event_owner_id_str));
+			record.setAttribute("event_name", event_name);
+			record.setAttribute("remark", remark);
+			record.setAttribute("event_price", event_price);
+			record.setAttribute("sms_remark", sms_remark);
+			record.setAttribute("event_date", event_date);
+			record.setAttribute("event_time", str_time == null ? null
 					: str_time.toString());
-			record.setAttribute("dt_crit", dt_crit);
-			record.setAttribute("dt_view_crit", dt_view_crit);
+			record.setAttribute("date_criteria", date_criteria);
+			record.setAttribute("date_visibility", date_visibility);
 
-			record.setAttribute("deleted", 0);
 			record.setAttribute("rec_user", loggedUser);
 
 			if (editRecord != null) {
-				record.setAttribute("ent_poster_id",
-						editRecord.getAttributeAsInt("ent_poster_id"));
+				record.setAttribute("event_id",
+						editRecord.getAttributeAsInt("event_id"));
 			}
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null
-					|| editRecord.getAttributeAsInt("ent_poster_id") == null) {
-				req.setAttribute("operationId", "addEntPoster");
+					|| editRecord.getAttributeAsInt("event_id") == null) {
+				req.setAttribute("operationId", "addEvent");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -352,7 +357,7 @@ public class DlgAddEditEntPoster extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateEntPoster");
+				req.setAttribute("operationId", "updateEvent");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
