@@ -14,6 +14,7 @@ import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.Country;
 import com.info08.billing.callcenterbk.shared.entity.currency.Currency;
 import com.info08.billing.callcenterbk.shared.entity.currency.CurrencyCourse;
+import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 
 public class CurrencyDMI implements QueryConstants {
@@ -148,8 +149,7 @@ public class CurrencyDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public Currency removeCurrency(Map record) throws Exception {
+	public Currency removeCurrency(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -157,12 +157,12 @@ public class CurrencyDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			String loggedUserName = record.get("loggedUserName").toString();
+			String loggedUserName = dsRequest.getOldValues().get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Removing Currency.");
 
-			Long id = new Long(record.get("currency_id").toString());
+			Long id = new Long(dsRequest.getOldValues().get("currency_id").toString());
 
 			Currency currency = oracleManager.find(Currency.class, id);
 

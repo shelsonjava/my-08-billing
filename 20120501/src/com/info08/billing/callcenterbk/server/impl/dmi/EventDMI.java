@@ -16,9 +16,9 @@ import com.info08.billing.callcenterbk.shared.entity.ent.EntType;
 import com.info08.billing.callcenterbk.shared.entity.org.MainOrg;
 import com.isomorphic.jpa.EMF;
 
-public class EntDMI implements QueryConstants {
+public class EventDMI implements QueryConstants {
 
-	Logger logger = Logger.getLogger(EntDMI.class.getName());
+	Logger logger = Logger.getLogger(EventDMI.class.getName());
 
 	/**
 	 * Adding New EntType
