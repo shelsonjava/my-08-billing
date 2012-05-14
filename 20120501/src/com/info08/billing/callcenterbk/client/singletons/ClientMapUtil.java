@@ -43,12 +43,12 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> weekDays;
 	private LinkedHashMap<String, String> contractorTypes;
 	private LinkedHashMap<String, String> contractorTypes1;
-	private LinkedHashMap<String, String> telCompIndTypes;
+	private LinkedHashMap<String, String> billingCompIndTypes;
 	private LinkedHashMap<String, String> contractorPriceTypes;
 	private LinkedHashMap<String, String> limitTypes;
 	private LinkedHashMap<String, String> hasCalculations;
 	private LinkedHashMap<String, String> hasCalculations1;
-	private LinkedHashMap<String, String> telCompIndTypes1;
+	private LinkedHashMap<String, String> billingCompIndTypes1;
 	private LinkedHashMap<String, String> callTypes;
 
 	protected ClientMapUtil() {
@@ -81,12 +81,12 @@ public class ClientMapUtil {
 		weekDays = new LinkedHashMap<String, String>();
 		contractorTypes = new LinkedHashMap<String, String>();
 		contractorTypes1 = new LinkedHashMap<String, String>();
-		telCompIndTypes = new LinkedHashMap<String, String>();
+		billingCompIndTypes = new LinkedHashMap<String, String>();
 		contractorPriceTypes = new LinkedHashMap<String, String>();
 		limitTypes = new LinkedHashMap<String, String>();
 		hasCalculations = new LinkedHashMap<String, String>();
 		hasCalculations1 = new LinkedHashMap<String, String>();
-		telCompIndTypes1 = new LinkedHashMap<String, String>();
+		billingCompIndTypes1 = new LinkedHashMap<String, String>();
 		callTypes = new LinkedHashMap<String, String>();
 
 		mapOpClose.put("0", "ღია");
@@ -198,8 +198,8 @@ public class ClientMapUtil {
 		contractorTypes1.put("0", CallCenterBK.constants.budget());
 		contractorTypes1.put("1", CallCenterBK.constants.commercial());
 
-		telCompIndTypes.put("0", CallCenterBK.constants.partial());
-		telCompIndTypes.put("1", CallCenterBK.constants.full());
+		billingCompIndTypes.put("0", CallCenterBK.constants.partial());
+		billingCompIndTypes.put("1", CallCenterBK.constants.full());
 
 		contractorPriceTypes.put("-1", CallCenterBK.constants.all());
 		contractorPriceTypes.put("0", CallCenterBK.constants.simple());
@@ -216,8 +216,8 @@ public class ClientMapUtil {
 		hasCalculations1.put("1", CallCenterBK.constants.yes());
 		hasCalculations1.put("0", CallCenterBK.constants.noInGeo());
 		
-		telCompIndTypes1.put("0", CallCenterBK.constants.byCharges());
-		telCompIndTypes1.put("1", CallCenterBK.constants.byCalls());
+		billingCompIndTypes1.put("0", CallCenterBK.constants.byCharges());
+		billingCompIndTypes1.put("1", CallCenterBK.constants.byCalls());
 		
 		callTypes.put("11", CallCenterBK.constants.direct());
 		callTypes.put("12", CallCenterBK.constants.nonDirect());
@@ -228,8 +228,8 @@ public class ClientMapUtil {
 		return callTypes;
 	}
 
-	public LinkedHashMap<String, String> getTelCompIndTypes1() {
-		return telCompIndTypes1;
+	public LinkedHashMap<String, String> getBillingCompIndTypes1() {
+		return billingCompIndTypes1;
 	}
 	
 	public LinkedHashMap<String, String> getHasCalculations1() {
@@ -364,7 +364,7 @@ public class ClientMapUtil {
 		return contractorTypes1;
 	}
 
-	public LinkedHashMap<String, String> getTelCompIndTypes() {
-		return telCompIndTypes;
+	public LinkedHashMap<String, String> getBillingCompIndTypes() {
+		return billingCompIndTypes;
 	}
 }

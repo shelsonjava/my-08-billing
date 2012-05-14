@@ -1,9 +1,9 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditTelComp;
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetTelCompBillByDay;
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetTelCompBillByMonth;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditBillingComps;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetBillingCompsBillByDay;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetBillingCompsBillByMonth;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -34,11 +34,11 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class TabTelComps extends Tab {
+public class TabBillingComps extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
-	private TextItem telCompNameItem;
+	private TextItem billingCompNameItem;
 	private TextItem phoneIndexItem;
 	private SelectItem hasCalcItem;
 
@@ -49,19 +49,19 @@ public class TabTelComps extends Tab {
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
 
-	private ToolStripButton telCompBillByDayBtn;
-	private ToolStripButton telCompBillByMonthBtn;
+	private ToolStripButton billingCompBillByDayBtn;
+	private ToolStripButton billingCompBillByMonthBtn;
 
-	private ListGrid telCompsGrid;
-	private DataSource telCompsDS;
+	private ListGrid billingCompsGrid;
+	private DataSource billingCompsDS;
 
-	public TabTelComps() {
+	public TabBillingComps() {
 		try {
 
-			setTitle(CallCenterBK.constants.telComps());
+			setTitle(CallCenterBK.constants.billingComps());
 			setCanClose(true);
 
-			telCompsDS = DataSource.get("TelCompsDS");
+			billingCompsDS = DataSource.get("BillingCompsDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -75,10 +75,10 @@ public class TabTelComps extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			telCompNameItem = new TextItem();
-			telCompNameItem.setTitle(CallCenterBK.constants.companyName());
-			telCompNameItem.setWidth(250);
-			telCompNameItem.setName("telCompNameItem");
+			billingCompNameItem = new TextItem();
+			billingCompNameItem.setTitle(CallCenterBK.constants.companyName());
+			billingCompNameItem.setWidth(250);
+			billingCompNameItem.setName("billingCompNameItem");
 
 			phoneIndexItem = new TextItem();
 			phoneIndexItem.setTitle(CallCenterBK.constants.index());
@@ -93,7 +93,8 @@ public class TabTelComps extends Tab {
 			hasCalcItem.setValueMap(ClientMapUtil.getInstance()
 					.getHasCalculations());
 
-			searchForm.setFields(telCompNameItem, phoneIndexItem, hasCalcItem);
+			searchForm.setFields(billingCompNameItem, phoneIndexItem,
+					hasCalcItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(830);
@@ -134,39 +135,40 @@ public class TabTelComps extends Tab {
 
 			toolStrip.addSeparator();
 
-			telCompBillByDayBtn = new ToolStripButton(
+			billingCompBillByDayBtn = new ToolStripButton(
 					CallCenterBK.constants.telCombBillByDay(), "billing.png");
-			telCompBillByDayBtn.setLayoutAlign(Alignment.LEFT);
-			telCompBillByDayBtn.setWidth(50);
-			toolStrip.addButton(telCompBillByDayBtn);
+			billingCompBillByDayBtn.setLayoutAlign(Alignment.LEFT);
+			billingCompBillByDayBtn.setWidth(50);
+			toolStrip.addButton(billingCompBillByDayBtn);
 
-			telCompBillByMonthBtn = new ToolStripButton(
+			billingCompBillByMonthBtn = new ToolStripButton(
 					CallCenterBK.constants.telCombBillByMonth(), "billing.png");
-			telCompBillByMonthBtn.setLayoutAlign(Alignment.LEFT);
-			telCompBillByMonthBtn.setWidth(50);
-			toolStrip.addButton(telCompBillByMonthBtn);
+			billingCompBillByMonthBtn.setLayoutAlign(Alignment.LEFT);
+			billingCompBillByMonthBtn.setWidth(50);
+			toolStrip.addButton(billingCompBillByMonthBtn);
 
-			telCompsGrid = new ListGrid();
+			billingCompsGrid = new ListGrid();
 
-			telCompsGrid.setWidth100();
-			telCompsGrid.setHeight100();
-			telCompsGrid.setAlternateRecordStyles(true);
-			telCompsGrid.setDataSource(telCompsDS);
-			telCompsGrid.setAutoFetchData(false);
-			telCompsGrid.setShowFilterEditor(false);
-			telCompsGrid.setCanEdit(false);
-			telCompsGrid.setCanRemoveRecords(false);
-			telCompsGrid.setFetchOperation("searchAllTelComps");
-			telCompsGrid.setShowRowNumbers(true);
-			telCompsGrid.setCanHover(true);
-			telCompsGrid.setShowHover(true);
-			telCompsGrid.setShowHoverComponents(true);
-			telCompsGrid.setWrapCells(true);
-			telCompsGrid.setFixedRecordHeights(false);
-			telCompsGrid.setCanDragSelectText(true);
+			billingCompsGrid.setWidth100();
+			billingCompsGrid.setHeight100();
+			billingCompsGrid.setAlternateRecordStyles(true);
+			billingCompsGrid.setDataSource(billingCompsDS);
+			billingCompsGrid.setAutoFetchData(false);
+			billingCompsGrid.setShowFilterEditor(false);
+			billingCompsGrid.setCanEdit(false);
+			billingCompsGrid.setCanRemoveRecords(false);
+			billingCompsGrid.setFetchOperation("searchAllBillingComps");
+			billingCompsGrid.setShowRowNumbers(true);
+			billingCompsGrid.setCanHover(true);
+			billingCompsGrid.setShowHover(true);
+			billingCompsGrid.setShowHoverComponents(true);
+			billingCompsGrid.setWrapCells(true);
+			billingCompsGrid.setFixedRecordHeights(false);
+			billingCompsGrid.setCanDragSelectText(true);
 
-			ListGridField tel_comp_name_geo = new ListGridField(
-					"tel_comp_name_geo", CallCenterBK.constants.companyName());
+			ListGridField billing_company_name = new ListGridField(
+					"billing_company_name",
+					CallCenterBK.constants.companyName());
 
 			ListGridField our_percent = new ListGridField("our_percent",
 					CallCenterBK.constants.ourPercent(), 150);
@@ -182,10 +184,10 @@ public class TabTelComps extends Tab {
 			has_calculation_descr.setAlign(Alignment.CENTER);
 			call_price.setAlign(Alignment.CENTER);
 
-			telCompsGrid.setFields(tel_comp_name_geo, our_percent,
+			billingCompsGrid.setFields(billing_company_name, our_percent,
 					has_calculation_descr, call_price);
 
-			mainLayout.addMember(telCompsGrid);
+			mainLayout.addMember(billingCompsGrid);
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -193,7 +195,7 @@ public class TabTelComps extends Tab {
 				}
 			});
 
-			telCompNameItem.addKeyPressHandler(new KeyPressHandler() {
+			billingCompNameItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
@@ -214,23 +216,23 @@ public class TabTelComps extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					telCompNameItem.clearValue();
+					billingCompNameItem.clearValue();
 				}
 			});
 
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditTelComp dlgAddEditTelComp = new DlgAddEditTelComp(
-							telCompsGrid, null);
-					dlgAddEditTelComp.show();
+					DlgAddEditBillingComps dlgAddEditBillingComp = new DlgAddEditBillingComps(
+							billingCompsGrid, null);
+					dlgAddEditBillingComp.show();
 				}
 			});
 
 			editBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = telCompsGrid
+					ListGridRecord listGridRecord = billingCompsGrid
 							.getSelectedRecord();
 
 					if (listGridRecord == null) {
@@ -238,15 +240,15 @@ public class TabTelComps extends Tab {
 						return;
 					}
 
-					DlgAddEditTelComp dlgAddEditTelComp = new DlgAddEditTelComp(
-							telCompsGrid, listGridRecord);
-					dlgAddEditTelComp.show();
+					DlgAddEditBillingComps dlgAddEditBillingComp = new DlgAddEditBillingComps(
+							billingCompsGrid, listGridRecord);
+					dlgAddEditBillingComp.show();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = telCompsGrid
+					final ListGridRecord listGridRecord = billingCompsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
@@ -264,47 +266,47 @@ public class TabTelComps extends Tab {
 				}
 			});
 
-			telCompsGrid
+			billingCompsGrid
 					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 						@Override
 						public void onRecordDoubleClick(
 								RecordDoubleClickEvent event) {
-							ListGridRecord listGridRecord = telCompsGrid
+							ListGridRecord listGridRecord = billingCompsGrid
 									.getSelectedRecord();
-							DlgAddEditTelComp dlgAddEditTelComp = new DlgAddEditTelComp(
-									telCompsGrid, listGridRecord);
-							dlgAddEditTelComp.show();
+							DlgAddEditBillingComps dlgAddEditBillingComp = new DlgAddEditBillingComps(
+									billingCompsGrid, listGridRecord);
+							dlgAddEditBillingComp.show();
 						}
 					});
 
-			telCompBillByDayBtn.addClickHandler(new ClickHandler() {
+			billingCompBillByDayBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 
-					final ListGridRecord listGridRecord = telCompsGrid
+					final ListGridRecord listGridRecord = billingCompsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					Integer tel_comp_id = listGridRecord
-							.getAttributeAsInt("tel_comp_id");
-					getTelCompBillByDay(tel_comp_id);
+					Integer billing_company_id = listGridRecord
+							.getAttributeAsInt("billing_company_id");
+					getBillingCompBillByDay(billing_company_id);
 				}
 			});
-			telCompBillByMonthBtn.addClickHandler(new ClickHandler() {
+			billingCompBillByMonthBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 
-					final ListGridRecord listGridRecord = telCompsGrid
+					final ListGridRecord listGridRecord = billingCompsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					Integer tel_comp_id = listGridRecord
-							.getAttributeAsInt("tel_comp_id");
-					getTelCompBillByMonth(tel_comp_id);
+					Integer billing_company_id = listGridRecord
+							.getAttributeAsInt("billing_company_id");
+					getBillingCompBillByMonth(billing_company_id);
 				}
 			});
 
@@ -314,21 +316,21 @@ public class TabTelComps extends Tab {
 		}
 	}
 
-	private void getTelCompBillByDay(Integer tel_comp_id) {
+	private void getBillingCompBillByDay(Integer billing_company_id) {
 		try {
-			DlgGetTelCompBillByDay dlgGetTelCompBillByDay = new DlgGetTelCompBillByDay(
-					tel_comp_id);
-			dlgGetTelCompBillByDay.show();
+			DlgGetBillingCompsBillByDay dlgGetBillingCompBillByDay = new DlgGetBillingCompsBillByDay(
+					billing_company_id);
+			dlgGetBillingCompBillByDay.show();
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
 	}
 
-	private void getTelCompBillByMonth(Integer tel_comp_id) {
+	private void getBillingCompBillByMonth(Integer billing_company_id) {
 		try {
-			DlgGetTelCompBillByMonth dlgGetTelCompBillByMonth = new DlgGetTelCompBillByMonth(
-					tel_comp_id);
-			dlgGetTelCompBillByMonth.show();
+			DlgGetBillingCompsBillByMonth dlgGetBillingCompBillByMonth = new DlgGetBillingCompsBillByMonth(
+					billing_company_id);
+			dlgGetBillingCompBillByMonth.show();
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -337,8 +339,9 @@ public class TabTelComps extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			String tel_comp_name_geo = telCompNameItem.getValueAsString();
-			criteria.setAttribute("tel_comp_name_geo", tel_comp_name_geo);
+			String billing_company_name = billingCompNameItem
+					.getValueAsString();
+			criteria.setAttribute("billing_company_name", billing_company_name);
 
 			String phoneIndex = phoneIndexItem.getValueAsString();
 
@@ -362,9 +365,9 @@ public class TabTelComps extends Tab {
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllTelComps");
-			telCompsGrid.invalidateCache();
-			telCompsGrid.filterData(criteria, new DSCallback() {
+			dsRequest.setAttribute("operationId", "searchAllBillingComps");
+			billingCompsGrid.invalidateCache();
+			billingCompsGrid.filterData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -382,13 +385,13 @@ public class TabTelComps extends Tab {
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUserName());
-			record.setAttribute("tel_comp_id",
-					listGridRecord.getAttributeAsInt("tel_comp_id"));
+			record.setAttribute("billing_company_id",
+					listGridRecord.getAttributeAsInt("billing_company_id"));
 
 			DSRequest req = new DSRequest();
-			req.setAttribute("operationId", "removeTelComp");
+			req.setAttribute("operationId", "removeBillingComp");
 
-			telCompsGrid.removeData(record, new DSCallback() {
+			billingCompsGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

@@ -5,11 +5,11 @@ public interface QueryConstants {
 	
 	public static final String Q_GET_VIRTUAL_SESSION_ID = " select 'VIRT.'||ccare.seq_virtual_session_id.nextval as session_id from dual ";
 	
-	public static final String Q_GET_TEL_COMP_IND =" select count(1) from ccare.tel_comps_ind t where ? between t.st_ind and t.end_ind ";
+	public static final String Q_GET_BILLING_COMP_IND =" select count(1) from ccare.BILLING_COMPANIES_IND t where ? between t.bill_index_start and t.bill_index_end ";
 	
-	public static final String Q_GET_TEL_COMP_IND_BY_ID =" select count(1) from ccare.tel_comps_ind t where ? between t.st_ind and t.end_ind and t.tel_comp_id <> ? ";
+	public static final String Q_GET_BILLING_COMP_IND_BY_ID =" select count(1) from ccare.BILLING_COMPANIES_IND t where ? between t.bill_index_start and t.bill_index_end and t.billing_company_id <> ? ";
 	
-	public static final String Q_GET_TEL_COMP_BILL_BY_DAY = 
+	public static final String Q_GET_BILLING_COMP_BILL_BY_DAY = 
 			"select\n" +
 					"      t.phone as phonea,\n" + 
 					"     '11808' as phoneb,\n" + 
@@ -25,19 +25,19 @@ public interface QueryConstants {
 					"     trunc(ch.rec_date) = trunc(?) and\n" + 
 					"      exists (\n" + 
 					"        select\n" + 
-					"          to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind)),\n" + 
-					"          to_number(decode(length(i.end_ind),7,'32'||i.st_ind,i.end_ind))\n" + 
-					"        from ccare.tel_comps tc\n" + 
-					"               inner join ccare.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id\n" + 
-					"        where tc.tel_comp_id = ? \n" + 
-					"              and to_number(t.phone) >= to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind))\n" + 
-					"              and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))\n" + 
+					"          to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start)),\n" + 
+					"          to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_start,i.bill_index_end))\n" + 
+					"        from ccare.BILLING_COMPANIES tc\n" + 
+					"               inner join ccare.BILLING_COMPANIES_IND i on i.billing_company_id = tc.billing_company_id\n" + 
+					"        where tc.billing_company_id = ? \n" + 
+					"              and to_number(t.phone) >= to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))\n" + 
+					"              and to_number(t.phone) <= to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))\n" + 
 					"      )\n" + 
 					"      and ccare.getcontractorpricenew(t.phone)=-999999999\n" + 
 					"      and t.phone like '322%'";
 	
 	
-	public static final String Q_GET_TEL_COMP_BILL_BY_YM = "select substr(t.phone,3, length(t.phone)) as phonea,\n"
+	public static final String Q_GET_BILLING_COMP_BILL_BY_YM = "select substr(t.phone,3, length(t.phone)) as phonea,\n"
 			+ "   '11808' as phoneb,\n"
 			+ "    ch.rec_date as charge_date,\n"
 			+ "    to_char(ch.rec_date,'DD/MM/YYYY HH24:MI:SS') as charge_date1,\n"
@@ -50,13 +50,13 @@ public interface QueryConstants {
 			+ "     t.ym = ? and ch.ym = ? and\n"
 			+ "      exists (\n"
 			+ "        select\n"
-			+ "          to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind)),\n"
-			+ "          to_number(decode(length(i.end_ind),7,'32'||i.st_ind,i.end_ind))\n"
-			+ "        from ccare.tel_comps tc\n"
-			+ "               inner join ccare.tel_comps_ind i on i.tel_comp_id = tc.tel_comp_id\n"
-			+ "        where tc.tel_comp_id = ? \n"
-			+ "              and to_number(t.phone) >= to_number(decode(length(i.st_ind),7,'32'||i.st_ind,i.st_ind))\n"
-			+ "              and to_number(t.phone) <= to_number(decode(length(i.end_ind),7,'32'||i.end_ind,i.end_ind))\n"
+			+ "          to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start)),\n"
+			+ "          to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_start,i.bill_index_end))\n"
+			+ "        from ccare.BILLING_COMPANIES tc\n"
+			+ "               inner join ccare.BILLING_COMPANIES_IND i on i.billing_company_id = tc.billing_company_id\n"
+			+ "        where tc.billing_company_id = ? \n"
+			+ "              and to_number(t.phone) >= to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))\n"
+			+ "              and to_number(t.phone) <= to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))\n"
 			+ "      )\n"
 			+ "      and ccare.getcontractorpricenew(t.phone)=-999999999\n"
 			+ "      and t.phone like '322%'";
@@ -813,8 +813,8 @@ public interface QueryConstants {
 	public static final String Q_DELETE_CONTRACT_PRICES = "delete from ccare.contract_price_items t where t.contract_id = ? ";
 	public static final String Q_DELETE_CONTRACT_PHONES = "delete from ccare.contractor_phones t where t.contract_id = ? ";
 	public static final String Q_DELETE_BLOCKLIST_PHONES = "delete from ccare.block_list_phones t where t.block_list_id = ? ";
-	public static final String Q_DELETE_TELCOMP = "delete from ccare.tel_comps t where t.tel_comp_id = ? ";
-	public static final String Q_DELETE_TELCOMP_IND = "delete from ccare.tel_comps_ind t where t.tel_comp_id = ? ";
+	public static final String Q_DELETE_BILLINGCOMP = "delete from ccare.BILLING_COMPANIES t where t.billing_company_id = ? ";
+	public static final String Q_DELETE_BILLINGCOMP_IND = "delete from ccare.BILLING_COMPANIES_IND t where t.billing_company_id = ? ";
 	
 	public static final String Q_REMOVE_PHONE_FROM_AST_DB = " delete from asteriskcdrdb.block where code = ? and proriti = ? and len = ? "; 
 	public static final String Q_ADD_PHONE_INTO_AST_DB = " insert into asteriskcdrdb.block (code,proriti,len) values (?, ?, ?) ";

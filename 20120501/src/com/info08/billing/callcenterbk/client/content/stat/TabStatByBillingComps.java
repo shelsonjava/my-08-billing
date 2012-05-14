@@ -6,7 +6,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatByTelCompGraph;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatByBillingCompGraph;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class TabStatByTelComp extends Tab {
+public class TabStatByBillingComps extends Tab {
 
 	private VLayout mainLayout;
 
@@ -47,16 +47,16 @@ public class TabStatByTelComp extends Tab {
 	private DynamicForm searchForm;
 
 	private ListGrid listGrid;
-	private DataSource statsByTelCompDS;
+	private DataSource statsByBillingpDS;
 
 	private ToolStripButton statN1Btn;
 
-	public TabStatByTelComp(TabSet tabSet) {
+	public TabStatByBillingComps(TabSet tabSet) {
 		try {
 
-			statsByTelCompDS = DataSource.get("StatisticsByTelCompDS");
+			statsByBillingpDS = DataSource.get("StatisticsByBillingCompDS");
 
-			setTitle(CallCenterBK.constants.statisticByTelComp());
+			setTitle(CallCenterBK.constants.statisticByBillingComp());
 			setCanClose(true);
 
 			mainLayout = new VLayout(5);
@@ -112,12 +112,12 @@ public class TabStatByTelComp extends Tab {
 			listGrid.setWidth(500);
 			listGrid.setHeight100();
 			listGrid.setAlternateRecordStyles(false);
-			listGrid.setDataSource(statsByTelCompDS);
+			listGrid.setDataSource(statsByBillingpDS);
 			listGrid.setAutoFetchData(false);
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchStatsByTelComp");
+			listGrid.setFetchOperation("searchStatsByBillingComp");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
@@ -130,8 +130,8 @@ public class TabStatByTelComp extends Tab {
 			listGrid.setShowGroupSummary(false);
 			listGrid.setShowAllRecords(true);
 
-			ListGridField tel_comp_name_geo = new ListGridField(
-					"tel_comp_name_geo", CallCenterBK.constants.telComps(), 250);
+			ListGridField billing_company_name = new ListGridField(
+					"billing_company_name", CallCenterBK.constants.billingComps(), 250);
 
 			ListGridField calls_cnt = new ListGridField("calls_cnt",
 					CallCenterBK.constants.count(), 100);
@@ -139,18 +139,18 @@ public class TabStatByTelComp extends Tab {
 			ListGridField calls_amm = new ListGridField("calls_amm",
 					CallCenterBK.constants.amount(), 100);
 
-			tel_comp_name_geo.setAlign(Alignment.LEFT);
+			billing_company_name.setAlign(Alignment.LEFT);
 			calls_cnt.setAlign(Alignment.CENTER);
 			calls_amm.setAlign(Alignment.CENTER);
 
-			tel_comp_name_geo.setSummaryFunction(new SummaryFunction() {
+			billing_company_name.setSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
 					return CallCenterBK.constants.sum();
 				}
 			});
-			tel_comp_name_geo.addSummaryFunction(new SummaryFunction() {
+			billing_company_name.addSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
@@ -192,7 +192,7 @@ public class TabStatByTelComp extends Tab {
 			calls_amm.setSummaryFunction(SummaryFunctionType.SUM);
 			calls_amm.addSummaryFunction(SummaryFunctionType.AVG);
 
-			listGrid.setFields(tel_comp_name_geo, calls_cnt, calls_amm);
+			listGrid.setFields(billing_company_name, calls_cnt, calls_amm);
 
 			mainLayout.addMember(listGrid);
 
@@ -230,7 +230,7 @@ public class TabStatByTelComp extends Tab {
 				SC.say(CallCenterBK.constants.pleaseSearchData());
 				return;
 			}
-			DlgViewStatByTelCompGraph dlgViewStatFullGraph = new DlgViewStatByTelCompGraph(
+			DlgViewStatByBillingCompGraph dlgViewStatFullGraph = new DlgViewStatByBillingCompGraph(
 					records);
 			dlgViewStatFullGraph.show();
 		} catch (Exception e) {
@@ -249,7 +249,7 @@ public class TabStatByTelComp extends Tab {
 			final Integer ym = new Integer(dateFormatter.format(date));
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("searchStatsByTelComp");
+			dsRequest.setOperationId("searchStatsByBillingComp");
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("ym", ym);
 

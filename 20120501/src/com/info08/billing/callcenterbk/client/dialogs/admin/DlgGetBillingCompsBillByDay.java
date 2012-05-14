@@ -1,5 +1,8 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
+import java.util.Date;
+
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -16,23 +19,21 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgGetTelCompBillByMonth extends Window {
+public class DlgGetBillingCompsBillByDay extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private TextItem ymItem;
-	private Integer tel_comp_id;
+	private DateItem dateItem;
+	private Integer billing_company_id;
 
-	public DlgGetTelCompBillByMonth(Integer tel_comp_id) {
+	public DlgGetBillingCompsBillByDay(Integer billing_company_id) {
 		try {
-			this.tel_comp_id = tel_comp_id;
+			this.billing_company_id = billing_company_id;
 			setTitle(CallCenterBK.constants.telCombBillByDay());
 
 			setHeight(110);
@@ -58,12 +59,13 @@ public class DlgGetTelCompBillByMonth extends Window {
 			dynamicForm.setNumCols(2);
 			hLayout.addMember(dynamicForm);
 
-			ymItem = new TextItem();
-			ymItem.setTitle(CallCenterBK.constants.yearMonth());
-			ymItem.setName("ymItem");
-			ymItem.setWidth(200);
+			dateItem = new DateItem();
+			dateItem.setTitle(CallCenterBK.constants.chooseDate());
+			dateItem.setName("dateItem");
+			dateItem.setWidth(200);
+			dateItem.setValue(new Date());
 
-			dynamicForm.setFields(ymItem);
+			dynamicForm.setFields(dateItem);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -94,16 +96,6 @@ public class DlgGetTelCompBillByMonth extends Window {
 					save();
 				}
 			});
-
-			ymItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					if (event.getKeyName().equals("Enter")) {
-						save();
-					}
-				}
-			});
-
 			addItem(hLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -113,39 +105,29 @@ public class DlgGetTelCompBillByMonth extends Window {
 
 	private void save() {
 		try {
-			String yearMonthStr = ymItem.getValueAsString();
-			if (yearMonthStr == null || yearMonthStr.trim().equals("")) {
-				SC.say(CallCenterBK.constants.plzEnterYearMonth());
-				return;
-			}
-			yearMonthStr = yearMonthStr.trim();
-
-			if (yearMonthStr.length() < 4) {
-				SC.say(CallCenterBK.constants.invalidYearMonth());
-				return;
-			}
-			final Integer ym;
-			try {
-				ym = Integer.parseInt(yearMonthStr);
-			} catch (Exception e) {
-				SC.say(CallCenterBK.constants.invalidYearMonth());
+			Date date_param = dateItem.getValueAsDate();
+			if (date_param == null) {
+				SC.say(CallCenterBK.constants.plzEnterDate());
 				return;
 			}
 
-			final DataSource dataSource = DataSource.get("TelCompsDS");
+			final DataSource dataSource = DataSource.get("BillingCompsDS");
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
-					ExportFormat.values(), "csv"));
+					ExportFormat.values(), ExportFormat.CSV.toString()));
 			dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
 
-			dsRequest.setOperationId("getTelCompBillByMonth");
+			dsRequest.setOperationId("getBillingCompBillByDay");
 			dsRequest.setExportFields(new String[] { "phonea", "phoneb",
 					"charge_date1", "duration", "rate", "price" });
-			dsRequest.setExportFilename(yearMonthStr);
+			dsRequest.setExportResults(true);
+
+			DateTimeFormat dateFormatter = DateTimeFormat.getFormat("yyyyMMdd");
+			dsRequest.setExportFilename(dateFormatter.format(date_param));
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("tel_comp_id", tel_comp_id);
-			criteria.setAttribute("ym", ym);
+			criteria.setAttribute("billing_company_id", billing_company_id);
+			criteria.setAttribute("date_param", date_param);
 			dataSource.exportData(criteria, dsRequest, new DSCallback() {
 
 				@Override

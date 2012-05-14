@@ -6,7 +6,7 @@ import com.info08.billing.callcenterbk.client.content.admin.TabBlockList;
 import com.info08.billing.callcenterbk.client.content.admin.TabContractors;
 import com.info08.billing.callcenterbk.client.content.admin.TabFixedOperPrefs;
 import com.info08.billing.callcenterbk.client.content.admin.TabMobOperPrefs;
-import com.info08.billing.callcenterbk.client.content.admin.TabTelComps;
+import com.info08.billing.callcenterbk.client.content.admin.TabBillingComps;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -30,7 +30,7 @@ public class AdminStackSelection extends SectionStackSection {
 			new MenuNode("102", "1", CallCenterBK.constants.fixedOpIndexes(), true, "phone.png"),
 			new MenuNode("103", "1", CallCenterBK.constants.contractors(), true, "contracts.png"),
 			new MenuNode("104", "1", CallCenterBK.constants.blockPhone(), true, "telephone_delete.png"),
-			new MenuNode("105", "1", CallCenterBK.constants.telComps(), true, "phone.png"),
+			new MenuNode("105", "1", CallCenterBK.constants.billingComps(), true, "phone.png"),
 	};
 
 	private TreeGrid menuTreeGrid;
@@ -126,8 +126,8 @@ public class AdminStackSelection extends SectionStackSection {
 			TabBlockList tabBlockList = new TabBlockList();
 			body.addTab(tabBlockList);
 		} else if (menuId.equals("105")) {
-			TabTelComps tabTelComps = new TabTelComps();
-			body.addTab(tabTelComps);
+			TabBillingComps tabBillingComps = new TabBillingComps();
+			body.addTab(tabBillingComps);
 		}
 	}
 

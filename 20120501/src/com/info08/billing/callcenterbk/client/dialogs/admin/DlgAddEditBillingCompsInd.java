@@ -16,7 +16,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditTelCompInd extends Window {
+public class DlgAddEditBillingCompsInd extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -29,12 +29,14 @@ public class DlgAddEditTelCompInd extends Window {
 	private ListGrid listGrid = null;
 	private ListGridRecord listGridRecord = null;
 
-	public DlgAddEditTelCompInd(ListGrid listGrid, ListGridRecord listGridRecord) {
+	public DlgAddEditBillingCompsInd(ListGrid listGrid,
+			ListGridRecord listGridRecord) {
 		try {
 			this.listGrid = listGrid;
 			this.listGridRecord = listGridRecord;
 			setTitle(listGridRecord == null ? CallCenterBK.constants
-					.addTelCompInd() : CallCenterBK.constants.editTelCompInd());
+					.addBillingCompInd() : CallCenterBK.constants
+					.editBillingCompInd());
 
 			setHeight(180);
 			setWidth(400);
@@ -75,7 +77,7 @@ public class DlgAddEditTelCompInd extends Window {
 			typeItem.setWidth(250);
 			typeItem.setDefaultToFirstOption(true);
 			typeItem.setValueMap(ClientMapUtil.getInstance()
-					.getTelCompIndTypes());
+					.getBillingCompIndTypes());
 
 			typeItem1 = new SelectItem();
 			typeItem1.setTitle(CallCenterBK.constants.type());
@@ -83,7 +85,7 @@ public class DlgAddEditTelCompInd extends Window {
 			typeItem1.setWidth(250);
 			typeItem1.setDefaultToFirstOption(true);
 			typeItem1.setValueMap(ClientMapUtil.getInstance()
-					.getTelCompIndTypes1());
+					.getBillingCompIndTypes1());
 
 			dynamicForm.setFields(startIndexItem, endIndexItem, typeItem,
 					typeItem1);
@@ -129,10 +131,13 @@ public class DlgAddEditTelCompInd extends Window {
 			if (listGridRecord == null) {
 				return;
 			}
-			startIndexItem.setValue(listGridRecord.getAttributeAsInt("st_ind"));
-			endIndexItem.setValue(listGridRecord.getAttributeAsInt("end_ind"));
-			typeItem.setValue(listGridRecord.getAttributeAsInt("cr"));
-			typeItem1.setValue(listGridRecord.getAttributeAsInt("count_type"));
+			startIndexItem.setValue(listGridRecord
+					.getAttributeAsInt("bill_index_start"));
+			endIndexItem.setValue(listGridRecord
+					.getAttributeAsInt("bill_index_end"));
+			typeItem.setValue(listGridRecord
+					.getAttributeAsInt("applied_wholly"));
+			typeItem1.setValue(listGridRecord.getAttributeAsInt("calcul_type"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -193,18 +198,18 @@ public class DlgAddEditTelCompInd extends Window {
 					if (item.equals(listGridRecord)) {
 						continue;
 					}
-					Integer ind_id = item.getAttributeAsInt("ind_id");
+					Integer ind_id = item.getAttributeAsInt("bill_index_id");
 					if (ind_id != null && listGridRecord != null) {
 						Integer ind_id1 = listGridRecord
-								.getAttributeAsInt("ind_id");
+								.getAttributeAsInt("bill_index_id");
 						if (ind_id1 != null
 								&& ind_id1.intValue() == ind_id.intValue()) {
 							continue;
 						}
 					}
 
-					Integer st_ind = item.getAttributeAsInt("st_ind");
-					Integer end_ind = item.getAttributeAsInt("end_ind");
+					Integer st_ind = item.getAttributeAsInt("bill_index_start");
+					Integer end_ind = item.getAttributeAsInt("bill_index_end");
 					if (startIndex.intValue() >= st_ind
 							&& startIndex <= end_ind) {
 						SC.say(CallCenterBK.constants.invalidStartIndex());
@@ -225,21 +230,22 @@ public class DlgAddEditTelCompInd extends Window {
 				isUpdate = true;
 				dateRec = listGridRecord;
 			}
-			dateRec.setAttribute("st_ind", startIndex);
-			dateRec.setAttribute("end_ind", endIndex);
-			dateRec.setAttribute("cr", cr);
-			dateRec.setAttribute("count_type", count_type);
-			dateRec.setAttribute("count_type_descr",
+			dateRec.setAttribute("bill_index_start", startIndex);
+			dateRec.setAttribute("bill_index_end", endIndex);
+			dateRec.setAttribute("applied_wholly", cr);
+			dateRec.setAttribute("calcul_type", count_type);
+			dateRec.setAttribute("calcul_type_descr",
 					typeItem1.getDisplayValue());
 
-			dateRec.setAttribute("cr_descr", typeItem.getDisplayValue());
+			dateRec.setAttribute("applied_wholly_descr",
+					typeItem.getDisplayValue());
 			if (listGridRecord != null) {
-				dateRec.setAttribute("tel_comp_id",
-						listGridRecord.getAttributeAsInt("tel_comp_id"));
-				dateRec.setAttribute("ind_id",
-						listGridRecord.getAttributeAsInt("ind_id"));
+				dateRec.setAttribute("billing_company_id",
+						listGridRecord.getAttributeAsInt("billing_company_id"));
+				dateRec.setAttribute("bill_index_id",
+						listGridRecord.getAttributeAsInt("bill_index_id"));
 			}
-			dateRec.setAttribute("tel_comp_id", cr);
+			dateRec.setAttribute("billing_company_id", cr);
 			if (isUpdate) {
 				listGrid.updateData(dateRec);
 			} else {

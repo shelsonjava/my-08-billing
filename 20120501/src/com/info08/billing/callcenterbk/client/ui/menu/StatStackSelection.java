@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.stat.TabBillCallsBySrvBK;
-import com.info08.billing.callcenterbk.client.content.stat.TabStatByTelComp;
+import com.info08.billing.callcenterbk.client.content.stat.TabStatByBillingComps;
 import com.info08.billing.callcenterbk.client.content.stat.TabStatFull;
 import com.info08.billing.callcenterbk.client.content.stat.TabStatFullByMonth;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -26,7 +26,7 @@ public class StatStackSelection extends SectionStackSection {
 		new MenuNode("100", "1", CallCenterBK.constants.callsTotalBySrv(), true,"stats.png") ,
 		new MenuNode("101", "1", CallCenterBK.constants.statisticFullDay(), true,"stats.png"),
 		new MenuNode("102", "1", CallCenterBK.constants.statisticFullMonth(), true,"stats.png"),
-		new MenuNode("103", "1", CallCenterBK.constants.statisticByTelComp(), true,"stats.png")
+		new MenuNode("103", "1", CallCenterBK.constants.statisticByBillingComp(), true,"stats.png")
 	};
 
 	private TreeGrid menuTreeGrid;
@@ -114,8 +114,8 @@ public class StatStackSelection extends SectionStackSection {
 			TabStatFullByMonth tabStatFullByMonth = new TabStatFullByMonth(body.getMainTabPanel());
 			body.addTab(tabStatFullByMonth);
 		} else if (menuId.equals("103")) {
-			TabStatByTelComp tabStatByTelComp = new TabStatByTelComp(body.getMainTabPanel());
-			body.addTab(tabStatByTelComp);
+			TabStatByBillingComps tabStatByBillingComp = new TabStatByBillingComps(body.getMainTabPanel());
+			body.addTab(tabStatByBillingComp);
 		}
 	}
 

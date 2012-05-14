@@ -19,13 +19,13 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgViewStatByTelCompGraph extends Window {
+public class DlgViewStatByBillingCompGraph extends Window {
 
 	private VLayout hLayout;
 	protected FacetChart chart;
 	private ListGridRecord records[];
 
-	public DlgViewStatByTelCompGraph(ListGridRecord records[]) {
+	public DlgViewStatByBillingCompGraph(ListGridRecord records[]) {
 		try {
 			this.records = records;
 			setTitle(CallCenterBK.constants.graph());
@@ -51,7 +51,7 @@ public class DlgViewStatByTelCompGraph extends Window {
 			chart = new FacetChart();
 			chart.setWidth100();
 			chart.setHeight100();
-			chart.setFacets(new Facet("tel_comp_name_geo", "tel_comp_name_geo"));
+			chart.setFacets(new Facet("billing_company_name", "billing_company_name"));
 
 			chart.setValueProperty("calls_amm");
 			chart.setChartType(ChartType.LINE);
@@ -62,9 +62,9 @@ public class DlgViewStatByTelCompGraph extends Window {
 				@Override
 				public String hoverHTML(Float value, Record record) {
 					return ("<b>"
-							+ CallCenterBK.constants.telComps()
+							+ CallCenterBK.constants.billingComps()
 							+ " : </b> "
-							+ record.getAttribute("tel_comp_name_geo")
+							+ record.getAttribute("billing_company_name")
 							+ "<br />"
 							+ "<b>"
 							+ CallCenterBK.constants.amount()
@@ -110,8 +110,8 @@ public class DlgViewStatByTelCompGraph extends Window {
 			for (int i = 0; i < size; i++) {
 				ListGridRecord record = records[i];
 				ListGridRecord calls_amm = new ListGridRecord();
-				calls_amm.setAttribute("tel_comp_name_geo",
-						CallCenterBK.constants.telComps());
+				calls_amm.setAttribute("billing_company_name",
+						CallCenterBK.constants.billingComps());
 				calls_amm.setAttribute("value",
 						record.getAttributeAsDouble("calls_amm"));
 				listData.add(calls_amm);

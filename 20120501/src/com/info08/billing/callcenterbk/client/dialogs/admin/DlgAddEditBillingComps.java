@@ -33,12 +33,12 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class DlgAddEditTelComp extends Window {
+public class DlgAddEditBillingComps extends Window {
 
 	private VLayout hLayout;
 
-	private TextItem telCompNameItem;
-	private TextItem telCompOurPercentItem;
+	private TextItem billingCompNameItem;
+	private TextItem billingCompOurPercentItem;
 	private SelectItem hasCalcItem;
 	private TextItem callPriceItem;
 
@@ -52,12 +52,12 @@ public class DlgAddEditTelComp extends Window {
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
 
-	public DlgAddEditTelComp(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditBillingComps(ListGrid listGrid, ListGridRecord pRecord) {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenterBK.constants.addTelComp()
-					: CallCenterBK.constants.editTelComp());
+			setTitle(pRecord == null ? CallCenterBK.constants.addBillingComp()
+					: CallCenterBK.constants.editBillingComp());
 
 			setHeight(600);
 			setWidth(800);
@@ -75,16 +75,18 @@ public class DlgAddEditTelComp extends Window {
 			hLayout.setHeight100();
 			hLayout.setPadding(10);
 
-			telCompNameItem = new TextItem();
-			telCompNameItem.setTitle(CallCenterBK.constants.companyNameFull());
-			telCompNameItem.setWidth("100%");
-			telCompNameItem.setName("telCompNameItem");
+			billingCompNameItem = new TextItem();
+			billingCompNameItem.setTitle(CallCenterBK.constants
+					.companyNameFull());
+			billingCompNameItem.setWidth("100%");
+			billingCompNameItem.setName("billingCompNameItem");
 
-			telCompOurPercentItem = new TextItem();
-			telCompOurPercentItem.setTitle(CallCenterBK.constants.ourPercent());
-			telCompOurPercentItem.setWidth("100%");
-			telCompOurPercentItem.setName("telCompOurPercentItem");
-			telCompOurPercentItem.setKeyPressFilter("[0-9\\.]");
+			billingCompOurPercentItem = new TextItem();
+			billingCompOurPercentItem.setTitle(CallCenterBK.constants
+					.ourPercent());
+			billingCompOurPercentItem.setWidth("100%");
+			billingCompOurPercentItem.setName("billingCompOurPercentItem");
+			billingCompOurPercentItem.setKeyPressFilter("[0-9\\.]");
 
 			hasCalcItem = new SelectItem();
 			hasCalcItem.setTitle(CallCenterBK.constants.hasCalculation());
@@ -106,8 +108,8 @@ public class DlgAddEditTelComp extends Window {
 			dynamicForm.setTitleWidth(250);
 			dynamicForm.setNumCols(2);
 
-			dynamicForm.setFields(telCompNameItem, telCompOurPercentItem,
-					hasCalcItem, callPriceItem);
+			dynamicForm.setFields(billingCompNameItem,
+					billingCompOurPercentItem, hasCalcItem, callPriceItem);
 
 			hLayout.addMember(dynamicForm);
 
@@ -141,13 +143,13 @@ public class DlgAddEditTelComp extends Window {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			TelCompIndClientDS telCompIndClientDS = TelCompIndClientDS
+			BillingCompIndClientDS billingCompIndClientDS = BillingCompIndClientDS
 					.getInstance();
 
 			listGridIndexes = new ListGrid();
 			listGridIndexes.setHeight100();
 			listGridIndexes.setWidth100();
-			listGridIndexes.setDataSource(telCompIndClientDS);
+			listGridIndexes.setDataSource(billingCompIndClientDS);
 			listGridIndexes.setDataPageSize(50);
 			listGridIndexes.setAutoFetchData(true);
 			listGridIndexes.setSelectionType(SelectionStyle.MULTIPLE);
@@ -157,24 +159,24 @@ public class DlgAddEditTelComp extends Window {
 			listGridIndexes.setCanDragSelectText(true);
 			listGridIndexes.setShowRowNumbers(true);
 
-			ListGridField st_ind = new ListGridField("st_ind",
-					CallCenterBK.constants.startIndex());
-			st_ind.setAlign(Alignment.CENTER);
+			ListGridField bill_index_start = new ListGridField(
+					"bill_index_start", CallCenterBK.constants.startIndex());
+			bill_index_start.setAlign(Alignment.CENTER);
 
-			ListGridField end_ind = new ListGridField("end_ind",
+			ListGridField bill_index_end = new ListGridField("bill_index_end",
 					CallCenterBK.constants.endIndex());
-			end_ind.setAlign(Alignment.CENTER);
+			bill_index_end.setAlign(Alignment.CENTER);
 
-			ListGridField cr_descr = new ListGridField("cr_descr",
-					CallCenterBK.constants.type());
-			cr_descr.setAlign(Alignment.CENTER);
+			ListGridField applied_wholly_descr = new ListGridField(
+					"applied_wholly_descr", CallCenterBK.constants.type());
+			applied_wholly_descr.setAlign(Alignment.CENTER);
 
-			ListGridField count_type_descr = new ListGridField(
-					"count_type_descr", CallCenterBK.constants.type());
-			count_type_descr.setAlign(Alignment.CENTER);
+			ListGridField calcul_type_descr = new ListGridField(
+					"calcul_type_descr", CallCenterBK.constants.type());
+			calcul_type_descr.setAlign(Alignment.CENTER);
 
-			listGridIndexes.setFields(st_ind, end_ind, cr_descr,
-					count_type_descr);
+			listGridIndexes.setFields(bill_index_start, bill_index_end,
+					applied_wholly_descr, calcul_type_descr);
 
 			hLayout.addMember(listGridIndexes);
 
@@ -233,9 +235,9 @@ public class DlgAddEditTelComp extends Window {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditTelCompInd dlgAddEditTelCompInd = new DlgAddEditTelCompInd(
+					DlgAddEditBillingCompsInd dlgAddEditBillingCompInd = new DlgAddEditBillingCompsInd(
 							listGridIndexes, null);
-					dlgAddEditTelCompInd.show();
+					dlgAddEditBillingCompInd.show();
 				}
 			});
 
@@ -250,9 +252,9 @@ public class DlgAddEditTelComp extends Window {
 						return;
 					}
 
-					DlgAddEditTelCompInd dlgAddEditTelCompInd = new DlgAddEditTelCompInd(
+					DlgAddEditBillingCompsInd dlgAddEditBillingCompInd = new DlgAddEditBillingCompsInd(
 							listGridIndexes, listGridRecord);
-					dlgAddEditTelCompInd.show();
+					dlgAddEditBillingCompInd.show();
 				}
 			});
 
@@ -264,9 +266,9 @@ public class DlgAddEditTelComp extends Window {
 							ListGridRecord listGridRecord = listGridIndexes
 									.getSelectedRecord();
 
-							DlgAddEditTelCompInd dlgAddEditTelCompInd = new DlgAddEditTelCompInd(
+							DlgAddEditBillingCompsInd dlgAddEditBillingCompInd = new DlgAddEditBillingCompsInd(
 									listGridIndexes, listGridRecord);
-							dlgAddEditTelCompInd.show();
+							dlgAddEditBillingCompInd.show();
 						}
 					});
 
@@ -284,22 +286,22 @@ public class DlgAddEditTelComp extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			telCompNameItem.setValue(editRecord
-					.getAttributeAsString("tel_comp_name_geo"));
-			telCompOurPercentItem.setValue(editRecord
+			billingCompNameItem.setValue(editRecord
+					.getAttributeAsString("billing_company_name"));
+			billingCompOurPercentItem.setValue(editRecord
 					.getAttributeAsString("our_percent"));
 			hasCalcItem.setValue(editRecord
 					.getAttributeAsInt("has_calculation"));
 			callPriceItem.setValue(editRecord
 					.getAttributeAsString("call_price"));
 
-			DataSource telCompIndDS = DataSource.get("TelCompIndDS");
+			DataSource billingCompsIndDS = DataSource.get("BillingCompsIndDS");
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("tel_comp_id",
-					editRecord.getAttributeAsInt("tel_comp_id"));
+			criteria.setAttribute("billing_company_id",
+					editRecord.getAttributeAsInt("billing_company_id"));
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("searchAllTelCompInds");
-			telCompIndDS.fetchData(criteria, new DSCallback() {
+			dsRequest.setOperationId("searchAllBillingCompInds");
+			billingCompsIndDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -319,15 +321,17 @@ public class DlgAddEditTelComp extends Window {
 
 	private void save() {
 		try {
-			String tel_comp_name_geo = telCompNameItem.getValueAsString();
-			if (tel_comp_name_geo == null
-					|| tel_comp_name_geo.trim().equals("")) {
-				SC.say(CallCenterBK.constants.plzEnterTelCompName());
+			String billing_company_name = billingCompNameItem
+					.getValueAsString();
+			if (billing_company_name == null
+					|| billing_company_name.trim().equals("")) {
+				SC.say(CallCenterBK.constants.plzEnterBillingCompName());
 				return;
 			}
-			tel_comp_name_geo = tel_comp_name_geo.trim();
+			billing_company_name = billing_company_name.trim();
 
-			String our_percent_str = telCompOurPercentItem.getValueAsString();
+			String our_percent_str = billingCompOurPercentItem
+					.getValueAsString();
 			if (our_percent_str == null || our_percent_str.trim().equals("")) {
 				SC.say(CallCenterBK.constants.plzEnterOurPercent());
 				return;
@@ -372,45 +376,49 @@ public class DlgAddEditTelComp extends Window {
 				for (int i = 0; i < length; i++) {
 					Record record = recordList.get(i);
 
-					Integer st_ind = record.getAttributeAsInt("st_ind");
-					Integer end_ind = record.getAttributeAsInt("end_ind");
-					Integer cr = record.getAttributeAsInt("cr");
-					Integer count_type = record.getAttributeAsInt("count_type");
+					Integer bill_index_start = record
+							.getAttributeAsInt("bill_index_start");
+					Integer bill_index_end = record
+							.getAttributeAsInt("bill_index_end");
+					Integer applied_wholly = record
+							.getAttributeAsInt("applied_wholly");
+					Integer calcul_type = record
+							.getAttributeAsInt("calcul_type");
 					LinkedHashMap<String, String> param = new LinkedHashMap<String, String>();
-					param.put("str_end_ind", end_ind.toString());
-					param.put("str_cr", cr.toString());
-					param.put("str_count_type", count_type.toString());
-					indexes.put(st_ind.toString(), param);
+					param.put("str_bill_index_end", bill_index_end.toString());
+					param.put("str_applied_wholly", applied_wholly.toString());
+					param.put("str_calcul_type", calcul_type.toString());
+					indexes.put(bill_index_start.toString(), param);
 				}
 			}
 
 			Record record = new Record();
 			if (editRecord != null) {
-				record.setAttribute("tel_comp_id",
-						editRecord.getAttributeAsInt("tel_comp_id"));
+				record.setAttribute("billing_company_id",
+						editRecord.getAttributeAsInt("billing_company_id"));
 			}
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUserName();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("tel_comp_name_geo", tel_comp_name_geo);
+			record.setAttribute("billing_company_name", billing_company_name);
 			record.setAttribute("our_percent", our_percent);
 			record.setAttribute("call_price", call_price);
-			record.setAttribute("telCompIdexes", indexes);
+			record.setAttribute("billingCompIdexes", indexes);
 			record.setAttribute("has_calculation", has_calculation);
 
-			saveTelComp(record);
+			saveBillingComp(record);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
 
-	private void saveTelComp(Record record) {
+	private void saveBillingComp(Record record) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			DSRequest req = new DSRequest();
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addTelComp");
+				req.setAttribute("operationId", "addBillingComp");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -419,7 +427,7 @@ public class DlgAddEditTelComp extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateTelComp");
+				req.setAttribute("operationId", "updateBillingComp");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

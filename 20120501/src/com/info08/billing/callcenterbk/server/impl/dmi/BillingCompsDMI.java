@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
-import com.info08.billing.callcenterbk.shared.entity.telcomps.TelComp;
-import com.info08.billing.callcenterbk.shared.entity.telcomps.TelCompsInd;
+import com.info08.billing.callcenterbk.shared.entity.billingcomps.BillingCompany;
+import com.info08.billing.callcenterbk.shared.entity.billingcomps.BillingCompanyInd;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 
@@ -26,13 +26,13 @@ import com.isomorphic.jpa.EMF;
  * @since 1.0.0.1
  * 
  */
-public class TelCompsDMI implements QueryConstants {
+public class BillingCompsDMI implements QueryConstants {
 
 	/**
 	 * კლასი რომლის მეშვეობითაც ხდება სისტემური ინფორმაციის ლოგირება სერვერზე -
 	 * ფაილში.
 	 */
-	private Logger logger = Logger.getLogger(TelCompsDMI.class.getName());
+	private Logger logger = Logger.getLogger(BillingCompsDMI.class.getName());
 
 	/**
 	 * ახალი სატელეფონო კომპანიის და მისი ინდექსების დამატების ფუნქციონალი.
@@ -40,114 +40,109 @@ public class TelCompsDMI implements QueryConstants {
 	 * @param dsRequest
 	 *            ამ პარამეტრში მოდის თუ რა ინფორმაცია უნდა შეინახოს სატელეფონო
 	 *            კომპანიის შესახებ
-	 * @return TelComp ფუნქცია აბრუნებს ჰიბერნეიტის კლასს რომელიც უკვე შენახულია
-	 *         მონაცმთა ბაზაში. ეს კლასი ბრუნდება კლიენტის მხარეს რათა კლიენტმა
-	 *         დაინახოს მის მიერ ახალ დამატებული სატელეფონო კომპანია
+	 * @return BillingComp ფუნქცია აბრუნებს ჰიბერნეიტის კლასს რომელიც უკვე
+	 *         შენახულია მონაცმთა ბაზაში. ეს კლასი ბრუნდება კლიენტის მხარეს რათა
+	 *         კლიენტმა დაინახოს მის მიერ ახალ დამატებული სატელეფონო კომპანია
 	 * @throws Exception
 	 *             შეცდომის დამუშავება.
 	 */
 	@SuppressWarnings("rawtypes")
-	public TelComp addTelComp(DSRequest dsRequest) throws Exception {
+	public BillingCompany addBillingComp(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:TelCompsDMI.addTelComp.";
+			String log = "Method:BillingCompsDMI.addBillingComp.";
 
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
 
 			// sysdate
 			Timestamp rec_date = new Timestamp(System.currentTimeMillis());
-			TelComp telComp = new TelComp();
-			telComp.setDeleted(0L);
-			telComp.setRec_date(rec_date);
-			telComp.setLoggedUserName(loggedUserName);
-			telComp.setRec_user(loggedUserName);
 
-			Object otel_comp_name_eng = dsRequest
-					.getFieldValue("tel_comp_name_eng");
-			String tel_comp_name_eng = (otel_comp_name_eng == null ? null
-					: otel_comp_name_eng.toString());
-			telComp.setTel_comp_name_eng(tel_comp_name_eng);
+			BillingCompany billingComp = new BillingCompany();
+			billingComp.setLoggedUserName(loggedUserName);
 
-			Object otel_comp_name_geo = dsRequest
-					.getFieldValue("tel_comp_name_geo");
-			String tel_comp_name_geo = (otel_comp_name_geo == null ? null
-					: otel_comp_name_geo.toString());
-			telComp.setTel_comp_name_geo(tel_comp_name_geo);
-			telComp.setUpd_user(loggedUserName);
+			Object obilling_company_name = dsRequest
+					.getFieldValue("billing_company_name");
+			String billing_company_name = (obilling_company_name == null ? null
+					: obilling_company_name.toString());
+			billingComp.setBilling_company_name(billing_company_name);
 
 			Object oour_percent = dsRequest.getFieldValue("our_percent");
 			Double our_percent = (oour_percent == null ? 1L : new Double(
 					oour_percent.toString()));
-			telComp.setOur_percent(our_percent);
-			
+			billingComp.setOur_percent(our_percent);
+
 			Object ocall_price = dsRequest.getFieldValue("call_price");
 			Double call_price = (ocall_price == null ? 1L : new Double(
 					ocall_price.toString()));
-			telComp.setCall_price(call_price);
+			billingComp.setCall_price(call_price);
 
 			Object ohas_calculation = dsRequest
 					.getFieldValue("has_calculation");
 			Long has_calculation = (ohas_calculation == null ? -1L : new Long(
 					ohas_calculation.toString()));
-			telComp.setHas_calculation(has_calculation);
+			billingComp.setHas_calculation(has_calculation);
 
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, rec_date,
-					loggedUserName, "Adding TelComp.");
+					loggedUserName, "Adding BillingComp.");
 
-			oracleManager.persist(telComp);
+			oracleManager.persist(billingComp);
 			oracleManager.flush();
 
-			Object oMap = dsRequest.getFieldValue("telCompIdexes");
+			Object oMap = dsRequest.getFieldValue("billingCompIdexes");
 			if (oMap != null) {
 				LinkedMap indexed = (LinkedMap) oMap;
 				if (!indexed.isEmpty()) {
 					Set keys1 = indexed.keySet();
-					checkTelCompIndexes(null, indexed);
+					checkBillingCompIndexes(null, indexed);
 					for (Object okey1 : keys1) {
-						String str_st_ind = okey1.toString();
-						LinkedMap value1 = (LinkedMap) indexed.get(str_st_ind);
-						String str_end_ind = value1.get("str_end_ind")
+						String str_bill_index_start = okey1.toString();
+						LinkedMap value1 = (LinkedMap) indexed
+								.get(str_bill_index_start);
+						String str_bill_index_end = value1.get(
+								"str_bill_index_end").toString();
+						String str_applied_wholly = value1.get(
+								"str_applied_wholly").toString();
+						String str_calcul_type = value1.get("str_calcul_type")
 								.toString();
-						String str_cr = value1.get("str_cr").toString();
-						String str_count_type = value1.get("str_count_type").toString();
 
-						TelCompsInd item = new TelCompsInd();
-						item.setCr(new Long(str_cr));
-						item.setEnd_ind(new Long(str_end_ind));
-						item.setSt_ind(new Long(str_st_ind));
-						item.setCount_type(new Long(str_count_type));
-						item.setTel_comp_id(telComp.getTel_comp_id());
+						BillingCompanyInd item = new BillingCompanyInd();
+						item.setApplied_wholly(new Long(str_applied_wholly));
+						item.setBill_index_end(new Long(str_bill_index_end));
+						item.setBill_index_start(new Long(str_bill_index_start));
+						item.setCalcul_type(new Long(str_calcul_type));
+						item.setBilling_company_id(billingComp
+								.getbilling_company_id());
 						oracleManager.persist(item);
 					}
 				}
 			}
 
-			telComp = oracleManager.find(TelComp.class,
-					telComp.getTel_comp_id());
-			telComp.setLoggedUserName(loggedUserName);
+			billingComp = oracleManager.find(BillingCompany.class,
+					billingComp.getbilling_company_id());
+			billingComp.setLoggedUserName(loggedUserName);
 			if (has_calculation.equals(1L)) {
-				telComp.setHas_calculation_descr("დიახ");
+				billingComp.setHas_calculation_descr("დიახ");
 			} else if (has_calculation.equals(0L)) {
-				telComp.setHas_calculation_descr("არა");
+				billingComp.setHas_calculation_descr("არა");
 			} else {
-				telComp.setHas_calculation_descr("ყველა");
+				billingComp.setHas_calculation_descr("ყველა");
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return telComp;
+			return billingComp;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert TelComp Into Database : ", e);
+			logger.error("Error While Insert BillingComp Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -162,102 +157,106 @@ public class TelCompsDMI implements QueryConstants {
 	 * 
 	 * @param record
 	 *            ეს პარამეტრი მოიცავს ყველა ინფორმაცის ცვლილების შესახებ.
-	 * @return TelComp ფუნქცია აბრუნებს კონტრაქტორის კლასს რომელშიც უკვე შესულია
-	 *         ცვლილება და ასახულია ბაზაში.
+	 * @return BillingComp ფუნქცია აბრუნებს კონტრაქტორის კლასს რომელშიც უკვე
+	 *         შესულია ცვლილება და ასახულია ბაზაში.
 	 * @throws Exception
 	 *             შეცდომის დამუშავება
 	 */
 	@SuppressWarnings("rawtypes")
-	public TelComp updateTelComp(Map record) throws Exception {
+	public BillingCompany updateBillingComp(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:TelCompsDMI.updateTelComp.";
+			String log = "Method:BillingCompsDMI.updateBillingComp.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long tel_comp_id = new Long(record.get("tel_comp_id").toString());
+			Long billing_company_id = new Long(record.get("billing_company_id")
+					.toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp upd_date = new Timestamp(System.currentTimeMillis());
-			String tel_comp_name_eng = record.get("tel_comp_name_eng") == null ? null
-					: record.get("tel_comp_name_eng").toString();
-			String tel_comp_name_geo = record.get("tel_comp_name_geo") == null ? null
-					: record.get("tel_comp_name_geo").toString();
+
+			String billing_company_name = record.get("billing_company_name") == null ? null
+					: record.get("billing_company_name").toString();
 			Object oour_percent = record.get("our_percent");
 			Double our_percent = (oour_percent == null ? 1L : new Double(
 					oour_percent.toString()));
-			
+
 			Object ocall_price = record.get("call_price");
 			Double call_price = (ocall_price == null ? 1L : new Double(
 					ocall_price.toString()));
-			
+
 			Object ohas_calculation = record.get("has_calculation");
 			Long has_calculation = (ohas_calculation == null ? -1L : new Long(
 					ohas_calculation.toString()));
 
-			TelComp telComp = oracleManager.find(TelComp.class, tel_comp_id);
-			telComp.setDeleted(0L);
-			telComp.setLoggedUserName(loggedUserName);
-			telComp.setTel_comp_name_eng(tel_comp_name_eng);
-			telComp.setTel_comp_name_geo(tel_comp_name_geo);
-			telComp.setOur_percent(our_percent);
-			telComp.setCall_price(call_price);
-			telComp.setHas_calculation(has_calculation);
+			BillingCompany billingComp = oracleManager.find(
+					BillingCompany.class, billing_company_id);
+			billingComp.setLoggedUserName(loggedUserName);
+			billingComp.setBilling_company_name(billing_company_name);
+			billingComp.setOur_percent(our_percent);
+			billingComp.setCall_price(call_price);
+			billingComp.setHas_calculation(has_calculation);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, upd_date,
 					loggedUserName, "Updating Contract.");
 
 			oracleManager
-					.createNativeQuery(QueryConstants.Q_DELETE_TELCOMP_IND)
-					.setParameter(1, telComp.getTel_comp_id()).executeUpdate();
+					.createNativeQuery(QueryConstants.Q_DELETE_BILLINGCOMP_IND)
+					.setParameter(1, billingComp.getbilling_company_id())
+					.executeUpdate();
 
-			oracleManager.merge(telComp);
+			oracleManager.merge(billingComp);
 			oracleManager.flush();
 
-			Object oMap = record.get("telCompIdexes");
+			Object oMap = record.get("billingCompIdexes");
 			if (oMap != null) {
 				LinkedMap indexed = (LinkedMap) oMap;
 				if (!indexed.isEmpty()) {
-					checkTelCompIndexes(tel_comp_id, indexed);
+					checkBillingCompIndexes(billing_company_id, indexed);
 					Set keys1 = indexed.keySet();
 					for (Object okey1 : keys1) {
 						String str_st_ind = okey1.toString();
 						LinkedMap value1 = (LinkedMap) indexed.get(str_st_ind);
-						String str_end_ind = value1.get("str_end_ind")
+						String str_bill_index_end = value1.get(
+								"str_bill_index_end").toString();
+						String str_applied_wholly = value1.get(
+								"str_applied_wholly").toString();
+						String str_calcul_type = value1.get("str_calcul_type")
 								.toString();
-						String str_cr = value1.get("str_cr").toString();
-						String str_count_type = value1.get("str_count_type").toString();
 
-						TelCompsInd item = new TelCompsInd();
-						item.setCr(new Long(str_cr));
-						item.setEnd_ind(new Long(str_end_ind));
-						item.setSt_ind(new Long(str_st_ind));
-						item.setCount_type(new Long(str_count_type));
-						item.setTel_comp_id(telComp.getTel_comp_id());
+						BillingCompanyInd item = new BillingCompanyInd();
+						item.setApplied_wholly(new Long(str_applied_wholly));
+						item.setBill_index_end(new Long(str_bill_index_end));
+						item.setBill_index_start(new Long(str_st_ind));
+						item.setCalcul_type(new Long(str_calcul_type));
+						item.setBilling_company_id(billingComp
+								.getbilling_company_id());
 						oracleManager.persist(item);
 					}
 				}
 			}
 
-			telComp = oracleManager.find(TelComp.class, tel_comp_id);
-			telComp.setLoggedUserName(loggedUserName);
+			billingComp = oracleManager.find(BillingCompany.class,
+					billing_company_id);
+			billingComp.setLoggedUserName(loggedUserName);
 			if (has_calculation.equals(1L)) {
-				telComp.setHas_calculation_descr("დიახ");
+				billingComp.setHas_calculation_descr("დიახ");
 			} else if (has_calculation.equals(0L)) {
-				telComp.setHas_calculation_descr("არა");
+				billingComp.setHas_calculation_descr("არა");
 			} else {
-				telComp.setHas_calculation_descr("ყველა");
+				billingComp.setHas_calculation_descr("ყველა");
 			}
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return telComp;
+			return billingComp;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update TelComp Into Database : ", e);
+			logger.error("Error While Update BillingComp Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -268,40 +267,41 @@ public class TelCompsDMI implements QueryConstants {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void checkTelCompIndexes(Long tel_comp_id, LinkedMap indexes)
-			throws Exception {
+	public void checkBillingCompIndexes(Long billing_company_id,
+			LinkedMap indexes) throws Exception {
 		EntityManager oracleManager = null;
 		try {
-			String log = "Method:TelCompsDMI.checkTelCompIndexes.";
+			String log = "Method:BillingCompsDMI.checkBillingCompIndexes.";
 			oracleManager = EMF.getEntityManager();
 			if (!indexes.isEmpty()) {
 				Set keys1 = indexes.keySet();
 
-				if (tel_comp_id == null) {
-					tel_comp_id = -111111111L;
+				if (billing_company_id == null) {
+					billing_company_id = -111111111L;
 				}
 
 				for (Object okey1 : keys1) {
 					String str_st_ind = okey1.toString();
 					LinkedMap value1 = (LinkedMap) indexes.get(str_st_ind);
-					String str_end_ind = value1.get("str_end_ind").toString();
+					String str_bill_index_end = value1
+							.get("str_bill_index_end").toString();
 					Long st_ind = new Long(str_st_ind);
-					Long end_ind = new Long(str_end_ind);
+					Long end_ind = new Long(str_bill_index_end);
 
 					Long count = 0L;
-					if (tel_comp_id.equals(-111111111L)) {
+					if (billing_company_id.equals(-111111111L)) {
 						count = new Long(oracleManager
 								.createNativeQuery(
-										QueryConstants.Q_GET_TEL_COMP_IND)
+										QueryConstants.Q_GET_BILLING_COMP_IND)
 								.setParameter(1, st_ind).getSingleResult()
 								.toString());
 					} else {
 						count = new Long(
 								oracleManager
 										.createNativeQuery(
-												QueryConstants.Q_GET_TEL_COMP_IND_BY_ID)
+												QueryConstants.Q_GET_BILLING_COMP_IND_BY_ID)
 										.setParameter(1, st_ind)
-										.setParameter(2, tel_comp_id)
+										.setParameter(2, billing_company_id)
 										.getSingleResult().toString());
 					}
 					if (count.longValue() > 0) {
@@ -309,19 +309,19 @@ public class TelCompsDMI implements QueryConstants {
 								"მსგავსი ინდექსი უკვე რეგისტრირებულია : "
 										+ st_ind);
 					}
-					if (tel_comp_id.equals(-111111111L)) {
+					if (billing_company_id.equals(-111111111L)) {
 						count = new Long(oracleManager
 								.createNativeQuery(
-										QueryConstants.Q_GET_TEL_COMP_IND)
+										QueryConstants.Q_GET_BILLING_COMP_IND)
 								.setParameter(1, end_ind).getSingleResult()
 								.toString());
 					} else {
 						count = new Long(
 								oracleManager
 										.createNativeQuery(
-												QueryConstants.Q_GET_TEL_COMP_IND_BY_ID)
+												QueryConstants.Q_GET_BILLING_COMP_IND_BY_ID)
 										.setParameter(1, end_ind)
-										.setParameter(2, tel_comp_id)
+										.setParameter(2, billing_company_id)
 										.getSingleResult().toString());
 					}
 					if (count.longValue() > 0) {
@@ -338,7 +338,8 @@ public class TelCompsDMI implements QueryConstants {
 				throw (CallCenterException) e;
 			}
 			logger.error(
-					"Error While Checking TelComp Indexes Into Database : ", e);
+					"Error While Checking BillingComp Indexes Into Database : ",
+					e);
 			throw new CallCenterException("შეცდომა მონაცემების შემოწმებისას : "
 					+ e.toString());
 		} finally {
@@ -359,30 +360,33 @@ public class TelCompsDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public TelComp removeTelComp(DSRequest dsRequest) throws Exception {
+	public BillingCompany removeBillingComp(DSRequest dsRequest)
+			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
 			Map oldValue = dsRequest.getOldValues();
-			Long tel_comp_id = new Long(dsRequest.getFieldValue("tel_comp_id")
-					.toString());
+			Long billing_company_id = new Long(dsRequest.getFieldValue(
+					"billing_company_id").toString());
 			String loggedUserName = oldValue.get("loggedUserName").toString();
 
-			String log = "Method:TelCompsDMI.removeTelComp.";
+			String log = "Method:BillingCompsDMI.removeBillingComp.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 
-			TelComp telComp = oracleManager.find(TelComp.class, tel_comp_id);
+			BillingCompany billingComp = oracleManager.find(
+					BillingCompany.class, billing_company_id);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
-					loggedUserName, "Remove TelComp.");
+					loggedUserName, "Remove BillingComp.");
 
 			oracleManager
-					.createNativeQuery(QueryConstants.Q_DELETE_TELCOMP_IND)
-					.setParameter(1, telComp.getTel_comp_id()).executeUpdate();
-			oracleManager.remove(telComp);
+					.createNativeQuery(QueryConstants.Q_DELETE_BILLINGCOMP_IND)
+					.setParameter(1, billingComp.getbilling_company_id())
+					.executeUpdate();
+			oracleManager.remove(billingComp);
 
 			oracleManager.flush();
 			EMF.commitTransaction(transaction);
@@ -394,7 +398,7 @@ public class TelCompsDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Remove TelComps From Database : ", e);
+			logger.error("Error While Remove BillingComps From Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების წაშლისას : "
 					+ e.toString());
 		} finally {

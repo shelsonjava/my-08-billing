@@ -378,7 +378,7 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public void getTelCompBillByMonth(Integer tel_comp_id, Integer ym)
+	public void getBillingCompBillByMonth(Integer billing_company_id, Integer ym)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
@@ -399,7 +399,7 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void getTelCompBillByDay(Integer tel_comp_id, Date date_param)
+	public void getBillingCompBillByDay(Integer billing_company_id, Date date_param)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
@@ -409,10 +409,10 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 
 			List resultList = oracleManager
 					.createNativeQuery(
-							QueryConstants.Q_GET_TEL_COMP_BILL_BY_DAY)
+							QueryConstants.Q_GET_BILLING_COMP_BILL_BY_DAY)
 					.setParameter(1, new Timestamp(date_param.getTime()))
 					.setParameter(2, new Timestamp(date_param.getTime()))
-					.setParameter(3, tel_comp_id).getResultList();
+					.setParameter(3, billing_company_id).getResultList();
 			if (resultList != null && !resultList.isEmpty()) {
 				for (Object row : resultList) {
 					Object record[] = (Object[]) row;

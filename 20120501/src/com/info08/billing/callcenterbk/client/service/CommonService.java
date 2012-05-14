@@ -27,9 +27,9 @@ public interface CommonService extends RemoteService {
 
 	void deleteLogPersNote(Integer noteId) throws CallCenterException;
 
-	void getTelCompBillByMonth(Integer tel_comp_id, Integer ym)
+	void getBillingCompBillByMonth(Integer billing_company_id, Integer ym)
 			throws CallCenterException;
 
-	void getTelCompBillByDay(Integer tel_comp_id, Date date_param)
+	void getBillingCompBillByDay(Integer billing_company_id, Date date_param)
 			throws CallCenterException;
 }

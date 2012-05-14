@@ -25,9 +25,9 @@ public interface CommonServiceAsync {
 	void deleteLogPersNote(Integer noteId, AsyncCallback<Void> callback)
 			throws CallCenterException;
 
-	void getTelCompBillByMonth(Integer tel_comp_id, Integer ym,
+	void getBillingCompBillByMonth(Integer billing_company_id, Integer ym,
 			AsyncCallback<Void> callback) throws CallCenterException;
 
-	void getTelCompBillByDay(Integer tel_comp_id, Date date_param,
+	void getBillingCompBillByDay(Integer billing_company_id, Date date_param,
 			AsyncCallback<Void> callback) throws CallCenterException;
 }
