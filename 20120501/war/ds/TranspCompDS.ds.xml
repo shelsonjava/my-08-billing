@@ -69,7 +69,7 @@
 			</selectClause> 
 			<tableClause>transp_companies t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) and t.transport_type_id = 1000005
+				($defaultWhereClause) and t.transp_type_id = 1000005
 			</whereClause>			
     	</operationBinding>
     	
@@ -81,7 +81,7 @@
 			</selectClause> 
 			<tableClause>transp_companies t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) and t.transport_type_id = 1000003
+				($defaultWhereClause) and t.transp_type_id = 1000003
 			</whereClause>			
     	</operationBinding>
     	
@@ -93,7 +93,7 @@
 			</selectClause> 
 			<tableClause>transp_companies t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) and t.transport_type_id = 1000004
+				($defaultWhereClause) and t.transp_type_id = 1000004
 			</whereClause>			
     	</operationBinding>
     	
