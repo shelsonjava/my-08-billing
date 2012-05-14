@@ -36,7 +36,7 @@
 		<field name="checkContractor"		type="integer"		title="checkContractor"		hidden="true"/>		
 		<field name="call_count"			type="integer"		title="call_count"			hidden="true"/>
 		<field name="amount"				type="any"			title="amount"				hidden="true"/>
-		<field name="tel_comp_name_geo"		type="text"			title="tel_comp_name_geo"	hidden="true"/>
+		<field name="billing_company_name"	type="text"			title="billing_company_name"	hidden="true"/>
 		<field name="service_name_geo"		type="text"			title="service_name_geo"	hidden="true"/>
 		<field name="call_date"				type="datetime"		title="call_date"			hidden="true"/>
 		<field name="charge_date"			type="datetime"		title="charge_date"			hidden="true"/>
@@ -577,7 +577,7 @@
     	
     	<operationBinding operationId="getFullContrBillMain2" operationType="fetch">
     		<selectClause>
-    			          tc.tel_comp_name_geo,
+    			          tc.billing_company_name,
 					      mo.org_name as orgName,
 					      md.main_detail_geo as orgDepName,
 					      s.service_name_geo, 
@@ -589,12 +589,12 @@
 			<tableClause> ccare.contractor_bill_items bi, ccare.contracts c, ccare.main_orgs mo, ccare.main_details md, ccare.tel_comps tc, ccare.services s </tableClause>
 			<whereClause><![CDATA[
 				 bi.contractor_id = c.contract_id and c.main_id = mo.main_id and c.main_detail_id = md.main_detail_id(+) and 
-				 bi.tel_comp_id = tc.tel_comp_id and  bi.service_id = s.service_id  and bi.ym = $criteria.ym
+				 bi.billing_company_id = tc.billing_company_id and  bi.service_id = s.service_id  and bi.ym = $criteria.ym
 				 #if($criteria.contract_id) and c.contract_id = $criteria.contract_id #end				 
 				 #if($criteria.is_budget) and c.is_budget = $criteria.is_budget #end
 				]]>  
 			</whereClause> 
-			<orderClause>tc.tel_comp_name_geo, mo.org_name, md.main_detail_geo, bi.phone, s.service_name_geo, bi.call_date, bi.charge_date </orderClause>
+			<orderClause>tc.billing_company_name, mo.org_name, md.main_detail_geo, bi.phone, s.service_name_geo, bi.call_date, bi.charge_date </orderClause>
     	</operationBinding>
     	
     </operationBindings>	

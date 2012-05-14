@@ -5,37 +5,37 @@
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="ind_id"				type="integer"		title="ind_id"				hidden="true" primaryKey="true" />
-		<field name="cr"					type="integer"		title="cr"					hidden="true"/>
-		<field name="count_type"			type="integer"		title="count_type"			hidden="true"/>
-		<field name="count_type_descr"		type="text"			title="count_type_descr"/>
-		<field name="cr_descr"				type="text"			title="cr_descr"/>
-		<field name="st_ind"				type="integer"		title="st_ind"/>
-		<field name="end_ind"				type="integer"		title="end_ind"/>
+		<field name="bill_index_id"					type="integer"		title="bill_index_id"				hidden="true" primaryKey="true" />
+		<field name="applied_wholly"				type="integer"		title="cr"					hidden="true"/>
+		<field name="calcul_type"					type="integer"		title="calcul_type"			hidden="true"/>
+		<field name="calcul_type_descr"				type="text"			title="calcul_type_descr"/>
+		<field name="applied_wholly_descr"			type="text"			title="cr_descr"/>
+		<field name="bill_index_start"				type="integer"		title="bill_index_start"/>
+		<field name="bill_index_end"				type="integer"		title="end_ind"/>
 		<field name="billing_company_id"			type="integer"		title="billing_company_id"			hidden="true"/>
-		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
+		<field name="loggedUserName"				type="text"			title="loggedUserName"		hidden="true"/>
 	</fields>
 
 	<operationBindings>		
 
-    	<operationBinding operationId="searchAllTelCompInds" operationType="fetch">
+    	<operationBinding operationId="searchAllBillingCompInds" operationType="fetch">
     		<selectClause>   			
-    			  	t.ind_id,
-					t.cr,
-					t.end_ind,
-					t.st_ind,
+    			  	t.bill_index_id,
+					t.applied_wholly,
+					t.bill_index_end,
+					t.bill_index_start,
 					t.billing_company_id,
-					decode(t.cr, 0, 'ნაწილი', 'მთლიანი') as cr_descr,
-					t.count_type,
-					decode(t.count_type, 1, 'ზარებით', 'დარიცხვებით') as count_type_descr
+					decode(t.applied_wholly, 0, 'ნაწილი', 'მთლიანი') as applied_wholly_descr,
+					t.calcul_type,
+					decode(t.calcul_type, 1, 'ზარებით', 'დარიცხვებით') as calcul_type_descr
 			</selectClause> 
-			<tableClause>ccare.tel_comps_ind t</tableClause>
+			<tableClause>ccare.BILLING_COMPANIES_IND t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				 #if($criteria.billing_company_id) and t.billing_company_id = $criteria.billing_company_id #end				 
 				]]>  
 			</whereClause> 
-			<orderClause>t.ind_id</orderClause>
+			<orderClause>t.bill_index_id</orderClause>
     	</operationBinding>
     	
     </operationBindings>	
