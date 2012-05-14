@@ -1,0 +1,42 @@
+<DataSource
+	ID="BillingCompsIndDS"
+	serverType="sql"
+	tableName="ccare.BILLING_COMPANIES_IND"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="ind_id"				type="integer"		title="ind_id"				hidden="true" primaryKey="true" />
+		<field name="cr"					type="integer"		title="cr"					hidden="true"/>
+		<field name="count_type"			type="integer"		title="count_type"			hidden="true"/>
+		<field name="count_type_descr"		type="text"			title="count_type_descr"/>
+		<field name="cr_descr"				type="text"			title="cr_descr"/>
+		<field name="st_ind"				type="integer"		title="st_ind"/>
+		<field name="end_ind"				type="integer"		title="end_ind"/>
+		<field name="billing_company_id"			type="integer"		title="billing_company_id"			hidden="true"/>
+		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
+	</fields>
+
+	<operationBindings>		
+
+    	<operationBinding operationId="searchAllTelCompInds" operationType="fetch">
+    		<selectClause>   			
+    			  	t.ind_id,
+					t.cr,
+					t.end_ind,
+					t.st_ind,
+					t.billing_company_id,
+					decode(t.cr, 0, 'ნაწილი', 'მთლიანი') as cr_descr,
+					t.count_type,
+					decode(t.count_type, 1, 'ზარებით', 'დარიცხვებით') as count_type_descr
+			</selectClause> 
+			<tableClause>ccare.tel_comps_ind t</tableClause>
+			<whereClause><![CDATA[
+				 1 = 1
+				 #if($criteria.billing_company_id) and t.billing_company_id = $criteria.billing_company_id #end				 
+				]]>  
+			</whereClause> 
+			<orderClause>t.ind_id</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
