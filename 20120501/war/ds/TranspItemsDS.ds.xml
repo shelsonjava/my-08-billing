@@ -6,67 +6,39 @@
 	dropExtraFields = "false">
 	
 	<fields>
-		<field name="transport_detail_id"		type="integer"		title="ID"							hidden="true" primaryKey="true" />
-		<field name="deleted"					type="integer"		title="Deleted" 					hidden="true"/>
-		<field name="transport_place_geo_out"	type="text"			title="Transport Place Geo Out"/>
-		<field name="in_time"					type="datetime"		title="In Time"/>
-		<field name="out_time"					type="datetime"		title="Out Time"/>
-		<field name="rec_date"					type="datetime"		title="Record Date"/>
-		<field name="upd_user"					type="text"			title="Update User"/>
-		<field name="stay_time"					type="datetime"		title="Stay Time"/>
-		<field name="transport_detail_order"	type="integer"		title="Transport Detail Order"/>
-		<field name="transport_id"				type="integer"		title="Transport Id"/>
-		<field name="transport_place_id"		type="integer"		title="Transport Plane Id"/>
-		<field name="upd_user"					type="text"			title="Update User"/>
-		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true" />
-		<field name="out_transport_place_id"	type="integer"		title="out_transport_place_id" 		hidden="true" />
-		<field name="in_transport_place_id"		type="integer"		title="in_transport_place_id" 		hidden="true" />
+		<field name="transp_item_id"			type="integer"		title="transp_item_id"				hidden="true" primaryKey="true" />
+		<field name="depart_station"			type="text"			title="depart_station"/>
+		<field name="arrival_time"				type="datetime"		title="arrival_time"/>
+		<field name="departure_time"			type="datetime"		title="departure_time"/>
+		<field name="delay_time"				type="datetime"		title="delay_time"/>
+		<field name="item_order"				type="integer"		title="item_order"/>
+		<field name="transp_schedule_id"		type="integer"		title="transp_schedule_id"/>
+		<field name="transp_station_id"			type="integer"		title="transp_station_id"/>
+		<field name="loggedUserName"			type="text"			title="loggedUserName" 				hidden="true" />
+		<field name="departure_transp_stat_id"	type="integer"		title="departure_transp_stat_id" 	hidden="true" />
+		<field name="arrival_transp_stat_id"	type="integer"		title="arrival_transp_stat_id" 		hidden="true" />
 	</fields>
-
 	<operationBindings>		
-
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
-
-		<!-- Add TransportDetail -->
-		<operationBinding operationType="add" operationId="addTransportDetail" serverMethod="addTransportDetail">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
-        </operationBinding>
-        
-		<!-- TransportDetail Update -->
-		<operationBinding operationType="update" operationId="updateTransportDetail" serverMethod="updateTransportDetail">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
-        </operationBinding>
-        
-        <!-- TransportDetail Status Update -->
-		<operationBinding operationType="update" operationId="updateTransportDetailStatus" serverMethod="updateTransportDetailStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
-        </operationBinding>
-	
     	<operationBinding operationId="searchTransportDetails" operationType="fetch">
     		<selectClause>   			
-    			t.transport_detail_id,
-				t.deleted,
-				t.in_time,
-				t.out_time,
-				t.rec_date,
-				t.rec_user,
-				t.stay_time,
-				t.transport_detail_order,
-				t.transport_id,
-				t.transport_place_id,
-				t.upd_user,
-				o.transport_place_geo_descr as transport_place_geo_out,
-				t.out_transport_place_id,
-				t.in_transport_place_id
+    			t.transp_item_id,
+				t.arrival_time,
+				t.departure_time,
+				t.delay_time,
+				t.item_order,
+				t.transp_schedule_id,
+				t.transp_station_id,
+				o.name_descr as depart_station,
+				t.departure_transp_stat_id,
+				t.arrival_transp_stat_id
 			</selectClause> 
-			<tableClause>transport_details t,transport_places o</tableClause>
+			<tableClause>transp_items t, transp_stations o</tableClause>
 			<whereClause><![CDATA[				
-					t.transport_place_id = o.transport_place_id
-					#if($criteria.transport_id) and t.transport_id = $criteria.transport_id #end
-					#if($criteria.deleted) and t.deleted = $criteria.deleted #end
+					t.transp_station_id = o.transp_stat_id
+					#if($criteria.transp_schedule_id) and t.transp_schedule_id = $criteria.transp_schedule_id #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.transport_detail_order</orderClause>
+			<orderClause>t.item_order</orderClause>
     	</operationBinding>
     </operationBindings>	
 </DataSource>

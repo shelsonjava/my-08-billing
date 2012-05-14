@@ -91,9 +91,10 @@
 					ts.transp_comp_id = tc.transp_comp_id(+) and
 					ts.transp_res_id = tp.transp_res_id(+)  
 					#if($criteria.transp_type_id) and ts.transp_type_id = $criteria.transp_type_id #end
-					#if($criteria.out_transport_place_id) and ts.out_transport_place_id = $criteria.out_transport_place_id #end
-					#if($criteria.in_transport_place_id) and ts.in_transport_place_id = $criteria.in_transport_place_id #end
+					#if($criteria.depart_transp_stat_id) and ts.depart_transp_stat_id = $criteria.depart_transp_stat_id #end
+					#if($criteria.arrival_transp_stat_id) and ts.arrival_transp_stat_id = $criteria.arrival_transp_stat_id #end
 					#if($criteria.transp_comp_id) and ts.transp_comp_id = $criteria.transp_comp_id #end
+					#if($criteria.transp_res_id) and ts.transp_res_id = $criteria.transp_res_id #end
 					#if($criteria.remark) and ts.remark like '%'||($criteria.remark)||'%' #end					
 					#if($criteria.transp_model_descr) and ts.transp_model_descr like '%'||($criteria.transp_model_descr)||'%' #end
 					#if($criteria.depart_city) and oc.city_name_geo like '%'||($criteria.depart_city)||'%' #end
@@ -113,18 +114,18 @@
     	
     	<operationBinding operationId="searchAllTransportsInner" operationType="fetch">
     		<selectClause>   			
-    			t.transport_id,
-    			t.out_time as c_out_time,
-    			t.in_time as c_in_time,
-    			t.outCity,
-    			t.outPlace
+    			t.transp_schedule_id,
+    			t.out_time as formated_depart_time,
+    			t.in_time as formated_arrival_time,
+    			t.outCity as depart_city,
+    			t.outPlace as arrival_city
 			</selectClause> 
 			<tableClause>search_transp_stops t</tableClause>
 			<whereClause><![CDATA[
 					1 = 1
-					#if($criteria.transport_id) and t.transport_id = $criteria.transport_id #end
+					#if($criteria.transp_schedule_id) and t.transp_schedule_id = $criteria.transp_schedule_id #end
 					#if($criteria.outCity) and t.outCity like '%'||($criteria.outCity)||'%' #end
-					#if($criteria.outPlace) and t.outPlace like '%'||($criteria.outPlace)||'%' #end
+					#if($criteria.departureplace) and t.departureplace like '%'||($criteria.departureplace)||'%' #end
 				]]>  
 			</whereClause> 
     	</operationBinding>

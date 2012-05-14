@@ -60,7 +60,7 @@
     			t.transp_type_id,
 				t.name_descr 				
 			</selectClause> 
-			<tableClause>transp_stations t</tableClause>
+			<tableClause>view_transp_comp_stat t</tableClause>
 			<whereClause><![CDATA[
 				($defaultWhereClause)
 				]]>  
@@ -74,7 +74,7 @@
     			t.transp_type_id,
 				t.name_descr 				
 			</selectClause> 
-			<tableClause>transp_stations t</tableClause>
+			<tableClause>view_transp_comp_stat t</tableClause>
 			<whereClause><![CDATA[
 				($defaultWhereClause) and t.transp_type_id = 1000005
 				]]>  
@@ -87,7 +87,7 @@
     			t.transp_type_id,
 				t.name_descr 				
 			</selectClause> 
-			<tableClause>transp_stations t</tableClause>
+			<tableClause>view_transp_comp_stat t</tableClause>
 			<whereClause><![CDATA[
 				($defaultWhereClause) and t.transp_type_id = 1000003
 				]]>  
@@ -100,7 +100,7 @@
     			t.transp_type_id,
 				t.name_descr 				
 			</selectClause> 
-			<tableClause>transp_stations t</tableClause>
+			<tableClause>view_transp_comp_stat t</tableClause>
 			<whereClause><![CDATA[
 				($defaultWhereClause) and t.transp_type_id = 1000004
 				]]>  
@@ -113,7 +113,7 @@
     			t.transp_type_id,
 				t.name_descr 				
 			</selectClause> 
-			<tableClause>transp_stations t</tableClause>
+			<tableClause>view_transp_comp_stat t</tableClause>
 			<whereClause><![CDATA[
 				($defaultWhereClause) and t.transp_type_id = 1000002
 				]]>  
@@ -126,7 +126,7 @@
     			t.transp_type_id,
 				t.name_descr 				
 			</selectClause> 
-			<tableClause>transp_stations t</tableClause>
+			<tableClause>view_transp_comp_stat t</tableClause>
 			<whereClause><![CDATA[
 				($defaultWhereClause) and t.transp_type_id = 1000001
 				]]>  

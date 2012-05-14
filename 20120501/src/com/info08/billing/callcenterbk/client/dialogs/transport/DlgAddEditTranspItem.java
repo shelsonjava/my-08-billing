@@ -23,14 +23,14 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditTransportDetail extends Window {
+public class DlgAddEditTranspItem extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private ComboBoxItem transportPlaceOutItem;
-	private TimeItem outTimeItem;
-	private TimeItem inTimeItem;
+	private ComboBoxItem departTranspStatItem;
+	private TimeItem departTimeItem;
+	private TimeItem arrivalTimeItem;
 	private SpinnerItem orderItem;
 
 	private ListGridRecord editRecord;
@@ -38,7 +38,7 @@ public class DlgAddEditTransportDetail extends Window {
 
 	DateTimeFormat dateFormatter = DateTimeFormat.getFormat("HH:mm");
 
-	public DlgAddEditTransportDetail(ListGrid listGrid, ListGridRecord pRecord,
+	public DlgAddEditTranspItem(ListGrid listGrid, ListGridRecord pRecord,
 			Integer transport_type_id) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
@@ -69,91 +69,85 @@ public class DlgAddEditTransportDetail extends Window {
 		dynamicForm.setNumCols(2);
 		hLayout.addMember(dynamicForm);
 
-		transportPlaceOutItem = new ComboBoxItem();
-		transportPlaceOutItem.setTitle("გასვლის პუნქტი");
-		transportPlaceOutItem.setWidth(250);
-		transportPlaceOutItem.setName("transport_place_geo_out");
-		transportPlaceOutItem.setFetchMissingValues(true);
-		transportPlaceOutItem.setFilterLocally(false);
-		transportPlaceOutItem.setAddUnknownValues(false);
+		departTranspStatItem = new ComboBoxItem();
+		departTranspStatItem.setTitle("გასვლის პუნქტი");
+		departTranspStatItem.setWidth(250);
+		departTranspStatItem.setName("departTranspStatItem");
+		departTranspStatItem.setFetchMissingValues(true);
+		departTranspStatItem.setFilterLocally(false);
+		departTranspStatItem.setAddUnknownValues(false);
 
-		DataSource transpPlaceDS = DataSource.get("TranspPlaceDS");
+		DataSource transpStatDS = DataSource.get("TranspStatDS");
 
 		switch (transport_type_id) {
 		case 1000005: // Aviation
-			transportPlaceOutItem
-					.setOptionOperationId("searchAllTransportPlacesForCBAv");
+			departTranspStatItem.setOptionOperationId("searchAllTransportPlacesForCBAv");
 			break;
 		case 1000003: // Railway
-			transportPlaceOutItem
-					.setOptionOperationId("searchAllTransportPlacesForCBRk");
+			departTranspStatItem.setOptionOperationId("searchAllTransportPlacesForCBRk");
 			break;
 		case 1000004: // Autobus
-			transportPlaceOutItem
-					.setOptionOperationId("searchAllTransportPlacesForCBAvt");
+			departTranspStatItem.setOptionOperationId("searchAllTransportPlacesForCBAvt");
 			break;
 		case 1000002: // Autobus1
-			transportPlaceOutItem
-					.setOptionOperationId("searchAllTransportPlacesForCBAvt1");
+			departTranspStatItem.setOptionOperationId("searchAllTransportPlacesForCBAvt1");
 			break;
 		case 1000001: // Tax
-			transportPlaceOutItem
-					.setOptionOperationId("searchAllTransportPlacesForCBMarsh");
+			departTranspStatItem.setOptionOperationId("searchAllTransportPlacesForCBMarsh");
 			break;
 		default:
-			transportPlaceOutItem
-					.setOptionOperationId("searchAllTransportPlacesForCB");
+			departTranspStatItem.setOptionOperationId("searchAllTransportPlacesForCB");
 			break;
 		}
 
-		transportPlaceOutItem.setOptionDataSource(transpPlaceDS);
-		transportPlaceOutItem.setValueField("transport_place_id");
-		transportPlaceOutItem.setDisplayField("transport_place_geo_descr");
+		departTranspStatItem.setOptionDataSource(transpStatDS);
+		departTranspStatItem.setValueField("transp_stat_id");
+		departTranspStatItem.setDisplayField("name_descr");
 
-		transportPlaceOutItem.setOptionCriteria(new Criteria());
-		transportPlaceOutItem.setAutoFetchData(false);
+		departTranspStatItem.setOptionCriteria(new Criteria());
+		departTranspStatItem.setAutoFetchData(false);
 
-		transportPlaceOutItem.addKeyPressHandler(new KeyPressHandler() {
+		departTranspStatItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = transportPlaceOutItem.getOptionCriteria();
+				Criteria criteria = departTranspStatItem.getOptionCriteria();
 				if (criteria != null) {
 					String oldAttr = criteria
-							.getAttribute("transport_place_id");
+							.getAttribute("transp_stat_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("transport_place_id", nullO);
+						criteria.setAttribute("transp_stat_id", nullO);
 					}
 				}
 			}
 		});
 
-		outTimeItem = new TimeItem("timeItem", "Time");
-		outTimeItem.setTitle("გასვლის დრო");
-		outTimeItem.setWidth(250);
-		outTimeItem.setName("out_time");
-		outTimeItem.setHint("");
-		outTimeItem.setMask("00:00");
-		outTimeItem.setTimeFormatter(TimeDisplayFormat.TOSHORT24HOURTIME);
-		outTimeItem.setUseMask(true);
+		departTimeItem = new TimeItem("departTimeItem", "Time");
+		departTimeItem.setTitle("გასვლის დრო");
+		departTimeItem.setWidth(250);
+		departTimeItem.setName("departTimeItem");
+		departTimeItem.setHint("");
+		departTimeItem.setMask("00:00");
+		departTimeItem.setTimeFormatter(TimeDisplayFormat.TOSHORT24HOURTIME);
+		departTimeItem.setUseMask(true);
 
-		inTimeItem = new TimeItem("timeItem", "Time");
-		inTimeItem.setTitle("ჩასვლის დრო");
-		inTimeItem.setWidth(250);
-		inTimeItem.setName("in_time");
-		inTimeItem.setHint("");
-		inTimeItem.setTimeFormatter(TimeDisplayFormat.TOSHORT24HOURTIME);
-		inTimeItem.setUseMask(true);
-		inTimeItem.setMask("00:00");
+		arrivalTimeItem = new TimeItem("arrivalTimeItem", "Time");
+		arrivalTimeItem.setTitle("ჩასვლის დრო");
+		arrivalTimeItem.setWidth(250);
+		arrivalTimeItem.setName("arrivalTimeItem");
+		arrivalTimeItem.setHint("");
+		arrivalTimeItem.setTimeFormatter(TimeDisplayFormat.TOSHORT24HOURTIME);
+		arrivalTimeItem.setUseMask(true);
+		arrivalTimeItem.setMask("00:00");
 
 		orderItem = new SpinnerItem();
 		orderItem.setTitle("თანმიმდევრობა");
 		orderItem.setWidth(250);
-		orderItem.setName("transport_detail_order");
+		orderItem.setName("orderItem");
 		orderItem.setMin(0);
 		orderItem.setMax(1000);
 
-		dynamicForm.setFields(transportPlaceOutItem, outTimeItem, inTimeItem,
+		dynamicForm.setFields(departTranspStatItem, departTimeItem, arrivalTimeItem,
 				orderItem);
 
 		HLayout hLayoutItem = new HLayout(5);
@@ -194,26 +188,24 @@ public class DlgAddEditTransportDetail extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			Integer transport_place_id = editRecord
-					.getAttributeAsInt("transport_place_id");
-			if (transport_place_id != null) {
-				transportPlaceOutItem.setValue(transport_place_id);
+			Integer transp_station_id = editRecord.getAttributeAsInt("transp_station_id");
+			if (transp_station_id != null) {
+				departTranspStatItem.setValue(transp_station_id);
 			}
-			Date out_time = editRecord.getAttributeAsDate("out_time");
-			if (out_time != null) {
-				String out_time_str = dateFormatter.format(out_time);
-				outTimeItem.setValue(out_time_str);
+			Date departure_time = editRecord.getAttributeAsDate("departure_time");
+			if (departure_time != null) {
+				String departure_time_str = dateFormatter.format(departure_time);
+				departTimeItem.setValue(departure_time_str);
 			}
 
-			Date in_time = editRecord.getAttributeAsDate("in_time");
-			if (in_time != null) {
-				String in_time_str = dateFormatter.format(in_time);
-				inTimeItem.setValue(in_time_str);
+			Date arrival_time = editRecord.getAttributeAsDate("arrival_time");
+			if (arrival_time != null) {
+				String arrival_time_str = dateFormatter.format(arrival_time);
+				arrivalTimeItem.setValue(arrival_time_str);
 			}
-			Integer transport_detail_order = editRecord
-					.getAttributeAsInt("transport_detail_order");
-			if (transport_detail_order != null) {
-				orderItem.setValue(transport_detail_order);
+			Integer item_order = editRecord.getAttributeAsInt("item_order");
+			if (item_order != null) {
+				orderItem.setValue(item_order);
 			}
 
 		} catch (Exception e) {
@@ -223,9 +215,8 @@ public class DlgAddEditTransportDetail extends Window {
 
 	private void save() {
 		try {
-			String transport_place_id = transportPlaceOutItem
-					.getValueAsString();
-			if (transport_place_id == null) {
+			String transp_station_id = departTranspStatItem.getValueAsString();
+			if (transp_station_id == null) {
 				SC.say("გთხოვთ მიუთითოთ გასვლის პუნქტი !");
 				return;
 			}
@@ -234,42 +225,35 @@ public class DlgAddEditTransportDetail extends Window {
 				SC.say("გთხოვთ მიუთითოთ თანმიმდევრობა !");
 				return;
 			}
-			Integer transport_detail_order = null;
+			Integer item_order = null;
 			try {
-				transport_detail_order = new Integer(orderStr);
+				item_order = new Integer(orderStr);
 			} catch (Exception e) {
 				SC.say("თანმიმდევრობა ველი არის ციფრი !");
 				return;
 			}
-			Object oin_time = inTimeItem.getValue();
-			Object oout_time = outTimeItem.getValue();
+			Object o_arrival_time = arrivalTimeItem.getValue();
+			Object o_departure_time = departTimeItem.getValue();
 
 			ListGridRecord listGridRecord = new ListGridRecord();
-			listGridRecord.setAttribute("transport_place_id", new Integer(
-					transport_place_id));
-			listGridRecord.setAttribute("transport_detail_order",
-					transport_detail_order);
-			if (oin_time != null) {
-				Date in_time = (Date) oin_time;
-				listGridRecord.setAttribute("in_time", in_time);
+			listGridRecord.setAttribute("transp_station_id", new Integer(transp_station_id));
+			listGridRecord.setAttribute("item_order",item_order);
+			if (o_arrival_time != null) {
+				Date arrival_time = (Date) o_arrival_time;
+				listGridRecord.setAttribute("arrival_time", arrival_time);
 			}
-			if (oout_time != null) {
-				Date out_time = (Date) oout_time;
-				listGridRecord.setAttribute("out_time", out_time);
+			if (o_departure_time != null) {
+				Date departure_time = (Date) o_departure_time;
+				listGridRecord.setAttribute("departure_time", departure_time);
 			}
 
-			String displayValue = transportPlaceOutItem.getDisplayValue();
-			listGridRecord
-					.setAttribute("transport_place_geo_out", displayValue);
+			String displayValue = departTranspStatItem.getDisplayValue();
+			listGridRecord.setAttribute("depart_station", displayValue);
 
 			if (editRecord == null) {
-				listGridRecord.setAttribute("deleted", 0);
 				listGrid.addData(listGridRecord);
 			} else {
-				listGridRecord.setAttribute("transport_detail_id",
-						editRecord.getAttributeAsInt("transport_detail_id"));
-				listGridRecord.setAttribute("deleted",
-						editRecord.getAttributeAsInt("deleted"));
+				listGridRecord.setAttribute("transp_item_id", editRecord.getAttributeAsInt("transp_item_id"));
 				listGrid.updateData(listGridRecord);
 			}
 			destroy();

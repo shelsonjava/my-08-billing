@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.content.transport;
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.info08.billing.callcenterbk.client.dialogs.transport.DlgAddEditTransport;
+import com.info08.billing.callcenterbk.client.dialogs.transport.DlgAddEditTranspSchedule;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -38,7 +38,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabTransport extends Tab {
+public class TabTranspSchedule extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
@@ -67,7 +67,7 @@ public class TabTransport extends Tab {
 
 	private Integer transp_type_id;
 
-	public TabTransport(final Integer transp_type_id) {
+	public TabTranspSchedule(final Integer transp_type_id) {
 		try {
 			this.transp_type_id = transp_type_id;
 			setCanClose(true);
@@ -438,7 +438,6 @@ public class TabTransport extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					transpTypeItem.clearValue();
 					remarkItem.clearValue();
 					depTranspStationItem.clearValue();
 					arrTranspStationItem.clearValue();
@@ -450,7 +449,7 @@ public class TabTransport extends Tab {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditTransport dlgAddEditTransport = new DlgAddEditTransport(
+					DlgAddEditTranspSchedule dlgAddEditTransport = new DlgAddEditTranspSchedule(
 							listGrid, null, transp_type_id);
 					dlgAddEditTransport.show();
 				}
@@ -465,7 +464,7 @@ public class TabTransport extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditTransport dlgAddEditTransport = new DlgAddEditTransport(
+					DlgAddEditTranspSchedule dlgAddEditTransport = new DlgAddEditTranspSchedule(
 							listGrid, listGridRecord, transp_type_id);
 					dlgAddEditTransport.show();
 				}
@@ -520,11 +519,38 @@ public class TabTransport extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditTransport dlgAddEditTransport = new DlgAddEditTransport(
+					DlgAddEditTranspSchedule dlgAddEditTransport = new DlgAddEditTranspSchedule(
 							listGrid, listGridRecord, transp_type_id);
 					dlgAddEditTransport.show();
 				}
 			});
+			
+			transpTypeItem.addKeyPressHandler(new KeyPressHandler() {				
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if(event.getKeyName().equals("Enter")){
+						search();
+					}
+				}
+			});
+			
+			remarkItem.addKeyPressHandler(new KeyPressHandler() {				
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if(event.getKeyName().equals("Enter")){
+						search();
+					}
+				}
+			});
+			
+			transpModelDescrItem.addKeyPressHandler(new KeyPressHandler() {				
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if(event.getKeyName().equals("Enter")){
+						search();
+					}
+				}
+			});			
 
 			tabSet.setTabs(tabDetViewer);
 			mainLayout.addMember(tabSet);
@@ -547,18 +573,16 @@ public class TabTransport extends Tab {
 
 	private void search() {
 		try {
-			String depart_transp_stat_id = depTranspStationItem
-					.getValueAsString();
-			String arrival_transp_stat_id = arrTranspStationItem
-					.getValueAsString();
-			String transp_company_id = transpCompanyItem.getValueAsString();
+			String depart_transp_stat_id = depTranspStationItem.getValueAsString();
+			String arrival_transp_stat_id = arrTranspStationItem.getValueAsString();
+			String transp_comp_id = transpCompanyItem.getValueAsString();
 			String remark = remarkItem.getValueAsString();
 			String transp_model_descr = transpModelDescrItem.getValueAsString();
+			String transp_res_id = transpResourceItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
 			if (transp_type_id != null) {
-				criteria.setAttribute("transp_type_id", new Integer(
-						transp_type_id));
+				criteria.setAttribute("transp_type_id", new Integer(transp_type_id));
 			}
 			if (depart_transp_stat_id != null) {
 				criteria.setAttribute("depart_transp_stat_id", new Integer(
@@ -568,16 +592,17 @@ public class TabTransport extends Tab {
 				criteria.setAttribute("arrival_transp_stat_id", new Integer(
 						arrival_transp_stat_id));
 			}
-			if (transp_company_id != null) {
-				criteria.setAttribute("transp_company_id", new Integer(
-						transp_company_id));
+			if (transp_comp_id != null) {
+				criteria.setAttribute("transp_comp_id", new Integer(transp_comp_id));
+			}
+			if (transp_res_id != null) {
+				criteria.setAttribute("transp_res_id", new Integer(transp_res_id));
 			}
 
 			if (remark != null && !remark.trim().equals("")) {
 				criteria.setAttribute("remark", remark);
 			}
-			if (transp_model_descr != null
-					&& !transp_model_descr.trim().equals("")) {
+			if (transp_model_descr != null&& !transp_model_descr.trim().equals("")) {
 				criteria.setAttribute("transp_model_descr", transp_model_descr);
 			}
 

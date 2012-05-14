@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
-import com.info08.billing.callcenterbk.client.content.transport.TabTransport;
+import com.info08.billing.callcenterbk.client.content.transport.TabTranspSchedule;
 import com.info08.billing.callcenterbk.client.content.transport.TabTransportCityBusStreet;
 import com.info08.billing.callcenterbk.client.content.transport.TabTransportCityPublTransport;
 import com.info08.billing.callcenterbk.client.content.transport.TabTransportCompany;
@@ -151,13 +151,13 @@ public class TransportStackSelection extends SectionStackSection {
 			TabTransportCityBusStreet tabTransportCityBusStreet = new TabTransportCityBusStreet();
 			body.addTab(tabTransportCityBusStreet);
 		} else if (menuId.equals("105")) {
-			TabTransport transport = new TabTransport(1000005);
+			TabTranspSchedule transport = new TabTranspSchedule(1000005);
 			body.addTab(transport);
 		} else if (menuId.equals("106")) {
-			TabTransport transport = new TabTransport(1000003);
+			TabTranspSchedule transport = new TabTranspSchedule(1000003);
 			body.addTab(transport);
 		} else if (menuId.equals("107")) {
-			TabTransport transport = new TabTransport(1000004);
+			TabTranspSchedule transport = new TabTranspSchedule(1000004);
 			body.addTab(transport);
 		}
 	}
