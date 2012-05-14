@@ -1,0 +1,41 @@
+<DataSource
+	ID="StatisticsByBillingCompDS"
+	serverType="sql"
+	tableName="ccare.STATISTIC_BY_BILLING_COMPANY"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+
+	<fields>
+		<field name="id"						type="integer"		title="id"					hidden="true" primaryKey="true" />
+		<field name="ym"						type="integer"		title="ym"					hidden="true"/>
+		<field name="stat_date"					type="date"			title="stat_date"/>
+		<field name="calls_cnt"					type="integer"		title="calls_cnt"/>		
+		<field name="calls_amm"					type="integer"		title="calls_amm"/>
+		<field name="billing_company_id"		type="integer"		title="billing_company_id"			hidden="true"/>
+		<field name="billing_company_name"		type="text"			title="billing_company_name"/>
+		<field name="date_str"					type="text"			title="date_str"/>
+	</fields>
+
+	<operationBindings>		
+
+    	<operationBinding operationId="searchStatsByBillingComp" operationType="fetch">
+    		<selectClause>   			
+    			  	t.ym,
+					sum(t.calls_cnt) as calls_cnt,
+					sum(t.calls_amm) as calls_amm,
+					tc.billing_company_name,
+					tc.billing_company_id
+			</selectClause> 
+			<tableClause>ccare.STATISTIC_BY_BILLING_COMPANY t, ccare.BILLING_COMPANIES tc</tableClause>
+			<whereClause><![CDATA[
+				 t.billing_company_id = tc.billing_company_id
+				 #if($criteria.ym) and t.ym = $criteria.ym #end			 				
+				]]>  
+			</whereClause> 
+			<groupClause>tc.billing_company_id, t.ym, tc.billing_company_name</groupClause>
+			<orderClause>tc.billing_company_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    </operationBindings>	
+</DataSource>
