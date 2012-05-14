@@ -2,7 +2,9 @@ package com.info08.billing.callcenterbk.server.impl.dmi;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 
@@ -16,6 +18,7 @@ import com.info08.billing.callcenterbk.shared.entity.StreetEnt;
 import com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirection;
 import com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirectionStreet;
 import com.info08.billing.callcenterbk.shared.entity.transport.TranspCompany;
+import com.info08.billing.callcenterbk.shared.entity.transport.TranspItems;
 import com.info08.billing.callcenterbk.shared.entity.transport.TranspSchedule;
 import com.info08.billing.callcenterbk.shared.entity.transport.TranspStation;
 import com.info08.billing.callcenterbk.shared.entity.transport.TranspType;
@@ -987,42 +990,6 @@ public class TransportDMI implements QueryConstants {
 			oracleManager.remove(busRouteStreet);
 			oracleManager.flush();
 
-			// busRouteStreet = oracleManager.find(
-			// PublicTranspDirectionStreet.class, route_street_id);
-			//
-			// busRouteStreet.setLoggedUserName(loggedUserName);
-			// Long streetId = busRouteStreet.getStreet_id();
-			// if (streetId != null) {
-			// StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
-			// streetId);
-			// if (streetEnt != null) {
-			// busRouteStreet.setStreet_name(streetEnt
-			// .getStreet_name_geo());
-			// }
-			// }
-			// Long route_id = busRouteStreet.getDir_id();
-			// if (route_id != null) {
-			// PublicTranspDirection busRoute = oracleManager.find(
-			// PublicTranspDirection.class, route_id);
-			// if (busRoute != null) {
-			// busRouteStreet.setDescr(busRoute.getDir_num());
-			// }
-			// }
-			// Long route_dir = busRouteStreet.getDir();
-			// if (route_dir != null) {
-			// switch (route_dir.intValue()) {
-			// case 1:
-			// busRouteStreet.setDir_descr("წინ");
-			// break;
-			// case 2:
-			// busRouteStreet.setDir_descr("უკან");
-			// break;
-			// default:
-			// busRouteStreet.setDir_descr("უცნობი");
-			// break;
-			// }
-			// }
-			//
 			EMF.commitTransaction(transaction);
 			log += ". Remove Finished SuccessFully. ";
 			logger.info(log);
@@ -1052,7 +1019,7 @@ public class TransportDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public TranspSchedule addTransport(DSRequest dsRequest) throws Exception {
+	public TranspSchedule addTranspSchedule(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -1061,130 +1028,103 @@ public class TransportDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			// sysdate
-//			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-//			String loggedUserName = dsRequest.getFieldValue("loggedUserName").toString();
-//			Long transport_type_id = dsRequest.getFieldValue("transp_type_id") == null ? null : new Long(dsRequest.getFieldValue("transp_type_id").toString());
-//			Long out_transport_place_id = dsRequest.getFieldValue("out_transport_place_id") == null ? null: new Long(dsRequest.getFieldValue("out_transport_place_id").toString());
-//			Long in_transport_place_id = dsRequest.getFieldValue("in_transport_place_id") == null ? null: new Long(dsRequest.getFieldValue("in_transport_place_id").toString());
-//			Date out_time = dsRequest.getFieldValue("out_time") == null ? null: (Date) dsRequest.getFieldValue("out_time");
-//			Date in_time = dsRequest.getFieldValue("in_time") == null ? null: (Date) dsRequest.getFieldValue("in_time");
-//			String note_geo = dsRequest.getFieldValue("note_geo") == null ? null: dsRequest.getFieldValue("note_geo").toString();
-//			Long deleted = dsRequest.getFieldValue("deleted") == null ? null: new Long(dsRequest.getFieldValue("deleted").toString());
-//			String transport_price_geo = dsRequest.getFieldValue("transport_price_geo") == null ? null: dsRequest.getFieldValue("transport_price_geo").toString();
-//			Long transport_company_id = dsRequest.getFieldValue("transport_company_id") == null ? null: new Long(dsRequest.getFieldValue("transport_company_id").toString());
-//			Long transport_plane_id = dsRequest.getFieldValue("transport_plane_id") == null ? null: new Long(dsRequest.getFieldValue("transport_plane_id").toString());
-//			String trip_criteria = dsRequest.getFieldValue("trip_criteria") == null ? null: dsRequest.getFieldValue("trip_criteria").toString();
-//			Long note_crit = dsRequest.getFieldValue("note_crit") == null ? null: new Long(dsRequest.getFieldValue("note_crit").toString());
-//			Long days = dsRequest.getFieldValue("days") == null ? null: new Long(dsRequest.getFieldValue("days").toString());
-//
-//			TranspSchedule transport = new TranspSchedule();
-//			transport.setDays(new Long(days));
-//			if (in_time != null) {
-//				transport.setIn_time(new Timestamp(in_time.getTime()));
-//			}
-//			if (out_time != null) {
-//				transport.setOut_time(new Timestamp(out_time.getTime()));
-//			}
-//			transport.setIn_transport_place_id(in_transport_place_id);
-//			transport.setNote_crit(note_crit);
-//			transport.setNote_geo(note_geo);
-//			transport.setOut_transport_place_id(out_transport_place_id);
-//			transport.setTransport_company_id(transport_company_id);
-//			transport.setTransport_plane_id(transport_plane_id);
-//			transport.setTransport_price_geo(transport_price_geo);
-//			transport.setTransport_type_id(transport_type_id);
-//			transport.setTrip_criteria(trip_criteria);
-//
-//			oracleManager.persist(transport);
-//
-//			Object oListTranspDetails = dsRequest
-//					.getFieldValue("listTranspDetails");
-//			if (oListTranspDetails != null) {
-//				Map listTranspDetails = (Map) oListTranspDetails;
-//				if (listTranspDetails != null && !listTranspDetails.isEmpty()) {
-//					Set keys = listTranspDetails.keySet();
-//					for (Object object : keys) {
-//						String transport_place_id = object.toString();
-//						Map transpDetailsMap = (Map) listTranspDetails
-//								.get(transport_place_id);
-//						if (transpDetailsMap == null
-//								|| transpDetailsMap.isEmpty()) {
-//							continue;
-//						}
-//						Long deleted_det = transpDetailsMap.get("deleted") == null ? null
-//								: new Long(transpDetailsMap.get("deleted")
-//										.toString());
-//						Long transport_detail_order = transpDetailsMap
-//								.get("transport_detail_order") == null ? null
-//								: new Long(transpDetailsMap.get(
-//										"transport_detail_order").toString());
-//						Date out_time_det = transpDetailsMap.get("out_time") == null ? null
-//								: (Date) transpDetailsMap.get("out_time");
-//						Date in_time_det = transpDetailsMap.get("in_time") == null ? null
-//								: (Date) transpDetailsMap.get("in_time");
-//
-//						TranspItems transportDetail = new TranspItems();
-//						transportDetail.setDeleted(deleted_det);
-//						if (in_time_det != null) {
-//							transportDetail.setIn_time(new Timestamp(
-//									in_time_det.getTime()));
-//						}
-//						if (out_time_det != null) {
-//							transportDetail.setOut_time(new Timestamp(
-//									out_time_det.getTime()));
-//						}
-//						transportDetail.setRec_date(recDate);
-//						transportDetail.setRec_user(loggedUserName);
-//						transportDetail
-//								.setOut_transport_place_id(out_transport_place_id);
-//						transportDetail
-//								.setIn_transport_place_id(in_transport_place_id);
-//
-//						transportDetail
-//								.setTransport_detail_order(transport_detail_order);
-//						transportDetail.setTransport_id(transport
-//								.getTransport_id());
-//						transportDetail.setTransport_place_id(new Long(
-//								transport_place_id));
-//
-//						oracleManager.persist(transportDetail);
-//					}
-//				}
-//			}
-//			oracleManager.flush();
-//
-//			transport.setLoggedUserName(loggedUserName);
-//
-//			List resultList = oracleManager
-//					.createNativeQuery(Q_GET_TRANSPORT_BY_ID)
-//					.setParameter(1, transport.getTransport_id())
-//					.getResultList();
-//			if (resultList != null && !resultList.isEmpty()) {
-//				Object array[] = (Object[]) resultList.get(0);
-//				String days_descr = array[0] == null ? null : array[0]
-//						.toString();
-//				String name_descr = array[1] == null ? null : array[1]
-//						.toString();
-//				String transport_place_geo_out = array[2] == null ? null
-//						: array[2].toString();
-//				String transport_place_geo_in = array[3] == null ? null
-//						: array[3].toString();
-//				String transport_company_geo = array[4] == null ? null
-//						: array[4].toString();
-//				String transport_plane_geo = array[5] == null ? null : array[5]
-//						.toString();
-//				transport.setDays_descr(days_descr);
-//				transport.setname_descr(name_descr);
-//				transport.setTransport_place_geo_out(transport_place_geo_out);
-//				transport.setTransport_place_geo_in(transport_place_geo_in);
-//				transport.setTransport_company_geo(transport_company_geo);
-//				transport.setTransport_plane_geo(transport_plane_geo);
-//			}
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+			String loggedUserName = dsRequest.getFieldValue("loggedUserName").toString();
+			Long transp_type_id = dsRequest.getFieldValue("transp_type_id") == null ? null : new Long(dsRequest.getFieldValue("transp_type_id").toString());
+			Long depart_transp_stat_id = dsRequest.getFieldValue("depart_transp_stat_id") == null ? null: new Long(dsRequest.getFieldValue("depart_transp_stat_id").toString());
+			Long arrival_transp_stat_id = dsRequest.getFieldValue("arrival_transp_stat_id") == null ? null: new Long(dsRequest.getFieldValue("arrival_transp_stat_id").toString());
+			Date depart_time = dsRequest.getFieldValue("depart_time") == null ? null: (Date) dsRequest.getFieldValue("depart_time");
+			Date arrival_time = dsRequest.getFieldValue("arrival_time") == null ? null: (Date) dsRequest.getFieldValue("arrival_time");
+			String remark = dsRequest.getFieldValue("remark") == null ? null: dsRequest.getFieldValue("remark").toString();
+			String price_descr = dsRequest.getFieldValue("price_descr") == null ? null: dsRequest.getFieldValue("price_descr").toString();
+			Long transp_comp_id = dsRequest.getFieldValue("transp_comp_id") == null ? null: new Long(dsRequest.getFieldValue("transp_comp_id").toString());
+			Long transp_res_id = dsRequest.getFieldValue("transp_res_id") == null ? null: new Long(dsRequest.getFieldValue("transp_res_id").toString());
+			String transp_model_descr = dsRequest.getFieldValue("transp_model_descr") == null ? null: dsRequest.getFieldValue("transp_model_descr").toString();
+			Long important = dsRequest.getFieldValue("important") == null ? null: new Long(dsRequest.getFieldValue("important").toString());
+			Long days = dsRequest.getFieldValue("days") == null ? null: new Long(dsRequest.getFieldValue("days").toString());
+
+			TranspSchedule transport = new TranspSchedule();
+			transport.setDays(new Long(days));
+			if (arrival_time != null) {
+				transport.setArrival_time(new Timestamp(arrival_time.getTime()));
+			}
+			if (depart_time != null) {
+				transport.setDepart_time(new Timestamp(depart_time.getTime()));
+			}
+			transport.setDepart_transp_stat_id(depart_transp_stat_id);
+			transport.setImportant(important);
+			transport.setRemark(remark);
+			transport.setArrival_transp_stat_id(arrival_transp_stat_id);
+			transport.setTransp_comp_id(transp_comp_id);
+			transport.setTransp_res_id(transp_res_id);
+			transport.setPrice_descr(price_descr);
+			transport.setTransp_type_id(transp_type_id);
+			transport.setTransp_model_descr(transp_model_descr);
+
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate, loggedUserName, "Adding Transport");
+			
+			oracleManager.persist(transport);
+
+			Object oListTranspItems = dsRequest.getFieldValue("listTranspItems");
+			if (oListTranspItems != null) {
+				Map listTranspItems = (Map) oListTranspItems;
+				if (listTranspItems != null && !listTranspItems.isEmpty()) {
+					Set keys = listTranspItems.keySet();
+					for (Object object : keys) {
+						String transp_station_id = object.toString();
+						Map transpItemsMap = (Map) listTranspItems.get(transp_station_id);
+						if (transpItemsMap == null || transpItemsMap.isEmpty()) {
+							continue;
+						}
+						Long item_order = transpItemsMap.get("item_order") == null ? null : new Long(transpItemsMap.get("item_order").toString());
+						Date it_departure_time = transpItemsMap.get("departure_time") == null ? null : (Date) transpItemsMap.get("departure_time");
+						Date it_arrival_time = transpItemsMap.get("arrival_time") == null ? null : (Date) transpItemsMap.get("arrival_time");
+
+						TranspItems transportItem = new TranspItems();
+						if (it_arrival_time != null) {
+							transportItem.setArrival_time(new Timestamp(it_arrival_time.getTime()));
+						}
+						if (it_departure_time != null) {
+							transportItem.setDeparture_time(new Timestamp(it_departure_time.getTime()));
+						}
+						transportItem.setDeparture_transp_stat_id(depart_transp_stat_id);
+						transportItem.setArrival_transp_stat_id(arrival_transp_stat_id);
+
+						transportItem.setItem_order(item_order);
+						transportItem.setTransp_schedule_id(transport.getTransp_schedule_id());
+						transportItem.setTransp_station_id(new Long(transp_station_id));
+
+						oracleManager.persist(transportItem);
+					}
+				}
+			}
+			oracleManager.flush();
+
+			transport.setLoggedUserName(loggedUserName);
+
+			List resultList = oracleManager.createNativeQuery(Q_GET_TRANSPORT_BY_ID).setParameter(1, transport.getTransp_schedule_id()).getResultList();
+			if (resultList != null && !resultList.isEmpty()) {
+				Object array[] = (Object[]) resultList.get(0);
+				String days_descr = array[0] == null ? null : array[0].toString();
+				String transport_type = array[1] == null ? null : array[1].toString();
+				String departure_station = array[2] == null ? null: array[2].toString();
+				String arrival_station = array[3] == null ? null: array[3].toString();
+				String transport_company = array[4] == null ? null: array[4].toString();
+				String transport_resource = array[5] == null ? null : array[5].toString();
+				
+				transport.setDays_descr(days_descr);
+				transport.setTransport_type(transport_type);
+				transport.setDepart_station(departure_station);
+				transport.setArrival_station(arrival_station);
+				transport.setTransp_company(transport_company);
+				transport.setTransp_resource(transport_resource);
+				
+			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return null;
+			return transport;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -1208,7 +1148,7 @@ public class TransportDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public TranspSchedule updateTransport(Map record) throws Exception {
+	public TranspSchedule updateTranspSchedule(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -1410,7 +1350,7 @@ public class TransportDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public TranspSchedule removeTransport(DSRequest dsRequest) throws Exception {
+	public TranspSchedule removeTranspSchedule(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {

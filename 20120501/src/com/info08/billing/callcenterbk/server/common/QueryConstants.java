@@ -1002,22 +1002,24 @@ public interface QueryConstants {
 			"where t.discover_type_id <> 4 and t.execution_status <>0 and trunc(t.rec_date) = trunc(sysdate)\n" + 
 			"";
 
-	public static final String Q_GET_TRANSPORT_BY_ID = "select\n"
-			+ "        getdaysdescription(t.days) as days_descr,\n"
-			+ "        tt.transp_type_name_geo,\n"
-			+ "        oc.city_name_geo||' '||o.transport_place_geo as transport_place_geo_out,\n"
-			+ "        ic.city_name_geo||' '||i.transport_place_geo as transport_place_geo_in,\n"
-			+ "        tc.transport_company_geo,\n"
-			+ "        tp.transport_plane_geo\n"
-			+ "\n"
-			+ "from ccare.transports t, transp_types tt,transport_places o, cities oc,transport_places i, cities ic, transport_companies tc, transport_plane tp\n"
-			+ "where\n"
-			+ "          t.transp_type_id = tt.transp_type_id and\n"
-			+ "          t.out_transport_place_id = o.transport_place_id and o.city_id = oc.city_id and\n"
-			+ "          t.in_transport_place_id = i.transport_place_id and i.city_id = ic.city_id and\n"
-			+ "          t.transport_company_id = tc.transport_company_id(+) and\n"
-			+ "          t.transport_plane_id = tp.transport_plane_id  and\n"
-			+ "          t.transport_id = ? \n" + "order by t.days";
+	public static final String Q_GET_TRANSPORT_BY_ID = "select\n" +
+					"        getdaysdescription(t.days) as days_descr,\n" + 
+					"        tt.name_descr transport_type,\n" + 
+					"        dep_c.city_name_geo||' '||dep_st.name_descr as departure_station,\n" + 
+					"        arr_c.city_name_geo||' '||arr_st.name_descr as arrival_station,\n" + 
+					"        tc.name_descr as transport_company,\n" + 
+					"        tr.name_descr as transport_resource\n" + 
+					"\n" + 
+					"from transp_schedules t, transp_types tt,transp_stations dep_st, cities dep_c,transp_stations arr_st, cities arr_c, transp_companies tc, transp_resource tr\n" + 
+					"where\n" + 
+					"          t.transp_type_id = tt.transp_type_id and\n" + 
+					"          t.depart_transp_stat_id = dep_st.transp_stat_id and dep_st.city_id = dep_c.city_id and\n" + 
+					"          t.arrival_transp_stat_id = arr_st.transp_stat_id and arr_st.city_id = arr_c.city_id and\n" + 
+					"          t.transp_comp_id = tc.transp_comp_id(+) and\n" + 
+					"          t.transp_res_id = tr.transp_res_id and\n" + 
+					"          t.transp_schedule_id = ? \n" + 
+					"order by t.days";
+;
 
 	public static final String Q_GET_SESSION_BY_ID = "select * from ccare.log_sessions t where t.session_id = ? ";
 	public static final String Q_GET_PERS_NOTE_BY_ID = "select t.note_id from ccare.log_personell_notes t where t.note_id = ? ";

@@ -870,19 +870,19 @@ public class DlgAddEditTranspSchedule extends Window {
 					Record tranpDetailRecord = trasnport_details.get(i);
 					Map transportDetailsMap = new LinkedHashMap();
 
-					Integer transport_detail_id = tranpDetailRecord.getAttributeAsInt("transport_detail_id");
-					Integer transport_place_id = tranpDetailRecord.getAttributeAsInt("transport_place_id");
-					Integer transport_detail_order = tranpDetailRecord.getAttributeAsInt("transport_detail_order");
-					Date in_time_tr_det = tranpDetailRecord.getAttributeAsDate("in_time");
-					Date out_time_tr_det = tranpDetailRecord.getAttributeAsDate("out_time");
+					Integer transp_item_id = tranpDetailRecord.getAttributeAsInt("transp_item_id");
+					Integer transp_station_id = tranpDetailRecord.getAttributeAsInt("transp_station_id");
+					Integer item_order = tranpDetailRecord.getAttributeAsInt("item_order");
+					Date it_arrival_time = tranpDetailRecord.getAttributeAsDate("arrival_time");
+					Date it_departure_time = tranpDetailRecord.getAttributeAsDate("departure_time");
 
-					transportDetailsMap.put("transport_detail_id",transport_detail_id);
-					transportDetailsMap.put("transport_place_id",transport_place_id);					
-					transportDetailsMap.put("c_in_time", ((in_time_tr_det == null) ? null : (in_time_tr_det.getTime() + "")));
-					transportDetailsMap.put("c_out_time",((out_time_tr_det == null) ? null : (out_time_tr_det.getTime() + "")));
-					transportDetailsMap.put("transport_detail_order",transport_detail_order);
+					transportDetailsMap.put("transp_item_id",transp_item_id);
+					transportDetailsMap.put("transp_station_id",transp_station_id);					
+					transportDetailsMap.put("arrival_time", ((it_arrival_time == null) ? null : (it_arrival_time.getTime() + "")));
+					transportDetailsMap.put("departure_time",((it_departure_time == null) ? null : (it_departure_time.getTime() + "")));
+					transportDetailsMap.put("item_order",item_order);
 
-					records.put(transport_detail_id.toString(), transportDetailsMap);
+					records.put(transp_item_id.toString(), transportDetailsMap);
 				}
 			}
 
@@ -909,11 +909,11 @@ public class DlgAddEditTranspSchedule extends Window {
 				record.setAttribute("important", 0);
 			}
 			record.setAttribute("days", days);
-			record.setAttribute("listTranspDetails", records);
+			record.setAttribute("listTranspItems", records);
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addTransport");
+				req.setAttribute("operationId", "addTranspSchedule");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -922,7 +922,7 @@ public class DlgAddEditTranspSchedule extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateTransport");
+				req.setAttribute("operationId", "updateTranspSchedule");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

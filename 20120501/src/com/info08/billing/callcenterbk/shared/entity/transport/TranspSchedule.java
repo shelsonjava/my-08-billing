@@ -44,7 +44,7 @@ public class TranspSchedule implements Serializable {
 	
 	@Basic
 	@Column(name="TRANSP_MODE_DESCR")
-	private Long transp_model_descr;
+	private String transp_model_descr;
 	
 	@Basic
 	@Column(name="REMARK")
@@ -63,20 +63,20 @@ public class TranspSchedule implements Serializable {
 	private Long transp_type_id;
 	
 	@Basic
-	@Column(name="IN_TRANSPORT_PLACE_ID")
-	private Long in_transport_place_id;
+	@Column(name="ARRIVAL_TRANSP_STAT_ID")
+	private Long arrival_transp_stat_id;
 
 	@Basic
-	@Column(name="OUT_TRANSPORT_PLACE_ID")
-	private Long out_transport_place_id;
+	@Column(name="DEPART_TRANSP_STAT_ID")
+	private Long depart_transp_stat_id;
 
 	@Basic
-	@Column(name="TRANSPORT_PLANE_ID")
-	private Long transport_plane_id;
+	@Column(name="TRANSP_RES_ID")
+	private Long transp_res_id;
 
 	@Basic
 	@Column(name="IMPORTANT")
-	private String important;
+	private Long important;
 	
 	@Transient
     private String loggedUserName;
@@ -134,11 +134,11 @@ public class TranspSchedule implements Serializable {
 		this.depart_time = depart_time;
 	}
 
-	public Long getTransp_model_descr() {
+	public String getTransp_model_descr() {
 		return transp_model_descr;
 	}
 
-	public void setTransp_model_descr(Long transp_model_descr) {
+	public void setTransp_model_descr(String transp_model_descr) {
 		this.transp_model_descr = transp_model_descr;
 	}
 
@@ -174,35 +174,35 @@ public class TranspSchedule implements Serializable {
 		this.transp_type_id = transp_type_id;
 	}
 
-	public Long getIn_transport_place_id() {
-		return in_transport_place_id;
+	public Long getArrival_transp_stat_id() {
+		return arrival_transp_stat_id;
 	}
 
-	public void setIn_transport_place_id(Long in_transport_place_id) {
-		this.in_transport_place_id = in_transport_place_id;
+	public void setArrival_transp_stat_id(Long arrival_transp_stat_id) {
+		this.arrival_transp_stat_id = arrival_transp_stat_id;
 	}
 
-	public Long getOut_transport_place_id() {
-		return out_transport_place_id;
+	public Long getDepart_transp_stat_id() {
+		return depart_transp_stat_id;
 	}
 
-	public void setOut_transport_place_id(Long out_transport_place_id) {
-		this.out_transport_place_id = out_transport_place_id;
+	public void setDepart_transp_stat_id(Long depart_transp_stat_id) {
+		this.depart_transp_stat_id = depart_transp_stat_id;
 	}
 
-	public Long getTransport_plane_id() {
-		return transport_plane_id;
+	public Long getTransp_res_id() {
+		return transp_res_id;
 	}
 
-	public void setTransport_plane_id(Long transport_plane_id) {
-		this.transport_plane_id = transport_plane_id;
+	public void setTransp_res_id(Long transp_res_id) {
+		this.transp_res_id = transp_res_id;
 	}
 
-	public String getImportant() {
+	public Long getImportant() {
 		return important;
 	}
 
-	public void setImportant(String important) {
+	public void setImportant(Long important) {
 		this.important = important;
 	}
 

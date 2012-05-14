@@ -22,6 +22,7 @@
 		<field name="important"					type="integer"		title="important" 				hidden="true"/>
 		<field name="depart_time"				type="datetime"		title="depart_time"				hidden="true"/>
 		<field name="arrival_time"				type="datetime"		title="arrival_time"			hidden="true"/>
+		<field name="listTranspItems"			type="any"			title="listTranspItems"			hidden="true"/>
 		<field name="days_descr"				type="text"			title="days_descr"/>
 		<field name="transp_model_descr"		type="text"			title="transp_model_descr"/>
 		<field name="remark"					type="text"			title="remark"/>
@@ -35,24 +36,24 @@
 		<field name="formated_depart_time"		type="text"			title="formated_depart_time"/>
 		<field name="formated_arrival_time"		type="text"			title="formated_arrival_time"/>												
 		<field name="departureCity"				type="text"			title="departureCity"/>
-		<field name="departureStation"			type="text"			title="departureStation"/>
+		<field name="departureStation"			type="text"			title="departureStation"/>		
 	</fields>
 
 	<operationBindings>		
 
 		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
 		<!-- Add Transport -->
-		<operationBinding operationType="add" operationId="addTransport" serverMethod="addTransport">
+		<operationBinding operationType="add" operationId="addTranspSchedule" serverMethod="addTranspSchedule">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
 		<!-- Transport Update -->
-		<operationBinding operationType="update" operationId="updateTransport" serverMethod="updateTransport">
+		<operationBinding operationType="update" operationId="updateTranspSchedule" serverMethod="updateTranspSchedule">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
         
         <!-- Transport Remove -->
-		<operationBinding operationType="remove" operationId="removeTransport" serverMethod="removeTransport">
+		<operationBinding operationType="remove" operationId="removeTranspSchedule" serverMethod="removeTranspSchedule">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI"/>
         </operationBinding>
 	

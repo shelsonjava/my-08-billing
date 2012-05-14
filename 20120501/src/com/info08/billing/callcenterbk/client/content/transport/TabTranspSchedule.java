@@ -629,7 +629,7 @@ public class TabTranspSchedule extends Tab {
 					.getSessionPerson().getUserName());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "removeTransport");
+			req.setAttribute("operationId", "removeTranspSchedule");
 			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
