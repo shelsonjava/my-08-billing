@@ -3,74 +3,69 @@ package com.info08.billing.callcenterbk.server.spring.jobs;
 import java.net.InetAddress;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.TimerTask;
+import java.util.TreeMap;
 
 import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
-import com.info08.billing.callcenterbk.server.common.QueryConstants;
+import com.info08.billing.callcenterbk.server.impl.dmi.DMIUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
-import com.info08.billing.callcenterbk.shared.entity.discovery.DiscoverySmsHist;
+import com.info08.billing.callcenterbk.shared.entity.survey.SurveyHistSMS;
 import com.isomorphic.jpa.EMF;
 
-public class DiscoverySMSSenderJob extends TimerTask {
+public class SurveySMSSenderJob extends TimerTask {
 
-	Logger logger = Logger.getLogger(DiscoverySMSSenderJob.class.getName());
+	Logger logger = Logger.getLogger(SurveySMSSenderJob.class.getName());
 
 	public void run() {
-		sendDiscoverySMS();
+		sendSurveySMS();
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void sendDiscoverySMS() {
-
+	public void sendSurveySMS() {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
 			if (!InetAddress.getLocalHost().getHostAddress()
 					.contains("127.0.0")) {
-				String log = "Job. Sending Auto Discovery SMS.\n";
+				String log = "Job. Sending Auto Survey SMS.\n";
 				oracleManager = EMF.getEntityManager();
 				transaction = EMF.getTransaction(oracleManager);
-
-				List resultList = oracleManager.createNativeQuery(
-						QueryConstants.Q_GET_DISC_SMS_FOR_SEND).getResultList();
-				if (resultList != null && !resultList.isEmpty()) {
+				List<Map<?, ?>> listData = DMIUtils.findRecordsByCriteria(
+						"SurveyDS", "getAllSurveyForSMS", new TreeMap<String, String>());
+				if (listData != null && !listData.isEmpty()) {
 					log += "=========== SMS List ===========\n";
-					for (Object object : resultList) {
-						Object data[] = (Object[]) object;
-						Long discovery_id = (data[0] == null) ? null
-								: new Long(data[0].toString());
-						String sessionId = (data[1] == null) ? null : data[1]
-								.toString();
-						String phone = (data[2] == null) ? null : data[2]
-								.toString();
-						if (discovery_id == null || phone == null) {
+					for (Map<?, ?> map : listData) {
+						
+						Long survey_id = DMIUtils.getRowValueLong(map.get("survey_id"));
+						String sessionId = DMIUtils.getRowValueSt(map.get("session_call_id"));
+						String survey_phone = DMIUtils.getRowValueSt(map.get("survey_phone"));
+						if (survey_id == null || survey_phone == null) {
 							continue;
 						}
 						Timestamp rec_date = new Timestamp(
 								System.currentTimeMillis());
-						DiscoverySmsHist discoverySmsHist = new DiscoverySmsHist();
-						discoverySmsHist.setDiscovery_id(discovery_id);
-						discoverySmsHist.setRec_date(rec_date);
+						SurveyHistSMS surveySmsHist = new SurveyHistSMS();
+						surveySmsHist.setSurvey_id(survey_id);
+						surveySmsHist.setHist_datetime(rec_date);
 						oracleManager
 								.createNativeQuery(
 										"{call insert_send_sms(?,?,?,?)}")
 								.setParameter(1, Constants.discSMSDefText)
-								.setParameter(2, phone)
+								.setParameter(2, survey_phone)
 								.setParameter(3, sessionId).setParameter(4, 0)
 								.executeUpdate();
-						log += "Phone = " + phone + ", SessionId = "
+						log += "Phone = " + survey_phone + ", SessionId = "
 								+ sessionId + ", Rec. Date = "
 								+ rec_date.toString() + "\n";
-						oracleManager.persist(discoverySmsHist);
+						oracleManager.persist(surveySmsHist);
 					}
 					log += "=========== SMS List ===========";
 				} else {
 					log += "SMS List Is Empty.";
 				}
-				// sysdate
 				EMF.commitTransaction(transaction);
 				logger.info(log);
 			}
@@ -84,3 +79,6 @@ public class DiscoverySMSSenderJob extends TimerTask {
 		}
 	}
 }
+
+
+

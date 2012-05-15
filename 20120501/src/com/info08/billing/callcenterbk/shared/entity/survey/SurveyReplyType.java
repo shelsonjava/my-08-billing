@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * The persistent class for the DISCOVER_RTYPES database table.
+ * The persistent class for the survey_reply_type database table.
  * 
  */
 @Entity

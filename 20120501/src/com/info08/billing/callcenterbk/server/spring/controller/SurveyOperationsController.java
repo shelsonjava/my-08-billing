@@ -19,7 +19,7 @@ import com.isomorphic.rpc.RPCRequest;
 import com.isomorphic.util.DataTools;
 import com.isomorphic.util.ErrorReport;
 
-public class DiscoveryOperationsController implements Controller {
+public class SurveyOperationsController implements Controller {
 
     @SuppressWarnings({ "rawtypes", "unused" })
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {

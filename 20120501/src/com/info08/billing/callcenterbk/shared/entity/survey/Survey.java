@@ -20,7 +20,7 @@ import javax.persistence.Transient;
  * The persistent class for the Survey database table.
  * 
  */
-@NamedQueries({ @NamedQuery(name = "Survey.getLocked", query = "select e from Survey e where e.survey_id = :survId and e.survey_kind_id <> 4  and trunc(e.survey_created) >= trunc(sysdate-14) and e.survery_responce_status = 0 ") })
+@NamedQueries({ @NamedQuery(name = "Survey.getLocked", query = "select e from Survey e where e.survey_id = :survId and trunc(e.survey_created) >= trunc(sysdate-14) and e.survery_responce_status = 0 ") })
 @Entity
 @Table(name = "Survey", schema = "ccare")
 public class Survey implements Serializable {
