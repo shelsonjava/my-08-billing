@@ -13,7 +13,7 @@ import com.smartgwt.client.widgets.viewer.DetailViewer;
 public class SessDiscHistDialog extends Window {
 
 	private VLayout hLayout;
-	private DataSource sessDiscHistDS = null;
+	private DataSource sessSurvHistDS = null;
 	private ListGrid sessDiscHistGrid = null;
 	private DetailViewer detailViewer;
 
@@ -31,26 +31,26 @@ public class SessDiscHistDialog extends Window {
 		setCanDragScroll(false);
 		centerInPage();
 
-		sessDiscHistDS = DataSource.get("SessDiscHistDS");
+		sessSurvHistDS = DataSource.get("SessSurvHistDS");
 
-		sessDiscHistDS.getField("discover_id").setTitle("ID");
-		sessDiscHistDS.getField("phone").setTitle("ნომერი");
-		sessDiscHistDS.getField("discover_txt").setTitle("გარკვევის ტექსტი");
-		sessDiscHistDS.getField("rec_user").setTitle("ვინ დაარეგისტრირა");
-		sessDiscHistDS.getField("upd_user").setTitle("ვინ უპასუხა");
-		sessDiscHistDS.getField("response_type").setTitle("პასუხის სახეობა");
-		sessDiscHistDS.getField("execution_status").setTitle("შესრულების ტიპი");
+		sessSurvHistDS.getField("survey_id").setTitle("ID");
+		sessSurvHistDS.getField("p_numb").setTitle("ნომერი");
+		sessSurvHistDS.getField("survey_descript").setTitle("გარკვევის ტექსტი");
+		sessSurvHistDS.getField("survey_creator").setTitle("ვინ დაარეგისტრირა");
+		sessSurvHistDS.getField("loked_user").setTitle("ვინ უპასუხა");
+		sessSurvHistDS.getField("survey_reply_type_name").setTitle("პასუხის სახეობა");
+		sessSurvHistDS.getField("survery_responce_status").setTitle("შესრულების ტიპი");
 
-		ListGridField phone = new ListGridField("phone", "ნომერი", 80);
-		ListGridField discover_txt = new ListGridField("discover_txt",
+		ListGridField p_numb = new ListGridField("p_numb", "ნომერი", 80);
+		ListGridField survey_descript = new ListGridField("survey_descript",
 				"გამოკვლევის ტექსტი", 250);
-		ListGridField rec_user = new ListGridField("rec_user",
+		ListGridField rec_user = new ListGridField("survey_creator",
 				"ვინ დაარეგისტრირა", 150);
-		ListGridField upd_user = new ListGridField("upd_user", "ვინ უპასუხა",
+		ListGridField upd_user = new ListGridField("loked_user", "ვინ უპასუხა",
 				150);
-		ListGridField response_type = new ListGridField("response_type",
+		ListGridField survey_reply_type_name = new ListGridField("survey_reply_type_name",
 				"პასუხის სახეობა", 100);
-		ListGridField execution_status = new ListGridField("execution_status",
+		ListGridField survery_responce_status = new ListGridField("survery_responce_status",
 				"შესრულების ტიპი", 100);
 
 		hLayout = new VLayout(5);
@@ -62,21 +62,21 @@ public class SessDiscHistDialog extends Window {
 		sessDiscHistGrid.setHeight(250);
 		sessDiscHistGrid.setAutoFetchData(false);
 		sessDiscHistGrid.setAlternateRecordStyles(true);
-		sessDiscHistGrid.setDataSource(sessDiscHistDS);
+		sessDiscHistGrid.setDataSource(sessSurvHistDS);
 		sessDiscHistGrid.setShowFilterEditor(false);
 		sessDiscHistGrid.setCanEdit(false);
 		sessDiscHistGrid.setCanRemoveRecords(false);
 		sessDiscHistGrid.setFetchOperation("sessDiscCustSearch");		
 
-		sessDiscHistGrid.setFields(phone, discover_txt, rec_user, upd_user,
-				response_type, execution_status);
+		sessDiscHistGrid.setFields(p_numb, survey_descript, rec_user, upd_user,
+				survey_reply_type_name, survery_responce_status);
 
 		Criteria criteria = new Criteria();
 		criteria.addCriteria("sessionId", sessionId);
 		sessDiscHistGrid.filterData(criteria);
 
 		detailViewer = new DetailViewer();
-		detailViewer.setDataSource(sessDiscHistDS);
+		detailViewer.setDataSource(sessSurvHistDS);
 
 		hLayout.setMembers(sessDiscHistGrid, detailViewer);
 
