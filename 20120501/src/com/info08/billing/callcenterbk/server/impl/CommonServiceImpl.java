@@ -32,7 +32,7 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.opencsv.CSVWriter;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
-import com.info08.billing.callcenterbk.shared.entity.Person;
+import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.isomorphic.jpa.EMF;
 
 @SuppressWarnings("serial")
@@ -43,7 +43,7 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ServerSession login(String userName, String password,
+	public ServerSession login(String userName, String user_password,
 			String sessionId) throws CallCenterException {
 		EntityManager oracleManager = null;
 		Object tx = null;
@@ -62,22 +62,22 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 			tx = EMF.getTransaction(oracleManager);
 
 			String message = "User Identification. Username = " + userName
-					+ ", Password = " + password;
+					+ ", Password = " + user_password;
 			if (userName == null || userName.trim().equals("")) {
 				message += ". Result = Invalid UserName. ";
 				logger.info(message);
 				throw new CallCenterException("არასწორი მომხმარებელი");
 			}
-			if (password == null || password.trim().equals("")) {
+			if (user_password == null || user_password.trim().equals("")) {
 				message += ". Result = Invalid Password. ";
 				logger.info(message);
 				throw new CallCenterException("არასწორი პაროლი");
 			}
 
-			Query q = oracleManager.createNamedQuery("Person.selectBuUserName")
+			Query q = oracleManager.createNamedQuery("Users.selectByUserName")
 					.setParameter("usrName", userName);
 			@SuppressWarnings("unchecked")
-			ArrayList<Person> users = (ArrayList<Person>) q.getResultList();
+			ArrayList<Users> users = (ArrayList<Users>) q.getResultList();
 
 			if (users == null || users.isEmpty()) {
 				throw new CallCenterException("მომხმარებელი: " + userName
@@ -87,26 +87,22 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 				throw new CallCenterException("ასეთი მომხმარებელი: " + userName
 						+ " მონაცემთა ბაზაში რამოდენიმეა.");
 			}
-			Person user = users.get(0);
+			Users user = users.get(0);
 
-			if (user.getDeleted() != null && !user.getDeleted().equals(0L)) {
-				throw new CallCenterException(
-						"თქვენი მომხმარებელი მლოკირებულია !");
-			}
-			String dbPassword = user.getPassword();
-			if (!password.equals(dbPassword)) {
+			String dbPassword = user.getUser_password();
+			if (!user_password.equals(dbPassword)) {
 				throw new CallCenterException(
 						"მომხმარებელის პაროლი არასწორია !");
 			}
-			List persToAccList = oracleManager
-					.createNativeQuery(QueryConstants.Q_GET_PERS_TO_ACC)
-					.setParameter(1, user.getPersonelId()).getResultList();
-			if (persToAccList != null && !persToAccList.isEmpty()) {
-				Map<String, String> mapPerms = new LinkedHashMap<String, String>();
-				for (Object object : persToAccList) {
-					mapPerms.put(object.toString(), "1");
+			List userPermissions = oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_USER_PERMISSIONS)
+					.setParameter(1, user.getUser_id()).getResultList();
+			if (userPermissions != null && !userPermissions.isEmpty()) {
+				Map<String, String> mapUserPermissions = new LinkedHashMap<String, String>();
+				for (Object object : userPermissions) {
+					mapUserPermissions.put(object.toString(), "1");
 				}
-				user.setUserPerms(mapPerms);
+				user.setUserPerms(mapUserPermissions);
 			}
 			EMF.commitTransaction(tx);
 
@@ -209,7 +205,7 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void saveOrUpdateLogPersNote(Integer noteId, String sessionId,
-			Integer visOpt, String note, Integer particular, Person person)
+			Integer visOpt, String note, Integer particular, Users person)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		Object tx = null;
@@ -264,7 +260,7 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 				Integer ym = new Integer(cols[0] == null ? "-1"
 						: cols[0].toString());
 				String userName = cols[1] == null ? "" : cols[1].toString();
-				String recUser = person.getUserName();
+				String recUser = person.getUser_name();
 				String phone = cols[3] == null ? "" : cols[3].toString();
 				Timestamp callDate = (Timestamp) cols[2];
 				Query query = oracleManager
@@ -399,8 +395,8 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void getBillingCompBillByDay(Integer billing_company_id, Date date_param)
-			throws CallCenterException {
+	public void getBillingCompBillByDay(Integer billing_company_id,
+			Date date_param) throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
 			oracleManager = EMF.getEntityManager();

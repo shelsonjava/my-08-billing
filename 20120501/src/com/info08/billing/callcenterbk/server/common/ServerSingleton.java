@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.shared.entity.admin.FixedOperatorPrefixe;
-import com.info08.billing.callcenterbk.shared.entity.admin.MobileOperatorPrefixe;
+import com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes;
 import com.isomorphic.jpa.EMF;
 
 public class ServerSingleton {
@@ -17,7 +17,7 @@ public class ServerSingleton {
 	Logger logger = Logger.getLogger(ServerSingleton.class.getName());
 
 	private static ServerSingleton instance;
-	private static TreeMap<String, MobileOperatorPrefixe> mobileIndexes;
+	private static TreeMap<String, GSMIndexes> mobileIndexes;
 	private static TreeMap<String, FixedOperatorPrefixe> fixedIndexes;
 
 	public static ServerSingleton getInstance() {
@@ -66,20 +66,20 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public TreeMap<String, MobileOperatorPrefixe> getAllMobileOperPrefixes()
+	public TreeMap<String, GSMIndexes> getAllMobileOperPrefixes()
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
 			if (mobileIndexes == null) {
-				mobileIndexes = new TreeMap<String, MobileOperatorPrefixe>();
+				mobileIndexes = new TreeMap<String, GSMIndexes>();
 			}
 			if (mobileIndexes.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
-				ArrayList<MobileOperatorPrefixe> list = (ArrayList<MobileOperatorPrefixe>) oracleManager
+				ArrayList<GSMIndexes> list = (ArrayList<GSMIndexes>) oracleManager
 						.createNamedQuery("MobileOperatorPrefixe.getAll")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
-					for (MobileOperatorPrefixe item : list) {
+					for (GSMIndexes item : list) {
 						mobileIndexes.put(item.getPrefix(), item);
 					}
 				}
@@ -104,20 +104,20 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public MobileOperatorPrefixe getMobileOperatorPrefix(String mobileIndex)
+	public GSMIndexes getMobileOperatorPrefix(String mobileIndex)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
 			if (mobileIndexes == null) {
-				mobileIndexes = new TreeMap<String, MobileOperatorPrefixe>();
+				mobileIndexes = new TreeMap<String, GSMIndexes>();
 			}
 			if (mobileIndexes.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
-				ArrayList<MobileOperatorPrefixe> list = (ArrayList<MobileOperatorPrefixe>) oracleManager
+				ArrayList<GSMIndexes> list = (ArrayList<GSMIndexes>) oracleManager
 						.createNamedQuery("MobileOperatorPrefixe.getAll")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
-					for (MobileOperatorPrefixe item : list) {
+					for (GSMIndexes item : list) {
 						mobileIndexes.put(item.getPrefix(), item);
 					}
 				}
@@ -143,20 +143,20 @@ public class ServerSingleton {
 
 	@SuppressWarnings("unchecked")
 	public void addMobileOperatorPrefix(
-			MobileOperatorPrefixe mobileOperatorPrefixe)
+			GSMIndexes mobileOperatorPrefixe)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
 			if (mobileIndexes == null) {
-				mobileIndexes = new TreeMap<String, MobileOperatorPrefixe>();
+				mobileIndexes = new TreeMap<String, GSMIndexes>();
 			}
 			if (mobileIndexes.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
-				ArrayList<MobileOperatorPrefixe> list = (ArrayList<MobileOperatorPrefixe>) oracleManager
+				ArrayList<GSMIndexes> list = (ArrayList<GSMIndexes>) oracleManager
 						.createNamedQuery("MobileOperatorPrefixe.getAll")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
-					for (MobileOperatorPrefixe item : list) {
+					for (GSMIndexes item : list) {
 						mobileIndexes.put(item.getPrefix(), item);
 					}
 				}
@@ -183,20 +183,20 @@ public class ServerSingleton {
 
 	@SuppressWarnings("unchecked")
 	public void updateMobileOperatorPrefix(
-			MobileOperatorPrefixe mobileOperatorPrefixe)
+			GSMIndexes mobileOperatorPrefixe)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
 			if (mobileIndexes == null) {
-				mobileIndexes = new TreeMap<String, MobileOperatorPrefixe>();
+				mobileIndexes = new TreeMap<String, GSMIndexes>();
 			}
 			if (mobileIndexes.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
-				ArrayList<MobileOperatorPrefixe> list = (ArrayList<MobileOperatorPrefixe>) oracleManager
+				ArrayList<GSMIndexes> list = (ArrayList<GSMIndexes>) oracleManager
 						.createNamedQuery("MobileOperatorPrefixe.getAll")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
-					for (MobileOperatorPrefixe item : list) {
+					for (GSMIndexes item : list) {
 						mobileIndexes.put(item.getPrefix(), item);
 					}
 				}
