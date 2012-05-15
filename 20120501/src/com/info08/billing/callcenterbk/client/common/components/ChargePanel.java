@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgAddMyMobBase;
-import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgSendDiscovery;
+import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgSendSurvey;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewChargesByPhone;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -39,25 +39,25 @@ public class ChargePanel extends HLayout {
 	private TextItem prevNameItem;
 	private Label chargeCounter;
 	private boolean enableChargeButton;
-	private boolean enableDiscoveryButton;
+	private boolean enableSurveyButton;
 
 	private ToolStripButton addMyMobileInfo;
 	private ToolStripButton viewChargeInfo;
-	private ToolStripButton discoveryBtn;
+	private ToolStripButton surveyBtn;
 	private ToolStripButton chargeBtn;
 	private Integer service_id;
 	private Integer main_id;
 	private int chrgCounter = 0;
 
 	public ChargePanel(int width, boolean enableChargeButton,
-			boolean enableDiscoveryButton, Integer service_id, Integer main_id,
-			final Integer discoveryTypeId, final String discovery_txt) {
+			boolean enableSurveyButton, Integer service_id, Integer main_id,
+			final Integer surveyKindId, final String survey_descript) {
 
 		try {
 			this.service_id = service_id;
 			this.main_id = main_id;
 			this.enableChargeButton = enableChargeButton;
-			this.enableDiscoveryButton = enableDiscoveryButton;
+			this.enableSurveyButton = enableSurveyButton;
 
 			Long persTypeId = CommonSingleton.getInstance().getSessionPerson()
 					.getPersonelTypeId();
@@ -106,10 +106,10 @@ public class ChargePanel extends HLayout {
 
 			toolStrip.addSeparator();
 
-			discoveryBtn = new ToolStripButton(
-					CallCenterBK.constants.discovery(), "discovery.png");
-			discoveryBtn.setLayoutAlign(Alignment.LEFT);
-			toolStrip.addButton(discoveryBtn);
+			surveyBtn = new ToolStripButton(
+					CallCenterBK.constants.survey(), "survey.png");
+			surveyBtn.setLayoutAlign(Alignment.LEFT);
+			toolStrip.addButton(surveyBtn);
 
 			toolStrip.addSeparator();
 			toolStrip.addFill();
@@ -197,10 +197,10 @@ public class ChargePanel extends HLayout {
 				}
 			});
 
-			discoveryBtn.addClickHandler(new ClickHandler() {
+			surveyBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					sendDiscovery(discoveryTypeId, discovery_txt);
+					sendSurvey(surveyKindId, survey_descript);
 				}
 			});
 
@@ -226,8 +226,8 @@ public class ChargePanel extends HLayout {
 	}
 
 	public ChargePanel(int width, boolean enableChargeButton,
-			boolean enableDiscoveryButton, Integer service_id, Integer main_id) {
-		this(width, enableChargeButton, enableDiscoveryButton, service_id,
+			boolean enableSurveyButton, Integer service_id, Integer main_id) {
+		this(width, enableChargeButton, enableSurveyButton, service_id,
 				main_id, null, null);
 	}
 
@@ -291,7 +291,7 @@ public class ChargePanel extends HLayout {
 			}
 			chargeBtn.setVisible(enableChargeButton);
 			chargeCounter.setVisible(enableChargeButton);
-			discoveryBtn.setVisible(enableDiscoveryButton);
+			surveyBtn.setVisible(enableSurveyButton);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -348,47 +348,22 @@ public class ChargePanel extends HLayout {
 		}
 	}
 
-	private DlgSendDiscovery dlgSendDiscovery = null;
+	private DlgSendSurvey dlgSendSurvey = null;
 
-	public void setDlgSendDiscovery(DlgSendDiscovery dlgSendDiscovery) {
-		this.dlgSendDiscovery = dlgSendDiscovery;
+	public void setDlgSendSurvey(DlgSendSurvey dlgSendSurvey) {
+		this.dlgSendSurvey = dlgSendSurvey;
 	}
 
-	private void sendDiscovery(Integer discoveryTypeId, String discovery_txt) {
+	private void sendSurvey(Integer survey_kind_Id, String survey_descript) {
 		try {
-			if (dlgSendDiscovery == null) {
-				dlgSendDiscovery = new DlgSendDiscovery(this, discoveryTypeId,
-						discovery_txt);
-				dlgSendDiscovery.show();
+			if (dlgSendSurvey == null) {
+				dlgSendSurvey = new DlgSendSurvey(this, survey_kind_Id,
+						survey_descript);
+				dlgSendSurvey.show();
 			} else {
-				dlgSendDiscovery.show();
+				dlgSendSurvey.show();
 			}
 
-			// ServerSession serverSession = CommonSingleton.getInstance()
-			// .getServerSession();
-			// if (serverSession == null || serverSession.isWebSession()) {
-			// SC.say(CallCenter.constants.notCallCenterUser());
-			// return;
-			// }
-			// String isTest = com.google.gwt.user.client.Window.Location
-			// .getParameter("gwt.codesvr");
-			// String url = "";
-			// if (isTest != null && !isTest.trim().equals("")) {
-			// url =
-			// "http://192.168.1.3:8888/CallCenter.html?gwt.codesvr=192.168.1.3:9997&isDisc=yes&sessionId="
-			// + serverSession.getSessionId()
-			// + "&discTypeId="
-			// + discoveryTypeId + "&discoveryTxt=" + discovery_txt;
-			// } else {
-			// url =
-			// "http://192.168.1.5:18080/CallCenter/CallCenter.html?sessionId="
-			// + serverSession.getSessionId()
-			// + "&isDisc=yes&discTypeId="
-			// + discoveryTypeId
-			// + "&discoveryTxt=" + discovery_txt;
-			// }
-			//
-			// Window.open(url, "DiscoverySentWindow", null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
