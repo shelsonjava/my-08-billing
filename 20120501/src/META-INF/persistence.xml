@@ -40,10 +40,10 @@
     <class>com.info08.billing.callcenterbk.shared.entity.main.MainDetailType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.main.MainDetail</class>
     <class>com.info08.billing.callcenterbk.shared.entity.callcenter.CallCenterQueue</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.survey.Discover</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.survey.DiscoverRtype</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.survey.Survey</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.survey.SurveyReplyType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.survey.SurveyKind</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.survey.DiscoverySmsHist</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.survey.SurveyHistSMS</class>
     <class>com.info08.billing.callcenterbk.shared.entity.event.EventOwner</class>
     <class>com.info08.billing.callcenterbk.shared.entity.event.Event</class>
     <class>com.info08.billing.callcenterbk.shared.entity.event.EventCategory</class>
