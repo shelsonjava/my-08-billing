@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.server.jms.SMSSenderMagti;
 import com.info08.billing.callcenterbk.shared.entity.TmpLogSMS;
-import com.info08.billing.callcenterbk.shared.entity.admin.MobileOperatorPrefixe;
+import com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes;
 import com.isomorphic.jpa.EMF;
 
 public class SMSDeliveryManagerJob extends TimerTask {
@@ -30,7 +30,7 @@ public class SMSDeliveryManagerJob extends TimerTask {
 	private Session session;
 	private MessageProducer publisher;
 	private Topic topic;
-	private TreeMap<String, MobileOperatorPrefixe> prefs;
+	private TreeMap<String, GSMIndexes> prefs;
 
 	public void run() {
 		try {
@@ -49,15 +49,15 @@ public class SMSDeliveryManagerJob extends TimerTask {
 	private void initMobOperPrefixes(EntityManager oracleManager) {
 		try {
 			if (prefs == null) {
-				prefs = new TreeMap<String, MobileOperatorPrefixe>();
+				prefs = new TreeMap<String, GSMIndexes>();
 			}
 			prefs.clear();
 			oracleManager = EMF.getEntityManager();
-			ArrayList<MobileOperatorPrefixe> list = (ArrayList<MobileOperatorPrefixe>) oracleManager
+			ArrayList<GSMIndexes> list = (ArrayList<GSMIndexes>) oracleManager
 					.createNamedQuery("MobileOperatorPrefixe.getAll")
 					.getResultList();
 			if (list != null && !list.isEmpty()) {
-				for (MobileOperatorPrefixe fix : list) {
+				for (GSMIndexes fix : list) {
 					prefs.put(fix.getPrefix(), fix);
 				}
 			}
@@ -112,7 +112,7 @@ public class SMSDeliveryManagerJob extends TimerTask {
 					continue;
 				}
 				String prefix = phone.substring(0, 3);
-				MobileOperatorPrefixe prefixe = prefs.get(prefix);
+				GSMIndexes prefixe = prefs.get(prefix);
 				if (prefixe == null) {
 					logSMS.setStatus(-10000101L);
 					oracleManager.merge(logSMS);
