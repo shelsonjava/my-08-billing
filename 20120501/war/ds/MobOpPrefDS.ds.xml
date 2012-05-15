@@ -29,7 +29,7 @@
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
 
-        <!-- MobileOperatorPrefix Status Update -->
+        <!-- MobileOperatorPrefix Status Update A-->
 		<operationBinding operationType="update" operationId="updateMobileOperatorPrefixStatus" serverMethod="updateMobileOperatorPrefixStatus">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
         </operationBinding>
