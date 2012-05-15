@@ -14,8 +14,8 @@
     <class>com.info08.billing.callcenterbk.shared.entity.GeoIndRegion</class>
     <class>com.info08.billing.callcenterbk.shared.entity.LogSMS</class>
     <class>com.info08.billing.callcenterbk.shared.entity.TmpLogSMS</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.Person</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.PersonToAccess</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.Users</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.UserPermission</class>
     <class>com.info08.billing.callcenterbk.shared.entity.Service</class>
     <class>com.info08.billing.callcenterbk.shared.entity.StreetDescr</class>
     <class>com.info08.billing.callcenterbk.shared.entity.StreetDistrict</class>
@@ -54,7 +54,7 @@
     <class>com.info08.billing.callcenterbk.shared.entity.org.BusinessUnion</class>
     <class>com.info08.billing.callcenterbk.shared.entity.admin.FixedOperatorPrefixe</class>
     <class>com.info08.billing.callcenterbk.shared.entity.admin.MobileOperatorPrefixe</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.callcenter.MyMobbase</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments</class>
     <class>com.info08.billing.callcenterbk.shared.entity.callcenter.CcServiceLog</class>
     <class>com.info08.billing.callcenterbk.shared.entity.MainNew</class>
     <class>com.info08.billing.callcenterbk.shared.entity.session.LogSessionCharge</class>
