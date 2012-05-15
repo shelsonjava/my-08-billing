@@ -114,7 +114,7 @@ public class TabControl extends Tab {
 			operatorItem.setTitle("ოპერატორი");
 			operatorItem.setType("comboBox");
 			operatorItem.setWidth("100%");
-			operatorItem.setName("personelId");
+			operatorItem.setName("user_id");
 
 			serviceItem = new ComboBoxItem();
 			serviceItem.setTitle("სერვისი");
@@ -412,7 +412,7 @@ public class TabControl extends Tab {
 					criteria.addCriteria(formCriteria);
 					String operId = operatorItem.getValueAsString();
 					if (operId != null && !operId.trim().equals("")) {
-						criteria.setAttribute("personelId", new Integer(operId));
+						criteria.setAttribute("user_id", new Integer(operId));
 					}
 					String serviceId = serviceItem.getValueAsString();
 					if (serviceId != null && !serviceId.trim().equals("")) {
@@ -781,12 +781,12 @@ public class TabControl extends Tab {
 
 	private void fillCombos() {
 		try {
-			DataSource persons = CommonSingleton.getInstance().getPersonsDS();
+			DataSource persons = CommonSingleton.getInstance().getUsersDS();
 			DataSource services = CommonSingleton.getInstance().getServicesDS();
 			if (persons != null) {
-				operatorItem.setOptionOperationId("customPersSearch");
+				operatorItem.setOptionOperationId("searchUser");
 				operatorItem.setOptionDataSource(persons);
-				operatorItem.setValueField("personelId");
+				operatorItem.setValueField("user_id");
 				operatorItem.setDisplayField("fullPersonName");
 			}
 			if (services != null) {

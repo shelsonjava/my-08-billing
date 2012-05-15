@@ -94,15 +94,15 @@ public class TabViewSMSLog extends Tab {
 					.setValueMap(ClientMapUtil.getInstance().getSmsStatuses());
 			statusItem.setDefaultToFirstOption(true);
 
-			DataSource persons = CommonSingleton.getInstance().getPersonsDS();
+			DataSource persons = CommonSingleton.getInstance().getUsersDS();
 			operatorItem = new ComboBoxItem();
 			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setType("comboBox");
 			operatorItem.setWidth(250);
-			operatorItem.setName("personelId");
-			operatorItem.setOptionOperationId("customPersSearch");
+			operatorItem.setName("user_id");
+			operatorItem.setOptionOperationId("searchUser");
 			operatorItem.setOptionDataSource(persons);
-			operatorItem.setValueField("personelId");
+			operatorItem.setValueField("user_id");
 			operatorItem.setDisplayField("fullPersonName");
 
 			searchForm.setFields(phoneItem, dateItem, statusItem, operatorItem);
@@ -246,8 +246,7 @@ public class TabViewSMSLog extends Tab {
 
 			String operator = operatorItem.getValueAsString();
 			if (operator != null && !operator.trim().equals("")) {
-				criteria.setAttribute("personnel_id",
-						Integer.parseInt(operator));
+				criteria.setAttribute("user_id", Integer.parseInt(operator));
 			}
 
 			DSRequest dsRequest = new DSRequest();

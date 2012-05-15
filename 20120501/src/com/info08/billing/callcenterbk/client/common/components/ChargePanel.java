@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.common.components;
 import java.util.Date;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgAddMyMobBase;
+import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgAddTreatments;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgSendSurvey;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewChargesByPhone;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -60,7 +60,7 @@ public class ChargePanel extends HLayout {
 			this.enableSurveyButton = enableSurveyButton;
 
 			Long persTypeId = CommonSingleton.getInstance().getSessionPerson()
-					.getPersonelTypeId();
+					.getDepartment_id();
 			boolean isOperator = (persTypeId != null && persTypeId.equals(9L));
 
 			int aWidth = (width - 33);
@@ -145,7 +145,7 @@ public class ChargePanel extends HLayout {
 			userNameItem.setTitle(CallCenterBK.constants.username());
 			userNameItem.setCanEdit(false);
 			userNameItem.setValue(CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			userNameItem.setCanFocus(false);
 
 			currentNumberItem = new TextItem();
@@ -243,13 +243,13 @@ public class ChargePanel extends HLayout {
 				String phone = serverSession.getPhone();
 				String phoneDescription = serverSession.getPhoneDescription();
 				String abonentName = serverSession.getAbonentName();
-				Long sex = serverSession.getSex();
+				Long gender = serverSession.getGender();
 				// currentNameItem.setTextBoxStyle("textBoxStyleWoman");
-				if (sex.equals(0L)
+				if (gender.equals(0L)
 						|| (phoneDescription != null && !phoneDescription
 								.trim().equalsIgnoreCase(""))) {
 					currentNameItem.setTextBoxStyle("textBoxStyleWoman");
-				} else if (sex.equals(1L)) {
+				} else if (gender.equals(1L)) {
 					currentNameItem.setTextBoxStyle("textBoxStyleMan");
 				}
 				// if (phoneDescription != null
@@ -341,8 +341,8 @@ public class ChargePanel extends HLayout {
 				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
-			DlgAddMyMobBase addMyMobBase = new DlgAddMyMobBase();
-			addMyMobBase.show();
+			DlgAddTreatments dlgAddTreatment = new DlgAddTreatments();
+			dlgAddTreatment.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -412,7 +412,7 @@ public class ChargePanel extends HLayout {
 			record.setAttribute("session_id", serverSession.getSessionId());
 			record.setAttribute("ym", serverSession.getYearMonth());
 			record.setAttribute("main_id", main_id);
-			record.setAttribute("loggedUserName", serverSession.getUserName());
+			record.setAttribute("loggedUserName", serverSession.getUser_name());
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");

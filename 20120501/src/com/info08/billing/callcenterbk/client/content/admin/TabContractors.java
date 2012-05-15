@@ -541,7 +541,7 @@ public class TabContractors extends Tab {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			record.setAttribute("contract_id", contract_id);
 
 			DSRequest req = new DSRequest();
@@ -576,7 +576,7 @@ public class TabContractors extends Tab {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			record.setAttribute("contract_id", contract_id);
 
 			DSRequest req = new DSRequest();
@@ -680,7 +680,7 @@ public class TabContractors extends Tab {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			record.setAttribute("deleted", 1);
 			record.setAttribute("contract_id",
 					listGridRecord.getAttributeAsInt("contract_id"));

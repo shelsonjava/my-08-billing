@@ -41,16 +41,14 @@ public class TabAdmin extends Tab {
 	private TextItem firstNameItem;
 	private TextItem lastNameItem;
 	private TextItem userNameItem;
-	private TextItem recUserItem;
 	private IButton findButton;
 	private IButton clearButton;
 	private ToolStripButton addPersonBtn;
 	private ToolStripButton editPersonBtn;
 	private ToolStripButton deletePersonBtn;
-	private ToolStripButton restorePersonBtn;
 	private ToolStripButton exportButton;
 	private ListGrid usersGrid;
-	private DataSource personnelsDS;
+	private DataSource usersDS;
 
 	public TabAdmin() {
 		try {
@@ -58,7 +56,7 @@ public class TabAdmin extends Tab {
 			setTitle("სისტემის მომხმარებლების მართვა");
 			setCanClose(true);
 
-			personnelsDS = DataSource.get("PersDS");
+			usersDS = DataSource.get("UsersDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -75,25 +73,19 @@ public class TabAdmin extends Tab {
 			firstNameItem = new TextItem();
 			firstNameItem.setTitle("სახელი");
 			firstNameItem.setWidth(250);
-			firstNameItem.setName("personelName");
+			firstNameItem.setName("user_firstname");
 
 			lastNameItem = new TextItem();
 			lastNameItem.setTitle("გვარი");
 			lastNameItem.setWidth(250);
-			lastNameItem.setName("personelSurName");
+			lastNameItem.setName("user_lastname");
 
 			userNameItem = new TextItem();
 			userNameItem.setTitle("მომხმარებელი");
 			userNameItem.setWidth(250);
 			userNameItem.setName("userName");
 
-			recUserItem = new TextItem();
-			recUserItem.setTitle("შემქმნელი");
-			recUserItem.setWidth(250);
-			recUserItem.setName("recUser");
-
-			searchForm.setFields(firstNameItem, lastNameItem, userNameItem,
-					recUserItem);
+			searchForm.setFields(firstNameItem, lastNameItem, userNameItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(835);
@@ -130,11 +122,6 @@ public class TabAdmin extends Tab {
 			deletePersonBtn.setWidth(50);
 			toolStrip.addButton(deletePersonBtn);
 
-			restorePersonBtn = new ToolStripButton("აღდგენა", "person_add.png");
-			restorePersonBtn.setLayoutAlign(Alignment.LEFT);
-			restorePersonBtn.setWidth(50);
-			toolStrip.addButton(restorePersonBtn);
-
 			// toolStrip.addSeparator();
 
 			exportButton = new ToolStripButton("Excel - ში გადატანა",
@@ -150,63 +137,45 @@ public class TabAdmin extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+
+					return super.getCellCSSText(record, rowNum, colNum);
+
 				};
 			};
 
 			usersGrid.setWidth(835);
 			usersGrid.setHeight(280);
 			usersGrid.setAlternateRecordStyles(true);
-			usersGrid.setDataSource(personnelsDS);
+			usersGrid.setDataSource(usersDS);
 			usersGrid.setAutoFetchData(false);
 			usersGrid.setShowFilterEditor(false);
 			usersGrid.setCanEdit(false);
 			usersGrid.setCanRemoveRecords(false);
-			usersGrid.setFetchOperation("customPersSearch");
+			usersGrid.setFetchOperation("searchUser");
 			usersGrid.setShowRowNumbers(true);
 			usersGrid.setCanHover(true);
 			usersGrid.setShowHover(true);
 			usersGrid.setShowHoverComponents(true);
 
-			personnelsDS.getField("personelName").setTitle("სახელი");
-			personnelsDS.getField("personelSurName").setTitle("გვარი");
-			personnelsDS.getField("userName").setTitle("მომხმარებელი");
-			personnelsDS.getField("password").setTitle("პაროლი");
-			personnelsDS.getField("recUser").setTitle("შემქმნელი");
-			personnelsDS.getField("recDate").setTitle("თარიღი");
-			personnelsDS.getField("updUser").setTitle("განაახლა");
-			personnelsDS.getField("personelType").setTitle("განყოფილება");
+			usersDS.getField("user_firstname").setTitle("სახელი");
+			usersDS.getField("user_lastname").setTitle("გვარი");
+			usersDS.getField("user_name").setTitle("მომხმარებელი");
+			usersDS.getField("user_password").setTitle("პაროლი");
+			usersDS.getField("department_name").setTitle("განყოფილება");
 
-			ListGridField personnel_name = new ListGridField("personelName",
-					"სახელი", 80);
-			ListGridField personnel_surname = new ListGridField(
-					"personelSurName", "გვარი", 120);
-			ListGridField user_name = new ListGridField("userName",
-					"მომხმარებელი", 120);
-			ListGridField password = new ListGridField("password", "პაროლი", 70);
-			ListGridField rec_user = new ListGridField("recUser", "შემქმნელი",
-					90);
-			ListGridField rec_date = new ListGridField("recDate", "თარიღი", 120);
-			ListGridField upd_user = new ListGridField("updUser", "განაახლა",
-					90);
-			ListGridField personelType = new ListGridField("personelType",
-					"განყოფილება", 90);
+			ListGridField user_firstname = new ListGridField("user_firstname",
+					"სახელი", 150);
+			ListGridField user_lastname = new ListGridField("user_lastname",
+					"გვარი", 150);
+			ListGridField user_name = new ListGridField("user_name",
+					"მომხმარებელი", 150);
+			ListGridField user_password = new ListGridField("user_password",
+					"პაროლი", 70);
+			ListGridField department_name = new ListGridField(
+					"department_name", "განყოფილება", 150);
 
-			rec_user.setCanEdit(false);
-			rec_date.setCanEdit(false);
-			upd_user.setCanEdit(false);
-
-			rec_date.setAlign(Alignment.CENTER);
-
-			usersGrid.setFields(personnel_name, personnel_surname,
-					personelType, user_name, password, rec_user, rec_date,
-					upd_user);
+			usersGrid.setFields(user_firstname, user_lastname, department_name,
+					user_name, user_password);
 
 			mainLayout.addMember(usersGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -220,8 +189,8 @@ public class TabAdmin extends Tab {
 					criteria.addCriteria(formCriteria);
 
 					DSRequest dsRequest = new DSRequest();
-					dsRequest.setAttribute("operationId",
-							"customPersSearchAllFromDB");
+					dsRequest
+							.setAttribute("operationId", "searchAllUserFromDB");
 					usersGrid.invalidateCache();
 					usersGrid.filterData(criteria, new DSCallback() {
 						@Override
@@ -236,8 +205,8 @@ public class TabAdmin extends Tab {
 				public void onClick(ClickEvent event) {
 					searchForm.clearValues();
 					DSRequest dsRequest = new DSRequest();
-					dsRequest.setAttribute("operationId",
-							"customPersSearchAllFromDB");
+					dsRequest
+							.setAttribute("operationId", "searchAllUserFromDB");
 					usersGrid.clearCriteria(new DSCallback() {
 						@Override
 						public void execute(DSResponse response,
@@ -251,13 +220,13 @@ public class TabAdmin extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					DlgAddEditUserNew addEditUserNew = new DlgAddEditUserNew(
-							personnelsDS, null);
+							usersDS, null);
 					addEditUserNew.show();
 				}
 			});
 
 			final Long loggedPersonnelId = CommonSingleton.getInstance()
-					.getSessionPerson().getPersonelId();
+					.getSessionPerson().getUser_id();
 
 			editPersonBtn.addClickHandler(new ClickHandler() {
 				@Override
@@ -268,16 +237,15 @@ public class TabAdmin extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer personelId = listGridRecord
-							.getAttributeAsInt("personelId");
-					if (!loggedPersonnelId.equals(new Long(personelId))
-							&& personelId.intValue() == 215) {
+					Integer user_id = listGridRecord.getAttributeAsInt("user_id");
+					if (!loggedPersonnelId.equals(new Long(user_id))
+							&& user_id.intValue() == 215) {
 						SC.say("მოდიფიკაცია შეუძლებელია. ეს სისტემური მომხმარებელია !");
 						return;
 					}
 
 					DlgAddEditUserNew addEditUserNew = new DlgAddEditUserNew(
-							personnelsDS, listGridRecord);
+							usersDS, listGridRecord);
 					addEditUserNew.show();
 				}
 			});
@@ -290,20 +258,14 @@ public class TabAdmin extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("მომხმარებელი უკვე გაუქმებულია !");
-						return;
-					}
-					final Integer personelId = listGridRecord
-							.getAttributeAsInt("personelId");
-					if (personelId == null) {
+					final Integer user_id = listGridRecord
+							.getAttributeAsInt("user_id");
+					if (user_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
-					if (!loggedPersonnelId.equals(new Long(personelId))
-							&& personelId.intValue() == 215) {
+					if (!loggedPersonnelId.equals(new Long(user_id))
+							&& user_id.intValue() == 215) {
 						SC.say("მოდიფიკაცია შეუძლებელია. ეს სისტემური მომხმარებელია !");
 						return;
 					}
@@ -312,49 +274,13 @@ public class TabAdmin extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(personelId, 1);
+										deleteUser(user_id);
 									}
 								}
 							});
 				}
 			});
-			restorePersonBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = usersGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("მომხმარებელი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer personelId = listGridRecord
-							.getAttributeAsInt("personelId");
-					if (personelId == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-					if (!loggedPersonnelId.equals(new Long(personelId))
-							&& personelId.intValue() == 215) {
-						SC.say("მოდიფიკაცია შეუძლებელია. ეს სისტემური მომხმარებელია !");
-						return;
-					}
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(personelId, 0);
-									}
-								}
-							});
-				}
-			});
+
 			exportButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -363,7 +289,7 @@ public class TabAdmin extends Tab {
 							.getEnum(ExportFormat.values(), "xls"));
 					dsRequestProperties
 							.setExportDisplay(ExportDisplay.DOWNLOAD);
-					dsRequestProperties.setOperationId("customPersSearchAll");
+					dsRequestProperties.setOperationId("searchAllUser");
 					usersGrid.exportData(dsRequestProperties);
 				}
 			});
@@ -371,7 +297,7 @@ public class TabAdmin extends Tab {
 			tabSet.setWidth(835);
 			Tab tabDetViewer = new Tab("დათვალიერება");
 			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(personnelsDS);
+			detailViewer.setDataSource(usersDS);
 			detailViewer.setWidth(800);
 			tabDetViewer.setPane(detailViewer);
 
@@ -391,16 +317,16 @@ public class TabAdmin extends Tab {
 								SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 								return;
 							}
-							Integer personelId = listGridRecord
-									.getAttributeAsInt("personelId");
-							if (!loggedPersonnelId.equals(new Long(personelId))
-									&& personelId.intValue() == 215) {
+							Integer user_id = listGridRecord
+									.getAttributeAsInt("user_id");
+							if (!loggedPersonnelId.equals(new Long(user_id))
+									&& user_id.intValue() == 215) {
 								SC.say("მოდიფიკაცია შეუძლებელია. ეს სისტემური მომხმარებელია !");
 								return;
 							}
 
 							DlgAddEditUserNew addEditUserNew = new DlgAddEditUserNew(
-									personnelsDS, listGridRecord);
+									usersDS, listGridRecord);
 							addEditUserNew.show();
 						}
 					});
@@ -414,24 +340,26 @@ public class TabAdmin extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer personelId, Integer deleted) {
+	private void deleteUser(Integer user_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("personelId", personelId);
+			record.setAttribute("user_id", user_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
-			DSRequest req = new DSRequest();
+					.getSessionPerson().getUser_name());
+			record.setAttribute("aaaaaa", "bbbbbbbbbbbbbbbb");
 
-			req.setAttribute("operationId", "customStatusUpdate");
-			personnelsDS.updateData(record, new DSCallback() {
+			DSRequest req = new DSRequest();
+			req.setAttribute("operationId", "deleteUser");
+
+			usersGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
 				}
 			}, req);
 			com.smartgwt.client.rpc.RPCManager.sendQueue();
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}

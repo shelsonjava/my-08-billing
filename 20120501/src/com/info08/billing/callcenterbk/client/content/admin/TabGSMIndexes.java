@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditMobOperPref;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditGSMIndexes;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -32,29 +32,28 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabMobOperPrefs extends Tab {
+public class TabGSMIndexes extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
-	private TextItem operatorItem;
-	private TextItem indexItem;
+	private TextItem gsmCompanyItem;
+	private TextItem gsmIndexItem;
 
 	private IButton findButton;
 	private IButton clearButton;
-	private ToolStripButton addMobOperPrefBtn;
-	private ToolStripButton editMobOperPrefBtn;
-	private ToolStripButton deleteMobOpepPrefBtn;
-	private ToolStripButton restoreMobOperPrefBtn;
-	private ListGrid mobOperPrefsGrid;
-	private DataSource mobOperPrefDS;
+	private ToolStripButton addGSMIndexesBtn;
+	private ToolStripButton editGSMIndexesBtn;
+	private ToolStripButton deleteGSMIndexesBtn;
+	private ListGrid gsmIndexesGrid;
+	private DataSource gsmIndexesDS;
 
-	public TabMobOperPrefs() {
+	public TabGSMIndexes() {
 		try {
 
 			setTitle(CallCenterBK.constants.mobOpIndexes());
 			setCanClose(true);
 
-			mobOperPrefDS = DataSource.get("MobOpPrefDS");
+			gsmIndexesDS = DataSource.get("GSMIndexesDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -68,17 +67,17 @@ public class TabMobOperPrefs extends Tab {
 			searchForm.setNumCols(4);
 			mainLayout.addMember(searchForm);
 
-			operatorItem = new TextItem();
-			operatorItem.setTitle(CallCenterBK.constants.mobOperator());
-			operatorItem.setWidth(250);
-			operatorItem.setName("operatorItem");
+			gsmCompanyItem = new TextItem();
+			gsmCompanyItem.setTitle(CallCenterBK.constants.mobOperator());
+			gsmCompanyItem.setWidth(250);
+			gsmCompanyItem.setName("gsmCompanyItem");
 
-			indexItem = new TextItem();
-			indexItem.setTitle(CallCenterBK.constants.mobOperatorIndex());
-			indexItem.setWidth(250);
-			indexItem.setName("indexItem");
+			gsmIndexItem = new TextItem();
+			gsmIndexItem.setTitle(CallCenterBK.constants.mobOperatorIndex());
+			gsmIndexItem.setWidth(250);
+			gsmIndexItem.setName("gsmIndexItem");
 
-			searchForm.setFields(operatorItem, indexItem);
+			searchForm.setFields(gsmCompanyItem, gsmIndexItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(835);
@@ -99,94 +98,60 @@ public class TabMobOperPrefs extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addMobOperPrefBtn = new ToolStripButton(CallCenterBK.constants.add(),
-					"addIcon.png");
-			addMobOperPrefBtn.setLayoutAlign(Alignment.LEFT);
-			addMobOperPrefBtn.setWidth(50);
-			toolStrip.addButton(addMobOperPrefBtn);
+			addGSMIndexesBtn = new ToolStripButton(
+					CallCenterBK.constants.add(), "addIcon.png");
+			addGSMIndexesBtn.setLayoutAlign(Alignment.LEFT);
+			addGSMIndexesBtn.setWidth(50);
+			toolStrip.addButton(addGSMIndexesBtn);
 
-			editMobOperPrefBtn = new ToolStripButton(
+			editGSMIndexesBtn = new ToolStripButton(
 					CallCenterBK.constants.modify(), "editIcon.png");
-			editMobOperPrefBtn.setLayoutAlign(Alignment.LEFT);
-			editMobOperPrefBtn.setWidth(50);
-			toolStrip.addButton(editMobOperPrefBtn);
+			editGSMIndexesBtn.setLayoutAlign(Alignment.LEFT);
+			editGSMIndexesBtn.setWidth(50);
+			toolStrip.addButton(editGSMIndexesBtn);
 
-			deleteMobOpepPrefBtn = new ToolStripButton(
+			deleteGSMIndexesBtn = new ToolStripButton(
 					CallCenterBK.constants.disable(), "deleteIcon.png");
-			deleteMobOpepPrefBtn.setLayoutAlign(Alignment.LEFT);
-			deleteMobOpepPrefBtn.setWidth(50);
-			toolStrip.addButton(deleteMobOpepPrefBtn);
+			deleteGSMIndexesBtn.setLayoutAlign(Alignment.LEFT);
+			deleteGSMIndexesBtn.setWidth(50);
+			toolStrip.addButton(deleteGSMIndexesBtn);
 
-			restoreMobOperPrefBtn = new ToolStripButton(
-					CallCenterBK.constants.enable(), "restoreIcon.gif");
-			restoreMobOperPrefBtn.setLayoutAlign(Alignment.LEFT);
-			restoreMobOperPrefBtn.setWidth(50);
-			toolStrip.addButton(restoreMobOperPrefBtn);
-
-			mobOperPrefsGrid = new ListGrid() {
+			gsmIndexesGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
 					ListGridRecord countryRecord = (ListGridRecord) record;
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+					return super.getCellCSSText(record, rowNum, colNum);
 				};
 			};
 
-			mobOperPrefsGrid.setWidth(835);
-			mobOperPrefsGrid.setHeight(400);
-			mobOperPrefsGrid.setAlternateRecordStyles(true);
-			mobOperPrefsGrid.setDataSource(mobOperPrefDS);
-			mobOperPrefsGrid.setAutoFetchData(false);
-			mobOperPrefsGrid.setShowFilterEditor(false);
-			mobOperPrefsGrid.setCanEdit(false);
-			mobOperPrefsGrid.setCanRemoveRecords(false);
-			mobOperPrefsGrid.setFetchOperation("searchMobOperPrefs");
-			mobOperPrefsGrid.setShowRowNumbers(true);
-			mobOperPrefsGrid.setCanHover(true);
-			mobOperPrefsGrid.setShowHover(true);
-			mobOperPrefsGrid.setShowHoverComponents(true);
+			gsmIndexesGrid.setWidth(835);
+			gsmIndexesGrid.setHeight(400);
+			gsmIndexesGrid.setAlternateRecordStyles(true);
+			gsmIndexesGrid.setDataSource(mobOperPrefDS);
+			gsmIndexesGrid.setAutoFetchData(false);
+			gsmIndexesGrid.setShowFilterEditor(false);
+			gsmIndexesGrid.setCanEdit(false);
+			gsmIndexesGrid.setCanRemoveRecords(false);
+			gsmIndexesGrid.setFetchOperation("searchMobOperPrefs");
+			gsmIndexesGrid.setShowRowNumbers(true);
+			gsmIndexesGrid.setCanHover(true);
+			gsmIndexesGrid.setShowHover(true);
+			gsmIndexesGrid.setShowHoverComponents(true);
 
-			mobOperPrefDS.getField("oper").setTitle(
+			mobOperPrefDS.getField("gsm_company").setTitle(
 					CallCenterBK.constants.mobOperator());
-			mobOperPrefDS.getField("prefix").setTitle(
+			mobOperPrefDS.getField("gsm_index").setTitle(
 					CallCenterBK.constants.mobOperatorIndex());
-			mobOperPrefDS.getField("rec_date").setTitle(
-					CallCenterBK.constants.recDate());
-			mobOperPrefDS.getField("rec_user").setTitle(
-					CallCenterBK.constants.recUser());
-			mobOperPrefDS.getField("upd_date").setTitle(
-					CallCenterBK.constants.updDate());
-			mobOperPrefDS.getField("upd_user").setTitle(
-					CallCenterBK.constants.updUser());
 
-			ListGridField oper = new ListGridField("oper",
+			ListGridField gsm_company = new ListGridField("gsm_company",
 					CallCenterBK.constants.mobOperator(), 157);
-			ListGridField prefix = new ListGridField("prefix",
+			ListGridField prefix = new ListGridField("gsm_index",
 					CallCenterBK.constants.mobOperatorIndex(), 150);
-			ListGridField rec_date = new ListGridField("rec_date",
-					CallCenterBK.constants.recDate(), 130);
-			ListGridField rec_user = new ListGridField("rec_user",
-					CallCenterBK.constants.recUser(), 110);
-			ListGridField upd_date = new ListGridField("upd_date",
-					CallCenterBK.constants.updDate(), 130);
-			ListGridField upd_user = new ListGridField("upd_user",
-					CallCenterBK.constants.updUser(), 110);
 
-			rec_user.setAlign(Alignment.CENTER);
-			rec_date.setAlign(Alignment.CENTER);
-			upd_date.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
-
-			mobOperPrefsGrid.setFields(oper, prefix, rec_user, rec_date,
-					upd_user, upd_date);
+			mobOperPrefsGrid.setFields(gsm_company, prefix);
 
 			mainLayout.addMember(mobOperPrefsGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -198,15 +163,15 @@ public class TabMobOperPrefs extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					operatorItem.clearValue();
-					indexItem.clearValue();
+					gsmCompanyItem.clearValue();
+					gsmIndexItem.clearValue();
 				}
 			});
 
 			addMobOperPrefBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditMobOperPref dlgAddEditMobOperPref = new DlgAddEditMobOperPref(
+					DlgAddEditGSMIndexes dlgAddEditMobOperPref = new DlgAddEditGSMIndexes(
 							mobOperPrefsGrid, null);
 					dlgAddEditMobOperPref.show();
 				}
@@ -217,7 +182,7 @@ public class TabMobOperPrefs extends Tab {
 				public void onClick(ClickEvent event) {
 					ListGridRecord listGridRecord = mobOperPrefsGrid
 							.getSelectedRecord();
-					DlgAddEditMobOperPref dlgAddEditMobOperPref = new DlgAddEditMobOperPref(
+					DlgAddEditGSMIndexes dlgAddEditMobOperPref = new DlgAddEditGSMIndexes(
 							mobOperPrefsGrid, listGridRecord);
 					dlgAddEditMobOperPref.show();
 				}
@@ -231,44 +196,13 @@ public class TabMobOperPrefs extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrDisabled());
-						return;
-					}
+
 					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(listGridRecord, 1);
-									}
-								}
-							});
-				}
-			});
-			restoreMobOperPrefBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = mobOperPrefsGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrEnabled());
-						return;
-					}
-					SC.ask(CallCenterBK.constants.askForEnable(),
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(listGridRecord, 0);
+										delete(listGridRecord);
 									}
 								}
 							});
@@ -295,7 +229,7 @@ public class TabMobOperPrefs extends Tab {
 								RecordDoubleClickEvent event) {
 							ListGridRecord listGridRecord = mobOperPrefsGrid
 									.getSelectedRecord();
-							DlgAddEditMobOperPref dlgAddEditMobOperPref = new DlgAddEditMobOperPref(
+							DlgAddEditGSMIndexes dlgAddEditMobOperPref = new DlgAddEditGSMIndexes(
 									mobOperPrefsGrid, listGridRecord);
 							dlgAddEditMobOperPref.show();
 						}
@@ -313,16 +247,16 @@ public class TabMobOperPrefs extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			String oper = operatorItem.getValueAsString();
-			if (oper != null && !oper.trim().equals("")) {
-				criteria.setAttribute("oper", oper);
+			String gsm_company = gsmCompanyItem.getValueAsString();
+			if (gsm_company != null && !gsm_company.trim().equals("")) {
+				criteria.setAttribute("gsm_company", gsm_company);
 			}
-			String prefix = indexItem.getValueAsString();
-			if (prefix != null && !prefix.trim().equals("")) {
-				criteria.setAttribute("prefix", prefix);
+			String gsm_index = gsmIndexItem.getValueAsString();
+			if (gsm_index != null && !gsm_index.trim().equals("")) {
+				criteria.setAttribute("gsm_index", gsm_index);
 			}
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchMobOperPrefs");
+			dsRequest.setAttribute("operationId", "searchGSMIndexes");
 			mobOperPrefsGrid.invalidateCache();
 			mobOperPrefsGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -335,19 +269,19 @@ public class TabMobOperPrefs extends Tab {
 		}
 	}
 
-	private void changeStatus(ListGridRecord listGridRecord, Integer deleted) {
+	private void delete(ListGridRecord listGridRecord) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("id", listGridRecord.getAttributeAsInt("id"));
+					.getSessionPerson().getUser_name());
+			record.setAttribute("gsm_index_id",
+					listGridRecord.getAttributeAsInt("gsm_index_id"));
 
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateMobileOperatorPrefixStatus");
-			mobOperPrefsGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "deleteGSMIndexes");
+			mobOperPrefsGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

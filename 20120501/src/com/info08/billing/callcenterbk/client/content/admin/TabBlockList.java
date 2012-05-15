@@ -322,7 +322,7 @@ public class TabBlockList extends Tab {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			record.setAttribute("id", id);
 
 			DSRequest req = new DSRequest();
@@ -394,7 +394,7 @@ public class TabBlockList extends Tab {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("id", listGridRecord.getAttributeAsInt("id"));
 

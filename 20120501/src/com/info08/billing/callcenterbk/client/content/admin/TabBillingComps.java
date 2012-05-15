@@ -384,7 +384,7 @@ public class TabBillingComps extends Tab {
 
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			record.setAttribute("billing_company_id",
 					listGridRecord.getAttributeAsInt("billing_company_id"));
 
