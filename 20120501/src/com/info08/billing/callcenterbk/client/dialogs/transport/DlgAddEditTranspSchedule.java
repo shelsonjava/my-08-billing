@@ -861,8 +861,7 @@ public class DlgAddEditTranspSchedule extends Window {
 			}
 
 			Map records = new LinkedHashMap();
-			RecordList trasnport_details = transpItemsGrid
-					.getDataAsRecordList();
+			RecordList trasnport_details = transpItemsGrid.getDataAsRecordList();
 
 			if (trasnport_details != null && trasnport_details.getLength() > 0) {
 				int length = trasnport_details.getLength();
