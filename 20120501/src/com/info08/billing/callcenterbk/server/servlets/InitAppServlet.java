@@ -20,8 +20,8 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
-import com.info08.billing.callcenterbk.shared.entity.Person;
-import com.info08.billing.callcenterbk.shared.entity.callcenter.MyMobbase;
+import com.info08.billing.callcenterbk.shared.entity.Users;
+import com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments;
 import com.info08.billing.callcenterbk.shared.entity.contractors.ContractorBlockChecker;
 import com.isomorphic.jpa.EMF;
 
@@ -84,9 +84,9 @@ public class InitAppServlet extends HttpServlet {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Query q = oracleManager.createNamedQuery("Person.selectBuUserName")
+			Query q = oracleManager.createNamedQuery("Users.selectByUserName")
 					.setParameter("usrName", userName);
-			ArrayList<Person> users = (ArrayList<Person>) q.getResultList();
+			ArrayList<Users> users = (ArrayList<Users>) q.getResultList();
 			if (users == null || users.isEmpty()) {
 				out.println("UserName Not Found : " + userName);
 				return;
@@ -95,21 +95,21 @@ public class InitAppServlet extends HttpServlet {
 				out.println("Multiple UserName Found : " + userName);
 				return;
 			}
-			Person user = users.get(0);
-			Long personelTypeId = user.getPersonelTypeId();
-			if (personelTypeId == null || !personelTypeId.equals(9L)) {
+			Users user = users.get(0);
+			Long department_id = user.getDepartment_id();
+			if (department_id == null || !department_id.equals(9L)) {
 				out.println("This UserName Is Not Operator : " + userName);
 				return;
 			}
-			List persToAccList = oracleManager
-					.createNativeQuery(QueryConstants.Q_GET_PERS_TO_ACC)
-					.setParameter(1, user.getPersonelId()).getResultList();
-			if (persToAccList != null && !persToAccList.isEmpty()) {
-				Map<String, String> mapPerms = new LinkedHashMap<String, String>();
-				for (Object object : persToAccList) {
-					mapPerms.put(object.toString(), "1");
+			List userPermissions = oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_USER_PERMISSIONS)
+					.setParameter(1, user.getUser_id()).getResultList();
+			if (userPermissions != null && !userPermissions.isEmpty()) {
+				Map<String, String> mapUserPermissions = new LinkedHashMap<String, String>();
+				for (Object object : userPermissions) {
+					mapUserPermissions.put(object.toString(), "1");
 				}
-				user.setUserPerms(mapPerms);
+				user.setUserPerms(mapUserPermissions);
 			}
 			String realPhone = phone.substring(0, ampIndex);
 
@@ -136,9 +136,9 @@ public class InitAppServlet extends HttpServlet {
 
 			String phoneDescription = "";
 			String abonentName = "";
-			Long sex = -1L;
+			Long gender = -1L;
 			Double bid = new Double(-1);
-			MyMobbase myMobbase = null;
+			Treatments treatment = null;
 			Long main_id = -1L;
 			boolean checkContractor = false;
 			String findPhone = "";
@@ -161,14 +161,16 @@ public class InitAppServlet extends HttpServlet {
 					callType = Constants.callTypeMobile;
 				}
 
-				List<MyMobbase> list = (List<MyMobbase>) oracleManager
-						.createNamedQuery("MyMobbase.getByPhone")
-						.setParameter("phone", realPhone).getResultList();
+				List<Treatments> list = (List<Treatments>) oracleManager
+						.createNamedQuery(
+								"Treatments.getTreatmentByPhoneNumber")
+						.setParameter("phone_number", realPhone)
+						.getResultList();
 
 				if (list != null && !list.isEmpty()) {
-					myMobbase = list.get(0);
-					abonentName = myMobbase.getNm();
-					sex = myMobbase.getSex();
+					treatment = list.get(0);
+					abonentName = treatment.getTreatment();
+					gender = treatment.getGender();
 				}
 			} else {
 				// fixed telephony
@@ -284,13 +286,13 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setPhone(realPhone);
 			serverSession.setPhoneDescription(phoneDescription);
 			serverSession.setSessionId(sessionId);
-			serverSession.setSex(sex);
+			serverSession.setGender(gender);
 			serverSession.setUser(user);
 			serverSession.setUserName(userName);
 			serverSession.setWebSession(false);
 			serverSession.setCallType(callType);
 			serverSession.setCbd(bid);
-			serverSession.setMyMobbase(myMobbase);
+			serverSession.setTreatment(treatment);
 			serverSession.setPhoneIsMobile(phoneIsMobile);
 			serverSession.setMain_id(main_id);
 
@@ -323,14 +325,14 @@ public class InitAppServlet extends HttpServlet {
 
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
-			 response.sendRedirect(response
-			 .encodeRedirectURL("http://192.168.1.3:8888/CallCenterBK.html?gwt.codesvr=192.168.1.3:9997&sessionId="
-			 + sessionId));
+			response.sendRedirect(response
+					.encodeRedirectURL("http://192.168.1.8:8888/CallCenterBK.html?gwt.codesvr=192.168.1.8:9997&sessionId="
+							+ sessionId));
 			// } else {
 			// Live
-//			response.sendRedirect(response
-//					.encodeRedirectURL("http://192.168.1.5:18080/CallCenter/CallCenter.html?sessionId="
-//							+ sessionId));
+			// response.sendRedirect(response
+			// .encodeRedirectURL("http://192.168.1.5:18080/CallCenter/CallCenter.html?sessionId="
+			// + sessionId));
 			// }
 			time = System.currentTimeMillis() - time;
 			System.out.println("Servlet Initialize Time Is : " + time
