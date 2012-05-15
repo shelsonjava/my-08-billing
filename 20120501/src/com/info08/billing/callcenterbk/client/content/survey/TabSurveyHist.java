@@ -5,7 +5,7 @@ import java.util.Date;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.control.LogSMSDialog;
 import com.info08.billing.callcenterbk.client.dialogs.survey.DlgChangeResolveStatus;
-import com.info08.billing.callcenterbk.client.dialogs.survey.DlgDiscoveryManagerHist;
+import com.info08.billing.callcenterbk.client.dialogs.survey.DlgSurveyManagerHist;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -34,11 +34,11 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class TabDiscoveryHist extends Tab {
+public class TabSurveyHist extends Tab {
 
 	private DynamicForm searchForm;
-	private SelectItem discoveryTypeItem;
-	private DateItem discoveryDateItem;
+	private SelectItem surveyKindItem;
+	private DateItem surveyDateItem;
 	private TextItem nmItem;
 	private TextItem contactNmItem;
 	private ComboBoxItem operatorItem;
@@ -56,12 +56,12 @@ public class TabDiscoveryHist extends Tab {
 	// DataSource
 	protected DataSource datasource;
 
-	public TabDiscoveryHist() {
+	public TabSurveyHist() {
 		try {
-			setTitle(CallCenterBK.constants.menuDiscoveryHist());
+			setTitle(CallCenterBK.constants.menuSurveyHist());
 			setCanClose(true);
 
-			datasource = DataSource.get("DiscoveryDS");
+			datasource = DataSource.get("SurveyDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -76,24 +76,24 @@ public class TabDiscoveryHist extends Tab {
 			searchForm.setTitleOrientation(TitleOrientation.TOP);
 			mainLayout.addMember(searchForm);
 
-			discoveryTypeItem = new SelectItem();
-			discoveryTypeItem.setTitle(CallCenterBK.constants.discoveryType());
-			discoveryTypeItem.setWidth(250);
-			discoveryTypeItem.setName("discoveryTypeItem");
+			surveyKindItem = new SelectItem();
+			surveyKindItem.setTitle(CallCenterBK.constants.surveyKind());
+			surveyKindItem.setWidth(250);
+			surveyKindItem.setName("surveyKindItem");
 
-			DataSource discoveryTypeDS = DataSource.get("DiscoveryTypeDS");
-			discoveryTypeItem.setOptionOperationId("searchDiscoverTypesForCB");
-			discoveryTypeItem.setOptionDataSource(discoveryTypeDS);
-			discoveryTypeItem.setValueField("survey_kind_id");
-			discoveryTypeItem.setDisplayField("survey_kind_name");
+			DataSource surveyKindDS = DataSource.get("SurveyKindDS");
+			surveyKindItem.setOptionOperationId("searchSurveyKindsForCB");
+			surveyKindItem.setOptionDataSource(surveyKindDS);
+			surveyKindItem.setValueField("survey_kind_id");
+			surveyKindItem.setDisplayField("survey_kind_name");
 
-			discoveryTypeItem.setOptionCriteria(new Criteria());
-			discoveryTypeItem.setAutoFetchData(false);
+			surveyKindItem.setOptionCriteria(new Criteria());
+			surveyKindItem.setAutoFetchData(false);
 
-			discoveryTypeItem.addKeyPressHandler(new KeyPressHandler() {
+			surveyKindItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = discoveryTypeItem.getOptionCriteria();
+					Criteria criteria = surveyKindItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
 								.getAttribute("survey_kind_id");
@@ -105,12 +105,12 @@ public class TabDiscoveryHist extends Tab {
 				}
 			});
 
-			discoveryDateItem = new DateItem();
-			discoveryDateItem.setUseTextField(true);
-			discoveryDateItem.setTitle(CallCenterBK.constants.date());
-			discoveryDateItem.setName("discoveryDateItem");
-			discoveryDateItem.setWidth(250);
-			discoveryDateItem.setValue(new Date());
+			surveyDateItem = new DateItem();
+			surveyDateItem.setUseTextField(true);
+			surveyDateItem.setTitle(CallCenterBK.constants.date());
+			surveyDateItem.setName("surveyDateItem");
+			surveyDateItem.setWidth(250);
+			surveyDateItem.setValue(new Date());
 
 			nmItem = new TextItem();
 			nmItem.setTitle(CallCenterBK.constants.phone());
@@ -153,15 +153,16 @@ public class TabDiscoveryHist extends Tab {
 			discResponseType.setName("discResponseType");
 			discResponseType.setWidth(250);
 
-			DataSource discoveryRTypeDS = DataSource.get("DiscoveryRTypeDS");
-			discResponseType.setOptionOperationId("searchDiscoverRtypesForCB");
-			discResponseType.setOptionDataSource(discoveryRTypeDS);
+			DataSource surveyReplyTypeDS = DataSource.get("SurveyReplyTypeDS");
+			discResponseType
+					.setOptionOperationId("searchSurveyReplyTypesForCB");
+			discResponseType.setOptionDataSource(surveyReplyTypeDS);
 			discResponseType.setValueField("survey_reply_type_id");
 			discResponseType.setDisplayField("survey_reply_type_name");
 			discResponseType.setAutoFetchData(true);
 
-			searchForm.setFields(nmItem, contactNmItem, discoveryTypeItem,
-					discoveryDateItem, operatorItem, updateUserItem,
+			searchForm.setFields(nmItem, contactNmItem, surveyKindItem,
+					surveyDateItem, operatorItem, updateUserItem,
 					discResponseType);
 
 			HLayout buttonLayout = new HLayout(5);
@@ -209,24 +210,25 @@ public class TabDiscoveryHist extends Tab {
 			listGrid.setWidth100();
 			listGrid.setHeight100();
 			listGrid.setDataSource(datasource);
-			listGrid.setFetchOperation("searchAllDiscoveryHist");
+			listGrid.setFetchOperation("searchAllSurveyHist");
 			listGrid.setWrapCells(true);
 			listGrid.setFixedRecordHeights(false);
 			listGrid.setCanDragSelectText(true);
 			listGrid.setShowRowNumbers(true);
 
-			ListGridField survey_kind_name = new ListGridField("survey_kind_name",
-					CallCenterBK.constants.type(), 100);
+			ListGridField survey_kind_name = new ListGridField(
+					"survey_kind_name", CallCenterBK.constants.type(), 100);
 			ListGridField p_numb = new ListGridField("p_numb",
 					CallCenterBK.constants.phone(), 80);
 			ListGridField survey_phone = new ListGridField("survey_phone",
 					CallCenterBK.constants.contactPhone(), 120);
 			ListGridField contact_person = new ListGridField("contact_person",
 					CallCenterBK.constants.contactPerson(), 150);
-			ListGridField survey_descript = new ListGridField("survey_descript",
-					CallCenterBK.constants.message());
-			ListGridField survey_reply_type_name = new ListGridField("survey_reply_type_name",
-					CallCenterBK.constants.status(), 150);
+			ListGridField survey_descript = new ListGridField(
+					"survey_descript", CallCenterBK.constants.message());
+			ListGridField survey_reply_type_name = new ListGridField(
+					"survey_reply_type_name", CallCenterBK.constants.status(),
+					150);
 			ListGridField rec_user = new ListGridField("rec_user",
 					CallCenterBK.constants.shortOp(), 50);
 			ListGridField rec_date = new ListGridField("rec_date",
@@ -242,17 +244,17 @@ public class TabDiscoveryHist extends Tab {
 			rec_user.setAlign(Alignment.CENTER);
 			rec_date.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(survey_kind_name, survey_reply_type_name, p_numb,
-					survey_phone, contact_person, survey_descript, rec_user,
-					rec_date, upd_user);
+			listGrid.setFields(survey_kind_name, survey_reply_type_name,
+					p_numb, survey_phone, contact_person, survey_descript,
+					rec_user, rec_date, upd_user);
 
 			mainLayout.addMember(listGrid);
 
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					discoveryTypeItem.clearValue();
-					discoveryDateItem.clearValue();
+					surveyKindItem.clearValue();
+					surveyDateItem.clearValue();
 					nmItem.clearValue();
 					contactNmItem.clearValue();
 					operatorItem.clearValue();
@@ -322,9 +324,9 @@ public class TabDiscoveryHist extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					DlgDiscoveryManagerHist dlgResolveDiscovery = new DlgDiscoveryManagerHist(
+					DlgSurveyManagerHist dlgResolveSurvey = new DlgSurveyManagerHist(
 							datasource, gridRecord);
-					dlgResolveDiscovery.show();
+					dlgResolveSurvey.show();
 				}
 			});
 
@@ -367,13 +369,14 @@ public class TabDiscoveryHist extends Tab {
 		try {
 			Criteria criteria = new Criteria();
 
-			String survey_kind_id = discoveryTypeItem.getValueAsString();
+			String survey_kind_id = surveyKindItem.getValueAsString();
 			if (survey_kind_id != null && !survey_kind_id.trim().equals("")) {
 				criteria.setAttribute("survey_kind_id", new Integer(
 						survey_kind_id));
 			}
 			String survey_reply_type_id = discResponseType.getValueAsString();
-			if (survey_reply_type_id != null && !survey_reply_type_id.trim().equals("")) {
+			if (survey_reply_type_id != null
+					&& !survey_reply_type_id.trim().equals("")) {
 				criteria.setAttribute("survey_reply_type_id", new Integer(
 						survey_reply_type_id));
 			}
@@ -381,7 +384,7 @@ public class TabDiscoveryHist extends Tab {
 			criteria.setAttribute("survery_responce_status", new Integer(1));
 
 			try {
-				Date rec_date = discoveryDateItem.getValueAsDate();
+				Date rec_date = surveyDateItem.getValueAsDate();
 				if (rec_date != null) {
 					criteria.setAttribute("rec_date", rec_date);
 				}
@@ -410,7 +413,7 @@ public class TabDiscoveryHist extends Tab {
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllDiscoveryHist");
+			dsRequest.setAttribute("operationId", "searchAllSurveyHist");
 			listGrid.invalidateCache();
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override

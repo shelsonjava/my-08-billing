@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.survey;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.survey.DlgAddEditDiscoveryType;
+import com.info08.billing.callcenterbk.client.dialogs.survey.DlgAddEditSurveyKind;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -32,13 +32,13 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabDiscoveryTypes extends Tab {
+public class TabSurveyKinds extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
 
 	// form fields
-	private TextItem discoverTypeItem;
+	private TextItem surveyKindItem;
 
 	// actions
 	private IButton findButton;
@@ -53,12 +53,12 @@ public class TabDiscoveryTypes extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabDiscoveryTypes() {
+	public TabSurveyKinds() {
 		try {
-			setTitle(CallCenterBK.constants.menuDiscoveryTypes());
+			setTitle(CallCenterBK.constants.menuSurveyKinds());
 			setCanClose(true);
 
-			datasource = DataSource.get("DiscoveryTypeDS");
+			datasource = DataSource.get("SurveyKindDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -72,12 +72,12 @@ public class TabDiscoveryTypes extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			discoverTypeItem = new TextItem();
-			discoverTypeItem.setTitle(CallCenterBK.constants.type());
-			discoverTypeItem.setName("survey_kind_name");
-			discoverTypeItem.setWidth(300);
+			surveyKindItem = new TextItem();
+			surveyKindItem.setTitle(CallCenterBK.constants.type());
+			surveyKindItem.setName("survey_kind_name");
+			surveyKindItem.setWidth(300);
 
-			searchForm.setFields(discoverTypeItem);
+			searchForm.setFields(surveyKindItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -143,7 +143,7 @@ public class TabDiscoveryTypes extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchDiscoverTypes");
+			listGrid.setFetchOperation("searchSurveyKinds");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
@@ -152,8 +152,8 @@ public class TabDiscoveryTypes extends Tab {
 			datasource.getField("survey_kind_name").setTitle(
 					CallCenterBK.constants.type());
 
-			ListGridField survey_kind_name = new ListGridField("survey_kind_name",
-					CallCenterBK.constants.type(), 190);
+			ListGridField survey_kind_name = new ListGridField(
+					"survey_kind_name", CallCenterBK.constants.type(), 190);
 
 			survey_kind_name.setAlign(Alignment.LEFT);
 
@@ -169,15 +169,15 @@ public class TabDiscoveryTypes extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					discoverTypeItem.clearValue();
+					surveyKindItem.clearValue();
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditDiscoveryType dlgAddEditDiscoveryType = new DlgAddEditDiscoveryType(
+					DlgAddEditSurveyKind dlgAddEditSurveyKind = new DlgAddEditSurveyKind(
 							listGrid, null);
-					dlgAddEditDiscoveryType.show();
+					dlgAddEditSurveyKind.show();
 				}
 			});
 
@@ -190,9 +190,9 @@ public class TabDiscoveryTypes extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					DlgAddEditDiscoveryType dlgAddEditDiscoveryType = new DlgAddEditDiscoveryType(
+					DlgAddEditSurveyKind dlgAddEditSurveyKind = new DlgAddEditSurveyKind(
 							listGrid, listGridRecord);
-					dlgAddEditDiscoveryType.show();
+					dlgAddEditSurveyKind.show();
 				}
 			});
 			disableBtn.addClickHandler(new ClickHandler() {
@@ -239,9 +239,9 @@ public class TabDiscoveryTypes extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					DlgAddEditDiscoveryType dlgAddEditDiscoveryType = new DlgAddEditDiscoveryType(
+					DlgAddEditSurveyKind dlgAddEditSurveyKind = new DlgAddEditSurveyKind(
 							listGrid, listGridRecord);
-					dlgAddEditDiscoveryType.show();
+					dlgAddEditSurveyKind.show();
 				}
 			});
 
@@ -258,13 +258,13 @@ public class TabDiscoveryTypes extends Tab {
 		try {
 			Criteria criteria = new Criteria();
 
-			String survey_kind_name = discoverTypeItem.getValueAsString();
+			String survey_kind_name = surveyKindItem.getValueAsString();
 			if (survey_kind_name != null && !survey_kind_name.trim().equals("")) {
 				criteria.setAttribute("survey_kind_name", survey_kind_name);
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchDiscoverTypes");
+			dsRequest.setAttribute("operationId", "searchSurveyKinds");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override

@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.survey;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.survey.DlgAddEditDiscoveryRType;
+import com.info08.billing.callcenterbk.client.dialogs.survey.DlgAddEditSurveyReplyType;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -32,7 +32,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabDiscoveryRTypes extends Tab {
+public class TabSurveyReplyType extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
@@ -53,12 +53,12 @@ public class TabDiscoveryRTypes extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabDiscoveryRTypes() {
+	public TabSurveyReplyType() {
 		try {
-			setTitle(CallCenterBK.constants.menuDiscoveryStatuses());
+			setTitle(CallCenterBK.constants.menuSurveyStatuses());
 			setCanClose(true);
 
-			datasource = DataSource.get("DiscoveryRTypeDS");
+			datasource = DataSource.get("SurveyReplyTypeDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -143,7 +143,7 @@ public class TabDiscoveryRTypes extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchDiscoverRtypes");
+			listGrid.setFetchOperation("searchSurveyReplyTypes");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
@@ -176,9 +176,9 @@ public class TabDiscoveryRTypes extends Tab {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditDiscoveryRType dlgAddEditDiscoveryRType = new DlgAddEditDiscoveryRType(
+					DlgAddEditSurveyReplyType dlgAddEditSurveyReplyType = new DlgAddEditSurveyReplyType(
 							listGrid, null);
-					dlgAddEditDiscoveryRType.show();
+					dlgAddEditSurveyReplyType.show();
 				}
 			});
 
@@ -191,9 +191,9 @@ public class TabDiscoveryRTypes extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					DlgAddEditDiscoveryRType dlgAddEditDiscoveryRType = new DlgAddEditDiscoveryRType(
+					DlgAddEditSurveyReplyType dlgAddEditSurveyReplyType = new DlgAddEditSurveyReplyType(
 							listGrid, listGridRecord);
-					dlgAddEditDiscoveryRType.show();
+					dlgAddEditSurveyReplyType.show();
 				}
 			});
 			disableBtn.addClickHandler(new ClickHandler() {
@@ -240,9 +240,9 @@ public class TabDiscoveryRTypes extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					DlgAddEditDiscoveryRType dlgAddEditDiscoveryRType = new DlgAddEditDiscoveryRType(
+					DlgAddEditSurveyReplyType dlgAddEditSurveyReplyType = new DlgAddEditSurveyReplyType(
 							listGrid, listGridRecord);
-					dlgAddEditDiscoveryRType.show();
+					dlgAddEditSurveyReplyType.show();
 				}
 			});
 
@@ -267,7 +267,7 @@ public class TabDiscoveryRTypes extends Tab {
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchDiscoverRtypes");
+			dsRequest.setAttribute("operationId", "searchSurveyReplyTypes");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
