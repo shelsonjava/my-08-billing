@@ -370,7 +370,7 @@ public class TabCurrency extends Tab {
 			final Record record = new Record();
 			record.setAttribute("currency_id", curr_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeCurrency");
