@@ -4,8 +4,8 @@ import java.util.Date;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.control.LogSMSDialog;
-import com.info08.billing.callcenterbk.client.dialogs.discovery.DlgChangeResolveStatus;
-import com.info08.billing.callcenterbk.client.dialogs.discovery.DlgDiscoveryManagerHist;
+import com.info08.billing.callcenterbk.client.dialogs.survey.DlgChangeResolveStatus;
+import com.info08.billing.callcenterbk.client.dialogs.survey.DlgDiscoveryManagerHist;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;

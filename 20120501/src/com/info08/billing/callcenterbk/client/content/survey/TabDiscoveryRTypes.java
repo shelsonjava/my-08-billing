@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.survey;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.discovery.DlgAddEditDiscoveryRType;
+import com.info08.billing.callcenterbk.client.dialogs.survey.DlgAddEditDiscoveryRType;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
