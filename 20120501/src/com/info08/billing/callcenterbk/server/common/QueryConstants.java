@@ -840,43 +840,6 @@ public interface QueryConstants {
 
 	public static final String Q_GET_CALL_CENTER_REQ_MSG = "select t.text from ccare.call_center_req_msg t where sysdate between t.start_date and t.end_date";
 
-	
-	public static final String Q_GET_DISCOVERY_RECORD = "select tt.discover_type,\n" +
-					"       r.response_type,\n" + 
-					"       t.discover_id,\n" + 
-					"       t.call_id,\n" + 
-					"       t.phone,\n" + 
-					"       t.discover_txt,\n" + 
-					"       t.contact_phone,\n" + 
-					"       t.discover_type_id,\n" + 
-					"       t.rec_date,\n" + 
-					"       t.rec_user,\n" + 
-					"       t.deleted,\n" + 
-					"       t.upd_date,\n" + 
-					"       t.upd_user,\n" + 
-					"       t.response_type_id,\n" + 
-					"       t.contact_person,\n" + 
-					"       t.execution_status,\n" + 
-					"       t.ccr,\n" + 
-					"       t.iscorrect,\n" + 
-					"       t.is_locked,\n" + 
-					"       ss.start_date,\n" + 
-					"       p.personnel_id as personnel_id, \n" +
-					"       p1.personnel_id as personnel_id1 \n" +
-					"  from discover             t,\n" + 
-					"       discover_types       tt,\n" + 
-					"       ccare.discover_rtypes r,\n" + 
-					"       log_sessions         ss,\n" + 
-					"       personnel            p,\n" + 
-					"       personnel            p1\n" + 
-					" where t.discover_type_id = tt.discover_type_id(+)\n" + 
-					"   and t.response_type_id = r.response_type_id(+)\n" + 
-					"   and t.call_id = ss.session_id(+)\n" + 
-					"   and t.rec_user = p.user_name\n" + 
-					"   and t.discover_type_id <> 4\n" + 
-					"   and t.upd_user = p1.user_name(+)\n" + 
-					"   and t.discover_id = ? ";
-	
 	public static final String Q_GET_OPERATOR_REMARKS = " select count(1)\n" +
 					"  from ccare.log_personell_notes t\n" + 
 					" where t.ym = to_char(sysdate, 'YYmm')\n" + 
@@ -885,19 +848,6 @@ public interface QueryConstants {
 					"   and t.user_name = ? \n" + 
 					"   and t.received = 0\n" + 
 					" order by t.rec_user desc";
-
-	
-	public static final String Q_GET_DISC_SMS_FOR_SEND = " SELECT      t.discover_id,\n" +
-			"            t.call_id,\n" + 
-			"            case when t.phone like '5%' then t.phone else t.contact_phone end as phone\n" + 
-			"       FROM discover t WHERE\n" + 
-			"        t.discover_type_id <> 4 and trunc(t.rec_date) = trunc(sysdate)\n" + 
-			"         and t.execution_status = 0\n" + 
-			"         and ((trunc( mod( (sysdate-t.rec_date)*24, 24 ) )*60) + trunc( mod( (sysdate-t.rec_date)*24*60, 60 ) ))  > 15\n" +
-			"		  and (t.phone like '5%' or t.contact_phone like '5%') "+
-			"         and not exists (select tt.discovery_id from ccare.discovery_sms_hist tt\n" + 
-			"                         where tt.discovery_id = t.discover_id and trunc(tt.rec_date) = trunc(sysdate)\n" + 
-			"                         ) ";
 
 	public static final String Q_GET_SPECIAL_TEXT_BY_NUMBER = " select t.note from call_special t where t.phone = ? ";
 	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone) from NON_CHARGE_PHONES t where t.phone = ? ";
@@ -978,28 +928,28 @@ public interface QueryConstants {
 
 
 	public static final String Q_GET_DISCOVERY_LIST = "select\n" +
-			"  tt.discover_type,\n" + 
-			"  r.response_type,\n" + 
-			"  t.discover_id,\n" + 
-			"  t.call_id,\n" + 
+			"  tt.survey_kind_name,\n" + 
+			"  r.survey_reply_type_name,\n" + 
+			"  t.survey_id,\n" + 
+			"  t.session_call_id,\n" + 
 			"  t.phone,\n" + 
-			"  t.discover_txt,\n" + 
-			"  t.contact_phone,\n" + 
-			"  t.discover_type_id,\n" + 
+			"  t.survey_descript,\n" + 
+			"  t.survey_phone,\n" + 
+			"  t.survey_kind_id,\n" + 
 			"  t.rec_date,\n" + 
 			"  t.rec_user,\n" + 
 			"  t.deleted,\n" + 
 			"  t.upd_date,\n" + 
 			"  t.upd_user,\n" + 
-			"  t.response_type_id,\n" + 
+			"  t.survey_reply_type_id,\n" + 
 			"  t.contact_person,\n" + 
-			"  t.execution_status,\n" + 
+			"  t.survery_responce_status,\n" + 
 			"  t.ccr,\n" + 
-			"  t.iscorrect\n" + 
+			"  t.survey_done\n" + 
 			"from ccare.discover t\n" + 
-			"       inner join ccare.discover_types tt on tt.discover_type_id = t.discover_type_id\n" + 
-			"       left join ccare.discover_rtypes r on r.response_type_id = t.response_type_id\n" + 
-			"where t.discover_type_id <> 4 and t.execution_status <>0 and trunc(t.rec_date) = trunc(sysdate)\n" + 
+			"       inner join ccare.survey_kind tt on tt.survey_kind_id = t.survey_kind_id\n" + 
+			"       left join ccare.discover_rtypes r on r.survey_reply_type_id = t.survey_reply_type_id\n" + 
+			"where t.survey_kind_id <> 4 and t.survery_responce_status <>0 and trunc(t.rec_date) = trunc(sysdate)\n" + 
 			"";
 
 	public static final String Q_GET_TRANSPORT_BY_ID = "select\n" +
