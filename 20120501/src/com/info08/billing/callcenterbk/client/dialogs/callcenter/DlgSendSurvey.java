@@ -25,12 +25,12 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgSendDiscovery extends Window {
+public class DlgSendSurvey extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private ComboBoxItem discoverTypeItem;
+	private ComboBoxItem surveyKindItem;
 	private TextItem phoneItem;
 	private TextItem contactPersonItem;
 	private TextItem contactPhoneItem;
@@ -39,11 +39,11 @@ public class DlgSendDiscovery extends Window {
 	private String sessionId;
 	private String userName;
 
-	public DlgSendDiscovery(final ChargePanel chargePanel,
-			Integer discoveryTypeId, String discovery_txt) {
+	public DlgSendSurvey(final ChargePanel chargePanel,
+			Integer survey_kind_Id, String survey_descript) {
 		this.chargePanel = chargePanel;
 		try {
-			setTitle(CallCenterBK.constants.sendDiscovery());
+			setTitle(CallCenterBK.constants.sendSurvey());
 
 			setHeight(290);
 			setWidth(430);
@@ -70,43 +70,40 @@ public class DlgSendDiscovery extends Window {
 			dynamicForm.setNumCols(2);
 			hLayout.addMember(dynamicForm);
 
-			discoverTypeItem = new ComboBoxItem();
-			discoverTypeItem.setTitle(CallCenterBK.constants.discoveryType());
-			discoverTypeItem.setName("discover_type");
-			discoverTypeItem.setWidth(300);
-			discoverTypeItem.setFetchMissingValues(true);
-			discoverTypeItem.setFilterLocally(false);
-			discoverTypeItem.setAddUnknownValues(false);
+			surveyKindItem = new ComboBoxItem();
+			surveyKindItem.setTitle(CallCenterBK.constants.surveyKind());
+			surveyKindItem.setName("survey_kind_name");
+			surveyKindItem.setWidth(300);
+			surveyKindItem.setFetchMissingValues(true);
+			surveyKindItem.setFilterLocally(false);
+			surveyKindItem.setAddUnknownValues(false);
 
-			DataSource discoveryTypeDS = DataSource.get("DiscoveryTypeDS");
-			discoverTypeItem.setOptionOperationId("searchDiscoverTypesForCB");
-			discoverTypeItem.setOptionDataSource(discoveryTypeDS);
-			discoverTypeItem.setValueField("discover_type_id");
-			discoverTypeItem.setDisplayField("discover_type");
-			discoverTypeItem.setOptionCriteria(new Criteria());
-			discoverTypeItem.setAutoFetchData(false);
+			DataSource surveyKindDS = DataSource.get("SurveyKindDS");
+			surveyKindItem.setOptionOperationId("searchSurveyTypesForCB");
+			surveyKindItem.setOptionDataSource(surveyKindDS);
+			surveyKindItem.setValueField("survey_kind_id");
+			surveyKindItem.setDisplayField("survey_kind_name");
+			surveyKindItem.setOptionCriteria(new Criteria());
+			surveyKindItem.setAutoFetchData(false);
 
-			discoverTypeItem.addKeyPressHandler(new KeyPressHandler() {
+			surveyKindItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = discoverTypeItem.getOptionCriteria();
+					Criteria criteria = surveyKindItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("discover_type_id");
+								.getAttribute("survey_kind_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("discover_type_id", nullO);
+							criteria.setAttribute("survey_kind_id", nullO);
 						}
 					}
 				}
 			});
 
-			if (discoveryTypeId != null) {
-				discoverTypeItem.setValue(discoveryTypeId);
+			if (survey_kind_Id != null) {
+				surveyKindItem.setValue(survey_kind_Id);
 			}
-			// else {
-			// discoverTypeItem.setValue(Constants.defDiscTypeId);
-			// }
 
 			phoneItem = new TextItem();
 			phoneItem.setTitle(CallCenterBK.constants.phone());
@@ -138,11 +135,11 @@ public class DlgSendDiscovery extends Window {
 			messageItem.setName("messageItem");
 			messageItem.setWidth(300);
 
-			if (discovery_txt != null && !discovery_txt.trim().equals("")) {
-				messageItem.setValue(discovery_txt);
+			if (survey_descript != null && !survey_descript.trim().equals("")) {
+				messageItem.setValue(survey_descript);
 			}
 
-			dynamicForm.setFields(phoneItem, discoverTypeItem,
+			dynamicForm.setFields(phoneItem, surveyKindItem,
 					contactPersonItem, contactPhoneItem, messageItem);
 
 			HLayout hLayoutItem = new HLayout(5);
@@ -164,7 +161,7 @@ public class DlgSendDiscovery extends Window {
 			cancItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					chargePanel.setDlgSendDiscovery(null);
+					chargePanel.setDlgSendSurvey(null);
 					destroy();
 				}
 			});
@@ -183,7 +180,7 @@ public class DlgSendDiscovery extends Window {
 
 	}
 
-	public DlgSendDiscovery(ChargePanel chargePanel) {
+	public DlgSendSurvey(ChargePanel chargePanel) {
 		this(chargePanel, null, null);
 	}
 
@@ -198,28 +195,28 @@ public class DlgSendDiscovery extends Window {
 				return;
 			}
 
-			String phone = phoneItem.getValueAsString();
-			if (phone == null || phone.trim().equalsIgnoreCase("")) {
+			String p_numb = phoneItem.getValueAsString();
+			if (p_numb == null || p_numb.trim().equalsIgnoreCase("")) {
 				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
 			try {
-				new Integer(phone);
+				new Integer(p_numb);
 			} catch (Exception e) {
 				SC.say(CallCenterBK.constants.phoneMustBeNumeric());
 				return;
 			}
 
-			String discover_txt = messageItem.getValueAsString();
-			if (discover_txt == null) {
-				discover_txt = "";
+			String survey_descript = messageItem.getValueAsString();
+			if (survey_descript == null) {
+				survey_descript = "";
 			}
-			discover_txt = discover_txt.trim();
-			String contact_phone = contactPhoneItem.getValueAsString();
-			if (contact_phone == null) {
-				contact_phone = "";
+			survey_descript = survey_descript.trim();
+			String survey_phone = contactPhoneItem.getValueAsString();
+			if (survey_phone == null) {
+				survey_phone = "";
 			}
-			contact_phone = contact_phone.trim();
+			survey_phone = survey_phone.trim();
 
 			String contact_person = contactPersonItem.getValueAsString();
 			if (contact_person == null) {
@@ -227,50 +224,50 @@ public class DlgSendDiscovery extends Window {
 			}
 			contact_person = contact_person.trim();
 
-			String discover_type_id_str = discoverTypeItem.getValueAsString();
-			if (discover_type_id_str == null
-					|| discover_type_id_str.trim().equalsIgnoreCase("")) {
-				SC.say(CallCenterBK.constants.chooseDiscoveryType());
+			String survey_kind_id_str = surveyKindItem.getValueAsString();
+			if (survey_kind_id_str == null
+					|| survey_kind_id_str.trim().equalsIgnoreCase("")) {
+				SC.say(CallCenterBK.constants.chooseSurveyKind());
 				return;
 			}
-			Integer discover_type_id = null;
+			Integer survey_kind_id = null;
 			try {
-				discover_type_id = new Integer(discover_type_id_str);
+				survey_kind_id = new Integer(survey_kind_id_str);
 			} catch (Exception e) {
 				SC.say(CallCenterBK.constants.incorrDiscTypeSelected());
 				return;
 			}
-			if (discover_txt.equalsIgnoreCase("")
-					&& contact_phone.equalsIgnoreCase("")
+			if (survey_descript.equalsIgnoreCase("")
+					&& survey_phone.equalsIgnoreCase("")
 					&& contact_person.equalsIgnoreCase("")) {
-				SC.say(CallCenterBK.constants.enterSomeDiscoveryParam());
+				SC.say(CallCenterBK.constants.enterSomeSurveyParam());
 				return;
 			}
 
-			String discover_type = discoverTypeItem.getValueAsString();
-			if (discover_type == null || discover_type.trim().equals("")) {
+			String survey_kind_name = surveyKindItem.getValueAsString();
+			if (survey_kind_name == null || survey_kind_name.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterType());
 				return;
 			}
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
-			record.setAttribute("phone", phone);
-			record.setAttribute("call_id", sessionId);
-			record.setAttribute("discover_txt", discover_txt);
-			record.setAttribute("contact_phone", contact_phone);
-			record.setAttribute("contact_person", contact_person);
-			record.setAttribute("discover_type_id", discover_type_id);
-			record.setAttribute("rec_user", userName);
+			record.setAttribute("p_numb", p_numb);
+			record.setAttribute("session_call_id", sessionId);
+			record.setAttribute("survey_descript", survey_descript);
+			record.setAttribute("survey_phone", survey_phone);
+			record.setAttribute("survey_person", contact_person);
+			record.setAttribute("survey_kind_id", survey_kind_id);
+			record.setAttribute("survey_creator", userName);
 
 			DSRequest req = new DSRequest();
-			DataSource discoveryDS = DataSource.get("DiscoveryDS");
-			req.setAttribute("operationId", "sendDiscovery");
-			discoveryDS.addData(record, new DSCallback() {
+			DataSource surveyDS = DataSource.get("SurveyDS");
+			req.setAttribute("operationId", "sendSurvey");
+			surveyDS.addData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
-					chargePanel.setDlgSendDiscovery(null);
+					chargePanel.setDlgSendSurvey(null);
 					destroy();
 				}
 			}, req);
