@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
-import com.info08.billing.callcenterbk.shared.entity.Person;
+import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -24,10 +24,10 @@ public class CommonSingleton {
 		return instance;
 	}
 
-	private DataSource personsDS;
+	private DataSource usersDS;
 	private DataSource servicesDS;
-	private DataSource persTypeDS;
-	public Person sessionPerson;
+	private DataSource departmentDS;
+	public Users sessionPerson;
 	private ServerSession serverSession;
 
 	public CommonSingleton() {
@@ -40,11 +40,11 @@ public class CommonSingleton {
 
 	public void initDS() throws CallCenterException {
 		try {
-			personsDS = DataSource.get("PersDS");
+			usersDS = DataSource.get("UsersDS");
 			Criteria criteria = new Criteria();
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "customPersSearchAll");
-			personsDS.fetchData(criteria, new DSCallback() {
+			dsRequest.setAttribute("operationId", "searchAllUser");
+			usersDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -53,10 +53,10 @@ public class CommonSingleton {
 			}, dsRequest);
 
 			servicesDS = DataSource.get("ServiceDS");
-			persTypeDS = DataSource.get("PersTypeDS");
+			departmentDS = DataSource.get("DepartmentDS");
 
-			dsRequest.setAttribute("operationId", "persTypesSearch");
-			persTypeDS.fetchData(criteria, new DSCallback() {
+			dsRequest.setAttribute("operationId", "searchDepartments");
+			departmentDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -70,17 +70,17 @@ public class CommonSingleton {
 
 	public void clearDS() {
 		sessionPerson = null;
-		personsDS = null;
+		usersDS = null;
 		servicesDS = null;
-		persTypeDS = null;
+		departmentDS = null;
 	}
 
-	public DataSource getPersonsDS() {
-		return personsDS;
+	public DataSource getUsersDS() {
+		return usersDS;
 	}
 
-	public void setPersonsDS(DataSource personsDS) {
-		this.personsDS = personsDS;
+	public void setUsersDS(DataSource usersDS) {
+		this.usersDS = usersDS;
 	}
 
 	public DataSource getServicesDS() {
@@ -91,15 +91,15 @@ public class CommonSingleton {
 		this.servicesDS = servicesDS;
 	}
 
-	public DataSource getPersTypeDS() {
-		return persTypeDS;
+	public DataSource getDepartmentDS() {
+		return departmentDS;
 	}
 
-	public Person getSessionPerson() {
+	public Users getSessionPerson() {
 		return sessionPerson;
 	}
 
-	public void setSessionPerson(Person sessionPerson) {
+	public void setSessionPerson(Users sessionPerson) {
 		this.sessionPerson = sessionPerson;
 	}
 
@@ -111,13 +111,13 @@ public class CommonSingleton {
 		this.serverSession = serverSession;
 	}
 
-	public void setPersTypeDS(DataSource persTypeDS) {
-		this.persTypeDS = persTypeDS;
+	public void setDepartmentDS(DataSource departmentDS) {
+		this.departmentDS = departmentDS;
 	}
 
 	public boolean hasPermission(String accessKey) {
 		try {
-			Long persTypeId = sessionPerson.getPersonelTypeId();
+			Long persTypeId = sessionPerson.getDepartment_id();
 			if (persTypeId != null
 					&& (persTypeId.equals(2) || persTypeId.equals(7))) {
 				return true;
