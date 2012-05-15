@@ -1,10 +1,10 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.content.discovery.TabDiscovery;
-import com.info08.billing.callcenterbk.client.content.discovery.TabDiscoveryHist;
-import com.info08.billing.callcenterbk.client.content.discovery.TabDiscoveryRTypes;
-import com.info08.billing.callcenterbk.client.content.discovery.TabDiscoveryTypes;
+import com.info08.billing.callcenterbk.client.content.survey.TabSurvey;
+import com.info08.billing.callcenterbk.client.content.survey.TabSurveyHist;
+import com.info08.billing.callcenterbk.client.content.survey.TabSurveyReplyType;
+import com.info08.billing.callcenterbk.client.content.survey.TabSurveyKinds;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -19,20 +19,20 @@ import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.smartgwt.client.widgets.tree.TreeNode;
 
-public class DiscoveryStackSelection extends SectionStackSection {
+public class SurveyStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", CallCenterBK.constants.menuDiscoveryStatuses(), true, "discovery.png"),
-			new MenuNode("101", "2", CallCenterBK.constants.menuDiscoveryTypes(), true, "discovery.png"),
-			new MenuNode("102", "3", CallCenterBK.constants.menuDiscovery(), true, "discovery.png"),
-			new MenuNode("103", "4", CallCenterBK.constants.menuDiscoveryHist(), true, "discovery.png")};
+			new MenuNode("100", "1", CallCenterBK.constants.menuSurveyStatuses(), true, "survey.png"),
+			new MenuNode("101", "2", CallCenterBK.constants.menuSurveyKinds(), true, "survey.png"),
+			new MenuNode("102", "3", CallCenterBK.constants.menuSurvey(), true, "survey.png"),
+			new MenuNode("103", "4", CallCenterBK.constants.menuSurveyHist(), true, "survey.png")};
 
 	private TreeGrid employeeTreeGrid;
 
-	public DiscoveryStackSelection(Body body) {
+	public SurveyStackSelection(Body body) {
 		this.body = body;
-		setTitle(CallCenterBK.constants.discoveryActions());
+		setTitle(CallCenterBK.constants.surveyActions());
 		setExpanded(false);
 		setCanCollapse(true);
 
@@ -114,20 +114,20 @@ public class DiscoveryStackSelection extends SectionStackSection {
 			return;
 		}
 		if (menuId.equals("100")) {
-			TabDiscoveryRTypes tabDiscoveryRTypes = new TabDiscoveryRTypes();
-			body.addTab(tabDiscoveryRTypes);
+			TabSurveyReplyType tabSurveyReplyType = new TabSurveyReplyType();
+			body.addTab(tabSurveyReplyType);
 		} 
 		else if (menuId.equals("101")) {
-			TabDiscoveryTypes tabDiscoveryTypes = new TabDiscoveryTypes();
-			body.addTab(tabDiscoveryTypes);
+			TabSurveyKinds tabSurveyKinds = new TabSurveyKinds();
+			body.addTab(tabSurveyKinds);
 		}
 		else if (menuId.equals("102")) {
-			TabDiscovery tabDiscovery = new TabDiscovery();
-			body.addTab(tabDiscovery);
+			TabSurvey tabSurvey = new TabSurvey();
+			body.addTab(tabSurvey);
 		}
 		else if (menuId.equals("103")) {
-			TabDiscoveryHist tabDiscoveryHist = new TabDiscoveryHist();
-			body.addTab(tabDiscoveryHist);
+			TabSurveyHist tabSurveyHist = new TabSurveyHist();
+			body.addTab(tabSurveyHist);
 		}
 	}
 
