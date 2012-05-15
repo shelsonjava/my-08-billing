@@ -121,7 +121,7 @@ public class DlgAddEditEventCategory extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("event_category_name", event_category_name);
 			record.setAttribute("deleted", 0);
