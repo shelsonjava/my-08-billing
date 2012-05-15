@@ -251,8 +251,7 @@ public class TransportDMI implements QueryConstants {
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transpTypeId);
 			if (transportType != null) {
-				transportCompany.setTransport_type(transportType
-						.getName_descr());
+				transportCompany.setTransport_type(transportType.getName_descr());
 			}
 
 			EMF.commitTransaction(transaction);
@@ -291,17 +290,14 @@ public class TransportDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long transport_company_id = new Long(record.get("transp_comp_id")
-					.toString());
-			Long transport_type_id = new Long(record.get("transp_type_id")
-					.toString());
+			Long transp_comp_id = new Long(record.get("transp_comp_id").toString());
+			Long transport_type_id = new Long(record.get("transp_type_id").toString());
 			String name_descr = record.get("name_descr") == null ? null
 					: record.get("name_descr").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			TranspCompany transportCompany = oracleManager.find(
-					TranspCompany.class, transport_company_id);
+			TranspCompany transportCompany = oracleManager.find(TranspCompany.class, transp_comp_id);
 
 			transportCompany.setTransp_type_id(transport_type_id);
 			transportCompany.setName_descr(name_descr);
@@ -312,8 +308,7 @@ public class TransportDMI implements QueryConstants {
 			oracleManager.merge(transportCompany);
 			oracleManager.flush();
 
-			transportCompany = oracleManager.find(TranspCompany.class,
-					transport_company_id);
+			transportCompany = oracleManager.find(TranspCompany.class,transp_comp_id);
 
 			transportCompany.setLoggedUserName(loggedUserName);
 			Long transpTypeId = transportCompany.getTransp_type_id();
@@ -361,13 +356,10 @@ public class TransportDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			Long transport_company_id = new Long(dsRequest.getOldValues()
-					.get("transp_comp_id").toString());
-			String loggedUserName = dsRequest.getOldValues()
-					.get("loggedUserName").toString();
+			Long transp_comp_id = new Long(dsRequest.getOldValues().get("transp_comp_id").toString());
+			String loggedUserName = dsRequest.getOldValues().get("loggedUserName").toString();
 
-			TranspCompany transportCompany = oracleManager.find(
-					TranspCompany.class, transport_company_id);
+			TranspCompany transportCompany = oracleManager.find(TranspCompany.class, transp_comp_id);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
 					loggedUserName, "Remove Transport Company.");
@@ -408,7 +400,7 @@ public class TransportDMI implements QueryConstants {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addTransportPlace.";
+			String log = "Method:CommonDMI.addTransportStation.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -451,7 +443,7 @@ public class TransportDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert TransportPlace Into Database : ",
+			logger.error("Error While Insert TransportStation Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
@@ -525,7 +517,7 @@ public class TransportDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update TransportPlace Into Database : ",
+			logger.error("Error While Update TransportStation Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
@@ -548,7 +540,7 @@ public class TransportDMI implements QueryConstants {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateTransportPlaceStatus.";
+			String log = "Method:CommonDMI.removeTransportStation.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -575,7 +567,7 @@ public class TransportDMI implements QueryConstants {
 				throw (CallCenterException) e;
 			}
 			logger.error(
-					"Error While Update Status for TransportPlace Into Database : ",
+					"Error While Update Status for TransportStation Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
@@ -1043,27 +1035,27 @@ public class TransportDMI implements QueryConstants {
 			Long important = dsRequest.getFieldValue("important") == null ? null: new Long(dsRequest.getFieldValue("important").toString());
 			Long days = dsRequest.getFieldValue("days") == null ? null: new Long(dsRequest.getFieldValue("days").toString());
 
-			TranspSchedule transport = new TranspSchedule();
-			transport.setDays(new Long(days));
+			TranspSchedule transportSchedule = new TranspSchedule();
+			transportSchedule.setDays(new Long(days));
 			if (arrival_time != null) {
-				transport.setArrival_time(new Timestamp(arrival_time.getTime()));
+				transportSchedule.setArrival_time(new Timestamp(arrival_time.getTime()));
 			}
 			if (depart_time != null) {
-				transport.setDepart_time(new Timestamp(depart_time.getTime()));
+				transportSchedule.setDepart_time(new Timestamp(depart_time.getTime()));
 			}
-			transport.setDepart_transp_stat_id(depart_transp_stat_id);
-			transport.setImportant(important);
-			transport.setRemark(remark);
-			transport.setArrival_transp_stat_id(arrival_transp_stat_id);
-			transport.setTransp_comp_id(transp_comp_id);
-			transport.setTransp_res_id(transp_res_id);
-			transport.setPrice_descr(price_descr);
-			transport.setTransp_type_id(transp_type_id);
-			transport.setTransp_model_descr(transp_model_descr);
+			transportSchedule.setDepart_transp_stat_id(depart_transp_stat_id);
+			transportSchedule.setImportant(important);
+			transportSchedule.setRemark(remark);
+			transportSchedule.setArrival_transp_stat_id(arrival_transp_stat_id);
+			transportSchedule.setTransp_comp_id(transp_comp_id);
+			transportSchedule.setTransp_res_id(transp_res_id);
+			transportSchedule.setPrice_descr(price_descr);
+			transportSchedule.setTransp_type_id(transp_type_id);
+			transportSchedule.setTransp_model_descr(transp_model_descr);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate, loggedUserName, "Adding Transport");
 			
-			oracleManager.persist(transport);
+			oracleManager.persist(transportSchedule);
 
 			Object oListTranspItems = dsRequest.getFieldValue("listTranspItems");
 			if (oListTranspItems != null) {
@@ -1077,8 +1069,8 @@ public class TransportDMI implements QueryConstants {
 							continue;
 						}
 						Long item_order = transpItemsMap.get("item_order") == null ? null : new Long(transpItemsMap.get("item_order").toString());
-						Date it_departure_time = transpItemsMap.get("departure_time") == null ? null : (Date) transpItemsMap.get("departure_time");
-						Date it_arrival_time = transpItemsMap.get("arrival_time") == null ? null : (Date) transpItemsMap.get("arrival_time");
+						Date it_departure_time = transpItemsMap.get("departure_time") == null ? null : new Date(new Long((String) transpItemsMap.get("departure_time")));
+						Date it_arrival_time = transpItemsMap.get("arrival_time") == null ? null : new Date(new Long((String) transpItemsMap.get("arrival_time"))); 
 
 						TranspItems transportItem = new TranspItems();
 						if (it_arrival_time != null) {
@@ -1091,7 +1083,7 @@ public class TransportDMI implements QueryConstants {
 						transportItem.setArrival_transp_stat_id(arrival_transp_stat_id);
 
 						transportItem.setItem_order(item_order);
-						transportItem.setTransp_schedule_id(transport.getTransp_schedule_id());
+						transportItem.setTransp_schedule_id(transportSchedule.getTransp_schedule_id());
 						transportItem.setTransp_station_id(new Long(transp_station_id));
 
 						oracleManager.persist(transportItem);
@@ -1100,9 +1092,9 @@ public class TransportDMI implements QueryConstants {
 			}
 			oracleManager.flush();
 
-			transport.setLoggedUserName(loggedUserName);
+			transportSchedule.setLoggedUserName(loggedUserName);
 
-			List resultList = oracleManager.createNativeQuery(Q_GET_TRANSPORT_BY_ID).setParameter(1, transport.getTransp_schedule_id()).getResultList();
+			List resultList = oracleManager.createNativeQuery(Q_GET_TRANSPORT_BY_ID).setParameter(1, transportSchedule.getTransp_schedule_id()).getResultList();
 			if (resultList != null && !resultList.isEmpty()) {
 				Object array[] = (Object[]) resultList.get(0);
 				String days_descr = array[0] == null ? null : array[0].toString();
@@ -1112,19 +1104,19 @@ public class TransportDMI implements QueryConstants {
 				String transport_company = array[4] == null ? null: array[4].toString();
 				String transport_resource = array[5] == null ? null : array[5].toString();
 				
-				transport.setDays_descr(days_descr);
-				transport.setTransport_type(transport_type);
-				transport.setDepart_station(departure_station);
-				transport.setArrival_station(arrival_station);
-				transport.setTransp_company(transport_company);
-				transport.setTransp_resource(transport_resource);
+				transportSchedule.setDays_descr(days_descr);
+				transportSchedule.setTransport_type(transport_type);
+				transportSchedule.setDepart_station(departure_station);
+				transportSchedule.setArrival_station(arrival_station);
+				transportSchedule.setTransp_company(transport_company);
+				transportSchedule.setTransp_resource(transport_resource);
 				
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return transport;
+			return transportSchedule;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -1152,182 +1144,125 @@ public class TransportDMI implements QueryConstants {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateTransport.";
+			String log = "Method:CommonDMI.updateTranspSchedule.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 			String loggedUserName = record.get("loggedUserName").toString();
-			Long transport_id = record.get("transport_id") == null ? null
-					: new Long(record.get("transport_id").toString());
-			Long transport_type_id = record.get("transp_type_id") == null ? null
-					: new Long(record.get("transp_type_id").toString());
-			Long out_transport_place_id = record.get("out_transport_place_id") == null ? null
-					: new Long(record.get("out_transport_place_id").toString());
-			Long in_transport_place_id = record.get("in_transport_place_id") == null ? null
-					: new Long(record.get("in_transport_place_id").toString());
-			Date out_time = record.get("out_time") == null ? null
-					: (Date) record.get("out_time");
-			Date in_time = record.get("in_time") == null ? null : (Date) record
-					.get("in_time");
-			String note_geo = record.get("note_geo") == null ? null : record
-					.get("note_geo").toString();
-			Long deleted = record.get("deleted") == null ? null : new Long(
-					record.get("deleted").toString());
-			String transport_price_geo = record.get("transport_price_geo") == null ? null
-					: record.get("transport_price_geo").toString();
-			Long transport_company_id = record.get("transport_company_id") == null ? null
-					: new Long(record.get("transport_company_id").toString());
-			Long transport_plane_id = record.get("transport_plane_id") == null ? null
-					: new Long(record.get("transport_plane_id").toString());
-			String trip_criteria = record.get("trip_criteria") == null ? null
-					: record.get("trip_criteria").toString();
-			Long note_crit = record.get("note_crit") == null ? null : new Long(
-					record.get("note_crit").toString());
-			Long days = record.get("days") == null ? null : new Long(record
-					.get("days").toString());
+			Long transp_schedule_id = record.get("transp_schedule_id") == null ? null : new Long(record.get("transp_schedule_id").toString());
+			Long transp_type_id = record.get("transp_type_id") == null ? null : new Long(record.get("transp_type_id").toString());
+			Long depart_transp_stat_id = record.get("depart_transp_stat_id") == null ? null : new Long(record.get("depart_transp_stat_id").toString());
+			Long arrival_transp_stat_id = record.get("arrival_transp_stat_id") == null ? null : new Long(record.get("arrival_transp_stat_id").toString());
+			Date depart_time = record.get("depart_time") == null ? null : (Date) record.get("depart_time");
+			Date arrival_time = record.get("arrival_time") == null ? null : (Date) record.get("arrival_time");
+			String remark = record.get("remark") == null ? null : record.get("remark").toString();
+			String price_descr = record.get("price_descr") == null ? null : record.get("price_descr").toString();
+			Long transp_comp_id = record.get("transp_comp_id") == null ? null : new Long(record.get("transp_comp_id").toString());
+			Long transp_res_id = record.get("transp_res_id") == null ? null : new Long(record.get("transp_res_id").toString());
+			String transp_model_descr = record.get("transp_model_descr") == null ? null : record.get("transp_model_descr").toString();
+			Long important = record.get("important") == null ? null : new Long(record.get("important").toString());
+			Long days = record.get("days") == null ? null : new Long(record.get("days").toString());
 
-			TranspSchedule transport = oracleManager.find(TranspSchedule.class,
-					transport_id);
+			TranspSchedule transportSchedule = oracleManager.find(TranspSchedule.class, transp_schedule_id);
 
-//			transport.setDays(new Long(days));
-//			transport.setDeleted(deleted);
-//			if (in_time != null) {
-//				transport.setIn_time(new Timestamp(in_time.getTime()));
-//			}
-//			if (out_time != null) {
-//				transport.setOut_time(new Timestamp(out_time.getTime()));
-//			}
-//			transport.setIn_transport_place_id(in_transport_place_id);
-//			transport.setNote_crit(note_crit);
-//			transport.setNote_geo(note_geo);
-//			transport.setOut_transport_place_id(out_transport_place_id);
-//			transport.setUpd_date(recDate);
-//			transport.setUpd_user(loggedUserName);
-//			transport.setTransport_company_id(transport_company_id);
-//			transport.setTransport_plane_id(transport_plane_id);
-//			transport.setTransport_price_geo(transport_price_geo);
-//			transport.setTransport_type_id(transport_type_id);
-//			transport.setTrip_criteria(trip_criteria);
-//
-//			oracleManager.merge(transport);
-//
-//			Object oListTranspDetails = record.get("listTranspDetails");
-//			System.out.println("oListTranspDetails = " + oListTranspDetails);
-//			if (oListTranspDetails != null) {
-//				Map listTranspDetails = (Map) oListTranspDetails;
-//				if (listTranspDetails != null && !listTranspDetails.isEmpty()) {
-//					Set keys = listTranspDetails.keySet();
-//					for (Object object : keys) {
-//						String transport_detail_id = object.toString();
-//
-//						Map transpDetailsMap = (Map) listTranspDetails
-//								.get(transport_detail_id);
-//						if (transpDetailsMap == null
-//								|| transpDetailsMap.isEmpty()) {
-//							continue;
-//						}
-//						Long transport_place_id = transpDetailsMap
-//								.get("transport_place_id") == null ? null
-//								: new Long(transpDetailsMap.get(
-//										"transport_place_id").toString());
-//						Long deleted_det = transpDetailsMap.get("deleted") == null ? null
-//								: new Long(transpDetailsMap.get("deleted")
-//										.toString());
-//						Long transport_detail_order = transpDetailsMap
-//								.get("transport_detail_order") == null ? null
-//								: new Long(transpDetailsMap.get(
-//										"transport_detail_order").toString());
-//						Date out_time_det = (transpDetailsMap.get("c_out_time") == null || transpDetailsMap
-//								.get("c_out_time").toString().trim().equals("")) ? null
-//								: new Date(new Long(transpDetailsMap.get(
-//										"c_out_time").toString()));
-//						Date in_time_det = (transpDetailsMap.get("c_in_time") == null || transpDetailsMap
-//								.get("c_in_time").toString().trim().equals("")) ? null
-//								: new Date(new Long(transpDetailsMap.get(
-//										"c_in_time").toString()));
-//
-//						TranspItems transportDetail = null;
-//						boolean insert = false;
-//						if (transport_detail_id != null) {
-//							transportDetail = oracleManager.find(
-//									TranspItems.class, new Long(
-//											transport_detail_id));
-//							if (transportDetail == null) {
-//								transportDetail = new TranspItems();
-//							} else {
-//								transportDetail.setUpd_user(loggedUserName);
-//							}
-//						} else {
-//							transportDetail = new TranspItems();
-//							transportDetail.setRec_date(recDate);
-//							transportDetail.setRec_user(loggedUserName);
-//							insert = true;
-//						}
-//
-//						transportDetail.setDeleted(deleted_det);
-//						if (in_time_det != null) {
-//							transportDetail.setIn_time(new Timestamp(
-//									in_time_det.getTime()));
-//						}
-//						if (out_time_det != null) {
-//							transportDetail.setOut_time(new Timestamp(
-//									out_time_det.getTime()));
-//						}
-//						transportDetail
-//								.setTransport_detail_order(transport_detail_order);
-//						transportDetail.setTransport_id(transport
-//								.getTransport_id());
-//						transportDetail.setTransport_place_id(new Long(
-//								transport_place_id));
-//						transportDetail
-//								.setOut_transport_place_id(out_transport_place_id);
-//						transportDetail
-//								.setIn_transport_place_id(in_transport_place_id);
-//
-//						if (insert) {
-//							oracleManager.persist(transportDetail);
-//						} else {
-//							oracleManager.merge(transportDetail);
-//						}
-//					}
-//				}
-//			}
-//			oracleManager.flush();
-//			transport = oracleManager.find(TranspSchedule.class, transport_id);
-//
-//			transport.setLoggedUserName(loggedUserName);
-//
-//			List resultList = oracleManager
-//					.createNativeQuery(Q_GET_TRANSPORT_BY_ID)
-//					.setParameter(1, transport.getTransport_id())
-//					.getResultList();
-//			if (resultList != null && !resultList.isEmpty()) {
-//				Object array[] = (Object[]) resultList.get(0);
-//				String days_descr = array[0] == null ? null : array[0]
-//						.toString();
-//				String name_descr = array[1] == null ? null : array[1]
-//						.toString();
-//				String transport_place_geo_out = array[2] == null ? null
-//						: array[2].toString();
-//				String transport_place_geo_in = array[3] == null ? null
-//						: array[3].toString();
-//				String transport_company_geo = array[4] == null ? null
-//						: array[4].toString();
-//				String transport_plane_geo = array[5] == null ? null : array[5]
-//						.toString();
-//				transport.setDays_descr(days_descr);
-//				transport.setname_descr(name_descr);
-//				transport.setTransport_place_geo_out(transport_place_geo_out);
-//				transport.setTransport_place_geo_in(transport_place_geo_in);
-//				transport.setTransport_company_geo(transport_company_geo);
-//				transport.setTransport_plane_geo(transport_plane_geo);
-//			}
+			
+			transportSchedule.setDays(new Long(days));
+			if (arrival_time != null) {
+				transportSchedule.setArrival_time(new Timestamp(arrival_time.getTime()));
+			}
+			if (depart_time != null) {
+				transportSchedule.setDepart_time(new Timestamp(depart_time.getTime()));
+			}
+			transportSchedule.setDepart_transp_stat_id(depart_transp_stat_id);
+			transportSchedule.setImportant(important);
+			transportSchedule.setRemark(remark);
+			transportSchedule.setArrival_transp_stat_id(arrival_transp_stat_id);
+			transportSchedule.setTransp_comp_id(transp_comp_id);
+			transportSchedule.setTransp_res_id(transp_res_id);
+			transportSchedule.setPrice_descr(price_descr);
+			transportSchedule.setTransp_type_id(transp_type_id);
+			transportSchedule.setTransp_model_descr(transp_model_descr);
 
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate, loggedUserName, "Updating Transport");
+			
+			Object oListTranspItems = record.get("listTranspItems");
+			if (oListTranspItems != null) {
+				Map listTranspItems = (Map) oListTranspItems;
+				if (listTranspItems != null && !listTranspItems.isEmpty()) {
+					Set keys = listTranspItems.keySet();
+					for (Object object : keys) {
+						String transp_item_id = object.toString();
+
+						Map transpItemsMap = (Map) listTranspItems.get(transp_item_id);
+						if (transpItemsMap == null || transpItemsMap.isEmpty()) {
+							continue;
+						}
+						Long transp_station_id = transpItemsMap.get("transp_station_id") == null ? null : new Long(transpItemsMap.get("transp_station_id").toString());
+						Long item_order = transpItemsMap.get("item_order") == null ? null : new Long(transpItemsMap.get("item_order").toString());
+						Date it_departure_time = transpItemsMap.get("departure_time") == null ? null : new Date(new Long((String) transpItemsMap.get("departure_time")));
+						Date it_arrival_time = transpItemsMap.get("arrival_time") == null ? null : new Date(new Long((String) transpItemsMap.get("arrival_time")));
+
+						TranspItems transportItem = null;
+						boolean insert = false;
+						if (transp_item_id != null) {
+							transportItem = oracleManager.find(TranspItems.class, new Long(transp_item_id));
+							if (transportItem == null) {
+								transportItem = new TranspItems();
+							} 
+						} else {
+							transportItem = new TranspItems();							
+							insert = true;
+						}
+
+						if (it_arrival_time != null) {
+							transportItem.setArrival_time(new Timestamp(it_arrival_time.getTime()));
+						}
+						if (it_departure_time != null) {
+							transportItem.setDeparture_time(new Timestamp(it_departure_time.getTime()));
+						}
+						transportItem.setDeparture_transp_stat_id(depart_transp_stat_id);
+						transportItem.setArrival_transp_stat_id(arrival_transp_stat_id);
+
+						transportItem.setItem_order(item_order);
+						transportItem.setTransp_schedule_id(transportSchedule.getTransp_schedule_id());
+						transportItem.setTransp_station_id(new Long(transp_station_id));
+
+						if (insert) {
+							oracleManager.persist(transportItem);
+						} else {
+							oracleManager.merge(transportItem);
+						}
+					}
+				}
+			}
+			oracleManager.flush();
+			transportSchedule = oracleManager.find(TranspSchedule.class, transp_schedule_id);
+			transportSchedule.setLoggedUserName(loggedUserName);
+
+			List resultList = oracleManager.createNativeQuery(Q_GET_TRANSPORT_BY_ID).setParameter(1, transportSchedule.getTransp_schedule_id()).getResultList();
+			if (resultList != null && !resultList.isEmpty()) {
+				Object array[] = (Object[]) resultList.get(0);
+				String days_descr = array[0] == null ? null : array[0].toString();
+				String transport_type = array[1] == null ? null : array[1].toString();
+				String departure_station = array[2] == null ? null: array[2].toString();
+				String arrival_station = array[3] == null ? null: array[3].toString();
+				String transport_company = array[4] == null ? null: array[4].toString();
+				String transport_resource = array[5] == null ? null : array[5].toString();
+				
+				transportSchedule.setDays_descr(days_descr);
+				transportSchedule.setTransport_type(transport_type);
+				transportSchedule.setDepart_station(departure_station);
+				transportSchedule.setArrival_station(arrival_station);
+				transportSchedule.setTransp_company(transport_company);
+				transportSchedule.setTransp_resource(transport_resource);
+				
+			}
+			
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return transport;
+			return transportSchedule;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -1358,17 +1293,14 @@ public class TransportDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long transport_id = new Long(dsRequest.getOldValues()
-					.get("transp_schedule_id").toString());
-			String loggedUserName = dsRequest.getOldValues()
-					.get("loggedUserName").toString();
+			Long transp_schedule_id = new Long(dsRequest.getOldValues().get("transp_schedule_id").toString());
+			String loggedUserName = dsRequest.getOldValues().get("loggedUserName").toString();
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			TranspSchedule transport = oracleManager.find(TranspSchedule.class,
-					transport_id);
+			TranspSchedule transport = oracleManager.find(TranspSchedule.class, transp_schedule_id);
 
-			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
-					loggedUserName, "Remove Transport.");
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,loggedUserName, "Remove Transport.");
+			
 			oracleManager.remove(transport);
 			oracleManager.createNativeQuery(Q_DELETE_TRANSPORT_ITEMS)
 					.setParameter(1, transport.getTransp_schedule_id()).executeUpdate();
