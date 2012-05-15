@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import com.info08.billing.callcenterbk.shared.entity.Person;
-import com.info08.billing.callcenterbk.shared.entity.callcenter.MyMobbase;
+import com.info08.billing.callcenterbk.shared.entity.Users;
+import com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments;
 
 public class ServerSession implements Serializable {
 
@@ -19,20 +19,20 @@ public class ServerSession implements Serializable {
 	private String abonentName;
 	private boolean webSession = true;
 	private int chcount = 0;
-	private Long sex = -1L;
+	private Long gender = -1L;
 	private Double cbd = 0.0;
 	private String debts = "";
 	private int yearMonth;
-	private Person user;
+	private Users user;
 	private int callType;
 	private ServerSession prevSession;
-	private MyMobbase myMobbase;
+	private Treatments treatment;
 	private boolean phoneIsMobile;
 	private Long main_id;
 	private String specialAlertMessage;
 	private Long unreadPersNotesCount;
 	private String callCenterReqMsg;
-	
+
 	private boolean isContractorPhone;
 	private Long contractorId;
 	private Timestamp contractorStartDate;
@@ -90,7 +90,7 @@ public class ServerSession implements Serializable {
 		this.machineIP = machineIP;
 	}
 
-	public String getUserName() {
+	public String getUser_name() {
 		return userName;
 	}
 
@@ -130,12 +130,12 @@ public class ServerSession implements Serializable {
 		this.chcount = chcount;
 	}
 
-	public Long getSex() {
-		return sex;
+	public Long getGender() {
+		return gender;
 	}
 
-	public void setSex(Long sex) {
-		this.sex = sex;
+	public void setGender(Long gender) {
+		this.gender = gender;
 	}
 
 	public Double getCbd() {
@@ -162,11 +162,11 @@ public class ServerSession implements Serializable {
 		this.yearMonth = yearMonth;
 	}
 
-	public Person getUser() {
+	public Users getUser() {
 		return user;
 	}
 
-	public void setUser(Person user) {
+	public void setUser(Users user) {
 		this.user = user;
 	}
 
@@ -186,12 +186,12 @@ public class ServerSession implements Serializable {
 		this.prevSession = prevSession;
 	}
 
-	public MyMobbase getMyMobbase() {
-		return myMobbase;
+	public Treatments getTreatment() {
+		return treatment;
 	}
 
-	public void setMyMobbase(MyMobbase myMobbase) {
-		this.myMobbase = myMobbase;
+	public void setTreatment(Treatments treatment) {
+		this.treatment = treatment;
 	}
 
 	public boolean isPhoneIsMobile() {

@@ -49,7 +49,7 @@ public class SessQualityDMI implements QueryConstants {
 					.toString());
 			Long chargeCount = new Long(dsRequest.getValues()
 					.get("chargeCount").toString());
-			
+
 			Long virt_call_type = new Long(dsRequest.getValues()
 					.get("virt_call_type").toString());
 
@@ -197,7 +197,7 @@ public class SessQualityDMI implements QueryConstants {
 
 			log += ". Result : getLogSessionItem Finished Successfully.";
 			LogSessionItem existingRecord = new LogSessionItem();
-			existingRecord.setPersonnel_id(resultSetNote.getInt(1));
+			existingRecord.setUser_id(resultSetNote.getInt(1));
 			existingRecord.setSession_id(resultSetNote.getString(2));
 			existingRecord.setYm(resultSetNote.getInt(3));
 			existingRecord.setUser_name(resultSetNote.getString(4));

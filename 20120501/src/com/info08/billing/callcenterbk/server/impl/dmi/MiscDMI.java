@@ -20,7 +20,7 @@ import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.server.common.ServerSingleton;
 import com.info08.billing.callcenterbk.shared.entity.Service;
 import com.info08.billing.callcenterbk.shared.entity.admin.FixedOperatorPrefixe;
-import com.info08.billing.callcenterbk.shared.entity.admin.MobileOperatorPrefixe;
+import com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes;
 import com.info08.billing.callcenterbk.shared.entity.facts.FactStatus;
 import com.info08.billing.callcenterbk.shared.entity.facts.FactType;
 import com.info08.billing.callcenterbk.shared.entity.facts.Facts;
@@ -634,8 +634,8 @@ public static void main(String[] args) {
 	 * @return
 	 * @throws Exception
 	 */
-	public MobileOperatorPrefixe addMobileOperatorPrefix(
-			MobileOperatorPrefixe mobileOperatorPrefixe) throws Exception {
+	public GSMIndexes addMobileOperatorPrefix(
+			GSMIndexes mobileOperatorPrefixe) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -654,7 +654,7 @@ public static void main(String[] args) {
 			oracleManager.flush();
 
 			mobileOperatorPrefixe = oracleManager.find(
-					MobileOperatorPrefixe.class, mobileOperatorPrefixe.getId());
+					GSMIndexes.class, mobileOperatorPrefixe.getId());
 			mobileOperatorPrefixe.setLoggedUserName(loggedUserName);
 
 			EMF.commitTransaction(transaction);
@@ -690,7 +690,7 @@ public static void main(String[] args) {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public MobileOperatorPrefixe updateMobileOperatorPrefix(Map record)
+	public GSMIndexes updateMobileOperatorPrefix(Map record)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -707,8 +707,8 @@ public static void main(String[] args) {
 					"prefix").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			MobileOperatorPrefixe mobileOperatorPrefixe = oracleManager.find(
-					MobileOperatorPrefixe.class, id);
+			GSMIndexes mobileOperatorPrefixe = oracleManager.find(
+					GSMIndexes.class, id);
 			mobileOperatorPrefixe.setOper(oper);
 			mobileOperatorPrefixe.setPrefix(prefix);
 			mobileOperatorPrefixe.setUpd_date(currDate);
@@ -750,7 +750,7 @@ public static void main(String[] args) {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public MobileOperatorPrefixe updateMobileOperatorPrefixStatus(Map record)
+	public GSMIndexes updateMobileOperatorPrefixStatus(Map record)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -764,8 +764,8 @@ public static void main(String[] args) {
 			Long deleted = new Long(record.get("deleted").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			MobileOperatorPrefixe mobileOperatorPrefixe = oracleManager.find(
-					MobileOperatorPrefixe.class, id);
+			GSMIndexes mobileOperatorPrefixe = oracleManager.find(
+					GSMIndexes.class, id);
 
 			mobileOperatorPrefixe.setDeleted(deleted);
 			mobileOperatorPrefixe.setUpd_user(loggedUserName);
@@ -775,7 +775,7 @@ public static void main(String[] args) {
 			oracleManager.flush();
 
 			mobileOperatorPrefixe = oracleManager.find(
-					MobileOperatorPrefixe.class, id);
+					GSMIndexes.class, id);
 
 			mobileOperatorPrefixe.setLoggedUserName(loggedUserName);
 

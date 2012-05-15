@@ -32,7 +32,7 @@ import com.info08.billing.callcenterbk.shared.entity.StreetType;
 import com.info08.billing.callcenterbk.shared.entity.StreetsOldEnt;
 import com.info08.billing.callcenterbk.shared.items.FirstName;
 import com.info08.billing.callcenterbk.shared.items.LastName;
-import com.info08.billing.callcenterbk.shared.items.PersonnelTypes;
+import com.info08.billing.callcenterbk.shared.items.Departments;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSource;
 import com.isomorphic.datasource.DataSourceManager;
@@ -45,7 +45,7 @@ public class CommonDMI implements QueryConstants {
 
 	private static TreeMap<Integer, FirstName> firstNames = new TreeMap<Integer, FirstName>();
 	private static TreeMap<Integer, LastName> lastNames = new TreeMap<Integer, LastName>();
-	private static TreeMap<Integer, PersonnelTypes> persTypes = new TreeMap<Integer, PersonnelTypes>();
+	private static TreeMap<Integer, Departments> departments = new TreeMap<Integer, Departments>();
 	private static TreeMap<Long, Continents> continents = new TreeMap<Long, Continents>();
 	private static TreeMap<Long, Country> countries = new TreeMap<Long, Country>();
 	private static TreeMap<Long, CityType> cityTypes = new TreeMap<Long, CityType>();
@@ -77,8 +77,8 @@ public class CommonDMI implements QueryConstants {
 		return lastNames.get(lastNameId);
 	}
 
-	public static PersonnelTypes getPersonnelTypes(Integer persTypeId) {
-		return persTypes.get(persTypeId);
+	public static Departments getDepartments(Integer departmentId) {
+		return departments.get(departmentId);
 	}
 
 	public static CityType getCityType(Long cityTypeId) {
@@ -1825,7 +1825,7 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes"})
+	@SuppressWarnings({ "rawtypes" })
 	public City cityUpdate(Map fieldValues) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -1911,29 +1911,30 @@ public class CommonDMI implements QueryConstants {
 					changed = true;
 				}
 				if (changed) {
-//					ArrayList<TranspStation> trPlaces = (ArrayList<TranspStation>) oracleManager
-//							.createNamedQuery("TranspStation.getByCityId")
-//							.setParameter("city_id", city_id).getResultList();
-//					if (trPlaces != null && !trPlaces.isEmpty()) {
-//						String newCityName = fieldValues.get("city_name_geo")
-//								.toString();
-//						for (TranspStation transportPlace : trPlaces) {
-//							Long transpTypeId = transportPlace
-//									.getTransport_type_id();
-//							TranspType transportType = oracleManager.find(
-//									TranspType.class, transpTypeId);
-//							String newDescr = newCityName
-//									+ " "
-//									+ transportPlace.getTransport_place_geo()
-//									+ " ( "
-//									+ (transportType == null ? "NULL"
-//											: transportType.getName_descr())
-//									+ " ) ";
-//							transportPlace
-//									.setTransport_place_geo_descr(newDescr);
-//							oracleManager.merge(transportPlace);
-//						}
-//					}
+					// ArrayList<TranspStation> trPlaces =
+					// (ArrayList<TranspStation>) oracleManager
+					// .createNamedQuery("TranspStation.getByCityId")
+					// .setParameter("city_id", city_id).getResultList();
+					// if (trPlaces != null && !trPlaces.isEmpty()) {
+					// String newCityName = fieldValues.get("city_name_geo")
+					// .toString();
+					// for (TranspStation transportPlace : trPlaces) {
+					// Long transpTypeId = transportPlace
+					// .getTransport_type_id();
+					// TranspType transportType = oracleManager.find(
+					// TranspType.class, transpTypeId);
+					// String newDescr = newCityName
+					// + " "
+					// + transportPlace.getTransport_place_geo()
+					// + " ( "
+					// + (transportType == null ? "NULL"
+					// : transportType.getName_descr())
+					// + " ) ";
+					// transportPlace
+					// .setTransport_place_geo_descr(newDescr);
+					// oracleManager.merge(transportPlace);
+					// }
+					// }
 				}
 			}
 
@@ -2519,43 +2520,38 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	public ArrayList<PersonnelTypes> fetchPersTypes(DSRequest dsRequest)
+	public ArrayList<Departments> fetchDepartments(DSRequest dsRequest)
 			throws CallCenterException {
 		PreparedStatement selectStmt = null;
 		Connection connection = null;
 		try {
 			logger.info("getting PersonnelTypes ...");
 
-			if (persTypes == null || persTypes.isEmpty()) {
-				logger.info("getting persTypes from DB. ");
-				persTypes = new TreeMap<Integer, PersonnelTypes>();
+			if (departments == null || departments.isEmpty()) {
+				logger.info("getting departments from DB. ");
+				departments = new TreeMap<Integer, Departments>();
 				DataSource ds = DataSourceManager.get("LogSessDS");
 				SQLDataSource sqlDS = (SQLDataSource) ds;
 				connection = sqlDS.getConnection();
 
-				selectStmt = connection.prepareStatement(Q_GET_PERS_TYPES_ALL);
-				ResultSet rPersTypes = selectStmt.executeQuery();
-				while (rPersTypes.next()) {
-					PersonnelTypes personnelTypes = new PersonnelTypes();
-					Integer personnelTypes_id = rPersTypes.getInt(1);
-					personnelTypes.setPersonnel_type_id(personnelTypes_id);
-					personnelTypes.setPersonnel_type_name_geo(rPersTypes
-							.getString(2));
-					personnelTypes.setRec_date(rPersTypes.getTimestamp(3));
-					personnelTypes.setRec_user(rPersTypes.getString(4));
-					personnelTypes.setDeleted(rPersTypes.getInt(5));
-					persTypes.put(personnelTypes_id, personnelTypes);
+				selectStmt = connection.prepareStatement(Q_GET_DEPARTMENTS);
+				ResultSet rDepartments = selectStmt.executeQuery();
+				while (rDepartments.next()) {
+					Departments department = new Departments();
+					Integer department_id = rDepartments.getInt(1);
+					department.setDepartment_id(department_id);
+					department.setDepartment_name(rDepartments.getString(2));
+					departments.put(department_id, department);
 				}
 			}
-			ArrayList<PersonnelTypes> ret = new ArrayList<PersonnelTypes>();
-			ret.addAll(persTypes.values());
+			ArrayList<Departments> ret = new ArrayList<Departments>();
+			ret.addAll(departments.values());
 			return ret;
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Select PersonnelTypes From Database : ",
-					e);
+			logger.error("Error While Select Departments From Database : ", e);
 			throw new CallCenterException(
 					"შეცდომა მონაცემების წამოღებისას მონაცემთა ბაზიდან : "
 							+ e.toString());
