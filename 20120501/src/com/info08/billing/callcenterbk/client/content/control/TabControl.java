@@ -67,7 +67,7 @@ public class TabControl extends Tab {
 	private ToolStripButton remarksButton;
 	private ToolStripButton opRemarksButton;
 	private ToolStripButton qualityButton;
-	private ToolStripButton discoveryButton;
+	private ToolStripButton surveyButton;
 	private ToolStripButton smsButton;
 	private ToolStripButton exportButton;
 	private TimeItem startTimeItem;
@@ -278,10 +278,10 @@ public class TabControl extends Tab {
 			qualityButton.setWidth(50);
 			toolStrip.addButton(qualityButton);
 
-			discoveryButton = new ToolStripButton("გარკვევები", "discovery.png");
-			discoveryButton.setLayoutAlign(Alignment.LEFT);
-			discoveryButton.setWidth(50);
-			toolStrip.addButton(discoveryButton);
+			surveyButton = new ToolStripButton("გარკვევები", "survey.png");
+			surveyButton.setLayoutAlign(Alignment.LEFT);
+			surveyButton.setWidth(50);
+			toolStrip.addButton(surveyButton);
 
 			smsButton = new ToolStripButton("SMS - ები", "sms.gif");
 			smsButton.setLayoutAlign(Alignment.LEFT);
@@ -591,7 +591,7 @@ public class TabControl extends Tab {
 				}
 			});
 
-			discoveryButton.addClickHandler(new ClickHandler() {
+			surveyButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					ListGridRecord listGridRecord = sessionsGrid
