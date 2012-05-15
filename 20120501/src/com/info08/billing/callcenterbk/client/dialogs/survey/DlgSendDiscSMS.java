@@ -1,4 +1,4 @@
-package com.info08.billing.callcenterbk.client.dialogs.discovery;
+package com.info08.billing.callcenterbk.client.dialogs.survey;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
@@ -119,7 +119,7 @@ public class DlgSendDiscSMS extends Window {
 			sendSMSButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					sendDiscoverySMS();
+					sendSurveySMS();
 				}
 			});
 
@@ -142,7 +142,7 @@ public class DlgSendDiscSMS extends Window {
 		}
 	}
 
-	private void sendDiscoverySMS() {
+	private void sendSurveySMS() {
 		try {
 			String sms_text = smsItem.getValueAsString();
 			if (sms_text == null || sms_text.trim().equals("")) {
@@ -176,7 +176,7 @@ public class DlgSendDiscSMS extends Window {
 				return;
 			}
 			
-			String call_id = record.getAttributeAsString("call_id");
+			String session_call_id = record.getAttributeAsString("session_call_id");
 			String rec_user = CommonSingleton.getInstance().getSessionPerson()
 					.getUserName();
 
@@ -186,7 +186,7 @@ public class DlgSendDiscSMS extends Window {
 			Record record = new Record();
 
 			record.setAttribute("service_id", Constants.serviceOrganization);
-			record.setAttribute("session_id", call_id);
+			record.setAttribute("session_id", session_call_id);
 			record.setAttribute("sms_text", sms_text);
 			record.setAttribute("phone", phone);
 			record.setAttribute("rec_user", rec_user);

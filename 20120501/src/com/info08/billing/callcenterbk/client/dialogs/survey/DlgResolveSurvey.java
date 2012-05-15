@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.survey;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -16,12 +17,11 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgChangeResolveStatus extends Window {
+public class DlgResolveSurvey extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -31,14 +31,14 @@ public class DlgChangeResolveStatus extends Window {
 	private IButton sendSMSButton;
 
 	private ListGridRecord listGridRecord;
-	private ListGrid listGrid;
+	private DlgSurveyManager surveyManager;
 
-	public DlgChangeResolveStatus(ListGrid listGrid,
+	public DlgResolveSurvey(DlgSurveyManager surveyyManager,
 			ListGridRecord listGridRecord) {
 		try {
+			this.surveyManager = surveyyManager;
 			this.listGridRecord = listGridRecord;
-			this.listGrid = listGrid;
-			setTitle(CallCenterBK.constants.changeStatus());
+			setTitle(CallCenterBK.constants.resolveSurvey());
 
 			setHeight(130);
 			setWidth(400);
@@ -65,7 +65,7 @@ public class DlgChangeResolveStatus extends Window {
 
 			survResponseType = new SelectItem();
 			survResponseType.setTitle(CallCenterBK.constants.status());
-			survResponseType.setName("survResponseType");
+			survResponseType.setName("discResponseType");
 			survResponseType.setWidth("100%");
 
 			DataSource surveyReplyTypeDS = DataSource.get("SurveyReplyTypeDS");
@@ -130,30 +130,26 @@ public class DlgChangeResolveStatus extends Window {
 			String rec_user = CommonSingleton.getInstance().getSessionPerson()
 					.getUserName();
 
-			com.smartgwt.client.rpc.RPCManager.startQueue();
-			Record record = listGridRecord;
+			CanvasDisableTimer.addCanvasClickTimer(sendSMSButton);
 
-			record.setAttribute("survey_reply_type_id", new Integer(survey_reply_type_id_str));
-			record.setAttribute("loggedUserName", rec_user);
-			record.setAttribute("survey_id", listGridRecord.getAttributeAsInt("survey_id"));
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+			Record record = new Record();
+
+			record.setAttribute("survey_reply_type_id", new Integer(
+					survey_reply_type_id_str));
+			record.setAttribute("upd_user", rec_user);
+			record.setAttribute("survey_id",
+					listGridRecord.getAttributeAsInt("survey_id"));
 
 			DSRequest req = new DSRequest();
-			req.setAttribute("operationId", "updateSurveyItem");
-			listGrid.getDataSource().updateData(record, new DSCallback() {
+			DataSource surveyDS = DataSource.get("SurveyDS");
+			req.setAttribute("operationId", "resolveSurvey");
+			surveyDS.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
 					destroy();
-					Record records[] = response.getData();
-					Record record = records[0];
-					String attrs[] = record.getAttributes();
-					String txt = "";
-					for (String string : attrs) {
-						String value = record.getAttributeAsString(string);
-						txt += "AttrName: " + string + ", Value = " + value
-								+ "\n";
-					}
-					SC.say("TXT == "+txt);
+					surveyManager.destroy();
 				}
 			}, req);
 			com.smartgwt.client.rpc.RPCManager.sendQueue();

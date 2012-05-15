@@ -1,4 +1,4 @@
-package com.info08.billing.callcenterbk.client.dialogs.discovery;
+package com.info08.billing.callcenterbk.client.dialogs.survey;
 
 import java.util.Date;
 
