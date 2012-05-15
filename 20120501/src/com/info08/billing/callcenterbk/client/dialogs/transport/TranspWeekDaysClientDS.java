@@ -11,16 +11,17 @@ public class TranspWeekDaysClientDS extends DataSource {
 	}
 
 	public TranspWeekDaysClientDS(String id) {
-		//setID(id);
-		DataSourceIntegerField access_id = new DataSourceIntegerField("day_id");
-		access_id.setHidden(true);
-		access_id.setPrimaryKey(true);
-		access_id.setRequired(true);
+		// setID(id);
+		DataSourceIntegerField permission_id = new DataSourceIntegerField(
+				"day_id");
+		permission_id.setHidden(true);
+		permission_id.setPrimaryKey(true);
+		permission_id.setRequired(true);
 
-		DataSourceTextField access_name = new DataSourceTextField("day_name",
+		DataSourceTextField permission_name = new DataSourceTextField("day_name",
 				"გრაფიკის დღეები");
 
-		setFields(access_id, access_name);
+		setFields(permission_id, permission_name);
 		setClientOnly(true);
 	}
 }

@@ -864,7 +864,7 @@ public class DlgAddEditMainOrg extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 
 			record.setAttribute("main_id",
 					listGridRecord.getAttributeAsInt("main_id"));

@@ -398,7 +398,7 @@ public class DlgAddEditBillingComps extends Window {
 						editRecord.getAttributeAsInt("billing_company_id"));
 			}
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("billing_company_name", billing_company_name);
 			record.setAttribute("our_percent", our_percent);

@@ -108,7 +108,7 @@ public class DlgAddEditFirstName extends Window {
 					record.setAttribute("firstname", firstName);
 					record.setAttribute("firstname_Id", firstNameId);
 					record.setAttribute("loggedUserName", CommonSingleton
-							.getInstance().getSessionPerson().getUserName());
+							.getInstance().getSessionPerson().getUser_name());
 
 					DSRequest req = new DSRequest();
 					if (firstNameId == null) {

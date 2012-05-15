@@ -220,7 +220,7 @@ public class DlgAddVirtualCharge extends Window {
 			Integer virt_call_type = new Integer(typeItem.getValueAsString());
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();

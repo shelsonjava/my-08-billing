@@ -92,7 +92,7 @@ public class DlgAddEditSessNote extends Window {
 
 			HiddenItem textItem = new HiddenItem();
 			textItem.setValue(CommonSingleton.getInstance().getSessionPerson()
-					.getUserName());
+					.getUser_name());
 			textItem.setName("loggedUserName");
 			textItem.setVisible(false);
 
@@ -159,7 +159,7 @@ public class DlgAddEditSessNote extends Window {
 						record.setAttribute("particularInt", new Integer(
 								particItem.getValueAsString()));
 						record.setAttribute("loggedUserName", CommonSingleton
-								.getInstance().getSessionPerson().getUserName());
+								.getInstance().getSessionPerson().getUser_name());
 
 						DSRequest req = new DSRequest();
 						if (noteId == null) {

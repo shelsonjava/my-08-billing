@@ -233,7 +233,7 @@ public class DlgAddEditEventOwner extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("event_category_id", event_category_id);
 			record.setAttribute("event_owner_name", event_owner_name);

@@ -172,7 +172,7 @@ public class DlgAddEditBusRoute extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("dir_num", dir_num);
 			record.setAttribute("dir_old_num", dir_old_num);

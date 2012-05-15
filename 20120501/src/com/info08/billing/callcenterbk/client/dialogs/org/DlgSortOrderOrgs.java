@@ -170,7 +170,7 @@ public class DlgSortOrderOrgs extends Window {
 			Record record = new Record();
 			record.setAttribute("mainIdList", mainIdList);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 			req.setAttribute("operationId", "updateMainServiceOrders");
 			dataSource.updateData(record, new DSCallback() {

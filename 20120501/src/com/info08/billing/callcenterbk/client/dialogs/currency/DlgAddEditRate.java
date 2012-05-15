@@ -275,7 +275,7 @@ public class DlgAddEditRate extends Window {
 			record.setAttribute("currency_id",
 					editRecord.getAttributeAsInt("currency_id"));
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 
 			DataSource rateDS = DataSource.get("CurrencyCourseDS");

@@ -391,7 +391,7 @@ public class DlgAddEditBlockList extends Window {
 				record.setAttribute("id", editRecord.getAttributeAsInt("id"));
 			}
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("upd_user", loggedUser);

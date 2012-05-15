@@ -205,7 +205,7 @@ public class DlgAddEditRateCurr extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			if (country_id_str != null && !country_id_str.trim().equals("")) {
 				record.setAttribute("country_id", new Integer(country_id_str));

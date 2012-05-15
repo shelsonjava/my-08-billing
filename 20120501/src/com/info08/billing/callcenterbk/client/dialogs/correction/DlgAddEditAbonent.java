@@ -962,7 +962,7 @@ public class DlgAddEditAbonent extends Window {
 			record.setAttribute("addr_appt", sAppart);
 			record.setAttribute("addr_descr", sAddrAddInfo);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 
 			// Edit
 			if (abonentRecord != null) {

@@ -19,18 +19,18 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditMobOperPref extends Window {
+public class DlgAddEditGSMIndexes extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private TextItem operatorItem;
-	private TextItem indexItem;
+	private TextItem gsmCompanyItem;
+	private TextItem gsmIndexItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditMobOperPref(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditGSMIndexes(ListGrid listGrid, ListGridRecord pRecord) {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
@@ -61,17 +61,17 @@ public class DlgAddEditMobOperPref extends Window {
 			dynamicForm.setNumCols(2);
 			hLayout.addMember(dynamicForm);
 
-			operatorItem = new TextItem();
-			operatorItem.setTitle(CallCenterBK.constants.mobOperator());
-			operatorItem.setName("operatorItem");
-			operatorItem.setWidth(250);
+			gsmCompanyItem = new TextItem();
+			gsmCompanyItem.setTitle(CallCenterBK.constants.mobOperator());
+			gsmCompanyItem.setName("gsmCompanyItem");
+			gsmCompanyItem.setWidth(250);
 
-			indexItem = new TextItem();
-			indexItem.setTitle(CallCenterBK.constants.mobOperatorIndex());
-			indexItem.setName("indexItem");
-			indexItem.setWidth(250);
+			gsmIndexItem = new TextItem();
+			gsmIndexItem.setTitle(CallCenterBK.constants.mobOperatorIndex());
+			gsmIndexItem.setName("gsmIndexItem");
+			gsmIndexItem.setWidth(250);
 
-			dynamicForm.setFields(operatorItem, indexItem);
+			dynamicForm.setFields(gsmCompanyItem, gsmIndexItem);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -116,8 +116,8 @@ public class DlgAddEditMobOperPref extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			operatorItem.setValue(editRecord.getAttributeAsString("oper"));
-			indexItem.setValue(editRecord.getAttributeAsString("prefix"));
+			gsmCompanyItem.setValue(editRecord.getAttributeAsString("gsm_company"));
+			gsmIndexItem.setValue(editRecord.getAttributeAsString("gsm_index"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -125,23 +125,23 @@ public class DlgAddEditMobOperPref extends Window {
 
 	private void save() {
 		try {
-			String oper = operatorItem.getValueAsString();
-			if (oper == null || oper.trim().equals("")) {
+			String gsm_company = gsmCompanyItem.getValueAsString();
+			if (gsm_company == null || gsm_company.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterMobOperator());
 				return;
 			}
 
-			String prefix = indexItem.getValueAsString();
-			if (prefix == null || prefix.trim().equals("")) {
+			String gsm_index = gsmIndexItem.getValueAsString();
+			if (gsm_index == null || gsm_index.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterMobOperatorPrefix());
 				return;
 			}
-			if (prefix.length() < 2 || prefix.length() > 3) {
+			if (gsm_index.length() < 2 || gsm_index.length() > 3) {
 				SC.say(CallCenterBK.constants.mobOperPrefIs3Digit());
 				return;
 			}
 			try {
-				new Integer(prefix);
+				new Integer(gsm_index);
 			} catch (Exception e) {
 				SC.say(CallCenterBK.constants.mobOperPrefIs3Digit());
 				return;
@@ -151,19 +151,18 @@ public class DlgAddEditMobOperPref extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("oper", oper);
-			record.setAttribute("prefix", prefix);
+			record.setAttribute("gsm_company", gsm_company);
+			record.setAttribute("gsm_index", gsm_index);
 
 			if (editRecord != null) {
-				record.setAttribute("id", editRecord.getAttributeAsInt("id"));
+				record.setAttribute("gsm_index_id", editRecord.getAttributeAsInt("gsm_index_id"));
 			}
 
 			DSRequest req = new DSRequest();
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addMobileOperatorPrefix");
+				req.setAttribute("operationId", "addGSMIndexes");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -172,7 +171,7 @@ public class DlgAddEditMobOperPref extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateMobileOperatorPrefix");
+				req.setAttribute("operationId", "updateGSMIndexes");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

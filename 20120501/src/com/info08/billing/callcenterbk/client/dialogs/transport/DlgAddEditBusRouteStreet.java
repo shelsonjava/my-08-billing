@@ -265,7 +265,7 @@ public class DlgAddEditBusRouteStreet extends Window {
 			Record record = new Record(dynamicForm.getValues());
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("dir_id", new Integer(route_id));
 			record.setAttribute("street_id", new Integer(street_id));

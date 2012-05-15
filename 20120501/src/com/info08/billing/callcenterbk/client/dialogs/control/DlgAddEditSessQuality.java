@@ -76,7 +76,7 @@ public class DlgAddEditSessQuality extends Window {
 
 			HiddenItem loggedUserName = new HiddenItem();
 			loggedUserName.setValue(CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			loggedUserName.setName("loggedUserName");
 			loggedUserName.setVisible(false);
 

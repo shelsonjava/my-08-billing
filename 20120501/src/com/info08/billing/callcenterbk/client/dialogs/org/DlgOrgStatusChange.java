@@ -116,7 +116,7 @@ public class DlgOrgStatusChange extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			record.setAttribute("statuse",
 					new Integer(orgStatusItem.getValueAsString()));
 			record.setAttribute("main_id",

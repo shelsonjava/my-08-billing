@@ -887,7 +887,8 @@ public class DlgAddEditTranspSchedule extends Window {
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			String loggedUser = CommonSingleton.getInstance().getSessionPerson().getUserName();
+			String loggedUser = CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			if (editRecord != null) {
 				record.setAttribute("transp_schedule_id", editRecord.getAttributeAsInt("transp_schedule_id"));

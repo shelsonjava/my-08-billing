@@ -39,8 +39,8 @@ public class DlgAddEditUserNew extends Window {
 	private ComboBoxItem deputyItem;
 	private ListGrid permissionsGrid;
 	private ListGrid userPermissionsGrid;
-	private DataSource persmDS;
-	private UserPermsClientDS userPermsClientDS;
+	private DataSource permisssionsDS;
+	private UserPermissinsClientDS userPermissinsClientDS;
 	private DataSource userDS;
 	private ListGridRecord userRecord;
 
@@ -85,29 +85,29 @@ public class DlgAddEditUserNew extends Window {
 		userNameItem = new TextItem();
 		userNameItem.setTitle("მომხმარებელი");
 		userNameItem.setWidth(250);
-		userNameItem.setName("username");
+		userNameItem.setName("userName");
 
 		passwordItem = new TextItem();
 		passwordItem.setTitle("პაროლი");
 		passwordItem.setWidth(250);
-		passwordItem.setName("password");
+		passwordItem.setName("user_password");
 
 		deputyItem = new ComboBoxItem();
 		deputyItem.setWidth(250);
 		deputyItem.setTitle("განყოფილება");
-		DataSource persTypesDS = DataSource.get("PersTypeDS");
-		deputyItem.setOptionOperationId("persTypesSearch");
-		deputyItem.setOptionDataSource(persTypesDS);
-		deputyItem.setValueField("personnel_type_id");
-		deputyItem.setDisplayField("personnel_type_name_geo");
+		DataSource DepartmentDS = DataSource.get("DepartmentDS");
+		deputyItem.setOptionOperationId("searchDepartments");
+		deputyItem.setOptionDataSource(DepartmentDS);
+		deputyItem.setValueField("department_id");
+		deputyItem.setDisplayField("department_name");
 		deputyItem.setAutoFetchData(true);
 
 		dynamicForm.setFields(firstNameItem, lastNameItem, userNameItem,
 				passwordItem, deputyItem);
 
-		persmDS = DataSource.get("PermisssionsDS");
+		permisssionsDS = DataSource.get("PermisssionsDS");
 
-		persmDS.getField("access_name").setTitle("უფლებების ჩამონათვალი");
+		permisssionsDS.getField("permission_name").setTitle("უფლებების ჩამონათვალი");
 		permissionsGrid = new ListGrid() {
 			protected String getCellCSSText(ListGridRecord record, int rowNum,
 					int colNum) {
@@ -115,9 +115,9 @@ public class DlgAddEditUserNew extends Window {
 				if (countryRecord == null) {
 					return super.getCellCSSText(record, rowNum, colNum);
 				}
-				Integer is_main_perm = countryRecord
-						.getAttributeAsInt("is_main_perm");
-				if (is_main_perm != null && is_main_perm.equals(1)) {
+				Integer is_permission_group = countryRecord
+						.getAttributeAsInt("is_permission_group");
+				if (is_permission_group != null && is_permission_group.equals(1)) {
 					return "font-weight:bold;";
 				} else {
 					return super.getCellCSSText(record, rowNum, colNum);
@@ -126,15 +126,15 @@ public class DlgAddEditUserNew extends Window {
 		};
 		permissionsGrid.setWidth(300);
 		permissionsGrid.setHeight(400);
-		permissionsGrid.setDataSource(persmDS);
+		permissionsGrid.setDataSource(permisssionsDS);
 		permissionsGrid.setCanDragRecordsOut(true);
 		permissionsGrid.setDragDataAction(DragDataAction.COPY);
 		permissionsGrid.setAlternateRecordStyles(true);
 		permissionsGrid.setAutoFetchData(true);
 		permissionsGrid.setUseAllDataSourceFields(true);
-		permissionsGrid.setFetchOperation("customPersSearch");
+		permissionsGrid.setFetchOperation("searchUser");
 
-		userPermsClientDS = UserPermsClientDS.getInstance();
+		userPermissinsClientDS = UserPermissinsClientDS.getInstance();
 
 		userPermissionsGrid = new ListGrid() {
 			protected String getCellCSSText(ListGridRecord record, int rowNum,
@@ -143,9 +143,9 @@ public class DlgAddEditUserNew extends Window {
 				if (countryRecord == null) {
 					return super.getCellCSSText(record, rowNum, colNum);
 				}
-				Integer is_main_perm = countryRecord
-						.getAttributeAsInt("is_main_perm");
-				if (is_main_perm != null && is_main_perm.equals(1)) {
+				Integer is_permission_group = countryRecord
+						.getAttributeAsInt("is_permission_group");
+				if (is_permission_group != null && is_permission_group.equals(1)) {
 					return "font-weight:bold;";
 				} else {
 					return super.getCellCSSText(record, rowNum, colNum);
@@ -154,12 +154,13 @@ public class DlgAddEditUserNew extends Window {
 		};
 		userPermissionsGrid.setWidth(300);
 		userPermissionsGrid.setHeight(400);
-		userPermissionsGrid.setDataSource(userPermsClientDS);
+		userPermissionsGrid.setDataSource(userPermissinsClientDS);
 		userPermissionsGrid.setCanAcceptDroppedRecords(true);
 		userPermissionsGrid.setCanRemoveRecords(true);
 		userPermissionsGrid.setAutoFetchData(true);
 		userPermissionsGrid.setPreventDuplicates(true);
-		userPermissionsGrid.setDuplicateDragMessage("ასეთი უფლება უკვე არჩეულია !");
+		userPermissionsGrid
+				.setDuplicateDragMessage("ასეთი უფლება უკვე არჩეულია !");
 
 		Img arrowImg = new Img("arrow_right.png", 32, 32);
 		arrowImg.setLayoutAlign(Alignment.CENTER);
@@ -229,20 +230,20 @@ public class DlgAddEditUserNew extends Window {
 			if (userRecord == null) {
 				return;
 			}
-			firstNameItem.setValue(userRecord.getAttribute("personelName"));
-			lastNameItem.setValue(userRecord.getAttribute("personelSurName"));
-			userNameItem.setValue(userRecord.getAttribute("userName"));
-			passwordItem.setValue(userRecord.getAttribute("password"));
-			deputyItem.setValue(userRecord.getAttribute("personelTypeId"));
+			firstNameItem.setValue(userRecord.getAttribute("user_firstname"));
+			lastNameItem.setValue(userRecord.getAttribute("user_lastname"));
+			userNameItem.setValue(userRecord.getAttribute("user_name"));
+			passwordItem.setValue(userRecord.getAttribute("user_password"));
+			deputyItem.setValue(userRecord.getAttribute("department_id"));
 
 			DataSource userPermsDS = DataSource.get("PermisssionsDS");
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("personelId",
-					userRecord.getAttributeAsInt("personelId"));
+			criteria.setAttribute("user_id",
+					userRecord.getAttributeAsInt("user_id"));
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "customUserPersSearch");
+			dsRequest.setAttribute("operationId", "userPermissionSearch");
 
 			userPermsDS.fetchData(criteria, new DSCallback() {
 				@Override
@@ -280,19 +281,20 @@ public class DlgAddEditUserNew extends Window {
 				SC.say("შეიყვანეთ მომხმარებელი !");
 				return;
 			}
-			String password = passwordItem.getValueAsString();
-			if (password == null || password.trim().equalsIgnoreCase("")) {
+			String user_password = passwordItem.getValueAsString();
+			if (user_password == null
+					|| user_password.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ პაროლი !");
 				return;
 			}
 			ListGridRecord depRecord = deputyItem.getSelectedRecord();
 			if (depRecord == null
-					|| depRecord.getAttributeAsInt("personnel_type_id") == null) {
+					|| depRecord.getAttributeAsInt("department_id") == null) {
 				SC.say("გთხოვთ აირჩიოთ განყოფილება !");
 				return;
 			}
-			Integer personnel_type_id = depRecord
-					.getAttributeAsInt("personnel_type_id");
+			Integer department_id = depRecord
+					.getAttributeAsInt("department_id");
 
 			if (firstName.length() > 100) {
 				SC.say("სახელი შედგება მაქსიმუმ 100 სიმბოლოსაგან !");
@@ -306,7 +308,7 @@ public class DlgAddEditUserNew extends Window {
 				SC.say("მომხმარებლის სახელი შედგება მაქსიმუმ 30 სიმბოლოსაგან !");
 				return;
 			}
-			if (password.length() > 6) {
+			if (user_password.length() > 6) {
 				SC.say("პაროლი შედგება მაქსიმუმ 6 სიმბოლოსაგან !");
 				return;
 			}
@@ -315,30 +317,30 @@ public class DlgAddEditUserNew extends Window {
 			ListGridRecord phoneRecors[] = userPermissionsGrid.getRecords();
 			if (phoneRecors != null && phoneRecors.length > 0) {
 				for (ListGridRecord listGridRecord : phoneRecors) {
-					Integer access_id = listGridRecord
-							.getAttributeAsInt("access_id");
-					userPerms.put(access_id + "", "1");
+					Integer permission_id = listGridRecord
+							.getAttributeAsInt("permission_id");
+					userPerms.put(permission_id + "", "1");
 				}
 			}
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("userPerms", userPerms);
-			record.setAttribute("personelName", firstName);
-			record.setAttribute("personelSurName", lastName);
-			record.setAttribute("userName", userName);
-			record.setAttribute("password", password);
-			record.setAttribute("personnel_type_id", personnel_type_id);
+			record.setAttribute("user_firstname", firstName);
+			record.setAttribute("user_lastname", lastName);
+			record.setAttribute("user_name", userName);
+			record.setAttribute("user_password", user_password);
+			record.setAttribute("department_id", department_id);
 
 			if (userRecord != null) {
-				record.setAttribute("personelId",
-						userRecord.getAttributeAsInt("personelId"));
+				record.setAttribute("user_id",
+						userRecord.getAttributeAsInt("user_id"));
 			}
 
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 			if (userRecord == null) {
-				req.setAttribute("operationId", "customAdd");
+				req.setAttribute("operationId", "addUser");
 				userDS.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -347,7 +349,7 @@ public class DlgAddEditUserNew extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "customUpdate");
+				req.setAttribute("operationId", "updateUser");
 				userDS.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

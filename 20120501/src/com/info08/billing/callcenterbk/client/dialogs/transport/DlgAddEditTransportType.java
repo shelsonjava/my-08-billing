@@ -137,7 +137,7 @@ public class DlgAddEditTransportType extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("name_descr", name_descr);
 			record.setAttribute("kind", new Integer(intercity));

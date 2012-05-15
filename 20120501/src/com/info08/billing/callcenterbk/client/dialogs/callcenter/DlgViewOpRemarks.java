@@ -111,7 +111,7 @@ public class DlgViewOpRemarks extends Window {
 			listGrid.setDataSource(logPersNotesDS);
 			listGrid.setFetchOperation("notesCustSearchByOpCustom");
 			String user_name = CommonSingleton.getInstance().getSessionPerson()
-					.getUserName();
+					.getUser_name();
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("user_name", user_name);
 			criteria.setAttribute("received", 0);
@@ -243,7 +243,7 @@ public class DlgViewOpRemarks extends Window {
 			record.setAttribute("note_id",
 					listGridRecord.getAttributeAsInt("note_id"));
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("upd_user", loggedUser);
 			DSRequest req = new DSRequest();
 

@@ -130,7 +130,7 @@ public class DlgAddEditWebSiteGroup extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("main_detail_type_name_geo", main_detail_type_name_geo);
 			record.setAttribute("visible_option", 0);

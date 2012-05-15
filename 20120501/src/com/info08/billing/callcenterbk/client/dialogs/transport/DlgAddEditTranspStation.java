@@ -211,7 +211,7 @@ public class DlgAddEditTranspStation extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("name_descr", name_descr);			
 			record.setAttribute("transp_type_id", new Integer(transp_type_id));

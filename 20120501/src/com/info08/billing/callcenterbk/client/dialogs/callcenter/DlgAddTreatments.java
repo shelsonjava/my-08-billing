@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
-import com.info08.billing.callcenterbk.shared.entity.callcenter.MyMobbase;
+import com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -23,22 +23,23 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddMyMobBase extends Window {
+public class DlgAddTreatments extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private TextItem nmItem;
-	private RadioGroupItem sexItem;
+	private TextItem treatmentItem;
+	private RadioGroupItem genderItem;
 
-	public DlgAddMyMobBase() {
+	public DlgAddTreatments() {
 		try {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
-			final MyMobbase myMobbase = serverSession.getMyMobbase();
+			final Treatments treatment = serverSession.getTreatment();
 
-			setTitle(myMobbase == null ? CallCenterBK.constants.addAbonentName()
-					: CallCenterBK.constants.editAbonentName());
+			setTitle(treatment == null ? CallCenterBK.constants
+					.addAbonentName() : CallCenterBK.constants
+					.editAbonentName());
 
 			setHeight(160);
 			setWidth(430);
@@ -63,24 +64,24 @@ public class DlgAddMyMobBase extends Window {
 			dynamicForm.setNumCols(2);
 			hLayout.addMember(dynamicForm);
 
-			nmItem = new TextItem();
-			nmItem.setTitle(CallCenterBK.constants.abonentName());
-			nmItem.setName("phoneItem");
-			nmItem.setWidth(250);
+			treatmentItem = new TextItem();
+			treatmentItem.setTitle(CallCenterBK.constants.abonentName());
+			treatmentItem.setName("phoneItem");
+			treatmentItem.setWidth(250);
 
-			sexItem = new RadioGroupItem();
-			sexItem.setTitle(CallCenterBK.constants.sex());
+			genderItem = new RadioGroupItem();
+			genderItem.setTitle(CallCenterBK.constants.sex());
 			LinkedHashMap<String, String> sexMap = new LinkedHashMap<String, String>();
 			sexMap.put("1", CallCenterBK.constants.male());
 			sexMap.put("0", CallCenterBK.constants.female());
-			sexItem.setValueMap(sexMap);
+			genderItem.setValueMap(sexMap);
 
-			if (myMobbase != null) {
-				nmItem.setValue(myMobbase.getNm());
-				sexItem.setValue(myMobbase.getSex().toString());
+			if (treatment != null) {
+				treatmentItem.setValue(treatment.getTreatment());
+				genderItem.setValue(treatment.getGender().toString());
 			}
 
-			dynamicForm.setFields(sexItem, nmItem);
+			dynamicForm.setFields(genderItem, treatmentItem);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -107,7 +108,7 @@ public class DlgAddMyMobBase extends Window {
 			saveItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					save(myMobbase);
+					save(treatment);
 				}
 			});
 
@@ -118,7 +119,7 @@ public class DlgAddMyMobBase extends Window {
 		}
 	}
 
-	private void save(MyMobbase myMobbase) {
+	private void save(Treatments treatmentObj) {
 		try {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
@@ -126,8 +127,9 @@ public class DlgAddMyMobBase extends Window {
 				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
-			String phone = serverSession.getPhone();
-			if (phone == null || phone.trim().equalsIgnoreCase("")) {
+			String phone_number = serverSession.getPhone();
+			if (phone_number == null
+					|| phone_number.trim().equalsIgnoreCase("")) {
 				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
@@ -135,34 +137,33 @@ public class DlgAddMyMobBase extends Window {
 				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
-			String sex = sexItem.getValueAsString();
-			if (sex == null || sex.trim().equalsIgnoreCase("")) {
+			String gender = genderItem.getValueAsString();
+			if (gender == null || gender.trim().equalsIgnoreCase("")) {
 				SC.say(CallCenterBK.constants.plzSelectSex());
 				return;
 			}
-			String nm = nmItem.getValueAsString();
-			if (nm == null || nm.trim().equalsIgnoreCase("")) {
+			String treatment = treatmentItem.getValueAsString();
+			if (treatment == null || treatment.trim().equalsIgnoreCase("")) {
 				SC.say(CallCenterBK.constants.plzEnterAbonentName());
 				return;
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			if (myMobbase != null) {
-				record.setAttribute("id", myMobbase.getId());
+			if (treatment != null) {
+				record.setAttribute("treatment_id",
+						treatmentObj.getTreatment_id());
 			}
-			record.setAttribute("phone", phone);
-			record.setAttribute("sex", new Integer(sex));
-			record.setAttribute("nm", nm);
-			record.setAttribute("rec_user", serverSession.getUserName());
-			record.setAttribute("upd_user", serverSession.getUserName());
+			record.setAttribute("phone_number", phone_number);
+			record.setAttribute("gender", new Integer(gender));
+			record.setAttribute("treatment", treatment);
 
 			DSRequest req = new DSRequest();
-			DataSource myMobBaseDS = DataSource.get("MyMobBaseDS");
+			DataSource treatmentsDS = DataSource.get("TreatmentsDS");
 
-			if (myMobbase == null) {
-				req.setAttribute("operationId", "addMyMobBaseRecord");
-				myMobBaseDS.addData(record, new DSCallback() {
+			if (treatmentObj.getTreatment_id() == null) {
+				req.setAttribute("operationId", "addTreatments");
+				treatmentsDS.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse responsRe, Object rawData,
 							DSRequest request) {
@@ -170,8 +171,8 @@ public class DlgAddMyMobBase extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateMyMobBaseRecord");
-				myMobBaseDS.updateData(record, new DSCallback() {
+				req.setAttribute("operationId", "updateTreatments");
+				treatmentsDS.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse responsRe, Object rawData,
 							DSRequest request) {

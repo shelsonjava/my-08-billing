@@ -294,7 +294,7 @@ public class DlgViewIndex extends Window {
 			recordParam.setAttribute("sms_text", sms_text.toString());
 			recordParam.setAttribute("phone", phone);
 			recordParam.setAttribute("rec_user", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");
@@ -380,7 +380,7 @@ public class DlgViewIndex extends Window {
 			recordParam.setAttribute("sms_text", sms_text.toString());
 			recordParam.setAttribute("phone", phone);
 			recordParam.setAttribute("rec_user", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");

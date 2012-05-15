@@ -256,7 +256,7 @@ public class DlgAddEditFact extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("fact_status_id",
 					new Integer(calendar_state_id));

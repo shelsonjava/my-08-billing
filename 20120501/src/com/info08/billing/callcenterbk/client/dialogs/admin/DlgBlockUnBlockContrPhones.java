@@ -182,7 +182,7 @@ public class DlgBlockUnBlockContrPhones extends Window {
 			record.setAttribute("contract_id",
 					listGridRecord.getAttributeAsInt("contract_id"));
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("main_id",
 					listGridRecord.getAttributeAsInt("main_id"));

@@ -108,7 +108,7 @@ public class DlgAddEditLastName extends Window {
 					record.setAttribute("lastname", lastName);
 					record.setAttribute("lastname_Id", lastNameId);
 					record.setAttribute("loggedUserName", CommonSingleton
-							.getInstance().getSessionPerson().getUserName());
+							.getInstance().getSessionPerson().getUser_name());
 
 					DSRequest req = new DSRequest();
 					if (lastNameId == null) {
