@@ -127,8 +127,8 @@
 		<servlet-class>com.info08.billing.callcenterbk.server.listener.CallCenterServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>discoveryServlet</servlet-name>
-		<servlet-class>com.info08.billing.callcenterbk.server.listener.DiscoveryServlet</servlet-class>
+		<servlet-name>surveyServlet</servlet-name>
+		<servlet-class>com.info08.billing.callcenterbk.server.listener.SurveyServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>initAppServlet</servlet-name>
@@ -199,8 +199,8 @@
 		<url-pattern>/callcenterbk/callCenterServlet/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>discoveryServlet</servlet-name>
-		<url-pattern>/callcenterbk/discoveryServlet/*</url-pattern>
+		<servlet-name>surveyServlet</servlet-name>
+		<url-pattern>/callcenterbk/surveyServlet/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>initAppServlet</servlet-name>

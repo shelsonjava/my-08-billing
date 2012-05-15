@@ -6,7 +6,7 @@
 
 
 	<!-- Factories -->
-	<!-- Discovery SMS Sender -->
+	<!-- Survey SMS Sender -->
 	<bean id="timerFactory" class="org.springframework.scheduling.timer.TimerFactoryBean">
 		<property name="scheduledTimerTasks">
 			<list>
@@ -15,7 +15,7 @@
 			</list>
 		</property>
 	</bean>
-	<!-- Discovery SMS Sender -->
+	<!-- Survey SMS Sender -->
 	
 	<!--  Sms Sender-->
 	<bean id="timerFactorySMS" class="org.springframework.scheduling.timer.TimerFactoryBean">
@@ -33,11 +33,11 @@
 	
 
 	<!-- Job Classes -->
-	<!-- Discovery SMS Sender -->
-	<bean id="sendDiscoverySMSMessages"
-		class="com.info08.billing.callcenterbk.server.spring.jobs.DiscoverySMSSenderJob">
+	<!-- Survey SMS Sender -->
+	<bean id="sendSurveySMSMessages"
+		class="com.info08.billing.callcenterbk.server.spring.jobs.SurveySMSSenderJob">
 	</bean>
-	<!-- Discovery SMS Sender -->
+	<!-- Survey SMS Sender -->
 	
 	<!--  Sms Sender-->
 	<bean id="sendSMSMessages"
@@ -58,15 +58,15 @@
 	</bean>
 	<!--  Sms Sender-->
 
-	<!-- Discovery SMS Sender -->
+	<!-- Survey SMS Sender -->
 	<bean id="scheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
 		<!-- wait 1 minute (60000 millisecond) before starting repeated execution -->
 		<property name="delay" value="60000" />
 		<!-- run every 1 minute (60000 millisecond) -->
 		<property name="period" value="60000" />
-		<property name="timerTask" ref="sendDiscoverySMSMessages" />
+		<property name="timerTask" ref="sendSurveySMSMessages" />
 	</bean>
-	<!-- Discovery SMS Sender -->
+	<!-- Survey SMS Sender -->
 	
 	<!-- Schedulers -->
 	

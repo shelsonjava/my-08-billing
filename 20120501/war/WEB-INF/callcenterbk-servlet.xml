@@ -12,7 +12,7 @@
           class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="/**/*/discoveryOperations.do">discoveryOperationsController</prop>                
+                <prop key="/**/*/surveyOperations.do">surveyOperationsController</prop>                
             </props>
         </property>
     </bean>
@@ -32,6 +32,6 @@
 
 	<bean id="filenameController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController"/>
     
-    <bean id="discoveryOperationsController" class="com.info08.billing.callcenterbk.server.spring.controller.DiscoveryOperationsController"/>    
+    <bean id="surveyOperationsController" class="com.info08.billing.callcenterbk.server.spring.controller.SurveyOperationsController"/>    
 
 </beans>
