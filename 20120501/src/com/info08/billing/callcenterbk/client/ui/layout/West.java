@@ -6,7 +6,7 @@ import com.info08.billing.callcenterbk.client.ui.menu.AdminStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.CallCenterStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.ControlStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.CorrectionStackSelection;
-import com.info08.billing.callcenterbk.client.ui.menu.DiscoveryStackSelection;
+import com.info08.billing.callcenterbk.client.ui.menu.SurveyStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.MiscStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.StatStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.TransportStackSelection;
@@ -29,7 +29,7 @@ public class West extends VLayout {
 	protected static Body body;
 	private static CorrectionStackSelection correction;
 	private static ControlStackSelection control;
-	private static DiscoveryStackSelection discovery;
+	private static SurveyStackSelection survey;
 	private static AddressStackSelection address;
 	private static TransportStackSelection transport;
 	private static MiscStackSelection various;
@@ -74,8 +74,8 @@ public class West extends VLayout {
 				control = new ControlStackSelection(body);
 				menuStack.addSection(control);
 
-				discovery = new DiscoveryStackSelection(body);
-				menuStack.addSection(discovery);
+				survey = new SurveyStackSelection(body);
+				menuStack.addSection(survey);
 
 				address = new AddressStackSelection(body);
 				menuStack.addSection(address);
@@ -100,8 +100,8 @@ public class West extends VLayout {
 			case 4: // Correction
 				correction.setExpanded(true);
 				break;
-			case 6: // Discovery
-				discovery.setExpanded(true);
+			case 6: // Survey
+				survey.setExpanded(true);
 				break;
 			case 7: // IT
 				control.setExpanded(true);
@@ -135,7 +135,7 @@ public class West extends VLayout {
 				address.setMenuPersmission();
 				transport.setMenuPersmission();
 				various.setMenuPersmission();
-				discovery.setMenuPersmission();
+				survey.setMenuPersmission();
 				statistics.setMenuPersmission();
 			}
 			callCenter.setMenuPersmission();
