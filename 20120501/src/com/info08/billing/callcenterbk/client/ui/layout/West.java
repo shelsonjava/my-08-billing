@@ -62,7 +62,7 @@ public class West extends VLayout {
 	public static void openByLoggedUser() {
 		try {
 			Long personelTypeId = CommonSingleton.getInstance()
-					.getSessionPerson().getPersonelTypeId();
+					.getSessionPerson().getDepartment_id();
 			if (personelTypeId == null) {
 				return;
 			}

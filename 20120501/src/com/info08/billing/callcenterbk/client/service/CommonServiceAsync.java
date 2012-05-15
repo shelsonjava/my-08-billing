@@ -5,13 +5,13 @@ import java.util.Date;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
-import com.info08.billing.callcenterbk.shared.entity.Person;
+import com.info08.billing.callcenterbk.shared.entity.Users;
 
 /**
  * The async counterpart of <code>GreetingService</code>.
  */
 public interface CommonServiceAsync {
-	void login(String userName, String password, String sessionId,
+	void login(String userName, String user_password, String sessionId,
 			AsyncCallback<ServerSession> callback) throws CallCenterException;
 
 	void findSessionMp3ById(String sessionId, Date sessionDate,
@@ -19,7 +19,7 @@ public interface CommonServiceAsync {
 
 	// Log Personal Notes
 	void saveOrUpdateLogPersNote(Integer noteId, String sessionId,
-			Integer visOpt, String note, Integer particular, Person person,
+			Integer visOpt, String note, Integer particular, Users person,
 			AsyncCallback<Void> callback) throws CallCenterException;
 
 	void deleteLogPersNote(Integer noteId, AsyncCallback<Void> callback)

@@ -137,11 +137,11 @@ public class East extends VLayout {
 	// for (Serializable message : messages) {
 	// if (message instanceof ChatMessage) {
 	// ChatMessage chatMessage = (ChatMessage) message;
-	// output(chatMessage.getUsername() + ": "
+	// output(chatMessage.getUser_name() + ": "
 	// + chatMessage.getMessage());
 	// } else if (message instanceof StatusUpdate) {
 	// StatusUpdate statusUpdate = (StatusUpdate) message;
-	// output(statusUpdate.getUsername() + ": "
+	// output(statusUpdate.getUser_name() + ": "
 	// + statusUpdate.getStatus());
 	// } else {
 	// output("unrecognised message " + message);
@@ -204,7 +204,7 @@ public class East extends VLayout {
 	// setUserName(userName);
 	// }
 	//
-	// public String getUserName() {
+	// public String getUser_name() {
 	// return getAttributeAsString("userName");
 	// }
 	//
@@ -214,7 +214,7 @@ public class East extends VLayout {
 	//
 	// @Override
 	// public String toString() {
-	// return getUserName();
+	// return getUser_name();
 	// }
 	// }
 
@@ -237,7 +237,7 @@ public class East extends VLayout {
 	// }
 
 	// private void logOut() {
-	// userManagerService.logout(personelDTO.getUserName(),
+	// userManagerService.logout(personelDTO.getUser_name(),
 	// new AsyncCallback<Void>() {
 	// @Override
 	// public void onSuccess(Void result) {

@@ -23,7 +23,7 @@ import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewWeather;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
-import com.info08.billing.callcenterbk.shared.entity.Person;
+import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -129,7 +129,6 @@ public class CallCenterStackSelection extends SectionStackSection {
 		iButtonCalendar.setWidth100();
 		iButtonCalendar.setAlign(Alignment.LEFT);
 
-
 		IButton iButtonWeb = new IButton();
 		iButtonWeb.setTitle(CallCenterBK.constants.sites());
 		iButtonWeb.setIcon("web.png");
@@ -157,9 +156,8 @@ public class CallCenterStackSelection extends SectionStackSection {
 		vLayout.setMembers(iButtonOrg, iButtonAbFind, iButtonCodes,
 				iButtonTransport, iButtonCityTransp, iButtonPoster,
 				iButtonValute, iButtonStreets, iButtonRegInd, iButtonFindByNum,
-				iButtonCityDist, iButtonExactTime, iButtonCalendar,
-				iButtonWeb, iButtonSport, iButtonWiki,
-				iButtonWeather);
+				iButtonCityDist, iButtonExactTime, iButtonCalendar, iButtonWeb,
+				iButtonSport, iButtonWiki, iButtonWeather);
 
 		IButton iButtonNews = new IButton();
 		iButtonNews.setTitle(CallCenterBK.constants.news());
@@ -186,7 +184,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 		iButtonTest.setIcon("wikipedia_globe_icon.png");
 		iButtonTest.setWidth100();
 		iButtonTest.setAlign(Alignment.LEFT);
-		//vLayout.addMember(iButtonTest);
+		// vLayout.addMember(iButtonTest);
 
 		iButtonTest.addClickHandler(new ClickHandler() {
 			@Override
@@ -342,27 +340,28 @@ public class CallCenterStackSelection extends SectionStackSection {
 				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
-			Person person = serverSession.getUser();
-			if (person == null) {
+			Users user = serverSession.getUser();
+			if (user == null) {
 				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
-			Long persTypeId = person.getPersonelTypeId();
+			Long persTypeId = user.getDepartment_id();
 			if (persTypeId == null || !persTypeId.equals(9L)) {
 				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
-			String userName = person.getUserName();
-			DataSource dataSource = DataSource.get("PersDS");
+			String userName = user.getUser_name();
+			DataSource dataSource = DataSource.get("UsersDS");
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("operator", userName);
+			criteria.setAttribute("user_name", userName);
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("getOperatorSchedule");
+			dsRequest.setOperationId("getOperatorBreak");
 			dataSource.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
-					String strTxt = CallCenterBK.constants.operScheduleNotFound();
+					String strTxt = CallCenterBK.constants
+							.operScheduleNotFound();
 					Record records[] = response.getData();
 					if (records != null && records.length > 0) {
 						Record record = records[0];
