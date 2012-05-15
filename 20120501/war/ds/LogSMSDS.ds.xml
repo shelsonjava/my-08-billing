@@ -46,7 +46,7 @@
 				decode(t.sms_type, 1, 'გარკვევა', 'ჩვეულებრივი') as sms_type_descr,
 				decode(t.status, 1, 'მიწოდებულია', 'მიუწოდებელია') as status_descr
 			</selectClause> 
-			<tableClause>log_sms t,ccare.services s, ccare.personnel tt</tableClause>
+			<tableClause>log_sms t,ccare.services s, users tt</tableClause>
 			<whereClause><![CDATA[			 
 				t.service_id = s.service_id(+) and t.rec_user = tt.user_name(+)
 				#if($criteria.phone) and t.phone like '%'||$criteria.phone||'%' #end
@@ -54,7 +54,7 @@
 				#if($criteria.sms_date) and trunc(t.sms_date) = trunc($criteria.sms_date) #end
 				#if($criteria.pStatDelivered) and t.status = 1 #end
 				#if($criteria.pStatNotDelivered) and t.status <> 1 #end
-				#if($criteria.personnel_id) and tt.personnel_id = $criteria.personnel_id #end
+				#if($criteria.user_id) and tt.user_id = $criteria.user_id #end
 				]]>				 
 			</whereClause> 
 			<orderClause>t.sms_date desc</orderClause>

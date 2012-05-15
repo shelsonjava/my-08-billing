@@ -1,55 +1,47 @@
 <DataSource 
 	ID="PermisssionsDS"
     serverType="sql"
-    tableName="ccare.personnel_access"      
+    tableName="permissions"      
     qualifyColumnNames="false">
 	<fields>
-		<field name="access_id" 		type="integer"	title="ID"	hidden="true" 	primaryKey="true" />
-    	<field name="access_name" 		type="text" 	title="Access Name"/>
-        <field name="deleted" 			type="integer" 	title="Deleted"	hidden="true"/>
-        <field name="rec_date"  		type="datetime" title="Rec Date" hidden="true"/>        
-        <field name="rec_user"			type="text"  	title="Rec User" hidden="true"/>
-        <field name="new_billing"		type="integer"  title="New Billing" hidden="true"/>
-        <field name="is_main_perm"		type="integer"  title="Is Main Perm" hidden="true"/>        
+		<field name="permission_id" 		type="integer"	title="ID"	hidden="true" 	primaryKey="true" />
+    	<field name="permission_name" 		type="text" 	title="Access Name"/>
+        <field name="is_permission_group"		type="integer"  title="Is Main Perm" hidden="true"/>        
 	</fields>
 
 	<operationBindings>
-        <operationBinding operationId="customPersSearch" operationType="fetch" customFields="access_id,access_name,deleted,rec_date,rec_user,new_billing,is_main_perm">
+        <operationBinding operationId="searchUser" operationType="fetch" customFields="permission_id,permission_name,is_permission_group">
             <selectClause>
-				t.access_id,
-				t.access_name,
-				t.deleted,
-				t.rec_date,
-				t.rec_user,
-				t.new_billing,
-				t.is_main_perm
+				t.permission_id,
+				t.permission_name,
+				t.is_permission_group
 			</selectClause>
 			<tableClause>
-				personnel_access t
+				permissions t
 			</tableClause>
 			<whereClause><![CDATA[ 
-					t.new_billing = 1
+					1 = 1
 				]]>
 			</whereClause>		
-			<orderClause>t.access_id</orderClause>	
+			<orderClause>t.permission_id</orderClause>	
         </operationBinding>
           <!-- Custom User Permissions Search -->
-        <operationBinding operationId="customUserPersSearch"  operationType="fetch" customFields="access_id, access_name">
+        <operationBinding operationId="userPermissionSearch"  operationType="fetch" customFields="permission_id, permission_name">
             <selectClause>
-				pa.access_id,
-				pa.access_name,
-				pa.is_main_perm
+				pa.permission_id,
+				pa.permission_name,
+				pa.is_permission_group
 			</selectClause>
 			<tableClause>
-				ccare.personnel_to_access t,
-				ccare.personnel_access pa
+				user_permission t,
+				permissions pa
 			</tableClause>
 			<whereClause><![CDATA[ 
-					t.access_id = pa.access_id and pa.new_billing = 1
-					#if ($criteria.personelId) AND t.personnel_id = $criteria.personelId #end
+					t.permission_id = pa.permission_id 
+					#if ($criteria.user_id) AND t.user_id = $criteria.user_id #end
 				]]>
 			</whereClause>
-			<orderClause>pa.access_id</orderClause>			
+			<orderClause>pa.permission_id</orderClause>			
         </operationBinding>
     </operationBindings>
 </DataSource>

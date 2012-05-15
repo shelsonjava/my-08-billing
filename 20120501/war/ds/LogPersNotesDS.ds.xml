@@ -47,8 +47,8 @@
     		<selectClause>  
     			t.note_id,
     			t.session_id,
-      			r.user_name||' ( '||r.personnel_name||' '||r.personnel_surname||' ) ' as receiver,      
-      			s.user_name||' ( '||s.personnel_name||' '||s.personnel_surname||' ) ' as sender,
+      			r.user_name||' ( '||r.user_firstname||' '||r.user_lastname||' ) ' as receiver,      
+      			s.user_name||' ( '||s.user_firstname||' '||s.user_lastname||' ) ' as sender,
       			t.phone,
       			t.note,
       			t.rec_date,
@@ -59,8 +59,8 @@
 			</selectClause> 
 			<tableClause>
 				log_personell_notes t , 
-				personnel r, 
-				personnel  s
+				users r, 
+				users  s
 			</tableClause>
 			<whereClause><![CDATA[ 
 				t.session_id = $criteria.sessionId and 
@@ -74,8 +74,8 @@
     		<selectClause>  
     			t.note_id,
     			t.session_id as sessionId,
-      			r.user_name||' ( '||r.personnel_name||' '||r.personnel_surname||' ) ' as receiver,      
-      			s.user_name||' ( '||s.personnel_name||' '||s.personnel_surname||' ) ' as sender,
+      			r.user_name||' ( '||r.user_firstname||' '||r.user_lastname||' ) ' as receiver,      
+      			s.user_name||' ( '||s.user_firstname||' '||s.user_lastname||' ) ' as sender,
       			t.phone,
       			t.note,
       			t.rec_date,
@@ -87,13 +87,13 @@
 			</selectClause> 
 			<tableClause>
 				log_personell_notes t , 
-				personnel r, 
-				personnel  s,
+				users r, 
+				users  s,
 				log_sessions ss
 			</tableClause>
 			<whereClause><![CDATA[ 
 				t.session_id=ss.session_id and
-				r.personnel_id = $criteria.operId and 
+				r.user_id = $criteria.operId and 
 				t.user_name = r.user_name(+) and
 				t.rec_user = s.user_name(+)
 				]]>  
@@ -103,8 +103,8 @@
     		<selectClause>  
     			t.note_id,
     			t.session_id as sessionId,
-      			r.user_name||' ( '||r.personnel_name||' '||r.personnel_surname||' ) ' as receiver,      
-      			s.user_name||' ( '||s.personnel_name||' '||s.personnel_surname||' ) ' as sender,
+      			r.user_name||' ( '||r.user_firstname||' '||r.user_lastname||' ) ' as receiver,      
+      			s.user_name||' ( '||s.user_firstname||' '||s.user_lastname||' ) ' as sender,
       			t.phone,
       			t.note,
       			t.rec_date,
@@ -116,8 +116,8 @@
 			</selectClause> 
 			<tableClause>
 				log_personell_notes t , 
-				personnel r, 
-				personnel  s,
+				users r, 
+				users  s,
 				log_sessions ss 
 			</tableClause>
 			<whereClause><![CDATA[ 

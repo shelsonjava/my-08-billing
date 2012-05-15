@@ -1,0 +1,41 @@
+<DataSource
+	ID="TreatmentsDS"
+	serverType="sql"
+	tableName="treatments"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="treatment_id"		type="integer"	title="treatment_id"	hidden="true" primaryKey="true" />
+		<field name="treatment"			type="text"		title="treatment"/>
+		<field name="phone_number"		type="text"		title="phone_number"/>
+		<field name="gender"			type="integer"	title="gender"/>
+		<field name="loggedUserName"	type="text"		title="Logged UserName"	hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<!-- Add Treatments -->
+		<operationBinding operationId="addTreatments" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	insert into treatments 
+            	 			(treatment, phone_number, gender)
+            		values 
+            				($values.treatment,$values.phone_number,$values.gender)
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+
+		<!-- Update Treatments -->
+		<operationBinding operationId="updateTreatments" operationType="update">
+            <customSQL>
+            	 <![CDATA[
+            	 	update treatments t set 
+            	 		t.phone_number = $values.phone_number, t.treatment = $values.treatment 
+            	 		where t.treatment_id = $values.treatment_id
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+                
+    </operationBindings>	
+</DataSource>

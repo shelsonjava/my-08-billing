@@ -9,7 +9,7 @@
 		<field name="duration" type="integer" title="Duration" />
 		<field name="hangUp" type="text" title="hangUp" />
 		<field name="chargeCount" type="integer" title="Count" />
-		<field name="personnel_id" type="integer" title="Personel ID" hidden="true"/>
+		<field name="user_id" type="integer" title="user_id" hidden="true"/>
 		<field name="session_quality" type="integer" title="Session Quality" hidden="true"/>
 		<field name="session_quality_desc" type="text" title="Session Quality Desc" />
 		<field name="person_name" type="text" title="Personel Name" />
@@ -33,10 +33,10 @@
         <!-- FETCH -->
 		<operationBinding operationId="customSearch"
 			operationType="fetch"
-			customFields="personnel_id, session_id, ym, user_name, start_date, phone, duration, hangUp, chargeCount, session_quality, session_quality_desc, person_name">			
+			customFields="user_id, session_id, ym, user_name, start_date, phone, duration, hangUp, chargeCount, session_quality, session_quality_desc, person_name">			
 			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.LogSessionItem"/>
 			<selectClause>
-				p.personnel_id,
+				p.user_id,
 				s.session_id,
 				s.ym,
 				substr(s.user_name,3,length(s.user_name)) as user_name,
@@ -47,12 +47,12 @@
 				count(ch.session_id) as chargeCount,
 				s.session_quality,
 				decode(s.session_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი') as session_quality_desc,
-				p.personnel_name||' '||p.personnel_surname as person_name
+				p.user_firstname||' '||p.user_lastname as person_name
 			</selectClause>
 			<tableClause> <![CDATA[ 
 				log_sessions s,
 				log_session_charges ch,
-				ccare.personnel p				
+				users p				
 				]]>
 			</tableClause>
 			<whereClause><![CDATA[ 
@@ -67,7 +67,7 @@
 				#if($criteria.phone && $criteria.numberCondTypeItem == 2) AND 
 					s.phone like '%'||($criteria.phone)||'%'
 				#end				
-				#if ($criteria.personelId) AND p.personnel_id = $criteria.personelId #end
+				#if ($criteria.user_id) AND p.user_id = $criteria.user_id #end
 				#if ($criteria.serviceId) AND
 					(ch.service_id = $criteria.serviceId or 
 						(						
@@ -98,7 +98,7 @@
 				]]>
 			</whereClause>
 			<groupClause>
-				p.personnel_id,
+				p.user_id,
 				s.session_id,
 				s.ym,
 				substr(s.user_name,3,length(s.user_name)),
@@ -108,7 +108,7 @@
 				decode(s.hungup,0,'აბონენტმა',1,'ოპერატორმა','უცნობია'),
 				s.session_quality,
 				decode(s.session_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი'),
-				p.personnel_name||' '||p.personnel_surname
+				p.user_firstname||' '||p.user_lastname
 			</groupClause>			
 		</operationBinding>
 		

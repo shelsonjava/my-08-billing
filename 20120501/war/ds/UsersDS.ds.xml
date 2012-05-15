@@ -1,0 +1,93 @@
+<DataSource ID="UsersDS" serverType="sql" tableName="users"
+	qualifyColumnNames="false" dropExtraFields="false">
+	<fields>
+		<field name="user_id" type="integer" title="id" hidden="true"
+			primaryKey="true" />
+		<field name="user_firstname" type="text" title="user_firstname" />
+		<field name="user_lastname" type="text" title="user_lastname" />
+		<field name="user_name" type="text" title="User user_name" />
+		<field name="user_password" type="text" title="user_password" />
+		<field name="fullUserName" type="text" title="fullUserName"
+			hidden="true" />
+		<field name="loggedUserName" type="text" title="loggedUserName"
+			hidden="true" />
+		<field name="user_department_id" type="integer" title="user_department_id"
+			hidden="true" />
+		<field name="department_name" type="text" title="department_name" />
+		<field name="schedule_txt" type="text" title="schedule_txt"
+			hidden="true" />
+		<field name="aaaaaa" type="text" title="aaaaaa" hidden="true" />
+	</fields>
+
+	<serverObject lookupStyle="new"
+		className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />
+
+	<operationBindings>
+		<!-- Add User -->
+		<operationBinding operationId="addUser"
+			operationType="add" serverMethod="addUser">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />
+		</operationBinding>
+
+		<!-- Modify User -->
+		<operationBinding operationId="updateUser"
+			operationType="update" serverMethod="updateUser">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />
+		</operationBinding>
+
+		<!-- Modify User Status -->
+		<operationBinding operationId="deleteUser"
+			operationType="remove" serverMethod="deleteUser">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />
+		</operationBinding>
+
+		<!-- Custom Search -->
+		<operationBinding operationId="searchUser"
+			operationType="fetch" serverMethod="fetchOrderedUsers">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />
+		</operationBinding>
+
+		<!-- Custom Search Cached -->
+		<operationBinding operationId="searchAllUser"
+			operationType="fetch" serverMethod="fetchAllUsers">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />
+		</operationBinding>
+
+		<!-- Custom Search - DB -->
+		<operationBinding operationId="searchAllUserFromDB"
+			operationType="fetch" serverMethod="fetchAllUsersFromDB">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />
+		</operationBinding>
+
+		<!-- Login -->
+		<operationBinding operationId="login" operationType="add"
+			serverMethod="login">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />
+		</operationBinding>
+
+
+
+		<!-- FETCH - For CallCenter -->
+		<operationBinding operationId="getOperatorBreak"
+			operationType="fetch">
+			<customSQL>
+            	 <![CDATA[
+					select 
+       					'თარიღი : '||to_char(ob.break_date,'dd-mm-yyyy')||', დრო : '||ob.break_time as schedule_txt
+					from 
+						operator_breaks ob 
+					where 
+						to_char(ob.break_date,'dd/mm/yy')=to_char(sysdate,'dd/mm/yy') and ob.user_name = $criteria.user_name
+            	 ]]>
+			</customSQL>
+		</operationBinding>
+
+	</operationBindings>
+</DataSource>

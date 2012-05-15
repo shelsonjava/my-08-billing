@@ -1,0 +1,48 @@
+<DataSource
+	ID="GSMIndexesDS"
+	serverType="sql"
+	tableName="gsm_indexes"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="gsm_index_id"		type="integer"	title="gsm_index_id"	hidden="true" primaryKey="true" />
+		<field name="gsm_company"		type="text"		title="gsm_company"/>
+		<field name="gsm_index"			type="text"		title="gsm_index"/>
+		<field name="loggedUserName"	type="text"		title="Logged UserName"	hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<!-- Add GSMIndexes -->
+		<operationBinding operationType="add" operationId="addGSMIndexes" serverMethod="addGSMIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+
+		<!-- Update GSMIndexes -->
+		<operationBinding operationType="update" operationId="updateGSMIndexes" serverMethod="updateGSMIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+
+        <!-- Delete GSMIndexes -->
+		<operationBinding operationType="remove" operationId="deleteGSMIndexes" serverMethod="deleteGSMIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchGSMIndexes" operationType="fetch">
+    		<selectClause>   			
+    			t.gsm_index_id,
+				t.gsm_company,
+				t.gsm_index
+			</selectClause> 
+			<tableClause>gsm_indexes t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.gsm_company) AND t.gsm_company like '%'||($criteria.gsm_company)||'%' #end
+				#if($criteria.gsm_index) AND t.gsm_index like '%'||($criteria.gsm_index)||'%' #end
+				]]>  
+			</whereClause> 			
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
