@@ -1057,7 +1057,7 @@ public interface QueryConstants {
 			+ "inner join ccare.main_services ms on ms.main_id = a.main_id\n"
 			+ "inner join ccare.main_orgs mo on mo.main_id = a.main_id\n"
 			+ "where t.phone = ? and ms.service_id = 3 )";
-
+//Herio bichebo
 	public static final String Q_GET_FIRST_NAME_COUNT = " select count(1) from ccare.firstnames t where t.firstname = ? ";
 	public static final String Q_GET_LAST_NAME_COUNT = " select count(1) from ccare.lastnames t where t.lastname = ? ";
 	public static final String Q_GET_FIRST_NAME_COUNT_ALL = " select count(1) from ccare.firstnames t ";
