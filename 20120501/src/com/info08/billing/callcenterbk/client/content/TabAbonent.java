@@ -884,7 +884,7 @@ public class TabAbonent extends Tab {
 			Integer address_id = listGridRecord.getAttributeAsInt("address_id");
 			Integer main_id = listGridRecord.getAttributeAsInt("main_id");
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();

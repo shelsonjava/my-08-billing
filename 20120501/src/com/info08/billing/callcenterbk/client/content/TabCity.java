@@ -512,7 +512,7 @@ public class TabCity extends Tab {
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("city_id", city_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "cityStatusUpdate");

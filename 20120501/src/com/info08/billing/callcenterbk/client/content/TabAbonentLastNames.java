@@ -255,7 +255,7 @@ public class TabAbonentLastNames extends Tab {
 													CommonSingleton
 															.getInstance()
 															.getSessionPerson()
-															.getUserName());
+															.getUser_name());
 											record.setAttribute("deleted", -1);
 
 											DSRequest req = new DSRequest();
@@ -316,7 +316,7 @@ public class TabAbonentLastNames extends Tab {
 													CommonSingleton
 															.getInstance()
 															.getSessionPerson()
-															.getUserName());
+															.getUser_name());
 											record.setAttribute("deleted", 0);
 
 											DSRequest req = new DSRequest();

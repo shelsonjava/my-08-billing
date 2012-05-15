@@ -398,7 +398,7 @@ public class TabGeoCountryIdx extends Tab {
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("geo_country_id", geo_country_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "updateGeoIndCountryStatus");

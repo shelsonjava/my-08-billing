@@ -357,7 +357,7 @@ public class TabStreetTypes extends Tab {
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("street_type_Id", street_type_Id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "updateStreetTypeStatus");

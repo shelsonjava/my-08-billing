@@ -401,7 +401,7 @@ public class TabCityRegions extends Tab {
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("city_region_id", city_region_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "updateCityRegionStatus");
