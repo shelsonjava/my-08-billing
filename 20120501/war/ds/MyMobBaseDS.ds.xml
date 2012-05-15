@@ -8,7 +8,7 @@
 		<field name="id"					type="integer"			title="ID"							hidden="true" primaryKey="true" />
 		<field name="nm"					type="text"				title="nm"/>
 		<field name="phone"					type="text"				title="phone"/>
-		<field name="sex"					type="integer"			title="iscorrect"/>
+		<field name="sex"					type="integer"			title="survey_done"/>
 		<field name="rec_date"				type="datetime"			title="Record Date"/>
 		<field name="rec_user"				type="text"				title="Record User"/>
 		<field name="upd_date"				type="datetime"			title="upd_date"/>
@@ -18,7 +18,7 @@
 
 	<operationBindings>		
 
-		<!-- add New Discovery Record -->
+		<!-- add New MyMobBase Record -->
 		<operationBinding operationId="addMyMobBaseRecord" operationType="add">
             <customSQL>
             	 <![CDATA[

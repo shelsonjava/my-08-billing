@@ -1,0 +1,60 @@
+<DataSource
+	ID="SurveyKindDS"
+	serverType="sql"
+	tableName="ccare.survey_kind"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="survey_kind_id"		type="integer"			title="ID"					hidden="true" primaryKey="true" />
+		<field name="survey_kind_name"		type="text"				title="survey_reply_type_name"/>
+		<field name="loggedUserName"		type="text"				title="Logged UserName" 	hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+
+		<!-- Add SurveyKind -->
+		<operationBinding operationType="add" operationId="addSurveyKind" serverMethod="addSurveyKind">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+
+		<!-- SurveyKind Update -->
+		<operationBinding operationType="update" operationId="updateSurveyKind" serverMethod="updateSurveyKind">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+
+        <!-- SurveyKind Status Update -->
+		<operationBinding operationType="remove" operationId="removeSurveyKind" serverMethod="removeSurveyKind">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchSurveyKinds" operationType="fetch">
+    		<selectClause>   			
+    			t.survey_kind_id,
+				t.survey_kind_name    
+			</selectClause> 
+			<tableClause>survey_kind t</tableClause>
+			<whereClause><![CDATA[
+				1=1			
+				#if($criteria.survey_kind_name) AND t.survey_kind_name like ($criteria.survey_kind_name)||'%' #end	
+				]]>  
+			</whereClause> 
+			<orderClause>t.survey_kind_id</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchSurveyKindsForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.survey_kind_id,
+				t.survey_kind_name
+			</selectClause> 
+			<tableClause>survey_kind t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause) 
+				]]>  
+			</whereClause> 
+			<orderClause>t.survey_kind_id</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

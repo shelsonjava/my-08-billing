@@ -1,0 +1,61 @@
+<DataSource
+	ID="SurveyReplyTypeDS"
+	serverType="sql"
+	tableName="ccare.survey_reply_type"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="survey_reply_type_id"	type="integer"			title="ID"					hidden="true" primaryKey="true" />
+		<field name="survey_reply_type_name"		type="text"				title="survey_reply_type_name"/>
+		<field name="loggedUserName"	type="text"				title="Logged UserName" 	hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+
+		<!-- Add SurveyReplyType -->
+		<operationBinding operationType="add" operationId="addSurveyReplyType" serverMethod="addSurveyReplyType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+
+		<!-- SurveyReplyType Update -->
+		<operationBinding operationType="update" operationId="updateSurveyReplyType" serverMethod="updateSurveyReplyType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+
+        <!-- SurveyReplyType Status Update -->
+		<operationBinding operationType="remove" operationId="removeSurveyReplyType" serverMethod="removeSurveyReplyType">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchSurveyReplyTypes" operationType="fetch">
+    		<selectClause>   			
+    			t.survey_reply_type_id,
+				t.survey_reply_type_name
+			</selectClause> 
+			<tableClause>survey_reply_type t</tableClause>
+			<whereClause><![CDATA[
+				1=1				
+				#if($criteria.survey_reply_type_name) AND t.survey_reply_type_name like ($criteria.survey_reply_type_name)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.survey_reply_type_id</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchSurveyReplyTypesForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.survey_reply_type_id,
+				t.survey_reply_type_name
+			</selectClause> 
+			<tableClause>survey_reply_type t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause)	
+				]]>  
+			</whereClause> 
+			<orderClause>t.survey_reply_type_id</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

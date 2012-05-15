@@ -1,0 +1,177 @@
+<DataSource
+	ID="SurveyDS"
+	serverType="sql"
+	tableName="ccare.Survey"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="survey_id"						type="integer"			title="ID"							hidden="true" primaryKey="true" />
+		<field name="survey_kind_name"				type="text"				title="survey_kind_name"/>
+		<field name="survey_reply_type_name"		type="text"				title="survey_reply_type_name"/>
+		<field name="survey_person"					type="text"				title="survey_person"/>
+		<field name="survey_phone"					type="survey_phone"	title="Ent Type Geo"/>
+		<field name="survey_descript"				type="text"				title="survey_descript"/>
+		<field name="p_numb"						type="text"				title="p_numb"/>
+		<field name="loked_user"					type="text"				title="Record User"/>
+		<field name="survey_reply_type_id"			type="integer"			title="survey_reply_type_id" 			hidden="true"/>
+		<field name="survey_done"					type="integer"			title="survey_done" 					hidden="true"/>
+		<field name="survery_responce_status"		type="integer"			title="survery_responce_status" 			hidden="true"/>
+		<field name="survey_kind_id"				type="integer"			title="survey_kind_id" 			hidden="true"/>
+		<field name="session_call_id"				type="text"				title="session_call_id" 					hidden="true"/>
+		<field name="loggedUserName"				type="text"				title="Logged UserName" 			hidden="true" />
+		<field name="bblocked"						type="integer"			title="bblocked" 					hidden="true"/>
+		<field name="personnel_id"					type="integer"			title="personnel_id" 				hidden="true"/>
+		<field name="personnel_id1"					type="integer"			title="personnel_id1" 				hidden="true"/>
+		<field name="start_date"					type="datetime"			title="start_date"/>
+		<field name="survey_creator"				type="text"				title="survey_kind_name"/>	
+		<field name="survey_created"				type="datetime"			title="survey_created"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+		
+		
+		<!-- add New Survey Record -->
+		<operationBinding operationId="resolveSurvey" operationType="update">
+            <customSQL>
+            	 <![CDATA[
+            	 	update ccare.Survey t set             	 		
+            	 		t.survery_responce_status = 1,
+            	 		t.bblocked = 0,
+            	 		t.survey_reply_type_id = $values.survey_reply_type_id
+            	 		where t.survey_id = $values.survey_id
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+		
+		<!-- add New Survey Record -->
+		<operationBinding operationId="sendSurvey" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	insert into ccare.Survey
+            	 			(survey_id,session_call_id,p_numb,survey_descript,survey_phone,survey_person,survey_kind_id,survey_creator)
+                	values  (SQ_SURVEY_ID.nextval,$values.session_call_id,$values.p_numb,$values.survey_descript,$values.survey_phone,$values.survey_person,$values.survey_kind_id,$values.survey_creator)
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+
+		<!-- Survey Update -->
+		<operationBinding operationType="update" operationId="updateSurveyItem" serverMethod="updateSurveyItem">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+        
+        <!-- Survey Update -->
+		<operationBinding operationType="update" operationId="takeSurvey" serverMethod="takeSurvey">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+        
+        
+    	<operationBinding operationId="searchAllSurvey" operationType="fetch">
+    		<selectClause>   			
+    			tt.survey_kind_name, 
+		        r.survey_reply_type_name, 
+		        t.survey_id, 
+		        t.session_call_id, 
+		        t.p_numb, 
+		        t.survey_descript, 
+		        t.survey_phone, 
+		        t.survey_kind_id, 
+		        t.survey_reply_type_id, 
+		        t.survey_person,
+		        t.survery_responce_status, 
+		        t.survey_done,
+		        t.bblocked,
+		        t.survey_creator,
+		        t.survey_created,
+		        t.loked_user,
+		        ss.call_start_date start_date,
+       			p.user_id personnel_id	    
+			</selectClause> 
+			<tableClause>survey t,survey_kind tt,ccare.survey_reply_type r, call_sessions ss, users p</tableClause>
+			<whereClause><![CDATA[
+				t.survey_kind_id = tt.survey_kind_id(+) and t.survey_reply_type_id = r.survey_reply_type_id(+) and t.session_call_id = ss.session_id(+) and
+				t.survey_creator = p.user_name  
+				#if($criteria.mysurvey_id) and t.survey_id = $criteria.mysurvey_id #else and trunc(t.SURVEY_CREATED) >= trunc(sysdate-#if($criteria.current_date) 0 #else 14#end) #end
+				#if($criteria.survery_responce_status) and t.survery_responce_status = $criteria.survery_responce_status #end
+				#if($criteria.survey_kind_id) and tt.survey_kind_id = $criteria.survey_kind_id #end 				
+				#if($criteria.p_numb) and t.p_numb like '%'||$criteria.p_numb||'%' #end
+				#if($criteria.survey_phone) and t.survey_phone like '%'||$criteria.survey_phone||'%' #end
+				#if($criteria.personnel_id) and p.personnel_id = $criteria.personnel_id #end
+				#if($criteria.not_noll_status) and t.survery_responce_status <>0 #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.SURVEY_CREATED desc</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllSurveyHist" operationType="fetch">
+    		<selectClause>   			
+    			tt.survey_kind_name, 
+		        r.survey_reply_type_name, 
+		        t.survey_id, 
+		        t.session_call_id, 
+		        t.p_numb, 
+		        t.survey_descript, 
+		        t.survey_phone, 
+		        t.survey_kind_id, 
+		        t.survey_reply_type_id, 
+		        t.survey_person,
+		        t.survery_responce_status, 
+		        t.survey_done,
+		        t.bblocked,
+		        t.survey_creator,
+		        t.survey_created,
+		        t.loked_user,
+		        ss.start_date,
+		        p.personnel_id as personnel_id,
+		        p1.personnel_id as personnel_id1   
+			</selectClause> 
+			<tableClause>survey t,survey_kind tt,ccare.survey_reply_type r, log_sessions ss, personnel p, personnel p1 </tableClause>
+			<whereClause><![CDATA[
+				t.survey_kind_id = tt.survey_kind_id(+) and t.survey_reply_type_id = r.survey_reply_type_id(+) and t.session_call_id = ss.session_id(+) and
+				t.survey_creator = p.user_name and t.loked_user = p1.user_name(+)
+				#if($criteria.survery_responce_status) and t.survery_responce_status = $criteria.survery_responce_status #end
+				#if($criteria.survey_kind_id) and tt.survey_kind_id = $criteria.survey_kind_id #end
+				#if($criteria.survey_reply_type_id) and t.survey_reply_type_id = $criteria.survey_reply_type_id #end
+				#if($criteria.SURVEY_CREATED) and trunc(t.SURVEY_CREATED) = trunc($criteria.SURVEY_CREATED) #end
+				#if($criteria.p_numb) and t.p_numb like '%'||$criteria.p_numb||'%' #end
+				#if($criteria.survey_phone) and t.survey_phone like '%'||$criteria.survey_phone||'%' #end
+				#if($criteria.personnel_id) and p.personnel_id = $criteria.personnel_id #end
+				#if($criteria.personnel_id1) and p1.personnel_id = $criteria.personnel_id1 #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.SURVEY_CREATED desc</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	
+    	<operationBinding operationId="getAllSurveyForSMS" operationType="fetch">
+    		<selectClause>   			
+    			<![CDATA[t.survey_id,
+					       t.session_call_id,
+					       case
+					         when t.p_numb like '5%' then
+					          t.p_numb
+					         else
+					          t.survey_phone
+					       end as survey_phone   ]]>  
+			</selectClause> 
+			<tableClause>survey t </tableClause>
+			<whereClause><![CDATA[
+				t.survey_kind_id <> 4
+			   and trunc(t.survey_created) = trunc(sysdate)
+			   and t.survery_responce_status = 0
+			   and ((trunc(mod((sysdate - t.survey_created) * 24, 24)) * 60) +
+			       trunc(mod((sysdate - t.survey_created) * 24 * 60, 60))) > 15
+			   and (t.p_numb like '5%' or t.survey_phone like '5%')
+			   and not exists (select tt.survey_id
+			          from ccare.survey_hist_sms tt
+			         where tt.survey_id = t.survey_id
+			           and trunc(tt.hist_datetime) = trunc(sysdate))
+				]]>  
+			</whereClause> 
+			
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>
