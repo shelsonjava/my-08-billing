@@ -128,10 +128,10 @@ public interface AppConstants extends Constants {
 	String editNonStandInofCatTitle();
 	String addNonStandInfoTitle();
 	String editNonStandInfoTitle();
-	String discoveryActions();
-	String menuDiscoveryStatuses();
-	String menuDiscoveryTypes();
-	String menuDiscovery();
+	String surveyActions();
+	String menuSurveyStatuses();
+	String menuSurveyKinds();
+	String menuSurvey();
 	String addStatus();
 	String editStatus();
 	String addType();
@@ -226,7 +226,7 @@ public interface AppConstants extends Constants {
 	String prevname();
 	String charge();
 	String charges();
-	String discovery();
+	String survey();
 	String maininfo();
 	String departments();
 	String orgSMSAddInfo();
@@ -244,12 +244,12 @@ public interface AppConstants extends Constants {
 	String enterMobOperator();
 	String enterMobOperatorPrefix();
 	String mobOperPrefIs3Digit();
-	String sendDiscovery();
-	String discoveryType();
+	String sendSurvey();
+	String surveyKind();
 	String send();
 	String notCallCenterUser();
-	String chooseDiscoveryType();
-	String enterSomeDiscoveryParam();
+	String chooseSurveyKind();
+	String enterSomeSurveyParam();
 	String incorrDiscTypeSelected();
 	String addMobSubsInfo();
 	String viewChargeInfo();
@@ -419,7 +419,7 @@ public interface AppConstants extends Constants {
 	String depsNotFoundMessage();
 	String phoneMustBeNumeric();
 	String byMonth();
-	String discoverySent();
+	String surveySent();
 	String streetOldName();
 	String newCode();
 	String addressHide();
@@ -429,7 +429,7 @@ public interface AppConstants extends Constants {
 	String callInfo();
 	String resolve();
 	String phoneStatus();
-	String resolveDiscovery();
+	String resolveSurvey();
 	String saveRecord();
 	String listenRecord();
 	String sms();
@@ -450,7 +450,7 @@ public interface AppConstants extends Constants {
 	String invalidPhone();
 	String smsTextIsEmpty();
 	String chooseStatus();
-	String menuDiscoveryHist();
+	String menuSurveyHist();
 	String autoText();
 	String remarks();
 	String remark();
