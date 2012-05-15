@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 public class LogSessionItem implements Serializable {
 
 	private static final long serialVersionUID = 7026086622425435823L;
-	private Integer personnel_id;
+	private Integer user_id;
 	private Integer ym;
 	private String session_id;
 	private String user_name;
@@ -19,12 +19,12 @@ public class LogSessionItem implements Serializable {
 	private Integer session_quality;
 	private String session_quality_desc;
 
-	public Integer getPersonnel_id() {
-		return personnel_id;
+	public Integer getUser_id() {
+		return user_id;
 	}
 
-	public void setPersonnel_id(Integer personnel_id) {
-		this.personnel_id = personnel_id;
+	public void setUser_id(Integer user_id) {
+		this.user_id = user_id;
 	}
 
 	public String getSession_id() {
