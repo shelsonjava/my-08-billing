@@ -448,7 +448,7 @@ public class TabTransportCityBusStreet extends Tab {
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("route_street_id", route_street_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId",

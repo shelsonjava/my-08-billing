@@ -348,7 +348,7 @@ public class DlgAddEditCity extends Window {
 						lCityRecord.getAttributeAsInt("city_id"));
 			}
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			if (lCityRecord == null) {

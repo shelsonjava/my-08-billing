@@ -326,7 +326,7 @@ public class TabTransportCompany extends Tab {
 			Record record = new Record();
 			record.setAttribute("transp_comp_id", transp_comp_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeTransportCompany");

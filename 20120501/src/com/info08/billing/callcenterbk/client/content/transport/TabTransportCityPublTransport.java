@@ -376,7 +376,7 @@ public class TabTransportCityPublTransport extends Tab {
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("pt_id", id);
 			String loggedUserName = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUserName);
 			DSRequest req = new DSRequest();
 

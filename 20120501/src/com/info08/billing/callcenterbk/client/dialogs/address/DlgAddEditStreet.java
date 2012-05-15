@@ -1082,7 +1082,7 @@ public class DlgAddEditStreet extends Window {
 						editRecord.getAttributeAsInt("street_id"));
 			}
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("city_id",

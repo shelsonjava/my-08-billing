@@ -205,7 +205,7 @@ public class DlgAddEditGeoIndCountry extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("region_id", region_id);
 			record.setAttribute("geo_country_geo", geo_country_geo);

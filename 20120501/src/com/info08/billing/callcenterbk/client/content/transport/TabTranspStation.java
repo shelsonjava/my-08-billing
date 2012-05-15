@@ -367,7 +367,7 @@ public class TabTranspStation extends Tab {
 			Record record = new Record();
 			record.setAttribute("transp_stat_id", transp_stat_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeTransportStation");

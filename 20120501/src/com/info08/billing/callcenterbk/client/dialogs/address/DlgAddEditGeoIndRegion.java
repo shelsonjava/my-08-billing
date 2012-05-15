@@ -123,7 +123,7 @@ public class DlgAddEditGeoIndRegion extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("region_name_geo", region_name_geo);
 			record.setAttribute("deleted", 0);

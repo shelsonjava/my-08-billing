@@ -330,7 +330,7 @@ public class TabEventOwner extends Tab {
 			Record record = new Record();
 			record.setAttribute("event_owner_id", event_owner_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeEventOwner");

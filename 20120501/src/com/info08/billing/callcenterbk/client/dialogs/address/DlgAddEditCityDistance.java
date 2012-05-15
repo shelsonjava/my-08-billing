@@ -226,7 +226,7 @@ public class DlgAddEditCityDistance extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("city_distance_geo", city_distance_geo);
 			record.setAttribute("city_distance_type", new Integer(

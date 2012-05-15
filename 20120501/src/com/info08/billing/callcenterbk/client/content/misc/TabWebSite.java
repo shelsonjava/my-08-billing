@@ -380,10 +380,10 @@ public class TabWebSite extends Tab {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("loggedUserName", CommonSingleton.getInstance().getSessionPerson().getUserName());
+			record.setAttribute("loggedUserName", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("service_id", 63);
-			record.setAttribute("rec_user", CommonSingleton.getInstance().getSessionPerson().getUserName());
+			record.setAttribute("rec_user", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 			record.setAttribute("main_detail_type_id",listGridRecord.getAttributeAsInt("main_detail_type_id"));
 			record.setAttribute("main_detail_geo", listGridRecord.getAttributeAsString("main_detail_geo"));
 			record.setAttribute("main_detail_eng", listGridRecord.getAttributeAsString("main_detail_eng"));

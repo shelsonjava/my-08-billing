@@ -376,20 +376,30 @@ public class TabTranspSchedule extends Tab {
 			datasource.getField("depart_station").setTitle("გასვლის პუნქტი");
 			datasource.getField("arrival_station").setTitle("ჩასვლის პუნქტი");
 			datasource.getField("price_descr").setTitle("ფასი");
-			datasource.getField("transp_company").setTitle("სატრანსპორტო კომპანია");
-			datasource.getField("transp_resource").setTitle("სატრანსპორტო საშუალება");
+			datasource.getField("transp_company").setTitle(
+					"სატრანსპორტო კომპანია");
+			datasource.getField("transp_resource").setTitle(
+					"სატრანსპორტო საშუალება");
 			datasource.getField("days_descr").setTitle("კვირის დღეები");
 			datasource.getField("transp_model_descr").setTitle("რეისი");
 			datasource.getField("remark").setTitle("კომენტარი");
 
-			ListGridField transport_type = new ListGridField("transport_type","ტრანსპ. ტიპი", 150);
-			ListGridField depart_station = new ListGridField("depart_station","გასვლის პუნქტი", 200);
-			ListGridField arrival_station = new ListGridField("arrival_station", "ჩასვლის პუნქტი", 200);
-			ListGridField transp_company = new ListGridField("transp_company", "სატრანსპ. კომპანია", 200);
-			ListGridField transp_resource = new ListGridField("transp_resource", "ტრანსპორტი", 120);
-			ListGridField transp_model_descr = new ListGridField("transp_model_descr", "რეისი", 70);
-			ListGridField formated_depart_time = new ListGridField("formated_depart_time", "გასვ. დრო", 70);
-			ListGridField formated_arrival_time = new ListGridField("formated_arrival_time", "ჩასვ. დრო", 70);
+			ListGridField transport_type = new ListGridField("transport_type",
+					"ტრანსპ. ტიპი", 150);
+			ListGridField depart_station = new ListGridField("depart_station",
+					"გასვლის პუნქტი", 200);
+			ListGridField arrival_station = new ListGridField(
+					"arrival_station", "ჩასვლის პუნქტი", 200);
+			ListGridField transp_company = new ListGridField("transp_company",
+					"სატრანსპ. კომპანია", 200);
+			ListGridField transp_resource = new ListGridField(
+					"transp_resource", "ტრანსპორტი", 120);
+			ListGridField transp_model_descr = new ListGridField(
+					"transp_model_descr", "რეისი", 70);
+			ListGridField formated_depart_time = new ListGridField(
+					"formated_depart_time", "გასვ. დრო", 70);
+			ListGridField formated_arrival_time = new ListGridField(
+					"formated_arrival_time", "ჩასვ. დრო", 70);
 
 			formated_depart_time.setCellFormatter(new CellFormatter() {
 				@Override
@@ -524,33 +534,33 @@ public class TabTranspSchedule extends Tab {
 					dlgAddEditTransport.show();
 				}
 			});
-			
-			transpTypeItem.addKeyPressHandler(new KeyPressHandler() {				
+
+			transpTypeItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					if(event.getKeyName().equals("Enter")){
+					if (event.getKeyName().equals("Enter")) {
 						search();
 					}
 				}
 			});
-			
-			remarkItem.addKeyPressHandler(new KeyPressHandler() {				
+
+			remarkItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					if(event.getKeyName().equals("Enter")){
+					if (event.getKeyName().equals("Enter")) {
 						search();
 					}
 				}
 			});
-			
-			transpModelDescrItem.addKeyPressHandler(new KeyPressHandler() {				
+
+			transpModelDescrItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					if(event.getKeyName().equals("Enter")){
+					if (event.getKeyName().equals("Enter")) {
 						search();
 					}
 				}
-			});			
+			});
 
 			tabSet.setTabs(tabDetViewer);
 			mainLayout.addMember(tabSet);
@@ -573,8 +583,10 @@ public class TabTranspSchedule extends Tab {
 
 	private void search() {
 		try {
-			String depart_transp_stat_id = depTranspStationItem.getValueAsString();
-			String arrival_transp_stat_id = arrTranspStationItem.getValueAsString();
+			String depart_transp_stat_id = depTranspStationItem
+					.getValueAsString();
+			String arrival_transp_stat_id = arrTranspStationItem
+					.getValueAsString();
 			String transp_comp_id = transpCompanyItem.getValueAsString();
 			String remark = remarkItem.getValueAsString();
 			String transp_model_descr = transpModelDescrItem.getValueAsString();
@@ -582,7 +594,8 @@ public class TabTranspSchedule extends Tab {
 
 			Criteria criteria = new Criteria();
 			if (transp_type_id != null) {
-				criteria.setAttribute("transp_type_id", new Integer(transp_type_id));
+				criteria.setAttribute("transp_type_id", new Integer(
+						transp_type_id));
 			}
 			if (depart_transp_stat_id != null) {
 				criteria.setAttribute("depart_transp_stat_id", new Integer(
@@ -593,16 +606,19 @@ public class TabTranspSchedule extends Tab {
 						arrival_transp_stat_id));
 			}
 			if (transp_comp_id != null) {
-				criteria.setAttribute("transp_comp_id", new Integer(transp_comp_id));
+				criteria.setAttribute("transp_comp_id", new Integer(
+						transp_comp_id));
 			}
 			if (transp_res_id != null) {
-				criteria.setAttribute("transp_res_id", new Integer(transp_res_id));
+				criteria.setAttribute("transp_res_id", new Integer(
+						transp_res_id));
 			}
 
 			if (remark != null && !remark.trim().equals("")) {
 				criteria.setAttribute("remark", remark);
 			}
-			if (transp_model_descr != null&& !transp_model_descr.trim().equals("")) {
+			if (transp_model_descr != null
+					&& !transp_model_descr.trim().equals("")) {
 				criteria.setAttribute("transp_model_descr", transp_model_descr);
 			}
 
@@ -626,7 +642,7 @@ public class TabTranspSchedule extends Tab {
 			Record record = new Record();
 			record.setAttribute("transp_schedule_id", transp_schedule_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeTranspSchedule");

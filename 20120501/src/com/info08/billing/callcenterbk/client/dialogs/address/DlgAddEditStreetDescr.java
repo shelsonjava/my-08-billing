@@ -137,7 +137,7 @@ public class DlgAddEditStreetDescr extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("street_descr_name_geo", street_descr_name_geo);
 			record.setAttribute("street_descr_name_eng", street_descr_name_eng);

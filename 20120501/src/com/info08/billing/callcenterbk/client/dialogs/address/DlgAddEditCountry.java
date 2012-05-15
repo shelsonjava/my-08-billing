@@ -195,7 +195,7 @@ public class DlgAddEditCountry extends Window {
 						countryRecord.getAttributeAsInt("country_id"));
 			}
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			if (countryRecord == null) {

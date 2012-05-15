@@ -107,14 +107,14 @@ public class LoginDialog extends Window {
 			SC.warn("შეიყვანეთ მომხმარებელი !!!");
 			return;
 		}
-		final String password = passwordItem.getValueAsString();
-		if (password == null || password.trim().equals("")) {
+		final String user_password = passwordItem.getValueAsString();
+		if (user_password == null || user_password.trim().equals("")) {
 			SC.warn("შეიყვანეთ პაროლი !!! ");
 			return;
 		}
 		try {
 			buttonItem.setDisabled(true);
-			CallCenterBK.commonService.login(userName, password, null,
+			CallCenterBK.commonService.login(userName, user_password, null,
 					new AsyncCallback<ServerSession>() {
 						@Override
 						public void onSuccess(ServerSession serverSession) {

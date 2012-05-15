@@ -285,7 +285,7 @@ public class TabEventCategory extends Tab {
 
 			record.setAttribute("event_category_id", event_category_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeEventCategory");

@@ -144,7 +144,7 @@ public class DlgAddEditStreetType extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("street_type_name_geo", streetTypeNameGeo);
 			record.setAttribute("street_type_name_eng", streetTypeNameEng);

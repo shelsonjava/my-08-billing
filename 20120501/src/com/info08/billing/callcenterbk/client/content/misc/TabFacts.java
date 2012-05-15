@@ -483,7 +483,7 @@ public class TabFacts extends Tab {
 			record.setAttribute("deleted", deleted);
 			record.setAttribute("fact_id", calendar_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeFacts");

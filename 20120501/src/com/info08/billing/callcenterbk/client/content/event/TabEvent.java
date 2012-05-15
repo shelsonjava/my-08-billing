@@ -517,7 +517,7 @@ public class TabEvent extends Tab {
 			Record record = new Record();
 			record.setAttribute("event_id", ent_poster_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUserName());
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeEvent");
@@ -540,7 +540,7 @@ public class TabEvent extends Tab {
 	//
 	// record.setAttribute("event_id", ent_poster_id);
 	// record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-	// .getSessionPerson().getUserName());
+	// .getSessionPerson().getUser_name());
 	// DSRequest req = new DSRequest();
 	//
 	// req.setAttribute("operationId", "updateEntPosterStatus");
