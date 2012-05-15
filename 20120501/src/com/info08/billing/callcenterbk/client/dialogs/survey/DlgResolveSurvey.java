@@ -128,7 +128,7 @@ public class DlgResolveSurvey extends Window {
 			}
 
 			String rec_user = CommonSingleton.getInstance().getSessionPerson()
-					.getUserName();
+					.getUser_name();
 
 			CanvasDisableTimer.addCanvasClickTimer(sendSMSButton);
 

@@ -130,7 +130,7 @@ public class TabGSMIndexes extends Tab {
 			gsmIndexesGrid.setWidth(835);
 			gsmIndexesGrid.setHeight(400);
 			gsmIndexesGrid.setAlternateRecordStyles(true);
-			gsmIndexesGrid.setDataSource(mobOperPrefDS);
+			gsmIndexesGrid.setDataSource(gsmIndexesDS);
 			gsmIndexesGrid.setAutoFetchData(false);
 			gsmIndexesGrid.setShowFilterEditor(false);
 			gsmIndexesGrid.setCanEdit(false);
@@ -141,9 +141,9 @@ public class TabGSMIndexes extends Tab {
 			gsmIndexesGrid.setShowHover(true);
 			gsmIndexesGrid.setShowHoverComponents(true);
 
-			mobOperPrefDS.getField("gsm_company").setTitle(
+			gsmIndexesDS.getField("gsm_company").setTitle(
 					CallCenterBK.constants.mobOperator());
-			mobOperPrefDS.getField("gsm_index").setTitle(
+			gsmIndexesDS.getField("gsm_index").setTitle(
 					CallCenterBK.constants.mobOperatorIndex());
 
 			ListGridField gsm_company = new ListGridField("gsm_company",
@@ -151,9 +151,9 @@ public class TabGSMIndexes extends Tab {
 			ListGridField prefix = new ListGridField("gsm_index",
 					CallCenterBK.constants.mobOperatorIndex(), 150);
 
-			mobOperPrefsGrid.setFields(gsm_company, prefix);
+			gsmIndexesGrid.setFields(gsm_company, prefix);
 
-			mainLayout.addMember(mobOperPrefsGrid);
+			mainLayout.addMember(gsmIndexesGrid);
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -168,29 +168,29 @@ public class TabGSMIndexes extends Tab {
 				}
 			});
 
-			addMobOperPrefBtn.addClickHandler(new ClickHandler() {
+			addGSMIndexesBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					DlgAddEditGSMIndexes dlgAddEditMobOperPref = new DlgAddEditGSMIndexes(
-							mobOperPrefsGrid, null);
+							gsmIndexesGrid, null);
 					dlgAddEditMobOperPref.show();
 				}
 			});
 
-			editMobOperPrefBtn.addClickHandler(new ClickHandler() {
+			editGSMIndexesBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = mobOperPrefsGrid
+					ListGridRecord listGridRecord = gsmIndexesGrid
 							.getSelectedRecord();
 					DlgAddEditGSMIndexes dlgAddEditMobOperPref = new DlgAddEditGSMIndexes(
-							mobOperPrefsGrid, listGridRecord);
+							gsmIndexesGrid, listGridRecord);
 					dlgAddEditMobOperPref.show();
 				}
 			});
-			deleteMobOpepPrefBtn.addClickHandler(new ClickHandler() {
+			deleteGSMIndexesBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = mobOperPrefsGrid
+					final ListGridRecord listGridRecord = gsmIndexesGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
@@ -213,24 +213,24 @@ public class TabGSMIndexes extends Tab {
 			tabSet.setWidth(835);
 			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
 			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(mobOperPrefDS);
+			detailViewer.setDataSource(gsmIndexesDS);
 			detailViewer.setWidth(800);
 			tabDetViewer.setPane(detailViewer);
 
-			mobOperPrefsGrid.addRecordClickHandler(new RecordClickHandler() {
+			gsmIndexesGrid.addRecordClickHandler(new RecordClickHandler() {
 				public void onRecordClick(RecordClickEvent event) {
-					detailViewer.viewSelectedData(mobOperPrefsGrid);
+					detailViewer.viewSelectedData(gsmIndexesGrid);
 				}
 			});
-			mobOperPrefsGrid
+			gsmIndexesGrid
 					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 						@Override
 						public void onRecordDoubleClick(
 								RecordDoubleClickEvent event) {
-							ListGridRecord listGridRecord = mobOperPrefsGrid
+							ListGridRecord listGridRecord = gsmIndexesGrid
 									.getSelectedRecord();
 							DlgAddEditGSMIndexes dlgAddEditMobOperPref = new DlgAddEditGSMIndexes(
-									mobOperPrefsGrid, listGridRecord);
+									gsmIndexesGrid, listGridRecord);
 							dlgAddEditMobOperPref.show();
 						}
 					});
@@ -257,8 +257,8 @@ public class TabGSMIndexes extends Tab {
 			}
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "searchGSMIndexes");
-			mobOperPrefsGrid.invalidateCache();
-			mobOperPrefsGrid.filterData(criteria, new DSCallback() {
+			gsmIndexesGrid.invalidateCache();
+			gsmIndexesGrid.filterData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -281,7 +281,7 @@ public class TabGSMIndexes extends Tab {
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "deleteGSMIndexes");
-			mobOperPrefsGrid.removeData(record, new DSCallback() {
+			gsmIndexesGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

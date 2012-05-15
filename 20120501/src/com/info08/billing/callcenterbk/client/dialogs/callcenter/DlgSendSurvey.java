@@ -116,7 +116,7 @@ public class DlgSendSurvey extends Window {
 			if (serverSession != null && !serverSession.isWebSession()) {
 				phoneItem.setValue(serverSession.getPhone());
 				sessionId = serverSession.getSessionId();
-				userName = serverSession.getUserName();
+				userName = serverSession.getUser_name();
 			}
 
 			contactPersonItem = new TextItem();

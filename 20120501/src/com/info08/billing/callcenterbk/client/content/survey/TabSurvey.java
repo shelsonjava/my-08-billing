@@ -217,7 +217,7 @@ public class TabSurvey extends Tab {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("survey_id",
 					listGridRecord.getAttributeAsInt("survey_id"));

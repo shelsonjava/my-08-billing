@@ -190,7 +190,7 @@ public class DlgAddChargeItem extends Window {
 					.getAttributeAsString("session_id");
 			Integer ym = listGridRecord.getAttributeAsInt("ym");
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();

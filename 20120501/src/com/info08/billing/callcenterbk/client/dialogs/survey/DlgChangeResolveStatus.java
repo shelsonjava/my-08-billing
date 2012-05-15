@@ -128,7 +128,7 @@ public class DlgChangeResolveStatus extends Window {
 			}
 
 			String rec_user = CommonSingleton.getInstance().getSessionPerson()
-					.getUserName();
+					.getUser_name();
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = listGridRecord;

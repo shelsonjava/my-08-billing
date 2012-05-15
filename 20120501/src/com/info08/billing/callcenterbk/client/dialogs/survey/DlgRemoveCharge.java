@@ -217,7 +217,7 @@ public class DlgRemoveCharge extends Window {
 						Record record = new Record();
 						record.setAttribute("id", id);
 						record.setAttribute("upd_user", CommonSingleton
-								.getInstance().getSessionPerson().getUserName());
+								.getInstance().getSessionPerson().getUser_name());
 
 						DSRequest req = new DSRequest();
 						req.setAttribute("operationId", "deleteSessionCharge");

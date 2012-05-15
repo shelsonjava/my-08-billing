@@ -194,12 +194,14 @@ public class MiscDMI implements QueryConstants {
 			}
 		}
 	}
-public static void main(String[] args) {
-	String s="setСycle_descr";
-	for (char c : s.toCharArray()) {
-		System.out.println((int)c+" "+c);
+
+	public static void main(String[] args) {
+		String s = "setСycle_descr";
+		for (char c : s.toCharArray()) {
+			System.out.println((int) c + " " + c);
+		}
 	}
-}
+
 	/**
 	 * Updating SecularCalendar Status
 	 * 
@@ -634,8 +636,8 @@ public static void main(String[] args) {
 	 * @return
 	 * @throws Exception
 	 */
-	public GSMIndexes addMobileOperatorPrefix(
-			GSMIndexes mobileOperatorPrefixe) throws Exception {
+	public GSMIndexes addMobileOperatorPrefix(GSMIndexes mobileOperatorPrefixe)
+			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -644,17 +646,13 @@ public static void main(String[] args) {
 			transaction = EMF.getTransaction(oracleManager);
 
 			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 			String loggedUserName = mobileOperatorPrefixe.getLoggedUserName();
-			mobileOperatorPrefixe.setRec_date(recDate);
-			mobileOperatorPrefixe.setRec_user(loggedUserName);
-			mobileOperatorPrefixe.setDeleted(0L);
 
 			oracleManager.persist(mobileOperatorPrefixe);
 			oracleManager.flush();
 
-			mobileOperatorPrefixe = oracleManager.find(
-					GSMIndexes.class, mobileOperatorPrefixe.getId());
+			mobileOperatorPrefixe = oracleManager.find(GSMIndexes.class,
+					mobileOperatorPrefixe.getGsm_index_id());
 			mobileOperatorPrefixe.setLoggedUserName(loggedUserName);
 
 			EMF.commitTransaction(transaction);
@@ -690,8 +688,7 @@ public static void main(String[] args) {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public GSMIndexes updateMobileOperatorPrefix(Map record)
-			throws Exception {
+	public GSMIndexes updateMobileOperatorPrefix(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -699,20 +696,16 @@ public static void main(String[] args) {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp currDate = new Timestamp(System.currentTimeMillis());
 			Long id = new Long(record.get("id").toString());
 			String oper = record.get("oper") == null ? null : record
 					.get("oper").toString();
 			String prefix = record.get("prefix") == null ? null : record.get(
 					"prefix").toString();
-			String loggedUserName = record.get("loggedUserName").toString();
 
 			GSMIndexes mobileOperatorPrefixe = oracleManager.find(
 					GSMIndexes.class, id);
-			mobileOperatorPrefixe.setOper(oper);
-			mobileOperatorPrefixe.setPrefix(prefix);
-			mobileOperatorPrefixe.setUpd_date(currDate);
-			mobileOperatorPrefixe.setUpd_user(loggedUserName);
+			mobileOperatorPrefixe.setGsm_company(oper);
+			mobileOperatorPrefixe.setGsm_index(prefix);
 
 			oracleManager.merge(mobileOperatorPrefixe);
 			oracleManager.flush();
@@ -759,23 +752,17 @@ public static void main(String[] args) {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp currDate = new Timestamp(System.currentTimeMillis());
 			Long id = new Long(record.get("id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
+
 			String loggedUserName = record.get("loggedUserName").toString();
 
 			GSMIndexes mobileOperatorPrefixe = oracleManager.find(
 					GSMIndexes.class, id);
 
-			mobileOperatorPrefixe.setDeleted(deleted);
-			mobileOperatorPrefixe.setUpd_user(loggedUserName);
-			mobileOperatorPrefixe.setUpd_date(currDate);
-
 			oracleManager.merge(mobileOperatorPrefixe);
 			oracleManager.flush();
 
-			mobileOperatorPrefixe = oracleManager.find(
-					GSMIndexes.class, id);
+			mobileOperatorPrefixe = oracleManager.find(GSMIndexes.class, id);
 
 			mobileOperatorPrefixe.setLoggedUserName(loggedUserName);
 

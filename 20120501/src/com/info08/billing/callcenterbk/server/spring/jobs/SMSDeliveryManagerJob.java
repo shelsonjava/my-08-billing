@@ -58,7 +58,7 @@ public class SMSDeliveryManagerJob extends TimerTask {
 					.getResultList();
 			if (list != null && !list.isEmpty()) {
 				for (GSMIndexes fix : list) {
-					prefs.put(fix.getPrefix(), fix);
+					prefs.put(fix.getGsm_index(), fix);
 				}
 			}
 		} catch (Exception e) {
@@ -91,8 +91,8 @@ public class SMSDeliveryManagerJob extends TimerTask {
 					.createNamedQuery("TmpLogSMS.getForSending")
 					.getResultList();
 			if (resultList == null || resultList.isEmpty()) {
-				//log.append("SMS Batch List Is Empty.");
-				//logger.info(log.toString());
+				// log.append("SMS Batch List Is Empty.");
+				// logger.info(log.toString());
 				return;
 			}
 
@@ -118,7 +118,7 @@ public class SMSDeliveryManagerJob extends TimerTask {
 					oracleManager.merge(logSMS);
 					continue;
 				}
-				logSMS.setOperator(prefixe.getOper());
+				logSMS.setOperator(prefixe.getGsm_company());
 				ObjectMessage objectMessage = session.createObjectMessage();
 				objectMessage.setObject(logSMS);
 				publisher.send(objectMessage);

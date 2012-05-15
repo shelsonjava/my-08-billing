@@ -127,10 +127,10 @@ public class TabSurveyHist extends Tab {
 			operatorItem.setType("comboBox");
 			operatorItem.setWidth(250);
 			operatorItem.setName("operatorItem");
-			DataSource persons = CommonSingleton.getInstance().getPersonsDS();
-			if (persons != null) {
+			DataSource usersDS = CommonSingleton.getInstance().getUsersDS();
+			if (usersDS != null) {
 				operatorItem.setOptionOperationId("customPersSearch");
-				operatorItem.setOptionDataSource(persons);
+				operatorItem.setOptionDataSource(usersDS);
 				operatorItem.setValueField("personelId");
 				operatorItem.setDisplayField("fullPersonName");
 			}
@@ -140,7 +140,7 @@ public class TabSurveyHist extends Tab {
 			updateUserItem.setType("comboBox");
 			updateUserItem.setWidth(250);
 			updateUserItem.setName("updateUserItem");
-			DataSource persons1 = CommonSingleton.getInstance().getPersonsDS();
+			DataSource persons1 = CommonSingleton.getInstance().getUsersDS();
 			if (persons1 != null) {
 				updateUserItem.setOptionOperationId("customPersSearch");
 				updateUserItem.setOptionDataSource(persons1);
@@ -340,7 +340,7 @@ public class TabSurveyHist extends Tab {
 	private void changeStatus() {
 		try {
 			String userName = CommonSingleton.getInstance().getSessionPerson()
-					.getUserName();
+					.getUser_name();
 			ListGridRecord listGridRecord = listGrid.getSelectedRecord();
 			if (listGridRecord == null) {
 				SC.say(CallCenterBK.constants.warning(),

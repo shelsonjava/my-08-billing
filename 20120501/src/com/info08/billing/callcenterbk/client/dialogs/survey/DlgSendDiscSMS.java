@@ -178,7 +178,7 @@ public class DlgSendDiscSMS extends Window {
 			
 			String session_call_id = record.getAttributeAsString("session_call_id");
 			String rec_user = CommonSingleton.getInstance().getSessionPerson()
-					.getUserName();
+					.getUser_name();
 
 			CanvasDisableTimer.addCanvasClickTimer(sendSMSButton);
 

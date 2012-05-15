@@ -80,7 +80,7 @@ public class ServerSingleton {
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 					for (GSMIndexes item : list) {
-						mobileIndexes.put(item.getPrefix(), item);
+						mobileIndexes.put(item.getGsm_index(), item);
 					}
 				}
 			}
@@ -118,7 +118,7 @@ public class ServerSingleton {
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 					for (GSMIndexes item : list) {
-						mobileIndexes.put(item.getPrefix(), item);
+						mobileIndexes.put(item.getGsm_index(), item);
 					}
 				}
 			}
@@ -142,8 +142,7 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void addMobileOperatorPrefix(
-			GSMIndexes mobileOperatorPrefixe)
+	public void addMobileOperatorPrefix(GSMIndexes mobileOperatorPrefixe)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
@@ -157,11 +156,11 @@ public class ServerSingleton {
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 					for (GSMIndexes item : list) {
-						mobileIndexes.put(item.getPrefix(), item);
+						mobileIndexes.put(item.getGsm_index(), item);
 					}
 				}
 			}
-			mobileIndexes.put(mobileOperatorPrefixe.getPrefix(),
+			mobileIndexes.put(mobileOperatorPrefixe.getGsm_index(),
 					mobileOperatorPrefixe);
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
@@ -182,8 +181,7 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void updateMobileOperatorPrefix(
-			GSMIndexes mobileOperatorPrefixe)
+	public void updateMobileOperatorPrefix(GSMIndexes mobileOperatorPrefixe)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
@@ -197,15 +195,12 @@ public class ServerSingleton {
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 					for (GSMIndexes item : list) {
-						mobileIndexes.put(item.getPrefix(), item);
+						mobileIndexes.put(item.getGsm_index(), item);
 					}
 				}
 			}
-			mobileIndexes.remove(mobileOperatorPrefixe.getPrefix());
-			if (mobileOperatorPrefixe.getDeleted().equals(0L)) {
-				mobileIndexes.put(mobileOperatorPrefixe.getPrefix(),
-						mobileOperatorPrefixe);
-			}
+			mobileIndexes.remove(mobileOperatorPrefixe.getGsm_index());
+
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;

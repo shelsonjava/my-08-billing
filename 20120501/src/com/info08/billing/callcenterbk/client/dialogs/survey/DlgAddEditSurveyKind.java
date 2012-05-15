@@ -126,7 +126,7 @@ public class DlgAddEditSurveyKind extends Window {
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUserName();
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("deleted", 0);
 			record.setAttribute("survey_kind_name", survey_kind_name);
