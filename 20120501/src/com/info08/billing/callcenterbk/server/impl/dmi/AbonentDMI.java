@@ -90,7 +90,7 @@ public class AbonentDMI implements QueryConstants {
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 			connection.setAutoCommit(false);
@@ -242,7 +242,7 @@ public class AbonentDMI implements QueryConstants {
 			Integer deleted = new Integer(dsRequest.getFieldValue("deleted")
 					.toString());
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 			connection.setAutoCommit(false);

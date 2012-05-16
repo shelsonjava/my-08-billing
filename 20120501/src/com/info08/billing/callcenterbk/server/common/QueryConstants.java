@@ -984,40 +984,6 @@ public interface QueryConstants {
 			+ "where substr(t.user_name,0,2) <> 'op'\n"
 			+ "order by t.user_name)\n" + "";
 
-	public static final String Q_GET_LOG_SESSION = "select p.user_id,\n"
-			+ "        s.session_id,\n"
-			+ "        s.ym,\n"
-			+ "        substr(s.user_name,3,length(s.user_name)) as user_name,\n"
-			+ "        s.start_date,\n"
-			+ "        s.phone,\n"
-			+ "        s.duration,\n"
-			+ "        decode(s.hungup,0,'აბონენტმა',1,'ოპერატორმა','უცნობია') as hangUp,\n"
-			+ "        count(ch.session_id) as chargeCount,\n"
-			+ "        s.session_quality,\n"
-			+ "        decode(s.session_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი') as session_quality_desc,\n"
-			+ "        p.user_firstname||' '||p.user_lastname as person_name\n"
-			+ "from\n"
-			+ "        log_sessions s,\n"
-			+ "\t\t\t\tlog_session_charges ch,\n"
-			+ "\t\t\t\tccare.users p\n"
-			+ "where\n"
-			+ "        s.session_id=ch.session_id(+) and\n"
-			+ "        p.user_name = s.user_name and\n"
-			+ "        s.session_id = ? \n"
-			+ "\n"
-			+ "group by\n"
-			+ "        p.user_id,\n"
-			+ "\t\t\t\ts.session_id,\n"
-			+ "\t\t\t\ts.ym,\n"
-			+ "\t\t\t\tsubstr(s.user_name,3,length(s.user_name)),\n"
-			+ "\t\t\t\ts.start_date,\n"
-			+ "\t\t\t\ts.phone,\n"
-			+ "\t\t\t\ts.duration,\n"
-			+ "\t\t\t\tdecode(s.hungup,0,'აბონენტმა',1,'ოპერატორმა','უცნობია'),\n"
-			+ "\t\t\t\ts.session_quality,\n"
-			+ "\t\t\t\tdecode(s.session_quality,0,'ხარისხიანი',-1,'უხარისხო','უცნობი'),\n"
-			+ "\t\t\t\tp.user_firstname||' '||p.user_lastname\n";
-
 	public static final String Q_GET_ORGS_BY_PHONE = "select\n"
 			+ "  t.main_id,\n"
 			+ "  t.org_name,\n"
@@ -1185,7 +1151,7 @@ public interface QueryConstants {
 
 	public static final String Q_UPDATE_LOCK_STATUS = " update ccare.lock_status t set t.status = 1 where t.session_id = ? ";
 
-	public static final String Q_UPDATE_SESSION_QUALITY = " update ccare.log_sessions t set t.session_quality = ?     where t.session_id = ? ";
+	public static final String Q_UPDATE_SESSION_QUALITY = " update call_sessions t set t.call_quality = ? where t.call_session_id = ? ";
 
 	public static final String Q_UPDATE_ABONENT = " update ccare.abonents t set t.deleted = ?, t.upd_user = ?, t.upd_date = ? where t.abonent_id = ? ";
 

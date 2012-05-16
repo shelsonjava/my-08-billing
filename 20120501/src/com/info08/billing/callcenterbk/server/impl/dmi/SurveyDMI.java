@@ -15,8 +15,8 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.common.Constants;
-import com.info08.billing.callcenterbk.shared.entity.session.LogSession;
-import com.info08.billing.callcenterbk.shared.entity.session.LogSessionCharge;
+import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
+import com.info08.billing.callcenterbk.shared.entity.session.CallSessionExpense;
 import com.info08.billing.callcenterbk.shared.entity.survey.Survey;
 import com.info08.billing.callcenterbk.shared.entity.survey.SurveyKind;
 import com.info08.billing.callcenterbk.shared.entity.survey.SurveyReplyType;
@@ -410,8 +410,8 @@ public class SurveyDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public LogSessionCharge addChargesBySurvey(
-			LogSessionCharge logSessionCharge) throws Exception {
+	public CallSessionExpense addChargesBySurvey(
+			CallSessionExpense logSessionCharge) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -419,7 +419,7 @@ public class SurveyDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 			for (int i = 0; i < logSessionCharge.getChargeCount(); i++) {
-				LogSessionCharge item = new LogSessionCharge();
+				CallSessionExpense item = new CallSessionExpense();
 				item.setId(new Long((System.currentTimeMillis() * (i + 1))));
 				item.setService_id(logSessionCharge.getService_id());
 				item.setSession_id(logSessionCharge.getSession_id());
@@ -456,7 +456,7 @@ public class SurveyDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public LogSession addChargesWithoutCall(DSRequest dsRequest)
+	public CallSession addChargesWithoutCall(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -477,7 +477,7 @@ public class SurveyDMI implements QueryConstants {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyMM");
 			Long ym = new Long(dateFormat.format(currDate));
 
-			LogSession logSession = new LogSession();
+			CallSession logSession = new CallSession();
 			String session_id = oracleManager
 					.createNativeQuery(QueryConstants.Q_GET_VIRTUAL_SESSION_ID)
 					.getSingleResult().toString();
@@ -497,7 +497,7 @@ public class SurveyDMI implements QueryConstants {
 			oracleManager.persist(logSession);
 
 			for (int i = 0; i < chargeCount.intValue(); i++) {
-				LogSessionCharge item = new LogSessionCharge();
+				CallSessionExpense item = new CallSessionExpense();
 				item.setId(new Long((System.currentTimeMillis() * (i + 1))));
 				item.setService_id(service_id);
 				item.setSession_id(session_id);

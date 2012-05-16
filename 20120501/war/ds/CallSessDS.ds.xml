@@ -1,0 +1,135 @@
+<DataSource 
+	ID="CallSessDS" 
+	serverType="sql"
+	tableName="call_sessions" 
+	qualifyColumnNames="false">
+	<fields>
+		<field name="call_session_id"			type="integer" 	title="call_session_id"		hidden="true" primaryKey="true"/>
+		<field name="session_id"				type="text" 	title="session_id"			hidden="true"/>
+		<field name="year_month" 				type="integer"	title="Year/Month" 			hidden="true" />
+		<field name="uname" 					type="text" 	title="uname" />
+		<field name="call_start_date" 			type="datetime" title="call_start_date" />
+		<field name="call_phone" 				type="text" 	title="call_phone" />
+		<field name="call_duration" 			type="integer" 	title="call_duration" />
+		<field name="reject_type" 				type="text" 	title="reject_type" />
+		<field name="chargeCount" 				type="integer" 	title="chargeCount" />
+		<field name="user_id" 					type="integer" 	title="user_id"				hidden="true"/>
+		<field name="call_quality"				type="integer" 	title="reject_type" 		hidden="true"/>
+		<field name="call_quality_desc"			type="text" 	title="call_quality_desc" />
+		<field name="full_user_name" 			type="text" 	title="full_user_name" />
+		<field name="loggedUserName"			type="text" 	title="loggedUserName" 		hidden="true"/>
+		<field name="service_id"				type="integer" 	title="service_id" 			hidden="true"/>
+		<field name="virt_call_type" 			type="integer" 	title="virt_call_type" 		hidden="true"/>		
+	</fields>
+
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SessQualityDMI"/>
+
+	<operationBindings>
+		<!-- UPDATE -->
+		<operationBinding operationType="update" operationId="update" serverMethod="update">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SessQualityDMI"/>
+        </operationBinding>
+        
+        <operationBinding operationType="add" operationId="addChargesWithoutCall" serverMethod="addChargesWithoutCall">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SessQualityDMI"/>
+        </operationBinding>
+        
+        <!-- FETCH -->
+		<operationBinding operationId="customSearch" operationType="fetch">			
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.LogSessionItem"/>
+			<selectClause>
+				p.user_id,
+				s.call_session_id,
+				s.session_id,
+				s.year_month,
+				substr(s.uname,3,length(s.uname)) as uname,
+				s.call_start_date,
+				s.call_phone,
+				s.call_duration,
+				decode(s.hungup,0,'აბონენტმა',1,'ოპერატორმა','უცნობია') as reject_type,
+				count(ch.session_id) as chargeCount,
+				s.call_quality,
+				decode(s.call_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი') as call_quality_desc,
+				p.user_firstname||' '||p.user_lastname as full_user_name
+			</selectClause>
+			<tableClause> <![CDATA[call_sessions s, call_session_expense ch, users p ]]>
+			</tableClause>
+			<whereClause><![CDATA[ 
+				s.session_id = ch.session_id(+) and p.user_name = s.uname and 	
+				#if ($criteria.call_session_id) AND s.call_session_id = $criteria.call_session_id #end						
+				s.call_start_date > to_date(to_char(#if($criteria.startDate) $criteria.startDate #else trunc(sysdate) #end ,'yyyymmdd')||  #if ($criteria.startTime)  to_char($criteria.startTime ,'hh24miss')  #else '000000' #end ,'yyyymmddhh24miss') and 
+				s.call_start_date < to_date(to_char(#if($criteria.endDate)   $criteria.endDate   #else trunc(sysdate)+1 #end ,'yyyymmdd')|| #if ($criteria.endTime) to_char($criteria.endTime,'hh24miss')  #else '235959' #end ,'yyyymmddhh24miss')
+				
+				#if($criteria.phone && $criteria.numberCondTypeItem == 1)AND 
+					s.call_phone like ($criteria.phone)||'%'
+				#end
+				#if($criteria.phone && $criteria.numberCondTypeItem == 2) AND 
+					s.call_phone like '%'||($criteria.phone)||'%'
+				#end				
+				#if ($criteria.user_id) AND p.user_id = $criteria.user_id #end
+				#if ($criteria.serviceId) AND
+					(ch.service_id = $criteria.serviceId or 
+						(						
+							select count(1) from ccare.log_sms sms where s.session_id = sms.session_id and sms.service_id = $criteria.serviceId 
+						) > 0 
+					)
+				#end	
+				#if ($criteria.numOfSecondsStart) AND s.call_duration > $criteria.numOfSecondsStart #end
+				#if ($criteria.numOfSecondsEnd) AND s.call_duration <= $criteria.numOfSecondsEnd #end
+				#if ($criteria.chargedCall == 2) AND
+					 (
+            			select 
+            				count(1) 
+            			from call_session_expense a 
+            			where a.session_id = s.session_id
+            		 ) > 0
+				#end
+				#if ($criteria.chargedCall == 3) AND
+					s.call_kind in (0,3) AND
+					 (
+            			select 
+            				count(1) 
+            			from call_session_expense a 
+            			where a.session_id = s.session_id
+            		 ) <= 0
+				#end
+				#if($criteria.sessQualityTypeItem && $criteria.sessQualityTypeItem != 100) AND s.call_quality = $criteria.sessQualityTypeItem #end
+				]]>
+			</whereClause>
+			<groupClause>
+				p.user_id,
+				s.session_id,
+				s.year_month,
+				substr(s.uname,3,length(s.uname)),
+				s.call_start_date,
+				s.call_phone,
+				s.call_duration,
+				decode(s.reject_type,0,'აბონენტმა',1,'ოპერატორმა','უცნობია'),
+				s.call_quality,
+				decode(s.call_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი'),
+				p.user_firstname||' '||p.user_lastname
+			</groupClause>			
+		</operationBinding>
+		
+		
+		
+		 <!-- FETCH -->
+		<operationBinding operationId="customSearchStat" operationType="fetch">			
+			<selectClause>
+				t.ym,
+				count(1) as chargeCount
+			</selectClause>
+			<tableClause> <![CDATA[ 
+				call_sessions t				
+				]]>
+			</tableClause>
+			<whereClause><![CDATA[ 
+					t.year_month like '11%'
+				]]>
+			</whereClause>
+			<groupClause>
+				t.ym
+			</groupClause>			
+		</operationBinding>
+	</operationBindings>
+</DataSource>

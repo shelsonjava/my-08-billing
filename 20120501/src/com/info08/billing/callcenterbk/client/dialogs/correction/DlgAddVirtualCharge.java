@@ -235,7 +235,7 @@ public class DlgAddVirtualCharge extends Window {
 			DSRequest req = new DSRequest();
 			req.setAttribute("operationId", "addChargesWithoutCall");
 
-			DataSource dataSource = DataSource.get("LogSessDS");
+			DataSource dataSource = DataSource.get("CallSessDS");
 
 			dataSource.addData(record, new DSCallback() {
 				@Override

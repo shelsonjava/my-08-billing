@@ -510,7 +510,7 @@ public class MiscDMI implements QueryConstants {
 					dsRequest.getFieldValue("service_id") == null ? "-100"
 							: dsRequest.getFieldValue("service_id").toString());
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 			connection.setAutoCommit(false);
@@ -1009,7 +1009,7 @@ public class MiscDMI implements QueryConstants {
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 			connection.setAutoCommit(false);

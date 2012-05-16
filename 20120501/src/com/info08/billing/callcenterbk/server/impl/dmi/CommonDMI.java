@@ -2530,7 +2530,7 @@ public class CommonDMI implements QueryConstants {
 			if (departments == null || departments.isEmpty()) {
 				logger.info("getting departments from DB. ");
 				departments = new TreeMap<Integer, Departments>();
-				DataSource ds = DataSourceManager.get("LogSessDS");
+				DataSource ds = DataSourceManager.get("CallSessDS");
 				SQLDataSource sqlDS = (SQLDataSource) ds;
 				connection = sqlDS.getConnection();
 
@@ -2582,7 +2582,7 @@ public class CommonDMI implements QueryConstants {
 			if (lastNames == null || lastNames.isEmpty()) {
 				logger.info("getting lastnames from DB. ");
 				lastNames = new TreeMap<Integer, LastName>();
-				DataSource ds = DataSourceManager.get("LogSessDS");
+				DataSource ds = DataSourceManager.get("CallSessDS");
 				SQLDataSource sqlDS = (SQLDataSource) ds;
 				connection = sqlDS.getConnection();
 
@@ -2635,7 +2635,7 @@ public class CommonDMI implements QueryConstants {
 
 				logger.info("getting first names from DB. ");
 				firstNames = new TreeMap<Integer, FirstName>();
-				DataSource ds = DataSourceManager.get("LogSessDS");
+				DataSource ds = DataSourceManager.get("CallSessDS");
 				SQLDataSource sqlDS = (SQLDataSource) ds;
 				connection = sqlDS.getConnection();
 
@@ -2703,7 +2703,7 @@ public class CommonDMI implements QueryConstants {
 			// sysdate
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 			countStatement = connection
@@ -2800,7 +2800,7 @@ public class CommonDMI implements QueryConstants {
 					+ firstName
 					+ ", loggedUserName = " + loggedUserName;
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 
@@ -2876,7 +2876,7 @@ public class CommonDMI implements QueryConstants {
 					+ deleted
 					+ ", loggedUserName = " + loggedUserName;
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 
@@ -2998,7 +2998,7 @@ public class CommonDMI implements QueryConstants {
 			// sysdate
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 			countStatement = connection.prepareStatement(Q_GET_LAST_NAME_COUNT);
@@ -3094,7 +3094,7 @@ public class CommonDMI implements QueryConstants {
 					+ lastName
 					+ ", loggedUserName = " + loggedUserName;
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 
@@ -3170,7 +3170,7 @@ public class CommonDMI implements QueryConstants {
 					+ deleted
 					+ ", loggedUserName = " + loggedUserName;
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 
@@ -3285,7 +3285,7 @@ public class CommonDMI implements QueryConstants {
 
 			String session_my_idI = session_my_id.toString();
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 

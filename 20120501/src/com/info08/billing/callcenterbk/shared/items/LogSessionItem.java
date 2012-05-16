@@ -7,17 +7,17 @@ public class LogSessionItem implements Serializable {
 
 	private static final long serialVersionUID = 7026086622425435823L;
 	private Integer user_id;
-	private Integer ym;
+	private Integer year_month;
 	private String session_id;
-	private String user_name;
-	private String person_name;
-	private Timestamp start_date;
-	private String phone;
-	private Integer duration;
-	private String hangUp;
+	private String uname;
+	private String full_user_name;
+	private Timestamp call_start_date;
+	private String call_phone;
+	private Integer call_duration;
+	private String reject_type;
 	private Integer chargeCount;
-	private Integer session_quality;
-	private String session_quality_desc;
+	private Integer call_quality;
+	private String call_quality_desc;
 
 	public Integer getUser_id() {
 		return user_id;
@@ -25,6 +25,14 @@ public class LogSessionItem implements Serializable {
 
 	public void setUser_id(Integer user_id) {
 		this.user_id = user_id;
+	}
+
+	public Integer getYear_month() {
+		return year_month;
+	}
+
+	public void setYear_month(Integer year_month) {
+		this.year_month = year_month;
 	}
 
 	public String getSession_id() {
@@ -35,44 +43,52 @@ public class LogSessionItem implements Serializable {
 		this.session_id = session_id;
 	}
 
-	public String getUser_name() {
-		return user_name;
+	public String getUname() {
+		return uname;
 	}
 
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public void setUname(String uname) {
+		this.uname = uname;
 	}
 
-	public Timestamp getStart_date() {
-		return start_date;
+	public String getFull_user_name() {
+		return full_user_name;
 	}
 
-	public void setStart_date(Timestamp start_date) {
-		this.start_date = start_date;
+	public void setFull_user_name(String full_user_name) {
+		this.full_user_name = full_user_name;
 	}
 
-	public String getPhone() {
-		return phone;
+	public Timestamp getCall_start_date() {
+		return call_start_date;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setCall_start_date(Timestamp call_start_date) {
+		this.call_start_date = call_start_date;
 	}
 
-	public Integer getDuration() {
-		return duration;
+	public String getCall_phone() {
+		return call_phone;
 	}
 
-	public void setDuration(Integer duration) {
-		this.duration = duration;
+	public void setCall_phone(String call_phone) {
+		this.call_phone = call_phone;
 	}
 
-	public String getHangUp() {
-		return hangUp;
+	public Integer getCall_duration() {
+		return call_duration;
 	}
 
-	public void setHangUp(String hangUp) {
-		this.hangUp = hangUp;
+	public void setCall_duration(Integer call_duration) {
+		this.call_duration = call_duration;
+	}
+
+	public String getReject_type() {
+		return reject_type;
+	}
+
+	public void setReject_type(String reject_type) {
+		this.reject_type = reject_type;
 	}
 
 	public Integer getChargeCount() {
@@ -83,36 +99,19 @@ public class LogSessionItem implements Serializable {
 		this.chargeCount = chargeCount;
 	}
 
-	public Integer getSession_quality() {
-		return session_quality;
+	public Integer getCall_quality() {
+		return call_quality;
 	}
 
-	public void setSession_quality(Integer session_quality) {
-		this.session_quality = session_quality;
+	public void setCall_quality(Integer call_quality) {
+		this.call_quality = call_quality;
 	}
 
-	public String getSession_quality_desc() {
-		return session_quality_desc;
+	public String getCall_quality_desc() {
+		return call_quality_desc;
 	}
 
-	public void setSession_quality_desc(String session_quality_desc) {
-		this.session_quality_desc = session_quality_desc;
+	public void setCall_quality_desc(String call_quality_desc) {
+		this.call_quality_desc = call_quality_desc;
 	}
-
-	public Integer getYm() {
-		return ym;
-	}
-
-	public void setYm(Integer ym) {
-		this.ym = ym;
-	}
-
-	public String getPerson_name() {
-		return person_name;
-	}
-
-	public void setPerson_name(String person_name) {
-		this.person_name = person_name;
-	}
-
 }

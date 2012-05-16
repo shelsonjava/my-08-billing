@@ -93,7 +93,7 @@ public class LogPersNotesDMI {
 			// sysdate
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 
@@ -195,7 +195,7 @@ public class LogPersNotesDMI {
 					+ noteId + ", visibOpt = " + visibOpt + ", note = " + note
 					+ ", partic = " + partic;
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 
@@ -259,7 +259,7 @@ public class LogPersNotesDMI {
 			String log = "Method:LogPersNotesDMI.remove. Params : 1. noteId = "
 					+ noteId;
 
-			DataSource ds = DataSourceManager.get("LogSessDS");
+			DataSource ds = DataSourceManager.get("CallSessDS");
 			SQLDataSource sqlDS = (SQLDataSource) ds;
 			connection = sqlDS.getConnection();
 			connection.setAutoCommit(false);
