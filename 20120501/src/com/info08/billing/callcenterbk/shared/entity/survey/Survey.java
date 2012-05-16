@@ -27,8 +27,8 @@ public class Survey implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "SQ_SURVEY_ID_GENERATOR", sequenceName = "SQ_SURVEY_ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_SURVEY_ID_GENERATOR")
+	@SequenceGenerator(name = "SEQ_SURVEY_ID_GENERATOR", sequenceName = "SEQ_SURVEY_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SURVEY_ID_GENERATOR")
 	@Column(name = "survey_id")
 	private Long survey_id;
 
