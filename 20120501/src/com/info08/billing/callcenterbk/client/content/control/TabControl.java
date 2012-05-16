@@ -84,7 +84,7 @@ public class TabControl extends Tab {
 			setTitle("კონტროლის განყოფილება");
 			setCanClose(true);
 
-			sessionsDS = DataSource.get("LogSessDS");
+			sessionsDS = DataSource.get("CallSessDS");
 			sessionChargesDS = DataSource.get("LogSessChDS");
 
 			VLayout vLayout = new VLayout(5);

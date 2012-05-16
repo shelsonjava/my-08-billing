@@ -38,7 +38,7 @@ public class TabTest extends Tab {
 			chart.setShowDataPoints(true);
 			chart.setMinHeight(400);
 
-			DataSource dataSource = DataSource.get("LogSessDS");
+			DataSource dataSource = DataSource.get("CallSessDS");
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("customSearchStat");
 
