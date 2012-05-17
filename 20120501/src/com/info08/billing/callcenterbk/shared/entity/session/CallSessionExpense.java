@@ -30,7 +30,7 @@ public class CallSessionExpense implements Serializable {
 
 	@Basic
 	@Column(name = "CHARGE")
-	private Double price;
+	private Double charge;
 
 	@Basic
 	@Column(name = "CHARGE_DATE")
@@ -47,6 +47,11 @@ public class CallSessionExpense implements Serializable {
 	@Basic
 	@Column(name = "YEAR_MONTH")
 	private Long year_month;
+	
+	@Basic
+	@Column(name = "CALL_SESSION_ID")
+	private Long call_session_id;
+	
 
 	@Transient
 	private Long chargeCount;
@@ -77,12 +82,12 @@ public class CallSessionExpense implements Serializable {
 		this.cse_id = cse_id;
 	}
 
-	public Double getPrice() {
-		return price;
+	public Double getCharge() {
+		return charge;
 	}
 
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setCharge(Double charge) {
+		this.charge = charge;
 	}
 
 	public Timestamp getCharge_date() {
@@ -164,6 +169,12 @@ public class CallSessionExpense implements Serializable {
 	public void setCall_start_date(Timestamp call_start_date) {
 		this.call_start_date = call_start_date;
 	}
-	
-	
+
+	public Long getCall_session_id() {
+		return call_session_id;
+	}
+
+	public void setCall_session_id(Long call_session_id) {
+		this.call_session_id = call_session_id;
+	}
 }

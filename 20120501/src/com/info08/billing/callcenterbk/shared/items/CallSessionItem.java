@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.shared.items;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class LogSessionItem implements Serializable {
+public class CallSessionItem implements Serializable {
 
 	private static final long serialVersionUID = 7026086622425435823L;
 	private Integer user_id;
@@ -18,6 +18,7 @@ public class LogSessionItem implements Serializable {
 	private Integer chargeCount;
 	private Integer call_quality;
 	private String call_quality_desc;
+	private Long call_session_id;
 
 	public Integer getUser_id() {
 		return user_id;
@@ -113,5 +114,13 @@ public class LogSessionItem implements Serializable {
 
 	public void setCall_quality_desc(String call_quality_desc) {
 		this.call_quality_desc = call_quality_desc;
+	}
+
+	public Long getCall_session_id() {
+		return call_session_id;
+	}
+
+	public void setCall_session_id(Long call_session_id) {
+		this.call_session_id = call_session_id;
 	}
 }

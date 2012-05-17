@@ -14,7 +14,7 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.shared.entity.Service;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSessionExpense;
-import com.info08.billing.callcenterbk.shared.items.LogSessionItem;
+import com.info08.billing.callcenterbk.shared.items.CallSessionItem;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DSResponse;
 import com.isomorphic.datasource.DataSource;
@@ -75,7 +75,7 @@ public class SessQualityDMI implements QueryConstants {
 				item.setSession_id(session_id);
 				item.setYear_month(ym);
 				item.setCharge_date(currDate);
-				item.setPrice(service.getPrice());
+				item.setCharge(service.getPrice());
 				oracleManager.persist(item);
 			}
 
@@ -126,7 +126,7 @@ public class SessQualityDMI implements QueryConstants {
 
 			updateStmt.executeUpdate();
 			updateStmt.close();
-			LogSessionItem sessionItem = getLogSessionItem(new Long(call_session_id.toString()));
+			CallSessionItem sessionItem = getLogSessionItem(new Long(call_session_id.toString()));
 			DSResponse resp = new DSResponse();
 			resp.setData(sessionItem);
 			resp.setStatus(DSResponse.STATUS_SUCCESS);
@@ -167,12 +167,12 @@ public class SessQualityDMI implements QueryConstants {
 		}
 	}
 
-	private LogSessionItem getLogSessionItem(Long call_session_id) throws CallCenterException {
+	private CallSessionItem getLogSessionItem(Long call_session_id) throws CallCenterException {
 		PreparedStatement selectNote = null;
 		try {
 			String log = "Method:SessQualityDMI.getLogSessionItem. Params : 1. call_session_id = " + call_session_id;
 			log += ". Result : getLogSessionItem Finished Successfully.";
-			LogSessionItem existingRecord = new LogSessionItem();
+			CallSessionItem existingRecord = new CallSessionItem();
 			DMIUtils.findRecordById("CallSessDS", "customSearch", call_session_id, "call_session_id", existingRecord);
 			logger.info(log);
 			return existingRecord;

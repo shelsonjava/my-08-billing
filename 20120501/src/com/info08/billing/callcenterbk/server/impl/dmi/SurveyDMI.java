@@ -15,6 +15,7 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.common.Constants;
+import com.info08.billing.callcenterbk.shared.entity.Service;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSessionExpense;
 import com.info08.billing.callcenterbk.shared.entity.survey.Survey;
@@ -411,29 +412,49 @@ public class SurveyDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	public CallSessionExpense addChargesBySurvey(
-			CallSessionExpense logSessionCharge) throws Exception {
+			CallSessionExpense callSessionExpense) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
 			String log = "Method:CommonDMI.addChargesBySurvey.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			for (int i = 0; i < logSessionCharge.getChargeCount(); i++) {
+
+			Long call_session_id = callSessionExpense.getCall_session_id();
+			Long service_id = callSessionExpense.getService_id();
+			String call_phone = callSessionExpense.getCall_phone();
+
+			CallSession callSession = oracleManager.find(CallSession.class,
+					call_session_id);
+			Service service = oracleManager.find(Service.class, service_id);
+
+			Long call_kind = callSession.getCall_kind();
+
+			Double charge = new Double(0);
+
+			if (call_kind.longValue() > -1
+					|| (call_phone != null && call_phone.startsWith("570"))) {
+				if (call_kind.equals(new Long(Constants.callTypeOrganization))) {
+					charge = service.getPriceSpecial();
+				} else {
+					charge = service.getPrice();
+				}
+			}
+
+			for (int i = 0; i < callSessionExpense.getChargeCount(); i++) {
 				CallSessionExpense item = new CallSessionExpense();
-				item.setId(new Long((System.currentTimeMillis() * (i + 1))));
-				item.setService_id(logSessionCharge.getService_id());
-				item.setSession_id(logSessionCharge.getSession_id());
-				item.setUpd_user(logSessionCharge.getUpd_user());
-				item.setYm(logSessionCharge.getYm());
-				item.setDeleted(0L);
-				item.setRec_date(new Timestamp(System.currentTimeMillis()));
+				item.setService_id(service.getServiceId());
+				item.setSession_id(callSessionExpense.getSession_id());
+				item.setYear_month(callSessionExpense.getYear_month());
+				item.setCharge_date(new Timestamp(System.currentTimeMillis()));
+				item.setCharge(charge);
 				oracleManager.persist(item);
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Adding Charges Finished SuccessFully. ";
 			logger.info(log);
-			return logSessionCharge;
+			return callSessionExpense;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -465,13 +486,10 @@ public class SurveyDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			String loggedUserName = dsRequest.getAttribute("loggedUserName")
-					.toString();
+			String loggedUserName = dsRequest.getAttribute("loggedUserName").toString();
 			String phone = dsRequest.getAttribute("phone").toString();
-			Long service_id = new Long(dsRequest.getAttribute("service_id")
-					.toString());
-			Long chargeCount = new Long(dsRequest.getAttribute("chargeCount")
-					.toString());
+			Long service_id = new Long(dsRequest.getAttribute("service_id").toString());
+			Long chargeCount = new Long(dsRequest.getAttribute("chargeCount").toString());
 
 			Timestamp currDate = new Timestamp(System.currentTimeMillis());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyMM");
@@ -482,29 +500,26 @@ public class SurveyDMI implements QueryConstants {
 					.createNativeQuery(QueryConstants.Q_GET_VIRTUAL_SESSION_ID)
 					.getSingleResult().toString();
 			logSession.setSession_id(session_id);
-			logSession.setCall_type(new Long(Constants.callTypeVirtualDirect));
-			logSession.setDuration(0L);
-			logSession.setEnd_date(currDate);
-			logSession.setHungup(0L);
-			logSession.setIs_new_bill(1L);
-			logSession.setParent_id(0L);
-			logSession.setReciever_number(phone);
-			logSession.setSession_quality(0L);
-			logSession.setStart_date(currDate);
-			logSession.setUser_name(loggedUserName);
-			logSession.setYm(ym);
+			logSession.setCall_kind(new Long(Constants.callTypeVirtualDirect));
+			logSession.setCall_duration(0L);
+			logSession.setCall_end_date(currDate);
+			logSession.setReject_type(0L);
+			logSession.setSwitch_ower_type(0L);
+			logSession.setCall_phone(phone);
+			logSession.setCall_quality(0L);
+			logSession.setCall_start_date(currDate);
+			logSession.setUname(loggedUserName);
+			logSession.setYear_month(ym);
 
 			oracleManager.persist(logSession);
 
 			for (int i = 0; i < chargeCount.intValue(); i++) {
 				CallSessionExpense item = new CallSessionExpense();
-				item.setId(new Long((System.currentTimeMillis() * (i + 1))));
+				// TODO CHARGEEEEEEEEEEEEEEEEEE
 				item.setService_id(service_id);
 				item.setSession_id(session_id);
-				item.setUpd_user(loggedUserName);
-				item.setYm(ym);
-				item.setDeleted(0L);
-				item.setRec_date(currDate);
+				item.setYear_month(ym);
+				item.setCharge_date(currDate);
 				oracleManager.persist(item);
 			}
 
