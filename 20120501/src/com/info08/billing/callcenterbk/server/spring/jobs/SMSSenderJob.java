@@ -16,7 +16,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.server.jms.SMSSenderMagti;
-import com.info08.billing.callcenterbk.shared.entity.LogSMS;
+import com.info08.billing.callcenterbk.shared.entity.SentSMSHist;
 import com.isomorphic.jpa.EMF;
 
 public class SMSSenderJob extends TimerTask {
@@ -77,8 +77,8 @@ public class SMSSenderJob extends TimerTask {
 				return;
 			}
 
-			ArrayList<LogSMS> resultList = (ArrayList<LogSMS>) oracleManager
-					.createNamedQuery("LogSMS.getForSending")
+			ArrayList<SentSMSHist> resultList = (ArrayList<SentSMSHist>) oracleManager
+					.createNamedQuery("Sent_SMS_Hist.getForSending")
 					.getResultList();
 			if (resultList == null || resultList.isEmpty()) {
 				//log.append("SMS Batch List Is Empty.");
@@ -88,14 +88,14 @@ public class SMSSenderJob extends TimerTask {
 			
 			transaction = EMF.getTransaction(oracleManager);
 
-			for (LogSMS logSMS : resultList) {
-				String phone = logSMS.getPhone();
+			for (SentSMSHist logSMS : resultList) {
+				String phone = logSMS.getReciever_number();
 				if (phone == null || phone.trim().length() != 9) {
-					logSMS.setStatus(-1L);
+					logSMS.setHist_status_id(-1L);
 					oracleManager.merge(logSMS);
 					continue;
 				}
-				logSMS.setStatus(-2L);
+				logSMS.setHist_status_id(-2L);
 				oracleManager.merge(logSMS);
 
 				ObjectMessage objectMessage = session.createObjectMessage();

@@ -15,7 +15,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.server.jms.SMSDelRepMagti;
-import com.info08.billing.callcenterbk.shared.entity.LogSMS;
+import com.info08.billing.callcenterbk.shared.entity.SentSMSHist;
 import com.isomorphic.jpa.EMF;
 
 public class SMSDeliveryRepJob extends TimerTask {
@@ -71,8 +71,8 @@ public class SMSDeliveryRepJob extends TimerTask {
 				logger.info(log.toString());
 				return;
 			}
-			ArrayList<LogSMS> resultList = (ArrayList<LogSMS>) oracleManager
-					.createNamedQuery("LogSMS.getDeliveryReport")
+			ArrayList<SentSMSHist> resultList = (ArrayList<SentSMSHist>) oracleManager
+					.createNamedQuery("Sent_SMS_Hist.getDeliveryReport")
 					.getResultList();
 			if (resultList == null || resultList.isEmpty()) {
 				log.append("SMS Batch Delivery Report List Is Empty.");
@@ -80,10 +80,10 @@ public class SMSDeliveryRepJob extends TimerTask {
 				return;
 			}
 
-			for (LogSMS logSMS : resultList) {
-				String phone = logSMS.getPhone();
+			for (SentSMSHist logSMS : resultList) {
+				String phone = logSMS.getReciever_number();
 				if (phone == null || phone.trim().length() != 9) {
-					logSMS.setStatus(-10000100L);
+					logSMS.setHist_status_id(-10000100L);
 					oracleManager.merge(logSMS);
 					continue;
 				}
