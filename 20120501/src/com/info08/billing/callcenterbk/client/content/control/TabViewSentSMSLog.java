@@ -30,13 +30,13 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 
-public class TabViewSMSLog extends Tab {
+public class TabViewSentSMSLog extends Tab {
 
 	// search form
 	private DynamicForm searchForm;
 
 	// fields
-	private TextItem phoneItem;
+	private TextItem reciever_numberItem;
 	private DateItem dateItem;
 	private SelectItem statusItem;
 	private ComboBoxItem operatorItem;
@@ -54,13 +54,13 @@ public class TabViewSMSLog extends Tab {
 	// DataSource
 	private DataSource orgDS;
 
-	public TabViewSMSLog() {
+	public TabViewSentSMSLog() {
 		try {
 
 			setTitle(CallCenterBK.constants.findByNumber());
 			setCanClose(true);
 
-			orgDS = DataSource.get("LogSMSDS");
+			orgDS = DataSource.get("SentSMSHist");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -74,10 +74,10 @@ public class TabViewSMSLog extends Tab {
 			searchForm.setTitleOrientation(TitleOrientation.TOP);
 			mainLayout.addMember(searchForm);
 
-			phoneItem = new TextItem();
-			phoneItem.setTitle(CallCenterBK.constants.phone());
-			phoneItem.setName("phoneItem");
-			phoneItem.setWidth(250);
+			reciever_numberItem = new TextItem();
+			reciever_numberItem.setTitle(CallCenterBK.constants.phone());
+			reciever_numberItem.setName("reciever_numberItem");
+			reciever_numberItem.setWidth(250);
 
 			dateItem = new DateItem();
 			dateItem.setTitle(CallCenterBK.constants.date());
@@ -105,7 +105,7 @@ public class TabViewSMSLog extends Tab {
 			operatorItem.setValueField("user_id");
 			operatorItem.setDisplayField("fullPersonName");
 
-			searchForm.setFields(phoneItem, dateItem, statusItem, operatorItem);
+			searchForm.setFields(reciever_numberItem, dateItem, statusItem, operatorItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -129,7 +129,7 @@ public class TabViewSMSLog extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer status = countryRecord.getAttributeAsInt("status");
+					Integer status = countryRecord.getAttributeAsInt("hist_status_id");
 					if (status == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
@@ -156,32 +156,32 @@ public class TabViewSMSLog extends Tab {
 			listGrid.setFixedRecordHeights(false);
 			listGrid.setCanDragSelectText(true);
 
-			ListGridField sms_type_descr = new ListGridField("sms_type_descr",
+			ListGridField message_type_descr = new ListGridField("message_type_descr",
 					CallCenterBK.constants.type(), 100);
-			sms_type_descr.setAlign(Alignment.CENTER);
+			message_type_descr.setAlign(Alignment.CENTER);
 
-			ListGridField status_descr = new ListGridField("status_descr",
+			ListGridField hist_status_descr = new ListGridField("hist_status_descr",
 					CallCenterBK.constants.status(), 100);
-			status_descr.setAlign(Alignment.CENTER);
+			hist_status_descr.setAlign(Alignment.CENTER);
 
-			ListGridField phone = new ListGridField("phone",
+			ListGridField reciever_number = new ListGridField("reciever_number",
 					CallCenterBK.constants.phone(), 80);
-			phone.setAlign(Alignment.CENTER);
+			reciever_number.setAlign(Alignment.CENTER);
 
-			ListGridField sms_date = new ListGridField("sms_date",
+			ListGridField message_sent_time = new ListGridField("message_sent_time",
 					CallCenterBK.constants.date(), 120);
-			sms_date.setAlign(Alignment.CENTER);
+			message_sent_time.setAlign(Alignment.CENTER);
 
-			ListGridField rec_user = new ListGridField("rec_user",
+			ListGridField creator_user = new ListGridField("creator_user",
 					CallCenterBK.constants.recUser(), 120);
-			rec_user.setAlign(Alignment.CENTER);
+			creator_user.setAlign(Alignment.CENTER);
 
-			ListGridField sms_text = new ListGridField("sms_text",
+			ListGridField message_context = new ListGridField("message_context",
 					CallCenterBK.constants.sms());
-			sms_text.setAlign(Alignment.LEFT);
+			message_context.setAlign(Alignment.LEFT);
 
-			listGrid.setFields(sms_type_descr, status_descr, phone, sms_date,
-					rec_user, sms_text);
+			listGrid.setFields(message_type_descr, hist_status_descr, reciever_number, message_sent_time,
+					creator_user, message_context);
 
 			mainLayout.addMember(listGrid);
 
@@ -194,13 +194,13 @@ public class TabViewSMSLog extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					phoneItem.clearValue();
+					reciever_numberItem.clearValue();
 					dateItem.setValue(new Date());
 					statusItem.clearValue();
 					operatorItem.clearValue();
 				}
 			});
-			phoneItem.addKeyPressHandler(new KeyPressHandler() {
+			reciever_numberItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
@@ -222,14 +222,14 @@ public class TabViewSMSLog extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("deleted", 0);
 
-			String phone = phoneItem.getValueAsString();
-			if (phone != null && !phone.trim().equals("")) {
-				criteria.setAttribute("phone", phone);
+			String reciever_number = reciever_numberItem.getValueAsString();
+			if (reciever_number != null && !reciever_number.trim().equals("")) {
+				criteria.setAttribute("reciever_number", reciever_number);
 			}
 			try {
-				Date sms_date = dateItem.getValueAsDate();
-				if (sms_date != null) {
-					criteria.setAttribute("sms_date", sms_date);
+				Date message_sent_time = dateItem.getValueAsDate();
+				if (message_sent_time != null) {
+					criteria.setAttribute("message_sent_time", message_sent_time);
 				}
 			} catch (Exception e) {
 			}
