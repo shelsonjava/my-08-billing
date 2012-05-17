@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
-import com.info08.billing.callcenterbk.shared.entity.LogSMS;
+import com.info08.billing.callcenterbk.shared.entity.SentSMSHist;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DSResponse;
 import com.isomorphic.jpa.EMF;
@@ -20,20 +20,20 @@ public class LogSMSDMI {
 	public DSResponse fetch(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		try {
-			String sessionId = dsRequest.getFieldValue("sessionId").toString();
+			String session_call_id = dsRequest.getFieldValue("session_call_id").toString();
 			oracleManager = EMF.getEntityManager();
 
 			long startRow = dsRequest.getStartRow();
 			long endRow = dsRequest.getEndRow();
 
 			Long totalRows = new Long(oracleManager
-					.createNamedQuery("LogSMS.getBySessionIdCount")
-					.setParameter("sessId", sessionId).getSingleResult()
+					.createNamedQuery("Sent_SMS_Hist.getBySessionIdCount")
+					.setParameter("sessId", session_call_id).getSingleResult()
 					.toString());
 
-			ArrayList<LogSMS> matchingItems = (ArrayList<LogSMS>) oracleManager
-					.createNamedQuery("LogSMS.getBySessionId")
-					.setParameter("sessId", sessionId).getResultList();
+			ArrayList<SentSMSHist> matchingItems = (ArrayList<SentSMSHist>) oracleManager
+					.createNamedQuery("Sent_SMS_Hist.getBySessionId")
+					.setParameter("sessId", session_call_id).getResultList();
 
 			DSResponse dsResponse = new DSResponse();
 			dsResponse.setTotalRows(totalRows);

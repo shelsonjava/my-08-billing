@@ -488,7 +488,7 @@ public class SurveyDMI implements QueryConstants {
 			logSession.setHungup(0L);
 			logSession.setIs_new_bill(1L);
 			logSession.setParent_id(0L);
-			logSession.setPhone(phone);
+			logSession.setReciever_number(phone);
 			logSession.setSession_quality(0L);
 			logSession.setStart_date(currDate);
 			logSession.setUser_name(loggedUserName);

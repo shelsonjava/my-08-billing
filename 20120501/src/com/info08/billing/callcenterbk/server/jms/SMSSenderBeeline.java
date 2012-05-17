@@ -70,7 +70,7 @@ public class SMSSenderBeeline implements MessageListener {
 			}
 			ObjectMessage objectMessage = (ObjectMessage) message;
 			TmpLogSMS logSMS = (TmpLogSMS) objectMessage.getObject();
-			String phone = logSMS.getPhone();
+			String phone = logSMS.getReciever_number();
 			String smsTxt = logSMS.getSmsText();
 			phone = ("995" + phone);
 			System.out.println("Sending SMS. phone = " + phone + ", smsTxt = "

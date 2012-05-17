@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.control.TabControl;
-import com.info08.billing.callcenterbk.client.content.control.TabViewSMSLog;
+import com.info08.billing.callcenterbk.client.content.control.TabViewSentSMSLog;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -118,7 +118,7 @@ public class ControlStackSelection extends SectionStackSection {
 			TabControl controlTabPane = new TabControl();
 			body.addTab(controlTabPane);
 		} else if (menuId.equals("101")) {
-			TabViewSMSLog tabViewSMSLog = new TabViewSMSLog();
+			TabViewSentSMSLog tabViewSMSLog = new TabViewSentSMSLog();
 			body.addTab(tabViewSMSLog);
 		}
 	}

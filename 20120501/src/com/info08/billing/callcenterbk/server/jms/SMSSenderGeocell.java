@@ -19,7 +19,7 @@ import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 
-import com.info08.billing.callcenterbk.shared.entity.LogSMS;
+import com.info08.billing.callcenterbk.shared.entity.SentSMSHist;
 
 public class SMSSenderGeocell implements MessageListener {
 
@@ -63,9 +63,9 @@ public class SMSSenderGeocell implements MessageListener {
 				System.out.println("Received " + count + " messages.");
 			}
 			ObjectMessage objectMessage = (ObjectMessage) message;
-			LogSMS logSMS = (LogSMS) objectMessage.getObject();
-			String phone = logSMS.getPhone();
-			String smsTxt = logSMS.getSms_text();
+			SentSMSHist logSMS = (SentSMSHist) objectMessage.getObject();
+			String phone = logSMS.getReciever_number();
+			String smsTxt = logSMS.getMessage_context();
 			sendOverHttp(phone, smsTxt);
 			System.out.println("logSMS = " + logSMS);
 		} catch (Exception e) {

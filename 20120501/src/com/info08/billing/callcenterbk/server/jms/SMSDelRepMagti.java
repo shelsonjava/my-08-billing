@@ -25,7 +25,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
 
-import com.info08.billing.callcenterbk.shared.entity.LogSMS;
+import com.info08.billing.callcenterbk.shared.entity.SentSMSHist;
 import com.isomorphic.jpa.EMF;
 
 public class SMSDelRepMagti implements MessageListener {
@@ -70,18 +70,18 @@ public class SMSDelRepMagti implements MessageListener {
 						+ " messages.");
 			}
 			ObjectMessage objectMessage = (ObjectMessage) message;
-			LogSMS logSMS = (LogSMS) objectMessage.getObject();
+			SentSMSHist logSMS = (SentSMSHist) objectMessage.getObject();
 			getDeliveryReport(logSMS);
 		} catch (Exception e) {
 			logger.error("Error While On Message(Delivery Report) : ", e);
 		}
 	}
 
-	private void getDeliveryReport(LogSMS logSMS) {
+	private void getDeliveryReport(SentSMSHist logSMS) {
 		HttpPost method = null;
 		HttpClient client = null;
 		try {
-			String messageId = logSMS.getSmsc_message_id();
+			String messageId = logSMS.getGsm_operator_msg_id();
 			String lUrl = String.format(urlMgt, from, messageId);
 			logger.info("Sengind SMS. lUrl = " + lUrl);
 
@@ -103,33 +103,33 @@ public class SMSDelRepMagti implements MessageListener {
 					+ ", messageId = " + messageId);
 			if (statusCode == HttpStatus.SC_OK) {
 				Long delRepStatus = Long.parseLong(str);
-				logSMS.setDelivered(delRepStatus);
+				logSMS.setMessage_done(delRepStatus);
 				if (!delRepStatus.equals(1L)) {
-					Long delRepFailCount = logSMS.getDel_rep_fail_counter();
+					Long delRepFailCount = logSMS.getUnsuccess_count();
 					if (delRepFailCount == null) {
 						delRepFailCount = 0L;
 					}
 					delRepFailCount = (delRepFailCount.longValue() + 1);
-					logSMS.setDel_rep_fail_counter(delRepFailCount);
+					logSMS.setUnsuccess_count(delRepFailCount);
 				}
 				updateSMSLog(logSMS);
 			} else {
-				Long delRepFailCount = logSMS.getDel_rep_fail_counter();
+				Long delRepFailCount = logSMS.getUnsuccess_count();
 				if (delRepFailCount == null) {
 					delRepFailCount = 0L;
 				}
 				delRepFailCount = (delRepFailCount.longValue() + 1);
-				logSMS.setDel_rep_fail_counter(delRepFailCount);
+				logSMS.setUnsuccess_count(delRepFailCount);
 				updateSMSLog(logSMS);
 			}
 		} catch (Exception e) {
 			logger.error("Error While Sending Message Over HTTP : ", e);
-			Long delRepFailCount = logSMS.getDel_rep_fail_counter();
+			Long delRepFailCount = logSMS.getUnsuccess_count();
 			if (delRepFailCount == null) {
 				delRepFailCount = 0L;
 			}
 			delRepFailCount = (delRepFailCount.longValue() + 1);
-			logSMS.setDel_rep_fail_counter(delRepFailCount);
+			logSMS.setUnsuccess_count(delRepFailCount);
 			updateSMSLog(logSMS);
 		} finally {
 			if (method != null) {
@@ -141,16 +141,16 @@ public class SMSDelRepMagti implements MessageListener {
 		}
 	}
 
-	private void updateSMSLog(LogSMS tmpLogSMS) {
+	private void updateSMSLog(SentSMSHist tmpLogSMS) {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			Long delivered = tmpLogSMS.getDelivered();
-			Long failCounter = tmpLogSMS.getDel_rep_fail_counter();
+			Long delivered = tmpLogSMS.getMessage_done();
+			Long failCounter = tmpLogSMS.getUnsuccess_count();
 			if (!delivered.equals(1L) && failCounter.longValue() > 300) {
-				tmpLogSMS.setStatus(-10000300L);
+				tmpLogSMS.setHist_status_id(-10000300L);
 			}
 			oracleManager.merge(tmpLogSMS);
 			EMF.commitTransaction(transaction);

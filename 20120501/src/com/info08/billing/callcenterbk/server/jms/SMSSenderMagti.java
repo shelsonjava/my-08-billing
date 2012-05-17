@@ -26,7 +26,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.log4j.Logger;
 
-import com.info08.billing.callcenterbk.shared.entity.LogSMS;
+import com.info08.billing.callcenterbk.shared.entity.SentSMSHist;
 import com.isomorphic.jpa.EMF;
 
 public class SMSSenderMagti implements MessageListener {
@@ -71,25 +71,25 @@ public class SMSSenderMagti implements MessageListener {
 				logger.info("Received " + count + " messages.");
 			}
 			ObjectMessage objectMessage = (ObjectMessage) message;
-			LogSMS logSMS = (LogSMS) objectMessage.getObject();
+			SentSMSHist logSMS = (SentSMSHist) objectMessage.getObject();
 			sendOverHttp(logSMS);
 		} catch (Exception e) {
 			logger.error("Error While On Message : ", e);
 		}
 	}
 
-	private void sendOverHttp(LogSMS logSMS) {
+	private void sendOverHttp(SentSMSHist logSMS) {
 		HttpPost method = null;
 		HttpClient client = null;
 		try {
-			String phone = logSMS.getPhone().trim();
+			String phone = logSMS.getReciever_number().trim();
 			if (phone.trim().length() != 9) {
-				logSMS.setStatus(-1L);
+				logSMS.setHist_status_id(-1L);
 				updateSMSLog(logSMS);
 				return;
 			}
 			phone = "995" + phone.trim();
-			String smsTxt = logSMS.getSms_text();
+			String smsTxt = logSMS.getMessage_context();
 			smsTxt = URLEncoder.encode(smsTxt, "UTF-8");
 			String lUrl = String.format(urlSMS, phone, smsTxt);
 			logger.info("Sengind SMS. lUrl = " + lUrl);
@@ -111,22 +111,22 @@ public class SMSSenderMagti implements MessageListener {
 			int idx = str.indexOf("-");
 			if (statusCode == HttpStatus.SC_OK) {
 				if (idx < 0) {
-					logSMS.setStatus(-3L);
+					logSMS.setHist_status_id(-3L);
 				} else {
 					String msgId = str.substring((idx + 1), str.length());
-					logSMS.setStatus(1L);
-					logSMS.setSmsc_message_id(msgId);
+					logSMS.setHist_status_id(1L);
+					logSMS.setGsm_operator_msg_id(msgId);
 				}
 			} else {
-				logSMS.setStatus(-4L);
+				logSMS.setHist_status_id(-4L);
 			}
 
 			logger.info("SMS Response : " + str + ", phone = " + phone
-					+ ", Status = " + logSMS.getStatus());
+					+ ", Status = " + logSMS.getHist_status_id());
 
 		} catch (Exception e) {
 			logger.error("Error While Sending Message Over HTTP : ", e);
-			logSMS.setStatus(-5L);
+			logSMS.setHist_status_id(-5L);
 		} finally {
 			if (client != null) {
 				client.getConnectionManager().shutdown();
@@ -135,7 +135,7 @@ public class SMSSenderMagti implements MessageListener {
 		}
 	}
 
-	private void updateSMSLog(LogSMS tmpLogSMS) {
+	private void updateSMSLog(SentSMSHist tmpLogSMS) {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {

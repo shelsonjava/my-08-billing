@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
-import com.info08.billing.callcenterbk.shared.entity.LogSMS;
+import com.info08.billing.callcenterbk.shared.entity.SentSMSHist;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DSResponse;
 import com.isomorphic.jpa.EMF;
@@ -27,12 +27,12 @@ public class FileDownloadDMI {
 			long endRow = dsRequest.getEndRow();
 
 			Long totalRows = new Long(oracleManager
-					.createNamedQuery("LogSMS.getBySessionIdCount")
+					.createNamedQuery("Sent_SMS_Hist.getBySessionIdCount")
 					.setParameter("sessId", sessionId).getSingleResult()
 					.toString());
 
-			ArrayList<LogSMS> matchingItems = (ArrayList<LogSMS>) oracleManager
-					.createNamedQuery("LogSMS.getBySessionId")
+			ArrayList<SentSMSHist> matchingItems = (ArrayList<SentSMSHist>) oracleManager
+					.createNamedQuery("Sent_SMS_Hist.getBySessionId")
 					.setParameter("sessId", sessionId).getResultList();
 
 			DSResponse dsResponse = new DSResponse();
