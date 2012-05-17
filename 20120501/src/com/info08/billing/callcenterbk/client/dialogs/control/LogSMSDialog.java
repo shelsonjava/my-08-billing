@@ -17,7 +17,7 @@ public class LogSMSDialog extends Window {
 	private ListGrid notesGrid = null;
 	private DetailViewer detailViewer;
 
-	public LogSMSDialog(String sessionId) {
+	public LogSMSDialog(String session_call_id) {
 
 		setWidth(630);
 		setHeight(400);
@@ -31,13 +31,13 @@ public class LogSMSDialog extends Window {
 		setCanDragScroll(false);
 		centerInPage();
 
-		smsDS = DataSource.get("LogSMSDS");
+		smsDS = DataSource.get("SentSMSHist");
 
-		smsDS.getField("phone").setTitle("ნომერი");
-		smsDS.getField("sms_text").setTitle("SMS - ის ტექსტი");
+		smsDS.getField("reciever_number").setTitle("ნომერი");
+		smsDS.getField("message_context").setTitle("SMS - ის ტექსტი");
 
-		ListGridField phone = new ListGridField("phone", "ნომერი", 80);
-		ListGridField sms = new ListGridField("sms_text", "SMS - ის ტექსტი");
+		ListGridField reciever_number = new ListGridField("reciever_number", "ნომერი", 80);
+		ListGridField sms = new ListGridField("message_context", "SMS - ის ტექსტი");
 
 		hLayout = new VLayout(5);
 		hLayout.setWidth100();
@@ -57,10 +57,10 @@ public class LogSMSDialog extends Window {
 		notesGrid.setCanSelectText(true);
 		notesGrid.setFixedRecordHeights(false);
 
-		notesGrid.setFields(phone, sms);
+		notesGrid.setFields(reciever_number, sms);
 
 		Criteria criteria = new Criteria();
-		criteria.addCriteria("session_id", sessionId);
+		criteria.addCriteria("session_call_id", session_call_id);
 		notesGrid.filterData(criteria);
 
 		detailViewer = new DetailViewer();
