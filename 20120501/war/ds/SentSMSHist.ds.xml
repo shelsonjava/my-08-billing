@@ -1,0 +1,61 @@
+<DataSource
+	ID="SentSMSHist"
+	serverType="sql"
+	tableName="ccare.log_sms"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="sent_sms_hist_id"				type="integer"		title="ID"		hidden="true" primaryKey="true" />
+		<field name="status"						type="integer"		title="status"/>
+		<field name="sms_type"						type="integer"		title="sms_type"/>
+		<field name="reciever_number"				type="text" 		title="reciever_number"/>
+		<field name="message_context"				type="text" 		title="message_context"/>
+		<field name="message_sent_time"				type="datetime" 	title="message_sent_time"/>
+		<field name="session_call_id"				type="text" 		title="session_call_id"/>
+		<field name="creator_user"					type="text" 		title="creator_user"/>
+		<field name="service_id"					type="integer"		title="service_id"/>
+		<field name="unsuccess"						type="integer"		title="unsuccess"/>
+		<field name="message_done"					type="integer"		title="delivered"/>
+		<field name="unsuccess_count"				type="integer"		title="delivered"/>
+		<field name="gsm_operator_msg_id"			type="text" 		title="gsm_operator_msg_id"/>
+		<field name="operator"						type="text" 		title="operator"/>
+		<field name="service_name_geo"				type="text" 		title="service_name_geo"/>
+		<field name="sms_type_descr"				type="text" 		title="sms_type_descr"/>
+		<field name="status_descr"					type="text" 		title="status_descr"/>
+	</fields>
+	
+	<operationBindings>
+		<operationBinding operationId="findSMSLog" operationType="fetch">
+    		<selectClause>  
+    			t.sent_sms_hist_id,
+				t.status,
+				t.sms_type,
+				t.reciever_number,
+				t.message_context,
+				t.message_sent_time,
+				t.session_call_id,
+				t.creator_user,
+				t.service_id,
+				t.unsuccess,
+				t.delivered,
+				t.unsuccess_count,
+				t.gsm_operator_msg_id,
+				s.service_name_geo,
+				decode(t.sms_type, 1, 'გარკვევა', 'ჩვეულებრივი') as message_type_descr,
+				decode(t.status, 1, 'მიწოდებულია', 'მიუწოდებელია') as hist_status_descr
+			</selectClause> 
+			<tableClause>log_sms t,ccare.services s, users tt</tableClause>
+			<whereClause><![CDATA[			 
+				t.service_id = s.service_id(+) and t.creator_user = tt.user_name(+)
+				#if($criteria.reciever_number) and t.reciever_number like '%'||$criteria.reciever_number||'%' #end
+				#if($criteria.session_call_id) and t.session_call_id = $criteria.session_call_id #end
+				#if($criteria.message_sent_time) and trunc(t.message_sent_time) = trunc($criteria.message_sent_time) #end
+				#if($criteria.pStatDelivered) and t.status = 1 #end
+				#if($criteria.pStatNotDelivered) and t.status <> 1 #end
+				#if($criteria.user_id) and tt.user_id = $criteria.user_id #end
+				]]>				 
+			</whereClause> 
+			<orderClause>t.message_sent_time desc</orderClause>
+    	</operationBinding>    	
+    </operationBindings>	
+</DataSource>

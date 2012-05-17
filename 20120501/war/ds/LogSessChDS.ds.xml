@@ -70,7 +70,7 @@
         <operationBinding operationId="LogSMSNew1" operationType="add">
             <customSQL>
             	 <![CDATA[
-            	 	{call insert_send_sms_new1($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user, $values.sms_type)}            	 	
+            	 	{call SEND_SMS_TO_RECIPTENT_NEW1($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user, $values.sms_type)}            	 	
             	 ]]>
             </customSQL> 
         </operationBinding>
@@ -79,9 +79,9 @@
             <customSQL>
             	 <![CDATA[
             	 	insert into ccare.log_sms 
-            	 		(session_id,sms_type,sms_text,phone,rec_user) 
+            	 		(SENT_SMS_HIST_ID,SESSION_CALL_ID,MESSAGE_TYPE,MESSAGE_CONTEXT,RECIEVER_NUMBER,reciever_number) 
             	 	values 
-            	 		($values.session_id,$values.sms_type,ccare.trsms($values.sms_text),trim($values.phone),$values.rec_user)
+            	 		(SEQ_SENT_SMS_HIST.NEXTVAL,$values.session_id,$values.sms_type,ccare.trsms($values.sms_text),trim($values.phone),$values.rec_user)
             	 ]]>
             </customSQL> 
         </operationBinding>

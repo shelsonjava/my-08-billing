@@ -70,7 +70,7 @@
 				#if ($criteria.serviceId) AND
 					(ch.service_id = $criteria.serviceId or 
 						(						
-							select count(1) from ccare.log_sms sms where s.session_id = sms.session_id and sms.service_id = $criteria.serviceId 
+							select count(1) from ccare.SENT_SMS_HIST sms where s.session_id = sms.SESSION_CALL_ID and sms.service_id = $criteria.serviceId 
 						) > 0 
 					)
 				#end	
