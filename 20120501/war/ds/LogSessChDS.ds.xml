@@ -28,10 +28,9 @@
 				ch.price,
 				o.org_name
 			</selectClause> 
-			<tableClause>log_session_charges ch, services s, log_charge_hits h, main_orgs o</tableClause>
+			<tableClause>log_session_charges ch, services s, main_orgs o</tableClause>
 			<whereClause><![CDATA[ 
 				ch.service_id = s.service_id(+) and
-				ch.id = h.id(+) and				
 				h.main_id = o.main_id(+) and				
 				ch.session_id=$criteria.sessionId and
 				ch.deleted = 0
