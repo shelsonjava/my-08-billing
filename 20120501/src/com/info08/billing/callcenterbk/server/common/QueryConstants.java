@@ -830,7 +830,7 @@ public interface QueryConstants {
 			+ "   and t.received = 0\n" + " order by t.rec_user desc";
 
 	public static final String Q_GET_SPECIAL_TEXT_BY_NUMBER = " select t.note from call_special t where t.phone = ? ";
-	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone) from NON_CHARGE_PHONES t where t.phone = ? ";
+	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone) from FREE_OF_CHARGE_PHONE t where t.phone = ? ";
 	public static final String Q_GET_MOBITEL_NOTE = "select t.ccn_note as note from call_center_note t where t.ccn_id = 2 ";
 	public static final String Q_GET_TREATMENT = " select treatment, gender from treatments where phone_number = ? ";
 	public static final String Q_GET_ORG_ABONENT = " select * from searchOrg where phone = ? ";
