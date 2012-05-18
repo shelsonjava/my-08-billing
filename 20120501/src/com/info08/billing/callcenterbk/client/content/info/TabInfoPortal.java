@@ -74,18 +74,18 @@ public class TabInfoPortal extends Tab {
 
 			searchFormComm.setFields(spacerItem1, commentItem);
 
-			DataSource dataSource = DataSource.get("MainNewsDS");
+			DataSource dataSource = DataSource.get("CallCenterNewsDS");
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("searchMainWarningNews");
+			dsRequest.setOperationId("searchCallCenterWarnings");
 			dataSource.fetchData(new Criteria(), new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
 					Record records[] = response.getData();
 					if (records != null && records.length > 0) {
-						String mn = records[0].getAttributeAsString("mn");
-						if (mn != null && !mn.trim().equals("")) {
-							commentItem.setValue(mn);
+						String call_center_news_text = records[0].getAttributeAsString("call_center_news_text");
+						if (call_center_news_text != null && !call_center_news_text.trim().equals("")) {
+							commentItem.setValue(call_center_news_text);
 						}
 					}
 				}

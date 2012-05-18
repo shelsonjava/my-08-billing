@@ -25,14 +25,14 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 
-public class TabFindNews extends Tab {
+public class TabFindCallCenterNews extends Tab {
 
 	// search form
 	private DynamicForm searchForm;
 
 	// fields
-	private TextItem mnItem;
-	private DateItem dateItem;
+	private TextItem call_center_news_textItem;
+	private DateItem call_center_news_dateItem;
 
 	// main content layout
 	private VLayout mainLayout;
@@ -45,13 +45,13 @@ public class TabFindNews extends Tab {
 	private ListGrid listGrid;
 
 	// DataSource
-	private DataSource mainNewsDS;
+	private DataSource callCenterNewsDS;
 
-	public TabFindNews() {
+	public TabFindCallCenterNews() {
 		setTitle(CallCenterBK.constants.news());
 		setCanClose(true);
 
-		mainNewsDS = DataSource.get("MainNewsDS");
+		callCenterNewsDS = DataSource.get("CallCenterNewsDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -65,23 +65,25 @@ public class TabFindNews extends Tab {
 		searchForm.setTitleWidth(75);
 		mainLayout.addMember(searchForm);
 
-		mnItem = new TextItem();
-		mnItem.setTitle(CallCenterBK.constants.description());
-		mnItem.setName("mnItem");
-		mnItem.setWidth(175);
+		call_center_news_textItem = new TextItem();
+		call_center_news_textItem
+				.setTitle(CallCenterBK.constants.description());
+		call_center_news_textItem.setName("call_center_news_textItem");
+		call_center_news_textItem.setWidth(175);
 
-		dateItem = new DateItem();
-		dateItem.setName("dateItem");
-		dateItem.setWidth(175);
-		dateItem.setTitle(CallCenterBK.constants.date());
-		dateItem.setUseTextField(true);
+		call_center_news_dateItem = new DateItem();
+		call_center_news_dateItem.setName("call_center_news_dateItem");
+		call_center_news_dateItem.setWidth(175);
+		call_center_news_dateItem.setTitle(CallCenterBK.constants.date());
+		call_center_news_dateItem.setUseTextField(true);
 
 		SpacerItem spacerItem2 = new SpacerItem();
 		spacerItem2.setWidth(500);
 		spacerItem2.setName("spacerItem2");
 		spacerItem2.setColSpan(4);
 
-		searchForm.setFields(spacerItem2, mnItem, dateItem);
+		searchForm.setFields(spacerItem2, call_center_news_textItem,
+				call_center_news_dateItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(500);
@@ -101,27 +103,27 @@ public class TabFindNews extends Tab {
 		listGrid.setWidth(900);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(mainNewsDS);
+		listGrid.setDataSource(callCenterNewsDS);
 		listGrid.setAutoFetchData(true);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
 		listGrid.setCanRemoveRecords(false);
-		listGrid.setFetchOperation("searchAllMainNews");
+		listGrid.setFetchOperation("searchAllCallCenterNews");
 		listGrid.setCanSort(false);
 		listGrid.setCanResizeFields(false);
 		listGrid.setWrapCells(true);
 		listGrid.setFixedRecordHeights(false);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField dt = new ListGridField("dt", CallCenterBK.constants.date(),
-				70);
+		ListGridField dt = new ListGridField("call_center_news_date_day",
+				CallCenterBK.constants.date(), 70);
 		dt.setAlign(Alignment.LEFT);
 
-		ListGridField hr = new ListGridField("hr", CallCenterBK.constants.hour(),
-				70);
+		ListGridField hr = new ListGridField("call_center_news_date_time",
+				CallCenterBK.constants.hour(), 70);
 		hr.setAlign(Alignment.LEFT);
 
-		ListGridField mn = new ListGridField("mn",
+		ListGridField mn = new ListGridField("call_center_news_text",
 				CallCenterBK.constants.description());
 		mn.setAlign(Alignment.LEFT);
 
@@ -138,12 +140,12 @@ public class TabFindNews extends Tab {
 		clearButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				mnItem.clearValue();
-				dateItem.clearValue();
+				call_center_news_textItem.clearValue();
+				call_center_news_dateItem.clearValue();
 			}
 		});
 
-		mnItem.addKeyPressHandler(new KeyPressHandler() {
+		call_center_news_textItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
@@ -158,9 +160,11 @@ public class TabFindNews extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			String mn = mnItem.getValueAsString();
-			if (mn != null && !mn.trim().equals("")) {
-				String tmp = mn.trim();
+			String call_center_news_text = call_center_news_textItem
+					.getValueAsString();
+			if (call_center_news_text != null
+					&& !call_center_news_text.trim().equals("")) {
+				String tmp = call_center_news_text.trim();
 				String arrStr[] = tmp.split(" ");
 				int i = 1;
 				for (String string : arrStr) {
@@ -168,21 +172,23 @@ public class TabFindNews extends Tab {
 					if (item.equals("")) {
 						continue;
 					}
-					criteria.setAttribute("mn" + i, item);
+					criteria.setAttribute("call_center_news_text" + i, item);
 					i++;
 				}
 			}
 			try {
-				Date rec_date = dateItem.getValueAsDate();
-				if (rec_date != null) {
-					criteria.setAttribute("rec_date", rec_date);
+				Date call_center_news_date = call_center_news_dateItem
+						.getValueAsDate();
+				if (call_center_news_date != null) {
+					criteria.setAttribute("call_center_news_date",
+							call_center_news_date);
 				}
 			} catch (Exception e) {
 
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllMainNews");
+			dsRequest.setAttribute("operationId", "searchAllCallCenterNews");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override

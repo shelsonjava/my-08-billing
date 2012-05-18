@@ -1,0 +1,60 @@
+<DataSource
+	ID="CallCenterNewsDS"
+	serverType="sql"
+	tableName="call_center_news"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="call_center_news_id"			type="integer"		title="call_center_news_id"			hidden="true" primaryKey="true" />
+		<field name="call_center_news_text"			type="text"			title="call_center_news_text"/>
+		<field name="call_center_news_date"			type="datetime"		title="call_center_news_date"/>
+		<field name="call_center_warning"			type="integer"		title="call_center_warning" 		hidden="true"/>
+		<field name="loggedUserName"				type="text"			title="Logged UserName" 			hidden="true" />
+		<field name="call_center_news_date_day"		type="text"			title="call_center_news_date_day"/>
+		<field name="call_center_news_date_time"	type="text"			title="call_center_news_date_time"/>
+	</fields>
+
+	<operationBindings>		
+
+    	<operationBinding operationId="searchAllCallCenterNews" operationType="fetch">
+    		<selectClause>   			
+    				t.call_center_news_id,
+					t.call_center_news_text,
+					t.call_center_news_date,
+					to_char(t.call_center_news_date, 'dd/mm/yy') as call_center_news_date_day,
+       				to_char(t.call_center_news_date, 'HH24:mi:ss') as call_center_news_date_time   
+			</selectClause> 
+			<tableClause>call_center_news t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.call_center_news_text1) and t.call_center_news_text like '%'||($criteria.call_center_news_text1)||'%' #end
+				#if($criteria.call_center_news_text2) and t.call_center_news_text like '%'||($criteria.call_center_news_text2)||'%' #end
+				#if($criteria.call_center_news_text3) and t.call_center_news_text like '%'||($criteria.call_center_news_text3)||'%' #end
+				#if($criteria.call_center_news_text4) and t.call_center_news_text like '%'||($criteria.call_center_news_text4)||'%' #end
+				#if($criteria.call_center_news_text5) and t.call_center_news_text like '%'||($criteria.call_center_news_text5)||'%' #end
+				#if($criteria.call_center_news_text6) and t.call_center_news_text like '%'||($criteria.call_center_news_text6)||'%' #end
+				#if($criteria.call_center_news_text7) and t.call_center_news_text like '%'||($criteria.call_center_news_text7)||'%' #end
+				#if($criteria.call_center_news_text8) and t.call_center_news_text like '%'||($criteria.call_center_news_text8)||'%' #end
+				#if($criteria.call_center_news_text9) and t.call_center_news_text like '%'||($criteria.call_center_news_text9)||'%' #end
+				#if($criteria.call_center_news_text10) and t.call_center_news_text like '%'||($criteria.call_center_news_text10)||'%' #end
+				#if($criteria.call_center_news_date) and trunc(t.call_center_news_date)=trunc($criteria.call_center_news_date) #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.call_center_news_date desc</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchCallCenterWarnings" operationType="fetch">
+    		<selectClause>   			
+    				t.call_center_news_text
+			</selectClause> 
+			<tableClause>call_center_news t</tableClause>
+			<whereClause><![CDATA[
+				t.call_center_warning=1				
+				]]>  
+			</whereClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
