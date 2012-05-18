@@ -12,7 +12,7 @@
     <class>com.info08.billing.callcenterbk.shared.entity.CityType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.DistrictIndexes</class>
     <class>com.info08.billing.callcenterbk.shared.entity.VillageIndexes</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.Sent_SMS_Hist</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.SentSMSHist</class>
     <class>com.info08.billing.callcenterbk.shared.entity.Users</class>
     <class>com.info08.billing.callcenterbk.shared.entity.UserPermission</class>
     <class>com.info08.billing.callcenterbk.shared.entity.Service</class>
