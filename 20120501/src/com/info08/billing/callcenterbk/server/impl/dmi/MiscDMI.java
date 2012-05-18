@@ -19,7 +19,7 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.server.common.ServerSingleton;
 import com.info08.billing.callcenterbk.shared.entity.Service;
-import com.info08.billing.callcenterbk.shared.entity.admin.FixedOperatorPrefixe;
+import com.info08.billing.callcenterbk.shared.entity.admin.LandlineIndexes;
 import com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes;
 import com.info08.billing.callcenterbk.shared.entity.facts.FactStatus;
 import com.info08.billing.callcenterbk.shared.entity.facts.FactType;
@@ -636,41 +636,36 @@ public class MiscDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public GSMIndexes addMobileOperatorPrefix(GSMIndexes mobileOperatorPrefixe)
-			throws Exception {
+	public GSMIndexes addGSMIndexes(GSMIndexes gsmIndex) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addMobileOperatorPrefix.";
+			String log = "Method:CommonDMI.addGSMIndexes.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			// sysdate
-			String loggedUserName = mobileOperatorPrefixe.getLoggedUserName();
+			String loggedUserName = gsmIndex.getLoggedUserName();
 
-			oracleManager.persist(mobileOperatorPrefixe);
+			oracleManager.persist(gsmIndex);
 			oracleManager.flush();
 
-			mobileOperatorPrefixe = oracleManager.find(GSMIndexes.class,
-					mobileOperatorPrefixe.getGsm_index_id());
-			mobileOperatorPrefixe.setLoggedUserName(loggedUserName);
+			gsmIndex = oracleManager.find(GSMIndexes.class,
+					gsmIndex.getGsm_index_id());
+			gsmIndex.setLoggedUserName(loggedUserName);
 
 			EMF.commitTransaction(transaction);
 
-			ServerSingleton.getInstance().addMobileOperatorPrefix(
-					mobileOperatorPrefixe);
+			ServerSingleton.getInstance().addGSMIndexes(gsmIndex);
 
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return mobileOperatorPrefixe;
+			return gsmIndex;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Insert MobileOperatorPrefixe Into Database : ",
-					e);
+			logger.error("Error While Insert GSMIndexes Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -681,51 +676,48 @@ public class MiscDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating MobileOperatorPrefixe
+	 * Updating GSMIndexes
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public GSMIndexes updateMobileOperatorPrefix(Map record) throws Exception {
+	public GSMIndexes updateGSMIndexes(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateSecularCalendar.";
+			String log = "Method:CommonDMI.updateGSMIndexes.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long id = new Long(record.get("id").toString());
-			String oper = record.get("oper") == null ? null : record
-					.get("oper").toString();
-			String prefix = record.get("prefix") == null ? null : record.get(
-					"prefix").toString();
+			Long gsm_index_id = new Long(record.get("gsm_index_id").toString());
+			String gsm_company = record.get("gsm_company") == null ? null
+					: record.get("gsm_company").toString();
+			String gsm_index = record.get("gsm_index") == null ? null : record
+					.get("gsm_index").toString();
 
-			GSMIndexes mobileOperatorPrefixe = oracleManager.find(
-					GSMIndexes.class, id);
-			mobileOperatorPrefixe.setGsm_company(oper);
-			mobileOperatorPrefixe.setGsm_index(prefix);
+			GSMIndexes gsmIndex = oracleManager.find(GSMIndexes.class,
+					gsm_index_id);
+			gsmIndex.setGsm_company(gsm_company);
+			gsmIndex.setGsm_index(gsm_index);
 
-			oracleManager.merge(mobileOperatorPrefixe);
+			oracleManager.merge(gsmIndex);
 			oracleManager.flush();
 
 			EMF.commitTransaction(transaction);
 
-			ServerSingleton.getInstance().updateMobileOperatorPrefix(
-					mobileOperatorPrefixe);
+			ServerSingleton.getInstance().updateGSMIndexes(gsmIndex);
 
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return mobileOperatorPrefixe;
+			return gsmIndex;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Update MobileOperatorPrefixe Into Database : ",
-					e);
+			logger.error("Error While Update GSMIndexes Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -736,51 +728,41 @@ public class MiscDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating MobileOperatorPrefixe Status
+	 * Deleting GSMIndexes
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public GSMIndexes updateMobileOperatorPrefixStatus(Map record)
-			throws Exception {
+	public GSMIndexes deleteGSMIndexes(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateMobileOperatorPrefixStatus.";
+			String log = "Method:CommonDMI.deleteGSMIndexes.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long id = new Long(record.get("id").toString());
+			Long gsm_index_id = new Long(record.get("gsm_index_id").toString());
 
-			String loggedUserName = record.get("loggedUserName").toString();
+			GSMIndexes gsmIndex = oracleManager.find(GSMIndexes.class,
+					gsm_index_id);
 
-			GSMIndexes mobileOperatorPrefixe = oracleManager.find(
-					GSMIndexes.class, id);
-
-			oracleManager.merge(mobileOperatorPrefixe);
+			oracleManager.remove(gsmIndex);
 			oracleManager.flush();
-
-			mobileOperatorPrefixe = oracleManager.find(GSMIndexes.class, id);
-
-			mobileOperatorPrefixe.setLoggedUserName(loggedUserName);
 
 			EMF.commitTransaction(transaction);
 
-			ServerSingleton.getInstance().updateMobileOperatorPrefix(
-					mobileOperatorPrefixe);
-
-			log += ". Status Updating Finished SuccessFully. ";
+			log += ". Deleting Finished SuccessFully. ";
 			logger.info(log);
-			return mobileOperatorPrefixe;
+			return gsmIndex;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			logger.error(
-					"Error While Update Status for MobileOperatorPrefixe Into Database : ",
+					"Error While Update Status for GSMIndexes Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
@@ -792,50 +774,41 @@ public class MiscDMI implements QueryConstants {
 	}
 
 	/**
-	 * Adding New FixedOperatorPrefixe
+	 * Adding New LandlineIndexes
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	public FixedOperatorPrefixe addFixedOperatorPrefix(
-			FixedOperatorPrefixe fixedOperatorPrefixe) throws Exception {
+	public LandlineIndexes addLandlineIndexes(
+			LandlineIndexes landlineIndexesParam) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addFixedOperatorPrefix.";
+			String log = "Method:CommonDMI.addLandlineIndexes.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			String loggedUserName = fixedOperatorPrefixe.getLoggedUserName();
-			fixedOperatorPrefixe.setRec_date(recDate);
-			fixedOperatorPrefixe.setRec_user(loggedUserName);
-			fixedOperatorPrefixe.setDeleted(0L);
-
-			oracleManager.persist(fixedOperatorPrefixe);
+			oracleManager.persist(landlineIndexesParam);
 			oracleManager.flush();
 
-			fixedOperatorPrefixe = oracleManager.find(
-					FixedOperatorPrefixe.class, fixedOperatorPrefixe.getId());
-			fixedOperatorPrefixe.setLoggedUserName(loggedUserName);
+			landlineIndexesParam = oracleManager.find(LandlineIndexes.class,
+					landlineIndexesParam.getLandline_id());
 
 			EMF.commitTransaction(transaction);
 
-			ServerSingleton.getInstance().addFixedOperatorPrefix(
-					fixedOperatorPrefixe);
+			ServerSingleton.getInstance().addLandlineIndexes(
+					landlineIndexesParam);
 
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return fixedOperatorPrefixe;
+			return landlineIndexesParam;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Insert FixedOperatorPrefixe Into Database : ",
+			logger.error("Error While Insert LandlineIndexes Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
@@ -847,52 +820,46 @@ public class MiscDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating FixedOperatorPrefixe
+	 * Updating LandlineIndexes
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public FixedOperatorPrefixe updateFixedOperatorPrefix(Map record)
-			throws Exception {
+	public LandlineIndexes updateLandlineIndexes(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateSecularCalendar.";
+			String log = "Method:CommonDMI.updateLandlineIndexes.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp currDate = new Timestamp(System.currentTimeMillis());
-			Long id = new Long(record.get("id").toString());
-			String prefix = record.get("prefix") == null ? null : record.get(
-					"prefix").toString();
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long landline_id = new Long(record.get("landline_id").toString());
+			String landline_index = record.get("landline_index") == null ? null
+					: record.get("landline_index").toString();
 
-			FixedOperatorPrefixe fixedOperatorPrefixe = oracleManager.find(
-					FixedOperatorPrefixe.class, id);
-			fixedOperatorPrefixe.setPrefix(prefix);
-			fixedOperatorPrefixe.setUpd_date(currDate);
-			fixedOperatorPrefixe.setUpd_user(loggedUserName);
+			LandlineIndexes landlineIndex = oracleManager.find(
+					LandlineIndexes.class, landline_id);
+			landlineIndex.setLandline_index(landline_index);
 
-			oracleManager.merge(fixedOperatorPrefixe);
+			oracleManager.merge(landlineIndex);
 			oracleManager.flush();
 
 			EMF.commitTransaction(transaction);
 
-			ServerSingleton.getInstance().updateFixedOperatorPrefix(
-					fixedOperatorPrefixe);
+			ServerSingleton.getInstance().updateLandlineIndexes(
+					landlineIndex);
 
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return fixedOperatorPrefixe;
+			return landlineIndex;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Update FixedOperatorPrefixe Into Database : ",
+			logger.error("Error While Update LandlineIndexes Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
@@ -904,57 +871,44 @@ public class MiscDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating FixedOperatorPrefixe Status
+	 * Delete LandlineIndexes
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public FixedOperatorPrefixe updateFixedOperatorPrefixStatus(Map record)
+	public LandlineIndexes deleteLandlineIndexes(Map record)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateFixedOperatorPrefixStatus.";
+			String log = "Method:CommonDMI.deleteLandlineIndexes.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp currDate = new Timestamp(System.currentTimeMillis());
-			Long id = new Long(record.get("id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long landline_id = new Long(record.get("landline_id").toString());
 
-			FixedOperatorPrefixe fixedOperatorPrefixe = oracleManager.find(
-					FixedOperatorPrefixe.class, id);
+			LandlineIndexes landlineIndexes = oracleManager.find(
+					LandlineIndexes.class, landline_id);
 
-			fixedOperatorPrefixe.setDeleted(deleted);
-			fixedOperatorPrefixe.setUpd_user(loggedUserName);
-			fixedOperatorPrefixe.setUpd_date(currDate);
-
-			oracleManager.merge(fixedOperatorPrefixe);
+			oracleManager.remove(landlineIndexes);
 			oracleManager.flush();
-
-			fixedOperatorPrefixe = oracleManager.find(
-					FixedOperatorPrefixe.class, id);
-
-			fixedOperatorPrefixe.setLoggedUserName(loggedUserName);
 
 			EMF.commitTransaction(transaction);
 
-			ServerSingleton.getInstance().updateFixedOperatorPrefix(
-					fixedOperatorPrefixe);
+			ServerSingleton.getInstance().updateLandlineIndexes(
+					landlineIndexes);
 
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return fixedOperatorPrefixe;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Update Status for FixedOperatorPrefixe Into Database : ",
+			logger.error("Error While Delete LandlineIndexes From Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
