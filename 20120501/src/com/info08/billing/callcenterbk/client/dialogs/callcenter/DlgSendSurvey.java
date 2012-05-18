@@ -79,7 +79,7 @@ public class DlgSendSurvey extends Window {
 			surveyKindItem.setAddUnknownValues(false);
 
 			DataSource surveyKindDS = DataSource.get("SurveyKindDS");
-			surveyKindItem.setOptionOperationId("searchSurveyTypesForCB");
+			surveyKindItem.setOptionOperationId("searchSurveyKindsForCB");
 			surveyKindItem.setOptionDataSource(surveyKindDS);
 			surveyKindItem.setValueField("survey_kind_id");
 			surveyKindItem.setDisplayField("survey_kind_name");
@@ -218,11 +218,11 @@ public class DlgSendSurvey extends Window {
 			}
 			survey_phone = survey_phone.trim();
 
-			String contact_person = contactPersonItem.getValueAsString();
-			if (contact_person == null) {
-				contact_person = "";
+			String survey_person = contactPersonItem.getValueAsString();
+			if (survey_person == null) {
+				survey_person = "";
 			}
-			contact_person = contact_person.trim();
+			survey_person = survey_person.trim();
 
 			String survey_kind_id_str = surveyKindItem.getValueAsString();
 			if (survey_kind_id_str == null
@@ -239,7 +239,7 @@ public class DlgSendSurvey extends Window {
 			}
 			if (survey_descript.equalsIgnoreCase("")
 					&& survey_phone.equalsIgnoreCase("")
-					&& contact_person.equalsIgnoreCase("")) {
+					&& survey_person.equalsIgnoreCase("")) {
 				SC.say(CallCenterBK.constants.enterSomeSurveyParam());
 				return;
 			}
@@ -256,7 +256,7 @@ public class DlgSendSurvey extends Window {
 			record.setAttribute("session_call_id", sessionId);
 			record.setAttribute("survey_descript", survey_descript);
 			record.setAttribute("survey_phone", survey_phone);
-			record.setAttribute("survey_person", contact_person);
+			record.setAttribute("survey_person", survey_person);
 			record.setAttribute("survey_kind_id", survey_kind_id);
 			record.setAttribute("survey_creator", userName);
 

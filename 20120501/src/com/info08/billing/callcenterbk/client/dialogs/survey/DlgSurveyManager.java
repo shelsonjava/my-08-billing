@@ -117,13 +117,14 @@ public class DlgSurveyManager extends Window {
 			detailViewer.setWidth100();
 			detailViewer.setHeight100();
 			detailViewer.selectRecord(pRecord);
+			
 			DetailViewerField survey_kind_name = new DetailViewerField(
 					"survey_kind_name", CallCenterBK.constants.type());
 			DetailViewerField p_numb = new DetailViewerField("p_numb",
 					CallCenterBK.constants.phone());
 			DetailViewerField survey_phone = new DetailViewerField(
 					"survey_phone", CallCenterBK.constants.contactPhone());
-			DetailViewerField contact_person = new DetailViewerField(
+			DetailViewerField survey_person = new DetailViewerField(
 					"survey_person", CallCenterBK.constants.contactPerson());
 			DetailViewerField survey_descript = new DetailViewerField(
 					"survey_descript", CallCenterBK.constants.message());
@@ -137,7 +138,7 @@ public class DlgSurveyManager extends Window {
 			rec_date.setDateFormatter(DateDisplayFormat.TOSERIALIZEABLEDATE);
 
 			detailViewer.setFields(survey_kind_name, p_numb, survey_phone,
-					contact_person, survey_descript, rec_user, rec_date,
+					survey_person, survey_descript, rec_user, rec_date,
 					status_descr);
 
 			ListGridRecord arr[] = new ListGridRecord[1];

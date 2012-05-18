@@ -1137,8 +1137,11 @@ public interface QueryConstants {
 			+ "(t.ym,t.session_id,t.user_name,t.note,t.rec_user,t.rec_date,t.visible_options,t.phone,t.call_date,t.particular)\n"
 			+ "values (?,?,?,?,?,?,?,?,?,?) returning id into ?; END; ";
 
-	public static final String Q_INSERT_SESSION = " insert into ccare.LOG_SESSIONS (YM, user_name, phone, session_id, call_type, is_new_bill) values (?,?,?,?,?,?) ";
-
+	public static final String Q_INSERT_SESSION = 
+			"insert into call_sessions\n" +
+					"  (call_session_id, year_month, uname, call_phone, session_id, call_kind)\n" + 
+					"values\n" + 
+					"  (Seq_Call_Session_Id.Nextval, ?, ?, ?, ?, ?";
 	// updates
 	public static final String Q_UPDATE_PERS_NOTES = "update ccare.log_personell_notes t set t.note = ?, t.visible_options = ?, t.particular = ?\n"
 			+ "where t.note_id = ? ";
@@ -1149,7 +1152,7 @@ public interface QueryConstants {
 	public static final String Q_UPDATE_FIRST_NAME_STATUS = "update ccare.firstnames t set t.deleted = ? , t.upd_user = ? where t.firstname_id = ? ";
 	public static final String Q_UPDATE_LAST_NAME_STATUS = "update ccare.lastnames t set t.deleted = ? , t.upd_user = ? where t.lastname_id = ? ";
 
-	public static final String Q_UPDATE_LOCK_STATUS = " update ccare.lock_status t set t.status = 1 where t.session_id = ? ";
+	public static final String Q_UPDATE_LOCK_STATUS = " update ccare.call_record_lock t set t.LOCK_STATUS = 1 where t.CALL_SESSION = ? ";
 
 	public static final String Q_UPDATE_SESSION_QUALITY = " update call_sessions t set t.call_quality = ? where t.call_session_id = ? ";
 

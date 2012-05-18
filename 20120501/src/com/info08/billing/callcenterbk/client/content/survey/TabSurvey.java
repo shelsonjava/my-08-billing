@@ -153,7 +153,7 @@ public class TabSurvey extends Tab {
 					CallCenterBK.constants.phone(), 80);
 			ListGridField survey_phone = new ListGridField("survey_phone",
 					CallCenterBK.constants.contactPhone(), 120);
-			ListGridField contact_person = new ListGridField("survey_person",
+			ListGridField survey_person = new ListGridField("survey_person",
 					CallCenterBK.constants.contactPerson(), 150);
 			ListGridField survey_descript = new ListGridField(
 					"survey_descript", CallCenterBK.constants.message());
@@ -167,12 +167,12 @@ public class TabSurvey extends Tab {
 			survey_kind_name.setAlign(Alignment.LEFT);
 			p_numb.setAlign(Alignment.LEFT);
 			survey_phone.setAlign(Alignment.LEFT);
-			contact_person.setAlign(Alignment.LEFT);
+			survey_person.setAlign(Alignment.LEFT);
 			rec_user.setAlign(Alignment.CENTER);
 			rec_date.setAlign(Alignment.CENTER);
 
 			listGrid.setFields(survey_kind_name, p_numb, survey_phone,
-					contact_person, survey_descript, rec_user, rec_date,
+					survey_person, survey_descript, rec_user, rec_date,
 					upd_user);
 
 			mainLayout.addMember(listGrid);

@@ -72,7 +72,7 @@ public class DlgSendDiscSMS extends Window {
 			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setName("phoneItem");
 			phoneItem.setWidth("100%");
-			phoneItem.setValue(record.getAttributeAsString("phone"));
+			phoneItem.setValue(record.getAttributeAsString("survey_phone"));
 
 			smsItem = new TextAreaItem();
 			smsItem.setTitle(CallCenterBK.constants.sms());

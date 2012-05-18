@@ -246,7 +246,7 @@ public class TabViewSentSMSLog extends Tab {
 
 			String operator = operatorItem.getValueAsString();
 			if (operator != null && !operator.trim().equals("")) {
-				criteria.setAttribute("user_id", Integer.parseInt(operator));
+				criteria.setAttribute("creator_user", Integer.parseInt(operator));
 			}
 
 			DSRequest dsRequest = new DSRequest();

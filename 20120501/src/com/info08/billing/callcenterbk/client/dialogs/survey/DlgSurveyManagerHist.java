@@ -116,15 +116,15 @@ public class DlgSurveyManagerHist extends Window {
 			DetailViewerField survey_phone = new DetailViewerField(
 					"survey_phone", CallCenterBK.constants.contactPhone());
 			DetailViewerField contact_person = new DetailViewerField(
-					"contact_person", CallCenterBK.constants.contactPerson());
+					"survey_person", CallCenterBK.constants.contactPerson());
 			DetailViewerField survey_descript = new DetailViewerField(
 					"survey_descript", CallCenterBK.constants.message());
-			DetailViewerField rec_user = new DetailViewerField("rec_user",
+			DetailViewerField rec_user = new DetailViewerField("survey_creator",
 					CallCenterBK.constants.operator());
-			DetailViewerField rec_date = new DetailViewerField("rec_date",
+			DetailViewerField rec_date = new DetailViewerField("survey_created",
 					CallCenterBK.constants.time());
 			DetailViewerField status_descr = new DetailViewerField(
-					"status_descr", CallCenterBK.constants.status());
+					"survey_reply_type_name", CallCenterBK.constants.status());
 
 			rec_date.setDateFormatter(DateDisplayFormat.TOSERIALIZEABLEDATE);
 

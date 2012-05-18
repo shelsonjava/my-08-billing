@@ -222,30 +222,30 @@ public class TabSurveyHist extends Tab {
 					CallCenterBK.constants.phone(), 80);
 			ListGridField survey_phone = new ListGridField("survey_phone",
 					CallCenterBK.constants.contactPhone(), 120);
-			ListGridField contact_person = new ListGridField("contact_person",
+			ListGridField survey_person = new ListGridField("survey_person",
 					CallCenterBK.constants.contactPerson(), 150);
 			ListGridField survey_descript = new ListGridField(
 					"survey_descript", CallCenterBK.constants.message());
 			ListGridField survey_reply_type_name = new ListGridField(
 					"survey_reply_type_name", CallCenterBK.constants.status(),
 					150);
-			ListGridField rec_user = new ListGridField("rec_user",
+			ListGridField rec_user = new ListGridField("survey_creator",
 					CallCenterBK.constants.shortOp(), 50);
-			ListGridField rec_date = new ListGridField("rec_date",
+			ListGridField rec_date = new ListGridField("survey_created",
 					CallCenterBK.constants.time(), 100);
 			// rec_date.setDateFormatter(DateDisplayFormat.TOEUROPEANSHORTDATETIME);
-			ListGridField upd_user = new ListGridField("upd_user",
+			ListGridField upd_user = new ListGridField("loked_user",
 					CallCenterBK.constants.updUser(), 100);
 
 			survey_kind_name.setAlign(Alignment.LEFT);
 			p_numb.setAlign(Alignment.LEFT);
 			survey_phone.setAlign(Alignment.LEFT);
-			contact_person.setAlign(Alignment.LEFT);
+			survey_person.setAlign(Alignment.LEFT);
 			rec_user.setAlign(Alignment.CENTER);
 			rec_date.setAlign(Alignment.CENTER);
 
 			listGrid.setFields(survey_kind_name, survey_reply_type_name,
-					p_numb, survey_phone, contact_person, survey_descript,
+					p_numb, survey_phone, survey_person, survey_descript,
 					rec_user, rec_date, upd_user);
 
 			mainLayout.addMember(listGrid);
