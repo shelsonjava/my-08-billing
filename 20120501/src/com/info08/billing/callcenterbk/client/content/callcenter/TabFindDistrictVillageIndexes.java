@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewGeoInd;
+import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewDistrictVillageIndexes;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -26,7 +26,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 
-public class TabFindGeoInd extends Tab {
+public class TabFindDistrictVillageIndexes extends Tab {
 
 	// search form
 	private DynamicForm searchForm;
@@ -46,13 +46,13 @@ public class TabFindGeoInd extends Tab {
 	private ListGrid listGrid;
 
 	// DataSource
-	private DataSource geoIndCountryDS;
+	private DataSource villageIndexesDS;
 
-	public TabFindGeoInd() {
+	public TabFindDistrictVillageIndexes() {
 		setTitle(CallCenterBK.constants.regIndexes());
 		setCanClose(true);
 
-		geoIndCountryDS = DataSource.get("GeoIndCountryDS");
+		villageIndexesDS = DataSource.get("VillageIndexesDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -99,9 +99,9 @@ public class TabFindGeoInd extends Tab {
 				if (countryRecord == null) {
 					return super.getCellCSSText(record, rowNum, colNum);
 				}
-				Integer is_center = countryRecord
-						.getAttributeAsInt("is_center");
-				if (is_center != null && is_center.equals(-1) && colNum == 1) {
+				Integer district_center = countryRecord
+						.getAttributeAsInt("district_center");
+				if (district_center != null && district_center.equals(-1) && colNum == 1) {
 					return "color:red;";
 				} else {
 					return super.getCellCSSText(record, rowNum, colNum);
@@ -111,34 +111,34 @@ public class TabFindGeoInd extends Tab {
 		listGrid.setWidth(500);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(geoIndCountryDS);
+		listGrid.setDataSource(villageIndexesDS);
 		listGrid.setAutoFetchData(false);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
 		listGrid.setCanRemoveRecords(false);
-		listGrid.setFetchOperation("searchGeoIndRegCountry");
+		listGrid.setFetchOperation("searchVillageIndexes");
 		listGrid.setCanSort(false);
 		listGrid.setCanResizeFields(false);
 		listGrid.setShowFilterEditor(true);
 		listGrid.setFilterOnKeypress(true);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField regionName = new ListGridField("regionName",
+		ListGridField district_index_name = new ListGridField("district_index_name",
 				CallCenterBK.constants.region());
-		regionName.setAlign(Alignment.LEFT);
-		regionName.setCanFilter(false);
+		district_index_name.setAlign(Alignment.LEFT);
+		district_index_name.setCanFilter(false);
 
-		ListGridField geo_country_geo = new ListGridField("geo_country_geo",
+		ListGridField village_index_name = new ListGridField("village_index_name",
 				CallCenterBK.constants.cityCountry());
-		geo_country_geo.setAlign(Alignment.LEFT);
-		geo_country_geo.setCanFilter(true);
+		village_index_name.setAlign(Alignment.LEFT);
+		village_index_name.setCanFilter(true);
 
-		ListGridField geo_index = new ListGridField("geo_index",
+		ListGridField village_index = new ListGridField("village_index",
 				CallCenterBK.constants.index());
-		geo_index.setAlign(Alignment.LEFT);
-		geo_index.setCanFilter(true);
+		village_index.setAlign(Alignment.LEFT);
+		village_index.setCanFilter(true);
 
-		listGrid.setFields(regionName, geo_country_geo, geo_index);
+		listGrid.setFields(district_index_name, village_index_name, village_index);
 
 		mainLayout.addMember(listGrid);
 
@@ -176,8 +176,8 @@ public class TabFindGeoInd extends Tab {
 		listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-				DlgViewGeoInd dlgViewGeoInd = new DlgViewGeoInd(listGrid,
-						geoIndCountryDS, listGrid.getSelectedRecord());
+				DlgViewDistrictVillageIndexes dlgViewGeoInd = new DlgViewDistrictVillageIndexes(listGrid,
+						villageIndexesDS, listGrid.getSelectedRecord());
 				dlgViewGeoInd.show();
 			}
 		});
@@ -187,7 +187,6 @@ public class TabFindGeoInd extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", 0);
 
 			String regionName = regCountryNameItem.getValueAsString();
 			if (regionName != null && !regionName.trim().equals("")) {
@@ -201,19 +200,19 @@ public class TabFindGeoInd extends Tab {
 					if (item.equals("")) {
 						continue;
 					}
-					criteria.setAttribute("fullText" + i, item);
+					criteria.setAttribute("full_text" + i, item);
 					i++;
 				}
 				
 				
 			}
-			String geo_index = indexItem.getValueAsString();
-			if (geo_index != null && !geo_index.trim().equals("")) {
-				criteria.setAttribute("geo_index", geo_index);
+			String village_index = indexItem.getValueAsString();
+			if (village_index != null && !village_index.trim().equals("")) {
+				criteria.setAttribute("village_index", village_index);
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchGeoIndRegCountry");
+			dsRequest.setAttribute("operationId", "searchVillageIndexes");
 			listGrid.invalidateCache();
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override
