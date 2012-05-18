@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.content;
 
-import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditGeoIndRegion;
+import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditVillageIndexes;
+import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -15,6 +16,7 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -31,13 +33,16 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabGeoRegIdx extends Tab {
+public class TabVillageIndexes extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
 
 	// form fields
-	private TextItem geoIndRegNameGeoItem;
+	private ComboBoxItem districtIndexesItem;
+	private TextItem villageIndexNameItem;
+	private TextItem villageIndexItem;
+	private ComboBoxItem districtCenterItem;
 
 	// actions
 	private IButton findButton;
@@ -45,7 +50,6 @@ public class TabGeoRegIdx extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -53,12 +57,12 @@ public class TabGeoRegIdx extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabGeoRegIdx() {
+	public TabVillageIndexes() {
 		try {
-			setTitle("რეგიონების მართვა");
+			setTitle("ინდექსების მართვა");
 			setCanClose(true);
 
-			datasource = DataSource.get("GeoIndRegionDS");
+			datasource = DataSource.get("VillageIndexesDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -72,12 +76,33 @@ public class TabGeoRegIdx extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			geoIndRegNameGeoItem = new TextItem();
-			geoIndRegNameGeoItem.setTitle("დასახელება(ქართ.)");
-			geoIndRegNameGeoItem.setWidth(350);
-			geoIndRegNameGeoItem.setName("region_name_geo");
+			districtIndexesItem = new ComboBoxItem();
+			districtIndexesItem.setTitle("რაიონი");
+			districtIndexesItem.setWidth(350);
+			districtIndexesItem.setName("districtIndexesItem");
+			districtIndexesItem.setFetchMissingValues(true);
+			districtIndexesItem.setFilterLocally(false);
 
-			searchForm.setFields(geoIndRegNameGeoItem);
+			villageIndexNameItem = new TextItem();
+			villageIndexNameItem.setTitle("დასახელება");
+			villageIndexNameItem.setWidth(350);
+			villageIndexNameItem.setName("villageIndexNameItem");
+
+			villageIndexItem = new TextItem();
+			villageIndexItem.setTitle("ინდექსი");
+			villageIndexItem.setWidth(350);
+			villageIndexItem.setName("villageIndexItem");
+
+			districtCenterItem = new ComboBoxItem();
+			districtCenterItem.setTitle("რაიონი");
+			districtCenterItem.setWidth(350);
+			districtCenterItem.setName("districtCenterItem");
+			districtCenterItem.setValueMap(ClientMapUtil.getInstance()
+					.getRaionCentTypes());
+			districtCenterItem.setDefaultToFirstOption(true);
+
+			searchForm.setFields(districtIndexesItem, villageIndexNameItem,
+					villageIndexItem, districtCenterItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -94,7 +119,7 @@ public class TabGeoRegIdx extends Tab {
 			mainLayout.addMember(buttonLayout);
 
 			ToolStrip toolStrip = new ToolStrip();
-			toolStrip.setWidth(730);
+			toolStrip.setWidth(880);
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
@@ -113,11 +138,6 @@ public class TabGeoRegIdx extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "person_add.png");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			listGrid = new ListGrid() {
@@ -127,56 +147,43 @@ public class TabGeoRegIdx extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+					return super.getCellCSSText(record, rowNum, colNum);
 				};
 			};
 
-			listGrid.setWidth(730);
-			listGrid.setHeight(400);
+			listGrid.setWidth(880);
+			listGrid.setHeight(300);
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(datasource);
 			listGrid.setAutoFetchData(false);
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchGeoIndRegionFromDB");
+			listGrid.setFetchOperation("searchFromDB");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("region_name_geo").setTitle(
-					"დასახელება (ქართ.)");
-			datasource.getField("region_name_eng").setTitle(
-					"დასახელება (ინგლ.)");
-			datasource.getField("serviceName").setTitle("სერვისის დასახელება");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
+			datasource.getField("district_index_name").setTitle("რეგიონი");
+			datasource.getField("village_index_name").setTitle("დასახელება");
+			datasource.getField("district_center_descr").setTitle("ტიპი");
+			datasource.getField("village_index").setTitle("ინდექსი");
 
-			ListGridField region_name_geo = new ListGridField(
-					"region_name_geo", "დასახელება (ქართ.)", 150);
-			ListGridField region_name_eng = new ListGridField(
-					"region_name_eng", "დასახელება (ინგლ.)", 150);
-			ListGridField rec_date = new ListGridField("rec_date",
-					"შექმინის თარიღი", 130);
-			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",
-					100);
-			ListGridField upd_user = new ListGridField("upd_user",
-					"ვინ განაახლა", 150);
+			ListGridField district_index_name = new ListGridField(
+					"district_index_name", "რეგიონი", 150);
+			ListGridField village_index_name = new ListGridField(
+					"village_index_name", "დასახელება", 150);
+			ListGridField district_center_descr = new ListGridField(
+					"district_center_descr", "ტიპი", 100);
+			ListGridField village_index = new ListGridField("village_index",
+					"ინდექსი", 100);
 
-			rec_date.setAlign(Alignment.CENTER);
-			rec_user.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
+			village_index.setAlign(Alignment.CENTER);
+			district_center_descr.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(region_name_geo, region_name_eng, rec_date,
-					rec_user, upd_user);
+			listGrid.setFields(district_index_name, village_index_name,
+					district_center_descr, village_index);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -188,15 +195,18 @@ public class TabGeoRegIdx extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					geoIndRegNameGeoItem.clearValue();
+					villageIndexNameItem.clearValue();
+					villageIndexItem.clearValue();
+					districtCenterItem.clearValue();
+					districtIndexesItem.clearValue();
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditGeoIndRegion dlgAddEditGeoIndRegion = new DlgAddEditGeoIndRegion(
+					DlgAddEditVillageIndexes dlgAddEditVillageIndexes = new DlgAddEditVillageIndexes(
 							listGrid, null);
-					dlgAddEditGeoIndRegion.show();
+					dlgAddEditVillageIndexes.show();
 				}
 			});
 
@@ -210,9 +220,9 @@ public class TabGeoRegIdx extends Tab {
 						return;
 					}
 
-					DlgAddEditGeoIndRegion dlgAddEditGeoIndRegion = new DlgAddEditGeoIndRegion(
+					DlgAddEditVillageIndexes dlgAddEditVillageIndexes = new DlgAddEditVillageIndexes(
 							listGrid, listGridRecord);
-					dlgAddEditGeoIndRegion.show();
+					dlgAddEditVillageIndexes.show();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
@@ -224,15 +234,10 @@ public class TabGeoRegIdx extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
-					final Integer region_id = listGridRecord
-							.getAttributeAsInt("region_id");
-					if (region_id == null) {
+
+					final Integer village_index_id = listGridRecord
+							.getAttributeAsInt("village_index_id");
+					if (village_index_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -242,40 +247,7 @@ public class TabGeoRegIdx extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(region_id, 1);
-									}
-								}
-							});
-				}
-			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer region_id = listGridRecord
-							.getAttributeAsInt("region_id");
-					if (region_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(region_id, 0);
+										delete(village_index_id);
 									}
 								}
 							});
@@ -283,11 +255,11 @@ public class TabGeoRegIdx extends Tab {
 			});
 
 			TabSet tabSet = new TabSet();
-			tabSet.setWidth(730);
+			tabSet.setWidth(880);
 			Tab tabDetViewer = new Tab("დათვალიერება");
 			final DetailViewer detailViewer = new DetailViewer();
 			detailViewer.setDataSource(datasource);
-			detailViewer.setWidth(710);
+			detailViewer.setWidth(860);
 			tabDetViewer.setPane(detailViewer);
 
 			listGrid.addRecordClickHandler(new RecordClickHandler() {
@@ -297,7 +269,7 @@ public class TabGeoRegIdx extends Tab {
 			});
 			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 				@Override
-				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
+				public void onRecordDoubleClick(RecordDoubleClickEvent event) { //TODO
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
@@ -305,12 +277,12 @@ public class TabGeoRegIdx extends Tab {
 						return;
 					}
 
-					DlgAddEditGeoIndRegion dlgAddEditGeoIndRegion = new DlgAddEditGeoIndRegion(
+					DlgAddEditVillageIndexes dlgAddEditVillageIndexes = new DlgAddEditVillageIndexes(
 							listGrid, listGridRecord);
-					dlgAddEditGeoIndRegion.show();
+					dlgAddEditVillageIndexes.show();
 				}
 			});
-
+			fillCombos();
 			tabSet.setTabs(tabDetViewer);
 			mainLayout.addMember(tabSet);
 			setPane(mainLayout);
@@ -320,14 +292,42 @@ public class TabGeoRegIdx extends Tab {
 		}
 	}
 
+	private void fillCombos() {
+		try {
+			DataSource districtIndexesDS = DataSource.get("DistrictIndexesDS");
+			districtIndexesItem
+					.setOptionOperationId("searchVillageDistrictIndexes");
+			districtIndexesItem.setOptionDataSource(districtIndexesDS);
+			districtIndexesItem.setValueField("district_index_id");
+			districtIndexesItem.setDisplayField("district_index_name");
+			districtIndexesItem.setAutoFetchData(true);
+			districtIndexesItem.fetchData(new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
 	private void search() {
 		try {
-			String region_name_geo = geoIndRegNameGeoItem.getValueAsString();
+			String district_index_id = districtIndexesItem.getValueAsString();
+			String village_index_name = villageIndexNameItem.getValueAsString();
+			String village_index = villageIndexItem.getValueAsString();
+			String district_center = districtCenterItem.getValueAsString();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("region_name_geo", region_name_geo);
+			criteria.setAttribute("district_index_id", district_index_id);
+			criteria.setAttribute("village_index_name", village_index_name);
+			criteria.setAttribute("village_index", village_index);
+			criteria.setAttribute("district_center", district_center);
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchGeoIndRegionFromDB");
+			dsRequest.setAttribute("operationId",
+					"searchVillageDistrictIndexes");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -340,18 +340,17 @@ public class TabGeoRegIdx extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer region_id, Integer deleted) {
+	private void delete(Integer village_index_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("region_id", region_id);
+			record.setAttribute("village_index_id", village_index_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateGeoIndRegionStatus");
-			listGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "deleteVillageIndexes");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
