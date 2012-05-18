@@ -1,7 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -19,17 +18,17 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditFixedOperPref extends Window {
+public class DlgAddEditLandlineIndexes extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private TextItem indexItem;
+	private TextItem landlineIndexItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditFixedOperPref(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditLandlineIndexes(ListGrid listGrid, ListGridRecord pRecord) {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
@@ -60,12 +59,12 @@ public class DlgAddEditFixedOperPref extends Window {
 			dynamicForm.setNumCols(2);
 			hLayout.addMember(dynamicForm);
 
-			indexItem = new TextItem();
-			indexItem.setTitle(CallCenterBK.constants.index());
-			indexItem.setName("indexItem");
-			indexItem.setWidth(250);
+			landlineIndexItem = new TextItem();
+			landlineIndexItem.setTitle(CallCenterBK.constants.index());
+			landlineIndexItem.setName("landlineIndexItem");
+			landlineIndexItem.setWidth(250);
 
-			dynamicForm.setFields(indexItem);
+			dynamicForm.setFields(landlineIndexItem);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -110,7 +109,7 @@ public class DlgAddEditFixedOperPref extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			indexItem.setValue(editRecord.getAttributeAsString("prefix"));
+			landlineIndexItem.setValue(editRecord.getAttributeAsString("landline_index"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -118,17 +117,17 @@ public class DlgAddEditFixedOperPref extends Window {
 
 	private void save() {
 		try {
-			String prefix = indexItem.getValueAsString();
-			if (prefix == null || prefix.trim().equals("")) {
+			String landlineIndex = landlineIndexItem.getValueAsString();
+			if (landlineIndex == null || landlineIndex.trim().equals("")) {
 				SC.say(CallCenterBK.constants.enterMobOperatorPrefix());
 				return;
 			}
-			if (prefix.length() < 2 || prefix.length() > 3) {
+			if (landlineIndex.length() < 2 || landlineIndex.length() > 3) {
 				SC.say(CallCenterBK.constants.mobOperPrefIs3Digit());
 				return;
 			}
 			try {
-				new Integer(prefix);
+				new Integer(landlineIndex);
 			} catch (Exception e) {
 				SC.say(CallCenterBK.constants.mobOperPrefIs3Digit());
 				return;
@@ -137,19 +136,15 @@ public class DlgAddEditFixedOperPref extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
-			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name();
-			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("deleted", 0);			
-			record.setAttribute("prefix", prefix);
+			record.setAttribute("landline_index", landlineIndex);
 
 			if (editRecord != null) {
-				record.setAttribute("id", editRecord.getAttributeAsInt("id"));
+				record.setAttribute("landline_id", editRecord.getAttributeAsInt("landline_id"));
 			}
 
 			DSRequest req = new DSRequest();
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addFixedOperatorPrefix");
+				req.setAttribute("operationId", "addLandlineIndexes");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -158,7 +153,7 @@ public class DlgAddEditFixedOperPref extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateFixedOperatorPrefix");
+				req.setAttribute("operationId", "updateLandlineIndexes");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

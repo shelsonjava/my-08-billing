@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgViewGeoInd extends Window {
+public class DlgViewDistrictVillageIndexes extends Window {
 
 	private VLayout mainLayout;
 
@@ -38,8 +38,8 @@ public class DlgViewGeoInd extends Window {
 	private boolean smsSend = false;
 	private ToolStripButton sendSMS;
 
-	public DlgViewGeoInd(ListGrid listGrid, DataSource dataSource,
-			ListGridRecord listGridRecord) {
+	public DlgViewDistrictVillageIndexes(ListGrid listGrid,
+			DataSource dataSource, ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
 		setTitle(CallCenterBK.constants.regIndexes());
@@ -80,18 +80,19 @@ public class DlgViewGeoInd extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		DetailViewerField regionName = new DetailViewerField("regionName",
-				CallCenterBK.constants.region());
+		DetailViewerField district_index_name = new DetailViewerField(
+				"district_index_name", CallCenterBK.constants.region());
 
-		DetailViewerField geo_country_geo = new DetailViewerField(
-				"geo_country_geo", CallCenterBK.constants.cityCountry());
+		DetailViewerField village_index_name = new DetailViewerField(
+				"village_index_name", CallCenterBK.constants.cityCountry());
 
-		DetailViewerField geo_index = new DetailViewerField("geo_index",
-				CallCenterBK.constants.index());
+		DetailViewerField village_index = new DetailViewerField(
+				"village_index", CallCenterBK.constants.index());
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(regionName, geo_country_geo, geo_index);
+		detailViewer.setFields(district_index_name, village_index_name,
+				village_index);
 
 		mainLayout.addMember(detailViewer);
 
@@ -131,7 +132,7 @@ public class DlgViewGeoInd extends Window {
 
 	private void destroyDlg() {
 		try {
-			final DlgViewGeoInd dlgViewIndex = this;
+			final DlgViewDistrictVillageIndexes dlgViewDistrictVillageIndexes = this;
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
@@ -152,7 +153,7 @@ public class DlgViewGeoInd extends Window {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										dlgViewIndex.destroy();
+										dlgViewDistrictVillageIndexes.destroy();
 									}
 								}
 							});
@@ -168,7 +169,7 @@ public class DlgViewGeoInd extends Window {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										dlgViewIndex.destroy();
+										dlgViewDistrictVillageIndexes.destroy();
 									}
 								}
 							});
@@ -202,21 +203,21 @@ public class DlgViewGeoInd extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String regionName = listGridRecord
-					.getAttributeAsString("regionName");
-			if (regionName != null && !regionName.trim().equals("")) {
-				sms_text.append(regionName).append(" ");
+			String district_index_name = listGridRecord
+					.getAttributeAsString("district_index_name");
+			if (district_index_name != null && !district_index_name.trim().equals("")) {
+				sms_text.append(district_index_name).append(" ");
 			}
 
-			String geo_country_geo = listGridRecord
-					.getAttributeAsString("geo_country_geo");
-			if (geo_country_geo != null && !geo_country_geo.trim().equals("")) {
-				sms_text.append(geo_country_geo).append(" ");
+			String village_index_name = listGridRecord
+					.getAttributeAsString("village_index_name");
+			if (village_index_name != null && !village_index_name.trim().equals("")) {
+				sms_text.append(village_index_name).append(" ");
 			}
 
-			String geo_index = listGridRecord.getAttributeAsString("geo_index");
-			if (geo_index != null && !geo_index.trim().equals("")) {
-				sms_text.append(geo_index).append(" ");
+			String village_index = listGridRecord.getAttributeAsString("village_index");
+			if (village_index != null && !village_index.trim().equals("")) {
+				sms_text.append(village_index).append(" ");
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
