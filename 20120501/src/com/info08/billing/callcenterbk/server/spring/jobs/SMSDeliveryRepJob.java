@@ -72,7 +72,7 @@ public class SMSDeliveryRepJob extends TimerTask {
 				return;
 			}
 			ArrayList<SentSMSHist> resultList = (ArrayList<SentSMSHist>) oracleManager
-					.createNamedQuery("Sent_SMS_Hist.getDeliveryReport")
+					.createNamedQuery("SentSMSHist.getDeliveryReport")
 					.getResultList();
 			if (resultList == null || resultList.isEmpty()) {
 				log.append("SMS Batch Delivery Report List Is Empty.");

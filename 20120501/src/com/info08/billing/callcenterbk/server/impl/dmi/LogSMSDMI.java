@@ -27,12 +27,12 @@ public class LogSMSDMI {
 			long endRow = dsRequest.getEndRow();
 
 			Long totalRows = new Long(oracleManager
-					.createNamedQuery("Sent_SMS_Hist.getBySessionIdCount")
+					.createNamedQuery("SentSMSHist.getBySessionIdCount")
 					.setParameter("sessId", session_call_id).getSingleResult()
 					.toString());
 
 			ArrayList<SentSMSHist> matchingItems = (ArrayList<SentSMSHist>) oracleManager
-					.createNamedQuery("Sent_SMS_Hist.getBySessionId")
+					.createNamedQuery("SentSMSHist.getBySessionId")
 					.setParameter("sessId", session_call_id).getResultList();
 
 			DSResponse dsResponse = new DSResponse();

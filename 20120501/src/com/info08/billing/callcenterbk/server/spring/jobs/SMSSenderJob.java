@@ -78,7 +78,7 @@ public class SMSSenderJob extends TimerTask {
 			}
 
 			ArrayList<SentSMSHist> resultList = (ArrayList<SentSMSHist>) oracleManager
-					.createNamedQuery("Sent_SMS_Hist.getForSending")
+					.createNamedQuery("SentSMSHist.getForSending")
 					.getResultList();
 			if (resultList == null || resultList.isEmpty()) {
 				//log.append("SMS Batch List Is Empty.");

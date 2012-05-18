@@ -27,12 +27,12 @@ public class FileDownloadDMI {
 			long endRow = dsRequest.getEndRow();
 
 			Long totalRows = new Long(oracleManager
-					.createNamedQuery("Sent_SMS_Hist.getBySessionIdCount")
+					.createNamedQuery("SentSMSHist.getBySessionIdCount")
 					.setParameter("sessId", sessionId).getSingleResult()
 					.toString());
 
 			ArrayList<SentSMSHist> matchingItems = (ArrayList<SentSMSHist>) oracleManager
-					.createNamedQuery("Sent_SMS_Hist.getBySessionId")
+					.createNamedQuery("SentSMSHist.getBySessionId")
 					.setParameter("sessId", sessionId).getResultList();
 
 			DSResponse dsResponse = new DSResponse();

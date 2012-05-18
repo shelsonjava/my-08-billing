@@ -13,20 +13,20 @@ import javax.persistence.Transient;
 
 @NamedQueries({
 		@NamedQuery(
-					name = "Sent_SMS_Hist.getBySessionId", 
-					query = "select e from Sent_SMS_Hist e where e.session_call_id = :sessId"),
+					name = "SentSMSHist.getBySessionId", 
+					query = "select e from SentSMSHist e where e.session_call_id = :sessId"),
 		@NamedQuery(
-					name = "Sent_SMS_Hist.getForSending", 
-					query = "select e from Sent_SMS_Hist e where trunc(e.message_sent_time) >= trunc(sysdate-1) and e.hist_status_id = 0 and rownum < 20 order by e.sent_sms_hist_id"),
+					name = "SentSMSHist.getForSending", 
+					query = "select e from SentSMSHist e where trunc(e.message_sent_time) >= trunc(sysdate-1) and e.hist_status_id = 0 and rownum < 20 order by e.sent_sms_hist_id"),
 		@NamedQuery(
-					name = "Sent_SMS_Hist.getForSendingTest", 
-					query = "select e from Sent_SMS_Hist e where trunc(e.message_sent_time) >= trunc(sysdate-1) and e.hist_status_id = -1000 and rownum < 20 order by e.sent_sms_hist_id"),					
+					name = "SentSMSHist.getForSendingTest", 
+					query = "select e from SentSMSHist e where trunc(e.message_sent_time) >= trunc(sysdate-1) and e.hist_status_id = -1000 and rownum < 20 order by e.sent_sms_hist_id"),					
 		@NamedQuery(
-					name = "Sent_SMS_Hist.getDeliveryReport", 
-					query = "select e from Sent_SMS_Hist e where trunc(e.message_sent_time) >= trunc(sysdate-1) and e.hist_status_id = 1 and e.message_done <> 1 order by e.sent_sms_hist_id"),					
+					name = "SentSMSHist.getDeliveryReport", 
+					query = "select e from SentSMSHist e where trunc(e.message_sent_time) >= trunc(sysdate-1) and e.hist_status_id = 1 and e.message_done <> 1 order by e.sent_sms_hist_id"),					
 		@NamedQuery(
-					name = "Sent_SMS_Hist.getBySessionIdCount", 
-					query = "select count(e) from Sent_SMS_Hist e where e.session_call_id = :sessId")
+					name = "SentSMSHist.getBySessionIdCount", 
+					query = "select count(e) from SentSMSHist e where e.session_call_id = :sessId")
 })
 @Entity
 @Table(name = "SENT_SMS_HIST", schema = "ccare")
