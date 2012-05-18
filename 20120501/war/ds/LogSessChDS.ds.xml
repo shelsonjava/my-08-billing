@@ -62,7 +62,7 @@
 		<operationBinding operationId="LogSMS" operationType="add">
             <customSQL>
             	 <![CDATA[
-            	 	{call insert_send_sms_new($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user)}
+            	 	{call send_sms_to_reciptent_new($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user)}
             	 ]]>
             </customSQL> 
         </operationBinding>
