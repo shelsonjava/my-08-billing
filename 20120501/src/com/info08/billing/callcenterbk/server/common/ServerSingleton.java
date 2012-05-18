@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
-import com.info08.billing.callcenterbk.shared.entity.admin.FixedOperatorPrefixe;
+import com.info08.billing.callcenterbk.shared.entity.admin.LandlineIndexes;
 import com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes;
 import com.isomorphic.jpa.EMF;
 
@@ -17,8 +17,8 @@ public class ServerSingleton {
 	Logger logger = Logger.getLogger(ServerSingleton.class.getName());
 
 	private static ServerSingleton instance;
-	private static TreeMap<String, GSMIndexes> mobileIndexes;
-	private static TreeMap<String, FixedOperatorPrefixe> fixedIndexes;
+	private static TreeMap<String, GSMIndexes> gsmIndexes;
+	private static TreeMap<String, LandlineIndexes> landlineIndex;
 
 	public static ServerSingleton getInstance() {
 		if (instance == null) {
@@ -28,35 +28,35 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public TreeMap<String, FixedOperatorPrefixe> getAllFixedOperPrefixes(
-			String fixedIndex) throws CallCenterException {
+	public TreeMap<String, LandlineIndexes> getLandlineIndexes(
+			String landlineIndexParam) throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
-			if (fixedIndexes == null) {
-				fixedIndexes = new TreeMap<String, FixedOperatorPrefixe>();
+			if (landlineIndex == null) {
+				landlineIndex = new TreeMap<String, LandlineIndexes>();
 			}
-			if (fixedIndexes.isEmpty()) {
+			if (landlineIndex.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
-				ArrayList<FixedOperatorPrefixe> list = (ArrayList<FixedOperatorPrefixe>) oracleManager
-						.createNamedQuery("FixedOperatorPrefixe.getAll")
+				ArrayList<LandlineIndexes> list = (ArrayList<LandlineIndexes>) oracleManager
+						.createNamedQuery("LandlineIndexes.getAll")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
-					for (FixedOperatorPrefixe item : list) {
-						fixedIndexes.put(item.getPrefix(), item);
+					for (LandlineIndexes item : list) {
+						landlineIndex.put(item.getLandline_index(), item);
 					}
 				}
 			}
-			return fixedIndexes;
+			return landlineIndex;
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			e.printStackTrace();
 			logger.error(
-					"Error While getting all FixedOperatorPrefixe from Database : ",
+					"Error While getting all LandlineIndexes from Database : ",
 					e);
 			throw new CallCenterException(
-					"Error While getting all FixedOperatorPrefixe from Database : "
+					"Error While getting all LandlineIndexes from Database : "
 							+ e.toString());
 		} finally {
 			if (oracleManager != null) {
@@ -66,35 +66,34 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public TreeMap<String, GSMIndexes> getAllMobileOperPrefixes()
+	public TreeMap<String, GSMIndexes> getGSMIndexes()
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
-			if (mobileIndexes == null) {
-				mobileIndexes = new TreeMap<String, GSMIndexes>();
+			if (gsmIndexes == null) {
+				gsmIndexes = new TreeMap<String, GSMIndexes>();
 			}
-			if (mobileIndexes.isEmpty()) {
+			if (gsmIndexes.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
 				ArrayList<GSMIndexes> list = (ArrayList<GSMIndexes>) oracleManager
-						.createNamedQuery("MobileOperatorPrefixe.getAll")
+						.createNamedQuery("GSMIndexes.getAllGSMIndexes")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 					for (GSMIndexes item : list) {
-						mobileIndexes.put(item.getGsm_index(), item);
+						gsmIndexes.put(item.getGsm_index(), item);
 					}
 				}
 			}
-			return mobileIndexes;
+			return gsmIndexes;
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			e.printStackTrace();
-			logger.error(
-					"Error While getting all MobileOperatorPrefixes from Database : ",
+			logger.error("Error While getting all GSMIndexes from Database : ",
 					e);
 			throw new CallCenterException(
-					"Error While getting all MobileOperatorPrefixes from Database : "
+					"Error While getting all GSMIndexes from Database : "
 							+ e.toString());
 		} finally {
 			if (oracleManager != null) {
@@ -104,35 +103,32 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public GSMIndexes getMobileOperatorPrefix(String mobileIndex)
-			throws CallCenterException {
+	public GSMIndexes getGSMIndexes(String gsmIndex) throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
-			if (mobileIndexes == null) {
-				mobileIndexes = new TreeMap<String, GSMIndexes>();
+			if (gsmIndexes == null) {
+				gsmIndexes = new TreeMap<String, GSMIndexes>();
 			}
-			if (mobileIndexes.isEmpty()) {
+			if (gsmIndexes.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
 				ArrayList<GSMIndexes> list = (ArrayList<GSMIndexes>) oracleManager
-						.createNamedQuery("MobileOperatorPrefixe.getAll")
+						.createNamedQuery("GSMIndexes.getAllGSMIndexes")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 					for (GSMIndexes item : list) {
-						mobileIndexes.put(item.getGsm_index(), item);
+						gsmIndexes.put(item.getGsm_index(), item);
 					}
 				}
 			}
-			return mobileIndexes.get(mobileIndex);
+			return gsmIndexes.get(gsmIndex);
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			e.printStackTrace();
-			logger.error(
-					"Error While getting MobileOperatorPrefixes from Database : ",
-					e);
+			logger.error("Error While getting GSMIndexes from Database : ", e);
 			throw new CallCenterException(
-					"Error While getting MobileOperatorPrefixes from Database : "
+					"Error While getting GSMIndexes from Database : "
 							+ e.toString());
 		} finally {
 			if (oracleManager != null) {
@@ -142,36 +138,33 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void addMobileOperatorPrefix(GSMIndexes mobileOperatorPrefixe)
+	public void addGSMIndexes(GSMIndexes gsmIndexeParam)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
-			if (mobileIndexes == null) {
-				mobileIndexes = new TreeMap<String, GSMIndexes>();
+			if (gsmIndexes == null) {
+				gsmIndexes = new TreeMap<String, GSMIndexes>();
 			}
-			if (mobileIndexes.isEmpty()) {
+			if (gsmIndexes.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
 				ArrayList<GSMIndexes> list = (ArrayList<GSMIndexes>) oracleManager
-						.createNamedQuery("MobileOperatorPrefixe.getAll")
+						.createNamedQuery("GSMIndexes.getAllGSMIndexes")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 					for (GSMIndexes item : list) {
-						mobileIndexes.put(item.getGsm_index(), item);
+						gsmIndexes.put(item.getGsm_index(), item);
 					}
 				}
 			}
-			mobileIndexes.put(mobileOperatorPrefixe.getGsm_index(),
-					mobileOperatorPrefixe);
+			gsmIndexes.put(gsmIndexeParam.getGsm_index(), gsmIndexeParam);
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			e.printStackTrace();
-			logger.error(
-					"Error While adding MobileOperatorPrefixes to Database : ",
-					e);
+			logger.error("Error While adding GSMIndexes to Database : ", e);
 			throw new CallCenterException(
-					"Error While adding MobileOperatorPrefixes to Database : "
+					"Error While adding GSMIndexes to Database : "
 							+ e.toString());
 		} finally {
 			if (oracleManager != null) {
@@ -181,36 +174,110 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void updateMobileOperatorPrefix(GSMIndexes mobileOperatorPrefixe)
+	public void updateGSMIndexes(GSMIndexes gsmIndexParam)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
-			if (mobileIndexes == null) {
-				mobileIndexes = new TreeMap<String, GSMIndexes>();
+			if (gsmIndexes == null) {
+				gsmIndexes = new TreeMap<String, GSMIndexes>();
 			}
-			if (mobileIndexes.isEmpty()) {
+			if (gsmIndexes.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
 				ArrayList<GSMIndexes> list = (ArrayList<GSMIndexes>) oracleManager
-						.createNamedQuery("MobileOperatorPrefixe.getAll")
+						.createNamedQuery("GSMIndexes.getAllGSMIndexes")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 					for (GSMIndexes item : list) {
-						mobileIndexes.put(item.getGsm_index(), item);
+						gsmIndexes.put(item.getGsm_index(), item);
 					}
 				}
 			}
-			mobileIndexes.remove(mobileOperatorPrefixe.getGsm_index());
+			gsmIndexes.remove(gsmIndexParam.getGsm_index());
 
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			e.printStackTrace();
-			logger.error(
-					"Error While update MobileOperatorPrefixes from Database : ",
-					e);
+			logger.error("Error While update GSMIndexes from Database : ", e);
 			throw new CallCenterException(
-					"Error While update MobileOperatorPrefixes from Database : "
+					"Error While update GSMIndexes from Database : "
+							+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	// @SuppressWarnings("unchecked")
+	// public LandlineIndexes getFixedOperatorPrefix(String fixedIndex)
+	// throws CallCenterException {
+	// EntityManager oracleManager = null;
+	// try {
+	// if (landlineIndex == null) {
+	// landlineIndex = new TreeMap<String, LandlineIndexes>();
+	// }
+	// if (landlineIndex.isEmpty()) {
+	// oracleManager = EMF.getEntityManager();
+	// ArrayList<LandlineIndexes> list = (ArrayList<LandlineIndexes>)
+	// oracleManager
+	// .createNamedQuery("FixedOperatorPrefixe.getAll")
+	// .getResultList();
+	// if (list != null && !list.isEmpty()) {
+	// for (LandlineIndexes item : list) {
+	// landlineIndex.put(item.getPrefix(), item);
+	// }
+	// }
+	// }
+	// return landlineIndex.get(fixedIndex);
+	// } catch (Exception e) {
+	// if (e instanceof CallCenterException) {
+	// throw (CallCenterException) e;
+	// }
+	// e.printStackTrace();
+	// logger.error(
+	// "Error While getting FixedOperatorPrefixe from Database : ",
+	// e);
+	// throw new CallCenterException(
+	// "Error While getting FixedOperatorPrefixe from Database : "
+	// + e.toString());
+	// } finally {
+	// if (oracleManager != null) {
+	// EMF.returnEntityManager(oracleManager);
+	// }
+	// }
+	// }
+
+	@SuppressWarnings("unchecked")
+	public void addLandlineIndexes(LandlineIndexes landlineIndexesParam)
+			throws CallCenterException {
+		EntityManager oracleManager = null;
+		try {
+			if (landlineIndex == null) {
+				landlineIndex = new TreeMap<String, LandlineIndexes>();
+			}
+			if (landlineIndex.isEmpty()) {
+				oracleManager = EMF.getEntityManager();
+				ArrayList<LandlineIndexes> list = (ArrayList<LandlineIndexes>) oracleManager
+						.createNamedQuery("LandlineIndexes.getAll")
+						.getResultList();
+				if (list != null && !list.isEmpty()) {
+					for (LandlineIndexes item : list) {
+						landlineIndex.put(item.getLandline_index(), item);
+					}
+				}
+			}
+			landlineIndex.put(landlineIndexesParam.getLandline_index(),
+					landlineIndexesParam);
+		} catch (Exception e) {
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			e.printStackTrace();
+			logger.error("Error While adding LandlineIndexes to Database : ", e);
+			throw new CallCenterException(
+					"Error While adding LandlineIndexes to Database : "
 							+ e.toString());
 		} finally {
 			if (oracleManager != null) {
@@ -220,116 +287,36 @@ public class ServerSingleton {
 	}
 
 	@SuppressWarnings("unchecked")
-	public FixedOperatorPrefixe getFixedOperatorPrefix(String fixedIndex)
+	public void updateLandlineIndexes(LandlineIndexes landlineIndexesParam)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
-			if (fixedIndexes == null) {
-				fixedIndexes = new TreeMap<String, FixedOperatorPrefixe>();
+			if (landlineIndex == null) {
+				landlineIndex = new TreeMap<String, LandlineIndexes>();
 			}
-			if (fixedIndexes.isEmpty()) {
+			if (landlineIndex.isEmpty()) {
 				oracleManager = EMF.getEntityManager();
-				ArrayList<FixedOperatorPrefixe> list = (ArrayList<FixedOperatorPrefixe>) oracleManager
-						.createNamedQuery("FixedOperatorPrefixe.getAll")
+				ArrayList<LandlineIndexes> list = (ArrayList<LandlineIndexes>) oracleManager
+						.createNamedQuery("LandlineIndexes.getAll")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
-					for (FixedOperatorPrefixe item : list) {
-						fixedIndexes.put(item.getPrefix(), item);
+					for (LandlineIndexes item : list) {
+						landlineIndex.put(item.getLandline_index(), item);
 					}
 				}
 			}
-			return fixedIndexes.get(fixedIndex);
+			landlineIndex.remove(landlineIndexesParam.getLandline_index());
+
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			e.printStackTrace();
 			logger.error(
-					"Error While getting FixedOperatorPrefixe from Database : ",
+					"Error While update LandlineIndexes from Database : ",
 					e);
 			throw new CallCenterException(
-					"Error While getting FixedOperatorPrefixe from Database : "
-							+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public void addFixedOperatorPrefix(FixedOperatorPrefixe fixedOperatorPrefixe)
-			throws CallCenterException {
-		EntityManager oracleManager = null;
-		try {
-			if (fixedIndexes == null) {
-				fixedIndexes = new TreeMap<String, FixedOperatorPrefixe>();
-			}
-			if (fixedIndexes.isEmpty()) {
-				oracleManager = EMF.getEntityManager();
-				ArrayList<FixedOperatorPrefixe> list = (ArrayList<FixedOperatorPrefixe>) oracleManager
-						.createNamedQuery("FixedOperatorPrefixe.getAll")
-						.getResultList();
-				if (list != null && !list.isEmpty()) {
-					for (FixedOperatorPrefixe item : list) {
-						fixedIndexes.put(item.getPrefix(), item);
-					}
-				}
-			}
-			fixedIndexes.put(fixedOperatorPrefixe.getPrefix(),
-					fixedOperatorPrefixe);
-		} catch (Exception e) {
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			e.printStackTrace();
-			logger.error(
-					"Error While adding FixedOperatorPrefixe to Database : ", e);
-			throw new CallCenterException(
-					"Error While adding FixedOperatorPrefixe to Database : "
-							+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public void updateFixedOperatorPrefix(
-			FixedOperatorPrefixe fixedOperatorPrefixe)
-			throws CallCenterException {
-		EntityManager oracleManager = null;
-		try {
-			if (fixedIndexes == null) {
-				fixedIndexes = new TreeMap<String, FixedOperatorPrefixe>();
-			}
-			if (fixedIndexes.isEmpty()) {
-				oracleManager = EMF.getEntityManager();
-				ArrayList<FixedOperatorPrefixe> list = (ArrayList<FixedOperatorPrefixe>) oracleManager
-						.createNamedQuery("FixedOperatorPrefixe.getAll")
-						.getResultList();
-				if (list != null && !list.isEmpty()) {
-					for (FixedOperatorPrefixe item : list) {
-						fixedIndexes.put(item.getPrefix(), item);
-					}
-				}
-			}
-			fixedIndexes.remove(fixedOperatorPrefixe.getPrefix());
-			if (fixedOperatorPrefixe.getDeleted().equals(0L)) {
-				fixedIndexes.put(fixedOperatorPrefixe.getPrefix(),
-						fixedOperatorPrefixe);
-			}
-		} catch (Exception e) {
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			e.printStackTrace();
-			logger.error(
-					"Error While update FixedOperatorPrefixe from Database : ",
-					e);
-			throw new CallCenterException(
-					"Error While update FixedOperatorPrefixe from Database : "
+					"Error While update LandlineIndexes from Database : "
 							+ e.toString());
 		} finally {
 			if (oracleManager != null) {
