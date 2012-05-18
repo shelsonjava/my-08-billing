@@ -54,7 +54,6 @@
     <class>com.info08.billing.callcenterbk.shared.entity.admin.LandlineIndexes</class>
     <class>com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes</class>
     <class>com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.callcenter.CcServiceLog</class>
     <class>com.info08.billing.callcenterbk.shared.entity.MainNew</class>
     <class>com.info08.billing.callcenterbk.shared.entity.session.LogSessionCharge</class>
     <class>com.info08.billing.callcenterbk.shared.entity.session.LogSession</class>
