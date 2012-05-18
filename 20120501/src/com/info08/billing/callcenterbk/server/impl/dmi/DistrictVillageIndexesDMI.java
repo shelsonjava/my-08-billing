@@ -9,175 +9,103 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
-import com.info08.billing.callcenterbk.shared.entity.GeoIndCountry;
-import com.info08.billing.callcenterbk.shared.entity.GeoIndRegion;
-import com.info08.billing.callcenterbk.shared.entity.Service;
+import com.info08.billing.callcenterbk.server.common.RCNGenerator;
+import com.info08.billing.callcenterbk.shared.entity.DistrictIndexes;
 import com.info08.billing.callcenterbk.shared.entity.StreetEnt;
 import com.info08.billing.callcenterbk.shared.entity.StreetIndex;
+import com.info08.billing.callcenterbk.shared.entity.VillageIndexes;
+import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 
-public class GeoIndDMI implements QueryConstants {
+public class DistrictVillageIndexesDMI implements QueryConstants {
 
-	Logger logger = Logger.getLogger(GeoIndDMI.class.getName());
+	Logger logger = Logger.getLogger(DistrictVillageIndexesDMI.class.getName());
 
 	/**
-	 * Adding New GeoIndRegion
+	 * Adding New DistrictIndexes
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	public GeoIndRegion addGeoIndRegion(GeoIndRegion geoIndRegion)
-			throws Exception {
+	// public DistrictIndexes addDistrictIndexes(DistrictIndexes
+	// districtIndexes)
+	// throws Exception {
+	// EntityManager oracleManager = null;
+	// Object transaction = null;
+	// try {
+	// String log = "Method:CommonDMI.addDistrictIndexes.";
+	// oracleManager = EMF.getEntityManager();
+	// transaction = EMF.getTransaction(oracleManager);
+	//
+	// String loggedUserName = districtIndexes.getLoggedUserName();
+	//
+	// Timestamp updDate = new Timestamp(System.currentTimeMillis());
+	// RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+	// loggedUserName, "Add DistrictIndexes.");
+	//
+	// oracleManager.persist(districtIndexes);
+	// oracleManager.flush();
+	//
+	// districtIndexes = oracleManager.find(DistrictIndexes.class,
+	// districtIndexes.getDistrict_index_id());
+	//
+	// EMF.commitTransaction(transaction);
+	// log += ". Inserting Finished SuccessFully. ";
+	// logger.info(log);
+	// return districtIndexes;
+	// } catch (Exception e) {
+	// EMF.rollbackTransaction(transaction);
+	// if (e instanceof CallCenterException) {
+	// throw (CallCenterException) e;
+	// }
+	// logger.error("Error While Insert DistrictIndexes Into Database : ",
+	// e);
+	// throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+	// + e.toString());
+	// } finally {
+	// if (oracleManager != null) {
+	// EMF.returnEntityManager(oracleManager);
+	// }
+	// }
+	// }
+
+	@SuppressWarnings("rawtypes")
+	public DistrictIndexes addDistrictIndexes(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addGeoIndRegion.";
+			String log = "Method:CommonDMI.addDistrictIndexes.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			String loggedUserName = geoIndRegion.getLoggedUserName();
-			geoIndRegion.setRec_date(recDate);
-			geoIndRegion.setService_id(48L);
+			DistrictIndexes districtIndexes = new DistrictIndexes();
+			districtIndexes.setDistrict_index_name(record
+					.get("district_index_name") == null ? null : record.get(
+					"district_index_name").toString());
 
-			oracleManager.persist(geoIndRegion);
+			String loggedUserName = record.get("loggedUserName").toString();
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add DistrictIndexes.");
+
+			oracleManager.persist(districtIndexes);
 			oracleManager.flush();
 
-			geoIndRegion = oracleManager.find(GeoIndRegion.class,
-					geoIndRegion.getRegion_id());
-			geoIndRegion.setLoggedUserName(loggedUserName);
-			Service service = oracleManager.find(Service.class, 48L);
-			if (service != null) {
-				geoIndRegion.setServiceName(service.getServiceNameGeo());
-			}
+			districtIndexes = oracleManager.find(DistrictIndexes.class,
+					districtIndexes.getDistrict_index_id());
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return geoIndRegion;
+			return districtIndexes;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert GeoIndRegion Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	/**
-	 * Updating GeoIndRegion
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public GeoIndRegion updateGeoIndRegion(Map record) throws Exception {
-		EntityManager oracleManager = null;
-		Object transaction = null;
-		try {
-			String log = "Method:CommonDMI.updateGeoIndRegion.";
-			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
-
-			Long region_id = new Long(record.get("region_id").toString());
-			String region_name_geo = record.get("region_name_geo") == null ? null
-					: record.get("region_name_geo").toString();
-			String region_name_eng = record.get("region_name_eng") == null ? null
-					: record.get("region_name_eng").toString();
-			String loggedUserName = record.get("loggedUserName").toString();
-
-			GeoIndRegion geoIndRegion = oracleManager.find(GeoIndRegion.class,
-					region_id);
-
-			geoIndRegion.setRegion_name_geo(region_name_geo);
-			geoIndRegion.setRegion_name_eng(region_name_eng);
-			geoIndRegion.setUpd_user(loggedUserName);
-
-			oracleManager.merge(geoIndRegion);
-			oracleManager.flush();
-
-			geoIndRegion = oracleManager.find(GeoIndRegion.class, region_id);
-
-			geoIndRegion.setLoggedUserName(loggedUserName);
-			Service service = oracleManager.find(Service.class, 48L);
-			if (service != null) {
-				geoIndRegion.setServiceName(service.getServiceNameGeo());
-			}
-
-			EMF.commitTransaction(transaction);
-			log += ". Updating Finished SuccessFully. ";
-			logger.info(log);
-			return geoIndRegion;
-		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error("Error While Update GeoIndRegion Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	/**
-	 * Updating GeoIndRegion Status
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public GeoIndRegion updateGeoIndRegionStatus(Map record) throws Exception {
-		EntityManager oracleManager = null;
-		Object transaction = null;
-		try {
-			String log = "Method:CommonDMI.updateGeoIndRegionStatus.";
-			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
-
-			Long region_id = new Long(record.get("region_id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
-
-			GeoIndRegion geoIndRegion = oracleManager.find(GeoIndRegion.class,
-					region_id);
-			geoIndRegion.setDeleted(deleted);
-			geoIndRegion.setUpd_user(loggedUserName);
-
-			oracleManager.merge(geoIndRegion);
-			oracleManager.flush();
-			geoIndRegion = oracleManager.find(GeoIndRegion.class, region_id);
-
-			geoIndRegion.setLoggedUserName(loggedUserName);
-			Service service = oracleManager.find(Service.class, 48L);
-			if (service != null) {
-				geoIndRegion.setServiceName(service.getServiceNameGeo());
-			}
-
-			EMF.commitTransaction(transaction);
-			log += ". Status Updating Finished SuccessFully. ";
-			logger.info(log);
-			return geoIndRegion;
-		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error(
-					"Error While Update Status for GeoIndRegion Into Database : ",
+			logger.error("Error While Insert DistrictIndexes Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
@@ -189,231 +117,54 @@ public class GeoIndDMI implements QueryConstants {
 	}
 
 	/**
-	 * Adding New GeoIndCountry
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	public GeoIndCountry addGeoIndCountry(GeoIndCountry geoIndCountry)
-			throws Exception {
-		EntityManager oracleManager = null;
-		Object transaction = null;
-		try {
-			String log = "Method:CommonDMI.addGeoIndCountry.";
-			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
-
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			String loggedUserName = geoIndCountry.getLoggedUserName();
-			geoIndCountry.setRec_date(recDate);
-
-			oracleManager.persist(geoIndCountry);
-			oracleManager.flush();
-
-			geoIndCountry = oracleManager.find(GeoIndCountry.class,
-					geoIndCountry.getGeo_country_id());
-			geoIndCountry.setLoggedUserName(loggedUserName);
-
-			Long region_id = geoIndCountry.getRegion_id();
-			if (region_id != null) {
-				GeoIndRegion geoIndRegion = oracleManager.find(
-						GeoIndRegion.class, region_id);
-				if (geoIndRegion != null) {
-					geoIndCountry.setRegionName(geoIndRegion
-							.getRegion_name_geo());
-				}
-			}
-			Long is_center = geoIndCountry.getIs_center();
-			if (is_center != null) {
-				switch (is_center.intValue()) {
-				case -1:
-					geoIndCountry.setIsCenterDescr("რაიონული ცენტრი");
-					break;
-				case 0:
-					geoIndCountry.setIsCenterDescr("სოფელი");
-					break;
-				default:
-					geoIndCountry.setIsCenterDescr("უცნობია");
-					break;
-				}
-			}
-
-			EMF.commitTransaction(transaction);
-			log += ". Inserting Finished SuccessFully. ";
-			logger.info(log);
-			return geoIndCountry;
-		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error("Error While Insert GeoIndCountry Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	/**
-	 * Updating GeoIndCountry
+	 * Updating DistrictIndexes
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public GeoIndCountry updateGeoIndCountry(Map record) throws Exception {
+	public DistrictIndexes updateDistrictIndexes(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateGeoIndCountry.";
+			String log = "Method:CommonDMI.updateDistrictIndexes.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long geo_country_id = new Long(record.get("geo_country_id")
+			Long district_index_id = new Long(record.get("district_index_id")
 					.toString());
-			String geo_country_geo = record.get("geo_country_geo") == null ? null
-					: record.get("geo_country_geo").toString();
-			String geo_country_eng = record.get("geo_country_eng") == null ? null
-					: record.get("geo_country_eng").toString();
-			String geo_index = record.get("geo_index") == null ? null : record
-					.get("geo_index").toString();
-			Long is_center = new Long(record.get("is_center").toString());
-			Long region_id = new Long(record.get("region_id").toString());
-
+			String district_index_name = record.get("district_index_name") == null ? null
+					: record.get("district_index_name").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			GeoIndCountry geoIndCountry = oracleManager.find(
-					GeoIndCountry.class, geo_country_id);
+			DistrictIndexes districtIndex = oracleManager.find(
+					DistrictIndexes.class, district_index_id);
 
-			geoIndCountry.setGeo_country_eng(geo_country_eng);
-			geoIndCountry.setGeo_country_geo(geo_country_geo);
-			geoIndCountry.setGeo_index(geo_index);
-			geoIndCountry.setIs_center(is_center);
-			geoIndCountry.setRegion_id(region_id);
-			geoIndCountry.setUpd_user(loggedUserName);
+			districtIndex.setDistrict_index_name(district_index_name);
 
-			oracleManager.merge(geoIndCountry);
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Detele DistrictIndexes.");
+
+			oracleManager.merge(districtIndex);
 			oracleManager.flush();
 
-			geoIndCountry = oracleManager.find(GeoIndCountry.class,
-					geo_country_id);
-			geoIndCountry.setLoggedUserName(loggedUserName);
+			districtIndex = oracleManager.find(DistrictIndexes.class,
+					district_index_id);
 
-			if (region_id != null) {
-				GeoIndRegion geoIndRegion = oracleManager.find(
-						GeoIndRegion.class, region_id);
-				if (geoIndRegion != null) {
-					geoIndCountry.setRegionName(geoIndRegion
-							.getRegion_name_geo());
-				}
-			}
-			if (is_center != null) {
-				switch (is_center.intValue()) {
-				case -1:
-					geoIndCountry.setIsCenterDescr("რაიონული ცენტრი");
-					break;
-				case 0:
-					geoIndCountry.setIsCenterDescr("სოფელი");
-					break;
-				default:
-					geoIndCountry.setIsCenterDescr("უცნობია");
-					break;
-				}
-			}
+			districtIndex.setLoggedUserName(loggedUserName);
 
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return geoIndCountry;
+			return districtIndex;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update GeoIndCountry Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	/**
-	 * Updating GeoIndCountry Status
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public GeoIndCountry updateGeoIndCountryStatus(Map record) throws Exception {
-		EntityManager oracleManager = null;
-		Object transaction = null;
-		try {
-			String log = "Method:CommonDMI.updateGeoIndCountryStatus.";
-			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
-
-			Long geo_country_id = new Long(record.get("geo_country_id")
-					.toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
-
-			GeoIndCountry geoIndCountry = oracleManager.find(
-					GeoIndCountry.class, geo_country_id);
-			geoIndCountry.setDeleted(deleted);
-			geoIndCountry.setUpd_user(loggedUserName);
-
-			oracleManager.merge(geoIndCountry);
-			oracleManager.flush();
-			geoIndCountry = oracleManager.find(GeoIndCountry.class,
-					geo_country_id);
-
-			geoIndCountry.setLoggedUserName(loggedUserName);
-
-			Long region_id = geoIndCountry.getRegion_id();
-			if (region_id != null) {
-				GeoIndRegion geoIndRegion = oracleManager.find(
-						GeoIndRegion.class, region_id);
-				if (geoIndRegion != null) {
-					geoIndCountry.setRegionName(geoIndRegion
-							.getRegion_name_geo());
-				}
-			}
-			Long is_center = geoIndCountry.getIs_center();
-			if (is_center != null) {
-				switch (is_center.intValue()) {
-				case -1:
-					geoIndCountry.setIsCenterDescr("რაიონული ცენტრი");
-					break;
-				case 0:
-					geoIndCountry.setIsCenterDescr("სოფელი");
-					break;
-				default:
-					geoIndCountry.setIsCenterDescr("უცნობია");
-					break;
-				}
-			}
-
-			EMF.commitTransaction(transaction);
-			log += ". Status Updating Finished SuccessFully. ";
-			logger.info(log);
-			return geoIndCountry;
-		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error(
-					"Error While Update Status for GeoIndCountry Into Database : ",
+			logger.error("Error While Update DistrictIndexes Into Database : ",
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
@@ -423,8 +174,270 @@ public class GeoIndDMI implements QueryConstants {
 			}
 		}
 	}
-	
-	
+
+	/**
+	 * Delete DistrictIndexes
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+
+	public DistrictIndexes deleteDistrictIndexes(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.deleteDistrictIndexes.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long district_index_id = new Long(dsRequest.getOldValues()
+					.get("district_index_id").toString());
+
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Detele DistrictIndexes.");
+
+			DistrictIndexes districtIndexes = oracleManager.find(
+					DistrictIndexes.class, district_index_id);
+
+			oracleManager.remove(districtIndexes);
+			oracleManager.flush();
+
+			EMF.commitTransaction(transaction);
+			log += ". Status Delete Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error(
+					"Error While Update Status for DistrictIndexes Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	/**
+	 * Adding New VillageIndexes
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public VillageIndexes addVillageIndexes(VillageIndexes villageIndexesParam)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.addVillageIndexes.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			String loggedUserName = villageIndexesParam.getLoggedUserName();
+
+			oracleManager.persist(villageIndexesParam);
+			oracleManager.flush();
+
+			villageIndexesParam = oracleManager.find(VillageIndexes.class,
+					villageIndexesParam.getVillage_index_id());
+			villageIndexesParam.setLoggedUserName(loggedUserName);
+
+			Long district_index_id = villageIndexesParam.getDistrict_index_id();
+			if (district_index_id != null) {
+				DistrictIndexes districtIndex = oracleManager.find(
+						DistrictIndexes.class, district_index_id);
+				if (districtIndex != null) {
+					villageIndexesParam.setDistrict_index_name(districtIndex
+							.getDistrict_index_name());
+				}
+			}
+			Long district_center = villageIndexesParam.getDistrict_center();
+			if (district_center != null) {
+				switch (district_center.intValue()) {
+				case -1:
+					villageIndexesParam
+							.setDistrict_center_descr("რაიონული ცენტრი");
+					break;
+				case 0:
+					villageIndexesParam.setDistrict_center_descr("სოფელი");
+					break;
+				default:
+					villageIndexesParam.setDistrict_center_descr("უცნობია");
+					break;
+				}
+			}
+
+			EMF.commitTransaction(transaction);
+			log += ". Inserting Finished SuccessFully. ";
+			logger.info(log);
+			return villageIndexesParam;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Insert VillageIndexes Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	/**
+	 * Updating VillageIndexes
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("rawtypes")
+	public VillageIndexes updateVillageIndexes(Map record) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.updateVillageIndexes.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long village_index_id = new Long(record.get("village_index_id")
+					.toString());
+			String village_index_name = record.get("village_index_name") == null ? null
+					: record.get("village_index_name").toString();
+			String village_index = record.get("village_index") == null ? null
+					: record.get("village_index").toString();
+			Long district_center = new Long(record.get("district_center")
+					.toString());
+			Long district_index_id = new Long(record.get("district_index_id")
+					.toString());
+
+			String loggedUserName = record.get("loggedUserName").toString();
+
+			VillageIndexes villageIndex = oracleManager.find(
+					VillageIndexes.class, village_index_id);
+
+			villageIndex.setVillage_index_name(village_index_name);
+			villageIndex.setVillage_index(village_index);
+			villageIndex.setDistrict_center(district_center);
+			villageIndex.setDistrict_index_id(district_index_id);
+
+			oracleManager.merge(villageIndex);
+			oracleManager.flush();
+
+			villageIndex = oracleManager.find(VillageIndexes.class,
+					village_index_id);
+
+			villageIndex.setLoggedUserName(loggedUserName);
+
+			if (district_index_id != null) {
+				DistrictIndexes districtIndex = oracleManager.find(
+						DistrictIndexes.class, district_index_id);
+				if (districtIndex != null) {
+					villageIndex.setDistrict_index_name(districtIndex
+							.getDistrict_index_name());
+				}
+			}
+			if (district_center != null) {
+				switch (district_center.intValue()) {
+				case -1:
+					villageIndex.setDistrict_center_descr("რაიონული ცენტრი");
+					break;
+				case 0:
+					villageIndex.setDistrict_center_descr("სოფელი");
+					break;
+				default:
+					villageIndex.setDistrict_center_descr("უცნობია");
+					break;
+				}
+			}
+
+			EMF.commitTransaction(transaction);
+			log += ". Updating Finished SuccessFully. ";
+			logger.info(log);
+			return villageIndex;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Update VillageIndexes Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	/**
+	 * Delete VillageIndexes
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public VillageIndexes deleteVillageIndexes(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.deleteVillageIndexes.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long village_index_id = new Long(dsRequest.getOldValues()
+					.get("village_index_id").toString());
+
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Detele Event.");
+
+			VillageIndexes villageIndexes = oracleManager.find(
+					VillageIndexes.class, village_index_id);
+
+			oracleManager.remove(villageIndexes);
+			oracleManager.flush();
+
+			EMF.commitTransaction(transaction);
+			log += ". Status Updating Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Delete VillageIndexes From Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
 	/**
 	 * Adding New StreetIndex
 	 * 
@@ -432,8 +445,7 @@ public class GeoIndDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public StreetIndex addStreetIndex(StreetIndex streetIndex)
-			throws Exception {
+	public StreetIndex addStreetIndex(StreetIndex streetIndex) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -455,8 +467,8 @@ public class GeoIndDMI implements QueryConstants {
 
 			Long street_id = streetIndex.getStreet_id();
 			if (street_id != null) {
-				StreetEnt streetEnt = oracleManager.find(
-						StreetEnt.class, street_id);
+				StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
+						street_id);
 				if (streetEnt != null) {
 					streetIndex.setStreetName(streetEnt.getStreet_name_geo());
 				}
@@ -497,13 +509,18 @@ public class GeoIndDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_index_id = new Long(record.get("street_index_id").toString());
-			Long street_id = record.get("street_id") == null ? null : new Long(record.get("street_id").toString());
-			String street_comment = record.get("street_comment") == null ? null : record.get("street_comment").toString();
-			String street_index = record.get("street_index") == null ? null : record.get("street_index").toString();			
+			Long street_index_id = new Long(record.get("street_index_id")
+					.toString());
+			Long street_id = record.get("street_id") == null ? null : new Long(
+					record.get("street_id").toString());
+			String street_comment = record.get("street_comment") == null ? null
+					: record.get("street_comment").toString();
+			String street_index = record.get("street_index") == null ? null
+					: record.get("street_index").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			StreetIndex streetIndex = oracleManager.find(StreetIndex.class, street_index_id);
+			StreetIndex streetIndex = oracleManager.find(StreetIndex.class,
+					street_index_id);
 
 			streetIndex.setStreet_id(street_id);
 			streetIndex.setStreet_comment(street_comment);
@@ -513,12 +530,13 @@ public class GeoIndDMI implements QueryConstants {
 			oracleManager.merge(streetIndex);
 			oracleManager.flush();
 
-			streetIndex = oracleManager.find(StreetIndex.class, street_index_id);
+			streetIndex = oracleManager
+					.find(StreetIndex.class, street_index_id);
 			streetIndex.setLoggedUserName(loggedUserName);
 
 			if (street_id != null) {
-				StreetEnt streetEnt = oracleManager.find(
-						StreetEnt.class, street_id);
+				StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
+						street_id);
 				if (streetEnt != null) {
 					streetIndex.setStreetName(streetEnt.getStreet_name_geo());
 				}
@@ -559,25 +577,28 @@ public class GeoIndDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_index_id = new Long(record.get("street_index_id").toString());
+			Long street_index_id = new Long(record.get("street_index_id")
+					.toString());
 			Long deleted = new Long(record.get("deleted").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			StreetIndex streetIndex = oracleManager.find(StreetIndex.class, street_index_id);
-			
+			StreetIndex streetIndex = oracleManager.find(StreetIndex.class,
+					street_index_id);
+
 			streetIndex.setDeleted(deleted);
 			streetIndex.setUpd_user(loggedUserName);
 
 			oracleManager.merge(streetIndex);
 			oracleManager.flush();
-			streetIndex = oracleManager.find(StreetIndex.class, street_index_id);
+			streetIndex = oracleManager
+					.find(StreetIndex.class, street_index_id);
 
 			streetIndex.setLoggedUserName(loggedUserName);
-			
-			Long street_id = streetIndex.getStreet_id(); 
+
+			Long street_id = streetIndex.getStreet_id();
 			if (street_id != null) {
-				StreetEnt streetEnt = oracleManager.find(
-						StreetEnt.class, street_id);
+				StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
+						street_id);
 				if (streetEnt != null) {
 					streetIndex.setStreetName(streetEnt.getStreet_name_geo());
 				}
