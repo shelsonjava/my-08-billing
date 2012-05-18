@@ -80,7 +80,7 @@
             	 	insert into ccare.SENT_SMS_HIST 
             	 		(SENT_SMS_HIST_ID,SESSION_CALL_ID,MESSAGE_TYPE,MESSAGE_CONTEXT,RECIEVER_NUMBER,reciever_number) 
             	 	values 
-            	 		(SEQ_SENT_SMS_HIST.NEXTVAL,$values.session_id,$values.sms_type,ccare.trsms($values.sms_text),trim($values.phone),$values.rec_user)
+            	 		(SEQ_SENT_SMS_HIST.NEXTVAL,$values.session_id,$values.sms_type,$values.sms_text,trim($values.phone),$values.rec_user)
             	 ]]>
             </customSQL> 
         </operationBinding>
