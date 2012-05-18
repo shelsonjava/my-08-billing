@@ -23,21 +23,21 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditGeoIndCountry extends Window {
+public class DlgAddEditVillageIndexes extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
 	// form fields
-	private ComboBoxItem geoIndRegionItem;
-	private TextItem geoCountryGeoItem;
-	private TextItem geoIndexItem;
-	private ComboBoxItem isRaionCenterItem;
+	private ComboBoxItem districtIndexItem;
+	private TextItem villageNameItem;
+	private TextItem vilageIndexItem;
+	private ComboBoxItem districtCenterItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditGeoIndCountry(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditVillageIndexes(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
@@ -67,33 +67,33 @@ public class DlgAddEditGeoIndCountry extends Window {
 		dynamicForm.setNumCols(2);
 		hLayout.addMember(dynamicForm);
 
-		geoIndRegionItem = new ComboBoxItem();
-		geoIndRegionItem.setTitle("რაიონი");
-		geoIndRegionItem.setWidth(350);
-		geoIndRegionItem.setName("region_id");
-		geoIndRegionItem.setFetchMissingValues(true);
-		geoIndRegionItem.setFilterLocally(true);
+		districtIndexItem = new ComboBoxItem();
+		districtIndexItem.setTitle("რაიონი");
+		districtIndexItem.setWidth(350);
+		districtIndexItem.setName("districtIndexItem");
+		districtIndexItem.setFetchMissingValues(true);
+		districtIndexItem.setFilterLocally(true);
 
-		geoCountryGeoItem = new TextItem();
-		geoCountryGeoItem.setTitle("დასახელება(ქართ.)");
-		geoCountryGeoItem.setWidth(350);
-		geoCountryGeoItem.setName("geo_country_geo");
+		villageNameItem = new TextItem();
+		villageNameItem.setTitle("დასახელება");
+		villageNameItem.setWidth(350);
+		villageNameItem.setName("villageNameItem");
 
-		geoIndexItem = new TextItem();
-		geoIndexItem.setTitle("ინდექსი");
-		geoIndexItem.setWidth(350);
-		geoIndexItem.setName("geo_index");
+		vilageIndexItem = new TextItem();
+		vilageIndexItem.setTitle("ინდექსი");
+		vilageIndexItem.setWidth(350);
+		vilageIndexItem.setName("vilageIndexItem");
 
-		isRaionCenterItem = new ComboBoxItem();
-		isRaionCenterItem.setTitle("რაიონი");
-		isRaionCenterItem.setWidth(350);
-		isRaionCenterItem.setName("is_center");
-		isRaionCenterItem.setValueMap(ClientMapUtil.getInstance()
+		districtCenterItem = new ComboBoxItem();
+		districtCenterItem.setTitle("რაიონი");
+		districtCenterItem.setWidth(350);
+		districtCenterItem.setName("districtCenterItem");
+		districtCenterItem.setValueMap(ClientMapUtil.getInstance()
 				.getRaionCentTypes());
-		isRaionCenterItem.setDefaultToFirstOption(true);
+		districtCenterItem.setDefaultToFirstOption(true);
 
-		dynamicForm.setFields(geoIndRegionItem, geoCountryGeoItem,
-				geoIndexItem, isRaionCenterItem);
+		dynamicForm.setFields(districtIndexItem, villageNameItem,
+				vilageIndexItem, districtCenterItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -130,30 +130,30 @@ public class DlgAddEditGeoIndCountry extends Window {
 
 	private void fillCombos() {
 		try {
-			DataSource geoIndRegDS = DataSource.get("GeoIndRegionDS");
-			geoIndRegionItem.setOptionOperationId("searchGeoIndRegionFromDB");
-			geoIndRegionItem.setOptionDataSource(geoIndRegDS);
-			geoIndRegionItem.setValueField("region_id");
-			geoIndRegionItem.setDisplayField("region_name_geo");
+			DataSource districtIndexesDS = DataSource.get("DistrictIndexesDS");
+			districtIndexItem.setOptionOperationId("searchDistrictIndexes");
+			districtIndexItem.setOptionDataSource(districtIndexesDS);
+			districtIndexItem.setValueField("district_index_id");
+			districtIndexItem.setDisplayField("district_index_name");
 			Criteria optionCriteria = new Criteria();
-			optionCriteria.setAttribute("DlgAddEditGeoIndCountry",
-					"DlgAddEditGeoIndCountry_" + HTMLPanel.createUniqueId());
+			optionCriteria.setAttribute("DlgAddEditVillageIndexes",
+					"DlgAddEditVillageIndexes_" + HTMLPanel.createUniqueId());
 			optionCriteria.setAttribute(CommonSingleton.getInstance()
 					.getUnixTimeStamp(), CommonSingleton.getInstance()
 					.getUnixTimeStamp());
-			geoIndRegionItem.setOptionCriteria(optionCriteria);
-			geoIndRegionItem.setAutoFetchData(true);
+			districtIndexItem.setOptionCriteria(optionCriteria);
+			districtIndexItem.setAutoFetchData(true);
 
 			DSRequest requestProperties1 = new DSRequest();
-			requestProperties1.setOperationId("searchGeoIndRegionFromDB");
+			requestProperties1.setOperationId("searchDistrictIndexes");
 
-			geoIndRegionItem.fetchData(new DSCallback() {
+			districtIndexItem.fetchData(new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
 					if (editRecord != null) {
-						geoIndRegionItem.setValue(editRecord
-								.getAttributeAsInt("region_id"));
+						districtIndexItem.setValue(editRecord
+								.getAttributeAsInt("district_index_id"));
 					}
 				}
 			}, requestProperties1);
@@ -168,11 +168,12 @@ public class DlgAddEditGeoIndCountry extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			geoCountryGeoItem.setValue(editRecord
-					.getAttributeAsString("geo_country_geo"));
-			geoIndexItem.setValue(editRecord.getAttributeAsString("geo_index"));
-			isRaionCenterItem.setValue(editRecord
-					.getAttributeAsInt("is_center"));
+			villageNameItem.setValue(editRecord
+					.getAttributeAsString("village_index_name"));
+			vilageIndexItem.setValue(editRecord
+					.getAttributeAsString("village_index"));
+			districtCenterItem.setValue(editRecord
+					.getAttributeAsInt("district_center"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -180,23 +181,25 @@ public class DlgAddEditGeoIndCountry extends Window {
 
 	private void save() {
 		try {
-			String region_id = geoIndRegionItem.getValueAsString();
-			if (region_id == null || region_id.trim().equalsIgnoreCase("")) {
+			String district_index_id = districtIndexItem.getValueAsString();
+			if (district_index_id == null
+					|| district_index_id.trim().equalsIgnoreCase("")) {
 				SC.say("აირჩიეთ რაიონი !");
 				return;
 			}
-			String geo_country_geo = geoCountryGeoItem.getValueAsString();
-			if (geo_country_geo == null || geo_country_geo.trim().equals("")) {
+			String village_index_name = villageNameItem.getValueAsString();
+			if (village_index_name == null
+					|| village_index_name.trim().equals("")) {
 				SC.say("შეიყვანეთ ქართული დასახელება !");
 				return;
 			}
-			String geo_index = geoIndexItem.getValueAsString();
-			if (geo_index == null || geo_index.trim().equals("")) {
+			String village_index = vilageIndexItem.getValueAsString();
+			if (village_index == null || village_index.trim().equals("")) {
 				SC.say("შეიყვანეთ ინდექსი !");
 				return;
 			}
-			String is_center = isRaionCenterItem.getValueAsString();
-			if (is_center == null || is_center.trim().equals("")) {
+			String district_center = districtCenterItem.getValueAsString();
+			if (district_center == null || district_center.trim().equals("")) {
 				SC.say("შეიყვანეთ ტიპი !");
 				return;
 			}
@@ -204,25 +207,24 @@ public class DlgAddEditGeoIndCountry extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
-			String loggedUser = CommonSingleton.getInstance()
+			String loggedUserName = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
-			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("region_id", region_id);
-			record.setAttribute("geo_country_geo", geo_country_geo);
-			record.setAttribute("geo_index", geo_index);
-			record.setAttribute("is_center", is_center);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("rec_user", loggedUser);
+
+			record.setAttribute("district_index_id", district_index_id);
+			record.setAttribute("village_index_name", village_index_name);
+			record.setAttribute("village_index", village_index);
+			record.setAttribute("district_center", district_center);
+			record.setAttribute("loggedUserName", loggedUserName);
 
 			if (editRecord != null) {
-				record.setAttribute("geo_country_id",
-						editRecord.getAttributeAsInt("geo_country_id"));
+				record.setAttribute("village_index_id",
+						editRecord.getAttributeAsInt("village_index_id"));
 			}
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addGeoIndCountry");
+				req.setAttribute("operationId", "addVillageIndexes");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -231,7 +233,7 @@ public class DlgAddEditGeoIndCountry extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateGeoIndCountry");
+				req.setAttribute("operationId", "updateVillageIndexes");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

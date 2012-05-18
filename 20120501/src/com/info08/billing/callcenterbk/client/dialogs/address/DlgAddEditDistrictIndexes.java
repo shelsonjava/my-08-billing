@@ -18,16 +18,16 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditGeoIndRegion extends Window {
+public class DlgAddEditDistrictIndexes extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
-	private TextItem geoIndRegNameGeoItem;
+	private TextItem districtNameItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditGeoIndRegion(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditDistrictIndexes(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
@@ -57,12 +57,12 @@ public class DlgAddEditGeoIndRegion extends Window {
 		dynamicForm.setNumCols(2);
 		hLayout.addMember(dynamicForm);
 
-		geoIndRegNameGeoItem = new TextItem();
-		geoIndRegNameGeoItem.setTitle("დასახელება (ქართულად)");
-		geoIndRegNameGeoItem.setWidth(300);
-		geoIndRegNameGeoItem.setName("region_name_geo");
+		districtNameItem = new TextItem();
+		districtNameItem.setTitle("დასახელება");
+		districtNameItem.setWidth(300);
+		districtNameItem.setName("district_index_name");
 
-		dynamicForm.setFields(geoIndRegNameGeoItem);
+		dynamicForm.setFields(districtNameItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -102,8 +102,8 @@ public class DlgAddEditGeoIndRegion extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			geoIndRegNameGeoItem.setValue(editRecord
-					.getAttribute("region_name_geo"));
+			districtNameItem.setValue(editRecord
+					.getAttribute("district_index_name"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -111,7 +111,7 @@ public class DlgAddEditGeoIndRegion extends Window {
 
 	private void save() {
 		try {
-			String region_name_geo = geoIndRegNameGeoItem
+			String region_name_geo = districtNameItem
 					.getValueAsString();
 			if (region_name_geo == null
 					|| region_name_geo.trim().equalsIgnoreCase("")) {
@@ -125,19 +125,18 @@ public class DlgAddEditGeoIndRegion extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("region_name_geo", region_name_geo);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("rec_user", loggedUser);
+			record.setAttribute("district_index_name", region_name_geo);
+
 
 			if (editRecord != null) {
-				record.setAttribute("region_id",
-						editRecord.getAttributeAsInt("region_id"));
+				record.setAttribute("district_index_id",
+						editRecord.getAttributeAsInt("district_index_id"));
 			}
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addGeoIndRegion");
+				req.setAttribute("operationId", "addDistrictIndexes");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -146,7 +145,7 @@ public class DlgAddEditGeoIndRegion extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateGeoIndRegion");
+				req.setAttribute("operationId", "updateDistrictIndexes");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
