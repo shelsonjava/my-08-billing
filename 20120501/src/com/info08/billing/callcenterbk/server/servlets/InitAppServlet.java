@@ -132,7 +132,7 @@ public class InitAppServlet extends HttpServlet {
 			}
 
 			boolean phoneIsMobile = CommonFunctions.isPhoneMobile(realPhone);
-			int callType = 0;
+			int callKind = 0;
 
 			String phoneDescription = "";
 			String abonentName = "";
@@ -151,14 +151,14 @@ public class InitAppServlet extends HttpServlet {
 			// mobile
 			if (phoneIsMobile) {
 				if (who.equals("M")) {
-					callType = Constants.callTypeMobitel;
+					callKind = Constants.callTypeMobitel;
 					List list = oracleManager.createNativeQuery(
 							QueryConstants.Q_GET_MOBITEL_NOTE).getResultList();
 					if (list != null && list.size() > 0) {
 						phoneDescription = list.get(0).toString();
 					}
 				} else {
-					callType = Constants.callTypeMobile;
+					callKind = Constants.callTypeMobile;
 				}
 
 				List<Treatments> list = (List<Treatments>) oracleManager
@@ -180,7 +180,7 @@ public class InitAppServlet extends HttpServlet {
 						.setParameter(1, realPhone).getSingleResult()
 						.toString());
 				if (nonChargeAbonentCount.longValue() > 0) {
-					callType = Constants.callTypeNoncharge;
+					callKind = Constants.callTypeNoncharge;
 				} else {
 
 					List result = oracleManager
@@ -194,9 +194,9 @@ public class InitAppServlet extends HttpServlet {
 								.toString();
 						bid = new Double(array[4] == null ? "-1"
 								: array[4].toString());
-						callType = Constants.callTypeOrganization;
+						callKind = Constants.callTypeOrganization;
 					} else {
-						callType = Constants.callTypeAbonent;
+						callKind = Constants.callTypeAbonent;
 					}
 					checkContractor = true;
 				}
@@ -290,7 +290,7 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setUser(user);
 			serverSession.setUserName(userName);
 			serverSession.setWebSession(false);
-			serverSession.setCallType(callType);
+			serverSession.setCallType(callKind);
 			serverSession.setCbd(bid);
 			serverSession.setTreatment(treatment);
 			serverSession.setPhoneIsMobile(phoneIsMobile);
@@ -303,11 +303,11 @@ public class InitAppServlet extends HttpServlet {
 			System.out.println("InitAppServlet. Incomming Session ID : "
 					+ sessionId + ", userName = " + userName + ", phone = "
 					+ phone + ", type = " + type + ", who = " + who);
+			int index=1;
 			oracleManager.createNativeQuery(QueryConstants.Q_INSERT_SESSION)
-					.setParameter(1, serverSession.getYearMonth())
-					.setParameter(2, userName).setParameter(3, realPhone)
-					.setParameter(4, sessionId).setParameter(5, callType)
-					.setParameter(6, 1).executeUpdate();
+					.setParameter(index++, serverSession.getYearMonth())
+					.setParameter(index++, userName).setParameter(index++, realPhone)
+					.setParameter(index++, sessionId).setParameter(index++, callKind);
 
 			HttpSession session = request.getSession(true);
 
@@ -326,7 +326,7 @@ public class InitAppServlet extends HttpServlet {
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
 			response.sendRedirect(response
-					.encodeRedirectURL("http://192.168.1.8:8888/CallCenterBK.html?gwt.codesvr=192.168.1.8:9997&sessionId="
+					.encodeRedirectURL("http://192.168.1.20:8888/CallCenterBK.html?gwt.codesvr=192.168.1.20:9997&sessionId="
 							+ sessionId));
 			// } else {
 			// Live
