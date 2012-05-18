@@ -870,6 +870,11 @@ public class DlgViewOrg extends Window {
 
 	private void logMainHit() {
 		try {
+			boolean flag = true;
+			if(flag){
+				// TODO LOOOOOOOOOOOOOOOGGGGGGGGGGG
+				return;
+			}
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {

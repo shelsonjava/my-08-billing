@@ -820,7 +820,7 @@ public interface QueryConstants {
 			+ " inner join ccare.contracts c on c.main_id = a.main_id\n"
 			+ " where t.phone = ? and a.deleted = 0 and c.deleted = 0 ";
 
-	public static final String Q_GET_CALL_CENTER_REQ_MSG = "select t.text from ccare.call_center_req_msg t where sysdate between t.start_date and t.end_date";
+	public static final String Q_GET_CALL_CENTER_REQ_MSG = "select t.description from ccare.descriptions t where t.description_id = 57100 ";
 
 	public static final String Q_GET_OPERATOR_REMARKS = " select count(1)\n"
 			+ "  from ccare.log_personell_notes t\n"
@@ -829,9 +829,9 @@ public interface QueryConstants {
 			+ "   and t.visible_options = 0\n" + "   and t.user_name = ? \n"
 			+ "   and t.received = 0\n" + " order by t.rec_user desc";
 
-	public static final String Q_GET_SPECIAL_TEXT_BY_NUMBER = " select t.note from call_special t where t.phone = ? ";
+	public static final String Q_GET_SPECIAL_TEXT_BY_NUMBER = " select t.note from ALERTS_BY_PHONE t where t.phone_number = ? ";
 	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone) from FREE_OF_CHARGE_PHONE t where t.phone = ? ";
-	public static final String Q_GET_MOBITEL_NOTE = "select t.ccn_note as note from call_center_note t where t.ccn_id = 2 ";
+	public static final String Q_GET_MOBITEL_NOTE = "select t.description from ccare.descriptions t where t.description_id = 56101 ";
 	public static final String Q_GET_TREATMENT = " select treatment, gender from treatments where phone_number = ? ";
 	public static final String Q_GET_ORG_ABONENT = " select * from searchOrg where phone = ? ";
 	public static final String Q_GET_WEB_SESSION_ID = " select (to_number(to_char(sysdate,'YYMM'))*1000000 + log_calls_seq.nextval) AS sessionID from dual ";
