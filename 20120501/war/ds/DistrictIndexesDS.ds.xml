@@ -1,0 +1,46 @@
+<DataSource
+	ID="DistrictIndexesDS"
+	serverType="sql"
+	tableName="district_indexes"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="district_index_id"		type="integer"		title="district_index_id"				hidden="true" primaryKey="true" />
+		<field name="district_index_name"	type="text"			title="district_index_name"/>
+		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DistrictVillageIndexesDMI"/>
+
+		<!-- Add DistrictIndexes -->
+		<operationBinding operationType="add" operationId="addDistrictIndexes" serverMethod="addDistrictIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DistrictVillageIndexesDMI"/>
+        </operationBinding>
+        
+		<!-- Update DistrictIndexes -->
+		<operationBinding operationType="update" operationId="updateDistrictIndexes" serverMethod="updateDistrictIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DistrictVillageIndexesDMI"/>
+        </operationBinding>
+        
+        <!-- Delete DistrictIndexes -->
+		<operationBinding operationType="remove" operationId="deleteDistrictIndexes" serverMethod="deleteDistrictIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DistrictVillageIndexesDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchDistrictIndexes" operationType="fetch">
+    		<selectClause>   			
+    			t.district_index_id,
+    			t.district_index_name
+			</selectClause> 
+			<tableClause>district_indexes t</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1
+				#if($criteria.district_index_name) and t.district_index_name like ($criteria.district_index_name)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.district_index_name</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

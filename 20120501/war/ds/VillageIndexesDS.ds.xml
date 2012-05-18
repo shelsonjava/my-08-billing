@@ -1,0 +1,95 @@
+<DataSource
+	ID="VillageIndexesDS"
+	serverType="sql"
+	tableName="village_indexes"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="village_index_id"			type="integer"		title="village_index_id"		hidden="true" primaryKey="true" />
+		<field name="district_index_id"			type="integer"		title="district_index_id"		hidden="true"/>
+		<field name="village_index_name"		type="text" 		title="village_index_name"/>
+		<field name="village_index"				type="text"			title="village_index"/>
+		<field name="district_center"			type="integer"		title="district_center"			hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 				hidden="true" />
+		<field name="district_index_name"		type="text"			title="district_index_name"/>
+		<field name="district_center_descr"		type="text"			title="district_center_descr"/>
+		<field name="full_text"					type="text"			title="full_text"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DistrictVillageIndexesDMI"/>
+
+		<!-- Add VillageIndexes -->
+		<operationBinding operationType="add" operationId="addVillageIndexes" serverMethod="addVillageIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DistrictVillageIndexesDMI"/>
+        </operationBinding>
+        
+		<!-- Update VillageIndexes -->
+		<operationBinding operationType="update" operationId="updateVillageIndexes" serverMethod="updateVillageIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DistrictVillageIndexesDMI"/>
+        </operationBinding>
+        
+        <!-- Delete VillageIndexes -->
+		<operationBinding operationType="remove" operationId="deleteVillageIndexes" serverMethod="deleteVillageIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DistrictVillageIndexesDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchVillageDistrictIndexes" operationType="fetch">
+    		<selectClause>   			
+    			t.village_index_id,
+    			t.district_index_id,
+    			t.village_index_name,
+    			t.village_index,
+    			t.district_center,
+    			r.district_index_name,    			
+    			decode(t.district_center,-1,'რაიონული ცენტრი',0,'სოფელი','უცნობია') as district_center_descr
+			</selectClause> 
+			<tableClause>village_indexes t,district_indexes r</tableClause>
+			<whereClause><![CDATA[ 
+				t.district_index_id = r.district_index_id
+				#if($criteria.district_index_id) AND t.district_index_id = $criteria.district_index_id #end
+				#if($criteria.village_index_name) and t.village_index_name like ($criteria.village_index_name)||'%' #end
+				#if($criteria.village_index) and t.village_index like ($criteria.village_index)||'%' #end
+				#if($criteria.district_center) AND t.district_center = $criteria.district_center #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.village_index_name</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchVillageIndexes" operationType="fetch">
+    		<selectClause>   			
+    			t.village_index_id,
+    			t.district_index_id,
+    			t.village_index_name,
+    			t.village_index,
+    			t.district_center,
+    			r.district_index_name, 
+    			decode(t.district_center,-1,'რაიონული ცენტრი',0,'სოფელი','უცნობია') as district_center_descr,
+    			r.district_index_name ||' '||t.village_index_name as full_text
+			</selectClause> 
+			<tableClause>village_indexes t,district_indexes r</tableClause>
+			<whereClause><![CDATA[ 
+				t.district_index_id = r.district_index_id 				
+				#if($criteria.full_text1)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text1||'%' #end
+				#if($criteria.full_text2)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text2||'%' #end
+				#if($criteria.full_text3)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text3||'%' #end
+				#if($criteria.full_text4)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text4||'%' #end
+				#if($criteria.full_text5)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text5||'%' #end
+				#if($criteria.full_text6)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text6||'%' #end
+				#if($criteria.full_text7)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text7||'%' #end
+				#if($criteria.full_text8)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text8||'%' #end
+				#if($criteria.full_text9)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text9||'%' #end
+				#if($criteria.full_text10)  and (r.district_index_name||' '||t.village_index_name) like '%'||$criteria.full_text10||'%' #end
+				
+				#if($criteria.village_index) and t.village_index like '%'||($criteria.village_index)||'%' #end
+				#if($criteria.village_index_name) and t.village_index_name like '%'||($criteria.village_index_name)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>r.district_index_name,t.village_index_name</orderClause>
+    	</operationBinding>   	
+    	
+    	
+    </operationBindings>	
+</DataSource>

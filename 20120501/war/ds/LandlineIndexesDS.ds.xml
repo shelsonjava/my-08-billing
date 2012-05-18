@@ -1,0 +1,45 @@
+<DataSource
+	ID="LandlineIndexesDS"
+	serverType="sql"
+	tableName="landline_indexes"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+
+	<fields>
+		<field name="landline_id"		type="integer"	title="landline_id"			hidden="true" primaryKey="true" />
+		<field name="landline_index"	type="text"		title="landline_index"/>
+		<field name="loggedUserName"	type="text"		title="Logged UserName" 	hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<!-- Add LandlineIndexes -->
+		<operationBinding operationType="add" operationId="addLandlineIndexes" serverMethod="addLandlineIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+
+		<!-- Update LandlineIndexes -->
+		<operationBinding operationType="update" operationId="updateLandlineIndexes" serverMethod="updateLandlineIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+
+        <!-- Delete  Update -->
+		<operationBinding operationType="remove" operationId="deleteLandlineIndexes" serverMethod="deleteLandlineIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchLandlineIndexes" operationType="fetch">
+    		<selectClause>   			
+    			t.landline_id,
+				t.landline_index
+			</selectClause> 
+			<tableClause>landline_indexes t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.landline_index) AND t.landline_index like '%'||($criteria.landline_index)||'%' #end
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
