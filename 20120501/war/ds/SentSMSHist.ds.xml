@@ -6,8 +6,8 @@
 	dropExtraFields = "false">
 	<fields>
 		<field name="sent_sms_hist_id"				type="integer"		title="ID"		hidden="true" primaryKey="true" />
-		<field name="status"						type="integer"		title="status"/>
-		<field name="sms_type"						type="integer"		title="sms_type"/>
+		<field name="hist_status_id"				type="integer"		title="status"/>
+		<field name="message_type"						type="integer"		title="message_type"/>
 		<field name="reciever_number"				type="text" 		title="reciever_number"/>
 		<field name="message_context"				type="text" 		title="message_context"/>
 		<field name="message_sent_time"				type="datetime" 	title="message_sent_time"/>
@@ -20,7 +20,7 @@
 		<field name="gsm_operator_msg_id"			type="text" 		title="gsm_operator_msg_id"/>
 		<field name="operator"						type="text" 		title="operator"/>
 		<field name="service_name_geo"				type="text" 		title="service_name_geo"/>
-		<field name="sms_type_descr"				type="text" 		title="sms_type_descr"/>
+		<field name="message_type_descr"				type="text" 		title="message_type_descr"/>
 		<field name="status_descr"					type="text" 		title="status_descr"/>
 	</fields>
 	
@@ -28,8 +28,8 @@
 		<operationBinding operationId="findSMSLog" operationType="fetch">
     		<selectClause>  
     			t.sent_sms_hist_id,
-				t.status,
-				t.sms_type,
+				t.hist_status_id,
+				t.message_type,
 				t.reciever_number,
 				t.message_context,
 				t.message_sent_time,
@@ -37,12 +37,12 @@
 				t.creator_user,
 				t.service_id,
 				t.unsuccess,
-				t.delivered,
+				t.message_done,
 				t.unsuccess_count,
 				t.gsm_operator_msg_id,
 				s.service_name_geo,
-				decode(t.sms_type, 1, 'გარკვევა', 'ჩვეულებრივი') as message_type_descr,
-				decode(t.status, 1, 'მიწოდებულია', 'მიუწოდებელია') as hist_status_descr
+				decode(t.message_type, 1, 'გარკვევა', 'ჩვეულებრივი') as message_type_descr,
+				decode(t.hist_status_id, 1, 'მიწოდებულია', 'მიუწოდებელია') as hist_status_descr
 			</selectClause> 
 			<tableClause>SENT_SMS_HIST t,ccare.services s, users tt</tableClause>
 			<whereClause><![CDATA[			 
@@ -50,9 +50,9 @@
 				#if($criteria.reciever_number) and t.reciever_number like '%'||$criteria.reciever_number||'%' #end
 				#if($criteria.session_call_id) and t.session_call_id = $criteria.session_call_id #end
 				#if($criteria.message_sent_time) and trunc(t.message_sent_time) = trunc($criteria.message_sent_time) #end
-				#if($criteria.pStatDelivered) and t.status = 1 #end
-				#if($criteria.pStatNotDelivered) and t.status <> 1 #end
-				#if($criteria.user_id) and tt.user_id = $criteria.user_id #end
+				#if($criteria.pStatDelivered) and t.hist_status_id = 1 #end
+				#if($criteria.pStatNotDelivered) and t.hist_status_id <> 1 #end
+				#if($criteria.creator_user) and tt.creator_user = $criteria.creator_user #end
 				]]>				 
 			</whereClause> 
 			<orderClause>t.message_sent_time desc</orderClause>
