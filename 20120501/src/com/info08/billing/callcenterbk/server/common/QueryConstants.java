@@ -1248,8 +1248,6 @@ public interface QueryConstants {
 
 	public static final String Q_DELETE_STREET_DISCTRICTS_BY_STREET_ID = " delete from ccare.street_district t where t.street_id = ? ";
 
-	public static final String Q_ROLLBACK_UNAPPROVED_MESSAGES = "update ccare.call_center_queue t set t.status=1 ,t.upd_date=sysdate where t.status=2 and t.upd_date<=sysdate-1/24/4";
-
 	public static final String Q_UPDATE_MAIN_SERVICE_SORT = " update ccare.main_services t set t.priority = ?,t.upd_user = ?,t.upd_date = ? where t.main_id = ? ";
 
 	public static final String Q_UPDATE_MAIN_SERVICE_DEL_STAT = " update ccare.main_services t set t.deleted = ?,t.upd_user = ?,t.upd_date = ? where t.main_id = ? ";
