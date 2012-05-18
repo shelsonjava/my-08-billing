@@ -52,7 +52,7 @@ public class SurveySMSSenderJob extends TimerTask {
 						surveySmsHist.setHist_datetime(rec_date);
 						oracleManager
 								.createNativeQuery(
-										"{call insert_send_sms(?,?,?,?)}")
+										"{call send_sms_to_reciptent(?,?,?,?)}")
 								.setParameter(1, Constants.discSMSDefText)
 								.setParameter(2, survey_phone)
 								.setParameter(3, sessionId).setParameter(4, 0)
