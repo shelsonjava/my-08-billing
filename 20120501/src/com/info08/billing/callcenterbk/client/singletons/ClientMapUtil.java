@@ -45,6 +45,8 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> contractorTypes1;
 	private LinkedHashMap<String, String> billingCompIndTypes;
 	private LinkedHashMap<String, String> contractorPriceTypes;
+	private LinkedHashMap<String, String> newsTypes;
+	private LinkedHashMap<String, String> searchNewsTypes;
 	private LinkedHashMap<String, String> limitTypes;
 	private LinkedHashMap<String, String> hasCalculations;
 	private LinkedHashMap<String, String> hasCalculations1;
@@ -83,6 +85,8 @@ public class ClientMapUtil {
 		contractorTypes1 = new LinkedHashMap<String, String>();
 		billingCompIndTypes = new LinkedHashMap<String, String>();
 		contractorPriceTypes = new LinkedHashMap<String, String>();
+		newsTypes = new LinkedHashMap<String, String>();
+		searchNewsTypes = new LinkedHashMap<String, String>();
 		limitTypes = new LinkedHashMap<String, String>();
 		hasCalculations = new LinkedHashMap<String, String>();
 		hasCalculations1 = new LinkedHashMap<String, String>();
@@ -205,6 +209,13 @@ public class ClientMapUtil {
 		contractorPriceTypes.put("0", CallCenterBK.constants.simple());
 		contractorPriceTypes.put("1", CallCenterBK.constants.advanced());
 
+		newsTypes.put("0", CallCenterBK.constants.newsTypeNormal());
+		newsTypes.put("1", CallCenterBK.constants.newsTypeMain());
+
+		searchNewsTypes.put("-1", " ");
+		searchNewsTypes.put("0", CallCenterBK.constants.newsTypeNormal());
+		searchNewsTypes.put("1", CallCenterBK.constants.newsTypeMain());
+
 		limitTypes.put("-1", CallCenterBK.constants.all());
 		limitTypes.put("0", CallCenterBK.constants.whithLimit());
 		limitTypes.put("1", CallCenterBK.constants.whithOutLimit());
@@ -215,15 +226,15 @@ public class ClientMapUtil {
 
 		hasCalculations1.put("1", CallCenterBK.constants.yes());
 		hasCalculations1.put("0", CallCenterBK.constants.noInGeo());
-		
+
 		billingCompIndTypes1.put("0", CallCenterBK.constants.byCharges());
 		billingCompIndTypes1.put("1", CallCenterBK.constants.byCalls());
-		
+
 		callTypes.put("11", CallCenterBK.constants.direct());
 		callTypes.put("12", CallCenterBK.constants.nonDirect());
 
 	}
-	
+
 	public LinkedHashMap<String, String> getCallTypes() {
 		return callTypes;
 	}
@@ -231,7 +242,7 @@ public class ClientMapUtil {
 	public LinkedHashMap<String, String> getBillingCompIndTypes1() {
 		return billingCompIndTypes1;
 	}
-	
+
 	public LinkedHashMap<String, String> getHasCalculations1() {
 		return hasCalculations1;
 	}
@@ -246,6 +257,14 @@ public class ClientMapUtil {
 
 	public LinkedHashMap<String, String> getContractorPriceTypes() {
 		return contractorPriceTypes;
+	}
+
+	public LinkedHashMap<String, String> getNewsTypes() {
+		return newsTypes;
+	}
+
+	public LinkedHashMap<String, String> getSearchNewsTypes() {
+		return searchNewsTypes;
 	}
 
 	public LinkedHashMap<String, String> getMapOpClose() {

@@ -32,7 +32,7 @@ public class CallCenterNews implements Serializable {
 	@Column(name = "CALL_CENTER_NEWS_TEXT")
 	private String call_center_news_text;
 
-	@Basic
+	@Basic	
 	@Column(name = "CALL_CENTER_NEWS_DATE")
 	private Timestamp call_center_news_date;
 

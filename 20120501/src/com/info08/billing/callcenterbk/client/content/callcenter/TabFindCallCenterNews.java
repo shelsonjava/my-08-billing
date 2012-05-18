@@ -21,6 +21,7 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
@@ -99,7 +100,24 @@ public class TabFindCallCenterNews extends Tab {
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
 
-		listGrid = new ListGrid();
+		listGrid = new ListGrid() {
+			protected String getCellCSSText(ListGridRecord record,
+					int rowNum, int colNum) {
+				ListGridRecord gridRecord = (ListGridRecord) record;
+				if (gridRecord == null) {
+					return super.getCellCSSText(record, rowNum, colNum);
+				}
+				Integer call_center_warning = gridRecord
+						.getAttributeAsInt("call_center_warning");
+				if (call_center_warning != null
+						&& call_center_warning.equals(1)) {
+					return "color:red;";
+				} else {
+					return super.getCellCSSText(record, rowNum, colNum);
+				}
+			};
+		};
+		
 		listGrid.setWidth(900);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
@@ -128,6 +146,8 @@ public class TabFindCallCenterNews extends Tab {
 		mn.setAlign(Alignment.LEFT);
 
 		listGrid.setFields(dt, hr, mn);
+		
+		
 
 		mainLayout.addMember(listGrid);
 

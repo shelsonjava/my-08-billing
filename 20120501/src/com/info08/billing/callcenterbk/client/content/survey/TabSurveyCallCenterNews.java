@@ -1,7 +1,10 @@
 package com.info08.billing.callcenterbk.client.content.survey;
 
+import java.util.Date;
+
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.survey.DlgAddEditSurveyKind;
+import com.info08.billing.callcenterbk.client.dialogs.survey.DlgAddEditSurveyCallCenterNews;
+import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -16,21 +19,17 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
-import com.smartgwt.client.widgets.viewer.DetailViewer;
 
 public class TabSurveyCallCenterNews extends Tab {
 
@@ -38,7 +37,10 @@ public class TabSurveyCallCenterNews extends Tab {
 	private VLayout mainLayout;
 
 	// form fields
-	private TextItem surveyKindItem;
+	private TextItem call_center_news_textItem;
+	private DateItem call_center_news_dateFromItem;
+	private DateItem call_center_news_dateToItem;
+	private SelectItem callCenterWarningItem;
 
 	// actions
 	private IButton findButton;
@@ -58,7 +60,7 @@ public class TabSurveyCallCenterNews extends Tab {
 			setTitle(CallCenterBK.constants.menuSurveyKinds());
 			setCanClose(true);
 
-			datasource = DataSource.get("SurveyKindDS");
+			datasource = DataSource.get("CallCenterNewsDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -72,12 +74,37 @@ public class TabSurveyCallCenterNews extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			surveyKindItem = new TextItem();
-			surveyKindItem.setTitle(CallCenterBK.constants.type());
-			surveyKindItem.setName("survey_kind_name");
-			surveyKindItem.setWidth(300);
+			call_center_news_textItem = new TextItem();
+			call_center_news_textItem.setTitle(CallCenterBK.constants.news());
+			call_center_news_textItem.setName("call_center_news_text");
+			call_center_news_textItem.setWidth(300);
 
-			searchForm.setFields(surveyKindItem);
+			callCenterWarningItem = new SelectItem();
+			callCenterWarningItem.setTitle(CallCenterBK.constants.newsType());
+			callCenterWarningItem.setWidth(300);
+			callCenterWarningItem.setName("callCenterWarningItem");
+			callCenterWarningItem.setDefaultToFirstOption(true);
+			callCenterWarningItem.setValueMap(ClientMapUtil.getInstance()
+					.getSearchNewsTypes());
+
+			call_center_news_dateFromItem = new DateItem();
+			call_center_news_dateFromItem.setUseTextField(true);
+			call_center_news_dateFromItem.setTitle(CallCenterBK.constants
+					.dateFrom());
+			call_center_news_dateFromItem
+					.setName("call_center_news_dateFromItem");
+			call_center_news_dateFromItem.setWidth(300);
+
+			call_center_news_dateToItem = new DateItem();
+			call_center_news_dateToItem.setUseTextField(true);
+			call_center_news_dateToItem.setTitle(CallCenterBK.constants
+					.dateTo());
+			call_center_news_dateToItem.setName("call_center_news_dateToItem");
+			call_center_news_dateToItem.setWidth(300);
+
+			searchForm.setFields(call_center_news_textItem,
+					callCenterWarningItem, call_center_news_dateFromItem,
+					call_center_news_dateToItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -121,13 +148,14 @@ public class TabSurveyCallCenterNews extends Tab {
 			listGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					if (countryRecord == null) {
+					ListGridRecord gridRecord = (ListGridRecord) record;
+					if (gridRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
+					Integer call_center_warning = gridRecord
+							.getAttributeAsInt("call_center_warning");
+					if (call_center_warning != null
+							&& call_center_warning.equals(1)) {
 						return "color:red;";
 					} else {
 						return super.getCellCSSText(record, rowNum, colNum);
@@ -143,21 +171,25 @@ public class TabSurveyCallCenterNews extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchSurveyKinds");
+			listGrid.setFetchOperation("searchAllCallCenterNews");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("survey_kind_name").setTitle(
+			datasource.getField("call_center_news_text").setTitle(
 					CallCenterBK.constants.type());
 
-			ListGridField survey_kind_name = new ListGridField(
-					"survey_kind_name", CallCenterBK.constants.type(), 190);
+			ListGridField call_center_news_date = new ListGridField(
+					"call_center_news_date", CallCenterBK.constants.date(), 150);
 
-			survey_kind_name.setAlign(Alignment.LEFT);
+			ListGridField call_center_news_text = new ListGridField(
+					"call_center_news_text", CallCenterBK.constants.news());
 
-			listGrid.setFields(survey_kind_name);
+			call_center_news_text.setAlign(Alignment.LEFT);
+			call_center_news_date.setAlign(Alignment.LEFT);
+
+			listGrid.setFields(call_center_news_date, call_center_news_text);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -169,15 +201,18 @@ public class TabSurveyCallCenterNews extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					surveyKindItem.clearValue();
+					call_center_news_textItem.clearValue();
+					call_center_news_dateFromItem.clearValue();
+					call_center_news_dateToItem.clearValue();
+					callCenterWarningItem.setValue(-1);
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditSurveyKind dlgAddEditSurveyKind = new DlgAddEditSurveyKind(
+					DlgAddEditSurveyCallCenterNews addEditSurveyCallCenterNews = new DlgAddEditSurveyCallCenterNews(
 							listGrid, null);
-					dlgAddEditSurveyKind.show();
+					addEditSurveyCallCenterNews.show();
 				}
 			});
 
@@ -190,9 +225,9 @@ public class TabSurveyCallCenterNews extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					DlgAddEditSurveyKind dlgAddEditSurveyKind = new DlgAddEditSurveyKind(
+					DlgAddEditSurveyCallCenterNews addEditSurveyCallCenterNews = new DlgAddEditSurveyCallCenterNews(
 							listGrid, listGridRecord);
-					dlgAddEditSurveyKind.show();
+					addEditSurveyCallCenterNews.show();
 				}
 			});
 			disableBtn.addClickHandler(new ClickHandler() {
@@ -209,44 +244,13 @@ public class TabSurveyCallCenterNews extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(listGridRecord, 1);
+										delete(listGridRecord);
 									}
 								}
 							});
 				}
 			});
 
-			TabSet tabSet = new TabSet();
-			tabSet.setWidth(780);
-			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
-			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(datasource);
-			detailViewer.setWidth(750);
-			tabDetViewer.setPane(detailViewer);
-
-			listGrid.addRecordClickHandler(new RecordClickHandler() {
-				public void onRecordClick(RecordClickEvent event) {
-					detailViewer.viewSelectedData(listGrid);
-				}
-			});
-
-			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-				@Override
-				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
-						return;
-					}
-					DlgAddEditSurveyKind dlgAddEditSurveyKind = new DlgAddEditSurveyKind(
-							listGrid, listGridRecord);
-					dlgAddEditSurveyKind.show();
-				}
-			});
-
-			tabSet.setTabs(tabDetViewer);
-			mainLayout.addMember(tabSet);
 			setPane(mainLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -258,13 +262,35 @@ public class TabSurveyCallCenterNews extends Tab {
 		try {
 			Criteria criteria = new Criteria();
 
-			String survey_kind_name = surveyKindItem.getValueAsString();
-			if (survey_kind_name != null && !survey_kind_name.trim().equals("")) {
-				criteria.setAttribute("survey_kind_name", survey_kind_name);
+			Long call_center_warning = new Long(
+					callCenterWarningItem.getValueAsString());
+			criteria.setAttribute("call_center_warning", call_center_warning);
+
+			String call_center_news_text = call_center_news_textItem
+					.getValueAsString();
+			if (call_center_news_text != null
+					&& !call_center_news_text.trim().equals("")) {
+				criteria.setAttribute("call_center_news_text",
+						call_center_news_text);
+			}
+			try {
+				Date call_center_news_date_from = call_center_news_dateFromItem
+						.getValueAsDate();
+				if (call_center_news_date_from != null) {
+					criteria.setAttribute("call_center_news_date_from",
+							call_center_news_date_from);
+				}
+				Date call_center_news_date_to = call_center_news_dateToItem
+						.getValueAsDate();
+				if (call_center_news_date_to != null) {
+					criteria.setAttribute("call_center_news_date_to",
+							call_center_news_date_to);
+				}
+			} catch (Exception e) {
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchSurveyKinds");
+			dsRequest.setAttribute("operationId", "searchAllCallCenterNews");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -277,19 +303,19 @@ public class TabSurveyCallCenterNews extends Tab {
 		}
 	}
 
-	private void changeStatus(ListGridRecord listGridRecord, Integer deleted) {
+	private void delete(ListGridRecord listGridRecord) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("survey_kind_id",
-					listGridRecord.getAttributeAsInt("survey_kind_id"));
+
+			record.setAttribute("call_center_news_id",
+					listGridRecord.getAttributeAsInt("call_center_news_id"));
 
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "removeSurveyKind");
+			req.setAttribute("operationId", "removeCallCenterNews");
 			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

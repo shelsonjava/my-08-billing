@@ -42,6 +42,8 @@ public interface AppConstants extends Constants {
 	String entPosterName();
 	String comment();
 	String date();
+	String dateFrom();
+	String dateTo();
 	String choose();
 	String time();
 	String price();
@@ -137,6 +139,8 @@ public interface AppConstants extends Constants {
 	String editStatus();
 	String addType();
 	String editType();
+	String addNews();
+	String editNews();
 	String enterType();
 	String enterStatus();
 	String phone();
@@ -476,6 +480,8 @@ public interface AppConstants extends Constants {
 	String smsDelivered();
 	String smsNotDelivered();
 	String all();
+	String newsTypeNormal();
+	String newsTypeMain();
 	String callsStatByDay();
 	String menuStat();
 	String callsTotalBySrv();
@@ -577,6 +583,7 @@ public interface AppConstants extends Constants {
 	String contractorCharges();
 	String blockPhoneList();
 	String priceType();
+	String newsType();
 	String reCalcCopntrRangePrice();
 	String currentPrice();
 	String noOrgOrDepSelected();

@@ -16,18 +16,35 @@
 	</fields>
 
 	<operationBindings>		
+	
+		<!-- Add CallCenterNews -->
+		<operationBinding operationType="add" operationId="addCallCenterNews" serverMethod="addCallCenterNews">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CallCenterNewsDMI"/>
+        </operationBinding>
+
+		<!-- CallCenterNews Update -->
+		<operationBinding operationType="update" operationId="updateCallCenterNews" serverMethod="updateCallCenterNews">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CallCenterNewsDMI"/>
+        </operationBinding>
+
+        <!-- CallCenterNews Delete -->
+		<operationBinding operationType="remove" operationId="removeCallCenterNews" serverMethod="removeCallCenterNews">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CallCenterNewsDMI"/>
+        </operationBinding>
 
     	<operationBinding operationId="searchAllCallCenterNews" operationType="fetch">
     		<selectClause>   			
     				t.call_center_news_id,
 					t.call_center_news_text,
 					t.call_center_news_date,
+					t.call_center_warning,
 					to_char(t.call_center_news_date, 'dd/mm/yy') as call_center_news_date_day,
        				to_char(t.call_center_news_date, 'HH24:mi:ss') as call_center_news_date_time   
 			</selectClause> 
 			<tableClause>call_center_news t</tableClause>
 			<whereClause><![CDATA[
 				1 = 1
+				#if($criteria.call_center_news_text) and t.call_center_news_text like '%'||($criteria.call_center_news_text)||'%' #end
 				#if($criteria.call_center_news_text1) and t.call_center_news_text like '%'||($criteria.call_center_news_text1)||'%' #end
 				#if($criteria.call_center_news_text2) and t.call_center_news_text like '%'||($criteria.call_center_news_text2)||'%' #end
 				#if($criteria.call_center_news_text3) and t.call_center_news_text like '%'||($criteria.call_center_news_text3)||'%' #end
@@ -39,6 +56,10 @@
 				#if($criteria.call_center_news_text9) and t.call_center_news_text like '%'||($criteria.call_center_news_text9)||'%' #end
 				#if($criteria.call_center_news_text10) and t.call_center_news_text like '%'||($criteria.call_center_news_text10)||'%' #end
 				#if($criteria.call_center_news_date) and trunc(t.call_center_news_date)=trunc($criteria.call_center_news_date) #end
+				#if($criteria.call_center_news_date_from) and trunc(t.call_center_news_date) >= trunc($criteria.call_center_news_date_from) #end
+				#if($criteria.call_center_news_date_to) and trunc(t.call_center_news_date) <= trunc($criteria.call_center_news_date_to) #end
+				#if($criteria.call_center_warning && $criteria.call_center_warning != -1) and t.call_center_warning = ($criteria.call_center_warning) #end
+				
 				]]>  
 			</whereClause> 
 			<orderClause>t.call_center_news_date desc</orderClause>
