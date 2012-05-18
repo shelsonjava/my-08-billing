@@ -4,8 +4,8 @@ import com.info08.billing.callcenterbk.client.content.TabCity;
 import com.info08.billing.callcenterbk.client.content.TabCityDistance;
 import com.info08.billing.callcenterbk.client.content.TabCityRegions;
 import com.info08.billing.callcenterbk.client.content.TabCountry;
-import com.info08.billing.callcenterbk.client.content.TabGeoCountryIdx;
-import com.info08.billing.callcenterbk.client.content.TabGeoRegIdx;
+import com.info08.billing.callcenterbk.client.content.TabVillageIndexes;
+import com.info08.billing.callcenterbk.client.content.TabDistrictIndexes;
 import com.info08.billing.callcenterbk.client.content.TabGeoStreetIdx;
 import com.info08.billing.callcenterbk.client.content.TabStreet;
 import com.info08.billing.callcenterbk.client.content.TabStreetDescr;
@@ -181,10 +181,10 @@ public class AddressStackSelection extends SectionStackSection {
 			TabStreetHist tabStreetHist = new TabStreetHist();
 			body.addTab(tabStreetHist);
 		}else if (menuId.equals("108")) {
-			TabGeoRegIdx tabGeoRegIdx = new TabGeoRegIdx();
+			TabDistrictIndexes tabGeoRegIdx = new TabDistrictIndexes();
 			body.addTab(tabGeoRegIdx);
 		}else if (menuId.equals("109")) {
-			TabGeoCountryIdx tabGeoCountryIdx = new TabGeoCountryIdx();
+			TabVillageIndexes tabGeoCountryIdx = new TabVillageIndexes();
 			body.addTab(tabGeoCountryIdx);
 		}else if (menuId.equals("110")) {
 			TabGeoStreetIdx tabGeoStreetIdx = new TabGeoStreetIdx();

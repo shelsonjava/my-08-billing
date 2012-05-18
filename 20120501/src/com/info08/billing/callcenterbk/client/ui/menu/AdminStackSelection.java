@@ -4,7 +4,7 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.admin.TabAdmin;
 import com.info08.billing.callcenterbk.client.content.admin.TabBlockList;
 import com.info08.billing.callcenterbk.client.content.admin.TabContractors;
-import com.info08.billing.callcenterbk.client.content.admin.TabFixedOperPrefs;
+import com.info08.billing.callcenterbk.client.content.admin.TabLandlineIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabGSMIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabBillingComps;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -117,7 +117,7 @@ public class AdminStackSelection extends SectionStackSection {
 			TabGSMIndexes tabMobOperPrefs = new TabGSMIndexes();
 			body.addTab(tabMobOperPrefs);
 		} else if (menuId.equals("102")) {
-			TabFixedOperPrefs tabFixedOperPrefs = new TabFixedOperPrefs();
+			TabLandlineIndexes tabFixedOperPrefs = new TabLandlineIndexes();
 			body.addTab(tabFixedOperPrefs);
 		} else if (menuId.equals("103")) {
 			TabContractors tabContractors = new TabContractors();
