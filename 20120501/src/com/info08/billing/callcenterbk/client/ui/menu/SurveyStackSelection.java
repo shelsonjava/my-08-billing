@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurvey;
+import com.info08.billing.callcenterbk.client.content.survey.TabSurveyCallCenterNews;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurveyHist;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurveyReplyType;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurveyKinds;
@@ -23,10 +24,18 @@ public class SurveyStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", CallCenterBK.constants.menuSurveyStatuses(), true, "survey.png"),
-			new MenuNode("101", "2", CallCenterBK.constants.menuSurveyKinds(), true, "survey.png"),
-			new MenuNode("102", "3", CallCenterBK.constants.menuSurvey(), true, "survey.png"),
-			new MenuNode("103", "4", CallCenterBK.constants.menuSurveyHist(), true, "survey.png")};
+			new MenuNode("100", "1",
+					CallCenterBK.constants.menuSurveyStatuses(), true,
+					"survey.png"),
+			new MenuNode("101", "2", CallCenterBK.constants.menuSurveyKinds(),
+					true, "survey.png"),
+			new MenuNode("102", "3", CallCenterBK.constants.menuSurvey(), true,
+					"survey.png"),
+			new MenuNode("103", "4", CallCenterBK.constants.menuSurveyHist(),
+					true, "survey.png"),
+			new MenuNode("104", "5",
+					CallCenterBK.constants.menuCallCenterNews(), true,
+					"survey.png") };
 
 	private TreeGrid employeeTreeGrid;
 
@@ -45,7 +54,8 @@ public class SurveyStackSelection extends SectionStackSection {
 		employeeTree.setOpenProperty("isOpen");
 		employeeTree.setData(menuData);
 
-		TreeGridField formattedField = new TreeGridField(CallCenterBK.constants.actionsList());
+		TreeGridField formattedField = new TreeGridField(
+				CallCenterBK.constants.actionsList());
 		formattedField.setCellFormatter(new CellFormatter() {
 			public String format(Object value, ListGridRecord record,
 					int rowNum, int colNum) {
@@ -83,32 +93,36 @@ public class SurveyStackSelection extends SectionStackSection {
 
 		addItem(employeeTreeGrid);
 	}
-	
-	
+
 	public void setMenuPersmission() {
 		try {
-			boolean hasDiscStatPerm = CommonSingleton.getInstance().hasPermission(
-					"401000");
+			boolean hasDiscStatPerm = CommonSingleton.getInstance()
+					.hasPermission("401000");
 			menuData[0].setAttribute("enabled", hasDiscStatPerm);
-			
-			boolean hasDiscTypesPerm = CommonSingleton.getInstance().hasPermission(
-					"402000");
+
+			boolean hasDiscTypesPerm = CommonSingleton.getInstance()
+					.hasPermission("402000");
 			menuData[1].setAttribute("enabled", hasDiscTypesPerm);
-			
+
 			boolean hasDiscrPerm = CommonSingleton.getInstance().hasPermission(
 					"403000");
 			menuData[2].setAttribute("enabled", hasDiscrPerm);
-			
-			boolean hasDiscHistPerm = CommonSingleton.getInstance().hasPermission(
-					"403000");
+
+			boolean hasDiscHistPerm = CommonSingleton.getInstance()
+					.hasPermission("403000");
 			menuData[3].setAttribute("enabled", hasDiscHistPerm);
+
+			boolean hasCallCenterNewsPerm = CommonSingleton.getInstance()
+					.hasPermission("404000");
+
+			menuData[4].setAttribute("enabled", hasCallCenterNewsPerm);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
-	
+
 	private void openTab(String menuId) {
 		if (menuId == null || menuId.trim().equals("")) {
 			return;
@@ -116,18 +130,18 @@ public class SurveyStackSelection extends SectionStackSection {
 		if (menuId.equals("100")) {
 			TabSurveyReplyType tabSurveyReplyType = new TabSurveyReplyType();
 			body.addTab(tabSurveyReplyType);
-		} 
-		else if (menuId.equals("101")) {
+		} else if (menuId.equals("101")) {
 			TabSurveyKinds tabSurveyKinds = new TabSurveyKinds();
 			body.addTab(tabSurveyKinds);
-		}
-		else if (menuId.equals("102")) {
+		} else if (menuId.equals("102")) {
 			TabSurvey tabSurvey = new TabSurvey();
 			body.addTab(tabSurvey);
-		}
-		else if (menuId.equals("103")) {
+		} else if (menuId.equals("103")) {
 			TabSurveyHist tabSurveyHist = new TabSurveyHist();
 			body.addTab(tabSurveyHist);
+		} else if (menuId.equals("104")) {
+			TabSurveyCallCenterNews tabSurveyCallCenterNews = new TabSurveyCallCenterNews();
+			body.addTab(tabSurveyCallCenterNews);
 		}
 	}
 

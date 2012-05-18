@@ -132,6 +132,7 @@ public interface AppConstants extends Constants {
 	String menuSurveyStatuses();
 	String menuSurveyKinds();
 	String menuSurvey();
+	String menuCallCenterNews();
 	String addStatus();
 	String editStatus();
 	String addType();
