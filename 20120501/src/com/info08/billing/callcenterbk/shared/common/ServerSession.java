@@ -6,6 +6,7 @@ import java.util.Date;
 
 import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments;
+import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
 
 public class ServerSession implements Serializable {
 
@@ -46,6 +47,7 @@ public class ServerSession implements Serializable {
 	private Long contractorMainId;
 	private Long contractorMainDetailId;
 	private boolean contractorNeedBlock;
+	private CallSession callSession;
 
 	@SuppressWarnings("deprecation")
 	public ServerSession() {
@@ -336,5 +338,13 @@ public class ServerSession implements Serializable {
 
 	public void setContractorNeedBlock(boolean contractorNeedBlock) {
 		this.contractorNeedBlock = contractorNeedBlock;
+	}
+
+	public CallSession getCallSession() {
+		return callSession;
+	}
+
+	public void setCallSession(CallSession callSession) {
+		this.callSession = callSession;
 	}
 }

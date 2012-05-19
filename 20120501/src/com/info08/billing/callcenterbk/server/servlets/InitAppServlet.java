@@ -23,6 +23,7 @@ import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments;
 import com.info08.billing.callcenterbk.shared.entity.contractors.ContractorBlockChecker;
+import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
 import com.isomorphic.jpa.EMF;
 
 public class InitAppServlet extends HttpServlet {
@@ -303,14 +304,19 @@ public class InitAppServlet extends HttpServlet {
 			System.out.println("InitAppServlet. Incomming Session ID : "
 					+ sessionId + ", userName = " + userName + ", phone = "
 					+ phone + ", type = " + type + ", who = " + who);
-			int index=1;
-			oracleManager.createNativeQuery(QueryConstants.Q_INSERT_SESSION)
-					.setParameter(index++, serverSession.getYearMonth())
-					.setParameter(index++, userName).setParameter(index++, realPhone)
-					.setParameter(index++, sessionId).setParameter(index++, callKind);
-
+			CallSession callSession = new CallSession();
+			callSession.setCall_kind(new Long(callKind));
+			callSession.setCall_phone(realPhone);
+			callSession.setCall_start_date(new Timestamp(time));
+			callSession.setSession_id(sessionId);
+			callSession.setUname(userName);			
+			callSession.setYear_month(new Long(serverSession.getYearMonth()));
+			callSession.setCall_quality(0L);
+			
+			oracleManager.persist(callSession);
+			serverSession.setCallSession(callSession);
+			
 			HttpSession session = request.getSession(true);
-
 			ServerSession prevSession = (ServerSession) session
 					.getAttribute("prevSession");
 			if (prevSession != null) {
@@ -326,7 +332,7 @@ public class InitAppServlet extends HttpServlet {
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
 			response.sendRedirect(response
-					.encodeRedirectURL("http://192.168.1.20:8888/CallCenterBK.html?gwt.codesvr=192.168.1.20:9997&sessionId="
+					.encodeRedirectURL("http://192.168.1.3:8888/CallCenterBK.html?gwt.codesvr=192.168.1.3:9997&sessionId="
 							+ sessionId));
 			// } else {
 			// Live

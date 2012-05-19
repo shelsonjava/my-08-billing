@@ -70,7 +70,7 @@ public class CallSession implements Serializable {
 	private String uname;
 
 	@Basic
-	@Column(name="YM")
+	@Column(name="YEAR_MONTH")
 	private Long year_month;
 
     public CallSession() {

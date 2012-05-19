@@ -27,7 +27,7 @@ public class TranspItems implements Serializable {
 	@Id
 	@SequenceGenerator(name="SEQ_TRANSP_ITEM_ID", sequenceName="SEQ_TRANSP_ITEM_ID")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_TRANSP_ITEM_ID")
-	@Column(name="TRANSPORT_DETAIL_ID")
+	@Column(name="TRANSP_ITEM_ID")
 	private Long transp_item_id;
 
 	@Basic

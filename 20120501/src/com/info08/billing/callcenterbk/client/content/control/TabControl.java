@@ -303,19 +303,14 @@ public class TabControl extends Tab {
 
 			vLayout.addMember(toolStrip);
 
-			ListGridField phone = new ListGridField("phone", "ტელეფონი", 80);
-			ListGridField operator = new ListGridField("user_name", "ოპ.", 40);
-			ListGridField person_name = new ListGridField("person_name",
-					"ოპერატორი", 230);
-			ListGridField date = new ListGridField("start_date", "თარიღი/დრო",
-					130);
-			ListGridField duration = new ListGridField("duration", "ხანგრძლ.",
-					80);
-			ListGridField chargeCount = new ListGridField("chargeCount",
-					"რაოდ.", 50);
-			ListGridField hangUp = new ListGridField("hangUp", "ვინ გათიშა", 90);
-			ListGridField session_quality_desc = new ListGridField(
-					"session_quality_desc", "ხარისხი");
+			ListGridField phone = new ListGridField("call_phone", "ტელეფონი", 80);
+			ListGridField operator = new ListGridField("uname", "ოპ.", 40);
+			ListGridField person_name = new ListGridField("full_user_name", "ოპერატორი", 230);
+			ListGridField date = new ListGridField("call_start_date", "თარიღი/დრო", 130);
+			ListGridField duration = new ListGridField("call_duration", "ხანგრძლ.", 80);
+			ListGridField chargeCount = new ListGridField("chargeCount", "რაოდ.", 50);
+			ListGridField hangUp = new ListGridField("reject_type", "ვინ გათიშა", 90);
+			ListGridField session_quality_desc = new ListGridField("call_quality_desc", "ხარისხი");
 
 			date.setAlign(Alignment.CENTER);
 			phone.setAlign(Alignment.CENTER);
@@ -369,20 +364,14 @@ public class TabControl extends Tab {
 
 			vLayout.addMember(hLayout);
 
-			ListGridField sChFieldSrvName = new ListGridField(
-					"service_name_geo", "სერვისის დასახელება", 150);
-			ListGridField sChFieldPrice = new ListGridField("price", "ხარჯი",
-					40);
-			ListGridField sChFieldOrgName = new ListGridField("org_name",
-					"ორგანიზაციის დასახელება", 210);
+			ListGridField sChFieldSrvName = new ListGridField("service_name_geo", "სერვისის დასახელება", 150);
+			ListGridField sChFieldPrice = new ListGridField("price", "ხარჯი",40);
+			ListGridField sChFieldOrgName = new ListGridField("org_name", "ორგანიზაციის დასახელება", 210);
 
-			sessionChargesGrid.setFields(sChFieldSrvName, sChFieldPrice,
-					sChFieldOrgName);
+			sessionChargesGrid.setFields(sChFieldSrvName, sChFieldPrice, sChFieldOrgName);
 
-			ListGridField sChFieldSrvName1 = new ListGridField(
-					"service_name_geo", "სერვისის დასახელება", 150);
-			ListGridField sChFieldOrgName1 = new ListGridField("org_name",
-					"ორგანიზაციის დასახელება", 250);
+			ListGridField sChFieldSrvName1 = new ListGridField("service_name_geo", "სერვისის დასახელება", 150);
+			ListGridField sChFieldOrgName1 = new ListGridField("org_name", "ორგანიზაციის დასახელება", 250);
 
 			sessionNavigGrid.setFields(sChFieldSrvName1, sChFieldOrgName1);
 
@@ -444,11 +433,6 @@ public class TabControl extends Tab {
 									SC.say("არასწორი ზარის ხანგრძლივობა");
 									return;
 								}
-								// if (duration <= 0) {
-								// SC.say("მოსმენა შეუძლებელია. ზარის ხანგრძლივობა არის : "
-								// + duration);
-								// return;
-								// }
 								String sessionId = listGridRecord
 										.getAttributeAsString("session_id");
 								Date date = listGridRecord

@@ -1192,13 +1192,13 @@ public class TransportDMI implements QueryConstants {
 				if (listTranspItems != null && !listTranspItems.isEmpty()) {
 					Set keys = listTranspItems.keySet();
 					for (Object object : keys) {
-						String transp_item_id = object.toString();
+						String transp_station_id = object.toString();
 
-						Map transpItemsMap = (Map) listTranspItems.get(transp_item_id);
+						Map transpItemsMap = (Map) listTranspItems.get(transp_station_id);
 						if (transpItemsMap == null || transpItemsMap.isEmpty()) {
 							continue;
 						}
-						Long transp_station_id = transpItemsMap.get("transp_station_id") == null ? null : new Long(transpItemsMap.get("transp_station_id").toString());
+						Long transp_item_id = transpItemsMap.get("transp_item_id") == null ? null : new Long(transpItemsMap.get("transp_item_id").toString());
 						Long item_order = transpItemsMap.get("item_order") == null ? null : new Long(transpItemsMap.get("item_order").toString());
 						Date it_departure_time = transpItemsMap.get("departure_time") == null ? null : new Date(new Long((String) transpItemsMap.get("departure_time")));
 						Date it_arrival_time = transpItemsMap.get("arrival_time") == null ? null : new Date(new Long((String) transpItemsMap.get("arrival_time")));

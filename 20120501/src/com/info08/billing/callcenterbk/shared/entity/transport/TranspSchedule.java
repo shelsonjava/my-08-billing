@@ -43,7 +43,7 @@ public class TranspSchedule implements Serializable {
 	private Timestamp depart_time;
 	
 	@Basic
-	@Column(name="TRANSP_MODE_DESCR")
+	@Column(name="TRANSP_MODEL_DESCR")
 	private String transp_model_descr;
 	
 	@Basic
@@ -59,7 +59,7 @@ public class TranspSchedule implements Serializable {
 	private Long transp_comp_id;
 	
 	@Basic
-	@Column(name="transp_type_id")
+	@Column(name="TRANSP_TYPE_ID")
 	private Long transp_type_id;
 	
 	@Basic

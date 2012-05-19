@@ -881,15 +881,15 @@ public class DlgAddEditTranspSchedule extends Window {
 					transportDetailsMap.put("departure_time",((it_departure_time == null) ? null : (it_departure_time.getTime() + "")));
 					transportDetailsMap.put("item_order",item_order);
 
-					records.put(transp_item_id.toString(), transportDetailsMap);
+					records.put(transp_station_id.toString(), transportDetailsMap);
 				}
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name();
+			String loggedUser = CommonSingleton.getInstance().getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
+			
 			if (editRecord != null) {
 				record.setAttribute("transp_schedule_id", editRecord.getAttributeAsInt("transp_schedule_id"));
 			}
