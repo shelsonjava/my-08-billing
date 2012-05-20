@@ -140,7 +140,7 @@ public class InitAppServlet extends HttpServlet {
 			Long gender = -1L;
 			Double bid = new Double(-1);
 			Treatments treatment = null;
-			Long main_id = -1L;
+			Long organization_id = -1L;
 			boolean checkContractor = false;
 			String findPhone = "";
 			if (realPhone.startsWith("22") || realPhone.startsWith("32")) {
@@ -189,7 +189,7 @@ public class InitAppServlet extends HttpServlet {
 							.setParameter(1, findPhone).getResultList();
 					if (result != null && !result.isEmpty()) {
 						Object array[] = (Object[]) result.get(0);
-						main_id = new Long(array[0] == null ? "-1"
+						organization_id = new Long(array[0] == null ? "-1"
 								: array[0].toString());
 						abonentName = array[2] == null ? "" : array[2]
 								.toString();
@@ -295,7 +295,7 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setCbd(bid);
 			serverSession.setTreatment(treatment);
 			serverSession.setPhoneIsMobile(phoneIsMobile);
-			serverSession.setMain_id(main_id);
+			serverSession.setOrganization_id(organization_id);
 
 			if (isContractor) {
 				blockContractor(serverSession, oracleManager);
@@ -309,13 +309,13 @@ public class InitAppServlet extends HttpServlet {
 			callSession.setCall_phone(realPhone);
 			callSession.setCall_start_date(new Timestamp(time));
 			callSession.setSession_id(sessionId);
-			callSession.setUname(userName);			
+			callSession.setUname(userName);
 			callSession.setYear_month(new Long(serverSession.getYearMonth()));
 			callSession.setCall_quality(0L);
-			
+
 			oracleManager.persist(callSession);
 			serverSession.setCallSession(callSession);
-			
+
 			HttpSession session = request.getSession(true);
 			ServerSession prevSession = (ServerSession) session
 					.getAttribute("prevSession");
