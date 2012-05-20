@@ -5,27 +5,53 @@
 	qualifyColumnNames="false">
 
 	<fields>
-		<field name="description_id" 		type="integer"	title="description_id"	hidden="true" primaryKey="true" />
-		<field name="description" 			type="text" 	title="description"/>
-		<field name="description_type_id"	type="integer"	title="description_type_id" />
+		<field name="description_id" 			type="integer"		title="description_id"			hidden="true" primaryKey="true" />
+		<field name="description" 				type="text" 		title="description"/>
+		<field name="description_type_id"		type="integer"		title="description_type_id" />
+		<field name="parrent_description_id"	type="integer"		title="parrent_description_id" />
 	</fields>
 
 	<operationBindings>
 		<!-- FETCH -->
-		<operationBinding operationId="searchDescriptions" operationType="fetch">
+		<operationBinding operationId="searchDescriptionsOrderById" operationType="fetch">
 			<selectClause>				
       			t.description_id,
       			t.description,
-      			t.description_type_id
+      			t.description_type_id,
+      			t.parrent_description_id
 			</selectClause>
 			<tableClause>				
 				descriptions t
 			</tableClause>
 			<whereClause><![CDATA[ 
-				#if($criteria.description_type_id) and t.description_type_id like ($criteria.description_type_id)||'%' #end
+				1 = 1
+				#if($criteria.description_type_id) and t.description_type_id = $criteria.description_type_id #end
+				#if($criteria.parrent_description_id) and t.parrent_description_id = $criteria.parrent_description_id #end
 				]]>
 			</whereClause>
 			<orderClause>t.description_id</orderClause>
 		</operationBinding>		
+		
+		
+		<!-- FETCH -->
+		<operationBinding operationId="searchDescriptionsOrderByDescr" operationType="fetch">
+			<selectClause>				
+      			t.description_id,
+      			t.description,
+      			t.description_type_id,
+      			t.parrent_description_id
+			</selectClause>
+			<tableClause>				
+				descriptions t
+			</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1
+				#if($criteria.description_type_id) and t.description_type_id = $criteria.description_type_id #end
+				#if($criteria.parrent_description_id) and t.parrent_description_id = $criteria.parrent_description_id #end
+				]]>
+			</whereClause>
+			<orderClause>t.description</orderClause>
+		</operationBinding>	
+		
 	</operationBindings>
 </DataSource>
