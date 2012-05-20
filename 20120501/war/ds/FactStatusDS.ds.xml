@@ -1,7 +1,7 @@
 <DataSource
 	ID="FactStatusDS"
 	serverType="sql"
-	tableName="ccare.facts_statuses"
+	tableName="ccare.v_facts_statuses"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
