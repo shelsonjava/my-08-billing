@@ -968,8 +968,8 @@ public class DlgAddEditAbonent extends Window {
 			if (abonentRecord != null) {
 				record.setAttribute("abonent_id",
 						abonentRecord.getAttributeAsInt("abonent_id"));
-				record.setAttribute("main_id",
-						abonentRecord.getAttributeAsInt("main_id"));
+				record.setAttribute("organization_id",
+						abonentRecord.getAttributeAsInt("organization_id"));
 				record.setAttribute("address_id",
 						abonentRecord.getAttributeAsInt("address_id"));
 			}

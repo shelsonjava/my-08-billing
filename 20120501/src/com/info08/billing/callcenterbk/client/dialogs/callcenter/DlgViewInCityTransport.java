@@ -70,7 +70,7 @@ public class DlgViewInCityTransport extends Window {
 
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceInCityTransportInfo,
-				listGridRecord.getAttributeAsInt("main_id"));
+				listGridRecord.getAttributeAsInt("organization_id"));
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();

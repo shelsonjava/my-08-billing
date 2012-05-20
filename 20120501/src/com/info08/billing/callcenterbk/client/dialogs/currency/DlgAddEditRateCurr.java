@@ -83,7 +83,7 @@ public class DlgAddEditRateCurr extends Window {
 			countryItem.setOptionOperationId("searchAllCountriesForCombos");
 			countryItem.setOptionDataSource(countryDS);
 			countryItem.setValueField("country_id");
-			countryItem.setDisplayField("country_name_geo");
+			countryItem.setDisplayField("country_name");
 
 			countryItem.setOptionCriteria(new Criteria());
 			countryItem.setAutoFetchData(false);

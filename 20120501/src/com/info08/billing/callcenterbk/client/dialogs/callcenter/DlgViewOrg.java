@@ -109,7 +109,7 @@ public class DlgViewOrg extends Window {
 
 			chargePanel = new ChargePanel(1100, true, true,
 					Constants.serviceOrganization,
-					pRecord.getAttributeAsInt("main_id"));
+					pRecord.getAttributeAsInt("organization_id"));
 			hLayout.addMember(chargePanel);
 
 			mainInfoForm = new DynamicForm();
@@ -328,8 +328,8 @@ public class DlgViewOrg extends Window {
 			depsTreeGrid.setHeight100();
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("deleted", new Integer(0));
-			criteria.setAttribute("p_main_id",
-					pRecord.getAttributeAsInt("main_id"));
+			criteria.setAttribute("p_organization_id",
+					pRecord.getAttributeAsInt("organization_id"));
 			depsTreeGrid.setCriteria(criteria);
 			depsTreeGrid.setFetchOperation("mainDetailSearchCustom");
 			depsTreeGrid.setDataSource(depsDataSource);
@@ -477,13 +477,13 @@ public class DlgViewOrg extends Window {
 				};
 			};
 
-			Integer main_id1 = record.getAttributeAsInt("main_id");
-			if (main_id1 == null || main_id1.equals(0)) {
-				main_id1 = record.getAttributeAsInt("main_id");
+			Integer organization_id1 = record.getAttributeAsInt("organization_id");
+			if (organization_id1 == null || organization_id1.equals(0)) {
+				organization_id1 = record.getAttributeAsInt("organization_id");
 			}
 
 			Criteria criteriaInner1 = new Criteria();
-			criteriaInner1.setAttribute("p_main_id", main_id1);
+			criteriaInner1.setAttribute("p_organization_id", organization_id1);
 			listGridOrgTreeParrent.setCriteria(criteriaInner1);
 			listGridOrgTreeParrent.setWidth100();
 			listGridOrgTreeParrent.setHeight(70);
@@ -536,13 +536,13 @@ public class DlgViewOrg extends Window {
 				};
 			};
 
-			Integer main_id = record.getAttributeAsInt("main_id");
-			if (main_id == null || main_id.equals(0)) {
-				main_id = record.getAttributeAsInt("main_id");
+			Integer organization_id = record.getAttributeAsInt("organization_id");
+			if (organization_id == null || organization_id.equals(0)) {
+				organization_id = record.getAttributeAsInt("organization_id");
 			}
 
 			Criteria criteriaInner = new Criteria();
-			criteriaInner.setAttribute("p_main_id", main_id);
+			criteriaInner.setAttribute("p_organization_id", organization_id);
 			listGridOrgTreeChilds.setCriteria(criteriaInner);
 			listGridOrgTreeChilds.setWidth100();
 			listGridOrgTreeChilds.setHeight100();
@@ -734,17 +734,17 @@ public class DlgViewOrg extends Window {
 							if (listGridRecord == null) {
 								return;
 							}
-							Integer main_id = listGridRecord
-									.getAttributeAsInt("main_id");
-							if (main_id == null) {
+							Integer organization_id = listGridRecord
+									.getAttributeAsInt("organization_id");
+							if (organization_id == null) {
 								return;
 							}
-							Integer cMain_id = pRecord
-									.getAttributeAsInt("main_id");
-							if (cMain_id == null) {
+							Integer cOrganization_id = pRecord
+									.getAttributeAsInt("organization_id");
+							if (cOrganization_id == null) {
 								return;
 							}
-							if (cMain_id.equals(main_id)) {
+							if (cOrganization_id.equals(organization_id)) {
 								SC.say(CallCenterBK.constants.warning(),
 										CallCenterBK.constants.orgAlreadyOpened());
 								return;
@@ -767,17 +767,17 @@ public class DlgViewOrg extends Window {
 							if (listGridRecord == null) {
 								return;
 							}
-							Integer main_id = listGridRecord
-									.getAttributeAsInt("main_id");
-							if (main_id == null) {
+							Integer organization_id = listGridRecord
+									.getAttributeAsInt("organization_id");
+							if (organization_id == null) {
 								return;
 							}
-							Integer cMain_id = pRecord
-									.getAttributeAsInt("main_id");
-							if (cMain_id == null) {
+							Integer cOrganization_id = pRecord
+									.getAttributeAsInt("organization_id");
+							if (cOrganization_id == null) {
 								return;
 							}
-							if (cMain_id.equals(main_id)) {
+							if (cOrganization_id.equals(organization_id)) {
 								SC.say(CallCenterBK.constants.warning(),
 										CallCenterBK.constants.orgAlreadyOpened());
 								return;
@@ -894,8 +894,8 @@ public class DlgViewOrg extends Window {
 			recordParam.setAttribute("ym", ym);
 			recordParam
 					.setAttribute("session_id", serverSession.getSessionId());
-			recordParam.setAttribute("main_id",
-					record.getAttributeAsInt("main_id"));
+			recordParam.setAttribute("organization_id",
+					record.getAttributeAsInt("organization_id"));
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");
@@ -1121,8 +1121,8 @@ public class DlgViewOrg extends Window {
 		try {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("deleted", new Integer(0));
-			criteria.setAttribute("p_main_id",
-					record.getAttributeAsInt("main_id"));
+			criteria.setAttribute("p_organization_id",
+					record.getAttributeAsInt("organization_id"));
 			String depName = depNameGeoItem.getValueAsString();
 			if (depName != null && !depName.trim().equalsIgnoreCase("")) {
 

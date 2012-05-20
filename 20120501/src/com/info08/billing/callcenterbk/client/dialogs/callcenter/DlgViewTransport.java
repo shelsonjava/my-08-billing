@@ -65,7 +65,7 @@ public class DlgViewTransport extends Window {
 
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceTransportInfo,
-				listGridRecord.getAttributeAsInt("main_id"));
+				listGridRecord.getAttributeAsInt("organization_id"));
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();

@@ -63,7 +63,7 @@ public class DlgViewIndex extends Window {
 
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceCodesInfo,
-				listGridRecord.getAttributeAsInt("main_id"));
+				listGridRecord.getAttributeAsInt("organization_id"));
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -94,7 +94,7 @@ public class DlgViewIndex extends Window {
 		dataSource.getField("gmtoff").setHidden(false);
 		dataSource.getField("gmtoffwinter").setHidden(false);
 		dataSource.getField("ctm").setHidden(false);
-		dataSource.getField("country_name_geo").setHidden(false);
+		dataSource.getField("country_name").setHidden(false);
 
 		DetailViewerField cityName = new DetailViewerField("cityName",
 				CallCenterBK.constants.city());
@@ -235,10 +235,10 @@ public class DlgViewIndex extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendCountryInfoSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String country_name_geo = listGridRecord
-					.getAttributeAsString("country_name_geo");
-			if (country_name_geo != null && !country_name_geo.trim().equals("")) {
-				sms_text.append(country_name_geo).append(" ");
+			String country_name = listGridRecord
+					.getAttributeAsString("country_name");
+			if (country_name != null && !country_name.trim().equals("")) {
+				sms_text.append(country_name).append(" ");
 			}
 
 			String countrycode = listGridRecord
@@ -333,9 +333,9 @@ public class DlgViewIndex extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendCountryInfoSMS1);
 			StringBuilder sms_text = new StringBuilder();
 
-			String country_name_geo = listGridRecord.getAttributeAsString("country_name_geo");
-			if (country_name_geo != null && !country_name_geo.trim().equals("")) {
-				sms_text.append(country_name_geo).append("-");
+			String country_name = listGridRecord.getAttributeAsString("country_name");
+			if (country_name != null && !country_name.trim().equals("")) {
+				sms_text.append(country_name).append("-");
 			}
 			
 			String cityName = listGridRecord.getAttributeAsString("city_name_geo");

@@ -61,7 +61,7 @@ public class DlgViewStreetInfo extends Window {
 
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceAddressInfo,
-				pRecord.getAttributeAsInt("main_id"));
+				pRecord.getAttributeAsInt("organization_id"));
 		hLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();

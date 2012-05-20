@@ -136,8 +136,8 @@ public class DlgViewCurrencyRate extends Window {
 		detailViewer.setDataSource(dataSource);
 		detailViewer.setWidth100();
 
-		DetailViewerField country_name_geo = new DetailViewerField(
-				"country_name_geo", CallCenterBK.constants.country());
+		DetailViewerField country_name = new DetailViewerField(
+				"country_name", CallCenterBK.constants.country());
 
 		DetailViewerField name_descr = new DetailViewerField("name_descr",
 				CallCenterBK.constants.currencyName());
@@ -150,7 +150,7 @@ public class DlgViewCurrencyRate extends Window {
 		arr[0] = recordFrom;
 		detailViewer.setData(arr);
 
-		detailViewer.setFields(country_name_geo, name_descr, code);
+		detailViewer.setFields(country_name, name_descr, code);
 
 		mainLayout.addMember(detailViewer);
 
@@ -165,8 +165,8 @@ public class DlgViewCurrencyRate extends Window {
 		detailViewer1.setDataSource(dataSource);
 		detailViewer1.setWidth100();
 
-		DetailViewerField country_name_geo1 = new DetailViewerField(
-				"country_name_geo", CallCenterBK.constants.country());
+		DetailViewerField country_name1 = new DetailViewerField(
+				"country_name", CallCenterBK.constants.country());
 
 		DetailViewerField name_descr1 = new DetailViewerField("name_descr",
 				CallCenterBK.constants.currencyName());
@@ -179,7 +179,7 @@ public class DlgViewCurrencyRate extends Window {
 		arr1[0] = recordTo;
 		detailViewer1.setData(arr1);
 
-		detailViewer1.setFields(country_name_geo1, name_descr1, code1);
+		detailViewer1.setFields(country_name1, name_descr1, code1);
 
 		mainLayout.addMember(detailViewer1);
 
