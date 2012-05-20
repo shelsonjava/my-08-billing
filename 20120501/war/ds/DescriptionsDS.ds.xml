@@ -25,6 +25,7 @@
 			</tableClause>
 			<whereClause><![CDATA[ 
 				1 = 1
+				#if($criteria.description) and t.description like '%'||($criteria.description)||'%' #end
 				#if($criteria.description_type_id) and t.description_type_id = $criteria.description_type_id #end
 				#if($criteria.parrent_description_id) and t.parrent_description_id = $criteria.parrent_description_id #end
 				]]>
@@ -46,6 +47,7 @@
 			</tableClause>
 			<whereClause><![CDATA[ 
 				1 = 1
+				#if($criteria.description) and t.description like '%'||($criteria.description)||'%' #end
 				#if($criteria.description_type_id) and t.description_type_id = $criteria.description_type_id #end
 				#if($criteria.parrent_description_id) and t.parrent_description_id = $criteria.parrent_description_id #end
 				]]>
