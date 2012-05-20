@@ -469,9 +469,9 @@ public class MiscDMI implements QueryConstants {
 			Timestamp currDate = new Timestamp(System.currentTimeMillis());
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
-			Integer pMain_id = new Integer(
-					dsRequest.getFieldValue("main_id") == null ? "-100"
-							: dsRequest.getFieldValue("main_id").toString());
+			Integer pOrganization_id = new Integer(
+					dsRequest.getFieldValue("organization_id") == null ? "-100"
+							: dsRequest.getFieldValue("organization_id").toString());
 			Integer pMainDetailId = new Integer(
 					dsRequest.getFieldValue("main_detail_id") == null ? "-100"
 							: dsRequest.getFieldValue("main_detail_id")
@@ -519,7 +519,7 @@ public class MiscDMI implements QueryConstants {
 			insertStatement = connection
 					.prepareCall("{ call ccare.newBillSupport2.saveOrUpdateMainDetail( ?,?,?,?,?,?,?,?,?,?,?,?,?,? ) }");
 
-			insertStatement.setInt(1, pMain_id);
+			insertStatement.setInt(1, pOrganization_id);
 			insertStatement.setInt(2, pMainDetailId);
 			insertStatement.setTimestamp(3, currDate);
 			insertStatement.setString(4, loggedUserName);
@@ -951,15 +951,15 @@ public class MiscDMI implements QueryConstants {
 			if (ym.equals(-1000)) {
 				throw new CallCenterException("არასწორი თარიღი !");
 			}
-			Integer main_id = Integer.parseInt(dsRequest
-					.getFieldValue("main_id") == null ? "-1" : dsRequest
-					.getFieldValue("main_id").toString());
+			Integer organization_id = Integer.parseInt(dsRequest
+					.getFieldValue("organization_id") == null ? "-1" : dsRequest
+					.getFieldValue("organization_id").toString());
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
 
 			String log = "Method:MiscDMI.addLogSessionCharge. service_id = "
 					+ service_id + ", session_id = " + session_id + ", ym = "
-					+ ym + ", main_id = " + main_id;
+					+ ym + ", organization_id = " + organization_id;
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
@@ -974,7 +974,7 @@ public class MiscDMI implements QueryConstants {
 				insertStatement.setInt(1, service_id);
 				insertStatement.setString(2, session_id);
 				insertStatement.setInt(3, ym);
-				insertStatement.setInt(4, main_id);
+				insertStatement.setInt(4, organization_id);
 			} else {
 				insertStatement = connection
 						.prepareCall("{ call ccare.insert_session_charge( ?,?,? ) }");

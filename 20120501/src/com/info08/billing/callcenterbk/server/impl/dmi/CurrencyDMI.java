@@ -50,7 +50,7 @@ public class CurrencyDMI implements QueryConstants {
 			if (country_id != null) {
 				Country country = oracleManager.find(Country.class, country_id);
 				if (country != null) {
-					currency.setCountry_name_geo(country.getCountry_name_geo());
+					currency.setCountry_name(country.getCountry_name());
 				}
 			}
 
@@ -119,7 +119,7 @@ public class CurrencyDMI implements QueryConstants {
 			if (country_id != null) {
 				Country country = oracleManager.find(Country.class, country_id);
 				if (country != null) {
-					currency.setCountry_name_geo(country.getCountry_name_geo());
+					currency.setCountry_name(country.getCountry_name());
 				}
 			}
 
@@ -157,12 +157,14 @@ public class CurrencyDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			String loggedUserName = dsRequest.getOldValues().get("loggedUserName").toString();
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Removing Currency.");
 
-			Long id = new Long(dsRequest.getOldValues().get("currency_id").toString());
+			Long id = new Long(dsRequest.getOldValues().get("currency_id")
+					.toString());
 
 			Currency currency = oracleManager.find(Currency.class, id);
 
@@ -240,7 +242,7 @@ public class CurrencyDMI implements QueryConstants {
 						currency_id);
 				if (currency != null) {
 					currencyCourseObject.setName_descr(currency
-							.getCountry_name_geo());
+							.getCountry_name());
 				}
 			}
 

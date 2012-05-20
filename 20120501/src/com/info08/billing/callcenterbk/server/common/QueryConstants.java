@@ -63,32 +63,32 @@ public interface QueryConstants {
 	public static final String Q_GET_DEP_CALL_CNT_BY_YM = "select getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
 
 	public static final String Q_GET_MAIN_ORGS_PHONES_HIERARCHY_NEW = "select distinct p.phone from (\n"
-			+ "       select ms.main_id from ccare.main_services ms\n"
-			+ "       start with ms.main_id = ? and ms.service_id = 3\n"
-			+ "       connect by prior ms.main_id = ms.main_master_id) r\n"
-			+ "inner join ccare.abonents a on a.main_id = r.main_id\n"
+			+ "       select ms.organization_id from ccare.main_services ms\n"
+			+ "       start with ms.organization_id = ? and ms.service_id = 3\n"
+			+ "       connect by prior ms.organization_id = ms.main_master_id) r\n"
+			+ "inner join ccare.abonents a on a.organization_id = r.organization_id\n"
 			+ "inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "where p. deleted = 0 and a.deleted = 0 and p.phone not in (\n"
 			+ "    select p.phone from (\n"
 			+ "    select\n"
-			+ "      t.main_id\n"
+			+ "      t.organization_id\n"
 			+ "    from ccare.main_services t\n"
-			+ "    start with t.main_id in (\n"
+			+ "    start with t.organization_id in (\n"
 			+ "          select\n"
-			+ "               c.main_id\n"
+			+ "               c.organization_id\n"
 			+ "          from ccare.contracts c\n"
-			+ "          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in (\n"
+			+ "          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in (\n"
 			+ "                select\n"
-			+ "                      t.main_id\n"
+			+ "                      t.organization_id\n"
 			+ "                from ccare.main_services t\n"
 			+ "                where level>1\n"
-			+ "          start with t.main_id = ? and t.service_id = 3\n"
-			+ "          connect by prior t.main_id = t.main_master_id\n"
+			+ "          start with t.organization_id = ? and t.service_id = 3\n"
+			+ "          connect by prior t.organization_id = t.main_master_id\n"
 			+ "          ) and (c.main_detail_id is null or c.main_detail_id = 0)\n"
 			+ "    ) and t.service_id = 3\n"
-			+ "    connect by prior t.main_id = t.main_master_id\n"
+			+ "    connect by prior t.organization_id = t.main_master_id\n"
 			+ "    ) a1\n"
-			+ "    inner join ccare.abonents a on a.main_id = a1.main_id\n"
+			+ "    inner join ccare.abonents a on a.organization_id = a1.organization_id\n"
 			+ "    inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "    where a.deleted = 0 and p.deleted = 0\n"
 			+ ") and p.phone not in (\n"
@@ -104,13 +104,13 @@ public interface QueryConstants {
 			+ "                 (select\n"
 			+ "                        c.main_detail_id\n"
 			+ "                  from ccare.contracts c\n"
-			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in\n"
+			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in\n"
 			+ "                        (select\n"
-			+ "                               t.main_id\n"
+			+ "                               t.organization_id\n"
 			+ "                         from ccare.main_services t\n"
 			+ "                         where level>1\n"
-			+ "                         start with t.main_id = ? and t.service_id = 3\n"
-			+ "                         connect by prior t.main_id = t.main_master_id\n"
+			+ "                         start with t.organization_id = ? and t.service_id = 3\n"
+			+ "                         connect by prior t.organization_id = t.main_master_id\n"
 			+ "                         )\n"
 			+ "                         and (c.main_detail_id is not null and c.main_detail_id <> 0)\n"
 			+ "                  ) and t.deleted = 0\n"
@@ -121,12 +121,12 @@ public interface QueryConstants {
 			+ "   distinct p.phone\n"
 			+ "from ccare.abonents a\n"
 			+ "   inner join ccare.phones p on p.phone_id = a.phone_id\n"
-			+ "where a.main_id in (\n"
+			+ "where a.organization_id in (\n"
 			+ "      select\n"
-			+ "         t.main_id\n"
+			+ "         t.organization_id\n"
 			+ "      from ccare.main_services t\n"
-			+ "      start with t.main_id = ? and t.service_id = 3\n"
-			+ "      connect by prior t.main_id = t.main_master_id\n"
+			+ "      start with t.organization_id = ? and t.service_id = 3\n"
+			+ "      connect by prior t.organization_id = t.main_master_id\n"
 			+ " )\n"
 			+ " and p.deleted = 0 and a.deleted = 0 and p.phone in (select tt.phone\n"
 			+ "                         from ccare.block_list_phones tt\n"
@@ -136,12 +136,12 @@ public interface QueryConstants {
 			+ "   distinct p.phone\n"
 			+ "from ccare.abonents a\n"
 			+ "   inner join ccare.phones p on p.phone_id = a.phone_id\n"
-			+ "where a.main_id in (\n"
+			+ "where a.organization_id in (\n"
 			+ "      select\n"
-			+ "         t.main_id\n"
+			+ "         t.organization_id\n"
 			+ "      from ccare.main_services t\n"
-			+ "      start with t.main_id = ? and t.service_id = 3\n"
-			+ "      connect by prior t.main_id = t.main_master_id\n"
+			+ "      start with t.organization_id = ? and t.service_id = 3\n"
+			+ "      connect by prior t.organization_id = t.main_master_id\n"
 			+ " )\n"
 			+ " and p.deleted = 0 and a.deleted = 0 and p.phone not in (select tt.phone\n"
 			+ "                         from ccare.block_list_phones tt\n"
@@ -176,10 +176,10 @@ public interface QueryConstants {
 	public static final String Q_GET_MAIN_ORGS_PHONES_HIERARCHY = " select\n"
 			+ "   distinct p.phone\n" + "from ccare.abonents a\n"
 			+ "   inner join ccare.phones p on p.phone_id = a.phone_id\n"
-			+ "where a.main_id in (\n" + "      select\n"
-			+ "         t.main_id\n" + "      from ccare.main_services t\n"
-			+ "      start with t.main_id = ? and t.service_id = 3\n"
-			+ "      connect by prior t.main_id = t.main_master_id\n" + " )\n"
+			+ "where a.organization_id in (\n" + "      select\n"
+			+ "         t.organization_id\n" + "      from ccare.main_services t\n"
+			+ "      start with t.organization_id = ? and t.service_id = 3\n"
+			+ "      connect by prior t.organization_id = t.main_master_id\n" + " )\n"
 			+ " and p.deleted = 0 and a.deleted = 0";
 
 	public static final String Q_GET_MAIN_DET_PHONES_HIERARCHY_NEW = "select /*+ index(p PHN_PRY_KS001)*/\n"
@@ -335,7 +335,7 @@ public interface QueryConstants {
 			+ "\t\t\t\t\t        )\n"
 			+ "\t\t\t\t\t  )\n" + ")";
 
-	// public static final String Q_GET_CALL_CNT_BY_CONT_AND_MAIN_ID =
+	// public static final String Q_GET_CALL_CNT_BY_CONT_AND_organization_id =
 	// " select /*+ index(ls IDX_LOG_SESS_PHANDDT) */ count(1) from ccare.log_sessions ls\n"
 	// +
 	// "       inner join ccare.log_session_charges ch on ch.session_id = ls.session_id\n"
@@ -347,49 +347,49 @@ public interface QueryConstants {
 	// "         distinct '32'||p.phone as phone\n" +
 	// "      from ccare.abonents a\n" +
 	// "         inner join ccare.phones p on p.phone_id = a.phone_id\n" +
-	// "      where a.main_id in (\n" +
+	// "      where a.organization_id in (\n" +
 	// "            select\n" +
-	// "               t.main_id\n" +
+	// "               t.organization_id\n" +
 	// "            from ccare.main_services t\n" +
-	// "            start with t.main_id =((select c.main_id from ccare.contracts c where c.contract_id = ?))  and t.service_id = 3\n"
+	// "            start with t.organization_id =((select c.organization_id from ccare.contracts c where c.contract_id = ?))  and t.service_id = 3\n"
 	// +
-	// "            connect by prior t.main_id = t.main_master_id\n" +
+	// "            connect by prior t.organization_id = t.main_master_id\n" +
 	// "       )\n" +
 	// ")";
 
-	public static final String Q_GET_CALL_CNT_BY_CONT_AND_MAIN_ID = "select\n"
+	public static final String Q_GET_CALL_CNT_BY_CONT_AND_ORGANIZATION_ID = "select\n"
 			+ "      /*+ index(ls IDX_LOG_SESS_PHANDDT) */ count(1)\n"
 			+ "from ccare.log_sessions ls\n"
 			+ "     inner join ccare.log_session_charges ch on ch.session_id = ls.session_id\n"
 			+ "     inner join ccare.contracts c on c.contract_id = ? \n"
 			+ "where ch.deleted = 0 and trunc(c.start_date) <= trunc(ls.start_date) and trunc(c.end_date)>=trunc(ls.start_date) and ls.phone in (\n"
 			+ "     select distinct decode(length(p.phone),7,'32'||p.phone,p.phone) from (\n"
-			+ "               select ms.main_id from ccare.main_services ms\n"
-			+ "               start with ms.main_id = ? and ms.service_id = 3\n"
-			+ "               connect by prior ms.main_id = ms.main_master_id) r\n"
-			+ "        inner join ccare.abonents a on a.main_id = r.main_id\n"
+			+ "               select ms.organization_id from ccare.main_services ms\n"
+			+ "               start with ms.organization_id = ? and ms.service_id = 3\n"
+			+ "               connect by prior ms.organization_id = ms.main_master_id) r\n"
+			+ "        inner join ccare.abonents a on a.organization_id = r.organization_id\n"
 			+ "        inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "        where p. deleted = 0 and a.deleted = 0 and p.phone not in (\n"
 			+ "            select p.phone from (\n"
 			+ "            select\n"
-			+ "              t.main_id\n"
+			+ "              t.organization_id\n"
 			+ "            from ccare.main_services t\n"
-			+ "            start with t.main_id in (\n"
+			+ "            start with t.organization_id in (\n"
 			+ "                  select\n"
-			+ "                       c.main_id\n"
+			+ "                       c.organization_id\n"
 			+ "                  from ccare.contracts c\n"
-			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in (\n"
+			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in (\n"
 			+ "                        select\n"
-			+ "                              t.main_id\n"
+			+ "                              t.organization_id\n"
 			+ "                        from ccare.main_services t\n"
 			+ "                        where level>1\n"
-			+ "                  start with t.main_id = ? and t.service_id = 3\n"
-			+ "                  connect by prior t.main_id = t.main_master_id\n"
+			+ "                  start with t.organization_id = ? and t.service_id = 3\n"
+			+ "                  connect by prior t.organization_id = t.main_master_id\n"
 			+ "                  ) and (c.main_detail_id is null or c.main_detail_id = 0)\n"
 			+ "            ) and t.service_id = 3\n"
-			+ "            connect by prior t.main_id = t.main_master_id\n"
+			+ "            connect by prior t.organization_id = t.main_master_id\n"
 			+ "            ) a1\n"
-			+ "            inner join ccare.abonents a on a.main_id = a1.main_id\n"
+			+ "            inner join ccare.abonents a on a.organization_id = a1.organization_id\n"
 			+ "            inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "            where a.deleted = 0 and p.deleted = 0\n"
 			+ "        ) and p.phone not in (\n"
@@ -405,52 +405,52 @@ public interface QueryConstants {
 			+ "                         (select\n"
 			+ "                                c.main_detail_id\n"
 			+ "                          from ccare.contracts c\n"
-			+ "                          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in\n"
+			+ "                          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in\n"
 			+ "                                (select\n"
-			+ "                                       t.main_id\n"
+			+ "                                       t.organization_id\n"
 			+ "                                 from ccare.main_services t\n"
 			+ "                                 where level>1\n"
-			+ "                                 start with t.main_id = ? and t.service_id = 3\n"
-			+ "\t\t\t\t                         connect by prior t.main_id = t.main_master_id\n"
+			+ "                                 start with t.organization_id = ? and t.service_id = 3\n"
+			+ "\t\t\t\t                         connect by prior t.organization_id = t.main_master_id\n"
 			+ "\t\t\t\t                         )\n"
 			+ "\t\t\t\t                         and (c.main_detail_id is not null and c.main_detail_id <> 0)\n"
 			+ "\t\t\t\t                  ) and t.deleted = 0\n"
 			+ "\t\t\t\t           connect by prior t.main_detail_id = t.main_detail_master_id)\n"
 			+ "\t\t\t\t)\n" + ")";
 
-	public static final String Q_GET_CHARGES_BY_CONT_AND_MAIN_ID = "select\n"
+	public static final String Q_GET_CHARGES_BY_CONT_AND_ORGANIZATION_ID = "select\n"
 			+ "      /*+ index(ls IDX_LOG_SESS_PHANDDT) */ nvl(sum(ch.price)/100,0) as charges \n"
 			+ "from ccare.log_sessions ls\n"
 			+ "     inner join ccare.log_session_charges ch on ch.session_id = ls.session_id\n"
 			+ "     inner join ccare.contracts c on c.contract_id = ? \n"
 			+ "where ch.deleted = 0 and trunc(c.start_date) <= trunc(ls.start_date) and trunc(c.end_date)>=trunc(ls.start_date) and ls.phone in (\n"
 			+ "     select distinct decode(length(p.phone),7,'32'||p.phone,p.phone) from (\n"
-			+ "               select ms.main_id from ccare.main_services ms\n"
-			+ "               start with ms.main_id = ? and ms.service_id = 3\n"
-			+ "               connect by prior ms.main_id = ms.main_master_id) r\n"
-			+ "        inner join ccare.abonents a on a.main_id = r.main_id\n"
+			+ "               select ms.organization_id from ccare.main_services ms\n"
+			+ "               start with ms.organization_id = ? and ms.service_id = 3\n"
+			+ "               connect by prior ms.organization_id = ms.main_master_id) r\n"
+			+ "        inner join ccare.abonents a on a.organization_id = r.organization_id\n"
 			+ "        inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "        where p. deleted = 0 and a.deleted = 0 and p.phone not in (\n"
 			+ "            select p.phone from (\n"
 			+ "            select\n"
-			+ "              t.main_id\n"
+			+ "              t.organization_id\n"
 			+ "            from ccare.main_services t\n"
-			+ "            start with t.main_id in (\n"
+			+ "            start with t.organization_id in (\n"
 			+ "                  select\n"
-			+ "                       c.main_id\n"
+			+ "                       c.organization_id\n"
 			+ "                  from ccare.contracts c\n"
-			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in (\n"
+			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in (\n"
 			+ "                        select\n"
-			+ "                              t.main_id\n"
+			+ "                              t.organization_id\n"
 			+ "                        from ccare.main_services t\n"
 			+ "                        where level>1\n"
-			+ "                  start with t.main_id = ? and t.service_id = 3\n"
-			+ "                  connect by prior t.main_id = t.main_master_id\n"
+			+ "                  start with t.organization_id = ? and t.service_id = 3\n"
+			+ "                  connect by prior t.organization_id = t.main_master_id\n"
 			+ "                  ) and (c.main_detail_id is null or c.main_detail_id = 0)\n"
 			+ "            ) and t.service_id = 3\n"
-			+ "            connect by prior t.main_id = t.main_master_id\n"
+			+ "            connect by prior t.organization_id = t.main_master_id\n"
 			+ "            ) a1\n"
-			+ "            inner join ccare.abonents a on a.main_id = a1.main_id\n"
+			+ "            inner join ccare.abonents a on a.organization_id = a1.organization_id\n"
 			+ "            inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "            where a.deleted = 0 and p.deleted = 0\n"
 			+ "        ) and p.phone not in (\n"
@@ -466,13 +466,13 @@ public interface QueryConstants {
 			+ "                         (select\n"
 			+ "                                c.main_detail_id\n"
 			+ "                          from ccare.contracts c\n"
-			+ "                          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in\n"
+			+ "                          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in\n"
 			+ "                                (select\n"
-			+ "                                       t.main_id\n"
+			+ "                                       t.organization_id\n"
 			+ "                                 from ccare.main_services t\n"
 			+ "                                 where level>1\n"
-			+ "                                 start with t.main_id = ? and t.service_id = 3\n"
-			+ "\t\t\t\t                         connect by prior t.main_id = t.main_master_id\n"
+			+ "                                 start with t.organization_id = ? and t.service_id = 3\n"
+			+ "\t\t\t\t                         connect by prior t.organization_id = t.main_master_id\n"
 			+ "\t\t\t\t                         )\n"
 			+ "\t\t\t\t                         and (c.main_detail_id is not null and c.main_detail_id <> 0)\n"
 			+ "\t\t\t\t                  ) and t.deleted = 0\n"
@@ -483,19 +483,19 @@ public interface QueryConstants {
 	public static final String Q_MYSQL_INSERT_BLOCK_PHONE = " insert into asteriskcdrdb.block (code,proriti,len) values (?, ?, ?) ";
 
 	public static final String Q_CHECK_PHONE_MAIN_ORG = "select count(1) from ccare.main_services ms\n"
-			+ "       inner join ccare.abonents a on a.main_id = ms.main_id\n"
+			+ "       inner join ccare.abonents a on a.organization_id = ms.organization_id\n"
 			+ "       inner join ccare.phones p on p.phone_id = a.phone_id\n"
-			+ "where ms.main_id in\n"
-			+ "      (select t.main_id from ccare.main_services t\n"
-			+ "       start with t.main_id = ? and t.service_id = 3 and t.deleted = 0\n"
-			+ "       connect by prior t.main_id = t.main_master_id\n"
+			+ "where ms.organization_id in\n"
+			+ "      (select t.organization_id from ccare.main_services t\n"
+			+ "       start with t.organization_id = ? and t.service_id = 3 and t.deleted = 0\n"
+			+ "       connect by prior t.organization_id = t.main_master_id\n"
 			+ "       )\n"
 			+ "and p.deleted = 0 and a.deleted = 0 and ms.deleted = 0 and p.phone is not null and p.phone not like '8%'\n"
 			+ "and length(p.phone)>6 and ms.service_id = 3 and ms.deleted = 0 and p.phone = ? ";
 
 	public static final String Q_CHECK_PHONE_MAIN_ORG_DET = "select p.phone from ccare.phones p\n"
 			+ "       inner join ccare.abonents a on a.phone_id = p.phone_id\n"
-			+ "       inner join ccare.main_services ms on ms.main_id = a.main_id\n"
+			+ "       inner join ccare.main_services ms on ms.organization_id = a.organization_id\n"
 			+ "where a.main_detail_id in\n"
 			+ "      (select t.main_detail_id from ccare.main_details t\n"
 			+ "       start with t.main_detail_id = ? and t.deleted = 0\n"
@@ -506,15 +506,15 @@ public interface QueryConstants {
 	// public static final String Q_GET_PHONE_LIST_ONLY_CONTR_LIST =
 	// "select distinct t.phone from ccare.phones t\n" +
 	// "inner join ccare.abonents a on a.phone_id = t.phone_id\n" +
-	// "inner join ccare.main_services ms on ms.main_id = a.main_id\n" +
-	// "where t.deleted = 0 and a.deleted = 0 and ms.service_id = 3 and a.main_id = ? and ms.main_id = ?\n"
+	// "inner join ccare.main_services ms on ms.organization_id = a.organization_id\n" +
+	// "where t.deleted = 0 and a.deleted = 0 and ms.service_id = 3 and a.organization_id = ? and ms.organization_id = ?\n"
 	// +
 	// "  and a.main_detail_id = ? and t.phone is not null and length(t.phone)>6 and t.phone not in (\n"
 	// +
 	// "      select tt.phone from ccare.contractor_phones tt\n" +
 	// "             inner join ccare.contracts c on c.contract_id = tt.contract_id\n"
 	// +
-	// "      where tt.contract_id = ? and tt.deleted = 0 and c.main_id = a.main_id and c.main_detail_id = a.main_detail_id and c.deleted = 0\n"
+	// "      where tt.contract_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.main_detail_id = a.main_detail_id and c.deleted = 0\n"
 	// +
 	// ")";
 
@@ -593,27 +593,27 @@ public interface QueryConstants {
 	// public static final String Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST =
 	// "select distinct t.phone from ccare.phones t\n" +
 	// "inner join ccare.abonents a on a.phone_id = t.phone_id\n" +
-	// "inner join ccare.main_services ms on ms.main_id = a.main_id\n" +
-	// "where t.deleted = 0 and a.deleted = 0 and ms.service_id = 3 and a.main_id = ? and ms.main_id = ?\n"
+	// "inner join ccare.main_services ms on ms.organization_id = a.organization_id\n" +
+	// "where t.deleted = 0 and a.deleted = 0 and ms.service_id = 3 and a.organization_id = ? and ms.organization_id = ?\n"
 	// +
 	// "  and a.main_detail_id = ? and t.phone is not null and length(t.phone)>6 and t.phone in (\n"
 	// +
 	// "      select tt.phone from ccare.contractor_phones tt\n" +
 	// "             inner join ccare.contracts c on c.contract_id = tt.contract_id\n"
 	// +
-	// "      where tt.contract_id = ? and tt.deleted = 0 and c.main_id = a.main_id and c.main_detail_id = a.main_detail_id and c.deleted = 0\n"
+	// "      where tt.contract_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.main_detail_id = a.main_detail_id and c.deleted = 0\n"
 	// +
 	// ")";
 
 	// public static final String Q_GET_PHONE_LIST_ONLY_CONTR_LIST1 =
 	// "select distinct p.phone from ccare.main_services ms\n" +
-	// "       inner join ccare.abonents a on a.main_id = ms.main_id\n" +
+	// "       inner join ccare.abonents a on a.organization_id = ms.organization_id\n" +
 	// "       inner join ccare.phones p on p.phone_id = a.phone_id\n" +
-	// "where ms.main_id in\n" +
-	// "      (select t.main_id from ccare.main_services t\n" +
-	// "       start with t.main_id = ? and t.service_id = 3 and t.deleted = 0\n"
+	// "where ms.organization_id in\n" +
+	// "      (select t.organization_id from ccare.main_services t\n" +
+	// "       start with t.organization_id = ? and t.service_id = 3 and t.deleted = 0\n"
 	// +
-	// "       connect by prior t.main_id = t.main_master_id\n" +
+	// "       connect by prior t.organization_id = t.main_master_id\n" +
 	// "       )\n" +
 	// "and p.deleted = 0 and a.deleted = 0 and p.phone is not null and p.phone not like '8%'\n"
 	// +
@@ -622,37 +622,37 @@ public interface QueryConstants {
 	// "      select tt.phone from ccare.contractor_phones tt\n" +
 	// "             inner join ccare.contracts c on c.contract_id = tt.contract_id\n"
 	// +
-	// "      where tt.contract_id = ? and tt.deleted = 0 and c.main_id = a.main_id and c.deleted = 0\n"
+	// "      where tt.contract_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.deleted = 0\n"
 	// +
 	// ")";
 
 	public static final String Q_GET_PHONE_LIST_ONLY_CONTR_LIST1 = "select distinct p.phone from (\n"
-			+ "       select ms.main_id from ccare.main_services ms\n"
-			+ "       start with ms.main_id = ? and ms.service_id = 3\n"
-			+ "       connect by prior ms.main_id = ms.main_master_id) r\n"
-			+ "inner join ccare.abonents a on a.main_id = r.main_id\n"
+			+ "       select ms.organization_id from ccare.main_services ms\n"
+			+ "       start with ms.organization_id = ? and ms.service_id = 3\n"
+			+ "       connect by prior ms.organization_id = ms.main_master_id) r\n"
+			+ "inner join ccare.abonents a on a.organization_id = r.organization_id\n"
 			+ "inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "where p. deleted = 0 and a.deleted = 0 and p.phone not in (\n"
 			+ "    select p.phone from (\n"
 			+ "    select\n"
-			+ "      t.main_id\n"
+			+ "      t.organization_id\n"
 			+ "    from ccare.main_services t\n"
-			+ "    start with t.main_id in (\n"
+			+ "    start with t.organization_id in (\n"
 			+ "          select\n"
-			+ "               c.main_id\n"
+			+ "               c.organization_id\n"
 			+ "          from ccare.contracts c\n"
-			+ "          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in (\n"
+			+ "          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in (\n"
 			+ "                select\n"
-			+ "                      t.main_id\n"
+			+ "                      t.organization_id\n"
 			+ "                from ccare.main_services t\n"
 			+ "                where level>1\n"
-			+ "          start with t.main_id = ? and t.service_id = 3\n"
-			+ "          connect by prior t.main_id = t.main_master_id\n"
+			+ "          start with t.organization_id = ? and t.service_id = 3\n"
+			+ "          connect by prior t.organization_id = t.main_master_id\n"
 			+ "          ) and (c.main_detail_id is null or c.main_detail_id = 0)\n"
 			+ "    ) and t.service_id = 3\n"
-			+ "    connect by prior t.main_id = t.main_master_id\n"
+			+ "    connect by prior t.organization_id = t.main_master_id\n"
 			+ "    ) a1\n"
-			+ "    inner join ccare.abonents a on a.main_id = a1.main_id\n"
+			+ "    inner join ccare.abonents a on a.organization_id = a1.organization_id\n"
 			+ "    inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "    where a.deleted = 0 and p.deleted = 0\n"
 			+ ") and p.phone not in (\n"
@@ -668,13 +668,13 @@ public interface QueryConstants {
 			+ "                 (select\n"
 			+ "                        c.main_detail_id\n"
 			+ "                  from ccare.contracts c\n"
-			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in\n"
+			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in\n"
 			+ "                        (select\n"
-			+ "                               t.main_id\n"
+			+ "                               t.organization_id\n"
 			+ "                         from ccare.main_services t\n"
 			+ "                         where level>1\n"
-			+ "                         start with t.main_id = ? and t.service_id = 3\n"
-			+ "                         connect by prior t.main_id = t.main_master_id\n"
+			+ "                         start with t.organization_id = ? and t.service_id = 3\n"
+			+ "                         connect by prior t.organization_id = t.main_master_id\n"
 			+ "                         )\n"
 			+ "                         and (c.main_detail_id is not null and c.main_detail_id <> 0)\n"
 			+ "                  ) and t.deleted = 0\n"
@@ -685,32 +685,32 @@ public interface QueryConstants {
 			+ "  )\n";
 
 	public static final String Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST1 = "select distinct p.phone from (\n"
-			+ "       select ms.main_id from ccare.main_services ms\n"
-			+ "       start with ms.main_id = ? and ms.service_id = 3\n"
-			+ "       connect by prior ms.main_id = ms.main_master_id) r\n"
-			+ "inner join ccare.abonents a on a.main_id = r.main_id\n"
+			+ "       select ms.organization_id from ccare.main_services ms\n"
+			+ "       start with ms.organization_id = ? and ms.service_id = 3\n"
+			+ "       connect by prior ms.organization_id = ms.main_master_id) r\n"
+			+ "inner join ccare.abonents a on a.organization_id = r.organization_id\n"
 			+ "inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "where p. deleted = 0 and a.deleted = 0 and p.phone not in (\n"
 			+ "    select p.phone from (\n"
 			+ "    select\n"
-			+ "      t.main_id\n"
+			+ "      t.organization_id\n"
 			+ "    from ccare.main_services t\n"
-			+ "    start with t.main_id in (\n"
+			+ "    start with t.organization_id in (\n"
 			+ "          select\n"
-			+ "               c.main_id\n"
+			+ "               c.organization_id\n"
 			+ "          from ccare.contracts c\n"
-			+ "          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in (\n"
+			+ "          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in (\n"
 			+ "                select\n"
-			+ "                      t.main_id\n"
+			+ "                      t.organization_id\n"
 			+ "                from ccare.main_services t\n"
 			+ "                where level>1\n"
-			+ "          start with t.main_id = ? and t.service_id = 3\n"
-			+ "          connect by prior t.main_id = t.main_master_id\n"
+			+ "          start with t.organization_id = ? and t.service_id = 3\n"
+			+ "          connect by prior t.organization_id = t.main_master_id\n"
 			+ "          ) and (c.main_detail_id is null or c.main_detail_id = 0)\n"
 			+ "    ) and t.service_id = 3\n"
-			+ "    connect by prior t.main_id = t.main_master_id\n"
+			+ "    connect by prior t.organization_id = t.main_master_id\n"
 			+ "    ) a1\n"
-			+ "    inner join ccare.abonents a on a.main_id = a1.main_id\n"
+			+ "    inner join ccare.abonents a on a.organization_id = a1.organization_id\n"
 			+ "    inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "    where a.deleted = 0 and p.deleted = 0\n"
 			+ ") and p.phone not in (\n"
@@ -726,13 +726,13 @@ public interface QueryConstants {
 			+ "                 (select\n"
 			+ "                        c.main_detail_id\n"
 			+ "                  from ccare.contracts c\n"
-			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in\n"
+			+ "                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in\n"
 			+ "                        (select\n"
-			+ "                               t.main_id\n"
+			+ "                               t.organization_id\n"
 			+ "                         from ccare.main_services t\n"
 			+ "                         where level>1\n"
-			+ "                         start with t.main_id = ? and t.service_id = 3\n"
-			+ "                         connect by prior t.main_id = t.main_master_id\n"
+			+ "                         start with t.organization_id = ? and t.service_id = 3\n"
+			+ "                         connect by prior t.organization_id = t.main_master_id\n"
 			+ "                         )\n"
 			+ "                         and (c.main_detail_id is not null and c.main_detail_id <> 0)\n"
 			+ "                  ) and t.deleted = 0\n"
@@ -744,13 +744,13 @@ public interface QueryConstants {
 
 	// public static final String Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST1 =
 	// "select distinct p.phone from ccare.main_services ms\n" +
-	// "       inner join ccare.abonents a on a.main_id = ms.main_id\n" +
+	// "       inner join ccare.abonents a on a.organization_id = ms.organization_id\n" +
 	// "       inner join ccare.phones p on p.phone_id = a.phone_id\n" +
-	// "where ms.main_id in\n" +
-	// "      (select t.main_id from ccare.main_services t\n" +
-	// "       start with t.main_id = ? and t.service_id = 3 and t.deleted = 0\n"
+	// "where ms.organization_id in\n" +
+	// "      (select t.organization_id from ccare.main_services t\n" +
+	// "       start with t.organization_id = ? and t.service_id = 3 and t.deleted = 0\n"
 	// +
-	// "       connect by prior t.main_id = t.main_master_id\n" +
+	// "       connect by prior t.organization_id = t.main_master_id\n" +
 	// "       )\n" +
 	// "and p.deleted = 0 and a.deleted = 0 and p.phone is not null and p.phone not like '8%'\n"
 	// +
@@ -759,35 +759,35 @@ public interface QueryConstants {
 	// "      select tt.phone from ccare.contractor_phones tt\n" +
 	// "             inner join ccare.contracts c on c.contract_id = tt.contract_id\n"
 	// +
-	// "      where tt.contract_id = ? and tt.deleted = 0 and c.main_id = a.main_id and c.deleted = 0\n"
+	// "      where tt.contract_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.deleted = 0\n"
 	// +
 	// ")";
 
-	public static final String Q_GET_PHONE_LIST_BY_MAIN_ID = "select distinct p.phone from ccare.main_services ms\n"
-			+ "       inner join ccare.abonents a on a.main_id = ms.main_id\n"
+	public static final String Q_GET_PHONE_LIST_BY_ORGANIZATION_ID = "select distinct p.phone from ccare.main_services ms\n"
+			+ "       inner join ccare.abonents a on a.organization_id = ms.organization_id\n"
 			+ "       inner join ccare.phones p on p.phone_id = a.phone_id\n"
-			+ "where ms.main_id in\n"
-			+ "      (select t.main_id from ccare.main_services t\n"
-			+ "       start with t.main_id = ? and t.service_id = 3 and t.deleted = 0\n"
-			+ "       connect by prior t.main_id = t.main_master_id\n"
+			+ "where ms.organization_id in\n"
+			+ "      (select t.organization_id from ccare.main_services t\n"
+			+ "       start with t.organization_id = ? and t.service_id = 3 and t.deleted = 0\n"
+			+ "       connect by prior t.organization_id = t.main_master_id\n"
 			+ "       )\n"
 			+ "       and p.deleted = 0 and a.deleted = 0 and p.phone is not null and p.phone not like '8%'\n"
 			+ "       and length(p.phone)>6\n"
 			+ "       and ms.service_id = 3 and ms.deleted = 0";
 
-	public static final String Q_GET_PHONE_LIST_BY_MAIN_ID1111 = "select\n"
+	public static final String Q_GET_PHONE_LIST_BY_ORGANIZATION_ID1111 = "select\n"
 			+ "  distinct p.phone\n"
 			+ "from ccare.main_orgs mo\n"
-			+ "inner join ccare.main_services ms on ms.main_id = mo.main_id\n"
-			+ "inner join ccare.main_details md on md.main_id = mo.main_id\n"
+			+ "inner join ccare.main_services ms on ms.organization_id = mo.organization_id\n"
+			+ "inner join ccare.main_details md on md.organization_id = mo.organization_id\n"
 			+ "inner join ccare.abonents a on a.main_detail_id = md.main_detail_id\n"
 			+ "inner join ccare.phones p on p.phone_id = a.phone_id\n"
-			+ "where mo.main_id in\n"
+			+ "where mo.organization_id in\n"
 			+ "      (select\n"
-			+ "         t.main_id\n"
+			+ "         t.organization_id\n"
 			+ "       from ccare.main_services t\n"
-			+ "       start with t.main_id = ? and t.service_id = 3 and t.deleted = 0\n"
-			+ "       connect by prior t.main_id = t.main_master_id\n"
+			+ "       start with t.organization_id = ? and t.service_id = 3 and t.deleted = 0\n"
+			+ "       connect by prior t.organization_id = t.main_master_id\n"
 			+ "      )\n"
 			+ "      and md.main_detail_type_id in (5, 30, 59, 60, 61)\n"
 			+ "      and p.deleted = 0 and a.deleted = 0 and md.deleted = 0 and p.phone is not null and p.phone not like '8%'\n"
@@ -813,11 +813,11 @@ public interface QueryConstants {
 			+ "       c.price_type,\n"
 			+ "       c.price,\n"
 			+ "       c.block, \n"
-			+ "       c.main_id,\n"
+			+ "       c.organization_id,\n"
 			+ "       c.main_detail_id \n"
 			+ "  from ccare.phones t\n"
 			+ " inner join ccare.abonents a on a.phone_id = t.phone_id\n"
-			+ " inner join ccare.contracts c on c.main_id = a.main_id\n"
+			+ " inner join ccare.contracts c on c.organization_id = a.organization_id\n"
 			+ " where t.phone = ? and a.deleted = 0 and c.deleted = 0 ";
 
 	public static final String Q_GET_CALL_CENTER_REQ_MSG = "select t.description from ccare.descriptions t where t.description_id = 57100 ";
@@ -859,7 +859,7 @@ public interface QueryConstants {
 			+ "       md.main_detail_note_eng,\n"
 			+ "       md.main_detail_note_geo,\n"
 			+ "       md.main_detail_type_id,\n"
-			+ "       md.main_id,\n"
+			+ "       md.organization_id,\n"
 			+ "       md.old_id,\n"
 			+ "       md.rec_user,\n"
 			+ "       md.rec_date,\n"
@@ -867,7 +867,7 @@ public interface QueryConstants {
 			+ "       md.upd_date,\n"
 			+ "       getorgdeptphones(main_detail_id) as phones\n"
 			+ "  FROM ccare.main_details md\n"
-			+ " start with md.main_id = ? and md.deleted = 0 and md.main_detail_geo like ? \n"
+			+ " start with md.organization_id = ? and md.deleted = 0 and md.main_detail_geo like ? \n"
 			+ " connect by prior md.main_detail_master_id = md.main_detail_id\n"
 			+ "union all\n"
 			+ "SELECT md.main_detail_id,\n"
@@ -892,7 +892,7 @@ public interface QueryConstants {
 			+ "       md.main_detail_note_eng,\n"
 			+ "       md.main_detail_note_geo,\n"
 			+ "       md.main_detail_type_id,\n"
-			+ "       md.main_id,\n"
+			+ "       md.organization_id,\n"
 			+ "       md.old_id,\n"
 			+ "       md.rec_user,\n"
 			+ "       md.rec_date,\n"
@@ -900,7 +900,7 @@ public interface QueryConstants {
 			+ "       md.upd_date,\n"
 			+ "       getorgdeptphones(main_detail_id) as phones\n"
 			+ "  FROM ccare.main_details md\n"
-			+ " start with md.main_id = ? and md.deleted = 0 and md.main_detail_geo like ? \n"
+			+ " start with md.organization_id = ? and md.deleted = 0 and md.main_detail_geo like ? \n"
 			+ " connect by prior md.main_detail_id = md.main_detail_master_id\n"
 			+ ") tt\n" + "order by tt.fields_order\n" + "";
 
@@ -985,7 +985,7 @@ public interface QueryConstants {
 			+ "order by t.user_name)\n" + "";
 
 	public static final String Q_GET_ORGS_BY_PHONE = "select\n"
-			+ "  t.main_id,\n"
+			+ "  t.organization_id,\n"
 			+ "  t.org_name,\n"
 			+ "  t.note,\n"
 			+ "  t.workinghours,\n"
@@ -1013,15 +1013,15 @@ public interface QueryConstants {
 			+ "  t.new_identcode\n"
 			+ "from ccare.main_orgs t\n"
 			+ "     left join ccare.legal_statuses ls on ls.legal_statuse_id = t.legal_statuse_id\n"
-			+ "     left join ccare.org_partnerbank_lists b on b.main_id = t.partnerbank_id\n"
-			+ "where t.main_id in (\n"
+			+ "     left join ccare.org_partnerbank_lists b on b.organization_id = t.partnerbank_id\n"
+			+ "where t.organization_id in (\n"
 			+ "select\n"
-			+ "      distinct mo.main_id\n"
+			+ "      distinct mo.organization_id\n"
 			+ "from ccare.phones t\n"
 			+ "inner join ccare.abonent_to_phones ap on ap.phone_id = t.phone_id\n"
 			+ "inner join ccare.abonents a on a.abonent_id = ap.abonent_id\n"
-			+ "inner join ccare.main_services ms on ms.main_id = a.main_id\n"
-			+ "inner join ccare.main_orgs mo on mo.main_id = a.main_id\n"
+			+ "inner join ccare.main_services ms on ms.organization_id = a.organization_id\n"
+			+ "inner join ccare.main_orgs mo on mo.organization_id = a.organization_id\n"
 			+ "where t.phone = ? and ms.service_id = 3 )";
 //Herio bichebo
 	public static final String Q_GET_FIRST_NAME_COUNT = " select count(1) from ccare.firstnames t where t.firstname = ? ";
@@ -1053,7 +1053,7 @@ public interface QueryConstants {
 			+ "from ccare.lastnames t\n" + "where t.lastname_id = ? ";
 
 	public static final String Q_GET_ABONENT_BY_ID = "select t.abonent_id,\n"
-			+ "       t.main_id,\n" + "       ma.address_id,\n"
+			+ "       t.organization_id,\n" + "       ma.address_id,\n"
 			+ "       p.phone_id,\n" + "       f.firstname,\n"
 			+ "       l.lastname,\n" + "       p.phone,\n"
 			+ "       ps.phone_state,\n" + "       ps.phone_state_id,\n"
@@ -1077,13 +1077,13 @@ public interface QueryConstants {
 			+ "       phone_states    ps,\n" + "       main_address    ma,\n"
 			+ "       streets         str,\n" + "       cities          c,\n"
 			+ "       street_district sd\n" + " where tt.service_id = 7\n"
-			+ "   and tt.main_id = t.main_id\n"
+			+ "   and tt.organization_id = t.organization_id\n"
 			+ "   and f.firstname_id = t.firstname_id\n"
 			+ "   and l.lastname_id = t.lastname_id\n"
 			+ "   and t.abonent_id = ap.abonent_id\n"
 			+ "   and p.phone_id = ap.phone_id\n"
 			+ "   and ps.phone_state_id = p.phone_state_id\n"
-			+ "   and ma.main_id = t.main_id\n"
+			+ "   and ma.organization_id = t.organization_id\n"
 			+ "   and str.street_id = ma.street_id\n"
 			+ "   and c.city_id = str.city_id\n"
 			+ "   and str.city_id = sd.city_id(+)\n"
@@ -1158,9 +1158,9 @@ public interface QueryConstants {
 
 	public static final String Q_UPDATE_ABONENT = " update ccare.abonents t set t.deleted = ?, t.upd_user = ?, t.upd_date = ? where t.abonent_id = ? ";
 
-	public static final String Q_UPDATE_MAIN_SERVICE = " update ccare.main_services t set t.deleted = ?, t.upd_user = ?, t.upd_date = ? where t.main_id = ? ";
+	public static final String Q_UPDATE_MAIN_SERVICE = " update ccare.main_services t set t.deleted = ?, t.upd_user = ?, t.upd_date = ? where t.organization_id = ? ";
 
-	public static final String Q_UPDATE_MAIN_ADDRESS = " update ccare.main_address t set t.deleted = ?, t.upd_user = ?, t.upd_date = ? where t.address_id = ? and t.main_id = ? ";
+	public static final String Q_UPDATE_MAIN_ADDRESS = " update ccare.main_address t set t.deleted = ?, t.upd_user = ?, t.upd_date = ? where t.address_id = ? and t.organization_id = ? ";
 
 	// public static final String Q_UPDATE_PHONES =
 	// " update ccare.phones t set t.deleted = ?, t.upd_user = ? where t.abonent_id = ? ";
@@ -1172,21 +1172,16 @@ public interface QueryConstants {
 			+ "       t.department_id = ? where t.user_id = ?";
 
 	public static final String Q_UPDATE_COUNTRY = "update ccare.countries t set\n"
-			+ "       t.country_name_geo = ?,\n"
-			+ "       t.country_name_eng = ?,\n"
-			+ "       t.country_code = ?,\n"
-			+ "       t.upd_user = ?,\n"
-			+ "       t.upd_date = ?,\n"
+			+ "       t.country_name = ?,\n"
+			+ "       t.phone_code = ?,\n"
 			+ "       t.continent_id = ?\n"
 			+ "where t.country_id = ?";
 
 	public static final String Q_DELETE_USER = " delete from users t \n"
 			+ "where t.user_id = ? ";
 
-	public static final String Q_UPDATE_COUNTRY_STATUS = "update ccare.countries t set\n"
-			+ "       t.deleted = ?,\n"
-			+ "       t.upd_user = ?,\n"
-			+ "       t.upd_date = ? where t.country_id = ?";
+	public static final String Q_DELETE_COUNTRY = "delete from ccare.countries t \n"
+			+" where t.country_id = ?";
 
 	public static final String Q_UPDATE_CITY = "update ccare.cities t set\n"
 			+ "       t.city_name_geo = ?, t.city_name_eng = ?,\n"
@@ -1248,15 +1243,15 @@ public interface QueryConstants {
 
 	public static final String Q_DELETE_STREET_DISCTRICTS_BY_STREET_ID = " delete from ccare.street_district t where t.street_id = ? ";
 
-	public static final String Q_UPDATE_MAIN_SERVICE_SORT = " update ccare.main_services t set t.priority = ?,t.upd_user = ?,t.upd_date = ? where t.main_id = ? ";
+	public static final String Q_UPDATE_MAIN_SERVICE_SORT = " update ccare.main_services t set t.priority = ?,t.upd_user = ?,t.upd_date = ? where t.organization_id = ? ";
 
-	public static final String Q_UPDATE_MAIN_SERVICE_DEL_STAT = " update ccare.main_services t set t.deleted = ?,t.upd_user = ?,t.upd_date = ? where t.main_id = ? ";
+	public static final String Q_UPDATE_MAIN_SERVICE_DEL_STAT = " update ccare.main_services t set t.deleted = ?,t.upd_user = ?,t.upd_date = ? where t.organization_id = ? ";
 
-	public static final String Q_UPDATE_MAIN_SERVICE_HIST = " update ccare.main_services t set t.upd_user = ?,t.upd_date = ? where t.main_id = ? ";
+	public static final String Q_UPDATE_MAIN_SERVICE_HIST = " update ccare.main_services t set t.upd_user = ?,t.upd_date = ? where t.organization_id = ? ";
 
-	public static final String Q_UPDATE_MAIN_ORG_STATUS = " update ccare.main_orgs t set t.statuse = ? where t.main_id = ? ";
+	public static final String Q_UPDATE_MAIN_ORG_STATUS = " update ccare.main_orgs t set t.statuse = ? where t.organization_id = ? ";
 
-	public static final String Q_GET_MAIN_ORG_BY_ID = "select ms.main_id,\n"
+	public static final String Q_GET_MAIN_ORG_BY_ID = "select ms.organization_id,\n"
 			+ "       ms.main_master_id,\n"
 			+ "       mo1.org_name,\n"
 			+ "       mo1.identcode,\n"
@@ -1282,10 +1277,10 @@ public interface QueryConstants {
 			+ "       ccare.main_orgs     mo1,\n"
 			+ "       main_address       ma,\n"
 			+ "       streets            str\n"
-			+ " where mo1.main_id = ms.main_id\n"
-			+ "   and ma.main_id = ms.main_id\n"
+			+ " where mo1.organization_id = ms.organization_id\n"
+			+ "   and ma.organization_id = ms.organization_id\n"
 			+ "   and str.street_id = ma.street_id\n"
-			+ "   and ms.service_id = 3\n" + "   and ms.main_id = ?\n"
+			+ "   and ms.service_id = 3\n" + "   and ms.organization_id = ?\n"
 			+ " order by ms.priority";
 	public static final String Q_DELETE_TRANSPORT_ITEMS = "delete from transp_items t where t.transp_schedule_id = ? ";
 }

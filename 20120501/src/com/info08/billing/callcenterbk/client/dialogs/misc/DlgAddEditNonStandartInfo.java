@@ -185,14 +185,14 @@ public class DlgAddEditNonStandartInfo extends Window {
 			record.setAttribute("main_detail_geo", main_detail_geo);
 			record.setAttribute("fields_order", 0);
 			record.setAttribute("main_detail_master_id", 0);
-			record.setAttribute("main_id", -100);
+			record.setAttribute("organization_id", -100);
 			record.setAttribute("old_id", 0);
 
 			if (editRecord != null) {
 				record.setAttribute("main_detail_id",
 						editRecord.getAttributeAsInt("main_detail_id"));
-				record.setAttribute("main_id",
-						editRecord.getAttributeAsInt("main_id"));
+				record.setAttribute("organization_id",
+						editRecord.getAttributeAsInt("organization_id"));
 			}
 
 			DSRequest req = new DSRequest();

@@ -71,10 +71,11 @@ public class AbonentDMI implements QueryConstants {
 			String addr_descr = oAddr_descr == null ? null : oAddr_descr
 					.toString();
 
-			Object oMain_Id = dsRequest.getFieldValue("main_id");
-			Integer main_id = -100;
-			if (oMain_Id != null) {
-				main_id = Integer.parseInt(oMain_Id.toString());
+			Object oOrganization_id = dsRequest
+					.getFieldValue("organization_id");
+			Integer organization_id = -100;
+			if (oOrganization_id != null) {
+				organization_id = Integer.parseInt(oOrganization_id.toString());
 			}
 			Object oAddress_id = dsRequest.getFieldValue("address_id");
 			Integer address_id = -100;
@@ -98,7 +99,7 @@ public class AbonentDMI implements QueryConstants {
 			// insert abonent
 			insertStatement = connection
 					.prepareCall("{ call ccare.newBillSupport2.saveOrUpdateAbonent( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) }");
-			insertStatement.setInt(1, main_id);
+			insertStatement.setInt(1, organization_id);
 			insertStatement.setInt(2, address_id);
 			insertStatement.setInt(3, abonent_id);
 			insertStatement.setTimestamp(4, recDate);
@@ -223,10 +224,11 @@ public class AbonentDMI implements QueryConstants {
 		try {
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
-			Object oMain_Id = dsRequest.getFieldValue("main_id");
-			Integer main_id = -100;
-			if (oMain_Id != null) {
-				main_id = Integer.parseInt(oMain_Id.toString());
+			Object oOrganization_id = dsRequest
+					.getFieldValue("organization_id");
+			Integer organization_id = -100;
+			if (oOrganization_id != null) {
+				organization_id = Integer.parseInt(oOrganization_id.toString());
 			}
 			Object oAddress_id = dsRequest.getFieldValue("address_id");
 			Integer address_id = -100;
@@ -259,7 +261,7 @@ public class AbonentDMI implements QueryConstants {
 			stmt.setInt(1, deleted);
 			stmt.setString(2, loggedUserName);
 			stmt.setTimestamp(3, recDate);
-			stmt.setInt(4, main_id);
+			stmt.setInt(4, organization_id);
 			stmt.executeUpdate();
 
 			stmt = connection.prepareStatement(Q_UPDATE_MAIN_ADDRESS);
@@ -267,7 +269,7 @@ public class AbonentDMI implements QueryConstants {
 			stmt.setString(2, loggedUserName);
 			stmt.setTimestamp(3, recDate);
 			stmt.setInt(4, address_id);
-			stmt.setInt(5, main_id);
+			stmt.setInt(5, organization_id);
 			stmt.executeUpdate();
 
 			// stmt = connection.prepareStatement(Q_UPDATE_PHONES);
@@ -333,8 +335,8 @@ public class AbonentDMI implements QueryConstants {
 			existingRecord.setLoggedUserName(loggedUserName);
 			existingRecord.setAbonent_id(columns[0] == null ? null
 					: new Integer(columns[0].toString()));
-			existingRecord.setMain_id(columns[1] == null ? null : new Integer(
-					columns[1].toString()));
+			existingRecord.setOrganization_id(columns[1] == null ? null
+					: new Integer(columns[1].toString()));
 			existingRecord.setAddress_id(columns[2] == null ? null
 					: new Integer(columns[2].toString()));
 			existingRecord.setPhone_id(columns[3] == null ? null : new Integer(
@@ -424,8 +426,8 @@ public class AbonentDMI implements QueryConstants {
 				for (Object row : resultList) {
 					Object columns[] = (Object[]) row;
 					OrgInfoByPhone item = new OrgInfoByPhone();
-					item.setMain_id(new Long(columns[0] == null ? "-100"
-							: columns[0].toString()));
+					item.setOrganization_id(new Long(
+							columns[0] == null ? "-100" : columns[0].toString()));
 					item.setOrg_name(columns[1] == null ? "" : columns[1]
 							.toString());
 					item.setNote(columns[2] == null ? "" : columns[2]

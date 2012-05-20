@@ -18,7 +18,7 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.shared.entity.block.BlockList;
 import com.info08.billing.callcenterbk.shared.entity.block.BlockListPhone;
 import com.info08.billing.callcenterbk.shared.entity.main.MainDetail;
-import com.info08.billing.callcenterbk.shared.entity.org.MainOrg;
+import com.info08.billing.callcenterbk.shared.entity.org.Organizations;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
@@ -43,10 +43,10 @@ public class BlockListManagerDMI implements QueryConstants {
 		try {
 			String log = "Method:CommonDMI.addBlockList.";
 			BlockList blockList = new BlockList();
-			Object oMainId = dsRequest.getFieldValue("main_id");
-			Long main_id = (oMainId == null) ? null : Long.parseLong(oMainId
-					.toString());
-			blockList.setMain_id(main_id);
+			Object oMainId = dsRequest.getFieldValue("organization_id");
+			Long organization_id = (oMainId == null) ? null : Long
+					.parseLong(oMainId.toString());
+			blockList.setOrganization_id(organization_id);
 
 			Object oBlockType = dsRequest.getFieldValue("block_type");
 			Long block_type = (oBlockType == null) ? null : Long
@@ -106,10 +106,11 @@ public class BlockListManagerDMI implements QueryConstants {
 
 			blockList = oracleManager.find(BlockList.class, blockList.getId());
 			blockList.setLoggedUserName(loggedUserName);
-			if (main_id != null) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class, main_id);
+			if (organization_id != null) {
+				Organizations mainOrg = oracleManager.find(Organizations.class,
+						organization_id);
 				if (mainOrg != null) {
-					blockList.setOrgName(mainOrg.getOrg_name());
+					blockList.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
 			if (main_detail_id != null) {
@@ -159,7 +160,8 @@ public class BlockListManagerDMI implements QueryConstants {
 			Long id = new Long(record.get("id").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
-			Long main_id = new Long(record.get("main_id").toString());
+			Long organization_id = new Long(record.get("organization_id")
+					.toString());
 			Long main_detail_id = new Long(
 					record.get("main_detail_id") == null ? "0" : record.get(
 							"main_detail_id").toString());
@@ -171,7 +173,7 @@ public class BlockListManagerDMI implements QueryConstants {
 
 			BlockList blockList = oracleManager.find(BlockList.class, id);
 			blockList.setMain_detail_id(main_detail_id);
-			blockList.setMain_id(main_id);
+			blockList.setOrganization_id(organization_id);
 			blockList.setDeleted(deleted);
 			blockList.setBlock_type(block_type);
 			blockList.setNote(note);
@@ -206,10 +208,11 @@ public class BlockListManagerDMI implements QueryConstants {
 
 			blockList = oracleManager.find(BlockList.class, blockList.getId());
 			blockList.setLoggedUserName(loggedUserName);
-			if (main_id != null) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class, main_id);
+			if (organization_id != null) {
+				Organizations mainOrg = oracleManager.find(Organizations.class,
+						organization_id);
 				if (mainOrg != null) {
-					blockList.setOrgName(mainOrg.getOrg_name());
+					blockList.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
 			if (main_detail_id != null) {
@@ -271,11 +274,12 @@ public class BlockListManagerDMI implements QueryConstants {
 
 			blockList = oracleManager.find(BlockList.class, id);
 			blockList.setLoggedUserName(loggedUserName);
-			Long main_id = blockList.getMain_id();
-			if (main_id != null) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class, main_id);
+			Long organization_id = blockList.getOrganization_id();
+			if (organization_id != null) {
+				Organizations mainOrg = oracleManager.find(Organizations.class,
+						organization_id);
 				if (mainOrg != null) {
-					blockList.setOrgName(mainOrg.getOrg_name());
+					blockList.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
 			Long main_detail_id = blockList.getMain_detail_id();
@@ -322,11 +326,11 @@ public class BlockListManagerDMI implements QueryConstants {
 				return;
 			}
 			logger.info("blockType = " + blockType);
-			Long main_id = blockList.getMain_id();
-			if (main_id == null) {
+			Long organization_id = blockList.getOrganization_id();
+			if (organization_id == null) {
 				return;
 			}
-			logger.info("main_id = " + main_id);
+			logger.info("organization_id = " + organization_id);
 			Long main_detail_id = blockList.getMain_detail_id();
 			logger.info("main_detail_id = " + main_detail_id);
 
@@ -346,8 +350,8 @@ public class BlockListManagerDMI implements QueryConstants {
 				} else {
 					resultList = oracleManager
 							.createNativeQuery(
-									QueryConstants.Q_GET_PHONE_LIST_BY_MAIN_ID)
-							.setParameter(1, main_id).getResultList();
+									QueryConstants.Q_GET_PHONE_LIST_BY_ORGANIZATION_ID)
+							.setParameter(1, organization_id).getResultList();
 				}
 			}
 
@@ -433,7 +437,8 @@ public class BlockListManagerDMI implements QueryConstants {
 						list = oracleManager
 								.createNativeQuery(
 										QueryConstants.Q_GET_MAIN_ORGS_PHONES_HIERARCHY)
-								.setParameter(1, main_id).getResultList();
+								.setParameter(1, organization_id)
+								.getResultList();
 						break;
 					case 2: // 2 - Block Only Listed Phones From This
 							// Organization
@@ -441,7 +446,7 @@ public class BlockListManagerDMI implements QueryConstants {
 						list = oracleManager
 								.createNativeQuery(
 										QueryConstants.Q_GET_MAIN_ORGS_PHONES_HIERARCHY_BLOCK_LIST)
-								.setParameter(1, main_id)
+								.setParameter(1, organization_id)
 								.setParameter(2, blockList.getId())
 								.getResultList();
 					case 3: // 3 - Block Whole Organizations Phones Except This
@@ -450,7 +455,7 @@ public class BlockListManagerDMI implements QueryConstants {
 						list = oracleManager
 								.createNativeQuery(
 										QueryConstants.Q_GET_MAIN_ORGS_PHONES_HIERARCHY_EXCEPT_BLOCK_LIST)
-								.setParameter(1, main_id)
+								.setParameter(1, organization_id)
 								.setParameter(2, blockList.getId())
 								.getResultList();
 					default:

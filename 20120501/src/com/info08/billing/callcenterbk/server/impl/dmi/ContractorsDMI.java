@@ -25,7 +25,7 @@ import com.info08.billing.callcenterbk.shared.entity.contractors.Contract;
 import com.info08.billing.callcenterbk.shared.entity.contractors.ContractPriceItem;
 import com.info08.billing.callcenterbk.shared.entity.contractors.ContractorPhone;
 import com.info08.billing.callcenterbk.shared.entity.main.MainDetail;
-import com.info08.billing.callcenterbk.shared.entity.org.MainOrg;
+import com.info08.billing.callcenterbk.shared.entity.org.Organizations;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
@@ -68,10 +68,10 @@ public class ContractorsDMI implements QueryConstants {
 			String log = "Method:CommonDMI.addContractor.";
 
 			Contract contract = new Contract();
-			Object oMainId = dsRequest.getFieldValue("main_id");
-			Long main_id = (oMainId == null) ? null : Long.parseLong(oMainId
-					.toString());
-			contract.setMain_id(main_id);
+			Object oMainId = dsRequest.getFieldValue("organization_id");
+			Long organization_id = (oMainId == null) ? null : Long
+					.parseLong(oMainId.toString());
+			contract.setOrganization_id(organization_id);
 
 			Object oBlock = dsRequest.getFieldValue("block");
 			Long block = (oBlock == null) ? null : Long.parseLong(oBlock
@@ -184,8 +184,8 @@ public class ContractorsDMI implements QueryConstants {
 			}
 
 			if (needCalc) {
-				range_curr_price = getRangeCurrPrice(main_id, main_detail_id,
-						oracleManager, contractAdvPrices);
+				range_curr_price = getRangeCurrPrice(organization_id,
+						main_detail_id, oracleManager, contractAdvPrices);
 			}
 			contract.setRange_curr_price(range_curr_price);
 
@@ -215,7 +215,7 @@ public class ContractorsDMI implements QueryConstants {
 						item.setDeleted(deleted);
 						item.setLimited(0L);
 						item.setMain_detail_id(0L);
-						item.setMain_id(0L);
+						item.setOrganization_id(0L);
 						item.setPhone(phone);
 						item.setPhone_id(0L);
 						item.setRec_date(recDate);
@@ -230,10 +230,11 @@ public class ContractorsDMI implements QueryConstants {
 			contract = oracleManager.find(Contract.class,
 					contract.getContract_id());
 			contract.setLoggedUserName(loggedUserName);
-			if (main_id != null) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class, main_id);
+			if (organization_id != null) {
+				Organizations mainOrg = oracleManager.find(Organizations.class,
+						organization_id);
 				if (mainOrg != null) {
-					contract.setOrgName(mainOrg.getOrg_name());
+					contract.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
 			if (main_detail_id != null) {
@@ -273,7 +274,7 @@ public class ContractorsDMI implements QueryConstants {
 	 * 0.70, 5001 დან 999999999 მდე არის 0.65, ფუნქცია ანგარიშობს მიმდინარე
 	 * თვეში რა ფასი ეკუთვნის კონტრაქტორს განხორციელებული ზარებიდან გამომდინარე)
 	 * 
-	 * @param main_id
+	 * @param organization_id
 	 *            კონტრაქტორი ორგანიზაციის იდენტიფიკატორი
 	 * @param main_detail_id
 	 *            კონტრაქტორი ორგანიზაციის განყოფილების იდენტიფიკატორი
@@ -286,8 +287,8 @@ public class ContractorsDMI implements QueryConstants {
 	 * @throws CallCenterException
 	 *             შეცდომის დამუშავება
 	 */
-	private BigDecimal getRangeCurrPrice(Long main_id, Long main_detail_id,
-			EntityManager oracleManager,
+	private BigDecimal getRangeCurrPrice(Long organization_id,
+			Long main_detail_id, EntityManager oracleManager,
 			ArrayList<ContractPriceItem> contractAdvPrices)
 			throws CallCenterException {
 		try {
@@ -306,7 +307,8 @@ public class ContractorsDMI implements QueryConstants {
 				callCnt = new Long(oracleManager
 						.createNativeQuery(
 								QueryConstants.Q_GET_ORG_CALL_CNT_BY_YM)
-						.setParameter(1, main_id).getSingleResult().toString());
+						.setParameter(1, organization_id).getSingleResult()
+						.toString());
 			}
 			for (ContractPriceItem priceItem : contractAdvPrices) {
 				Long start = priceItem.getCall_count_start();
@@ -350,7 +352,8 @@ public class ContractorsDMI implements QueryConstants {
 			Long contract_id = new Long(record.get("contract_id").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
-			Long main_id = new Long(record.get("main_id").toString());
+			Long organization_id = new Long(record.get("organization_id")
+					.toString());
 			Long main_detail_id = new Long(
 					record.get("main_detail_id") == null ? "0" : record.get(
 							"main_detail_id").toString());
@@ -380,7 +383,7 @@ public class ContractorsDMI implements QueryConstants {
 			contract.setIs_budget(is_budget);
 			contract.setLoggedUserName(loggedUserName);
 			contract.setMain_detail_id(main_detail_id);
-			contract.setMain_id(main_id);
+			contract.setOrganization_id(organization_id);
 			contract.setNote(note);
 			contract.setPrice(price);
 			contract.setPrice_type(price_type);
@@ -432,8 +435,8 @@ public class ContractorsDMI implements QueryConstants {
 			}
 
 			if (needCalc) {
-				range_curr_price = getRangeCurrPrice(main_id, main_detail_id,
-						oracleManager, contractAdvPrices);
+				range_curr_price = getRangeCurrPrice(organization_id,
+						main_detail_id, oracleManager, contractAdvPrices);
 			}
 			contract.setRange_curr_price(range_curr_price);
 
@@ -471,7 +474,7 @@ public class ContractorsDMI implements QueryConstants {
 						item.setDeleted(deleted1);
 						item.setLimited(0L);
 						item.setMain_detail_id(0L);
-						item.setMain_id(0L);
+						item.setOrganization_id(0L);
 						item.setPhone(phone);
 						item.setPhone_id(0L);
 						item.setRec_date(updDate);
@@ -485,10 +488,11 @@ public class ContractorsDMI implements QueryConstants {
 
 			contract = oracleManager.find(Contract.class, contract_id);
 			contract.setLoggedUserName(loggedUserName);
-			if (main_id != null) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class, main_id);
+			if (organization_id != null) {
+				Organizations mainOrg = oracleManager.find(Organizations.class,
+						organization_id);
 				if (mainOrg != null) {
-					contract.setOrgName(mainOrg.getOrg_name());
+					contract.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
 			if (main_detail_id != null) {
@@ -617,11 +621,11 @@ public class ContractorsDMI implements QueryConstants {
 
 			contract = oracleManager.find(Contract.class, contract_id);
 			contract.setLoggedUserName(loggedUserName);
-			if (contract.getMain_id() != null) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class,
-						contract.getMain_id());
+			if (contract.getOrganization_id() != null) {
+				Organizations mainOrg = oracleManager.find(Organizations.class,
+						contract.getOrganization_id());
 				if (mainOrg != null) {
-					contract.setOrgName(mainOrg.getOrg_name());
+					contract.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
 			if (contract.getMain_detail_id() != null) {
@@ -669,14 +673,15 @@ public class ContractorsDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			Long contract_id = new Long(record.get("contract_id").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
-			Long main_id = new Long(record.get("main_id").toString());
+			Long organization_id = new Long(record.get("organization_id")
+					.toString());
 			Contract contract = oracleManager.find(Contract.class, contract_id);
 			contract.setLoggedUserName(loggedUserName);
-			if (contract.getMain_id() != null) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class,
-						contract.getMain_id());
+			if (contract.getOrganization_id() != null) {
+				Organizations mainOrg = oracleManager.find(Organizations.class,
+						contract.getOrganization_id());
 				if (mainOrg != null) {
-					contract.setOrgName(mainOrg.getOrg_name());
+					contract.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
 			if (contract.getMain_detail_id() != null) {
@@ -688,8 +693,8 @@ public class ContractorsDMI implements QueryConstants {
 			}
 			List resultList = oracleManager
 					.createNativeQuery(
-							QueryConstants.Q_GET_PHONE_LIST_BY_MAIN_ID)
-					.setParameter(1, main_id).getResultList();
+							QueryConstants.Q_GET_PHONE_LIST_BY_ORGANIZATION_ID)
+					.setParameter(1, organization_id).getResultList();
 			if (resultList != null && !resultList.isEmpty()) {
 
 			}
@@ -730,13 +735,15 @@ public class ContractorsDMI implements QueryConstants {
 		try {
 			String log = "Method:CommonDMI.checkContractorNumbers.";
 			oracleManager = EMF.getEntityManager();
-			Long main_id = new Long(record.get("main_id").toString());
+			Long organization_id = new Long(record.get("organization_id")
+					.toString());
 			Long main_detail_id = new Long(
 					record.get("main_detail_id") == null ? "0" : record.get(
 							"main_detail_id").toString());
 
 			Object oMap1 = record.get("contractorAdvPhones");
-			if (oMap1 != null && main_id != null && main_id.longValue() > 0) {
+			if (oMap1 != null && organization_id != null
+					&& organization_id.longValue() > 0) {
 				LinkedMap contractorAdvPhones = (LinkedMap) oMap1;
 				if (!contractorAdvPhones.isEmpty()) {
 					Set keys1 = contractorAdvPhones.keySet();
@@ -761,7 +768,7 @@ public class ContractorsDMI implements QueryConstants {
 									oracleManager
 											.createNativeQuery(
 													QueryConstants.Q_CHECK_PHONE_MAIN_ORG)
-											.setParameter(1, main_id)
+											.setParameter(1, organization_id)
 											.setParameter(2, phone)
 											.getSingleResult().toString());
 							if (cnt.longValue() <= 0) {
@@ -811,12 +818,12 @@ public class ContractorsDMI implements QueryConstants {
 
 			Contract contract = oracleManager.find(Contract.class, contract_id);
 			contract.setLoggedUserName(loggedUserName);
-			if (contract.getMain_id() != null
-					&& contract.getMain_id().longValue() > 0) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class,
-						contract.getMain_id());
+			if (contract.getOrganization_id() != null
+					&& contract.getOrganization_id().longValue() > 0) {
+				Organizations mainOrg = oracleManager.find(Organizations.class,
+						contract.getOrganization_id());
 				if (mainOrg != null) {
-					contract.setOrgName(mainOrg.getOrg_name());
+					contract.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
 			if (contract.getMain_detail_id() != null
@@ -828,7 +835,7 @@ public class ContractorsDMI implements QueryConstants {
 				}
 			}
 			Long main_detail_id = contract.getMain_detail_id();
-			Long main_id = contract.getMain_id();
+			Long organization_id = contract.getOrganization_id();
 			Long contrCallCnt = -1L;
 
 			if (main_detail_id != null && main_detail_id.longValue() > 0) {
@@ -844,12 +851,12 @@ public class ContractorsDMI implements QueryConstants {
 				contrCallCnt = new Long(
 						oracleManager
 								.createNativeQuery(
-										QueryConstants.Q_GET_CALL_CNT_BY_CONT_AND_MAIN_ID)
+										QueryConstants.Q_GET_CALL_CNT_BY_CONT_AND_ORGANIZATION_ID)
 								.setParameter(1, contract.getContract_id())
-								.setParameter(2, main_id)
-								.setParameter(3, main_id)
-								.setParameter(4, main_id).getSingleResult()
-								.toString());
+								.setParameter(2, organization_id)
+								.setParameter(3, organization_id)
+								.setParameter(4, organization_id)
+								.getSingleResult().toString());
 			}
 			contract.setContractor_call_cnt(contrCallCnt);
 			contract.setPrice_type_descr((contract.getPrice_type() != null
@@ -891,12 +898,12 @@ public class ContractorsDMI implements QueryConstants {
 
 			Contract contract = oracleManager.find(Contract.class, contract_id);
 			contract.setLoggedUserName(loggedUserName);
-			if (contract.getMain_id() != null
-					&& contract.getMain_id().longValue() > 0) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class,
-						contract.getMain_id());
+			if (contract.getOrganization_id() != null
+					&& contract.getOrganization_id().longValue() > 0) {
+				Organizations mainOrg = oracleManager.find(Organizations.class,
+						contract.getOrganization_id());
 				if (mainOrg != null) {
-					contract.setOrgName(mainOrg.getOrg_name());
+					contract.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
 			if (contract.getMain_detail_id() != null
@@ -908,7 +915,7 @@ public class ContractorsDMI implements QueryConstants {
 				}
 			}
 			Long main_detail_id = contract.getMain_detail_id();
-			Long main_id = contract.getMain_id();
+			Long organization_id = contract.getOrganization_id();
 			Double contrCharges = -1D;
 
 			if (main_detail_id != null && main_detail_id.longValue() > 0) {
@@ -924,12 +931,12 @@ public class ContractorsDMI implements QueryConstants {
 				contrCharges = new Double(
 						oracleManager
 								.createNativeQuery(
-										QueryConstants.Q_GET_CHARGES_BY_CONT_AND_MAIN_ID)
+										QueryConstants.Q_GET_CHARGES_BY_CONT_AND_ORGANIZATION_ID)
 								.setParameter(1, contract.getContract_id())
-								.setParameter(2, main_id)
-								.setParameter(3, main_id)
-								.setParameter(4, main_id).getSingleResult()
-								.toString());
+								.setParameter(2, organization_id)
+								.setParameter(3, organization_id)
+								.setParameter(4, organization_id)
+								.getSingleResult().toString());
 			}
 			contract.setContractor_charges(contrCharges);
 			contract.setPrice_type_descr((contract.getPrice_type() != null
@@ -984,8 +991,8 @@ public class ContractorsDMI implements QueryConstants {
 				logger.info(log.toString());
 				return;
 			}
-			Long main_id = contract.getMain_id();
-			if (main_id == null) {
+			Long organization_id = contract.getOrganization_id();
+			if (organization_id == null) {
 				log.append("Result : Main ID Is Null. \n");
 				logger.info(log.toString());
 				return;
@@ -1003,13 +1010,14 @@ public class ContractorsDMI implements QueryConstants {
 				resultList = oracleManager
 						.createNativeQuery(
 								QueryConstants.Q_GET_MAIN_ORGS_PHONES_HIERARCHY_NEW)
-						.setParameter(1, main_id).setParameter(2, main_id)
-						.setParameter(3, main_id).getResultList();
+						.setParameter(1, organization_id)
+						.setParameter(2, organization_id)
+						.setParameter(3, organization_id).getResultList();
 			}
 
 			log.append("Params : 1. Contract Id : ").append(
 					contract.getContract_id());
-			log.append(", 2. Main Id : ").append(main_id);
+			log.append(", 2. Main Id : ").append(organization_id);
 			log.append(", 3. Main Detail Id : ").append(main_detail_id);
 			log.append(", 4. Phone List Type : ").append(phoneListType);
 
@@ -1076,12 +1084,12 @@ public class ContractorsDMI implements QueryConstants {
 							contrCallCnt = new Long(
 									oracleManager
 											.createNativeQuery(
-													QueryConstants.Q_GET_CALL_CNT_BY_CONT_AND_MAIN_ID)
+													QueryConstants.Q_GET_CALL_CNT_BY_CONT_AND_ORGANIZATION_ID)
 											.setParameter(1,
 													contract.getContract_id())
-											.setParameter(2, main_id)
-											.setParameter(3, main_id)
-											.setParameter(4, main_id)
+											.setParameter(2, organization_id)
+											.setParameter(3, organization_id)
+											.setParameter(4, organization_id)
 											.getSingleResult().toString());
 						}
 						if (contrCallCnt <= 0
@@ -1146,9 +1154,9 @@ public class ContractorsDMI implements QueryConstants {
 						list = oracleManager
 								.createNativeQuery(
 										QueryConstants.Q_GET_PHONE_LIST_ONLY_CONTR_LIST1)
-								.setParameter(1, main_id)
-								.setParameter(2, main_id)
-								.setParameter(3, main_id)
+								.setParameter(1, organization_id)
+								.setParameter(2, organization_id)
+								.setParameter(3, organization_id)
 								.setParameter(4, contract.getContract_id())
 								.getResultList();
 						break;
@@ -1158,9 +1166,9 @@ public class ContractorsDMI implements QueryConstants {
 						list = oracleManager
 								.createNativeQuery(
 										QueryConstants.Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST1)
-								.setParameter(1, main_id)
-								.setParameter(2, main_id)
-								.setParameter(3, main_id)
+								.setParameter(1, organization_id)
+								.setParameter(2, organization_id)
+								.setParameter(3, organization_id)
 								.setParameter(4, contract.getContract_id())
 								.getResultList();
 						break;

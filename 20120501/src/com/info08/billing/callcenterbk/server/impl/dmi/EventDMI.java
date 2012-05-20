@@ -14,7 +14,7 @@ import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.event.Event;
 import com.info08.billing.callcenterbk.shared.entity.event.EventCategory;
 import com.info08.billing.callcenterbk.shared.entity.event.EventOwner;
-import com.info08.billing.callcenterbk.shared.entity.org.MainOrg;
+import com.info08.billing.callcenterbk.shared.entity.org.Organizations;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 
@@ -220,11 +220,13 @@ public class EventDMI implements QueryConstants {
 				}
 			}
 
-			Long main_id = eventOwner.getMain_id();
-			if (main_id != null && main_id.longValue() > 0) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class, main_id);
-				if (mainOrg != null) {
-					eventOwner.setOrg_name(mainOrg.getOrg_name());
+			Long organization_id = eventOwner.getOrganization_id();
+			if (organization_id != null && organization_id.longValue() > 0) {
+				Organizations organizations = oracleManager.find(
+						Organizations.class, organization_id);
+				if (organizations != null) {
+					eventOwner.setOrganization_name(organizations
+							.getOrganization_name());
 				}
 			}
 
@@ -267,8 +269,8 @@ public class EventDMI implements QueryConstants {
 					.toString());
 			Long event_category_id = new Long(record.get("event_category_id")
 					.toString());
-			Long main_id = record.get("main_id") == null ? null : new Long(
-					record.get("main_id").toString());
+			Long organizations_id = record.get("organizations_id") == null ? null
+					: new Long(record.get("organizations_id").toString());
 			Long reservable = record.get("reservable") == null ? null
 					: new Long(record.get("reservable").toString());
 			String event_owner_name = record.get("event_owner_name") == null ? null
@@ -280,7 +282,7 @@ public class EventDMI implements QueryConstants {
 
 			entPlace.setEvent_category_id(event_category_id);
 			entPlace.setLoggedUserName(loggedUserName);
-			entPlace.setMain_id(main_id);
+			entPlace.setOrganization_id(organizations_id);
 			entPlace.setEvent_owner_name(event_owner_name);
 			entPlace.setReservable(reservable);
 
@@ -302,10 +304,12 @@ public class EventDMI implements QueryConstants {
 				}
 			}
 
-			if (main_id != null && main_id.longValue() > 0) {
-				MainOrg mainOrg = oracleManager.find(MainOrg.class, main_id);
-				if (mainOrg != null) {
-					entPlace.setOrg_name(mainOrg.getOrg_name());
+			if (organizations_id != null && organizations_id.longValue() > 0) {
+				Organizations organizations = oracleManager.find(
+						Organizations.class, organizations_id);
+				if (organizations != null) {
+					entPlace.setOrganization_name(organizations
+							.getOrganization_name());
 				}
 			}
 

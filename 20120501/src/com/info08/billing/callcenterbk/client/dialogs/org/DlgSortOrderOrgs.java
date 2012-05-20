@@ -163,7 +163,7 @@ public class DlgSortOrderOrgs extends Window {
 			Integer mainIdList[] = new Integer[records.length];
 			int i = 0;
 			for (Record record : records) {
-				mainIdList[i++] = record.getAttributeAsInt("main_id");
+				mainIdList[i++] = record.getAttributeAsInt("organization_id");
 			}
 			DataSource dataSource = DataSource.get("OrgDS");
 			com.smartgwt.client.rpc.RPCManager.startQueue();

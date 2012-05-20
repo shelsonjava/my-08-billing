@@ -40,11 +40,12 @@ public class MainOrgDMI implements QueryConstants {
 			String loggedUserName = record.get("loggedUserName").toString();
 
 			int order = 1;
-			for (Object main_id : mainIdList) {
+			for (Object organization_id : mainIdList) {
 				oracleManager.createNativeQuery(Q_UPDATE_MAIN_SERVICE_SORT)
 						.setParameter(1, order).setParameter(2, loggedUserName)
 						.setParameter(3, currentDate)
-						.setParameter(4, (Long) main_id).executeUpdate();
+						.setParameter(4, (Long) organization_id)
+						.executeUpdate();
 				order++;
 			}
 
@@ -85,16 +86,17 @@ public class MainOrgDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 			Timestamp currentDate = new Timestamp(System.currentTimeMillis());
-			Long main_id = new Long(record.get("main_id").toString());
+			Long organization_id = new Long(record.get("organization_id")
+					.toString());
 			Long deleted = new Long(record.get("deleted").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 
 			oracleManager.createNativeQuery(Q_UPDATE_MAIN_SERVICE_DEL_STAT)
 					.setParameter(1, deleted).setParameter(2, loggedUserName)
 					.setParameter(3, currentDate)
-					.setParameter(4, (Long) main_id).executeUpdate();
+					.setParameter(4, (Long) organization_id).executeUpdate();
 			oracleManager.flush();
-			MainOrgItem ret = getMainOrgItem(main_id, oracleManager);
+			MainOrgItem ret = getMainOrgItem(organization_id, oracleManager);
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
@@ -132,20 +134,21 @@ public class MainOrgDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 			Timestamp currentDate = new Timestamp(System.currentTimeMillis());
-			Long main_id = new Long(record.get("main_id").toString());
+			Long organization_id = new Long(record.get("organization_id")
+					.toString());
 			Long statuse = new Long(record.get("statuse").toString());
 			String loggedUserName = record.get("loggedUserName").toString();
 
 			oracleManager.createNativeQuery(Q_UPDATE_MAIN_ORG_STATUS)
-					.setParameter(1, statuse).setParameter(2, (Long) main_id)
-					.executeUpdate();
+					.setParameter(1, statuse)
+					.setParameter(2, (Long) organization_id).executeUpdate();
 
 			oracleManager.createNativeQuery(Q_UPDATE_MAIN_SERVICE_HIST)
 					.setParameter(1, loggedUserName)
 					.setParameter(2, currentDate)
-					.setParameter(3, (Long) main_id).executeUpdate();
+					.setParameter(3, (Long) organization_id).executeUpdate();
 			oracleManager.flush();
-			MainOrgItem ret = getMainOrgItem(main_id, oracleManager);
+			MainOrgItem ret = getMainOrgItem(organization_id, oracleManager);
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
@@ -167,17 +170,17 @@ public class MainOrgDMI implements QueryConstants {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public MainOrgItem getMainOrgItem(Long main_id, EntityManager oracleManager)
-			throws Exception {
+	public MainOrgItem getMainOrgItem(Long organization_id,
+			EntityManager oracleManager) throws Exception {
 		try {
 			MainOrgItem mainOrgItem = new MainOrgItem();
 			List result = oracleManager
 					.createNativeQuery(QueryConstants.Q_GET_MAIN_ORG_BY_ID)
-					.setParameter(1, main_id).getResultList();
+					.setParameter(1, organization_id).getResultList();
 			if (result != null && result.size() > 0) {
 				Object columns[] = (Object[]) result.get(0);
-				mainOrgItem.setMain_id(new Long(columns[0] == null ? "-1"
-						: columns[0].toString()));
+				mainOrgItem.setOrganization_id(new Long(
+						columns[0] == null ? "-1" : columns[0].toString()));
 				mainOrgItem.setMain_master_id(new Long(
 						columns[1] == null ? "-1" : columns[1].toString()));
 				mainOrgItem.setOrg_name(columns[2] == null ? null : columns[2]
@@ -237,7 +240,8 @@ public class MainOrgDMI implements QueryConstants {
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
-			Long main_id = new Long(dsRequest.getFieldValue("phone").toString());
+			Long organization_id = new Long(dsRequest.getFieldValue("phone")
+					.toString());
 			String main_detail_geo = dsRequest.getFieldValue("main_detail_geo") == null ? null
 					: dsRequest.getFieldValue("main_detail_geo").toString();
 			return null;

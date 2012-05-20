@@ -119,8 +119,8 @@ public class DlgOrgStatusChange extends Window {
 					.getSessionPerson().getUser_name());
 			record.setAttribute("statuse",
 					new Integer(orgStatusItem.getValueAsString()));
-			record.setAttribute("main_id",
-					listGridRecord.getAttributeAsInt("main_id"));
+			record.setAttribute("organization_id",
+					listGridRecord.getAttributeAsInt("organization_id"));
 
 			DSRequest req = new DSRequest();
 

@@ -32,7 +32,7 @@ public class DlgAddEditEventOwner extends Window {
 	private ComboBoxItem entTypeItem;
 	private TextItem entPlaceGeo;
 	private ComboBoxItem reservableItem;
-	private ComboBoxItem mainOrgsItem;
+	private ComboBoxItem organizationItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
@@ -114,39 +114,39 @@ public class DlgAddEditEventOwner extends Window {
 		reservableItem.setValueMap(ClientMapUtil.getInstance()
 				.getReservations());
 
-		mainOrgsItem = new ComboBoxItem();
-		mainOrgsItem.setTitle("ორგანიზაცია");
-		mainOrgsItem.setWidth(400);
-		mainOrgsItem.setName("event_category_name");
-		mainOrgsItem.setFetchMissingValues(true);
-		mainOrgsItem.setFilterLocally(false);
-		mainOrgsItem.setAddUnknownValues(false);
+		organizationItem = new ComboBoxItem();
+		organizationItem.setTitle("ორგანიზაცია");
+		organizationItem.setWidth(400);
+		organizationItem.setName("organization_name");
+		organizationItem.setFetchMissingValues(true);
+		organizationItem.setFilterLocally(false);
+		organizationItem.setAddUnknownValues(false);
 
 		DataSource EventOwnerDS = DataSource.get("EventOwnerDS");
-		mainOrgsItem.setOptionOperationId("searchMainOrgsForCB");
-		mainOrgsItem.setOptionDataSource(EventOwnerDS);
-		mainOrgsItem.setValueField("main_id");
-		mainOrgsItem.setDisplayField("org_name");
+		organizationItem.setOptionOperationId("searchOrganizationsForCB");
+		organizationItem.setOptionDataSource(EventOwnerDS);
+		organizationItem.setValueField("organization_id");
+		organizationItem.setDisplayField("organization_name");
 
-		mainOrgsItem.setOptionCriteria(new Criteria());
-		mainOrgsItem.setAutoFetchData(false);
+		organizationItem.setOptionCriteria(new Criteria());
+		organizationItem.setAutoFetchData(false);
 
-		mainOrgsItem.addKeyPressHandler(new KeyPressHandler() {
+		organizationItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = mainOrgsItem.getOptionCriteria();
+				Criteria criteria = organizationItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("main_id");
+					String oldAttr = criteria.getAttribute("organization_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("main_id", nullO);
+						criteria.setAttribute("organization_id", nullO);
 					}
 				}
 			}
 		});
 
 		dynamicForm.setFields(entTypeItem, entPlaceGeo, reservableItem,
-				mainOrgsItem);
+				organizationItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -199,9 +199,9 @@ public class DlgAddEditEventOwner extends Window {
 			if (reservable != null) {
 				reservableItem.setValue(reservable);
 			}
-			Integer main_id = editRecord.getAttributeAsInt("main_id");
-			if (main_id != null) {
-				mainOrgsItem.setValue(main_id);
+			Integer organization_id = editRecord.getAttributeAsInt("organization_id");
+			if (organization_id != null) {
+				organizationItem.setValue(organization_id);
 			}
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -223,10 +223,10 @@ public class DlgAddEditEventOwner extends Window {
 				return;
 			}
 			Integer reservable = new Integer(reservable_str);
-			Integer main_id = null;
-			String main_id_str = mainOrgsItem.getValueAsString();
-			if (main_id_str != null && !main_id_str.trim().equals("")) {
-				main_id = new Integer(main_id_str);
+			Integer organization_id = null;
+			String organization_id_str = organizationItem.getValueAsString();
+			if (organization_id_str != null && !organization_id_str.trim().equals("")) {
+				organization_id = new Integer(organization_id_str);
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
@@ -238,8 +238,7 @@ public class DlgAddEditEventOwner extends Window {
 			record.setAttribute("event_category_id", event_category_id);
 			record.setAttribute("event_owner_name", event_owner_name);
 			record.setAttribute("reservable", reservable);
-			record.setAttribute("main_id", main_id);
-			record.setAttribute("deleted", 0);
+			record.setAttribute("organization_id", organization_id);
 			record.setAttribute("rec_user", loggedUser);
 
 			if (editRecord != null) {

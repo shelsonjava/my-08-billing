@@ -18,11 +18,12 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
+import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.common.SharedUtils;
 import com.info08.billing.callcenterbk.shared.entity.City;
 import com.info08.billing.callcenterbk.shared.entity.CityDistance;
 import com.info08.billing.callcenterbk.shared.entity.CityRegion;
-import com.info08.billing.callcenterbk.shared.entity.CityType;
+//import com.info08.billing.callcenterbk.shared.entity.CityType;
 import com.info08.billing.callcenterbk.shared.entity.Continents;
 import com.info08.billing.callcenterbk.shared.entity.Country;
 import com.info08.billing.callcenterbk.shared.entity.StreetDescr;
@@ -48,7 +49,7 @@ public class CommonDMI implements QueryConstants {
 	private static TreeMap<Integer, Departments> departments = new TreeMap<Integer, Departments>();
 	private static TreeMap<Long, Continents> continents = new TreeMap<Long, Continents>();
 	private static TreeMap<Long, Country> countries = new TreeMap<Long, Country>();
-	private static TreeMap<Long, CityType> cityTypes = new TreeMap<Long, CityType>();
+	//private static TreeMap<Long, CityType> cityTypes = new TreeMap<Long, CityType>();
 	private static TreeMap<Long, City> cities = new TreeMap<Long, City>();
 	private static TreeMap<Long, ArrayList<StreetEnt>> streetsByCityId = new TreeMap<Long, ArrayList<StreetEnt>>();
 	private static TreeMap<Long, StreetType> streetTypes = new TreeMap<Long, StreetType>();
@@ -81,9 +82,11 @@ public class CommonDMI implements QueryConstants {
 		return departments.get(departmentId);
 	}
 
-	public static CityType getCityType(Long cityTypeId) {
-		return cityTypes.get(cityTypeId);
-	}
+//	public static CityType getCityType(Long cityTypeId) {
+//		return cityTypes.get(cityTypeId);
+//		
+//		
+//	}
 
 	public static City getCity(Long cityId) {
 		return cities.get(cityId);
@@ -1764,13 +1767,13 @@ public class CommonDMI implements QueryConstants {
 			}
 			Long cityTypeId = new Long(dsRequest.getFieldValue("city_type_id")
 					.toString());
-			CityType cityType = null;
-			if (cityTypeId != null) {
-				if (cityTypes.isEmpty()) {
-					fetchCityTypes(dsRequest);
-				}
-				cityType = getCityType(cityTypeId);
-			}
+//			CityType cityType = null;
+//			if (cityTypeId != null) {
+//				if (cityTypes.isEmpty()) {
+//					fetchCityTypes(dsRequest);
+//				}
+//				cityType = getCityType(cityTypeId);
+//			}
 
 			City city = new City();
 			city.setCity_code(dsRequest.getFieldValue("city_code") == null ? null
@@ -1789,12 +1792,12 @@ public class CommonDMI implements QueryConstants {
 					: new Long(dsRequest.getFieldValue("of_gmt_winter")
 							.toString()));
 			city.setCity_type_id(cityTypeId);
-			if (cityType != null) {
-				city.setCityType(cityType.getCity_type_geo());
-			}
+//			if (cityType != null) {
+//				city.setCityType(cityType.getCity_type_geo());
+//			}
 			city.setCountry_id(country_id);
 			if (country != null) {
-				city.setCountryName(country.getCountry_name_geo());
+				city.setCountryName(country.getCountry_name());
 			}
 			city.setCountry_region_id(-1L);
 			city.setDeleted(0L);
@@ -1848,13 +1851,13 @@ public class CommonDMI implements QueryConstants {
 			}
 			Long cityTypeId = new Long(fieldValues.get("city_type_id")
 					.toString());
-			CityType cityType = null;
-			if (cityTypeId != null) {
-				if (cityTypes.isEmpty()) {
-					fetchCityTypes(null);
-				}
-				cityType = getCityType(cityTypeId);
-			}
+//			CityType cityType = null;
+//			if (cityTypeId != null) {
+//				if (cityTypes.isEmpty()) {
+//					fetchCityTypes(null);
+//				}
+//				cityType = getCityType(cityTypeId);
+//			}
 			Timestamp curr_date = new Timestamp(System.currentTimeMillis());
 
 			oracleManager
@@ -1941,11 +1944,11 @@ public class CommonDMI implements QueryConstants {
 			oracleManager.flush();
 			City city = oracleManager.find(City.class, city_id);
 			if (country != null) {
-				city.setCountryName(country.getCountry_name_geo());
+				city.setCountryName(country.getCountry_name());
 			}
-			if (cityType != null) {
-				city.setCityType(cityType.getCity_type_geo());
-			}
+//			if (cityType != null) {
+//				city.setCityType(cityType.getCity_type_geo());
+//			}
 			city.setIsCapitalText(city.getIs_capital() != null
 					&& city.getIs_capital().equals(1L) ? "დედაქალაქი"
 					: "ჩვეულებრივი");
@@ -2002,19 +2005,19 @@ public class CommonDMI implements QueryConstants {
 				}
 				Country country = getCountry(country_id);
 				if (country != null) {
-					city.setCountryName(country.getCountry_name_geo());
+					city.setCountryName(country.getCountry_name());
 				}
 			}
 			Long cityTypeId = city.getCity_type_id();
-			if (cityTypeId != null) {
-				if (cityTypes.isEmpty()) {
-					fetchCityTypes(null);
-				}
-				CityType cityType = getCityType(cityTypeId);
-				if (cityType != null) {
-					city.setCityType(cityType.getCity_type_geo());
-				}
-			}
+//			if (cityTypeId != null) {
+//				if (cityTypes.isEmpty()) {
+//					fetchCityTypes(null);
+//				}
+//				CityType cityType = getCityType(cityTypeId);
+//				if (cityType != null) {
+//					city.setCityType(cityType.getCity_type_geo());
+//				}
+//			}
 			city.setIsCapitalText(city.getIs_capital() != null
 					&& city.getIs_capital().equals(1L) ? "დედაქალაქი"
 					: "ჩვეულებრივი");
@@ -2044,9 +2047,6 @@ public class CommonDMI implements QueryConstants {
 		try {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
-					.toString();
-			Timestamp rec_date = new Timestamp(System.currentTimeMillis());
 
 			Long continent_id = new Long(dsRequest
 					.getFieldValue("continent_id").toString());
@@ -2056,19 +2056,20 @@ public class CommonDMI implements QueryConstants {
 			Continents continent = continents.get(continent_id);
 
 			Country country = new Country();
-			country.setCountry_name_geo(dsRequest.getFieldValue(
-					"country_name_geo").toString());
-			country.setCountry_name_eng(dsRequest.getFieldValue(
-					"country_name_eng").toString());
-			country.setCountry_code(dsRequest.getFieldValue("country_code")
+			country.setCountry_name(dsRequest.getFieldValue("country_name")
+					.toString());
+			country.setPhone_code(dsRequest.getFieldValue("phone_code")
 					.toString());
 			country.setContinent_id(continent_id);
-			country.setDeleted(0L);
-			country.setRec_date(rec_date);
-			country.setRec_user(loggedUserName);
-			country.setSeason_id(0L);
+			country.setSeason(0L);
 			country.setContinent(continent != null ? continent.getName_descr()
 					: null);
+
+			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
+					.toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add Country.");
 
 			oracleManager.persist(country);
 
@@ -2100,25 +2101,24 @@ public class CommonDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 			Long country_id = -1L;
 			Object oCountry_id = fieldValues.get("country_id");
+
 			if (oCountry_id != null) {
 				country_id = new Long(oCountry_id.toString());
 			}
-			Timestamp curr_date = new Timestamp(System.currentTimeMillis());
+			String loggedUserName = fieldValues.get("loggedUserName")
+					.toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update Country.");
 
 			oracleManager
 					.createNativeQuery(Q_UPDATE_COUNTRY)
-					.setParameter(1,
-							fieldValues.get("country_name_geo").toString())
-					.setParameter(2,
-							fieldValues.get("country_name_eng").toString())
-					.setParameter(3, fieldValues.get("country_code").toString())
-					.setParameter(4,
-							fieldValues.get("loggedUserName").toString())
-					.setParameter(5, curr_date)
+					.setParameter(1, fieldValues.get("country_name").toString())
+					.setParameter(2, fieldValues.get("phone_code").toString())
 					.setParameter(
-							6,
+							3,
 							new Long(fieldValues.get("continent_id").toString()))
-					.setParameter(7, country_id).executeUpdate();
+					.setParameter(4, country_id).executeUpdate();
 			oracleManager.flush();
 			Country country = oracleManager.find(Country.class, country_id);
 			Long continent_id = country.getContinent_id();
@@ -2151,45 +2151,31 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	public Country countryStatusUpdate(Map fieldValues) throws Exception {
+	public Country deleteCountry(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 			Long country_id = -1L;
-			Object oCountry_id = fieldValues.get("country_id");
+			Object oCountry_id = dsRequest.getOldValues().get("country_id");
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
 			if (oCountry_id != null) {
 				country_id = new Long(oCountry_id.toString());
 			}
-			Timestamp curr_date = new Timestamp(System.currentTimeMillis());
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Delete Country.");
 
-			oracleManager
-					.createNativeQuery(Q_UPDATE_COUNTRY_STATUS)
-					.setParameter(1,
-							new Integer(fieldValues.get("deleted").toString()))
-					.setParameter(2,
-							fieldValues.get("loggedUserName").toString())
-					.setParameter(3, curr_date).setParameter(4, country_id)
-					.executeUpdate();
+			oracleManager.createNativeQuery(Q_DELETE_COUNTRY)
+					.setParameter(1, country_id).executeUpdate();
 
 			oracleManager.flush();
-			Country country = oracleManager.find(Country.class, country_id);
-			Long continent_id = country.getContinent_id();
-			if (continent_id != null) {
-				if (continents.isEmpty()) {
-					fetchContinents(null);
-				}
-				Continents continent = continents.get(continent_id);
-				if (continent != null) {
-					country.setContinent(continent.getName_descr());
-				}
-			}
+
 			countries.remove(country_id);
-			countries.put(country_id, country);
 			EMF.commitTransaction(transaction);
-			return country;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -2214,27 +2200,20 @@ public class CommonDMI implements QueryConstants {
 
 			logger.info("getting Countries From Database ... ");
 
-			Object country_name_geo = dsRequest
-					.getFieldValue("country_name_geo");
-			Object country_name_eng = dsRequest
-					.getFieldValue("country_name_eng");
-			Object country_code = dsRequest.getFieldValue("country_code");
+			Object country_name = dsRequest.getFieldValue("country_name");
+			Object phone_code = dsRequest.getFieldValue("phone_code");
 			Object continent_id = dsRequest.getFieldValue("continent_id");
 
 			String query = "select e from Country e where 1 = 1 ";
-			if (country_name_geo != null
-					&& !country_name_geo.toString().trim().equalsIgnoreCase("")) {
-				query += " and e.country_name_geo like '"
-						+ country_name_geo.toString() + "%'";
+			if (country_name != null
+					&& !country_name.toString().trim().equalsIgnoreCase("")) {
+				query += " and e.country_name like '" + country_name.toString()
+						+ "%'";
 			}
-			if (country_name_eng != null
-					&& !country_name_eng.toString().trim().equalsIgnoreCase("")) {
-				query += " and e.country_name_eng like '"
-						+ country_name_eng.toString() + "%'";
-			}
-			if (country_code != null
-					&& !country_code.toString().trim().equalsIgnoreCase("")) {
-				query += " and e.country_code like '" + country_code.toString()
+	
+			if (phone_code != null
+					&& !phone_code.toString().trim().equalsIgnoreCase("")) {
+				query += " and e.phone_code like '" + phone_code.toString()
 						+ "%'";
 			}
 			if (continent_id != null) {
@@ -2242,6 +2221,8 @@ public class CommonDMI implements QueryConstants {
 						+ new Long(continent_id.toString());
 			}
 			query += " order by e.country_id ";
+			
+			System.out.println(query);
 
 			oracleManager = EMF.getEntityManager();
 			ArrayList<Country> result = (ArrayList<Country>) oracleManager
@@ -2376,13 +2357,13 @@ public class CommonDMI implements QueryConstants {
 				for (City city : result) {
 					Long cTypeId = city.getCity_type_id();
 					if (cTypeId != null) {
-						if (cityTypes.isEmpty()) {
-							fetchCityTypes(dsRequest);
-						}
-						CityType cityType = getCityType(cTypeId);
-						if (cityType != null) {
-							city.setCityType(cityType.getCity_type_geo());
-						}
+//						if (cityTypes.isEmpty()) {
+//							fetchCityTypes(dsRequest);
+//						}
+//						CityType cityType = getCityType(cTypeId);
+//						if (cityType != null) {
+//							city.setCityType(cityType.getCity_type_geo());
+//						}
 					}
 					Long countryId = city.getCountry_id();
 					if (countryId != null) {
@@ -2391,7 +2372,7 @@ public class CommonDMI implements QueryConstants {
 						}
 						Country country = getCountry(countryId);
 						if (country != null) {
-							city.setCountryName(country.getCountry_name_geo());
+							city.setCountryName(country.getCountry_name());
 						}
 					}
 					city.setIsCapitalText(city.getIs_capital() != null
@@ -2483,42 +2464,42 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public ArrayList<CityType> fetchCityTypes(DSRequest dsRequest)
-			throws Exception {
-		EntityManager oracleManager = null;
-		try {
-			logger.info("getting CityTypes ...");
-			if (cityTypes == null || cityTypes.isEmpty()) {
-				logger.info("getting CityTypes from DB. ");
-				cityTypes = new TreeMap<Long, CityType>();
-				oracleManager = EMF.getEntityManager();
-				ArrayList<CityType> result = (ArrayList<CityType>) oracleManager
-						.createNamedQuery("CityType.getAllCityTypes")
-						.getResultList();
-				if (result != null && !result.isEmpty()) {
-					for (CityType cityType : result) {
-						Long id = cityType.getCity_type_id();
-						cityTypes.put(id, cityType);
-					}
-				}
-			}
-			ArrayList<CityType> ret = new ArrayList<CityType>();
-			ret.addAll(cityTypes.values());
-			return ret;
-		} catch (Exception e) {
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error("Error While Fetching CityTypes From Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების წამოღებისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
+	//@SuppressWarnings("unchecked")
+//	public ArrayList<CityType> fetchCityTypes(DSRequest dsRequest)
+//			throws Exception {
+//		EntityManager oracleManager = null;
+//		try {
+//			logger.info("getting CityTypes ...");
+//			if (cityTypes == null || cityTypes.isEmpty()) {
+//				logger.info("getting CityTypes from DB. ");
+//				cityTypes = new TreeMap<Long, CityType>();
+//				oracleManager = EMF.getEntityManager();
+//				ArrayList<CityType> result = (ArrayList<CityType>) oracleManager
+//						.createNamedQuery("CityType.getAllCityTypes")
+//						.getResultList();
+//				if (result != null && !result.isEmpty()) {
+//					for (CityType cityType : result) {
+//						Long id = cityType.getCity_type_id();
+//						cityTypes.put(id, cityType);
+//					}
+//				}
+//			}
+//			ArrayList<CityType> ret = new ArrayList<CityType>();
+//			ret.addAll(cityTypes.values());
+//			return ret;
+//		} catch (Exception e) {
+//			if (e instanceof CallCenterException) {
+//				throw (CallCenterException) e;
+//			}
+//			logger.error("Error While Fetching CityTypes From Database : ", e);
+//			throw new CallCenterException("შეცდომა მონაცემების წამოღებისას : "
+//					+ e.toString());
+//		} finally {
+//			if (oracleManager != null) {
+//				EMF.returnEntityManager(oracleManager);
+//			}
+//		}
+//	}
 
 	public ArrayList<Departments> fetchDepartments(DSRequest dsRequest)
 			throws CallCenterException {

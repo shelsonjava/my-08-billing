@@ -289,7 +289,7 @@ public class DlgAddEditMainOrg extends Window {
 			DataSource orgDS = DataSource.get("OrgDS");
 			orgPartnerBankItem.setOptionOperationId("searchCustomMainOrgBanks");
 			orgPartnerBankItem.setOptionDataSource(orgDS);
-			orgPartnerBankItem.setValueField("main_id");
+			orgPartnerBankItem.setValueField("organization_id");
 			orgPartnerBankItem.setDisplayField("org_name");
 
 			orgPartnerBankItem.setOptionCriteria(new Criteria());
@@ -300,10 +300,10 @@ public class DlgAddEditMainOrg extends Window {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = orgPartnerBankItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("main_id");
+						String oldAttr = criteria.getAttribute("organization_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("main_id", nullO);
+							criteria.setAttribute("organization_id", nullO);
 						}
 					}
 				}
@@ -740,7 +740,7 @@ public class DlgAddEditMainOrg extends Window {
 				orgLegalStatusItem.setValue(listGridRecord
 						.getAttributeAsInt("legal_statuse_id"));
 				orgPartnerBankItem.setValue(listGridRecord
-						.getAttributeAsInt("p_bank_main_id"));
+						.getAttributeAsInt("p_bank_organization_id"));
 				extraPriorityItem.setValue(listGridRecord
 						.getAttributeAsInt("extra_priority"));
 				orgStatusItem.setValue(listGridRecord
@@ -776,8 +776,8 @@ public class DlgAddEditMainOrg extends Window {
 				DataSource orgDS = DataSource.get("OrgDS");
 
 				Criteria criteria = new Criteria();
-				criteria.setAttribute("main_id",
-						listGridRecord.getAttributeAsInt("main_id"));
+				criteria.setAttribute("organization_id",
+						listGridRecord.getAttributeAsInt("organization_id"));
 
 				DSRequest dsRequest = new DSRequest();
 				dsRequest.setAttribute("operationId",
@@ -866,8 +866,8 @@ public class DlgAddEditMainOrg extends Window {
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 
-			record.setAttribute("main_id",
-					listGridRecord.getAttributeAsInt("main_id"));
+			record.setAttribute("organization_id",
+					listGridRecord.getAttributeAsInt("organization_id"));
 
 			DSRequest req = new DSRequest();
 

@@ -127,6 +127,7 @@ public class ClientMapUtil {
 		streetRecTypes.put("0", "ძველი");
 		streetRecTypes.put("1", "ახალი");
 
+		raionCentTypes.put("1", "ქალაქი");
 		raionCentTypes.put("0", "სოფელი");
 		raionCentTypes.put("-1", "რაიონული ცენტრი");
 
