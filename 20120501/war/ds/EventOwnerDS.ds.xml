@@ -8,9 +8,9 @@
 		<field name="event_owner_id"			type="integer"		title="ID"						hidden="true" primaryKey="true" />
 		<field name="event_owner_name"			type="text"			title="event_owner_name"/>
 		<field name="event_category_name"		type="text"			title="event_category_name"/>
-		<field name="org_name"					type="text"			title="Organization Name"/>
+		<field name="organization_name"			type="text"			title="Organization Name"/>
 		<field name="event_category_id"			type="integer"		title="event_category_id" 		hidden="true"/>
-		<field name="main_id"					type="integer"		title="Main Id" 				hidden="true"/>
+		<field name="organization_id"			type="integer"		title="Organization Id" 		hidden="true"/>
 		<field name="reservable"				type="integer"		title="reservable" 				hidden="true"/>
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 		hidden="true" />
 	</fields>
@@ -39,14 +39,14 @@
     			t.event_owner_id,
 				t.event_owner_name,
 				t.event_category_id,
-				t.main_id,
+				t.organization_id,
 				t.reservable,
 				ec.event_category_name,
-			    mo.org_name as org_name
+			    org.organization_name as organization_name
 			</selectClause> 
-			<tableClause>event_owner t,event_category ec, ccare.ORGANIZATIONS mo</tableClause>
+			<tableClause>event_owner t,event_category ec, organizations org</tableClause>
 			<whereClause><![CDATA[
-				t.event_category_id = ec.event_category_id and t.main_id = mo.main_id(+)
+				t.event_category_id = ec.event_category_id and t.organization_id = org.organization_id(+)
 				#if($criteria.event_category_id) and t.event_category_id = $criteria.event_category_id #end
 				#if($criteria.event_owner_name) and t.event_owner_name like '%'||($criteria.event_owner_name)||'%' #end
 				]]>  
@@ -67,16 +67,16 @@
 			<orderClause>t.event_owner_name</orderClause>	
     	</operationBinding>
     	
-    	<operationBinding operationId="searchMainOrgsForCB" operationType="fetch">
+    	<operationBinding operationId="searchOrganizationsForCB" operationType="fetch">
     		<selectClause>   			
-    			mo.main_id,
-    			mo.org_name 
+    			org.organization_id,
+    			org.organization_name 
 			</selectClause> 
-			<tableClause>ccare.organizations mo</tableClause>	
+			<tableClause>organizations org</tableClause>	
 			<whereClause>
 				   ($defaultWhereClause)
 			</whereClause>	
-			<orderClause>mo.org_name</orderClause>		
+			<orderClause>org.organization_name</orderClause>		
     	</operationBinding>
     	
     	<operationBinding operationId="searchAllEventOwnerForCallCenter2" operationType="fetch">
@@ -85,7 +85,7 @@
 		    			ep.event_owner_id,
 		    			ep.event_category_id,
 		    			ep.event_owner_name,
-		    			ep.main_id
+		    			ep.organization_id
 			</selectClause> 
 			<tableClause>event t
 							inner join event_owner ep on t.event_owner_id = ep.event_owner_id

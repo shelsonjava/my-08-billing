@@ -23,7 +23,7 @@
 		<field name="deleted"					type="integer"  	title="deleted"					hidden="true"/>
 		<field name="fields_order"				type="integer"  	title="fields_order"			hidden="true"/>
 		<field name="main_detail_type_id"		type="integer"  	title="main_detail_type_id"		hidden="true"/>		
-		<field name="main_id"					type="integer"  	title="main_id"					hidden="true"/>
+		<field name="organization_id"					type="integer"  	title="organization_id"					hidden="true"/>
 		<field name="old_id"					type="integer"  	title="old_id"					hidden="true"/>
 		<field name="contact_phones"			type="integer"  	title="contact_phones"			hidden="true"/>
 		<field name="abonent_id"				type="integer"  	title="abonent_id"				hidden="true"/>
@@ -60,7 +60,7 @@
 					       md.main_detail_note_eng,
 					       md.main_detail_note_geo,
 					       md.main_detail_type_id,
-					       md.main_id,
+					       md.organization_id,
 					       md.old_id,
 					       md.rec_user,
 					       md.rec_date,
@@ -68,7 +68,7 @@
 					       md.upd_date,
 					       getorgdeptphones(main_detail_id) as phones
 					  FROM ccare.main_details md
-					 start with md.main_id = $criteria.p_main_id 
+					 start with md.organization_id = $criteria.p_organization_id 
 					 and md.deleted = 0  
 					 #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||($criteria.main_detail_geo)||'%' #end
 					 #if($criteria.main_detail_geo1) and md.main_detail_geo like '%'||($criteria.main_detail_geo1)||'%' #end
@@ -109,7 +109,7 @@
 					       md.main_detail_note_eng,
 					       md.main_detail_note_geo,
 					       md.main_detail_type_id,
-					       md.main_id,
+					       md.organization_id,
 					       md.old_id,
 					       md.rec_user,
 					       md.rec_date,
@@ -117,7 +117,7 @@
 					       md.upd_date,
 					       getorgdeptphones(main_detail_id) as phones
 					  FROM ccare.main_details md
-					 start with md.main_id = $criteria.p_main_id
+					 start with md.organization_id = $criteria.p_organization_id
 					 and md.deleted = 0 
 					 #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||($criteria.main_detail_geo)||'%' #end
 					 #if($criteria.main_detail_geo1) and md.main_detail_geo like '%'||($criteria.main_detail_geo1)||'%' #end
@@ -160,7 +160,7 @@
 				md.main_detail_note_eng,
 				md.main_detail_note_geo,
 				md.main_detail_type_id,
-				md.main_id,
+				md.organization_id,
 				md.old_id,
 				md.rec_user,
 				md.rec_date,
@@ -174,7 +174,7 @@
 				 	 1 = 1
 				 	 #if($criteria.deleted) and md.deleted = $criteria.deleted #end
 				 	 #if($criteria.main_detail_id) and md.main_detail_id = $criteria.main_detail_id #end
-				 	 #if($criteria.main_id) and md.main_id = $criteria.main_id #end
+				 	 #if($criteria.organization_id) and md.organization_id = $criteria.organization_id #end
 				 	 #if($criteria.main_detail_master_id && $criteria.main_detail_master_id != -10000 ) and md.main_detail_master_id = $criteria.main_detail_master_id #end
 				 	 #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||($criteria.main_detail_geo)||'%' #end				 	 
 				 ]]>
@@ -200,13 +200,13 @@
     	<operationBinding operationId="searchMainDetailsAdv" operationType="fetch">
     		<selectClause>   			
     			md.main_detail_id,
-    			main_id,
+    			organization_id,
     			md.main_detail_geo 
 			</selectClause> 
 			<tableClause>ccare.main_details md</tableClause>	
 			<whereClause>
 					md.main_detail_type_id in (5,30,59,60,61) and md.deleted = 0	    
-				    #if($criteria.main_id) and md.main_id = $criteria.main_id #end
+				    #if($criteria.organization_id) and md.organization_id = $criteria.organization_id #end
 				    #if($criteria.main_detail_id) and md.main_detail_id = $criteria.main_detail_id #end
 				    #if($criteria.main_detail_geo) and md.main_detail_geo like '%'||$criteria.main_detail_geo||'%' #end
 			</whereClause>	

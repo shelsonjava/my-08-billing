@@ -28,7 +28,7 @@
 		<field name="event_list_price"			type="text"			title="event_list_price"/>
 		<field name="event_list_info"			type="text"			title="event_list_info"/>
 		<field name="event_list_date_m_y"		type="text"			title="event_list_date_m_y"			hidden="true"/>
-		<field name="main_id"					type="integer"		title="main_id" 					hidden="true"/>
+		<field name="organization_id"					type="integer"		title="organization_id" 					hidden="true"/>
 		<field name="event_list_n_date"			type="text"			title="event_list_n_date"/>
 		<field name="event_list_n_time"			type="text"			title="event_list_n_time"/>
 	</fields>
@@ -97,7 +97,7 @@
 			       t.event_list_info,
 			       t.event_list_date_m_y,
 			       ep.event_owner_name,
-       			   ep.main_id,
+       			   ep.organization_id,
        			   t.event_list_n_date,
        			   t.event_list_n_time       			   
 			</selectClause> 

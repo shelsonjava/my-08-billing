@@ -40,7 +40,7 @@
 		<field name="stringTwo"				type="text"			title="stringTwo"			hidden="true"/>
 		<field name="country_id"			type="integer"		title="country_id"			hidden="true"/>
 		<field name="country_detail_id"		type="integer"		title="country_detail_id"	hidden="true"/>
-		<field name="country_name_geo"		type="text"			title="country_name_geo"	hidden="true"/>
+		<field name="country_name"			type="text"			title="country_name"	hidden="true"/>
 	</fields>
 
 	<operationBindings>
@@ -160,7 +160,7 @@
     			t.seasonid,
     			t.countryregion,
     			t.city_id,
-    			t.country_name_geo,
+    			t.country_name,
     			t.city_new_code,
     			t.city_name_geo			
 			</selectClause> 

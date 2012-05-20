@@ -31,7 +31,7 @@
 			<tableClause>log_session_charges ch, services s, main_orgs o</tableClause>
 			<whereClause><![CDATA[ 
 				ch.service_id = s.service_id(+) and
-				h.main_id = o.main_id(+) and				
+				h.organization_id = o.organization_id(+) and				
 				ch.session_id=$criteria.sessionId and
 				ch.deleted = 0
 				]]>  
@@ -47,7 +47,7 @@
 			<tableClause>log_main_hits h, services s, main_orgs o</tableClause>
 			<whereClause><![CDATA[ 
 				h.service_id = s.service_id and				
-				h.main_id = o.main_id(+) and				
+				h.organization_id = o.organization_id(+) and				
 				h.session_id=$criteria.sessionId
 				]]>  
 			</whereClause> 
@@ -89,9 +89,9 @@
             <customSQL>
             	 <![CDATA[
             	 	insert into LOG_MAIN_HITS 
-            	 		(YM, SESSION_ID,  MAIN_ID, SERVICE_ID) 
+            	 		(YM, SESSION_ID,  organization_id, SERVICE_ID) 
 					values
-                        ($values.ym, $values.session_id, $values.main_id, $values.service_id)            		
+                        ($values.ym, $values.session_id, $values.organization_id, $values.service_id)            		
             	 ]]>
             </customSQL> 
         </operationBinding>

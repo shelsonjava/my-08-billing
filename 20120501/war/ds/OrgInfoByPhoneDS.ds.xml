@@ -1,7 +1,7 @@
 <DataSource ID="OrgInfoByPhoneDS" serverType="sql"
 	tableName="ccare.main_orgs" qualifyColumnNames="false">
 	<fields>
-		<field name="main_id" 				type="integer"	title="Main ID"				hidden="true"	primaryKey="true" />
+		<field name="organization_id" 				type="integer"	title="Main ID"				hidden="true"	primaryKey="true" />
 		<field name="org_name" 				type="text" 	title="Org Name"/>
 		<field name="note"  				type="text"		title="Note" />
 		<field name="workinghours" 			type="text"		title="Working Hours" />

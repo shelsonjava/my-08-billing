@@ -4,24 +4,20 @@
 	tableName="ccare.countries"
 	qualifyColumnNames="false">
 	<fields>
-		<field name="country_id"				type="integer"	title="ID"				hidden="true" primaryKey="true" />
-		<field name="country_name_geo"			type="text" 	title="Country Name Geo"/>
-		<field name="country_name_eng"			type="text" 	title="Country Name Eng"/>					
-		<field name="rec_date"					type="datetime"	title="Record Date"/>		
-		<field name="rec_user"					type="text"		title="Record User"/>		
-		<field name="deleted"					type="integer"	title="Deleted" 		hidden="true"/>
-		<field name="continent_id"				type="integer"	title="continent_id" 	hidden="true"/>
-		<field name="upd_user"					type="text"		title="Update User"/>
-		<field name="country_code"				type="text"		title="Country Code"/>
-		<field name="upd_date"					type="datetime"	title="Record Upd Date"/>
-		<field name="season_id"					type="integer"	title="Season Id" 		hidden="true"/>
-		<field name="continent"					type="text"		title="continent"/>			
+		<field name="country_id"		type="integer"	title="ID"				hidden="true" primaryKey="true" />
+		<field name="country_name"		type="text" 	title="country_name"/>
+		<field name="continent_id"		type="integer"	title="continent_id" 	hidden="true"/>
+		<field name="phone_code"		type="text"		title="phone_code"/>
+		<field name="season"			type="integer"	title="Season" 		hidden="true"/>
+		<field name="continent"			type="text"		title="continent"/>	
+		<field name="loggedUserName"	type="text"		title="Logged UserName" 			hidden="true"/>	
+		
 	</fields>
 
 	<operationBindings>
     	
     	<!-- Searching Countries From Database -->
-    	<operationBinding operationId="countriesSearchFromDB" operationType="fetch" serverMethod="fetchAllCountriesFromDB">
+    	<operationBinding operationId="fetchAllCountriesFromDB" operationType="fetch" serverMethod="fetchAllCountriesFromDB">
     		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
     	</operationBinding>
     	
@@ -41,34 +37,34 @@
         </operationBinding>
         
         <!-- Modify Country Status -->
-		<operationBinding operationId="countryStatusUpdate" operationType="update" serverMethod="countryStatusUpdate">
+		<operationBinding operationId="deleteCountry" operationType="remove" serverMethod="deleteCountry">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
         <operationBinding operationId="searchAllCountriesForCombos" operationType="fetch">
     		<selectClause>   			
     			t.country_id,
-				t.country_name_geo,
-				trim(nvl(t.country_code,'')) as country_code
+				t.country_name,
+				trim(nvl(t.phone_code,'')) as phone_code
 			</selectClause> 
 			<tableClause>countries t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0
+				($defaultWhereClause)
 			</whereClause>
-			<orderClause>t.country_name_geo</orderClause>
+			<orderClause>t.country_name</orderClause>
     	</operationBinding>
     	
     	<operationBinding operationId="searchAllCountriesNoContForCombos" operationType="fetch">
     		<selectClause>   			
     			t.country_id,
-				t.country_name_geo,
-				trim(nvl(t.country_code,'')) as country_code		
+				t.country_name,
+				trim(nvl(t.phone_code,'')) as phone_code		
 			</selectClause> 
 			<tableClause>countries t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0 and country_code is not null
+				($defaultWhereClause) and phone_code is not null
 			</whereClause>
-			<orderClause>t.country_name_geo</orderClause>
+			<orderClause>t.country_name</orderClause>
     	</operationBinding>
     	
     	
@@ -76,11 +72,11 @@
         <operationBinding operationId="searchCountriesByTransportType" operationType="fetch">
     		<selectClause>   			
     			c.country_id, 
-    			c.country_name_geo
+    			c.country_name
 			</selectClause> 
 			<tableClause>countries c</tableClause>
 			<whereClause><![CDATA[ 
-				($defaultWhereClause) AND c.deleted = 0 
+				($defaultWhereClause)  
 				#if($criteria.transport_type_id) 
 					 and c.country_id in 
 					 	(
@@ -94,8 +90,8 @@
 				#end
 				]]>  
 			</whereClause> 
-			<groupClause>c.country_id, c.country_name_geo</groupClause>
-			<orderClause>c.country_name_geo</orderClause>
+			<groupClause>c.country_id, c.country_name</groupClause>
+			<orderClause>c.country_name</orderClause>
         </operationBinding>
     	
     </operationBindings>

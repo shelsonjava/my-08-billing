@@ -19,7 +19,7 @@
 		<field name="upd_user"				type="text"			title="upd_user"/>
 		<field name="is_budget"				type="integer"		title="is_budget"			hidden="true"/>
 		<field name="main_detail_id"		type="integer"		title="main_detail_id"		hidden="true"/>
-		<field name="main_id"				type="integer"		title="main_id"				hidden="true"/>
+		<field name="organization_id"				type="integer"		title="organization_id"				hidden="true"/>
 		<field name="price_type"			type="integer"		title="price_type"			hidden="true"/>
 		<field name="rec_date"				type="datetime"		title="rec_date"			hidden="true"/>		
 		<field name="sms_warning"			type="integer"		title="sms_warning"			hidden="true"/>
@@ -97,7 +97,7 @@
 				  t.end_date,
 				  t.is_budget,
 				  t.main_detail_id,
-				  t.main_id,
+				  t.organization_id,
 				  t.note,
 				  t.price,
 				  t.price_type,
@@ -115,7 +115,7 @@
 			</selectClause> 
 			<tableClause>ccare.contracts t, ccare.main_orgs mo1, ccare.main_details md</tableClause>
 			<whereClause><![CDATA[
-				 t.main_id = mo1.main_id and t.main_detail_id = md.main_detail_id (+) and t.deleted = 0
+				 t.organization_id = mo1.organization_id and t.main_detail_id = md.main_detail_id (+) and t.deleted = 0
 				 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
 				 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
 				 #if($criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
@@ -307,32 +307,32 @@
 			<tableClause>
 				<![CDATA[
 					(select distinct p.phone from (
-						       select ms.main_id from ccare.main_services ms 
-						       start with ms.main_id = $criteria.main_id and ms.service_id = 3 
-						       connect by prior ms.main_id = ms.main_master_id) r 
-						inner join ccare.abonents a on a.main_id = r.main_id 
+						       select ms.organization_id from ccare.main_services ms 
+						       start with ms.organization_id = $criteria.organization_id and ms.service_id = 3 
+						       connect by prior ms.organization_id = ms.main_master_id) r 
+						inner join ccare.abonents a on a.organization_id = r.organization_id 
 						inner join ccare.phones p on p.phone_id = a.phone_id 
 						where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
 						    select p.phone from ( 
 						    select 
-						      t.main_id 
+						      t.organization_id 
 						    from ccare.main_services t 
-						    start with t.main_id in ( 
+						    start with t.organization_id in ( 
 						          select 
-						               c.main_id 
+						               c.organization_id 
 						          from ccare.contracts c 
-						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in ( 
+						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in ( 
 						                select 
-						                      t.main_id 
+						                      t.organization_id 
 						                from ccare.main_services t 
 						                where level>1 
-						          start with t.main_id = $criteria.main_id and t.service_id = 3 
-						          connect by prior t.main_id = t.main_master_id 
+						          start with t.organization_id = $criteria.organization_id and t.service_id = 3 
+						          connect by prior t.organization_id = t.main_master_id 
 						          ) and (c.main_detail_id is null or c.main_detail_id = 0) 
 						    ) and t.service_id = 3 
-						    connect by prior t.main_id = t.main_master_id 
+						    connect by prior t.organization_id = t.main_master_id 
 						    ) a1 
-						    inner join ccare.abonents a on a.main_id = a1.main_id 
+						    inner join ccare.abonents a on a.organization_id = a1.organization_id 
 						    inner join ccare.phones p on p.phone_id = a.phone_id 
 						    where a.deleted = 0 and p.deleted = 0 
 						) and p.phone not in ( 
@@ -348,13 +348,13 @@
 						                 (select 
 						                        c.main_detail_id 
 						                  from ccare.contracts c 
-						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in 
+						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in 
 						                        (select 
-						                               t.main_id 
+						                               t.organization_id 
 						                         from ccare.main_services t 
 						                         where level>1 
-						                         start with t.main_id = $criteria.main_id and t.service_id = 3 
-						                         connect by prior t.main_id = t.main_master_id 
+						                         start with t.organization_id = $criteria.organization_id and t.service_id = 3 
+						                         connect by prior t.organization_id = t.main_master_id 
 						                         ) 
 						                         and (c.main_detail_id is not null and c.main_detail_id <> 0) 
 						                  ) and t.deleted = 0 
@@ -380,32 +380,32 @@
 			<tableClause>
 				<![CDATA[
 					 	(select distinct p.phone from (
-						       select ms.main_id from ccare.main_services ms 
-						       start with ms.main_id = $criteria.main_id and ms.service_id = 3 
-						       connect by prior ms.main_id = ms.main_master_id) r 
-						inner join ccare.abonents a on a.main_id = r.main_id 
+						       select ms.organization_id from ccare.main_services ms 
+						       start with ms.organization_id = $criteria.organization_id and ms.service_id = 3 
+						       connect by prior ms.organization_id = ms.main_master_id) r 
+						inner join ccare.abonents a on a.organization_id = r.organization_id 
 						inner join ccare.phones p on p.phone_id = a.phone_id 
 						where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
 						    select p.phone from ( 
 						    select 
-						      t.main_id 
+						      t.organization_id 
 						    from ccare.main_services t 
-						    start with t.main_id in ( 
+						    start with t.organization_id in ( 
 						          select 
-						               c.main_id 
+						               c.organization_id 
 						          from ccare.contracts c 
-						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in ( 
+						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in ( 
 						                select 
-						                      t.main_id 
+						                      t.organization_id 
 						                from ccare.main_services t 
 						                where level>1 
-						          start with t.main_id = $criteria.main_id and t.service_id = 3 
-						          connect by prior t.main_id = t.main_master_id 
+						          start with t.organization_id = $criteria.organization_id and t.service_id = 3 
+						          connect by prior t.organization_id = t.main_master_id 
 						          ) and (c.main_detail_id is null or c.main_detail_id = 0) 
 						    ) and t.service_id = 3 
-						    connect by prior t.main_id = t.main_master_id 
+						    connect by prior t.organization_id = t.main_master_id 
 						    ) a1 
-						    inner join ccare.abonents a on a.main_id = a1.main_id 
+						    inner join ccare.abonents a on a.organization_id = a1.organization_id 
 						    inner join ccare.phones p on p.phone_id = a.phone_id 
 						    where a.deleted = 0 and p.deleted = 0 
 						) and p.phone not in ( 
@@ -421,13 +421,13 @@
 						                 (select 
 						                        c.main_detail_id 
 						                  from ccare.contracts c 
-						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in 
+						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in 
 						                        (select 
-						                               t.main_id 
+						                               t.organization_id 
 						                         from ccare.main_services t 
 						                         where level>1 
-						                         start with t.main_id = $criteria.main_id and t.service_id = 3 
-						                         connect by prior t.main_id = t.main_master_id 
+						                         start with t.organization_id = $criteria.organization_id and t.service_id = 3 
+						                         connect by prior t.organization_id = t.main_master_id 
 						                         ) 
 						                         and (c.main_detail_id is not null and c.main_detail_id <> 0) 
 						                  ) and t.deleted = 0 
@@ -456,32 +456,32 @@
 			<tableClause>
 				<![CDATA[
 					 	(select distinct p.phone from (
-						       select ms.main_id from ccare.main_services ms 
-						       start with ms.main_id = $criteria.main_id and ms.service_id = 3 
-						       connect by prior ms.main_id = ms.main_master_id) r 
-						inner join ccare.abonents a on a.main_id = r.main_id 
+						       select ms.organization_id from ccare.main_services ms 
+						       start with ms.organization_id = $criteria.organization_id and ms.service_id = 3 
+						       connect by prior ms.organization_id = ms.main_master_id) r 
+						inner join ccare.abonents a on a.organization_id = r.organization_id 
 						inner join ccare.phones p on p.phone_id = a.phone_id 
 						where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
 						    select p.phone from ( 
 						    select 
-						      t.main_id 
+						      t.organization_id 
 						    from ccare.main_services t 
-						    start with t.main_id in ( 
+						    start with t.organization_id in ( 
 						          select 
-						               c.main_id 
+						               c.organization_id 
 						          from ccare.contracts c 
-						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in ( 
+						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in ( 
 						                select 
-						                      t.main_id 
+						                      t.organization_id 
 						                from ccare.main_services t 
 						                where level>1 
-						          start with t.main_id = $criteria.main_id and t.service_id = 3 
-						          connect by prior t.main_id = t.main_master_id 
+						          start with t.organization_id = $criteria.organization_id and t.service_id = 3 
+						          connect by prior t.organization_id = t.main_master_id 
 						          ) and (c.main_detail_id is null or c.main_detail_id = 0) 
 						    ) and t.service_id = 3 
-						    connect by prior t.main_id = t.main_master_id 
+						    connect by prior t.organization_id = t.main_master_id 
 						    ) a1 
-						    inner join ccare.abonents a on a.main_id = a1.main_id 
+						    inner join ccare.abonents a on a.organization_id = a1.organization_id 
 						    inner join ccare.phones p on p.phone_id = a.phone_id 
 						    where a.deleted = 0 and p.deleted = 0 
 						) and p.phone not in ( 
@@ -497,13 +497,13 @@
 						                 (select 
 						                        c.main_detail_id 
 						                  from ccare.contracts c 
-						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_id in 
+						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in 
 						                        (select 
-						                               t.main_id 
+						                               t.organization_id 
 						                         from ccare.main_services t 
 						                         where level>1 
-						                         start with t.main_id = $criteria.main_id and t.service_id = 3 
-						                         connect by prior t.main_id = t.main_master_id 
+						                         start with t.organization_id = $criteria.organization_id and t.service_id = 3 
+						                         connect by prior t.organization_id = t.main_master_id 
 						                         ) 
 						                         and (c.main_detail_id is not null and c.main_detail_id <> 0) 
 						                  ) and t.deleted = 0 
@@ -538,7 +538,7 @@
     	
     	<operationBinding operationId="getCallsCountByMainAndYM" operationType="fetch">
     		<selectClause>   		
-    			  ccare.getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_id)	as contractor_call_cnt 			  
+    			  ccare.getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.organization_id)	as contractor_call_cnt 			  
 			</selectClause> 
 			<tableClause>dual</tableClause>
 			<whereClause><![CDATA[
@@ -566,7 +566,7 @@
 			</selectClause> 
 			<tableClause>ccare.contractor_bill t, ccare.contracts c, ccare.main_orgs mo, ccare.main_details md </tableClause>
 			<whereClause><![CDATA[
-				 t.contractor_id = c.contract_id and c.main_id = mo.main_id and c.main_detail_id = md.main_detail_id(+) 
+				 t.contractor_id = c.contract_id and c.organization_id = mo.organization_id and c.main_detail_id = md.main_detail_id(+) 
 				 and t.ym = $criteria.ym
 				 #if($criteria.contract_id) and c.contract_id = $criteria.contract_id #end	
 				 #if($criteria.is_budget) and c.is_budget = $criteria.is_budget #end			 
@@ -588,7 +588,7 @@
 			</selectClause> 
 			<tableClause> ccare.contractor_bill_items bi, ccare.contracts c, ccare.main_orgs mo, ccare.main_details md, ccare.tel_comps tc, ccare.services s </tableClause>
 			<whereClause><![CDATA[
-				 bi.contractor_id = c.contract_id and c.main_id = mo.main_id and c.main_detail_id = md.main_detail_id(+) and 
+				 bi.contractor_id = c.contract_id and c.organization_id = mo.organization_id and c.main_detail_id = md.main_detail_id(+) and 
 				 bi.billing_company_id = tc.billing_company_id and  bi.service_id = s.service_id  and bi.ym = $criteria.ym
 				 #if($criteria.contract_id) and c.contract_id = $criteria.contract_id #end				 
 				 #if($criteria.is_budget) and c.is_budget = $criteria.is_budget #end

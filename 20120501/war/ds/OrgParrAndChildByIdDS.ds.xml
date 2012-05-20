@@ -6,8 +6,8 @@
     dropExtraFields = "false">
     
 	<fields>
-		<field name="main_id"					type="integer"		title="ID"					hidden="true" 	primaryKey="true" />
-		<field name="main_master_id"			type="integer"  	title="parrent"				hidden="true"	required="true" foreignKey="OrgParrAndChildByIdDS.main_id"  detail="true"/>
+		<field name="organization_id"					type="integer"		title="ID"					hidden="true" 	primaryKey="true" />
+		<field name="main_master_id"			type="integer"  	title="parrent"				hidden="true"	required="true" foreignKey="OrgParrAndChildByIdDS.organization_id"  detail="true"/>
 		<field name="org_name"					type="text"  		title="org_name"/>
 		<field name="note"						type="text"  		title="note"/>
 		<field name="identcode"					type="text"  		title="identcode"/>
@@ -55,7 +55,7 @@
         			 when level=6 then '.....................'||t.org_name
         			 else t.org_name
       			end as org_name_tree_like, 
-			        t.main_id,
+			        t.organization_id,
 			        t.main_master_id,
 			        t.org_name,
 			        t.identcode,
@@ -93,15 +93,15 @@
 			<tableClause>ccare.nb_org_search t, org_partnerbank_lists p</tableClause>
 			<whereClause>
 				 <![CDATA[
-				 		t.partnerbank_id = p.main_id(+) and level > 1
+				 		t.partnerbank_id = p.organization_id(+) and level > 1
 				        #if($criteria.org_name_tree_like) and t.org_name like '%'||($criteria.org_name_tree_like)||'%' #end
 				        #if($criteria.org_name) and t.org_name like '%'||($criteria.org_name)||'%' #end
 				        #if($criteria.real_address) and t.real_address like '%'||($criteria.real_address)||'%' #end
 				        #if($criteria.full_address) and t.real_address like '%'||($criteria.full_address)||'%' #end
-				        #if($criteria.p_main_id)
-				        	start with t.main_id = $criteria.p_main_id  
+				        #if($criteria.p_organization_id)
+				        	start with t.organization_id = $criteria.p_organization_id  
 				        #end
-					  	connect by prior t.main_id = t.main_master_id
+					  	connect by prior t.organization_id = t.main_master_id
 						order siblings by t.priority
 				 ]]>
 			</whereClause>
@@ -117,7 +117,7 @@
         			 when level=1 then '...'||t.org_name
         			 else t.org_name
       			end as org_name_tree_like,
-					t.main_id,
+					t.organization_id,
 			        t.main_master_id,
 			        t.org_name,
 			        t.identcode,
@@ -155,14 +155,14 @@
 			<tableClause>ccare.nb_org_search t, org_partnerbank_lists p</tableClause>
 			<whereClause>
 				 <![CDATA[
-				 		t.partnerbank_id = p.main_id(+) and level = 2
+				 		t.partnerbank_id = p.organization_id(+) and level = 2
 				        #if($criteria.org_name_tree_like) and t.org_name like '%'||($criteria.org_name_tree_like)||'%' #end
 				        #if($criteria.org_name) and t.org_name like '%'||($criteria.org_name)||'%' #end
 				        #if($criteria.real_address) and t.real_address like '%'||($criteria.real_address)||'%' #end
-				        #if($criteria.p_main_id)
-				        	start with t.main_id = $criteria.p_main_id
+				        #if($criteria.p_organization_id)
+				        	start with t.organization_id = $criteria.p_organization_id
 				        #end
-					  	connect by prior t.main_master_id = t.main_id 
+					  	connect by prior t.main_master_id = t.organization_id 
 						order by t.priority
 				 ]]>
 			</whereClause>

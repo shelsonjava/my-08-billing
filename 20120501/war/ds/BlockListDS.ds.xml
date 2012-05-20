@@ -14,7 +14,7 @@
 		<field name="block_type"			type="integer"		title="block_type"			hidden="true"/>
 		<field name="deleted"				type="integer"		title="deleted"				hidden="true"/>
 		<field name="main_detail_id"		type="integer"		title="main_detail_id"		hidden="true"/>
-		<field name="main_id"				type="integer"		title="main_id"				hidden="true"/>
+		<field name="organization_id"				type="integer"		title="organization_id"				hidden="true"/>
 		<field name="rec_date"				type="datetime"		title="rec_date"			hidden="true"/>
 		<field name="rec_user"				type="text"			title="rec_user"			hidden="true"/>
 		<field name="upd_date"				type="datetime"		title="upd_date"			hidden="true"/>
@@ -49,7 +49,7 @@
 					t.block_type,
 					t.deleted,
 					t.main_detail_id,
-					t.main_id,
+					t.organization_id,
 					t.note,
 					t.rec_date,
 					t.rec_user,
@@ -61,7 +61,7 @@
 			</selectClause> 
 			<tableClause>ccare.block_list t, ccare.main_orgs mo1, ccare.main_details md</tableClause>
 			<whereClause><![CDATA[
-				 t.main_id = mo1.main_id(+) and t.main_detail_id = md.main_detail_id (+)
+				 t.organization_id = mo1.organization_id(+) and t.main_detail_id = md.main_detail_id (+)
 				 #if($criteria.note) and t.note like '%'||($criteria.note)||'%' #end
 				 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
 				 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end

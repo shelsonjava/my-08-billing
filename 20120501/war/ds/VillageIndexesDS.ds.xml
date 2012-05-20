@@ -43,7 +43,7 @@
     			t.village_index,
     			t.district_center,
     			r.district_index_name,    			
-    			decode(t.district_center,-1,'რაიონული ცენტრი',0,'სოფელი','უცნობია') as district_center_descr
+    			decode(t.district_center,-1,'რაიონული ცენტრი',0,'სოფელი',1,'ქალაქი','უცნობია') as district_center_descr
 			</selectClause> 
 			<tableClause>village_indexes t,district_indexes r</tableClause>
 			<whereClause><![CDATA[ 
@@ -66,7 +66,7 @@
     			t.village_index,
     			t.district_center,
     			r.district_index_name, 
-    			decode(t.district_center,-1,'რაიონული ცენტრი',0,'სოფელი','უცნობია') as district_center_descr,
+    			decode(t.district_center,-1,'რაიონული ცენტრი',0,'სოფელი',1,'ქალაქი','უცნობია') as district_center_descr,
     			r.district_index_name ||' '||t.village_index_name as full_text
 			</selectClause> 
 			<tableClause>village_indexes t,district_indexes r</tableClause>

@@ -6,8 +6,8 @@
     dropExtraFields = "false">
     
 	<fields>
-		<field name="main_id"					type="integer"		title="ID"					hidden="true" 	primaryKey="true" />
-		<field name="main_master_id"			type="integer"  	title="parrent"				hidden="true"	required="true" foreignKey="OrgDS.main_id"  detail="true"/>
+		<field name="organization_id"					type="integer"		title="ID"					hidden="true" 	primaryKey="true" />
+		<field name="main_master_id"			type="integer"  	title="parrent"				hidden="true"	required="true" foreignKey="OrgDS.organization_id"  detail="true"/>
 		<field name="org_name"					type="text"  		title="org_name"/>
 		<field name="note"						type="text"  		title="note"/>
 		<field name="identcode"					type="text"  		title="identcode"/>
@@ -54,7 +54,7 @@
 		<field name="phone_status"				type="text"  		title="phone_status"/>
 		<field name="org_name_tree"				type="text"  		title="org_name_tree"/>
 		<field name="is_abonent"				type="integer"  	title="is_abonent"			hidden="true"/>
-		<field name="p_bank_main_id"			type="integer"  	title="p_bank_main_id"		hidden="true"/>
+		<field name="p_bank_organization_id"			type="integer"  	title="p_bank_organization_id"		hidden="true"/>
 		<field name="city_region_id"			type="integer"  	title="city_region_id"		hidden="true"/>
 		<field name="street_id"					type="integer"  	title="street_id"			hidden="true"/>
 		<field name="tree_org_parrent"			type="text"  		title="tree_org_parrent"/>
@@ -94,7 +94,7 @@
 		<operationBinding operationId="updateMainServiceOrg" operationType="update">
             <customSQL>
             	 <![CDATA[
-            		update ccare.main_services set main_master_id = $values.main_master_id where main_id = $criteria.main_id
+            		update ccare.main_services set main_master_id = $values.main_master_id where organization_id = $criteria.organization_id
             	 ]]>
             </customSQL> 
         </operationBinding>
@@ -102,7 +102,7 @@
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearch" operationType="fetch">			
 			<selectClause>
-				ms.main_id,
+				ms.organization_id,
 				ms.main_master_id,
 				mo1.org_name,
 				mo1.identcode,
@@ -134,7 +134,7 @@
 			<tableClause>ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str</tableClause>
 			<whereClause>
 				 <![CDATA[
-					 mo1.main_id = ms.main_id and ma.main_id=ms.main_id and str.street_id = ma.street_id and ms.service_id = 3
+					 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and ms.service_id = 3
 					 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
 					 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
 					 #if($criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
@@ -172,7 +172,7 @@
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchByMainId" operationType="fetch">			
 			<selectClause>
-				ms.main_id,
+				ms.organization_id,
 				ms.main_master_id,
 				mo1.org_name,
 				mo1.identcode,
@@ -204,8 +204,8 @@
 			<tableClause>ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str</tableClause>
 			<whereClause>
 				 <![CDATA[
-					 mo1.main_id = ms.main_id and ma.main_id=ms.main_id and str.street_id = ma.street_id and ms.service_id = 3
-					 and ms.main_master_id = $criteria.main_id
+					 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and ms.service_id = 3
+					 and ms.main_master_id = $criteria.organization_id
 					 order by ms.priority
 				 ]]>
 			</whereClause>
@@ -215,15 +215,15 @@
 		<!-- FETCH -->
 		<operationBinding operationId="searchCustomMainOrgBanks" operationType="fetch">			
 			<selectClause>
-				mo.main_id, 
+				mo.organization_id, 
 				mo.org_name
 			</selectClause>
 			<tableClause>ccare.main_services ms, ccare.main_orgs mo, ccare.business_org bo</tableClause>
 			<whereClause>
 				 <![CDATA[
-					ms.main_id = mo.main_id AND ms.main_id = bo.main_id AND 
+					ms.organization_id = mo.organization_id AND ms.organization_id = bo.organization_id AND 
 					bo.business_detail_id = 59 AND ms.main_master_id = 0 AND ms.service_id = 3
-					#if($criteria.main_id) AND ms.main_id = $criteria.main_id #end
+					#if($criteria.organization_id) AND ms.organization_id = $criteria.organization_id #end
 				 ]]>
 			</whereClause>
 			<orderClause>mo.org_name asc</orderClause>
@@ -238,7 +238,7 @@
 			<tableClause>business_org t, ccare.business_details d</tableClause>
 			<whereClause>
 				 <![CDATA[
-				 	t.business_detail_id = d.business_detail_id and d.deleted = 0 and t.deleted = 0  and t.main_id = $criteria.main_id
+				 	t.business_detail_id = d.business_detail_id and d.deleted = 0 and t.deleted = 0  and t.organization_id = $criteria.organization_id
 				 ]]>
 			</whereClause>
 			<orderClause>d.business_detail_id</orderClause>
@@ -248,7 +248,7 @@
 		<!-- FETCH - For CallCenter -->
 		<operationBinding operationId="customOrgSearchForCallCenter1" operationType="fetch">			
 			<selectClause>
-						select  ms.main_id,
+						select  ms.organization_id,
 								ms.main_master_id,
 								mo1.org_name,
 								mo1.identcode,
@@ -287,7 +287,7 @@
 								ma.addr_number
 						 from ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls
 						 where  
-						 		 mo1.main_id = ms.main_id and ma.main_id=ms.main_id and str.street_id = ma.street_id and 
+						 		 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and 
 								 c.city_id = str.city_id and ls.legal_statuse_id = mo1.legal_statuse_id and ms.service_id = 3 and ms.deleted = 0
 								 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
 								 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
@@ -346,7 +346,7 @@
 			<whereClause>
 				 <![CDATA[					 
 					 start with tt.main_master_id = 0
-					 connect by prior tt.main_id = tt.main_master_id					 
+					 connect by prior tt.organization_id = tt.main_master_id					 
 					 order siblings by tt.priority
 				 ]]>
 			</whereClause>
@@ -358,7 +358,7 @@
 			<customSQL>
             	 <![CDATA[
             	 	select distinct * from (
-            	 	   select   ms.main_id,
+            	 	   select   ms.organization_id,
 								ms.main_master_id,
 								mo1.org_name,
 								mo1.identcode,
@@ -397,9 +397,9 @@
 								ma.addr_number
 						 from ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls
 						 where  
-						 		 mo1.main_id = ms.main_id and ma.main_id=ms.main_id and str.street_id = ma.street_id and 
+						 		 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and 
 								 c.city_id = str.city_id and ls.legal_statuse_id = mo1.legal_statuse_id and ms.service_id = 3 and ms.deleted = 0
-								 #if($criteria.main_id) and ms.main_id = $criteria.main_id #end
+								 #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id #end
 								 #if($criteria.org_name1) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name1)||'%' #end
 								 #if($criteria.org_name2) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name2)||'%' #end
 								 #if($criteria.org_name3) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name3)||'%' #end
@@ -445,7 +445,7 @@
 								 #end
 								 
 					 		)  tt					 	 
-						 connect by prior tt.main_id = tt.main_master_id
+						 connect by prior tt.organization_id = tt.main_master_id
 						 order siblings by tt.priority
             	 ]]>
             </customSQL>
@@ -457,7 +457,7 @@
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchForCallCenterNew" operationType="fetch">			
 			<selectClause>distinct 
-						ms.main_id,
+						ms.organization_id,
 						ms.main_master_id,
 						mo1.org_name,
 						mo1.identcode,
@@ -491,14 +491,14 @@
              			mo1.extra_priority,
              			ma.city_region_id,
              			p.partnerbank,
-             			p.main_id as p_bank_main_id,
+             			p.organization_id as p_bank_organization_id,
              		    decode(ma.address_hide,1,'მისამართი დაფარულია',(c.city_name_geo||' / '|| getDistrict(str.street_id)||' / '||str.street_name_geo||' '||ma.address_suffix_geo)) as full_address,
 		                ccare.getTbilisiOrder(c.city_id) as cust_order,
 		                ccare.getStreetOldNames(str.street_id) as street_old_name, 
 		                str.street_name_geo,
 		                ma.address_hide,
 		                decode(ms.main_master_id,0,null,'home') as tree_org_parrent,
-		                decode((select min(1) from ccare.main_services ms1 where ms1.main_master_id = ms.main_id and ms1.deleted=0),null,null,'associations') as tree_org_child,
+		                decode((select min(1) from ccare.main_services ms1 where ms1.main_master_id = ms.organization_id and ms1.deleted=0),null,null,'associations') as tree_org_child,
 		                ma.address_suffix_geo,
 						ma.addr_block,
 						ma.addr_appt,
@@ -506,17 +506,17 @@
 						ma.addr_number,
 						getStreetIdxs(str.street_id) as street_indexes,
 						(c.city_name_geo||' / '|| getDistrict(str.street_id)||' / '||str.street_name_geo||' '||ma.address_suffix_geo) as full_address_not_hidden,
-						ccare.getorgbusiness_alerts(ms.main_id) as org_allert_by_buss_det
+						ccare.getorgbusiness_alerts(ms.organization_id) as org_allert_by_buss_det
 			</selectClause>
 			<tableClause>ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls, org_partnerbank_lists p</tableClause>
 			<whereClause>
 				 <![CDATA[
-						 mo1.main_id = ms.main_id and ma.main_id=ms.main_id and str.street_id = ma.street_id and mo1.partnerbank_id = p.main_id(+) and 
+						 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and mo1.partnerbank_id = p.organization_id(+) and 
 						 c.city_id = ma.city_id and mo1.legal_statuse_id = ls.legal_statuse_id(+) and ms.service_id = 3
 						 #if($criteria.main_master_id) and ms.main_master_id = $criteria.main_master_id #end
 						 #if(!$criteria.main_master_id && $criteria.deleted) and ms.deleted = $criteria.deleted #end
-						 #if($criteria.main_id) and ms.main_id = $criteria.main_id #end
-						 #if($criteria.pp_main_id) and ms.main_id = $criteria.pp_main_id #end
+						 #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id #end
+						 #if($criteria.pp_organization_id) and ms.organization_id = $criteria.pp_organization_id #end
 						 #if(!$criteria.main_master_id && $criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
 						 #if(!$criteria.main_master_id && $criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
 						 #if(!$criteria.main_master_id && $criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
@@ -613,7 +613,7 @@
 			                  0 as is_abonent
 						from searchOrg t where t.phone = $criteria.phone
 						) tt
-					inner join ccare.main_services ms on ms.main_id = tt.mainID
+					inner join ccare.main_services ms on ms.organization_id = tt.mainID
 					order by tt.fullname            	 	
             	 ]]>
             </customSQL>
@@ -625,7 +625,7 @@
 		<operationBinding operationId="customOrgSearchForCallCenterByMainId" operationType="fetch">			
 			<customSQL>
             	 <![CDATA[
-            	 	   select   ms.main_id,
+            	 	   select   ms.organization_id,
 								ms.main_master_id,
 								mo1.org_name,
 								mo1.identcode,
@@ -662,12 +662,12 @@
 								ma.addr_appt,
 								ma.addr_descr,
 								ma.addr_number,
-								ccare.getorgbusiness_alerts(ms.main_id) as org_allert_by_buss_det
+								ccare.getorgbusiness_alerts(ms.organization_id) as org_allert_by_buss_det
 						 from ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls
 						 where  
-						 		 mo1.main_id = ms.main_id and ma.main_id=ms.main_id and str.street_id(+) = ma.street_id and 
+						 		 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id(+) = ma.street_id and 
 								 c.city_id(+) = ma.city_id and ls.legal_statuse_id(+) = mo1.legal_statuse_id and ms.service_id = 3 and ms.deleted = 0
-								 #if($criteria.main_id) and ms.main_id = $criteria.main_id #end
+								 #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id #end
             	 ]]>
             </customSQL>
 		</operationBinding>	
@@ -678,11 +678,11 @@
 		<operationBinding operationId="findSupperMainOrgId" operationType="fetch">
             <customSQL>
             	 <![CDATA[
-            	 	select tt.main_id
-					  from (select t.main_id, t.main_master_id
+            	 	select tt.organization_id
+					  from (select t.organization_id, t.main_master_id
 					          from ccare.main_services t
-					         start with t.main_id = $criteria.main_id
-					        connect by prior t.main_master_id = t.main_id) tt
+					         start with t.organization_id = $criteria.organization_id
+					        connect by prior t.main_master_id = t.organization_id) tt
 					 where tt.main_master_id = 0
             	 ]]>
             </customSQL> 
@@ -702,7 +702,7 @@
 			       end as org_name_tree,
 			       tmp.*
 			</selectClause>
-			<tableClause>  (SELECT distinct ms.main_id,
+			<tableClause>  (SELECT distinct ms.organization_id,
 			                ms.main_master_id,
 			                mo1.org_name,
 			                mo1.identcode,
@@ -740,7 +740,7 @@
 			                ma.city_region_id,
 			                ma.street_id,
 			                p.partnerbank,
-			                p.main_id as p_bank_main_id,
+			                p.organization_id as p_bank_organization_id,
 			                decode(ma.address_hide,
 			                       1,
 			                       'მისამართი დაფარულია',
@@ -754,7 +754,7 @@
 			                decode(ms.main_master_id, 0, null, 'home') as tree_org_parrent,
 			                decode((select min(1)
 			                         from ccare.main_services ms1
-			                        where ms1.main_master_id = ms.main_id
+			                        where ms1.main_master_id = ms.organization_id
 			                          and ms1.deleted = 0),
 			                       null,
 			                       null,
@@ -772,12 +772,12 @@
 				       legal_statuses        ls,
 				       org_partnerbank_lists p
 				  WHERE
-				  		mo1.main_id = ms.main_id and ma.main_id=ms.main_id and str.street_id = ma.street_id and mo1.partnerbank_id = p.main_id(+) and 
+				  		mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and mo1.partnerbank_id = p.organization_id(+) and 
 						 c.city_id = ma.city_id and mo1.legal_statuse_id = ls.legal_statuse_id(+) and ms.service_id = 3
 						 #if($criteria.main_master_id) and ms.main_master_id = $criteria.main_master_id #end			
 						 #if($criteria.deleted) and ms.deleted = $criteria.deleted #end
-						 #if($criteria.main_id) and ms.main_id = $criteria.main_id #end
-						 #if($criteria.pp_main_id) and ms.main_id = $criteria.pp_main_id #end
+						 #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id #end
+						 #if($criteria.pp_organization_id) and ms.organization_id = $criteria.pp_organization_id #end
 						 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
 						 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
 						 #if($criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
@@ -830,7 +830,7 @@
 			<whereClause>
 				 <![CDATA[
 				 		 1 = 1
-						 connect by prior tmp.main_id = tmp.main_master_id
+						 connect by prior tmp.organization_id = tmp.main_master_id
 				 ]]>
 			</whereClause>
 		</operationBinding>
@@ -842,7 +842,7 @@
 			<customSQL>
             	 <![CDATA[
             	 	select 
-            	 		   ms.main_id,
+            	 		   ms.organization_id,
 					       ms.main_master_id,
 					       mo1.org_name,
 					       mo1.identcode,
@@ -880,7 +880,7 @@
 					       ma.city_region_id,
 					       ma.street_id,
 					       p.partnerbank,
-					       p.main_id as p_bank_main_id,
+					       p.organization_id as p_bank_organization_id,
 					       decode(ma.address_hide,
 					             1,
 					             'მისამართი დაფარულია',
@@ -894,7 +894,7 @@
 					       decode(ms.main_master_id, 0, null, 'home') as tree_org_parrent,
 					       decode((select min(1)
 					               from ccare.main_services ms1
-					              where ms1.main_master_id = ms.main_id
+					              where ms1.main_master_id = ms.organization_id
 					                and ms1.deleted = 0),
 					             null,
 					             null,
@@ -909,16 +909,16 @@
 					  from ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls , org_partnerbank_lists_new p
 					 where ms.service_id = 3 and 
 					       ms.deleted = 0 and 
-					       ms.main_id = mo1.main_id and 
-					       ma.main_id = ms.main_id and 
+					       ms.organization_id = mo1.organization_id and 
+					       ma.organization_id = ms.organization_id and 
 					       ma.deleted = 0 and 
 					       ma.street_id = str.street_id(+) and
 					       ma.city_id = c.city_id(+) and
 					       mo1.legal_statuse_id = ls.legal_statuse_id(+) and
-					       mo1.partnerbank_id = p.main_id(+) 
-					 #if(!$criteria.main_master_id && $criteria.pp_main_id) 
-					 	   start with ms.main_id = $criteria.pp_main_id					 
-						   connect by prior ms.main_id = ms.main_master_id
+					       mo1.partnerbank_id = p.organization_id(+) 
+					 #if(!$criteria.main_master_id && $criteria.pp_organization_id) 
+					 	   start with ms.organization_id = $criteria.pp_organization_id					 
+						   connect by prior ms.organization_id = ms.main_master_id
 					       order siblings by ccare.getTbilisiOrder(c.city_id), mo1.extra_priority , ms.priority	 					 
 					 #elseif($criteria.main_master_id)
 					 		and ms.main_master_id = $criteria.main_master_id
@@ -930,12 +930,12 @@
 		
 		<operationBinding operationId="searchMainOrgsForCB" operationType="fetch">
     		<selectClause>   			
-    			mo.main_id,
+    			mo.organization_id,
     			mo.org_name 
 			</selectClause> 
 			<tableClause>ccare.main_orgs mo, ccare.main_services ms</tableClause>	
 			<whereClause>
-				    ms.service_id = 3 and ms.deleted = 0 and ms.main_id = mo.main_id and
+				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id and
 				    ($defaultWhereClause)
 			</whereClause>	
 			<orderClause>mo.org_name</orderClause>		
@@ -944,13 +944,13 @@
     	
     	<operationBinding operationId="searchMainOrgsForCB1" operationType="fetch">
     		<selectClause>   			
-    			mo.main_id,
+    			mo.organization_id,
     			mo.org_name 
 			</selectClause> 
 			<tableClause>ccare.main_orgs mo, ccare.main_services ms</tableClause>	
 			<whereClause>
-				    ms.service_id = 3 and ms.deleted = 0 and ms.main_id = mo.main_id
-				    #if($criteria.main_id) and ms.main_id = $criteria.main_id and mo.main_id = $criteria.main_id #end
+				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id
+				    #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id and mo.organization_id = $criteria.organization_id #end
 					#if($criteria.org_name) and mo.org_name like $criteria.org_name||'%' #end				    
 			</whereClause>	
 			<orderClause>mo.org_name</orderClause>		
@@ -958,13 +958,13 @@
     	
     	<operationBinding operationId="searchMainOrgsForCBDoubleLike" operationType="fetch">
     		<selectClause>   			
-    			mo.main_id,
+    			mo.organization_id,
     			mo.org_name || ' ( '||mo.note||' ) ' as org_name 
 			</selectClause> 
 			<tableClause>ccare.main_orgs mo, ccare.main_services ms</tableClause>	
 			<whereClause>
-				    ms.service_id = 3 and ms.deleted = 0 and ms.main_id = mo.main_id
-				    #if($criteria.main_id) and ms.main_id = $criteria.main_id and mo.main_id = $criteria.main_id #end
+				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id
+				    #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id and mo.organization_id = $criteria.organization_id #end
 					#if($criteria.org_name) and mo.org_name like '%'||$criteria.org_name||'%' #end				    
 			</whereClause>	
 			<orderClause>mo.org_name</orderClause>		
@@ -979,27 +979,27 @@
 				       md.main_detail_geo, 
 				       p.phone, 
 				       ccare.isPhoneMobile(substr(p.phone,1,3)) as phone_type,
-				       ms.main_id,
+				       ms.organization_id,
 				       ms.main_master_id, 
 				       ms.priority,
 				       md.fields_order
 					  from ccare.main_orgs mo
-					 inner join ccare.main_services ms on ms.main_id = mo.main_id 
-					 inner join ccare.main_details md on md.main_id = mo.main_id
+					 inner join ccare.main_services ms on ms.organization_id = mo.organization_id 
+					 inner join ccare.main_details md on md.organization_id = mo.organization_id
 					 inner join ccare.abonents a on a.main_detail_id = md.main_detail_id
 					 inner join ccare.phones p on p.phone_id = a.phone_id
-					 where mo.main_id in
-					       (select t.main_id
+					 where mo.organization_id in
+					       (select t.organization_id
 					          from ccare.main_services t
-					         start with t.main_id = $criteria.main_id
+					         start with t.organization_id = $criteria.organization_id
 					                and t.service_id = 3
 					                and t.deleted = 0
-					        connect by prior t.main_id = t.main_master_id)
+					        connect by prior t.organization_id = t.main_master_id)
 					   and md.main_detail_type_id in (5, 30, 59, 60, 61)
 					   and p.deleted = 0 and a.deleted = 0 and md.deleted = 0 and p.phone is not null and p.phone not like '8%'
 					   and length(p.phone)>4
 					   and ms.service_id = 3 and ms.deleted = 0
-					 order by ms.main_master_id, ms.main_id, ms.priority, md.fields_order 
+					 order by ms.main_master_id, ms.organization_id, ms.priority, md.fields_order 
             	  ]]>
             </customSQL>	
     	</operationBinding>

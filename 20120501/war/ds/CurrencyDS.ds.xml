@@ -9,7 +9,7 @@
 		<field name="code"						type="text"			title="code"/>
 		<field name="name_descr"				type="text"			title="name_descr"/>
 		<field name="sort_order"				type="integer"		title="sort_order"/>
-		<field name="country_name_geo"			type="integer"		title="country_name_geo"/>
+		<field name="country_name"				type="integer"		title="country_name"/>
 		<field name="country_id"				type="text"			title="country_id"					hidden="true"/>
 		<field name="loggedUserName"			type="text"			title="loggedUserName"		hidden="true"/>
 	</fields>
@@ -40,7 +40,7 @@
 				t.code,
 				t.name_descr,
 				t.sort_order,
-				c.country_name_geo
+				c.country_name
 			</selectClause> 
 			<tableClause>currency t, countries c</tableClause>
 			<whereClause><![CDATA[
@@ -73,14 +73,14 @@
 				t.code,
 				t.name_descr,
 				t.sort_order,
-				c.country_name_geo
+				c.country_name
 			</selectClause> 
 			<tableClause>currency t, countries c</tableClause>
 			<whereClause><![CDATA[
 				t.country_id = c.country_id(+)
 				#if($criteria.name_descr) and t.name_descr like '%'||($criteria.name_descr)||'%' #end
 				#if($criteria.code) and upper(t.code) like UPPER('%'||($criteria.code)||'%') #end
-				#if($criteria.country_name_geo) and c.country_name_geo like '%'||($criteria.country_name_geo)||'%' #end
+				#if($criteria.country_name) and c.country_name like '%'||($criteria.country_name)||'%' #end
 				]]>  
 			</whereClause> 
 			<orderClause>t.sort_order</orderClause>

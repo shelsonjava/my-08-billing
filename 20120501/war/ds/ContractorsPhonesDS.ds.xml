@@ -10,7 +10,7 @@
 		<field name="deleted"			type="integer"		title="deleted"			hidden="true"/>
 		<field name="limited"			type="integer"		title="limited"			hidden="true"/>
 		<field name="main_detail_id"	type="integer"		title="main_detail_id"	hidden="true"/>
-		<field name="main_id"			type="integer"		title="main_id"			hidden="true"/>
+		<field name="organization_id"			type="integer"		title="organization_id"			hidden="true"/>
 		<field name="phone_id"			type="integer"		title="phone_id"		hidden="true"/>
 		<field name="rec_user"			type="text"			title="rec_user"		hidden="true"/>
 		<field name="upd_user"			type="text"			title="upd_user"		hidden="true"/>
@@ -26,7 +26,7 @@
 					t.deleted,
 					t.limited,
 					t.main_detail_id,
-					t.main_id,
+					t.organization_id,
 					t.phone_id,
 					t.rec_date,
 					t.rec_user,
