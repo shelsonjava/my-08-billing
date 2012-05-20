@@ -104,8 +104,8 @@ public class DlgBlockUnBlockContrPhones extends Window {
 			};
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("main_id",
-					listGridRecord.getAttributeAsInt("main_id"));
+			criteria.setAttribute("organization_id",
+					listGridRecord.getAttributeAsInt("organization_id"));
 			phonesGrid.setCriteria(criteria);
 			phonesGrid.setWidth100();
 			phonesGrid.setHeight100();
@@ -184,8 +184,8 @@ public class DlgBlockUnBlockContrPhones extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("main_id",
-					listGridRecord.getAttributeAsInt("main_id"));
+			record.setAttribute("organization_id",
+					listGridRecord.getAttributeAsInt("organization_id"));
 			if (block) {
 				record.setAttribute("block_type", new Integer(1));
 			} else {

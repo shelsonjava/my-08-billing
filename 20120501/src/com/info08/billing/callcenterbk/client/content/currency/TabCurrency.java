@@ -91,7 +91,7 @@ public class TabCurrency extends Tab {
 			countryItem.setOptionOperationId("searchAllCountriesForCombos");
 			countryItem.setOptionDataSource(countryDS);
 			countryItem.setValueField("country_id");
-			countryItem.setDisplayField("country_name_geo");
+			countryItem.setDisplayField("country_name");
 
 			countryItem.setOptionCriteria(new Criteria());
 			countryItem.setAutoFetchData(false);
@@ -194,7 +194,7 @@ public class TabCurrency extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("country_name_geo").setTitle(
+			datasource.getField("country_name").setTitle(
 					CallCenterBK.constants.country());
 			datasource.getField("name_descr").setTitle(
 					CallCenterBK.constants.currencyName());
@@ -203,8 +203,8 @@ public class TabCurrency extends Tab {
 			datasource.getField("sort_order").setTitle(
 					CallCenterBK.constants.order());
 
-			ListGridField country_name_geo = new ListGridField(
-					"country_name_geo", CallCenterBK.constants.country(), 250);
+			ListGridField country_name = new ListGridField(
+					"country_name", CallCenterBK.constants.country(), 250);
 			ListGridField name_descr = new ListGridField("name_descr",
 					CallCenterBK.constants.currencyName(), 250);
 			ListGridField code = new ListGridField("code",
@@ -212,12 +212,12 @@ public class TabCurrency extends Tab {
 			ListGridField sort_order = new ListGridField("sort_order",
 					CallCenterBK.constants.order(), 70);
 
-			country_name_geo.setAlign(Alignment.LEFT);
+			country_name.setAlign(Alignment.LEFT);
 			name_descr.setAlign(Alignment.LEFT);
 			code.setAlign(Alignment.CENTER);
 			sort_order.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(country_name_geo, name_descr, code, sort_order);
+			listGrid.setFields(country_name, name_descr, code, sort_order);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {

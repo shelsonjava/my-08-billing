@@ -69,7 +69,8 @@ public class TabInfoPortal extends Tab {
 			commentItem.setName("commentItem");
 			commentItem.setWidth(770);
 			commentItem.setCanEdit(false);
-			commentItem.setTextBoxStyle("fontRedAndBoldNoBorder");
+			commentItem.setTextBoxStyle("font0+R8/7" +
+					"4edAndBoldNoBorder");
 			commentItem.setHeight(50);
 
 			searchFormComm.setFields(spacerItem1, commentItem);

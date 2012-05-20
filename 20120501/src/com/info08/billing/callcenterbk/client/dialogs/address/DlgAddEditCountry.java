@@ -24,9 +24,8 @@ public class DlgAddEditCountry extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
-	private TextItem countryNameGeoItem;
-	private TextItem countryNameEngItem;
-	private TextItem countryCodeItem;
+	private TextItem countryNameItem;
+	private TextItem phoneCodeItem;
 	private ComboBoxItem continentItem;
 	private ListGrid countryGrid;
 	private ListGridRecord countryRecord;
@@ -60,20 +59,15 @@ public class DlgAddEditCountry extends Window {
 		dynamicForm.setNumCols(2);
 		hLayout.addMember(dynamicForm);
 
-		countryNameGeoItem = new TextItem();
-		countryNameGeoItem.setTitle("დასახელება (ქართულად)");
-		countryNameGeoItem.setWidth(300);
-		countryNameGeoItem.setName("country_name_geo");
+		countryNameItem = new TextItem();
+		countryNameItem.setTitle("დასახელება");
+		countryNameItem.setWidth(300);
+		countryNameItem.setName("country_name");
 
-		countryNameEngItem = new TextItem();
-		countryNameEngItem.setTitle("დასახელება (ინგლისურად)");
-		countryNameEngItem.setWidth(300);
-		countryNameEngItem.setName("country_name_eng");
-
-		countryCodeItem = new TextItem();
-		countryCodeItem.setTitle("ქვეყნის კოდი");
-		countryCodeItem.setWidth(300);
-		countryCodeItem.setName("country_code");
+		phoneCodeItem = new TextItem();
+		phoneCodeItem.setTitle("ქვეყნის კოდი");
+		phoneCodeItem.setWidth(300);
+		phoneCodeItem.setName("phone_code");
 
 		continentItem = new ComboBoxItem();
 		continentItem.setWidth(300);
@@ -84,8 +78,7 @@ public class DlgAddEditCountry extends Window {
 		continentItem.setDisplayField("name_descr");
 		continentItem.setAutoFetchData(true);
 
-		dynamicForm.setFields(countryNameGeoItem, countryNameEngItem,
-				countryCodeItem, continentItem);
+		dynamicForm.setFields(countryNameItem, phoneCodeItem, continentItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -125,12 +118,9 @@ public class DlgAddEditCountry extends Window {
 			if (countryRecord == null) {
 				return;
 			}
-			countryNameGeoItem.setValue(countryRecord
-					.getAttribute("country_name_geo"));
-			countryNameEngItem.setValue(countryRecord
-					.getAttribute("country_name_eng"));
-			countryCodeItem
-					.setValue(countryRecord.getAttribute("country_code"));
+			countryNameItem
+					.setValue(countryRecord.getAttribute("country_name"));
+			phoneCodeItem.setValue(countryRecord.getAttribute("phone_code"));
 			continentItem.setValue(countryRecord.getAttribute("continent_id"));
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -139,20 +129,15 @@ public class DlgAddEditCountry extends Window {
 
 	private void saveCountry() {
 		try {
-			String countryNameGeo = countryNameGeoItem.getValueAsString();
+			String countryNameGeo = countryNameItem.getValueAsString();
 			if (countryNameGeo == null
 					|| countryNameGeo.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ ქართული დასახელება !");
 				return;
 			}
-			String countryNameEng = countryNameEngItem.getValueAsString();
-			if (countryNameEng == null
-					|| countryNameEng.trim().equalsIgnoreCase("")) {
-				SC.say("შეიყვანეთ ინგლისური დასახელება !");
-				return;
-			}
-			String countryCode = countryCodeItem.getValueAsString();
-			if (countryCode == null || countryCode.trim().equalsIgnoreCase("")) {
+
+			String phone_code = phoneCodeItem.getValueAsString();
+			if (phone_code == null || phone_code.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ ქვეყნის კოდი !");
 				return;
 			}
@@ -168,16 +153,13 @@ public class DlgAddEditCountry extends Window {
 				SC.say("ქართული დასახელება შედგება მაქსიმუმ 155 სიმბოლოსაგან !");
 				return;
 			}
-			if (countryNameEng.length() > 155) {
-				SC.say("ინგლისური დასახელება შედგება მაქსიმუმ 155 სიმბოლოსაგან !");
-				return;
-			}
-			if (countryCode.length() > 90) {
+			
+			if (phone_code.length() > 90) {
 				SC.say("ქვეყნის კოდი შედგება მაქსიმუმ 90 სიმბოლოსაგან !");
 				return;
 			}
 			try {
-				Integer.parseInt(countryCode);
+				Integer.parseInt(phone_code);
 			} catch (NumberFormatException e) {
 				SC.say("ქვეყნის კოდის შედგება მხოლოდ ციფრებისაგან !");
 				return;
@@ -185,9 +167,8 @@ public class DlgAddEditCountry extends Window {
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("country_name_geo", countryNameGeo);
-			record.setAttribute("country_name_eng", countryNameEng);
-			record.setAttribute("country_code", countryCode);
+			record.setAttribute("country_name", countryNameGeo);
+			record.setAttribute("phone_code", phone_code);
 			record.setAttribute("continent_id", continent_id);
 
 			if (countryRecord != null) {

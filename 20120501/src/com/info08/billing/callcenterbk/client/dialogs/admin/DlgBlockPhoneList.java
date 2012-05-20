@@ -42,7 +42,7 @@ public class DlgBlockPhoneList extends Window {
 
 			Integer main_detail_id = listGridRecord
 					.getAttributeAsInt("main_detail_id");
-			Integer main_id = listGridRecord.getAttributeAsInt("main_id");
+			Integer organization_id = listGridRecord.getAttributeAsInt("organization_id");
 			Integer contract_id = listGridRecord
 					.getAttributeAsInt("contract_id");
 			Integer phone_list_type = listGridRecord
@@ -51,7 +51,7 @@ public class DlgBlockPhoneList extends Window {
 			String fetchMethod = "";
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("main_detail_id", main_detail_id);
-			criteria.setAttribute("main_id", main_id);
+			criteria.setAttribute("organization_id", organization_id);
 			criteria.setAttribute("contract_id", contract_id);
 
 			if (main_detail_id != null && main_detail_id.longValue() > 0) {
@@ -59,7 +59,7 @@ public class DlgBlockPhoneList extends Window {
 				case 1: // 1 - All Phones From Organization's Department Can
 						// Call, Ignore Blocking
 					fetchMethod = "selectByDepAll";
-					criteria.setAttribute("main_id", -111111111);
+					criteria.setAttribute("organization_id", -111111111);
 					break;
 				case 2: // 2 - Only Listed Phones Can Call From
 						// Organization's
@@ -78,7 +78,7 @@ public class DlgBlockPhoneList extends Window {
 				case 1: // 1 - All Phones From Organization Can Call, Ignore
 						// Blocking
 					fetchMethod = "selectByOrganizationAll";
-					criteria.setAttribute("main_id", -111111111);
+					criteria.setAttribute("organization_id", -111111111);
 					break;
 				case 2: // 2 - Only Listed Phones Can Call From
 						// Organization,

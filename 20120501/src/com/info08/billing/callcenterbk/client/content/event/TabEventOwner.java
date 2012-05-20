@@ -182,16 +182,16 @@ public class TabEventOwner extends Tab {
 			datasource.getField("event_owner_name").setTitle(
 					"რესურსის დასახელება");
 			datasource.getField("event_category_name").setTitle("კატეგორია");
-			datasource.getField("org_name").setTitle("ორგანიზაცია");
+			datasource.getField("organization_name").setTitle("ორგანიზაცია");
 
 			ListGridField event_owner_name = new ListGridField(
 					"event_owner_name", "რესურსის დასახელება", 450);
 			ListGridField event_category_name = new ListGridField(
 					"event_category_name", "კატეგორია", 180);
-			ListGridField org_name = new ListGridField("org_name",
+			ListGridField organization_name = new ListGridField("organization_name",
 					"ორგანიზაცია", 250);
 
-			listGrid.setFields(event_owner_name, event_category_name, org_name);
+			listGrid.setFields(event_owner_name, event_category_name, organization_name);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {

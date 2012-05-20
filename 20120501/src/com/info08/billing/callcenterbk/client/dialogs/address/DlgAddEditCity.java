@@ -193,7 +193,7 @@ public class DlgAddEditCity extends Window {
 			countryItem.setOptionOperationId("searchAllCountriesForCombos");
 			countryItem.setOptionDataSource(countryDS);
 			countryItem.setValueField("country_id");
-			countryItem.setDisplayField("country_name_geo");
+			countryItem.setDisplayField("country_name");
 			Criteria criteria = new Criteria();
 			countryItem.setOptionCriteria(criteria);
 			countryItem.setAutoFetchData(false);

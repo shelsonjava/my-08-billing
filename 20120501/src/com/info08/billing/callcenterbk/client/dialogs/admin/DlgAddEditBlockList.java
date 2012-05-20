@@ -86,7 +86,7 @@ public class DlgAddEditBlockList extends Window {
 			myComboBoxItemOrg.setMyDataSource(orgDS);
 			myComboBoxItemOrg
 					.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
-			myComboBoxItemOrg.setMyIdField("main_id");
+			myComboBoxItemOrg.setMyIdField("organization_id");
 			myComboBoxItemOrg.setMyDisplayField("org_name");
 			myComboBoxItemOrg.setMyChooserTitle(CallCenterBK.constants
 					.organization());
@@ -106,7 +106,7 @@ public class DlgAddEditBlockList extends Window {
 			myComboBoxItemOrgDetails.setMyChooserTitle(CallCenterBK.constants
 					.department());
 			Criteria myCriteria = new Criteria();
-			myCriteria.setAttribute("main_id", -1000);
+			myCriteria.setAttribute("organization_id", -1000);
 			myComboBoxItemOrgDetails.setMyCriteria(myCriteria);
 
 			hLayout.addMember(myComboBoxItemOrgDetails);
@@ -277,12 +277,12 @@ public class DlgAddEditBlockList extends Window {
 					.addDataChangedHandler(new MyComboBoxItemDataChangedHandler() {
 						@Override
 						public void onDataChanged(MyComboBoxEvent event) {
-							Integer main_id = event.getSelectedId();
+							Integer organization_id = event.getSelectedId();
 							myComboBoxItemOrgDetails.setMyId(-1);
 							myComboBoxItemOrgDetails.setMyValue("");
-							if (main_id != null && main_id.intValue() > 0) {
+							if (organization_id != null && organization_id.intValue() > 0) {
 								Criteria myCriteria = new Criteria();
-								myCriteria.setAttribute("main_id", main_id);
+								myCriteria.setAttribute("organization_id", organization_id);
 								myComboBoxItemOrgDetails
 										.setMyCriteria(myCriteria);
 							}
@@ -329,17 +329,17 @@ public class DlgAddEditBlockList extends Window {
 					}
 				}
 			}, dsRequest);
-			Integer main_id = editRecord.getAttributeAsInt("main_id");
-			if (main_id != null && main_id.intValue() > 0) {
+			Integer organization_id = editRecord.getAttributeAsInt("organization_id");
+			if (organization_id != null && organization_id.intValue() > 0) {
 				String org_name = editRecord.getAttributeAsString("orgName");
-				myComboBoxItemOrg.setMyId(main_id);
+				myComboBoxItemOrg.setMyId(organization_id);
 				myComboBoxItemOrg.setMyValue(org_name);
 
 				Criteria myCriteria = myComboBoxItemOrgDetails.getMyCriteria();
 				if (myCriteria == null) {
 					myCriteria = new Criteria();
 				}
-				myCriteria.setAttribute("main_id", main_id);
+				myCriteria.setAttribute("organization_id", organization_id);
 				myComboBoxItemOrgDetails.setMyCriteria(myCriteria);
 			}
 
@@ -364,8 +364,8 @@ public class DlgAddEditBlockList extends Window {
 
 	private void save() {
 		try {
-			Integer main_id = myComboBoxItemOrg.getMyId();
-			if (main_id == null || main_id.intValue() <= 0) {
+			Integer organization_id = myComboBoxItemOrg.getMyId();
+			if (organization_id == null || organization_id.intValue() <= 0) {
 				SC.say(CallCenterBK.constants.plzSelectOrg());
 				return;
 			}
@@ -396,7 +396,7 @@ public class DlgAddEditBlockList extends Window {
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("upd_user", loggedUser);
 			record.setAttribute("deleted", 0);
-			record.setAttribute("main_id", main_id);
+			record.setAttribute("organization_id", organization_id);
 			record.setAttribute("main_detail_id", main_detail_id);
 			record.setAttribute("note", note);
 			record.setAttribute("phone_list_type", phone_list_type);
