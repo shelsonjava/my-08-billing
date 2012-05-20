@@ -44,7 +44,7 @@
 				ec.event_category_name,
 			    mo.org_name as org_name
 			</selectClause> 
-			<tableClause>event_owner t,event_category ec, ccare.main_orgs mo</tableClause>
+			<tableClause>event_owner t,event_category ec, ccare.ORGANIZATIONS mo</tableClause>
 			<whereClause><![CDATA[
 				t.event_category_id = ec.event_category_id and t.main_id = mo.main_id(+)
 				#if($criteria.event_category_id) and t.event_category_id = $criteria.event_category_id #end
@@ -72,7 +72,7 @@
     			mo.main_id,
     			mo.org_name 
 			</selectClause> 
-			<tableClause>ccare.main_orgs mo</tableClause>	
+			<tableClause>ccare.organizations mo</tableClause>	
 			<whereClause>
 				   ($defaultWhereClause)
 			</whereClause>	

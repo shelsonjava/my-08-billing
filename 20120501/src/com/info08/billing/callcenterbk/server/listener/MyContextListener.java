@@ -10,7 +10,7 @@ import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 public class MyContextListener implements ServletContextListener {
 
 	private Logger logger = Logger.getLogger(MyContextListener.class.getName());
-
+	
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
 		try {
