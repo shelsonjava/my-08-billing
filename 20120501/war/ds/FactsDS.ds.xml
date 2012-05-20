@@ -52,7 +52,7 @@
 				to_char(t.fact_date,'DD/MM/YYYY') as ffact_date,
 				ce.facts_descriptor_id
 			</selectClause> 
-			<tableClause>facts t, facts_type ce, v_FACTS_STATUSES cs</tableClause>
+			<tableClause>facts t, v_facts_type ce, v_FACTS_STATUSES cs</tableClause>
 			<whereClause><![CDATA[
 				t.fact_type_id = ce.fact_type_id(+) and t.fact_status_id = cs.fact_status_id(+)
 				#if($criteria.fact_status_id) AND t.fact_status_id = $criteria.fact_status_id #end
