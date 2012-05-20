@@ -475,20 +475,20 @@ public class TabOrganization extends Tab {
 					SC.say(CallCenterBK.constants.pleaseSelOnerecord());
 					return;
 				}
-				Integer main_id = null;
+				Integer organization_id = null;
 				try {
-					main_id = records[0].getAttributeAsInt("main_id");
+					organization_id = records[0].getAttributeAsInt("organization_id");
 				} catch (Exception e) {
 					SC.say(CallCenterBK.constants.invalidTreeRecord());
 					return;
 				}
-				if (main_id == null) {
+				if (organization_id == null) {
 					SC.say(CallCenterBK.constants.invalidTreeRecord());
 					return;
 				}
 				try {
 					Criteria criteria = new Criteria();
-					criteria.setAttribute("main_id", main_id);
+					criteria.setAttribute("organization_id", organization_id);
 					DSRequest requestProperties = new DSRequest();
 					requestProperties.setOperationId("customOrgSearchByMainId");
 					orgDS.fetchData(criteria, new DSCallback() {
@@ -730,24 +730,24 @@ public class TabOrganization extends Tab {
 							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
-				Integer main_id = listGridRecord.getAttributeAsInt("main_id");
+				Integer organization_id = listGridRecord.getAttributeAsInt("organization_id");
 
-				if (main_id == null) {
+				if (organization_id == null) {
 					SC.say(CallCenterBK.constants.warning(),
 							CallCenterBK.constants.invalidRecord());
 					return;
 				}
-				findBySupperOrg(main_id);
+				findBySupperOrg(organization_id);
 			}
 		});
 		setPane(mainLayout);
 		instance = this;
 	}
 
-	private void findBySupperOrg(Integer main_id) {
+	private void findBySupperOrg(Integer organization_id) {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("main_id", main_id);
+			criteria.setAttribute("organization_id", organization_id);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("findSupperMainOrgId");
 			orgDS.fetchData(criteria, new DSCallback() {
@@ -760,8 +760,8 @@ public class TabOrganization extends Tab {
 								CallCenterBK.constants.supperOrgNotFound());
 					}
 					Record record = records[0];
-					Integer ret_main_id = record.getAttributeAsInt("main_id");
-					fingOrgById(ret_main_id);
+					Integer ret_organization_id = record.getAttributeAsInt("organization_id");
+					fingOrgById(ret_organization_id);
 				}
 			}, dsRequest);
 		} catch (Exception e) {
@@ -770,11 +770,11 @@ public class TabOrganization extends Tab {
 		}
 	}
 
-	private void fingOrgById(Integer main_id) {
+	private void fingOrgById(Integer organization_id) {
 		try {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("deleted", new Integer(0));
-			criteria.setAttribute("pp_main_id", main_id);
+			criteria.setAttribute("pp_organization_id", organization_id);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId",
 					"customOrgSearchForCorrectByMainId");
@@ -798,8 +798,8 @@ public class TabOrganization extends Tab {
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			record.setAttribute("deleted", deleted);
-			record.setAttribute("main_id",
-					listGridRecord.getAttributeAsInt("main_id"));
+			record.setAttribute("organization_id",
+					listGridRecord.getAttributeAsInt("organization_id"));
 
 			DSRequest req = new DSRequest();
 
@@ -976,7 +976,7 @@ public class TabOrganization extends Tab {
 				}
 				Integer newParentId = null;
 				try {
-					newParentId = destFolder.getAttributeAsInt("main_id");
+					newParentId = destFolder.getAttributeAsInt("organization_id");
 				} catch (Exception e) {
 					newParentId = 0;
 				}
@@ -985,7 +985,7 @@ public class TabOrganization extends Tab {
 				}
 				if (treeMap.get(oldParentId) == null) {
 					// TreeNode parentNode =
-					// orgTreeGrid.getData().find("main_id",oldParentId);
+					// orgTreeGrid.getData().find("organization_id",oldParentId);
 					// if (parentNode != null){
 					// / treeMap.put(oldParentId, parentNode);
 					// }

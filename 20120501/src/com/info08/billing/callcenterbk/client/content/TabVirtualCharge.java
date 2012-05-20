@@ -289,7 +289,7 @@ public class TabVirtualCharge extends Tab {
 				return;
 			}
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("main_id", mainID);
+			criteria.setAttribute("organization_id", mainID);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("customOrgSearchForCallCenterByMainId");
 			orgDS.fetchData(criteria, new DSCallback() {
@@ -304,8 +304,8 @@ public class TabVirtualCharge extends Tab {
 						}
 						Record record = records[0];
 						ListGridRecord pRecord = new ListGridRecord();
-						pRecord.setAttribute("main_id",
-								record.getAttributeAsInt("main_id"));
+						pRecord.setAttribute("organization_id",
+								record.getAttributeAsInt("organization_id"));
 						pRecord.setAttribute("note_crit",
 								record.getAttributeAsInt("note_crit"));
 						pRecord.setAttribute("org_name",

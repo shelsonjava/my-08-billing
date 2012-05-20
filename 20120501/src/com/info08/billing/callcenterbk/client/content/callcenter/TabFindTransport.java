@@ -237,7 +237,7 @@ public class TabFindTransport extends Tab {
 		countryFromItem.setOptionOperationId("searchCountriesByTransportType");
 		countryFromItem.setOptionDataSource(countryDS);
 		countryFromItem.setValueField("country_id");
-		countryFromItem.setDisplayField("country_name_geo");
+		countryFromItem.setDisplayField("country_name");
 		Criteria criteriaFromCountry = new Criteria();
 		criteriaFromCountry.setAttribute("transp_type_id", 1000005);
 		countryFromItem.setOptionCriteria(criteriaFromCountry);
@@ -269,7 +269,7 @@ public class TabFindTransport extends Tab {
 		countryToItem.setOptionOperationId("searchCountriesByTransportType");
 		countryToItem.setOptionDataSource(countryDS);
 		countryToItem.setValueField("country_id");
-		countryToItem.setDisplayField("country_name_geo");
+		countryToItem.setDisplayField("country_name");
 		Criteria criteriaToCountry = new Criteria();
 		criteriaToCountry.setAttribute("transp_type_id", 1000005);
 		countryToItem.setOptionCriteria(criteriaToCountry);

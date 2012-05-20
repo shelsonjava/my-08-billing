@@ -39,16 +39,14 @@ public class TabCountry extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
-	private TextItem countryNameGeoItem;
-	private TextItem countryNameEngItem;
-	private TextItem countryCodeItem;
+	private TextItem countryNameItem;
+	private TextItem phoneCodeItem;
 	private ComboBoxItem continentItem;
 	private IButton findButton;
 	private IButton clearButton;
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 	private ToolStripButton exportButton;
 	private ListGrid listGrid;
 	private DataSource datasoutce;
@@ -72,20 +70,15 @@ public class TabCountry extends Tab {
 			searchForm.setNumCols(4);
 			mainLayout.addMember(searchForm);
 
-			countryNameGeoItem = new TextItem();
-			countryNameGeoItem.setTitle("დასახელება (ქართულად)");
-			countryNameGeoItem.setWidth(250);
-			countryNameGeoItem.setName("country_name_geo");
+			countryNameItem = new TextItem();
+			countryNameItem.setTitle("დასახელება");
+			countryNameItem.setWidth(250);
+			countryNameItem.setName("country_name");
 
-			countryNameEngItem = new TextItem();
-			countryNameEngItem.setTitle("დასახელება (ინგლისურად)");
-			countryNameEngItem.setWidth(250);
-			countryNameEngItem.setName("country_name_eng");
-
-			countryCodeItem = new TextItem();
-			countryCodeItem.setTitle("ქვეყნის კოდი");
-			countryCodeItem.setWidth(250);
-			countryCodeItem.setName("country_code");
+			phoneCodeItem = new TextItem();
+			phoneCodeItem.setTitle("ქვეყნის კოდი");
+			phoneCodeItem.setWidth(250);
+			phoneCodeItem.setName("phone_code");
 
 			continentItem = new ComboBoxItem();
 			continentItem.setTitle("კონტინენტი");
@@ -98,8 +91,7 @@ public class TabCountry extends Tab {
 			continentItem.setValueField("id");
 			continentItem.setDisplayField("name_descr");
 
-			searchForm.setFields(countryNameGeoItem, countryNameEngItem,
-					countryCodeItem, continentItem);
+			searchForm.setFields(countryNameItem, phoneCodeItem, continentItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(835);
@@ -135,11 +127,6 @@ public class TabCountry extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "person_add.png");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			exportButton = new ToolStripButton("Excel - ში გადატანა",
@@ -155,13 +142,7 @@ public class TabCountry extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+					return super.getCellCSSText(record, rowNum, colNum);
 				};
 			};
 
@@ -173,46 +154,24 @@ public class TabCountry extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("countriesSearchFromDB");
+			listGrid.setFetchOperation("fetchAllCountriesFromDB");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasoutce.getField("country_name_geo").setTitle(
-					"დასახელება (ქართ.)");
-			datasoutce.getField("country_name_eng").setTitle(
-					"დასახელება (ინგლ.)");
-			datasoutce.getField("country_code").setTitle("კოდი");
+			datasoutce.getField("country_name").setTitle("დასახელება");
+			datasoutce.getField("phone_code").setTitle("კოდი");
 			datasoutce.getField("continent").setTitle("კონტინენტი");
-			datasoutce.getField("rec_user").setTitle("შემქმნელი");
-			datasoutce.getField("rec_date").setTitle("თარიღი");
-			datasoutce.getField("upd_user").setTitle("განაახლა");
-			datasoutce.getField("upd_date").setTitle("როდის განახლდა");
 
-			ListGridField country_name_geo = new ListGridField(
-					"country_name_geo", "დასახელება (ქართ.)", 150);
-			ListGridField country_name_eng = new ListGridField(
-					"country_name_eng", "დასახელება (ინგლ.)", 150);
-			ListGridField country_code = new ListGridField("country_code",
-					"კოდი", 60);
+			ListGridField country_name = new ListGridField("country_name",
+					"დასახელება", 150);
+			ListGridField phone_code = new ListGridField("phone_code", "კოდი",
+					60);
 			ListGridField continent = new ListGridField("continent",
 					"კონტინენტი", 100);
-			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",
-					90);
-			ListGridField rec_date = new ListGridField("rec_date", "თარიღი",
-					120);
-			ListGridField upd_user = new ListGridField("upd_user", "განაახლა",
-					90);
 
-			rec_user.setCanEdit(false);
-			rec_date.setCanEdit(false);
-			upd_user.setCanEdit(false);
-
-			rec_date.setAlign(Alignment.CENTER);
-
-			listGrid.setFields(country_name_geo, country_name_eng,
-					country_code, continent, rec_user, rec_date, upd_user);
+			listGrid.setFields(country_name, phone_code, continent);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -222,12 +181,19 @@ public class TabCountry extends Tab {
 					if (criteria == null) {
 						criteria = new Criteria();
 					}
-					Criteria formCriteria = searchForm.getValuesAsCriteria();
-					criteria.addCriteria(formCriteria);
+					// Criteria formCriteria = searchForm.getValuesAsCriteria();
+					criteria.setAttribute("country_name",
+							countryNameItem.getValueAsString());
+					criteria.setAttribute("phone_code",
+							phoneCodeItem.getValueAsString());
+					if (continentItem.getValueAsString() != null) {
+						criteria.setAttribute("continent_id", new Integer(
+								continentItem.getValueAsString()));
+					}
 
 					DSRequest dsRequest = new DSRequest();
 					dsRequest.setAttribute("operationId",
-							"countriesSearchFromDB");
+							"fetchAllCountriesFromDB");
 					listGrid.invalidateCache();
 					listGrid.filterData(criteria, new DSCallback() {
 						@Override
@@ -243,7 +209,7 @@ public class TabCountry extends Tab {
 					searchForm.clearValues();
 					DSRequest dsRequest = new DSRequest();
 					dsRequest.setAttribute("operationId",
-							"countriesSearchFromDB");
+							"fetchAllCountriesFromDB");
 					listGrid.clearCriteria(new DSCallback() {
 						@Override
 						public void execute(DSResponse response,
@@ -285,12 +251,7 @@ public class TabCountry extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
+
 					final Integer country_id = listGridRecord
 							.getAttributeAsInt("country_id");
 					if (country_id == null) {
@@ -303,45 +264,13 @@ public class TabCountry extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(country_id, 1);
+										delete(country_id);
 									}
 								}
 							});
 				}
 			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer country_id = listGridRecord
-							.getAttributeAsInt("country_id");
-					if (country_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
 
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(country_id, 0);
-									}
-								}
-							});
-				}
-			});
 			exportButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -394,18 +323,17 @@ public class TabCountry extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer country_id, Integer deleted) {
+	private void delete(Integer country_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
 			record.setAttribute("country_id", country_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "countryStatusUpdate");
-			datasoutce.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "deleteCountry");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

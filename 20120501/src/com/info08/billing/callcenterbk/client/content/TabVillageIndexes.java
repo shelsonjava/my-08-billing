@@ -94,7 +94,7 @@ public class TabVillageIndexes extends Tab {
 			villageIndexItem.setName("villageIndexItem");
 
 			districtCenterItem = new ComboBoxItem();
-			districtCenterItem.setTitle("რაიონი");
+			districtCenterItem.setTitle("ტიპი");
 			districtCenterItem.setWidth(350);
 			districtCenterItem.setName("districtCenterItem");
 			districtCenterItem.setValueMap(ClientMapUtil.getInstance()

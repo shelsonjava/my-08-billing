@@ -286,13 +286,13 @@ public class TabFindPoster extends Tab {
 				return;
 			}
 
-			Integer main_id = record.getAttributeAsInt("main_id");
-			if (main_id == null) {
+			Integer organization_id = record.getAttributeAsInt("organization_id");
+			if (organization_id == null) {
 				SC.say(CallCenterBK.constants.invalidOrganization());
 				return;
 			}
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("main_id", main_id);
+			criteria.setAttribute("organization_id", organization_id);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("customOrgSearchForCallCenterByMainId");
 			final DataSource orgDS = DataSource.get("OrgDS");
@@ -308,8 +308,8 @@ public class TabFindPoster extends Tab {
 						}
 						Record record = records[0];
 						ListGridRecord pRecord = new ListGridRecord();
-						pRecord.setAttribute("main_id",
-								record.getAttributeAsInt("main_id"));
+						pRecord.setAttribute("organization_id",
+								record.getAttributeAsInt("organization_id"));
 						pRecord.setAttribute("note_crit",
 								record.getAttributeAsInt("note_crit"));
 						pRecord.setAttribute("org_name",

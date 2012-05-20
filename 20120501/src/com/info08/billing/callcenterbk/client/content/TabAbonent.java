@@ -882,7 +882,7 @@ public class TabAbonent extends Tab {
 			}
 			Integer abonent_id = listGridRecord.getAttributeAsInt("abonent_id");
 			Integer address_id = listGridRecord.getAttributeAsInt("address_id");
-			Integer main_id = listGridRecord.getAttributeAsInt("main_id");
+			Integer organization_id = listGridRecord.getAttributeAsInt("organization_id");
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 
@@ -890,7 +890,7 @@ public class TabAbonent extends Tab {
 			Record record = new Record();
 			record.setAttribute("abonent_id", abonent_id);
 			record.setAttribute("address_id", address_id);
-			record.setAttribute("main_id", main_id);
+			record.setAttribute("organization_id", organization_id);
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("deleted", deleted);
 

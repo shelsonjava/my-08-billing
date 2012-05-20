@@ -46,16 +46,16 @@ public class ChargePanel extends HLayout {
 	private ToolStripButton surveyBtn;
 	private ToolStripButton chargeBtn;
 	private Integer service_id;
-	private Integer main_id;
+	private Integer organization_id; 
 	private int chrgCounter = 0;
 
 	public ChargePanel(int width, boolean enableChargeButton,
-			boolean enableSurveyButton, Integer service_id, Integer main_id,
+			boolean enableSurveyButton, Integer service_id, Integer organization_id,
 			final Integer surveyKindId, final String survey_descript) {
 
 		try {
 			this.service_id = service_id;
-			this.main_id = main_id;
+			this.organization_id = organization_id;
 			this.enableChargeButton = enableChargeButton;
 			this.enableSurveyButton = enableSurveyButton;
 
@@ -226,9 +226,9 @@ public class ChargePanel extends HLayout {
 	}
 
 	public ChargePanel(int width, boolean enableChargeButton,
-			boolean enableSurveyButton, Integer service_id, Integer main_id) {
+			boolean enableSurveyButton, Integer service_id, Integer organization_id) {
 		this(width, enableChargeButton, enableSurveyButton, service_id,
-				main_id, null, null);
+				organization_id, null, null);
 	}
 
 	private void drawDynamicPanel(boolean isOperator) {
@@ -411,7 +411,7 @@ public class ChargePanel extends HLayout {
 			record.setAttribute("service_id", service_id);
 			record.setAttribute("session_id", serverSession.getSessionId());
 			record.setAttribute("ym", serverSession.getYearMonth());
-			record.setAttribute("main_id", main_id);
+			record.setAttribute("organization_id", organization_id);
 			record.setAttribute("loggedUserName", serverSession.getUser_name());
 
 			DSRequest req = new DSRequest();

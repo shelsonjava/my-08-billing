@@ -132,9 +132,9 @@ public class TabFindCurrencyRates extends Tab {
 		flag1.setCanSort(false);
 		flag1.setCanFilter(false);
 
-		ListGridField country_name_geo = new ListGridField("country_name_geo",
+		ListGridField country_name = new ListGridField("country_name",
 				CallCenterBK.constants.country(), 200);
-		country_name_geo.setAlign(Alignment.LEFT);
+		country_name.setAlign(Alignment.LEFT);
 
 		ListGridField name_descr = new ListGridField("name_descr",
 				CallCenterBK.constants.currencyName());
@@ -144,7 +144,7 @@ public class TabFindCurrencyRates extends Tab {
 				CallCenterBK.constants.currencyAbbrShort(), 50);
 		code.setAlign(Alignment.LEFT);
 
-		listGridFrom.setFields(flag1, country_name_geo, name_descr, code);
+		listGridFrom.setFields(flag1, country_name, name_descr, code);
 		section1.setItems(listGridFrom);
 		sectionStack1.setSections(section1);
 
@@ -174,9 +174,9 @@ public class TabFindCurrencyRates extends Tab {
 		flag.setCanSort(false);
 		flag.setCanFilter(false);
 
-		ListGridField country_name_geo1 = new ListGridField("country_name_geo",
+		ListGridField country_name1 = new ListGridField("country_name",
 				CallCenterBK.constants.country(), 200);
-		country_name_geo1.setAlign(Alignment.LEFT);
+		country_name1.setAlign(Alignment.LEFT);
 
 		ListGridField name_descr1 = new ListGridField("name_descr",
 				CallCenterBK.constants.currencyName());
@@ -187,7 +187,7 @@ public class TabFindCurrencyRates extends Tab {
 		code1.setAlign(Alignment.LEFT);
 
 		listGridTo
-				.setFields(flag, country_name_geo1, name_descr1, code1);
+				.setFields(flag, country_name1, name_descr1, code1);
 
 		section2.setItems(listGridTo);
 		sectionStack2.setSections(section2);

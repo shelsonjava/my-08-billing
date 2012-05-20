@@ -94,7 +94,7 @@ public class TabFindIndexes extends Tab {
 		countryItem.setOptionOperationId("searchAllCountriesNoContForCombos");
 		countryItem.setOptionDataSource(countryDS);
 		countryItem.setValueField("country_id");
-		countryItem.setDisplayField("country_name_geo");
+		countryItem.setDisplayField("country_name");
 		countryItem.setOptionCriteria(new Criteria());
 		countryItem.setAutoFetchData(false);
 
@@ -120,10 +120,10 @@ public class TabFindIndexes extends Tab {
 				if (record == null) {
 					return;
 				}
-				String country_code = record
-						.getAttributeAsString("country_code");
-				if (country_code != null && !country_code.trim().equals("")) {
-					countyCodeItem.setValue(country_code);
+				String phone_code = record
+						.getAttributeAsString("phone_code");
+				if (phone_code != null && !phone_code.trim().equals("")) {
+					countyCodeItem.setValue(phone_code);
 				}
 			}
 		});

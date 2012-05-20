@@ -431,7 +431,7 @@ public class TabCity extends Tab {
 				countryItem.setOptionOperationId("countriesSearchCached");
 				countryItem.setOptionDataSource(countryDS);
 				countryItem.setValueField("country_id");
-				countryItem.setDisplayField("country_name_geo");
+				countryItem.setDisplayField("country_name");
 				countryItem.setAutoFetchData(true);
 				Criteria optionCriteria = new Criteria();
 				optionCriteria.setAttribute("wtmpId123", "country_id"
