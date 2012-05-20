@@ -97,7 +97,7 @@ public class UsersDMI implements QueryConstants {
 
 			Object user_firstname = dsRequest.getFieldValue("user_firstname");
 			Object user_lastname = dsRequest.getFieldValue("user_lastname");
-			Object user_name = dsRequest.getFieldValue("user_name");
+			Object user_name = dsRequest.getFieldValue("userName");
 			String query = "select e from Users e where 1 = 1 ";
 			if (user_firstname != null
 					&& !user_firstname.toString().trim().equalsIgnoreCase("")) {
