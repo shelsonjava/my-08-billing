@@ -20,10 +20,9 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.common.SharedUtils;
-import com.info08.billing.callcenterbk.shared.entity.City;
+import com.info08.billing.callcenterbk.shared.entity.Towns;
 import com.info08.billing.callcenterbk.shared.entity.CityDistance;
 import com.info08.billing.callcenterbk.shared.entity.CityRegion;
-//import com.info08.billing.callcenterbk.shared.entity.CityType;
 import com.info08.billing.callcenterbk.shared.entity.Continents;
 import com.info08.billing.callcenterbk.shared.entity.Country;
 import com.info08.billing.callcenterbk.shared.entity.StreetDescr;
@@ -49,8 +48,7 @@ public class CommonDMI implements QueryConstants {
 	private static TreeMap<Integer, Departments> departments = new TreeMap<Integer, Departments>();
 	private static TreeMap<Long, Continents> continents = new TreeMap<Long, Continents>();
 	private static TreeMap<Long, Country> countries = new TreeMap<Long, Country>();
-	//private static TreeMap<Long, CityType> cityTypes = new TreeMap<Long, CityType>();
-	private static TreeMap<Long, City> cities = new TreeMap<Long, City>();
+	private static TreeMap<Long, Towns> cities = new TreeMap<Long, Towns>();
 	private static TreeMap<Long, ArrayList<StreetEnt>> streetsByCityId = new TreeMap<Long, ArrayList<StreetEnt>>();
 	private static TreeMap<Long, StreetType> streetTypes = new TreeMap<Long, StreetType>();
 	private static TreeMap<Long, StreetDescr> streetDescrs = new TreeMap<Long, StreetDescr>();
@@ -82,13 +80,7 @@ public class CommonDMI implements QueryConstants {
 		return departments.get(departmentId);
 	}
 
-//	public static CityType getCityType(Long cityTypeId) {
-//		return cityTypes.get(cityTypeId);
-//		
-//		
-//	}
-
-	public static City getCity(Long cityId) {
+	public static Towns getCity(Long cityId) {
 		return cities.get(cityId);
 	}
 
@@ -125,13 +117,13 @@ public class CommonDMI implements QueryConstants {
 			cityDistance = oracleManager.find(CityDistance.class,
 					cityDistance.getCity_distance_id());
 
-			City cityStart = getCity(cityDistance.getCity_id_start());
+			Towns cityStart = getCity(cityDistance.getCity_id_start());
 			if (cityStart != null) {
-				cityDistance.setCityStart(cityStart.getCity_name_geo());
+				cityDistance.setCityStart(cityStart.getCapital_town_name());
 			}
-			City cityEnd = getCity(cityDistance.getCity_id_end());
+			Towns cityEnd = getCity(cityDistance.getCity_id_end());
 			if (cityEnd != null) {
-				cityDistance.setCityEnd(cityEnd.getCity_name_geo());
+				cityDistance.setCityEnd(cityEnd.getCapital_town_name());
 			}
 			cityDistance.setLoggedUserName(cityDistance.getRec_user());
 			cityDistance.setCityDistTypeDesc(SharedUtils.getInstance()
@@ -203,13 +195,13 @@ public class CommonDMI implements QueryConstants {
 			cityDistance = oracleManager.find(CityDistance.class,
 					city_distance_id);
 
-			City cityStart = getCity(city_id_start);
+			Towns cityStart = getCity(city_id_start);
 			if (cityStart != null) {
-				cityDistance.setCityStart(cityStart.getCity_name_geo());
+				cityDistance.setCityStart(cityStart.getCapital_town_name());
 			}
-			City cityEnd = getCity(city_id_end);
+			Towns cityEnd = getCity(city_id_end);
 			if (cityEnd != null) {
-				cityDistance.setCityEnd(cityEnd.getCity_name_geo());
+				cityDistance.setCityEnd(cityEnd.getCapital_town_name());
 			}
 			cityDistance.setLoggedUserName(loggedUserName);
 			cityDistance.setCityDistTypeDesc(SharedUtils.getInstance()
@@ -267,13 +259,13 @@ public class CommonDMI implements QueryConstants {
 			cityDistance = oracleManager.find(CityDistance.class,
 					city_distance_id);
 
-			City cityStart = getCity(cityDistance.getCity_id_start());
+			Towns cityStart = getCity(cityDistance.getCity_id_start());
 			if (cityStart != null) {
-				cityDistance.setCityStart(cityStart.getCity_name_geo());
+				cityDistance.setCityStart(cityStart.getCapital_town_name());
 			}
-			City cityEnd = getCity(cityDistance.getCity_id_end());
+			Towns cityEnd = getCity(cityDistance.getCity_id_end());
 			if (cityEnd != null) {
-				cityDistance.setCityEnd(cityEnd.getCity_name_geo());
+				cityDistance.setCityEnd(cityEnd.getCapital_town_name());
 			}
 			cityDistance.setLoggedUserName(loggedUserName);
 			cityDistance.setCityDistTypeDesc(SharedUtils.getInstance()
@@ -604,9 +596,9 @@ public class CommonDMI implements QueryConstants {
 			if (ret != null) {
 				Long cityId = ret.getCity_id();
 				if (cityId != null) {
-					City city = oracleManager.find(City.class, cityId);
+					Towns city = oracleManager.find(Towns.class, cityId);
 					if (city != null) {
-						ret.setCity_name_geo(city.getCity_name_geo());
+						ret.setCity_name_geo(city.getCapital_town_name());
 					}
 				}
 			}
@@ -1747,7 +1739,7 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	public City cityAdd(DSRequest dsRequest) throws Exception {
+	public Towns cityAdd(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -1765,54 +1757,51 @@ public class CommonDMI implements QueryConstants {
 				}
 				country = getCountry(country_id);
 			}
-			Long cityTypeId = new Long(dsRequest.getFieldValue("city_type_id")
-					.toString());
-//			CityType cityType = null;
-//			if (cityTypeId != null) {
-//				if (cityTypes.isEmpty()) {
-//					fetchCityTypes(dsRequest);
-//				}
-//				cityType = getCityType(cityTypeId);
-//			}
+			Long town_type_id = new Long(dsRequest
+					.getFieldValue("town_type_id").toString());
+			// CityType cityType = null;
+			// if (cityTypeId != null) {
+			// if (cityTypes.isEmpty()) {
+			// fetchCityTypes(dsRequest);
+			// }
+			// cityType = getCityType(cityTypeId);
+			// }
 
-			City city = new City();
-			city.setCity_code(dsRequest.getFieldValue("city_code") == null ? null
+			Towns town = new Towns();
+			town.setTown_code(dsRequest.getFieldValue("city_code") == null ? null
 					: dsRequest.getFieldValue("city_code").toString());
-			city.setCity_name_eng(dsRequest.getFieldValue("city_name_eng") == null ? null
+			town.setTown_name(dsRequest.getFieldValue("city_name_eng") == null ? null
 					: dsRequest.getFieldValue("city_name_eng").toString());
-			city.setCity_name_geo(dsRequest.getFieldValue("city_name_geo") == null ? null
+			town.setTown_name(dsRequest.getFieldValue("city_name_geo") == null ? null
 					: dsRequest.getFieldValue("city_name_geo").toString());
-			city.setCity_new_code(dsRequest.getFieldValue("city_new_code") == null ? null
+			town.setTown_code(dsRequest.getFieldValue("city_new_code") == null ? null
 					: dsRequest.getFieldValue("city_new_code").toString());
-			city.setIs_capital(dsRequest.getFieldValue("is_capital") == null ? null
+			town.setCapital_town(dsRequest.getFieldValue("is_capital") == null ? null
 					: new Long(dsRequest.getFieldValue("is_capital").toString()));
-			city.setOf_gmt(dsRequest.getFieldValue("of_gmt") == null ? null
+			town.setNormal_gmt(dsRequest.getFieldValue("of_gmt") == null ? null
 					: new Long(dsRequest.getFieldValue("of_gmt").toString()));
-			city.setOf_gmt_winter(dsRequest.getFieldValue("of_gmt_winter") == null ? null
+			town.setWinter_gmt(dsRequest.getFieldValue("of_gmt_winter") == null ? null
 					: new Long(dsRequest.getFieldValue("of_gmt_winter")
 							.toString()));
-			city.setCity_type_id(cityTypeId);
-//			if (cityType != null) {
-//				city.setCityType(cityType.getCity_type_geo());
-//			}
-			city.setCountry_id(country_id);
+			town.setTown_type_id(town_type_id);
+			// if (cityType != null) {
+			// city.setCityType(cityType.getCity_type_geo());
+			// }
+			town.setCountry_id(country_id);
 			if (country != null) {
-				city.setCountryName(country.getCountry_name());
+				town.setCountry_name(country.getCountry_name());
 			}
-			city.setCountry_region_id(-1L);
-			city.setDeleted(0L);
-			city.setMap_id(-1L);
-			city.setRec_date(rec_date);
-			city.setRec_user(loggedUserName);
-			city.setIsCapitalText(city.getIs_capital() != null
-					&& city.getIs_capital().equals(1L) ? "დედაქალაქი"
+			town.setCountry_district_id(-1L);
+
+			town.setCapital_town_name(town.getCapital_town() != null
+					&& town.getCapital_town().equals(1L) ? "დედაქალაქი"
 					: "ჩვეულებრივი");
 
-			oracleManager.persist(city);
+			oracleManager.persist(town);
 
 			EMF.commitTransaction(transaction);
-			cities.put(city.getCity_id(), city);
-			return city;
+			cities.put(town.getTown_id(), town);
+			return town;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -1829,7 +1818,7 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	@SuppressWarnings({ "rawtypes" })
-	public City cityUpdate(Map fieldValues) throws Exception {
+	public Towns cityUpdate(Map fieldValues) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -1840,7 +1829,7 @@ public class CommonDMI implements QueryConstants {
 			String loggedUserName = fieldValues.get("loggedUserName")
 					.toString();
 
-			City old_city = oracleManager.find(City.class, city_id);
+			Towns old_city = oracleManager.find(Towns.class, city_id);
 
 			Country country = null;
 			if (country_id != null) {
@@ -1851,13 +1840,13 @@ public class CommonDMI implements QueryConstants {
 			}
 			Long cityTypeId = new Long(fieldValues.get("city_type_id")
 					.toString());
-//			CityType cityType = null;
-//			if (cityTypeId != null) {
-//				if (cityTypes.isEmpty()) {
-//					fetchCityTypes(null);
-//				}
-//				cityType = getCityType(cityTypeId);
-//			}
+			// CityType cityType = null;
+			// if (cityTypeId != null) {
+			// if (cityTypes.isEmpty()) {
+			// fetchCityTypes(null);
+			// }
+			// cityType = getCityType(cityTypeId);
+			// }
 			Timestamp curr_date = new Timestamp(System.currentTimeMillis());
 
 			oracleManager
@@ -1904,13 +1893,13 @@ public class CommonDMI implements QueryConstants {
 
 			if (old_city != null) {
 				boolean changed = false;
-				if (old_city.getCity_name_geo() != null) {
-					if (old_city.getCity_name_geo().compareTo(
+				if (old_city.getCapital_town_name() != null) {
+					if (old_city.getCapital_town_name().compareTo(
 							fieldValues.get("city_name_geo").toString()) > 0) {
 						changed = true;
 					}
 				} else if (fieldValues.get("city_name_geo").toString()
-						.equals(old_city.getCity_name_geo())) {
+						.equals(old_city.getCapital_town_name())) {
 					changed = true;
 				}
 				if (changed) {
@@ -1942,15 +1931,15 @@ public class CommonDMI implements QueryConstants {
 			}
 
 			oracleManager.flush();
-			City city = oracleManager.find(City.class, city_id);
+			Towns city = oracleManager.find(Towns.class, city_id);
 			if (country != null) {
-				city.setCountryName(country.getCountry_name());
+				city.setCountry_name(country.getCountry_name());
 			}
-//			if (cityType != null) {
-//				city.setCityType(cityType.getCity_type_geo());
-//			}
-			city.setIsCapitalText(city.getIs_capital() != null
-					&& city.getIs_capital().equals(1L) ? "დედაქალაქი"
+			// if (cityType != null) {
+			// city.setCityType(cityType.getCity_type_geo());
+			// }
+			city.setCapital_town_name(city.getCapital_town() != null
+					&& city.getCapital_town().equals(1L) ? "დედაქალაქი"
 					: "ჩვეულებრივი");
 			EMF.commitTransaction(transaction);
 			cities.remove(city_id);
@@ -1973,7 +1962,7 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public City cityStatusUpdate(Map fieldValues) throws Exception {
+	public Towns cityStatusUpdate(Map fieldValues) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -1997,7 +1986,7 @@ public class CommonDMI implements QueryConstants {
 					.setParameter(4, city_id).executeUpdate();
 
 			oracleManager.flush();
-			City city = oracleManager.find(City.class, city_id);
+			Towns city = oracleManager.find(Towns.class, city_id);
 			Long country_id = city.getCountry_id();
 			if (country_id != null) {
 				if (countries.isEmpty()) {
@@ -2005,21 +1994,21 @@ public class CommonDMI implements QueryConstants {
 				}
 				Country country = getCountry(country_id);
 				if (country != null) {
-					city.setCountryName(country.getCountry_name());
+					city.setCountry_name(country.getCountry_name());
 				}
 			}
-			Long cityTypeId = city.getCity_type_id();
-//			if (cityTypeId != null) {
-//				if (cityTypes.isEmpty()) {
-//					fetchCityTypes(null);
-//				}
-//				CityType cityType = getCityType(cityTypeId);
-//				if (cityType != null) {
-//					city.setCityType(cityType.getCity_type_geo());
-//				}
-//			}
-			city.setIsCapitalText(city.getIs_capital() != null
-					&& city.getIs_capital().equals(1L) ? "დედაქალაქი"
+			Long cityTypeId = city.getTown_type_id();
+			// if (cityTypeId != null) {
+			// if (cityTypes.isEmpty()) {
+			// fetchCityTypes(null);
+			// }
+			// CityType cityType = getCityType(cityTypeId);
+			// if (cityType != null) {
+			// city.setCityType(cityType.getCity_type_geo());
+			// }
+			// }
+			city.setCapital_town_name(city.getCapital_town() != null
+					&& city.getCapital_town().equals(1L) ? "დედაქალაქი"
 					: "ჩვეულებრივი");
 			EMF.commitTransaction(transaction);
 			cities.remove(city_id);
@@ -2210,7 +2199,7 @@ public class CommonDMI implements QueryConstants {
 				query += " and e.country_name like '" + country_name.toString()
 						+ "%'";
 			}
-	
+
 			if (phone_code != null
 					&& !phone_code.toString().trim().equalsIgnoreCase("")) {
 				query += " and e.phone_code like '" + phone_code.toString()
@@ -2221,7 +2210,7 @@ public class CommonDMI implements QueryConstants {
 						+ new Long(continent_id.toString());
 			}
 			query += " order by e.country_id ";
-			
+
 			System.out.println(query);
 
 			oracleManager = EMF.getEntityManager();
@@ -2289,7 +2278,7 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<City> fetchAllCitiesFromDB(DSRequest dsRequest)
+	public ArrayList<Towns> fetchAllCitiesFromDB(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		try {
@@ -2351,32 +2340,32 @@ public class CommonDMI implements QueryConstants {
 			query += " order by e.city_id ";
 
 			oracleManager = EMF.getEntityManager();
-			ArrayList<City> result = (ArrayList<City>) oracleManager
+			ArrayList<Towns> result = (ArrayList<Towns>) oracleManager
 					.createQuery(query).getResultList();
 			if (result != null && !result.isEmpty()) {
-				for (City city : result) {
-					Long cTypeId = city.getCity_type_id();
-					if (cTypeId != null) {
-//						if (cityTypes.isEmpty()) {
-//							fetchCityTypes(dsRequest);
-//						}
-//						CityType cityType = getCityType(cTypeId);
-//						if (cityType != null) {
-//							city.setCityType(cityType.getCity_type_geo());
-//						}
-					}
-					Long countryId = city.getCountry_id();
+				for (Towns town : result) {
+					Long cTypeId = town.getTown_type_id();
+					// if (cTypeId != null) {
+					// if (cityTypes.isEmpty()) {
+					// fetchCityTypes(dsRequest);
+					// }
+					// CityType cityType = getCityType(cTypeId);
+					// if (cityType != null) {
+					// city.setCityType(cityType.getCity_type_geo());
+					// }
+					// }
+					Long countryId = town.getCountry_id();
 					if (countryId != null) {
 						if (countries.isEmpty()) {
 							fetchAllCountries(dsRequest);
 						}
 						Country country = getCountry(countryId);
 						if (country != null) {
-							city.setCountryName(country.getCountry_name());
+							town.setCountry_name(country.getCountry_name());
 						}
 					}
-					city.setIsCapitalText(city.getIs_capital() != null
-							&& city.getIs_capital().equals(1L) ? "დედაქალაქი"
+					town.setCapital_town_name(town.getCapital_town() != null
+							&& town.getCapital_town().equals(1L) ? "დედაქალაქი"
 							: "ჩვეულებრივი");
 				}
 			}
@@ -2395,20 +2384,21 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	public ArrayList<City> fetchAllCities(DSRequest dsRequest) throws Exception {
+	public ArrayList<Towns> fetchAllCities(DSRequest dsRequest)
+			throws Exception {
 		EntityManager oracleManager = null;
 		try {
 			logger.info("getting Cities ... ");
 			if (cities == null || cities.isEmpty()) {
-				cities = new TreeMap<Long, City>();
-				ArrayList<City> tmpCities = fetchAllCitiesFromDB(dsRequest);
+				cities = new TreeMap<Long, Towns>();
+				ArrayList<Towns> tmpCities = fetchAllCitiesFromDB(dsRequest);
 				if (tmpCities != null && !tmpCities.isEmpty()) {
-					for (City city : tmpCities) {
-						cities.put(city.getCity_id(), city);
+					for (Towns town : tmpCities) {
+						cities.put(town.getTown_id(), town);
 					}
 				}
 			}
-			ArrayList<City> ret = new ArrayList<City>();
+			ArrayList<Towns> ret = new ArrayList<Towns>();
 			ret.addAll(cities.values());
 			return ret;
 		} catch (Exception e) {
@@ -2464,42 +2454,42 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	//@SuppressWarnings("unchecked")
-//	public ArrayList<CityType> fetchCityTypes(DSRequest dsRequest)
-//			throws Exception {
-//		EntityManager oracleManager = null;
-//		try {
-//			logger.info("getting CityTypes ...");
-//			if (cityTypes == null || cityTypes.isEmpty()) {
-//				logger.info("getting CityTypes from DB. ");
-//				cityTypes = new TreeMap<Long, CityType>();
-//				oracleManager = EMF.getEntityManager();
-//				ArrayList<CityType> result = (ArrayList<CityType>) oracleManager
-//						.createNamedQuery("CityType.getAllCityTypes")
-//						.getResultList();
-//				if (result != null && !result.isEmpty()) {
-//					for (CityType cityType : result) {
-//						Long id = cityType.getCity_type_id();
-//						cityTypes.put(id, cityType);
-//					}
-//				}
-//			}
-//			ArrayList<CityType> ret = new ArrayList<CityType>();
-//			ret.addAll(cityTypes.values());
-//			return ret;
-//		} catch (Exception e) {
-//			if (e instanceof CallCenterException) {
-//				throw (CallCenterException) e;
-//			}
-//			logger.error("Error While Fetching CityTypes From Database : ", e);
-//			throw new CallCenterException("შეცდომა მონაცემების წამოღებისას : "
-//					+ e.toString());
-//		} finally {
-//			if (oracleManager != null) {
-//				EMF.returnEntityManager(oracleManager);
-//			}
-//		}
-//	}
+	// @SuppressWarnings("unchecked")
+	// public ArrayList<CityType> fetchCityTypes(DSRequest dsRequest)
+	// throws Exception {
+	// EntityManager oracleManager = null;
+	// try {
+	// logger.info("getting CityTypes ...");
+	// if (cityTypes == null || cityTypes.isEmpty()) {
+	// logger.info("getting CityTypes from DB. ");
+	// cityTypes = new TreeMap<Long, CityType>();
+	// oracleManager = EMF.getEntityManager();
+	// ArrayList<CityType> result = (ArrayList<CityType>) oracleManager
+	// .createNamedQuery("CityType.getAllCityTypes")
+	// .getResultList();
+	// if (result != null && !result.isEmpty()) {
+	// for (CityType cityType : result) {
+	// Long id = cityType.getCity_type_id();
+	// cityTypes.put(id, cityType);
+	// }
+	// }
+	// }
+	// ArrayList<CityType> ret = new ArrayList<CityType>();
+	// ret.addAll(cityTypes.values());
+	// return ret;
+	// } catch (Exception e) {
+	// if (e instanceof CallCenterException) {
+	// throw (CallCenterException) e;
+	// }
+	// logger.error("Error While Fetching CityTypes From Database : ", e);
+	// throw new CallCenterException("შეცდომა მონაცემების წამოღებისას : "
+	// + e.toString());
+	// } finally {
+	// if (oracleManager != null) {
+	// EMF.returnEntityManager(oracleManager);
+	// }
+	// }
+	// }
 
 	public ArrayList<Departments> fetchDepartments(DSRequest dsRequest)
 			throws CallCenterException {

@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
-import com.info08.billing.callcenterbk.shared.entity.City;
+import com.info08.billing.callcenterbk.shared.entity.Towns;
 import com.info08.billing.callcenterbk.shared.entity.StreetEnt;
 import com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirection;
 import com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirectionStreet;
@@ -409,7 +409,7 @@ public class TransportDMI implements QueryConstants {
 			String loggedUserName = transpStation.getLoggedUserName();
 
 			Long city_id = transpStation.getCity_id();
-			City city = oracleManager.find(City.class, city_id);
+			Towns city = oracleManager.find(Towns.class, city_id);
 
 			Long transpTypeId = transpStation.getTransp_type_id();
 			TranspType transportType = oracleManager.find(TranspType.class,
@@ -431,7 +431,7 @@ public class TransportDMI implements QueryConstants {
 			}
 
 			if (city != null) {
-				transpStation.setCity_descr(city.getCity_name_geo());
+				transpStation.setCity_descr(city.getCapital_town_name());
 			}
 
 			EMF.commitTransaction(transaction);
@@ -487,7 +487,7 @@ public class TransportDMI implements QueryConstants {
 			transpStation.setCity_id(city_id);
 			transpStation.setName_descr(name_descr);
 
-			City city = oracleManager.find(City.class, city_id);
+			Towns city = oracleManager.find(Towns.class, city_id);
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transp_type_id);
 
@@ -505,7 +505,7 @@ public class TransportDMI implements QueryConstants {
 				transpStation.setTranspport_type(transportType.getName_descr());
 			}
 			if (city != null) {
-				transpStation.setCity_descr(city.getCity_name_geo());
+				transpStation.setCity_descr(city.getCapital_town_name());
 			}
 
 			EMF.commitTransaction(transaction);

@@ -6,7 +6,7 @@
     <!--  
     <jta-data-source>java:jboss/datasources/OracleDS</jta-data-source>
     -->
-    <class>com.info08.billing.callcenterbk.shared.entity.City</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.Towns</class>
     <class>com.info08.billing.callcenterbk.shared.entity.CityDistance</class>
     <class>com.info08.billing.callcenterbk.shared.entity.CityRegion</class>
     <class>com.info08.billing.callcenterbk.shared.entity.DistrictIndexes</class>

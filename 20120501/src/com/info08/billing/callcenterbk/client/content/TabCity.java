@@ -445,16 +445,17 @@ public class TabCity extends Tab {
 					}
 				});
 			}
-			final DataSource cityTypeDS = DataSource.get("CityTypeDS");
-			if (cityTypeDS != null) {
-				cityTypeItem.setOptionOperationId("cityTypesSearch");
-				cityTypeItem.setOptionDataSource(cityTypeDS);
-				cityTypeItem.setValueField("city_type_id");
-				cityTypeItem.setDisplayField("city_type_geo");
+			final DataSource descriptionsDS = DataSource.get("DescriptionsDS");
+
+			if (descriptionsDS != null) {
+				cityTypeItem
+						.setOptionOperationId("searchDescriptionsOrderById");
+				cityTypeItem.setOptionDataSource(descriptionsDS);
+				cityTypeItem.setValueField("description_id");
+				cityTypeItem.setDisplayField("description");
 				cityTypeItem.setAutoFetchData(true);
 				Criteria optionCriteria = new Criteria();
-				optionCriteria.setAttribute("wtmpId234", "city_type_id"
-						+ HTMLPanel.createUniqueId());
+				optionCriteria.setAttribute("description_type_id", "59000");
 				cityTypeItem.setOptionCriteria(optionCriteria);
 				cityTypeItem.fetchData(new DSCallback() {
 					@Override
