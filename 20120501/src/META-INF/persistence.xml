@@ -9,7 +9,6 @@
     <class>com.info08.billing.callcenterbk.shared.entity.City</class>
     <class>com.info08.billing.callcenterbk.shared.entity.CityDistance</class>
     <class>com.info08.billing.callcenterbk.shared.entity.CityRegion</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.CityType</class>
     <class>com.info08.billing.callcenterbk.shared.entity.DistrictIndexes</class>
     <class>com.info08.billing.callcenterbk.shared.entity.VillageIndexes</class>
     <class>com.info08.billing.callcenterbk.shared.entity.SentSMSHist</class>
@@ -46,7 +45,7 @@
     <class>com.info08.billing.callcenterbk.shared.entity.event.EventOwner</class>
     <class>com.info08.billing.callcenterbk.shared.entity.event.Event</class>
     <class>com.info08.billing.callcenterbk.shared.entity.event.EventCategory</class>
-    <class>com.info08.billing.callcenterbk.shared.entity.org.MainOrg</class>
+    <class>com.info08.billing.callcenterbk.shared.entity.org.Organizations</class>
     <class>com.info08.billing.callcenterbk.shared.entity.org.LegalStatus</class>
     <class>com.info08.billing.callcenterbk.shared.entity.org.BusinessDetail</class>
     <class>com.info08.billing.callcenterbk.shared.entity.org.BusinessSector</class>

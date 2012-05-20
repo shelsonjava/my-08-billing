@@ -29,7 +29,7 @@ public class ServerSession implements Serializable {
 	private ServerSession prevSession;
 	private Treatments treatment;
 	private boolean phoneIsMobile;
-	private Long main_id;
+	private Long organization_id;
 	private String specialAlertMessage;
 	private Long unreadPersNotesCount;
 	private String callCenterReqMsg;
@@ -204,12 +204,12 @@ public class ServerSession implements Serializable {
 		this.phoneIsMobile = phoneIsMobile;
 	}
 
-	public Long getMain_id() {
-		return main_id;
+	public Long getOrganization_id() {
+		return organization_id;
 	}
 
-	public void setMain_id(Long main_id) {
-		this.main_id = main_id;
+	public void setOrganization_id(Long organization_id) {
+		this.organization_id = organization_id;
 	}
 
 	public String getSpecialAlertMessage() {

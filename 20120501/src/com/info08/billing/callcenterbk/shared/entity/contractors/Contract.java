@@ -55,8 +55,8 @@ public class Contract implements Serializable {
 	private Long main_detail_id;
 
 	@Basic
-	@Column(name = "MAIN_ID")
-	private Long main_id;
+	@Column(name = "ORGANIZATION_ID")
+	private Long organization_id;
 
 	@Basic
 	@Column(name = "NOTE")
@@ -93,11 +93,11 @@ public class Contract implements Serializable {
 	@Basic
 	@Column(name = "UPD_USER")
 	private String upd_user;
-	
+
 	@Basic
 	@Column(name = "PHONE_LIST_TYPE")
 	private Long phone_list_type;
-	
+
 	@Basic
 	@Column(name = "RANGE_CURR_PRICE")
 	private BigDecimal range_curr_price;
@@ -110,22 +110,22 @@ public class Contract implements Serializable {
 
 	@Transient
 	private String orgDepName;
-	
+
 	@Transient
 	private String price_type_descr;
 
 	@Transient
 	private LinkedHashMap<String, LinkedHashMap<String, String>> contractorAdvPrices;
-	
+
 	@Transient
 	private LinkedHashMap<String, String> contractorAdvPhones;
 
 	@Transient
 	private Long contractor_call_cnt;
-	
+
 	@Transient
 	private Double contractor_charges;
-	
+
 	@Transient
 	private Long checkContractor;
 
@@ -188,12 +188,12 @@ public class Contract implements Serializable {
 		this.main_detail_id = main_detail_id;
 	}
 
-	public Long getMain_id() {
-		return main_id;
+	public Long getOrganization_id() {
+		return organization_id;
 	}
 
-	public void setMain_id(Long main_id) {
-		this.main_id = main_id;
+	public void setOrganization_id(Long organization_id) {
+		this.organization_id = organization_id;
 	}
 
 	public String getNote() {

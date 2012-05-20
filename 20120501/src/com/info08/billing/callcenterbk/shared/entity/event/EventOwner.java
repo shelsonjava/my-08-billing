@@ -36,8 +36,8 @@ public class EventOwner implements Serializable {
 	private Long event_category_id;
 
 	@Basic
-	@Column(name = "MAIN_ID")
-	private Long main_id;
+	@Column(name = "ORGANIZATION_ID")
+	private Long organization_id;
 
 	@Basic
 	@Column(name = "RESERVABLE")
@@ -50,7 +50,7 @@ public class EventOwner implements Serializable {
 	private String event_category_name;
 
 	@Transient
-	private String org_name;
+	private String organization_name;
 
 	public EventOwner() {
 	}
@@ -79,12 +79,12 @@ public class EventOwner implements Serializable {
 		this.event_category_id = event_category_id;
 	}
 
-	public Long getMain_id() {
-		return main_id;
+	public Long getOrganization_id() {
+		return organization_id;
 	}
 
-	public void setMain_id(Long main_id) {
-		this.main_id = main_id;
+	public void setOrganization_id(Long organization_id) {
+		this.organization_id = organization_id;
 	}
 
 	public Long getReservable() {
@@ -111,12 +111,12 @@ public class EventOwner implements Serializable {
 		this.event_category_name = event_category_name;
 	}
 
-	public String getOrg_name() {
-		return org_name;
+	public String getOrganization_name() {
+		return organization_name;
 	}
 
-	public void setOrg_name(String org_name) {
-		this.org_name = org_name;
+	public void setOrganization_name(String organization_name) {
+		this.organization_name = organization_name;
 	}
 
 }

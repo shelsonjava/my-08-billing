@@ -1,7 +1,5 @@
 package com.info08.billing.callcenterbk.shared.entity;
 
-import java.sql.Timestamp;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,115 +12,57 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-@NamedQueries({
-		@NamedQuery(
-					name = "Country.getAllCountries", 
-					query = "select e from Country e where e.deleted = 0 order by e.country_id")
+@NamedQueries({ @NamedQuery(name = "Country.getAllCountries", query = "select e from Country e order by e.country_id")
 
 })
 @Entity
-@Table(name = "countries", schema = "ccare")
+@Table(name = "COUNTRIES")
 public class Country implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "COUNTRY_ID")
-	@SequenceGenerator(name = "seq_country_gen", sequenceName = "country_id_seq")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_country_gen")
+	@SequenceGenerator(name = "SEQ_COUNTRIES_GENERATOR", sequenceName = "SEQ_COUNTRIES")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_COUNTRIES_GENERATOR")
 	private Long country_id;
 
 	@Basic
-	@Column(name = "COUNTRY_NAME_GEO")
-	private String country_name_geo;
+	@Column(name = "COUNTRY_NAME")
+	private String country_name;
 
-	@Basic
-	@Column(name = "COUNTRY_NAME_ENG")
-	private String country_name_eng;
-	
-	@Basic
-	@Column(name = "REC_DATE")
-	private Timestamp rec_date;
-	
-	@Basic
-	@Column(name = "REC_USER")
-	private String rec_user;
-	
-	@Basic
-	@Column(name = "DELETED")
-	private Long deleted;	
-	
 	@Basic
 	@Column(name = "CONTINENT_ID")
 	private Long continent_id;
-	
-	@Basic
-	@Column(name = "UPD_USER")
-	private String upd_user;
-	
-	@Basic
-	@Column(name = "COUNTRY_CODE")
-	private String country_code;
 
 	@Basic
-	@Column(name = "UPD_DATE")
-	private Timestamp upd_date;
-	
+	@Column(name = "PHONE_CODE")
+	private String phone_code;
+
 	@Basic
-	@Column(name = "SEASON_ID")
-	private Long season_id;
-	
+	@Column(name = "SEASON")
+	private Long season;
+
 	@Transient
 	private String continent;
-	
+
 	public Country() {
 	}
 
 	public Long getCountry_id() {
 		return country_id;
 	}
+
 	public void setCountry_id(Long country_id) {
 		this.country_id = country_id;
 	}
 
-	public String getCountry_name_geo() {
-		return country_name_geo;
+	public String getCountry_name() {
+		return country_name;
 	}
 
-	public void setCountry_name_geo(String country_name_geo) {
-		this.country_name_geo = country_name_geo;
-	}
-
-	public String getCountry_name_eng() {
-		return country_name_eng;
-	}
-
-	public void setCountry_name_eng(String country_name_eng) {
-		this.country_name_eng = country_name_eng;
-	}
-
-	public Timestamp getRec_date() {
-		return rec_date;
-	}
-
-	public void setRec_date(Timestamp rec_date) {
-		this.rec_date = rec_date;
-	}
-
-	public String getRec_user() {
-		return rec_user;
-	}
-
-	public void setRec_user(String rec_user) {
-		this.rec_user = rec_user;
-	}
-
-	public Long getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Long deleted) {
-		this.deleted = deleted;
+	public void setCountry_name(String country_name) {
+		this.country_name = country_name;
 	}
 
 	public Long getContinent_id() {
@@ -133,36 +73,20 @@ public class Country implements java.io.Serializable {
 		this.continent_id = continent_id;
 	}
 
-	public String getUpd_user() {
-		return upd_user;
+	public String getPhone_code() {
+		return phone_code;
 	}
 
-	public void setUpd_user(String upd_user) {
-		this.upd_user = upd_user;
+	public void setPhone_code(String phone_code) {
+		this.phone_code = phone_code;
 	}
 
-	public String getCountry_code() {
-		return country_code;
+	public Long getSeason() {
+		return season;
 	}
 
-	public void setCountry_code(String country_code) {
-		this.country_code = country_code;
-	}
-
-	public Timestamp getUpd_date() {
-		return upd_date;
-	}
-
-	public void setUpd_date(Timestamp upd_date) {
-		this.upd_date = upd_date;
-	}
-
-	public Long getSeason_id() {
-		return season_id;
-	}
-
-	public void setSeason_id(Long season_id) {
-		this.season_id = season_id;
+	public void setSeason(Long season) {
+		this.season = season;
 	}
 
 	public String getContinent() {
@@ -172,4 +96,5 @@ public class Country implements java.io.Serializable {
 	public void setContinent(String continent) {
 		this.continent = continent;
 	}
+
 }

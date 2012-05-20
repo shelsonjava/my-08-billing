@@ -5,9 +5,8 @@ import java.sql.Timestamp;
 
 public class Abonent implements Serializable {
 
-	
 	private static final long serialVersionUID = 7026086622425435823L;
-	private Integer main_id;
+	private Integer organization_id;
 	private Integer abonent_id;
 	private Integer address_id;
 	private Integer phone_id;
@@ -40,12 +39,12 @@ public class Abonent implements Serializable {
 	private String street_location_geo;
 	private Integer deleted;
 
-	public Integer getMain_id() {
-		return main_id;
+	public Integer getOrganization_id() {
+		return organization_id;
 	}
 
-	public void setMain_id(Integer main_id) {
-		this.main_id = main_id;
+	public void setOrganization_id(Integer organization_id) {
+		this.organization_id = organization_id;
 	}
 
 	public Integer getAbonent_id() {
@@ -298,18 +297,18 @@ public class Abonent implements Serializable {
 
 	@Override
 	public String toString() {
-		return "main_id = " + main_id + ", abonent_id = " + abonent_id
-				+ ", address_id = " + address_id + ", phone_id = " + phone_id
-				+ ", firstname_id = " + firstname_id + ", lastname_id = "
-				+ lastname_id + ", city_id = " + city_id + ", street_id = "
-				+ street_id + ", city_region_id = " + city_region_id
-				+ ", firstname = " + firstname + ", lastname = " + lastname
-				+ ", phone = " + phone + ", phone_state = " + phone_state
-				+ ", phone_state_id = " + phone_state_id + ", upd_date = "
-				+ upd_date + ", city = " + city + ", street = " + street
-				+ ", upd_user = " + upd_user + ", abonent_hide = "
-				+ abonent_hide + ", phone_parallel = " + phone_parallel
-				+ ", phone_status_id = " + phone_status_id
+		return "organization_id = " + organization_id + ", abonent_id = "
+				+ abonent_id + ", address_id = " + address_id + ", phone_id = "
+				+ phone_id + ", firstname_id = " + firstname_id
+				+ ", lastname_id = " + lastname_id + ", city_id = " + city_id
+				+ ", street_id = " + street_id + ", city_region_id = "
+				+ city_region_id + ", firstname = " + firstname
+				+ ", lastname = " + lastname + ", phone = " + phone
+				+ ", phone_state = " + phone_state + ", phone_state_id = "
+				+ phone_state_id + ", upd_date = " + upd_date + ", city = "
+				+ city + ", street = " + street + ", upd_user = " + upd_user
+				+ ", abonent_hide = " + abonent_hide + ", phone_parallel = "
+				+ phone_parallel + ", phone_status_id = " + phone_status_id
 				+ ", phone_type_id = " + phone_type_id + ", address_hide = "
 				+ address_hide + ", address_suffix_geo = " + address_suffix_geo
 				+ ", addr_number = " + addr_number + ", addr_block = "

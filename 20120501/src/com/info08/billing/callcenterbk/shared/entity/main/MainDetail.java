@@ -13,83 +13,82 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 /**
  * The persistent class for the MAIN_DETAILS database table.
  * 
  */
 @Entity
-@Table(name="MAIN_DETAILS", schema="ccare")
+@Table(name = "MAIN_DETAILS", schema = "ccare")
 public class MainDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="MAIN_DETAILS_MAINDETAILID_GENERATOR", sequenceName="MAIN_DETAIL_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MAIN_DETAILS_MAINDETAILID_GENERATOR")
-	@Column(name="MAIN_DETAIL_ID")
+	@SequenceGenerator(name = "MAIN_DETAILS_MAINDETAILID_GENERATOR", sequenceName = "MAIN_DETAIL_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MAIN_DETAILS_MAINDETAILID_GENERATOR")
+	@Column(name = "MAIN_DETAIL_ID")
 	private Long main_detail_id;
 
 	@Basic
-	@Column(name="DELETED")
+	@Column(name = "DELETED")
 	private Long deleted;
 
 	@Basic
-	@Column(name="FIELDS_ORDER")
+	@Column(name = "FIELDS_ORDER")
 	private Long fields_order;
 
 	@Basic
-	@Column(name="MAIN_DETAIL_ENG")
+	@Column(name = "MAIN_DETAIL_ENG")
 	private String main_detail_eng;
 
 	@Basic
-	@Column(name="MAIN_DETAIL_GEO")
+	@Column(name = "MAIN_DETAIL_GEO")
 	private String main_detail_geo;
 
 	@Basic
-	@Column(name="MAIN_DETAIL_MASTER_ID")
+	@Column(name = "MAIN_DETAIL_MASTER_ID")
 	private Long main_detail_master_id;
 
 	@Basic
-	@Column(name="MAIN_DETAIL_NOTE_ENG")
+	@Column(name = "MAIN_DETAIL_NOTE_ENG")
 	private String main_detail_note_eng;
 
 	@Basic
-	@Column(name="MAIN_DETAIL_NOTE_GEO")
+	@Column(name = "MAIN_DETAIL_NOTE_GEO")
 	private String main_detail_note_geo;
 
 	@Basic
-	@Column(name="MAIN_DETAIL_TYPE_ID")
+	@Column(name = "MAIN_DETAIL_TYPE_ID")
 	private Long main_detail_type_id;
 
 	@Basic
-	@Column(name="MAIN_ID")
-	private Long main_id;
+	@Column(name = "ORGANIZATION_ID")
+	private Long organization_id;
 
 	@Basic
-	@Column(name="OLD_ID")
+	@Column(name = "OLD_ID")
 	private Long old_id;
 
 	@Basic
-	@Column(name="REC_DATE")
+	@Column(name = "REC_DATE")
 	private Timestamp rec_date;
 
 	@Basic
-	@Column(name="REC_USER")
+	@Column(name = "REC_USER")
 	private String rec_user;
 
 	@Basic
-	@Column(name="UPD_DATE")
+	@Column(name = "UPD_DATE")
 	private Timestamp upd_date;
 
 	@Basic
-	@Column(name="UPD_USER")
+	@Column(name = "UPD_USER")
 	private String upd_user;
-	
-	@Transient	
+
+	@Transient
 	private String main_detail_type_name_geo;
 
-    public MainDetail() {
-    }
+	public MainDetail() {
+	}
 
 	public Long getMain_detail_id() {
 		return main_detail_id;
@@ -163,12 +162,12 @@ public class MainDetail implements Serializable {
 		this.main_detail_type_id = main_detail_type_id;
 	}
 
-	public Long getMain_id() {
-		return main_id;
+	public Long getOrganization_id() {
+		return organization_id;
 	}
 
-	public void setMain_id(Long main_id) {
-		this.main_id = main_id;
+	public void setOrganization_id(Long organization_id) {
+		this.organization_id = organization_id;
 	}
 
 	public Long getOld_id() {

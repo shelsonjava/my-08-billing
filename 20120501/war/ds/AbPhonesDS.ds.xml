@@ -68,7 +68,7 @@
 			<whereClause><![CDATA[ 
 				 t.phone_id = ap.phone_id and 
 				 ap.abonent_id = a.abonent_id and 
-				 a.main_id = ms.main_id and 
+				 a.organization_id = ms.organization_id and 
 				 f.firstname_id = a.firstname_id and 
 				 l.lastname_id = a.lastname_id and
 				 t.phone = $criteria.phone and 

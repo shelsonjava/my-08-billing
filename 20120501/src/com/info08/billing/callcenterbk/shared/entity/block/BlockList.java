@@ -14,61 +14,60 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 /**
  * The persistent class for the BLOCK_LIST database table.
  * 
  */
 @Entity
-@Table(name="BLOCK_LIST", schema="ccare")
+@Table(name = "BLOCK_LIST", schema = "ccare")
 public class BlockList implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="BLOCK_LIST_ID_GENERATOR", sequenceName="SEQ_BLOCK_LIST")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BLOCK_LIST_ID_GENERATOR")
+	@SequenceGenerator(name = "BLOCK_LIST_ID_GENERATOR", sequenceName = "SEQ_BLOCK_LIST")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BLOCK_LIST_ID_GENERATOR")
 	private Long id;
 
 	@Basic
-	@Column(name="BLOCK_TYPE")
+	@Column(name = "BLOCK_TYPE")
 	private Long block_type;
 
 	@Basic
-	@Column(name="DELETED")
+	@Column(name = "DELETED")
 	private Long deleted;
 
 	@Basic
-	@Column(name="MAIN_DETAIL_ID")
+	@Column(name = "MAIN_DETAIL_ID")
 	private Long main_detail_id;
 
 	@Basic
-	@Column(name="MAIN_ID")
-	private Long main_id;
+	@Column(name = "ORGANIZATION_ID")
+	private Long organization_id;
 
 	@Basic
-	@Column(name="NOTE")
+	@Column(name = "NOTE")
 	private String note;
 
 	@Basic
-	@Column(name="REC_DATE")
+	@Column(name = "REC_DATE")
 	private Timestamp rec_date;
 
 	@Basic
-	@Column(name="REC_USER")
+	@Column(name = "REC_USER")
 	private String rec_user;
 
 	@Basic
-	@Column(name="STATUS")
+	@Column(name = "STATUS")
 	private Long status;
 
 	@Basic
-	@Column(name="UPD_DATE")
+	@Column(name = "UPD_DATE")
 	private Timestamp upd_date;
 
 	@Basic
-	@Column(name="UPD_USER")
+	@Column(name = "UPD_USER")
 	private String upd_user;
-	
+
 	@Transient
 	private String loggedUserName;
 
@@ -77,12 +76,12 @@ public class BlockList implements Serializable {
 
 	@Transient
 	private String orgDepName;
-	
+
 	@Transient
 	private LinkedHashMap<String, String> blockListPhones;
 
-    public BlockList() {
-    }
+	public BlockList() {
+	}
 
 	public Long getId() {
 		return id;
@@ -116,12 +115,12 @@ public class BlockList implements Serializable {
 		this.main_detail_id = main_detail_id;
 	}
 
-	public Long getMain_id() {
-		return main_id;
+	public Long getOrganization_id() {
+		return organization_id;
 	}
 
-	public void setMain_id(Long main_id) {
-		this.main_id = main_id;
+	public void setOrganization_id(Long organization_id) {
+		this.organization_id = organization_id;
 	}
 
 	public String getNote() {

@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 public class OrgInfoByPhone implements Serializable {
 
 	private static final long serialVersionUID = 7026086622425435823L;
-	private Long main_id;
+	private Long organization_id;
 	private String org_name;
 	private String note;
 	private String workinghours;
@@ -33,12 +33,12 @@ public class OrgInfoByPhone implements Serializable {
 	private Long extra_priority;
 	private String new_identcode;
 
-	public Long getMain_id() {
-		return main_id;
+	public Long getOrganization_id() {
+		return organization_id;
 	}
 
-	public void setMain_id(Long main_id) {
-		this.main_id = main_id;
+	public void setOrganization_id(Long organization_id) {
+		this.organization_id = organization_id;
 	}
 
 	public String getOrg_name() {

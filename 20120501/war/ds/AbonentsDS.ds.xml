@@ -6,7 +6,7 @@
 	dropExtraFields = "false">
 	<fields>
 		<field name="abonent_id" 			type="integer"	title="ABonent ID"			hidden="true"	primaryKey="true" />
-		<field name="main_id" 				type="integer"	title="Main ID"				hidden="true"/>
+		<field name="organization_id" 				type="integer"	title="organization_id"				hidden="true"/>
 		<field name="address_id" 			type="integer"	title="Address ID"			hidden="true"/>
 		<field name="phone_id" 				type="integer"	title="Phone ID"			hidden="true"/>		
 		<field name="firstname" 			type="text" 	title="First Name"/>
@@ -67,7 +67,7 @@
 			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.Abonent"/>
 			<selectClause>				
       			t.abonent_id,
-      			t.main_id,
+      			t.organization_id,
       			ma.address_id,
       			p.phone_id,
       			f.firstname,
@@ -114,13 +114,13 @@
 			</tableClause>
 			<whereClause><![CDATA[ 
 				tt.service_id = 7 and 
-				tt.main_id = t.main_id and 
+				tt.organization_id = t.organization_id and 
 				f.firstname_id = t.firstname_id and  
 				l.lastname_id = t.lastname_id and
 				t.abonent_id = ap.abonent_id and
 				p.phone_id = ap.phone_id and 
 				ps.phone_state_id(+) = p.phone_state_id and 
-				ma.main_id = t.main_id and 
+				ma.organization_id = t.organization_id and 
 				str.street_id = ma.street_id and
 				c.city_id = str.city_id and 
 				ma.city_id = sd.city_id(+) and
@@ -157,7 +157,7 @@
 			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.Abonent"/>
 			<selectClause>	/*+ use_nl(t,tt,f,l,p,ap,ps,ma,str,c,sd) */			
       			t.abonent_id,
-      			t.main_id,
+      			t.organization_id,
       			ma.address_id,
       			p.phone_id,
       			f.firstname,
@@ -207,13 +207,13 @@
 			</tableClause>
 			<whereClause><![CDATA[ 
 				tt.service_id = 7 and 
-				tt.main_id = t.main_id and 
+				tt.organization_id = t.organization_id and 
 				f.firstname_id = t.firstname_id and  
 				l.lastname_id = t.lastname_id and
 				t.abonent_id = ap.abonent_id and
 				p.phone_id = ap.phone_id and 
 				ps.phone_state_id(+) = p.phone_state_id and 
-				ma.main_id = t.main_id and 
+				ma.organization_id = t.organization_id and 
 				str.street_id = ma.street_id and
 				c.city_id = str.city_id and 
 				ma.city_id = sd.city_id(+) and

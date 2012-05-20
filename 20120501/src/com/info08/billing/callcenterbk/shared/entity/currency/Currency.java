@@ -44,7 +44,7 @@ public class Currency implements Serializable {
 	private Long sort_order;
 
 	@Transient
-	private String country_name_geo;
+	private String country_name;
 
 	@Transient
 	private String loggedUserName;
@@ -92,12 +92,12 @@ public class Currency implements Serializable {
 		this.sort_order = sort_order;
 	}
 
-	public String getCountry_name_geo() {
-		return country_name_geo;
+	public String getCountry_name() {
+		return country_name;
 	}
 
-	public void setCountry_name_geo(String country_name_geo) {
-		this.country_name_geo = country_name_geo;
+	public void setCountry_name(String country_name) {
+		this.country_name = country_name;
 	}
 
 	public String getLoggedUserName() {
