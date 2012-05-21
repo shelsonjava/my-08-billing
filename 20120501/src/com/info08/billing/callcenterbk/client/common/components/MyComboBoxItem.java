@@ -48,10 +48,12 @@ public class MyComboBoxItem extends HLayout {
 		setWidth100();
 
 		dynamicForm = new DynamicForm();
-		dynamicForm.setAutoFocus(true);
+		dynamicForm.setAutoFocus(false);
 		dynamicForm.setWidth100();
 		dynamicForm.setTitleWidth(myFieldTitleWidth);
 		dynamicForm.setNumCols(2);
+		dynamicForm.setID("formId_"+myFieldName);
+		
 
 		addMember(dynamicForm);
 
