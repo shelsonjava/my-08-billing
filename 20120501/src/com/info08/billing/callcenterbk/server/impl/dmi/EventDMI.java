@@ -269,8 +269,8 @@ public class EventDMI implements QueryConstants {
 					.toString());
 			Long event_category_id = new Long(record.get("event_category_id")
 					.toString());
-			Long organizations_id = record.get("organizations_id") == null ? null
-					: new Long(record.get("organizations_id").toString());
+			Long organizations_id = record.get("organization_id") == null ? null
+					: new Long(record.get("organization_id").toString());
 			Long reservable = record.get("reservable") == null ? null
 					: new Long(record.get("reservable").toString());
 			String event_owner_name = record.get("event_owner_name") == null ? null
