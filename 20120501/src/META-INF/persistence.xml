@@ -66,6 +66,7 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.billingcomps.BillingCompany</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.billingcomps.BillingCompanyInd</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.billingcomps.PhoneNumber</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.billingcomps.Subscribers</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
 			<property name="hibernate.connection.username" value="ccare" />
