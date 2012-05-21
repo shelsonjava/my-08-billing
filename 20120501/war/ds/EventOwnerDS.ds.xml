@@ -51,7 +51,7 @@
 				#if($criteria.event_owner_name) and t.event_owner_name like '%'||($criteria.event_owner_name)||'%' #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.event_owner_id</orderClause>
+			<orderClause>t.event_owner_name</orderClause>
     	</operationBinding>
     	
     	<operationBinding operationId="searchAllEventOwnerForCB" operationType="fetch">
