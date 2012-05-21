@@ -79,6 +79,19 @@
 			<orderClause>org.organization_name</orderClause>		
     	</operationBinding>
     	
+    	<operationBinding operationId="searchOrganizationsForCBDoubleLike" operationType="fetch">
+    		<selectClause>   			
+    			org.organization_id,
+    			org.organization_name 
+			</selectClause> 
+			<tableClause>organizations org</tableClause>	
+			<whereClause>
+				   1 = 1
+				   #if($criteria.organization_name) and t.organization_name like '%'||($criteria.organization_name)||'%' #end
+			</whereClause>	
+			<orderClause>org.organization_name</orderClause>		
+    	</operationBinding>
+    	
     	<operationBinding operationId="searchAllEventOwnerForCallCenter2" operationType="fetch">
     		<selectClause>   
     					distinct			
