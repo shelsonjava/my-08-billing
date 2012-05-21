@@ -5,10 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -18,8 +15,6 @@ public class Description implements Serializable {
 	private static final long serialVersionUID = 5321693077115104783L;
 
 	@Id
-	@SequenceGenerator(name = "CONTRACTS_CONTRACTID_GENERATOR", sequenceName = "CONTRACT_ID_SEQ")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTRACTS_CONTRACTID_GENERATOR")
 	@Column(name = "DESCRIPTION_ID")
 	private Long description_id;
 
