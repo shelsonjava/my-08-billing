@@ -121,7 +121,7 @@ public class DlgViewEvent extends Window {
 		DetailViewerField price = new DetailViewerField("event_list_price",
 				CallCenterBK.constants.price());
 
-		DetailViewerField fullinfo = new DetailViewerField("event_list_info",
+		DetailViewerField fullinfo = new DetailViewerField("event_list_remark",
 				CallCenterBK.constants.comment());
 
 		detailViewer.selectRecord(listGridRecord);
