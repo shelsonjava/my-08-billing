@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
-import com.info08.billing.callcenterbk.shared.items.Abonent;
+import com.info08.billing.callcenterbk.shared.items.Subscribers;
 import com.info08.billing.callcenterbk.shared.items.OrgInfoByPhone;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSource;
@@ -36,7 +36,7 @@ public class AbonentDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "rawtypes", "unused" })
-	public Abonent saveOrUpdateAbonent(DSRequest dsRequest) throws Exception {
+	public Subscribers saveOrUpdateAbonent(DSRequest dsRequest) throws Exception {
 		CallableStatement insertStatement = null;
 		PreparedStatement stmt = null;
 		Connection connection = null;
@@ -217,7 +217,7 @@ public class AbonentDMI implements QueryConstants {
 		}
 	}
 
-	public Abonent setAbonentStatusToDelete(DSRequest dsRequest)
+	public Subscribers setAbonentStatusToDelete(DSRequest dsRequest)
 			throws CallCenterException {
 		PreparedStatement stmt = null;
 		Connection connection = null;
@@ -314,7 +314,7 @@ public class AbonentDMI implements QueryConstants {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private Abonent getAbonent(Integer abonentId, String loggedUserName,
+	private Subscribers getAbonent(Integer abonentId, String loggedUserName,
 			Connection connection) throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
@@ -331,9 +331,9 @@ public class AbonentDMI implements QueryConstants {
 
 			Object columns[] = (Object[]) resultList.get(0);
 
-			Abonent existingRecord = new Abonent();
+			Subscribers existingRecord = new Subscribers();
 			existingRecord.setLoggedUserName(loggedUserName);
-			existingRecord.setAbonent_id(columns[0] == null ? null
+			existingRecord.setSubscriber_id(columns[0] == null ? null
 					: new Integer(columns[0].toString()));
 			existingRecord.setOrganization_id(columns[1] == null ? null
 					: new Integer(columns[1].toString()));

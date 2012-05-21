@@ -3,11 +3,11 @@ package com.info08.billing.callcenterbk.shared.items;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Abonent implements Serializable {
+public class Subscribers implements Serializable {
 
 	private static final long serialVersionUID = 7026086622425435823L;
 	private Integer organization_id;
-	private Integer abonent_id;
+	private Integer subscriber_id;
 	private Integer address_id;
 	private Integer phone_id;
 	private Integer firstname_id;
@@ -47,12 +47,12 @@ public class Abonent implements Serializable {
 		this.organization_id = organization_id;
 	}
 
-	public Integer getAbonent_id() {
-		return abonent_id;
+	public Integer getSubscriber_id() {
+		return subscriber_id;
 	}
 
-	public void setAbonent_id(Integer abonent_id) {
-		this.abonent_id = abonent_id;
+	public void setSubscriber_id(Integer subscriber_id) {
+		this.subscriber_id = subscriber_id;
 	}
 
 	public String getFirstname() {
@@ -298,7 +298,7 @@ public class Abonent implements Serializable {
 	@Override
 	public String toString() {
 		return "organization_id = " + organization_id + ", abonent_id = "
-				+ abonent_id + ", address_id = " + address_id + ", phone_id = "
+				+ subscriber_id + ", address_id = " + address_id + ", phone_id = "
 				+ phone_id + ", firstname_id = " + firstname_id
 				+ ", lastname_id = " + lastname_id + ", city_id = " + city_id
 				+ ", street_id = " + street_id + ", city_region_id = "

@@ -21,7 +21,7 @@ public class Phone{
 	private String phone_type;
 	private String is_parallel_descr;
 	private Integer is_parallel;
-	private Abonent abonent;
+	private Subscribers abonent;
 	
 	public Integer getPhone_Id() {
 		return phone_Id;
@@ -159,11 +159,11 @@ public class Phone{
 		this.is_parallel = is_parallel;
 	}
 
-	public Abonent getAbonent() {
+	public Subscribers getAbonent() {
 		return abonent;
 	}
 
-	public void setAbonent(Abonent abonent) {
+	public void setAbonent(Subscribers abonent) {
 		this.abonent = abonent;
 	}	
 }
