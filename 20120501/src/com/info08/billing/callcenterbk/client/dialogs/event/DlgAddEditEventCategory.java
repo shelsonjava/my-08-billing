@@ -31,8 +31,7 @@ public class DlgAddEditEventCategory extends Window {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
-		setTitle(pRecord == null ? "აფიშა-კატეგორიის დამატება"
-				: "აფიშა-კატეგორიის მოდიფიცირება");
+		setTitle(pRecord == null ? "აფიშა-კატეგორიის დამატება" : "აფიშა-კატეგორიის მოდიფიცირება");
 
 		setHeight(110);
 		setWidth(520);
