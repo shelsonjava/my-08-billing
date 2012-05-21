@@ -4,6 +4,7 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.TabAbonent;
 import com.info08.billing.callcenterbk.client.content.TabAbonentLastNames;
 import com.info08.billing.callcenterbk.client.content.TabAbonentNames;
+import com.info08.billing.callcenterbk.client.content.TabOrgBusinessActivity;
 import com.info08.billing.callcenterbk.client.content.TabOrganization;
 import com.info08.billing.callcenterbk.client.content.TabVirtualCharge;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -24,12 +25,12 @@ public class CorrectionStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", "ორგანიზაციები", true, "organization.gif"),
-			new MenuNode("101", "2", "აბონენტები", true, "person.png"),
-			new MenuNode("102", "3", "სახელები", true, "person.png"),
-			new MenuNode("103", "4", "გვარები", true, "person.png"),
-			new MenuNode("104", "5", CallCenterBK.constants.virtualCharge(),
-					true, "moneySmall.png") };
+			new MenuNode("100", "1", "ორგ. საქმიანობები", true, "organization.gif"),
+			new MenuNode("101", "2", "ორგანიზაციები", true, "organization.gif"),
+			new MenuNode("102", "3", "აბონენტები", true, "person.png"),
+			new MenuNode("103", "4", "სახელები", true, "person.png"),
+			new MenuNode("104", "5", "გვარები", true, "person.png"),
+			new MenuNode("105", "6", CallCenterBK.constants.virtualCharge(), true, "moneySmall.png") };
 
 	private TreeGrid menuTreeGrid;
 
@@ -91,23 +92,20 @@ public class CorrectionStackSelection extends SectionStackSection {
 
 	public void setMenuPersmission() {
 		try {
-			boolean hasAbonentPerm = CommonSingleton.getInstance()
-					.hasPermission("105000");
-			boolean hasAbonentNameSurPerm = CommonSingleton.getInstance()
-					.hasPermission("104000");
-
-			menuData[1].setAttribute("enabled", hasAbonentPerm);
-			menuData[2].setAttribute("enabled", hasAbonentNameSurPerm);
-			menuData[3].setAttribute("enabled", hasAbonentNameSurPerm);
-
-			boolean hasOrgManPerm = CommonSingleton.getInstance()
-					.hasPermission("105500");
-			menuData[0].setAttribute("enabled", hasOrgManPerm);
-
-			boolean hasVirtChargePerm = CommonSingleton.getInstance()
-					.hasPermission("106550");
+			boolean hasOrgBusActPerm = CommonSingleton.getInstance().hasPermission("103500");
+			boolean hasAbonentPerm = CommonSingleton.getInstance().hasPermission("105000");
+			boolean hasAbonentNameSurPerm = CommonSingleton.getInstance().hasPermission("104000");
+			boolean hasOrgManPerm = CommonSingleton.getInstance().hasPermission("105500");
+			boolean hasVirtChargePerm = CommonSingleton.getInstance().hasPermission("106550");
 			
-			menuData[4].setAttribute("enabled", hasVirtChargePerm);
+
+			menuData[0].setAttribute("enabled", hasOrgBusActPerm);
+			menuData[1].setAttribute("enabled", hasOrgManPerm);
+			menuData[2].setAttribute("enabled", hasAbonentPerm);
+			menuData[3].setAttribute("enabled", hasAbonentNameSurPerm);
+			menuData[4].setAttribute("enabled", hasAbonentNameSurPerm);
+			menuData[5].setAttribute("enabled", hasVirtChargePerm);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -120,18 +118,22 @@ public class CorrectionStackSelection extends SectionStackSection {
 			return;
 		}
 		if (menuId.equals("100")) {
+			TabOrgBusinessActivity tabOrgBusinessActivity = new TabOrgBusinessActivity();
+			body.addTab(tabOrgBusinessActivity);
+		}
+		else if (menuId.equals("101")) {
 			TabOrganization controlTabPane = new TabOrganization();
 			body.addTab(controlTabPane);
-		} else if (menuId.equals("101")) {
+		} else if (menuId.equals("102")) {
 			TabAbonent tabAbonent = new TabAbonent();
 			body.addTab(tabAbonent);
-		} else if (menuId.equals("102")) {
+		} else if (menuId.equals("103")) {
 			TabAbonentNames tabAbonentName = new TabAbonentNames();
 			body.addTab(tabAbonentName);
-		} else if (menuId.equals("103")) {
+		} else if (menuId.equals("104")) {
 			TabAbonentLastNames tabAbonentLastNames = new TabAbonentLastNames();
 			body.addTab(tabAbonentLastNames);
-		} else if (menuId.equals("104")) {
+		} else if (menuId.equals("105")) {
 			TabVirtualCharge tabVirtualCharge = new TabVirtualCharge();
 			body.addTab(tabVirtualCharge);
 		}
