@@ -40,8 +40,8 @@ public class TabEventOwner extends Tab {
 	private VLayout mainLayout;
 
 	// form fields
-	private ComboBoxItem entTypeItem;
-	private TextItem entPlaceGeo;
+	private ComboBoxItem eventCategoryComboItem;
+	private TextItem eventOwnerNameItem;
 
 	// actions
 	private IButton findButton;
@@ -74,30 +74,30 @@ public class TabEventOwner extends Tab {
 			searchForm.setTitleWidth(200);
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
-
+			
 			Criteria criteria = new Criteria();
 
-			entTypeItem = new ComboBoxItem();
-			entTypeItem.setTitle("აფიშა-კატეგორია");
-			entTypeItem.setWidth(300);
-			entTypeItem.setName("event_category_name");
-			entTypeItem.setFetchMissingValues(true);
-			entTypeItem.setFilterLocally(false);
-			entTypeItem.setAddUnknownValues(false);
-
+			eventCategoryComboItem = new ComboBoxItem();
+			eventCategoryComboItem.setTitle("აფიშა-კატეგორია");
+			eventCategoryComboItem.setWidth(300);
+			eventCategoryComboItem.setName("event_category_name");
+			eventCategoryComboItem.setFetchMissingValues(true);
+			eventCategoryComboItem.setFilterLocally(false);
+			eventCategoryComboItem.setAddUnknownValues(false);
+			
 			DataSource EventCategoryDS = DataSource.get("EventCategoryDS");
-			entTypeItem.setOptionOperationId("searchAllEventCategoryForCB");
-			entTypeItem.setOptionDataSource(EventCategoryDS);
-			entTypeItem.setValueField("event_category_id");
-			entTypeItem.setDisplayField("event_category_name");
+			eventCategoryComboItem.setOptionOperationId("searchAllEventCategoryForCB");
+			eventCategoryComboItem.setOptionDataSource(EventCategoryDS);
+			eventCategoryComboItem.setValueField("event_category_id");
+			eventCategoryComboItem.setDisplayField("event_category_name");
 
-			entTypeItem.setOptionCriteria(criteria);
-			entTypeItem.setAutoFetchData(false);
+			eventCategoryComboItem.setOptionCriteria(criteria);
+			eventCategoryComboItem.setAutoFetchData(false);
 
-			entTypeItem.addKeyPressHandler(new KeyPressHandler() {
+			eventCategoryComboItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = entTypeItem.getOptionCriteria();
+					Criteria criteria = eventCategoryComboItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
 								.getAttribute("event_category_id");
@@ -109,12 +109,14 @@ public class TabEventOwner extends Tab {
 				}
 			});
 
-			entPlaceGeo = new TextItem();
-			entPlaceGeo.setTitle("რესურსის დასახელება");
-			entPlaceGeo.setName("event_owner_name");
-			entPlaceGeo.setWidth(300);
+			eventOwnerNameItem = new TextItem();
+			eventOwnerNameItem.setTitle("რესურსის დასახელება");
+			eventOwnerNameItem.setName("event_owner_name");
+			eventOwnerNameItem.setWidth(300);
 
-			searchForm.setFields(entTypeItem, entPlaceGeo);
+			searchForm.setFields(eventCategoryComboItem, eventOwnerNameItem);
+			
+			searchForm.focusInItem(eventOwnerNameItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -188,10 +190,11 @@ public class TabEventOwner extends Tab {
 					"event_owner_name", "რესურსის დასახელება", 450);
 			ListGridField event_category_name = new ListGridField(
 					"event_category_name", "კატეგორია", 180);
-			ListGridField organization_name = new ListGridField("organization_name",
-					"ორგანიზაცია", 250);
+			ListGridField organization_name = new ListGridField(
+					"organization_name", "ორგანიზაცია", 250);
 
-			listGrid.setFields(event_owner_name, event_category_name, organization_name);
+			listGrid.setFields(event_owner_name, event_category_name,
+					organization_name);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -203,8 +206,8 @@ public class TabEventOwner extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					entTypeItem.clearValue();
-					entPlaceGeo.clearValue();
+					eventCategoryComboItem.clearValue();
+					eventOwnerNameItem.clearValue();
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
@@ -287,6 +290,15 @@ public class TabEventOwner extends Tab {
 				}
 			});
 
+			eventOwnerNameItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			});
+
 			tabSet.setTabs(tabDetViewer);
 			mainLayout.addMember(tabSet);
 			setPane(mainLayout);
@@ -298,8 +310,8 @@ public class TabEventOwner extends Tab {
 
 	private void search() {
 		try {
-			String event_category_id = entTypeItem.getValueAsString();
-			String event_owner_name = entPlaceGeo.getValueAsString();
+			String event_category_id = eventCategoryComboItem.getValueAsString();
+			String event_owner_name = eventOwnerNameItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
 			if (event_category_id != null) {
