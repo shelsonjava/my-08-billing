@@ -1,5 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.event;
 
+import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -32,7 +34,7 @@ public class DlgAddEditEventOwner extends Window {
 	private ComboBoxItem entTypeItem;
 	private TextItem entPlaceGeo;
 	private ComboBoxItem reservableItem;
-	private ComboBoxItem organizationItem;
+	private MyComboBoxItem organizationItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
@@ -44,8 +46,8 @@ public class DlgAddEditEventOwner extends Window {
 		setTitle(pRecord == null ? "აფიშა-რესურსის დამატება"
 				: "აფიშა-რესურსის მოდიფიცირება");
 
-		setHeight(180);
-		setWidth(580);
+		setHeight(200);
+		setWidth(590);
 		setShowMinimizeButton(false);
 		setIsModal(true);
 		setShowModalMask(true);
@@ -114,39 +116,24 @@ public class DlgAddEditEventOwner extends Window {
 		reservableItem.setValueMap(ClientMapUtil.getInstance()
 				.getReservations());
 
-		organizationItem = new ComboBoxItem();
-		organizationItem.setTitle("ორგანიზაცია");
-		organizationItem.setWidth(400);
-		organizationItem.setName("organization_name");
-		organizationItem.setFetchMissingValues(true);
-		organizationItem.setFilterLocally(false);
-		organizationItem.setAddUnknownValues(false);
+		dynamicForm.setFields(entTypeItem, entPlaceGeo, reservableItem);
+		
+		
+		
 
-		DataSource EventOwnerDS = DataSource.get("EventOwnerDS");
-		organizationItem.setOptionOperationId("searchOrganizationsForCB");
-		organizationItem.setOptionDataSource(EventOwnerDS);
-		organizationItem.setValueField("organization_id");
-		organizationItem.setDisplayField("organization_name");
-
-		organizationItem.setOptionCriteria(new Criteria());
-		organizationItem.setAutoFetchData(false);
-
-		organizationItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = organizationItem.getOptionCriteria();
-				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("organization_id");
-					if (oldAttr != null) {
-						Object nullO = null;
-						criteria.setAttribute("organization_id", nullO);
-					}
-				}
-			}
-		});
-
-		dynamicForm.setFields(entTypeItem, entPlaceGeo, reservableItem,
-				organizationItem);
+		organizationItem = new MyComboBoxItem("organization_name", CallCenterBK.constants.orgNameFull(), 168, 380);
+		organizationItem.setMyDlgHeight(400);
+		organizationItem.setMyDlgWidth(600);
+		DataSource orgDS = DataSource.get("EventOwnerDS");
+		organizationItem.setMyDataSource(orgDS);
+		organizationItem.setMyDataSourceOperation("searchOrganizationsForCBDoubleLike");
+		organizationItem.setMyIdField("organization_id");
+		organizationItem.setMyDisplayField("organization_name");
+		organizationItem.setMyChooserTitle(CallCenterBK.constants.organization());
+		
+		hLayout.addMember(organizationItem);
+		
+		
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -186,7 +173,8 @@ public class DlgAddEditEventOwner extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			Integer event_category_id = editRecord.getAttributeAsInt("event_category_id");
+			Integer event_category_id = editRecord
+					.getAttributeAsInt("event_category_id");
 			if (event_category_id != null) {
 				entTypeItem.setValue(event_category_id);
 			}
@@ -199,10 +187,17 @@ public class DlgAddEditEventOwner extends Window {
 			if (reservable != null) {
 				reservableItem.setValue(reservable);
 			}
-			Integer organization_id = editRecord.getAttributeAsInt("organization_id");
+			Integer organization_id = editRecord
+					.getAttributeAsInt("organization_id");
 			if (organization_id != null) {
-				organizationItem.setValue(organization_id);
+				organizationItem.setMyId(organization_id);
 			}
+			String organization_name = editRecord
+					.getAttributeAsString("organization_name");
+			if (organization_name != null){
+				organizationItem.setMyValue(organization_name);
+			}
+			
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -211,7 +206,8 @@ public class DlgAddEditEventOwner extends Window {
 	private void save() {
 		try {
 			String event_category_id_str = entTypeItem.getValueAsString();
-			if (event_category_id_str == null || event_category_id_str.trim().equals("")) {
+			if (event_category_id_str == null
+					|| event_category_id_str.trim().equals("")) {
 				SC.say("გთხოვთ აირჩიოთ კატეგორია");
 				return;
 			}
@@ -224,9 +220,10 @@ public class DlgAddEditEventOwner extends Window {
 			}
 			Integer reservable = new Integer(reservable_str);
 			Integer organization_id = null;
-			String organization_id_str = organizationItem.getValueAsString();
-			if (organization_id_str != null && !organization_id_str.trim().equals("")) {
-				organization_id = new Integer(organization_id_str);
+			String organization_id_str = organizationItem.getMyValue();
+			if (organization_id_str != null
+					&& !organization_id_str.trim().equals("")) {
+				organization_id = new Integer(organizationItem.getMyId());
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
