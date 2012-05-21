@@ -215,7 +215,7 @@ public class TabFindPoster extends Tab {
 				CallCenterBK.constants.price(), 70);
 		price.setAlign(Alignment.CENTER);
 
-		ListGridField fullinfo = new ListGridField("event_list_info",
+		ListGridField fullinfo = new ListGridField("event_list_remark",
 				CallCenterBK.constants.comment());
 
 		ListGridField event_owner_name = new ListGridField("event_owner_name",
@@ -346,8 +346,8 @@ public class TabFindPoster extends Tab {
 								record.getAttributeAsString("webaddress"));
 						pRecord.setAttribute("mail",
 								record.getAttributeAsString("mail"));
-						pRecord.setAttribute("city_name_geo",
-								record.getAttributeAsString("city_name_geo"));
+						pRecord.setAttribute("town_name",
+								record.getAttributeAsString("town_name"));
 						pRecord.setAttribute("city_region_name_geo", record
 								.getAttributeAsString("city_region_name_geo"));
 						pRecord.setAttribute("street_location_geo", record
@@ -356,8 +356,8 @@ public class TabFindPoster extends Tab {
 								record.getAttributeAsString("index_text"));
 						pRecord.setAttribute("legal_statuse",
 								record.getAttributeAsString("legal_statuse"));
-						pRecord.setAttribute("city_id",
-								record.getAttributeAsInt("city_id"));
+						pRecord.setAttribute("town_id",
+								record.getAttributeAsInt("town_id"));
 						pRecord.setAttribute("org_allert_by_buss_det", record
 								.getAttributeAsString("org_allert_by_buss_det"));
 
