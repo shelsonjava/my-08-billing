@@ -118,16 +118,16 @@ public class TabTranspStation extends Tab {
 			cityItem = new ComboBoxItem();
 			cityItem.setTitle("ქალაქი");
 			cityItem.setWidth(350);
-			cityItem.setName("city_name_geo");
+			cityItem.setName("town_name");
 			cityItem.setFetchMissingValues(true);
 			cityItem.setFilterLocally(false);
 			cityItem.setAddUnknownValues(false);
 
-			DataSource cityDS = DataSource.get("CityDS");
+			DataSource townsDS = DataSource.get("TownsDS");
 			cityItem.setOptionOperationId("searchCitiesFromDBForCombos");
-			cityItem.setOptionDataSource(cityDS);
-			cityItem.setValueField("city_id");
-			cityItem.setDisplayField("city_name_geo");
+			cityItem.setOptionDataSource(townsDS);
+			cityItem.setValueField("town_id");
+			cityItem.setDisplayField("town_name");
 
 			Criteria criteriaCity = new Criteria();
 			cityItem.setOptionCriteria(criteriaCity);
@@ -138,10 +138,10 @@ public class TabTranspStation extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = cityItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("city_id");
+						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_id", nullO);
+							criteria.setAttribute("town_id", nullO);
 						}
 					}
 				}
@@ -335,7 +335,7 @@ public class TabTranspStation extends Tab {
 		try {
 			String name_descr = transpStatGeoItem.getValueAsString();
 			String transp_type_id = transportTypeItem.getValueAsString();
-			String city_id = cityItem.getValueAsString();
+			String town_id = cityItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("name_descr", name_descr);
@@ -343,8 +343,8 @@ public class TabTranspStation extends Tab {
 				criteria.setAttribute("transp_type_id", new Integer(
 						transp_type_id));
 			}
-			if (city_id != null) {
-				criteria.setAttribute("city_id", new Integer(city_id));
+			if (town_id != null) {
+				criteria.setAttribute("town_id", new Integer(town_id));
 			}
 
 			DSRequest dsRequest = new DSRequest();

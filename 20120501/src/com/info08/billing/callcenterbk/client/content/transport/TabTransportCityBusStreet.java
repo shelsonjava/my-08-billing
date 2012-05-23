@@ -104,7 +104,7 @@ public class TabTransportCityBusStreet extends Tab {
 
 			streetItem = new ComboBoxItem();
 			streetItem.setTitle("ქუჩა");
-			streetItem.setName("street_name_geo");
+			streetItem.setName("street_name");
 			streetItem.setWidth(300);
 			streetItem.setFetchMissingValues(true);
 			streetItem.setFilterLocally(false);
@@ -393,9 +393,9 @@ public class TabTransportCityBusStreet extends Tab {
 			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetItem.setOptionDataSource(streetsDS);
 			streetItem.setValueField("street_id");
-			streetItem.setDisplayField("street_name_geo");
+			streetItem.setDisplayField("street_name");
 
-			criteria.setAttribute("city_id", Constants.defCityTbilisiId);
+			criteria.setAttribute("town_id", Constants.defCityTbilisiId);
 			streetItem.setOptionCriteria(criteria);
 			streetItem.setAutoFetchData(false);
 
