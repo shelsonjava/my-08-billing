@@ -332,69 +332,69 @@ public class AbonentDMI implements QueryConstants {
 			Object columns[] = (Object[]) resultList.get(0);
 
 			Subscribers existingRecord = new Subscribers();
-			existingRecord.setLoggedUserName(loggedUserName);
-			existingRecord.setSubscriber_id(columns[0] == null ? null
-					: new Integer(columns[0].toString()));
-			existingRecord.setOrganization_id(columns[1] == null ? null
-					: new Integer(columns[1].toString()));
-			existingRecord.setAddress_id(columns[2] == null ? null
-					: new Integer(columns[2].toString()));
-			existingRecord.setPhone_id(columns[3] == null ? null : new Integer(
-					columns[3].toString()));
-			existingRecord.setFirstname(columns[4] == null ? null : columns[4]
-					.toString());
-			existingRecord.setLastname(columns[5] == null ? null : columns[5]
-					.toString());
-			existingRecord.setPhone(columns[6] == null ? null : columns[6]
-					.toString());
-			existingRecord.setPhone_state(columns[7] == null ? null
-					: columns[7].toString());
-			existingRecord.setPhone_state_id(columns[8] == null ? null
-					: new Integer(columns[8].toString()));
-			existingRecord.setUpd_date(columns[9] == null ? null
-					: ((Timestamp) columns[9]));
-			existingRecord.setCity(columns[10] == null ? null : columns[10]
-					.toString());
-			existingRecord.setStreet(columns[11] == null ? null : columns[11]
-					.toString());
-			existingRecord.setUpd_user(columns[12] == null ? null : columns[12]
-					.toString());
-			existingRecord.setFirstname_id(columns[13] == null ? null
-					: new Integer(columns[13].toString()));
-			existingRecord.setLastname_id(columns[14] == null ? null
-					: new Integer(columns[14].toString()));
-			existingRecord.setAbonent_hide(columns[15] == null ? null
-					: new Integer(columns[15].toString()));
-			existingRecord.setPhone_parallel(columns[16] == null ? null
-					: new Integer(columns[16].toString()));
-			existingRecord.setPhone_status_id(columns[17] == null ? null
-					: new Integer(columns[17].toString()));
-			existingRecord.setPhone_type_id(columns[18] == null ? null
-					: new Integer(columns[18].toString()));
-			existingRecord.setCity_id(columns[19] == null ? null : new Integer(
-					columns[19].toString()));
-			existingRecord.setStreet_id(columns[20] == null ? null
-					: new Integer(columns[20].toString()));
-			existingRecord.setCity_region_id(columns[21] == null ? null
-					: new Integer(columns[21].toString()));
-			existingRecord.setAddress_hide(columns[22] == null ? null
-					: new Integer(columns[22].toString()));
-			existingRecord.setAddress_suffix_geo(columns[23] == null ? null
-					: columns[23].toString());
-			existingRecord.setAddr_number(columns[24] == null ? null
-					: columns[24].toString());
-			existingRecord.setAddr_block(columns[25] == null ? null
-					: columns[25].toString());
-			existingRecord.setAddr_appt(columns[26] == null ? null
-					: columns[26].toString());
-			existingRecord.setAddr_descr(columns[27] == null ? null
-					: columns[27].toString());
-			existingRecord.setStreet_district_id(columns[28] == null ? null
-					: new Integer(columns[28].toString()));
-			existingRecord.setStreet_location_geo(columns[29] == null ? null
-					: columns[29].toString());
-			existingRecord.setDeleted(columns[30] == null ? null : new Integer(
-					columns[30].toString()));
+//			existingRecord.setLoggedUserName(loggedUserName);
+//			existingRecord.setSubscriber_id(columns[0] == null ? null
+//					: new Integer(columns[0].toString()));
+//			existingRecord.setOrganization_id(columns[1] == null ? null
+//					: new Integer(columns[1].toString()));
+//			existingRecord.setAddress_id(columns[2] == null ? null
+//					: new Integer(columns[2].toString()));
+//			existingRecord.setPhone_id(columns[3] == null ? null : new Integer(
+//					columns[3].toString()));
+//			existingRecord.setName(columns[4] == null ? null : columns[4]
+//					.toString());
+//			existingRecord.setLastname(columns[5] == null ? null : columns[5]
+//					.toString());
+//			existingRecord.setPhone(columns[6] == null ? null : columns[6]
+//					.toString());
+//			existingRecord.setPhone_state(columns[7] == null ? null
+//					: columns[7].toString());
+//			existingRecord.setPhone_state_id(columns[8] == null ? null
+//					: new Integer(columns[8].toString()));
+//			existingRecord.setUpd_date(columns[9] == null ? null
+//					: ((Timestamp) columns[9]));
+//			existingRecord.setCity(columns[10] == null ? null : columns[10]
+//					.toString());
+//			existingRecord.setStreet(columns[11] == null ? null : columns[11]
+//					.toString());
+//			existingRecord.setUpd_user(columns[12] == null ? null : columns[12]
+//					.toString());
+//			existingRecord.setName_id(columns[13] == null ? null
+//					: new Integer(columns[13].toString()));
+//			existingRecord.setFamily_name_id(columns[14] == null ? null
+//					: new Integer(columns[14].toString()));
+//			existingRecord.setAbonent_hide(columns[15] == null ? null
+//					: new Integer(columns[15].toString()));
+//			existingRecord.setPhone_parallel(columns[16] == null ? null
+//					: new Integer(columns[16].toString()));
+//			existingRecord.setPhone_status_id(columns[17] == null ? null
+//					: new Integer(columns[17].toString()));
+//			existingRecord.setPhone_type_id(columns[18] == null ? null
+//					: new Integer(columns[18].toString()));
+//			existingRecord.setCity_id(columns[19] == null ? null : new Integer(
+//					columns[19].toString()));
+//			existingRecord.setStreet_id(columns[20] == null ? null
+//					: new Integer(columns[20].toString()));
+//			existingRecord.setCity_region_id(columns[21] == null ? null
+//					: new Integer(columns[21].toString()));
+//			existingRecord.setAddress_hide(columns[22] == null ? null
+//					: new Integer(columns[22].toString()));
+//			existingRecord.setAddress_suffix_geo(columns[23] == null ? null
+//					: columns[23].toString());
+//			existingRecord.setAddr_number(columns[24] == null ? null
+//					: columns[24].toString());
+//			existingRecord.setAddr_block(columns[25] == null ? null
+//					: columns[25].toString());
+//			existingRecord.setAddr_appt(columns[26] == null ? null
+//					: columns[26].toString());
+//			existingRecord.setAddr_descr(columns[27] == null ? null
+//					: columns[27].toString());
+//			existingRecord.setStreet_district_id(columns[28] == null ? null
+//					: new Integer(columns[28].toString()));
+//			existingRecord.setStreet_location_geo(columns[29] == null ? null
+//					: columns[29].toString());
+//			existingRecord.setDeleted(columns[30] == null ? null : new Integer(
+//					columns[30].toString()));
 
 			log += ". Result : getAbonent Finished Successfully.";
 			logger.info(log);
