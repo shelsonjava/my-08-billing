@@ -39,8 +39,8 @@ public class TabFindAbonent extends Tab {
 	// main content layout
 	private VLayout mainLayout;
 
-	private TextItem firstNameItem;
-	private TextItem lastNameItem;
+	private TextItem nameItem;
+	private TextItem family_nameItem;
 	private TextItem phoneItem;
 	private ComboBoxItem citiesItem;
 	private TextItem streetItem;
@@ -60,7 +60,7 @@ public class TabFindAbonent extends Tab {
 		setTitle(CallCenterBK.constants.findAbonent());
 		setCanClose(true);
 
-		datasource = DataSource.get("AbonentsDS");
+		datasource = DataSource.get("SubscriberDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -74,15 +74,15 @@ public class TabFindAbonent extends Tab {
 		searchForm.setTitleOrientation(TitleOrientation.TOP);
 		mainLayout.addMember(searchForm);
 
-		firstNameItem = new TextItem();
-		firstNameItem.setTitle(CallCenterBK.constants.name());
-		firstNameItem.setWidth(250);
-		firstNameItem.setName("firstNameItem");
+		nameItem = new TextItem();
+		nameItem.setTitle(CallCenterBK.constants.name());
+		nameItem.setWidth(250);
+		nameItem.setName("nameItem");
 
-		lastNameItem = new TextItem();
-		lastNameItem.setTitle(CallCenterBK.constants.lastName());
-		lastNameItem.setWidth(250);
-		lastNameItem.setName("lastNameItem");
+		family_nameItem = new TextItem();
+		family_nameItem.setTitle(CallCenterBK.constants.lastName());
+		family_nameItem.setWidth(250);
+		family_nameItem.setName("family_nameItem");
 
 		phoneItem = new TextItem();
 		phoneItem.setTitle(CallCenterBK.constants.phone());
@@ -91,22 +91,22 @@ public class TabFindAbonent extends Tab {
 
 		streetItem = new TextItem();
 		streetItem.setTitle(CallCenterBK.constants.street());
-		streetItem.setName("street_name");
+		streetItem.setName("street_name_geo");
 		streetItem.setWidth(250);
 
 		citiesItem = new ComboBoxItem();
 		citiesItem.setTitle(CallCenterBK.constants.city());
-		citiesItem.setName("town_name");
+		citiesItem.setName("city_name_geo");
 		citiesItem.setWidth(250);
 		citiesItem.setFetchMissingValues(true);
 		citiesItem.setFilterLocally(false);
 		citiesItem.setAddUnknownValues(false);
 
-		DataSource TownsDS = DataSource.get("TownsDS");
+		DataSource cityDS = DataSource.get("CityDS");
 		citiesItem.setOptionOperationId("searchCitiesFromDBForCombos");
-		citiesItem.setOptionDataSource(TownsDS);
+		citiesItem.setOptionDataSource(cityDS);
 		citiesItem.setValueField("town_id");
-		citiesItem.setDisplayField("town_name");
+		citiesItem.setDisplayField("city_name_geo");
 
 		citiesItem.setOptionCriteria(new Criteria());
 		citiesItem.setAutoFetchData(false);
@@ -127,7 +127,7 @@ public class TabFindAbonent extends Tab {
 
 		regionItem = new ComboBoxItem();
 		regionItem.setTitle(CallCenterBK.constants.cityRegion());
-		regionItem.setName("town_district_name");
+		regionItem.setName("city_region_name_geo");
 		regionItem.setWidth(250);
 		regionItem.setFetchMissingValues(true);
 		regionItem.setFilterLocally(false);
@@ -136,8 +136,8 @@ public class TabFindAbonent extends Tab {
 		DataSource streetsDS = DataSource.get("CityRegionDS");
 		regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
 		regionItem.setOptionDataSource(streetsDS);
-		regionItem.setValueField("town_district_id");
-		regionItem.setDisplayField("town_district_name");
+		regionItem.setValueField("city_region_id");
+		regionItem.setDisplayField("city_region_name_geo");
 
 		Criteria criteria = new Criterion();
 		regionItem.setOptionCriteria(criteria);
@@ -148,17 +148,17 @@ public class TabFindAbonent extends Tab {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = regionItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("town_district_id");
+					String oldAttr = criteria.getAttribute("city_region_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("town_district_id", nullO);
+						criteria.setAttribute("city_region_id", nullO);
 					}
 				}
 			}
 		});
 
-		searchForm.setFields(lastNameItem, firstNameItem, phoneItem,
-				streetItem, citiesItem, regionItem);
+		searchForm.setFields(family_nameItem, nameItem, phoneItem, streetItem,
+				citiesItem, regionItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(750);
@@ -206,40 +206,40 @@ public class TabFindAbonent extends Tab {
 		listGrid.setShowFilterEditor(true);
 		listGrid.setFilterOnKeypress(true);
 
-		ListGridField firstname = new ListGridField("firstname",
+		ListGridField name = new ListGridField("name",
 				CallCenterBK.constants.name(), 120);
-		firstname.setCanFilter(true);
-		
-		ListGridField lastname = new ListGridField("lastname",
+		name.setCanFilter(true);
+
+		ListGridField family_name = new ListGridField("family_name",
 				CallCenterBK.constants.lastName(), 150);
-		lastname.setCanFilter(true);
-		
+		family_name.setCanFilter(true);
+
 		ListGridField city = new ListGridField("city",
 				CallCenterBK.constants.city(), 140);
 		city.setCanFilter(false);
-		
+
 		ListGridField address = new ListGridField("address",
 				CallCenterBK.constants.address());
 		address.setCanFilter(true);
-		
-		ListGridField phone = new ListGridField("phone",
-				CallCenterBK.constants.phone(), 100);
+
+		ListGridField phone = new ListGridField("phones",
+				CallCenterBK.constants.phones(), 100);
 		phone.setCanFilter(true);
 
-		firstname.setAlign(Alignment.LEFT);
-		lastname.setAlign(Alignment.LEFT);
+		name.setAlign(Alignment.LEFT);
+		family_name.setAlign(Alignment.LEFT);
 		city.setAlign(Alignment.LEFT);
 		address.setAlign(Alignment.LEFT);
 		phone.setAlign(Alignment.CENTER);
 
-		listGrid.setFields(lastname, firstname, city, address, phone);
+		listGrid.setFields(family_name, name, city, address, phone);
 		mainLayout.addMember(listGrid);
 
 		clearButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				firstNameItem.clearValue();
-				lastNameItem.clearValue();
+				nameItem.clearValue();
+				family_nameItem.clearValue();
 				phoneItem.clearValue();
 				streetItem.clearValue();
 				citiesItem.clearValue();
@@ -266,7 +266,7 @@ public class TabFindAbonent extends Tab {
 			}
 		});
 
-		firstNameItem.addKeyPressHandler(new KeyPressHandler() {
+		nameItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
@@ -274,7 +274,7 @@ public class TabFindAbonent extends Tab {
 				}
 			}
 		});
-		lastNameItem.addKeyPressHandler(new KeyPressHandler() {
+		family_nameItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
@@ -320,8 +320,8 @@ public class TabFindAbonent extends Tab {
 			DataSource streetsDS = DataSource.get("CityRegionDS");
 			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
 			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("town_district_id");
-			regionItem.setDisplayField("town_district_name");
+			regionItem.setValueField("city_region_id");
+			regionItem.setDisplayField("city_region_name_geo");
 
 			Criteria criteria = new Criterion();
 			criteria.setAttribute("town_id", town_id);
@@ -336,15 +336,15 @@ public class TabFindAbonent extends Tab {
 
 	private void search() {
 		try {
-			String firstname = firstNameItem.getValueAsString();
-			String lastname = lastNameItem.getValueAsString();
+			String name = nameItem.getValueAsString();
+			String family_name = family_nameItem.getValueAsString();
 			String phone = phoneItem.getValueAsString();
 			String street_id_str = streetItem.getValueAsString();
 			String town_id_str = citiesItem.getValueAsString();
-			String town_district_id_str = regionItem.getValueAsString();
+			String city_region_id_str = regionItem.getValueAsString();
 
-			if ((firstname == null || firstname.trim().equals(""))
-					&& (lastname == null || lastname.trim().equals(""))
+			if ((name == null || name.trim().equals(""))
+					&& (family_name == null || family_name.trim().equals(""))
 					&& (phone == null || phone.trim().equals(""))
 					&& (street_id_str == null || street_id_str.trim()
 							.equals(""))) {
@@ -353,11 +353,11 @@ public class TabFindAbonent extends Tab {
 				return;
 			}
 			Criteria criteria = new Criteria();
-			if (firstname != null && !firstname.trim().equals("")) {
-				criteria.setAttribute("firstname_param", firstname);
+			if (name != null && !name.trim().equals("")) {
+				criteria.setAttribute("name_param", name);
 			}
-			if (lastname != null && !lastname.trim().equals("")) {
-				criteria.setAttribute("lastname_param", lastname);
+			if (family_name != null && !family_name.trim().equals("")) {
+				criteria.setAttribute("family_name_param", family_name);
 			}
 			if (phone != null && !phone.trim().equals("")) {
 				criteria.setAttribute("phone_param", phone);
@@ -368,17 +368,17 @@ public class TabFindAbonent extends Tab {
 				int i = 1;
 				for (String string : arrStr) {
 					String item = string.trim();
-					criteria.setAttribute("street_name_param" + i, item);
+					criteria.setAttribute("street_name_geo_param" + i, item);
 					i++;
 				}
 			}
 			if (town_id_str != null && !town_id_str.trim().equals("")) {
 				criteria.setAttribute("town_id", new Integer(town_id_str));
 			}
-			if (town_district_id_str != null
-					&& !town_district_id_str.trim().equals("")) {
-				criteria.setAttribute("town_district_id", new Integer(
-						town_district_id_str));
+			if (city_region_id_str != null
+					&& !city_region_id_str.trim().equals("")) {
+				criteria.setAttribute("city_region_id", new Integer(
+						city_region_id_str));
 			}
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "customSearchForCC");
