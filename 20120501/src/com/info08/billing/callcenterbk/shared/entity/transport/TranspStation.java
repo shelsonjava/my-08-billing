@@ -19,12 +19,7 @@ import javax.persistence.Transient;
  * 
  */
 
-@NamedQueries({ 
-		@NamedQuery(
-					name = "TranspStation.getByCityId", 
-					query = "select e from TranspStation e where e.city_id = :city_id ") 
-})
-
+@NamedQueries({ @NamedQuery(name = "TranspStation.getByCityId", query = "select e from TranspStation e where e.town_id = :town_id ") })
 @Entity
 @Table(name = "TRANSP_STATIONS")
 public class TranspStation implements Serializable {
@@ -41,8 +36,8 @@ public class TranspStation implements Serializable {
 	private Long transp_type_id;
 
 	@Basic
-	@Column(name = "CITY_ID")
-	private Long city_id;
+	@Column(name = "TOWN_ID")
+	private Long town_id;
 
 	@Basic
 	@Column(name = "NAME_DESCR")
@@ -76,12 +71,12 @@ public class TranspStation implements Serializable {
 		this.transp_type_id = transp_type_id;
 	}
 
-	public Long getCity_id() {
-		return city_id;
+	public Long getTown_id() {
+		return town_id;
 	}
 
-	public void setCity_id(Long city_id) {
-		this.city_id = city_id;
+	public void setTown_id(Long town_id) {
+		this.town_id = town_id;
 	}
 
 	public String getName_descr() {

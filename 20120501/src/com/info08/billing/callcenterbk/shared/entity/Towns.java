@@ -70,6 +70,9 @@ public class Towns implements java.io.Serializable {
 	@Transient
 	private String capital_town_name;
 
+	@Transient
+	private String loggedUserName;
+
 	public Towns() {
 	}
 
@@ -175,6 +178,14 @@ public class Towns implements java.io.Serializable {
 
 	public void setCapital_town_name(String capital_town_name) {
 		this.capital_town_name = capital_town_name;
+	}
+
+	public String getLoggedUserName() {
+		return loggedUserName;
+	}
+
+	public void setLoggedUserName(String loggedUserName) {
+		this.loggedUserName = loggedUserName;
 	}
 
 }

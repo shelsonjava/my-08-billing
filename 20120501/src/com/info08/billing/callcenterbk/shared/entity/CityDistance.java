@@ -13,84 +13,83 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 /**
  * The persistent class for the CITY_DISTANCES database table.
  * 
  */
 @Entity
-@Table(name="CITY_DISTANCES",schema="ccare")
+@Table(name = "CITY_DISTANCES", schema = "ccare")
 public class CityDistance implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="CITY_DISTANCES_CITYDISTANCEID_GENERATOR", sequenceName="city_distance_id_seq")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CITY_DISTANCES_CITYDISTANCEID_GENERATOR")
-	@Column(name="CITY_DISTANCE_ID")
+	@SequenceGenerator(name = "CITY_DISTANCES_CITYDISTANCEID_GENERATOR", sequenceName = "city_distance_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CITY_DISTANCES_CITYDISTANCEID_GENERATOR")
+	@Column(name = "CITY_DISTANCE_ID")
 	private Long city_distance_id;
 
 	@Basic
-	@Column(name="CITY_DISTANCE_ENG")
+	@Column(name = "CITY_DISTANCE_ENG")
 	private String city_distance_eng;
 
 	@Basic
-	@Column(name="CITY_DISTANCE_GEO")
+	@Column(name = "CITY_DISTANCE_GEO")
 	private String city_distance_geo;
 
 	@Basic
-	@Column(name="CITY_DISTANCE_TYPE")
+	@Column(name = "CITY_DISTANCE_TYPE")
 	private Long city_distance_type;
 
 	@Basic
-	@Column(name="CITY_ID_END")
-	private Long city_id_end;
+	@Column(name = "TOWN_ID_END")
+	private Long town_id_end;
 
 	@Basic
-	@Column(name="CITY_ID_START")
-	private Long city_id_start;
+	@Column(name = "TOWN_ID_START")
+	private Long town_id_start;
 
 	@Basic
-	@Column(name="DELETED")
+	@Column(name = "DELETED")
 	private Long deleted;
 
 	@Basic
-	@Column(name="NOTE_ENG")
+	@Column(name = "NOTE_ENG")
 	private String note_eng;
 
 	@Basic
-	@Column(name="NOTE_GEO")
+	@Column(name = "NOTE_GEO")
 	private String note_geo;
 
 	@Basic
-    @Column(name="REC_DATE")
+	@Column(name = "REC_DATE")
 	private Timestamp rec_date;
 
 	@Basic
-	@Column(name="REC_USER")
+	@Column(name = "REC_USER")
 	private String rec_user;
 
 	@Basic
-    @Column(name="UPD_DATE")
+	@Column(name = "UPD_DATE")
 	private Timestamp upd_date;
 
 	@Basic
-	@Column(name="UPD_USER")
+	@Column(name = "UPD_USER")
 	private String upd_user;
-	
-	@Transient 
+
+	@Transient
 	private String loggedUserName;
-	
-	@Transient 
+
+	@Transient
 	private String cityStart;
-	
-	@Transient 
+
+	@Transient
 	private String cityEnd;
 
-	@Transient 
+	@Transient
 	private String cityDistTypeDesc;
 
-    public CityDistance() {
-    }
+	public CityDistance() {
+	}
 
 	public Long getCity_distance_id() {
 		return city_distance_id;
@@ -124,20 +123,20 @@ public class CityDistance implements Serializable {
 		this.city_distance_type = city_distance_type;
 	}
 
-	public Long getCity_id_end() {
-		return city_id_end;
+	public Long getTown_id_end() {
+		return town_id_end;
 	}
 
-	public void setCity_id_end(Long city_id_end) {
-		this.city_id_end = city_id_end;
+	public void setTown_id_end(Long town_id_end) {
+		this.town_id_end = town_id_end;
 	}
 
-	public Long getCity_id_start() {
-		return city_id_start;
+	public Long getTown_id_start() {
+		return town_id_start;
 	}
 
-	public void setCity_id_start(Long city_id_start) {
-		this.city_id_start = city_id_start;
+	public void setTown_id_start(Long town_id_start) {
+		this.town_id_start = town_id_start;
 	}
 
 	public Long getDeleted() {

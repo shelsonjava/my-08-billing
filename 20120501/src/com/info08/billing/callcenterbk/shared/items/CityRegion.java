@@ -8,8 +8,8 @@ public class CityRegion implements Serializable {
 	private static final long serialVersionUID = -7349948363380325805L;
 
 	private Long city_region_id;
-	private Long city_id;
-	private String city_region_name_geo;
+	private Long town_id;
+	private String town_district_name;
 	private String city_region_name_eng;
 	private Long deleted;
 
@@ -21,20 +21,20 @@ public class CityRegion implements Serializable {
 		this.city_region_id = city_region_id;
 	}
 
-	public Long getCity_id() {
-		return city_id;
+	public Long getTown_id() {
+		return town_id;
 	}
 
-	public void setCity_id(Long city_id) {
-		this.city_id = city_id;
+	public void setTown_id(Long town_id) {
+		this.town_id = town_id;
 	}
 
-	public String getCity_region_name_geo() {
-		return city_region_name_geo;
+	public String getTown_district_name() {
+		return town_district_name;
 	}
 
-	public void setCity_region_name_geo(String city_region_name_geo) {
-		this.city_region_name_geo = city_region_name_geo;
+	public void setTown_district_name(String town_district_name) {
+		this.town_district_name = town_district_name;
 	}
 
 	public Long getDeleted() {

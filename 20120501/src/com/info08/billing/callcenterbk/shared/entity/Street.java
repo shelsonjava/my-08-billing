@@ -1,7 +1,6 @@
 package com.info08.billing.callcenterbk.shared.entity;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.persistence.Basic;
@@ -16,177 +15,139 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 /**
  * The persistent class for the STREETS database table.
  * 
  */
 
-@NamedQueries({
-	@NamedQuery(
-				name="StreetEnt.getAllActive",
-				query="select e from StreetEnt e where e.deleted = 0")
-})
-
+@NamedQueries({ @NamedQuery(name = "Street.getAllActive", query = "select e from Street e") })
 @Entity
-@Table(name="STREETS",schema="ccare")
-public class StreetEnt implements Serializable {
-	
+@Table(name = "STREETS")
+public class Street implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="STREETS_STREETID_GENERATOR", sequenceName="street_id_seq")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="STREETS_STREETID_GENERATOR")
-	@Column(name="STREET_ID")
+	@SequenceGenerator(name = "STREETS_STREETID_GENERATOR", sequenceName = "street_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STREETS_STREETID_GENERATOR")
+	@Column(name = "STREET_ID")
 	private Long street_id;
 
-	@Basic	
-	@Column(name="CITY_ID")
-	private Long city_id;
+	@Basic
+	@Column(name = "TOWN_ID")
+	private Long town_id;
 
 	@Basic
-	@Column(name="DELETED")
-	private Long deleted;
-
-	@Basic
-	@Column(name="DESCR_ID_LEVEL_1")
+	@Column(name = "DESCR_ID_LEVEL_1")
 	private Long descr_id_level_1;
 
 	@Basic
-	@Column(name="DESCR_ID_LEVEL_2")
+	@Column(name = "DESCR_ID_LEVEL_2")
 	private Long descr_id_level_2;
 
 	@Basic
-	@Column(name="DESCR_ID_LEVEL_3")
+	@Column(name = "DESCR_ID_LEVEL_3")
 	private Long descr_id_level_3;
 
 	@Basic
-	@Column(name="DESCR_ID_LEVEL_4")
+	@Column(name = "DESCR_ID_LEVEL_4")
 	private Long descr_id_level_4;
 
 	@Basic
-	@Column(name="DESCR_ID_LEVEL_5")
+	@Column(name = "DESCR_ID_LEVEL_5")
 	private Long descr_id_level_5;
 
 	@Basic
-	@Column(name="DESCR_ID_LEVEL_6")
+	@Column(name = "DESCR_ID_LEVEL_6")
 	private Long descr_id_level_6;
 
 	@Basic
-	@Column(name="DESCR_ID_LEVEL_7")
+	@Column(name = "DESCR_ID_LEVEL_7")
 	private Long descr_id_level_7;
 
 	@Basic
-	@Column(name="DESCR_ID_LEVEL_8")
+	@Column(name = "DESCR_ID_LEVEL_8")
 	private Long descr_id_level_8;
 
 	@Basic
-	@Column(name="DESCR_ID_LEVEL_9")
+	@Column(name = "DESCR_ID_LEVEL_9")
 	private Long descr_id_level_9;
-	
+
 	@Basic
-	@Column(name="DESCR_ID_LEVEL_10")
+	@Column(name = "DESCR_ID_LEVEL_10")
 	private Long descr_id_level_10;
 
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_1")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_1")
 	private Long descr_type_id_level_1;
 
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_2")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_2")
 	private Long descr_type_id_level_2;
 
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_3")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_3")
 	private Long descr_type_id_level_3;
 
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_4")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_4")
 	private Long descr_type_id_level_4;
 
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_5")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_5")
 	private Long descr_type_id_level_5;
 
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_6")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_6")
 	private Long descr_type_id_level_6;
 
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_7")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_7")
 	private Long descr_type_id_level_7;
 
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_8")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_8")
 	private Long descr_type_id_level_8;
 
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_9")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_9")
 	private Long descr_type_id_level_9;
-	
+
 	@Basic
-	@Column(name="DESCR_TYPE_ID_LEVEL_10")
+	@Column(name = "DESCR_TYPE_ID_LEVEL_10")
 	private Long descr_type_id_level_10;
 
 	@Basic
-	@Column(name="MAP_ID")
-	private Long map_id;
-
-	@Basic    
-	@Column(name="REC_DATE")
-	private Timestamp rec_date;
-
-	@Basic
-	@Column(name="REC_USER")
-	private String rec_user;
-
-	@Basic
-	@Column(name="RECORD_TYPE")
+	@Column(name = "RECORD_TYPE")
 	private Long record_type;
 
 	@Basic
-	@Column(name="STREET_LOCATION_ENG")
-	private String street_location_eng;
+	@Column(name = "STREET_LOCATION")
+	private String street_location;
 
 	@Basic
-	@Column(name="STREET_LOCATION_GEO")
-	private String street_location_geo;
+	@Column(name = "STREET_NAME")
+	private String street_name;
 
 	@Basic
-	@Column(name="STREET_NAME_ENG")
-	private String street_name_eng;
+	@Column(name = "STREET_REMARK")
+	private String street_remark;
 
 	@Basic
-	@Column(name="STREET_NAME_GEO")
-	private String street_name_geo;
-
-	@Basic
-	@Column(name="STREET_NOTE_ENG")
-	private String street_note_eng;
-
-	@Basic
-	@Column(name="STREET_NOTE_GEO")
-	private String street_note_geo;
-
-	@Basic
-	@Column(name="UPD_USER")
-	private String upd_user;
-
-	@Basic
-	@Column(name="VISIBLE_OPTIONS")
+	@Column(name = "VISIBLE_OPTIONS")
 	private Long visible_options;
-	
+
 	@Transient
 	private String loggedUserName;
-	
-	@Transient
-	private Map<String,String> mapStreDistricts;
-	
-	@Transient
-	private String city_name_geo;
 
-    public StreetEnt() {
-    }
+	@Transient
+	private Map<String, String> mapStreDistricts;
+
+	@Transient
+	private String town_name;
+
+	public Street() {
+	}
 
 	public Long getStreet_id() {
 		return street_id;
@@ -196,20 +157,12 @@ public class StreetEnt implements Serializable {
 		this.street_id = street_id;
 	}
 
-	public Long getCity_id() {
-		return city_id;
+	public Long getTown_id() {
+		return town_id;
 	}
 
-	public void setCity_id(Long city_id) {
-		this.city_id = city_id;
-	}
-
-	public Long getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Long deleted) {
-		this.deleted = deleted;
+	public void setTown_id(Long town_id) {
+		this.town_id = town_id;
 	}
 
 	public Long getDescr_id_level_1() {
@@ -372,92 +325,8 @@ public class StreetEnt implements Serializable {
 		this.descr_type_id_level_9 = descr_type_id_level_9;
 	}
 
-	public Long getMap_id() {
-		return map_id;
-	}
-
-	public void setMap_id(Long map_id) {
-		this.map_id = map_id;
-	}
-
-	public Timestamp getRec_date() {
-		return rec_date;
-	}
-
-	public void setRec_date(Timestamp rec_date) {
-		this.rec_date = rec_date;
-	}
-
-	public String getRec_user() {
-		return rec_user;
-	}
-
-	public void setRec_user(String rec_user) {
-		this.rec_user = rec_user;
-	}
-
-	public Long getRecord_type() {
-		return record_type;
-	}
-
 	public void setRecord_type(Long record_type) {
 		this.record_type = record_type;
-	}
-
-	public String getStreet_location_eng() {
-		return street_location_eng;
-	}
-
-	public void setStreet_location_eng(String street_location_eng) {
-		this.street_location_eng = street_location_eng;
-	}
-
-	public String getStreet_location_geo() {
-		return street_location_geo;
-	}
-
-	public void setStreet_location_geo(String street_location_geo) {
-		this.street_location_geo = street_location_geo;
-	}
-
-	public String getStreet_name_eng() {
-		return street_name_eng;
-	}
-
-	public void setStreet_name_eng(String street_name_eng) {
-		this.street_name_eng = street_name_eng;
-	}
-
-	public String getStreet_name_geo() {
-		return street_name_geo;
-	}
-
-	public void setStreet_name_geo(String street_name_geo) {
-		this.street_name_geo = street_name_geo;
-	}
-
-	public String getStreet_note_eng() {
-		return street_note_eng;
-	}
-
-	public void setStreet_note_eng(String street_note_eng) {
-		this.street_note_eng = street_note_eng;
-	}
-
-	public String getStreet_note_geo() {
-		return street_note_geo;
-	}
-
-	public void setStreet_note_geo(String street_note_geo) {
-		this.street_note_geo = street_note_geo;
-	}
-
-	public String getUpd_user() {
-		return upd_user;
-	}
-
-	public void setUpd_user(String upd_user) {
-		this.upd_user = upd_user;
 	}
 
 	public Long getVisible_options() {
@@ -467,6 +336,7 @@ public class StreetEnt implements Serializable {
 	public void setVisible_options(Long visible_options) {
 		this.visible_options = visible_options;
 	}
+
 	public String getLoggedUserName() {
 		return loggedUserName;
 	}
@@ -483,11 +353,39 @@ public class StreetEnt implements Serializable {
 		this.mapStreDistricts = mapStreDistricts;
 	}
 
-	public String getCity_name_geo() {
-		return city_name_geo;
+	public String getTown_name() {
+		return town_name;
 	}
 
-	public void setCity_name_geo(String city_name_geo) {
-		this.city_name_geo = city_name_geo;
-	}	
+	public void setTown_name(String town_name) {
+		this.town_name = town_name;
+	}
+
+	public String getStreet_location() {
+		return street_location;
+	}
+
+	public void setStreet_location(String street_location) {
+		this.street_location = street_location;
+	}
+
+	public String getStreet_name() {
+		return street_name;
+	}
+
+	public void setStreet_name(String street_name) {
+		this.street_name = street_name;
+	}
+
+	public String getStreet_remark() {
+		return street_remark;
+	}
+
+	public void setStreet_remark(String street_remark) {
+		this.street_remark = street_remark;
+	}
+
+	public Long getRecord_type() {
+		return record_type;
+	}
 }
