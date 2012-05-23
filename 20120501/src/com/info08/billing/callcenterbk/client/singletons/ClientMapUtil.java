@@ -52,6 +52,8 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> hasCalculations1;
 	private LinkedHashMap<String, String> billingCompIndTypes1;
 	private LinkedHashMap<String, String> callTypes;
+	private LinkedHashMap<String, String> allYesAndNo;
+	private LinkedHashMap<String, String> yesAndNo;
 
 	protected ClientMapUtil() {
 		mapOpClose = new LinkedHashMap<String, String>();
@@ -92,6 +94,8 @@ public class ClientMapUtil {
 		hasCalculations1 = new LinkedHashMap<String, String>();
 		billingCompIndTypes1 = new LinkedHashMap<String, String>();
 		callTypes = new LinkedHashMap<String, String>();
+		allYesAndNo = new LinkedHashMap<String, String>();
+		yesAndNo = new LinkedHashMap<String, String>();
 
 		mapOpClose.put("0", "ღია");
 		mapOpClose.put("1", "დაფარულია");
@@ -171,7 +175,7 @@ public class ClientMapUtil {
 
 		orgNoteCrits.put("0", "ჩვეულებრივი");
 		orgNoteCrits.put("-1", "გაწითლებული");
-
+		
 		indexSearchTypes.put("1", CallCenterBK.constants.findByCountry());
 		indexSearchTypes.put("2", CallCenterBK.constants.findByCity());
 		indexSearchTypes.put("3", CallCenterBK.constants.findByOperator());
@@ -234,6 +238,12 @@ public class ClientMapUtil {
 		callTypes.put("11", CallCenterBK.constants.direct());
 		callTypes.put("12", CallCenterBK.constants.nonDirect());
 
+		allYesAndNo.put("-1", CallCenterBK.constants.all());
+		allYesAndNo.put("0", CallCenterBK.constants.noInGeo());
+		allYesAndNo.put("1", CallCenterBK.constants.yes());
+
+		yesAndNo.put("0", CallCenterBK.constants.noInGeo());
+		yesAndNo.put("1", CallCenterBK.constants.yes());
 	}
 
 	public LinkedHashMap<String, String> getCallTypes() {
@@ -387,4 +397,13 @@ public class ClientMapUtil {
 	public LinkedHashMap<String, String> getBillingCompIndTypes() {
 		return billingCompIndTypes;
 	}
+	
+	public LinkedHashMap<String, String> getAllYesAndNo() {
+		return allYesAndNo;
+	}
+	
+	public LinkedHashMap<String, String> getYesAndNo() {
+		return yesAndNo;
+	}
+	
 }
