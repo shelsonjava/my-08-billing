@@ -16,25 +16,24 @@ import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
-import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.common.SharedUtils;
-import com.info08.billing.callcenterbk.shared.entity.Towns;
 import com.info08.billing.callcenterbk.shared.entity.CityDistance;
-import com.info08.billing.callcenterbk.shared.entity.CityRegion;
 import com.info08.billing.callcenterbk.shared.entity.Continents;
 import com.info08.billing.callcenterbk.shared.entity.Country;
-import com.info08.billing.callcenterbk.shared.entity.StreetDescr;
-import com.info08.billing.callcenterbk.shared.entity.StreetDistrict;
-import com.info08.billing.callcenterbk.shared.entity.StreetEnt;
-import com.info08.billing.callcenterbk.shared.entity.StreetType;
-import com.info08.billing.callcenterbk.shared.entity.StreetsOldEnt;
+import com.info08.billing.callcenterbk.shared.entity.Street;
+import com.info08.billing.callcenterbk.shared.entity.StreetKind;
+import com.info08.billing.callcenterbk.shared.entity.StreetNames;
+import com.info08.billing.callcenterbk.shared.entity.StreetToTownDistricts;
+import com.info08.billing.callcenterbk.shared.entity.StreetsOldNames;
+import com.info08.billing.callcenterbk.shared.entity.TownDistrict;
+import com.info08.billing.callcenterbk.shared.entity.Towns;
 import com.info08.billing.callcenterbk.shared.entity.descriptions.Description;
+import com.info08.billing.callcenterbk.shared.items.Departments;
 import com.info08.billing.callcenterbk.shared.items.FirstName;
 import com.info08.billing.callcenterbk.shared.items.LastName;
-import com.info08.billing.callcenterbk.shared.items.Departments;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSource;
 import com.isomorphic.datasource.DataSourceManager;
@@ -43,8 +42,6 @@ import com.isomorphic.sql.SQLDataSource;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSResponse;
-import com.smartgwt.client.data.Record;
-import com.smartgwt.client.data.RecordList;
 
 public class CommonDMI implements QueryConstants {
 
@@ -55,24 +52,24 @@ public class CommonDMI implements QueryConstants {
 	private static TreeMap<Integer, Departments> departments = new TreeMap<Integer, Departments>();
 	private static TreeMap<Long, Continents> continents = new TreeMap<Long, Continents>();
 	private static TreeMap<Long, Country> countries = new TreeMap<Long, Country>();
-	private static TreeMap<Long, Towns> cities = new TreeMap<Long, Towns>();
-	private static TreeMap<Long, ArrayList<StreetEnt>> streetsByCityId = new TreeMap<Long, ArrayList<StreetEnt>>();
-	private static TreeMap<Long, StreetType> streetTypes = new TreeMap<Long, StreetType>();
-	private static TreeMap<Long, StreetDescr> streetDescrs = new TreeMap<Long, StreetDescr>();
-	private static TreeMap<Long, StreetEnt> streetEnts = new TreeMap<Long, StreetEnt>();
-	private static TreeMap<Long, CityRegion> cityRegions = new TreeMap<Long, CityRegion>();
-	private static TreeMap<Long, TreeMap<Long, CityRegion>> cityRegionsByCityId = new TreeMap<Long, TreeMap<Long, CityRegion>>();
+	private static TreeMap<Long, Towns> towns = new TreeMap<Long, Towns>();
+	private static TreeMap<Long, ArrayList<Street>> streetsByCityId = new TreeMap<Long, ArrayList<Street>>();
+	private static TreeMap<Long, StreetKind> streetKinds = new TreeMap<Long, StreetKind>();
+	private static TreeMap<Long, StreetNames> streetDescrs = new TreeMap<Long, StreetNames>();
+	private static TreeMap<Long, Street> streetEnts = new TreeMap<Long, Street>();
+	private static TreeMap<Long, TownDistrict> townDistricts = new TreeMap<Long, TownDistrict>();
+	private static TreeMap<Long, TreeMap<Long, TownDistrict>> townDistrictByTownId = new TreeMap<Long, TreeMap<Long, TownDistrict>>();
 
-	public static StreetEnt getStreetEnt(Long steetEntId) {
+	public static Street getStreetEnt(Long steetEntId) {
 		return streetEnts.get(steetEntId);
 	}
 
-	public static StreetDescr getStreetDescr(Long steetDescrId) {
+	public static StreetNames getStreetDescr(Long steetDescrId) {
 		return streetDescrs.get(steetDescrId);
 	}
 
-	public static CityRegion getCityRegion(Integer cityRegionId) {
-		return cityRegions.get(cityRegionId);
+	public static TownDistrict getTownDistricts(Integer town_district_id) {
+		return townDistricts.get(town_district_id);
 	}
 
 	public static FirstName getFirstName(Integer firstNameId) {
@@ -87,16 +84,16 @@ public class CommonDMI implements QueryConstants {
 		return departments.get(departmentId);
 	}
 
-	public static Towns getCity(Long cityId) {
-		return cities.get(cityId);
+	public static Towns getTown(Long townId) {
+		return towns.get(townId);
 	}
 
 	public static Country getCountry(Long countryId) {
 		return countries.get(countryId);
 	}
 
-	public static StreetType getStreetType(Long streetTypeId) {
-		return streetTypes.get(streetTypeId);
+	public static StreetKind getStreetKind(Long streetKindId) {
+		return streetKinds.get(streetKindId);
 	}
 
 	/**
@@ -124,11 +121,11 @@ public class CommonDMI implements QueryConstants {
 			cityDistance = oracleManager.find(CityDistance.class,
 					cityDistance.getCity_distance_id());
 
-			Towns cityStart = getCity(cityDistance.getTown_id_start());
+			Towns cityStart = getTown(cityDistance.getTown_id_start());
 			if (cityStart != null) {
 				cityDistance.setCityStart(cityStart.getCapital_town_name());
 			}
-			Towns cityEnd = getCity(cityDistance.getTown_id_end());
+			Towns cityEnd = getTown(cityDistance.getTown_id_end());
 			if (cityEnd != null) {
 				cityDistance.setCityEnd(cityEnd.getCapital_town_name());
 			}
@@ -202,11 +199,11 @@ public class CommonDMI implements QueryConstants {
 			cityDistance = oracleManager.find(CityDistance.class,
 					city_distance_id);
 
-			Towns cityStart = getCity(town_id_start);
+			Towns cityStart = getTown(town_id_start);
 			if (cityStart != null) {
 				cityDistance.setCityStart(cityStart.getCapital_town_name());
 			}
-			Towns cityEnd = getCity(town_id_end);
+			Towns cityEnd = getTown(town_id_end);
 			if (cityEnd != null) {
 				cityDistance.setCityEnd(cityEnd.getCapital_town_name());
 			}
@@ -266,11 +263,11 @@ public class CommonDMI implements QueryConstants {
 			cityDistance = oracleManager.find(CityDistance.class,
 					city_distance_id);
 
-			Towns cityStart = getCity(cityDistance.getTown_id_start());
+			Towns cityStart = getTown(cityDistance.getTown_id_start());
 			if (cityStart != null) {
 				cityDistance.setCityStart(cityStart.getCapital_town_name());
 			}
-			Towns cityEnd = getCity(cityDistance.getTown_id_end());
+			Towns cityEnd = getTown(cityDistance.getTown_id_end());
 			if (cityEnd != null) {
 				cityDistance.setCityEnd(cityEnd.getCapital_town_name());
 			}
@@ -308,54 +305,50 @@ public class CommonDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public StreetEnt addStreetEnt(StreetEnt streetEnt, DSRequest dsRequest)
+	public Street addStreet(Street street, DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addStreetEnt.";
+			String log = "Method:CommonDMI.addStreet.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			streetEnt.setRec_date(recDate);
-			streetEnt.setRecord_type(1L);
+			String loggedUserName = street.getLoggedUserName();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add StreetKind.");
+			String streetName = buildStreetName(street, oracleManager);
+			street.setStreet_name(streetName);
+			street.setRecord_type(1L);
 
-			String streetName = buildStreetName(streetEnt, oracleManager);
-			streetEnt.setStreet_name_geo(streetName);
-			oracleManager.persist(streetEnt);
+			oracleManager.persist(street);
 
 			Object oStreet_Districts = dsRequest
 					.getFieldValue("mapStreDistricts");
 			if (oStreet_Districts != null) {
 				Map<String, String> street_Districts = (Map<String, String>) oStreet_Districts;
 				Set<String> keySet = street_Districts.keySet();
-				for (String city_region_id : keySet) {
-					StreetDistrict streetDistrict = new StreetDistrict();
-					streetDistrict.setTown_id(streetEnt.getTown_id());
-					streetDistrict.setCity_region_id(Long
-							.parseLong(city_region_id));
-					streetDistrict.setDeleted(0L);
-					streetDistrict.setRec_date(recDate);
-					streetDistrict.setRec_user(streetEnt.getRec_user());
-					streetDistrict.setStreet_id(streetEnt.getStreet_id());
-					streetDistrict.setUpd_user(streetEnt.getRec_user());
+				for (String town_district_id : keySet) {
+					StreetToTownDistricts streetDistrict = new StreetToTownDistricts();
+					streetDistrict.setTown_id(street.getTown_id());
+					streetDistrict.setTown_district_id(Long
+							.parseLong(town_district_id));
+					streetDistrict.setStreet_id(street.getStreet_id());
 					oracleManager.persist(streetDistrict);
 				}
-				streetEnt.setMapStreDistricts(street_Districts);
+				street.setMapStreDistricts(street_Districts);
 			}
 
 			oracleManager.flush();
-			streetEnt = getStreetEntById(streetEnt.getStreet_id(),
-					oracleManager);
+			street = getStreetEntById(street.getStreet_id(), oracleManager);
 
-			if (streetEnt != null) {
-				streetEnts.put(streetEnt.getStreet_id(), streetEnt);
+			if (street != null) {
+				streetEnts.put(street.getStreet_id(), street);
 			}
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return streetEnt;
+			return street;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -377,8 +370,8 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	private String buildStreetName(StreetEnt streetEnt,
-			EntityManager oracleManager) throws Exception {
+	private String buildStreetName(Street streetEnt, EntityManager oracleManager)
+			throws Exception {
 		try {
 			if (streetEnt == null) {
 				return null;
@@ -386,192 +379,192 @@ public class CommonDMI implements QueryConstants {
 			StringBuilder streetName = new StringBuilder("");
 			Long str_descr_level_1 = streetEnt.getDescr_id_level_1();
 			if (str_descr_level_1 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_1);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_1 = streetEnt.getDescr_type_id_level_1();
 			if (str_descr_type_level_1 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_1);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 
 			Long str_descr_level_2 = streetEnt.getDescr_id_level_2();
 			if (str_descr_level_2 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_2);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_2 = streetEnt.getDescr_type_id_level_2();
 			if (str_descr_type_level_2 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_2);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 
 			Long str_descr_level_3 = streetEnt.getDescr_id_level_3();
 			if (str_descr_level_3 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_3);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_3 = streetEnt.getDescr_type_id_level_3();
 			if (str_descr_type_level_3 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_3);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 
 			Long str_descr_level_4 = streetEnt.getDescr_id_level_4();
 			if (str_descr_level_4 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_4);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_4 = streetEnt.getDescr_type_id_level_4();
 			if (str_descr_type_level_4 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_4);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 
 			Long str_descr_level_5 = streetEnt.getDescr_id_level_5();
 			if (str_descr_level_5 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_5);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_5 = streetEnt.getDescr_type_id_level_5();
 			if (str_descr_type_level_5 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_5);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 
 			Long str_descr_level_6 = streetEnt.getDescr_id_level_6();
 			if (str_descr_level_6 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_6);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_6 = streetEnt.getDescr_type_id_level_6();
 			if (str_descr_type_level_6 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_6);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 
 			Long str_descr_level_7 = streetEnt.getDescr_id_level_7();
 			if (str_descr_level_7 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_7);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_7 = streetEnt.getDescr_type_id_level_7();
 			if (str_descr_type_level_7 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_7);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 
 			Long str_descr_level_8 = streetEnt.getDescr_id_level_8();
 			if (str_descr_level_8 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_8);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_8 = streetEnt.getDescr_type_id_level_8();
 			if (str_descr_type_level_8 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_8);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 
 			Long str_descr_level_9 = streetEnt.getDescr_id_level_9();
 			if (str_descr_level_9 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_9);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_9 = streetEnt.getDescr_type_id_level_9();
 			if (str_descr_type_level_9 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_9);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 
 			Long str_descr_level_10 = streetEnt.getDescr_id_level_10();
 			if (str_descr_level_10 != null) {
-				StreetDescr streetDescr = oracleManager.find(StreetDescr.class,
+				StreetNames streetDescr = oracleManager.find(StreetNames.class,
 						str_descr_level_10);
 				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_descr_name_geo())
+					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
 			Long str_descr_type_level_10 = streetEnt
 					.getDescr_type_id_level_10();
 			if (str_descr_type_level_10 != null) {
-				StreetType streetType = oracleManager.find(StreetType.class,
+				StreetKind streetType = oracleManager.find(StreetKind.class,
 						str_descr_type_level_10);
 				if (streetType != null) {
-					streetName.append(streetType.getStreet_type_name_geo())
-							.append(" ");
+					streetName.append(streetType.getStreet_kind_name()).append(
+							" ");
 				}
 			}
 			return streetName.toString().trim();
@@ -585,16 +578,16 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	private StreetEnt getStreetEntById(Long streetId,
-			EntityManager oracleManager) throws Exception {
+	private Street getStreetEntById(Long streetId, EntityManager oracleManager)
+			throws Exception {
 		try {
-			StreetEnt ret = oracleManager.find(StreetEnt.class, streetId);
+			Street ret = oracleManager.find(Street.class, streetId);
 			if (ret != null) {
 				Long cityId = ret.getTown_id();
 				if (cityId != null) {
 					Towns city = oracleManager.find(Towns.class, cityId);
 					if (city != null) {
-						ret.setTown_name(city.getCapital_town_name());
+						ret.setTown_name(city.getTown_name());
 					}
 				}
 			}
@@ -615,7 +608,7 @@ public class CommonDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public StreetEnt updateStreetEnt(Map record) throws Exception {
+	public Street updateStreetEnt(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -625,10 +618,12 @@ public class CommonDMI implements QueryConstants {
 
 			Long street_id = new Long(record.get("street_id").toString());
 			Long town_id = new Long(record.get("town_id").toString());
-			String street_location_geo = record.get("street_location_geo") == null ? null
-					: record.get("street_location_geo").toString();
+			String street_location_geo = record.get("street_location") == null ? null
+					: record.get("street_location").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update Street.");
 
 			Object odescr_id_level_1 = record.get("descr_id_level_1");
 			Long descr_id_level_1 = (odescr_id_level_1 == null) ? null
@@ -716,21 +711,16 @@ public class CommonDMI implements QueryConstants {
 			Boolean bSaveStreetHistOrNotItem = (saveStreetHistOrNotItem == null) ? null
 					: (Boolean) saveStreetHistOrNotItem;
 
-			StreetEnt streetEntForGen = oracleManager.find(StreetEnt.class,
-					street_id);
+			Street streetEntForGen = oracleManager
+					.find(Street.class, street_id);
 
 			if (bSaveStreetHistOrNotItem != null
 					&& bSaveStreetHistOrNotItem.booleanValue()) {
-				StreetsOldEnt streetsOldEnt = new StreetsOldEnt();
+				StreetsOldNames streetsOldEnt = new StreetsOldNames();
 				streetsOldEnt.setTown_id(streetEntForGen.getTown_id());
-				streetsOldEnt.setDeleted(streetEntForGen.getDeleted());
-				streetsOldEnt.setRec_date(recDate);
-				streetsOldEnt.setRec_user(streetEntForGen.getRec_user());
 				streetsOldEnt.setStreet_id(streetEntForGen.getStreet_id());
-				streetsOldEnt.setStreet_old_name_eng(streetEntForGen
-						.getStreet_location_eng());
-				streetsOldEnt.setStreet_old_name_geo(streetEntForGen
-						.getStreet_name_geo());
+				streetsOldEnt.setStreet_old_name_descr(streetEntForGen
+						.getStreet_name());
 				oracleManager.persist(streetsOldEnt);
 			}
 
@@ -755,10 +745,9 @@ public class CommonDMI implements QueryConstants {
 			streetEntForGen.setDescr_type_id_level_9(descr_type_id_level_9);
 			streetEntForGen.setDescr_type_id_level_10(descr_type_id_level_10);
 			String streetName = buildStreetName(streetEntForGen, oracleManager);
-			streetEntForGen.setStreet_name_geo(streetName);
+			streetEntForGen.setStreet_name(streetName);
 			streetEntForGen.setTown_id(town_id);
-			streetEntForGen.setStreet_location_geo(street_location_geo);
-			streetEntForGen.setUpd_user(loggedUserName);
+			streetEntForGen.setStreet_location(street_location_geo);
 			streetEntForGen.setRecord_type(1L);
 			oracleManager.merge(streetEntForGen);
 
@@ -773,16 +762,12 @@ public class CommonDMI implements QueryConstants {
 				street_Districts = (Map<String, String>) oStreet_Districts;
 				if (street_Districts != null && !street_Districts.isEmpty()) {
 					Set<String> keySet = street_Districts.keySet();
-					for (String city_region_id : keySet) {
-						StreetDistrict streetDistrict = new StreetDistrict();
+					for (String town_district_id : keySet) {
+						StreetToTownDistricts streetDistrict = new StreetToTownDistricts();
 						streetDistrict.setTown_id(town_id);
-						streetDistrict.setCity_region_id(Long
-								.parseLong(city_region_id));
-						streetDistrict.setDeleted(0L);
-						streetDistrict.setRec_date(recDate);
-						streetDistrict.setRec_user(loggedUserName);
+						streetDistrict.setTown_district_id(Long
+								.parseLong(town_district_id));
 						streetDistrict.setStreet_id(street_id);
-						streetDistrict.setUpd_user(loggedUserName);
 						oracleManager.persist(streetDistrict);
 					}
 				}
@@ -790,7 +775,7 @@ public class CommonDMI implements QueryConstants {
 
 			oracleManager.flush();
 
-			StreetEnt streetEnt = getStreetEntById(street_id, oracleManager);
+			Street streetEnt = getStreetEntById(street_id, oracleManager);
 			if (street_Districts != null && !street_Districts.isEmpty()) {
 				streetEnt.setMapStreDistricts(street_Districts);
 			}
@@ -822,40 +807,43 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Street Status
+	 * Delete Street
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public StreetEnt updateStreetEntStatus(Map record) throws Exception {
+	public Street deleteStreet(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateStreetEntStatus.";
+			String log = "Method:CommonDMI.deleteStreet.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_id = new Long(record.get("street_id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long street_id = new Long(dsRequest.getOldValues().get("street_id")
+					.toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing Street.");
 
-			oracleManager.createNativeQuery(Q_UPDATE_STREET_STATUS)
-					.setParameter(1, deleted).setParameter(2, loggedUserName)
-					.setParameter(3, street_id).executeUpdate();
+			Street street = oracleManager.find(Street.class, street_id);
+			street.setLoggedUserName(loggedUserName);
+
+			oracleManager
+					.createNativeQuery(Q_DELETE_STREET_DISCTRICTS_BY_STREET_ID)
+					.setParameter(1, street.getStreet_id()).executeUpdate();
+
+			oracleManager.remove(street);
 			oracleManager.flush();
-			StreetEnt retItem = getStreetEntById(street_id, oracleManager);
-			if (retItem != null) {
-				streetEnts.remove(retItem.getStreet_id());
-				if (deleted.equals(0L)) {
-					streetEnts.put(retItem.getStreet_id(), retItem);
-				}
-			}
+
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return retItem;
+			return null;
+
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -885,7 +873,7 @@ public class CommonDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ArrayList<StreetEnt> fetchStreetEnts(DSRequest dsRequest)
+	public ArrayList<Street> fetchStreetEnts(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		try {
@@ -893,9 +881,9 @@ public class CommonDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			if (streetEnts == null || streetEnts.isEmpty()) {
 				log += " fetching Streets From DB ...";
-				streetEnts = new TreeMap<Long, StreetEnt>();
-				ArrayList<StreetEnt> list = (ArrayList<StreetEnt>) oracleManager
-						.createNamedQuery("StreetEnt.getAllActive")
+				streetEnts = new TreeMap<Long, Street>();
+				ArrayList<Street> list = (ArrayList<Street>) oracleManager
+						.createNamedQuery("Street.getAllActive")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 
@@ -906,22 +894,22 @@ public class CommonDMI implements QueryConstants {
 						for (Object object : strDistrList) {
 							Object row[] = (Object[]) object;
 							Long street_id = new Long(row[1].toString());
-							Long city_region_id = new Long(row[2].toString());
-							String city_region_name_geo = row[3].toString();
+							Long town_district_id = new Long(row[2].toString());
+							String town_district_name = row[3].toString();
 							TreeMap<String, String> mapItem = mapStrDistricts
 									.get(street_id.toString());
 							if (mapItem == null) {
 								mapItem = new TreeMap<String, String>();
 							}
-							mapItem.put(city_region_id.toString(),
-									city_region_name_geo);
+							mapItem.put(town_district_id.toString(),
+									town_district_name);
 							mapStrDistricts.put(street_id.toString(), mapItem);
 						}
 					}
 
-					streetsByCityId = new TreeMap<Long, ArrayList<StreetEnt>>();
+					streetsByCityId = new TreeMap<Long, ArrayList<Street>>();
 
-					for (StreetEnt streetEnt : list) {
+					for (Street streetEnt : list) {
 						TreeMap<String, String> mapItem = mapStrDistricts
 								.get(streetEnt.getStreet_id().toString());
 						if (mapItem != null) {
@@ -929,10 +917,10 @@ public class CommonDMI implements QueryConstants {
 						}
 						Long town_id = streetEnt.getTown_id();
 						if (town_id != null) {
-							ArrayList<StreetEnt> listByCity = streetsByCityId
+							ArrayList<Street> listByCity = streetsByCityId
 									.get(town_id);
 							if (listByCity == null) {
-								listByCity = new ArrayList<StreetEnt>();
+								listByCity = new ArrayList<Street>();
 							}
 							listByCity.add(streetEnt);
 							streetsByCityId.put(town_id, listByCity);
@@ -943,7 +931,7 @@ public class CommonDMI implements QueryConstants {
 			}
 			log += ". Fetching Streets Finished SuccessFully. ";
 			logger.info(log);
-			ArrayList<StreetEnt> ret = new ArrayList<StreetEnt>();
+			ArrayList<Street> ret = new ArrayList<Street>();
 			if (streetEnts != null && !streetEnts.isEmpty()) {
 
 				Object oStreet_id = dsRequest.getFieldValue("street_id");
@@ -985,29 +973,32 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Adding New Street Description
+	 * Adding New StreetNames
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	public StreetDescr addStreetDescr(StreetDescr streetDescr) throws Exception {
+	public StreetNames addStreetName(StreetNames streetName) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addStreetDescr.";
+			String log = "Method:CommonDMI.addStreetName.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			streetDescr.setRec_date(recDate);
 
-			oracleManager.persist(streetDescr);
+			String loggedUserName = streetName.getLoggedUserName();
 
-			StreetDescr retItem = oracleManager.find(StreetDescr.class,
-					streetDescr.getStreet_descr_id());
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add streetName.");
 
-			streetDescrs.put(retItem.getStreet_descr_id(), retItem);
+			oracleManager.persist(streetName);
+
+			StreetNames retItem = oracleManager.find(StreetNames.class,
+					streetName.getStreet_name_id());
+
+			streetDescrs.put(retItem.getStreet_name_id(), retItem);
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
@@ -1017,8 +1008,7 @@ public class CommonDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Insert Street Description Into Database : ", e);
+			logger.error("Error While Insert streetName Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -1035,49 +1025,53 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Street Descr
+	 * updateStreetName
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public StreetDescr updateStreetDescr(Map record) throws Exception {
+	public StreetNames updateStreetName(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateStreetDescr.";
+			String log = "Method:CommonDMI.updateStreetName.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_descr_id = new Long(record.get("street_descr_id")
+			Long street_name_id = new Long(record.get("street_name_id")
 					.toString());
-			String street_descr_name_geo = record.get("street_descr_name_geo")
-					.toString();
-			String street_descr_name_eng = record.get("street_descr_name_eng") != null ? record
-					.get("street_descr_name_eng").toString() : null;
+			String street_name_descr = record.get("street_name_descr") == null ? null
+					: record.get("street_name_descr").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			oracleManager.createNativeQuery(Q_UPDATE_STREET_DESCR)
-					.setParameter(1, street_descr_name_geo)
-					.setParameter(2, street_descr_name_eng)
-					.setParameter(3, loggedUserName)
-					.setParameter(4, street_descr_id).executeUpdate();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update StreetNames.");
 
-			StreetDescr retItem = oracleManager.find(StreetDescr.class,
-					street_descr_id);
-			streetDescrs.remove(street_descr_id);
-			streetDescrs.put(street_descr_id, retItem);
+			StreetNames streetNames = oracleManager.find(StreetNames.class,
+					street_name_id);
+
+			streetNames.setStreet_name_descr(street_name_descr);
+			streetNames.setLoggedUserName(loggedUserName);
+
+			oracleManager.merge(streetNames);
+			oracleManager.flush();
+
+			streetNames = oracleManager.find(StreetNames.class, street_name_id);
+
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return retItem;
+			return streetNames;
+
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update Street Descr Into Database : ", e);
+			logger.error("Error While Update Street Name Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -1094,48 +1088,46 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Street Descr Status
+	 * Delete Street Names
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public StreetDescr updateStreetDescrStatus(Map record) throws Exception {
+	public StreetNames deleteStreetName(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateStreetDescrStatus.";
+			String log = "Method:CommonDMI.deleteStreetName.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_descr_id = new Long(record.get("street_descr_id")
-					.toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long street_name_id = new Long(dsRequest.getOldValues()
+					.get("street_name_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing StreetNames.");
 
-			oracleManager.createNativeQuery(Q_UPDATE_STREET_DESCR_STATUS)
-					.setParameter(1, deleted).setParameter(2, loggedUserName)
-					.setParameter(3, street_descr_id).executeUpdate();
+			StreetNames streetName = oracleManager.find(StreetNames.class,
+					street_name_id);
+			streetName.setLoggedUserName(loggedUserName);
 
-			StreetDescr retItem = oracleManager.find(StreetDescr.class,
-					street_descr_id);
-			streetDescrs.remove(street_descr_id);
-			if (deleted.equals(0L)) {
-				streetDescrs.put(street_descr_id, retItem);
-			}
+			oracleManager.remove(streetName);
+			oracleManager.flush();
+
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return retItem;
+			return null;
+
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Update Status Street Descr Into Database : ",
-					e);
+			logger.error("Error While Delete Street Names From Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -1152,14 +1144,14 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Street Descr Status
+	 * Delete Street Old Name
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public StreetsOldEnt updateStreetsOldEntStatus(Map record) throws Exception {
+	public StreetsOldNames deleteStreetsOldNames(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -1168,18 +1160,16 @@ public class CommonDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			Long old_id = new Long(record.get("old_id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			// Long deleted = new Long(record.get("deleted").toString());
+			// String loggedUserName = record.get("loggedUserName").toString();
 
-			StreetsOldEnt find = oracleManager
-					.find(StreetsOldEnt.class, old_id);
-			find.setDeleted(deleted);
-			find.setUpd_user(loggedUserName);
+			StreetsOldNames find = oracleManager.find(StreetsOldNames.class,
+					old_id);
 
-			oracleManager.merge(find);
+			oracleManager.remove(find);
 			oracleManager.flush();
 
-			find = oracleManager.find(StreetsOldEnt.class, old_id);
+			find = oracleManager.find(StreetsOldNames.class, old_id);
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
@@ -1214,7 +1204,7 @@ public class CommonDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public ArrayList<StreetDescr> fetchStreetDescrs(DSRequest dsRequest)
+	public ArrayList<StreetNames> fetchStreetDescrs(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		try {
@@ -1222,20 +1212,20 @@ public class CommonDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			if (streetDescrs == null || streetDescrs.isEmpty()) {
 				log += " fetching Street Descriptions From DB ...";
-				streetDescrs = new TreeMap<Long, StreetDescr>();
-				ArrayList<StreetDescr> list = (ArrayList<StreetDescr>) oracleManager
+				streetDescrs = new TreeMap<Long, StreetNames>();
+				ArrayList<StreetNames> list = (ArrayList<StreetNames>) oracleManager
 						.createNamedQuery("StreetDescr.getAllActive")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
-					for (StreetDescr streetDescr : list) {
-						streetDescrs.put(streetDescr.getStreet_descr_id(),
+					for (StreetNames streetDescr : list) {
+						streetDescrs.put(streetDescr.getStreet_name_id(),
 								streetDescr);
 					}
 				}
 			}
 			log += ". Fetching StreetDescrs Finished SuccessFully. ";
 			logger.info(log);
-			ArrayList<StreetDescr> ret = new ArrayList<StreetDescr>();
+			ArrayList<StreetNames> ret = new ArrayList<StreetNames>();
 			if (streetDescrs != null && !streetDescrs.isEmpty()) {
 				ret.addAll(streetDescrs.values());
 			}
@@ -1262,28 +1252,31 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Adding New Street Type
+	 * Adding New Street Kind
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	public StreetType addStreetType(StreetType streetType) throws Exception {
+	public StreetKind addStreetKind(StreetKind streetKind) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addStreetType.";
+			String log = "Method:CommonDMI.addStreetKind.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			streetType.setRec_date(recDate);
 
-			oracleManager.persist(streetType);
+			String loggedUserName = streetKind.getLoggedUserName();
 
-			StreetType retItem = oracleManager.find(StreetType.class,
-					streetType.getStreet_type_Id());
-			streetTypes.put(retItem.getStreet_type_Id(), retItem);
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add StreetKind.");
+
+			oracleManager.persist(streetKind);
+
+			StreetKind retItem = oracleManager.find(StreetKind.class,
+					streetKind.getStreet_kind_id());
+			streetKinds.put(retItem.getStreet_kind_id(), retItem);
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
@@ -1293,7 +1286,7 @@ public class CommonDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert StreetTypes Into Database : ", e);
+			logger.error("Error While Insert StreetKind Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -1310,49 +1303,52 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Street Type
+	 * Updating Street Kind
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public StreetType updateStreetType(Map record) throws Exception {
+	public StreetKind updateStreetKind(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateStreetType.";
+			String log = "Method:CommonDMI.updateStreetKind.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_type_Id = new Long(record.get("street_type_Id")
+			Long street_kind_id = new Long(record.get("street_kind_id")
 					.toString());
-			String street_type_name_geo = record.get("street_type_name_geo")
-					.toString();
-			String street_type_name_eng = record.get("street_type_name_eng")
-					.toString();
+			String street_kind_name = record.get("street_kind_name") == null ? null
+					: record.get("street_kind_name").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			oracleManager.createNativeQuery(Q_UPDATE_STREET_TYPE)
-					.setParameter(1, street_type_name_geo)
-					.setParameter(2, street_type_name_eng)
-					.setParameter(3, loggedUserName)
-					.setParameter(4, street_type_Id).executeUpdate();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update StreetKind.");
 
-			StreetType retItem = oracleManager.find(StreetType.class,
-					street_type_Id);
-			streetTypes.remove(street_type_Id);
-			streetTypes.put(street_type_Id, retItem);
+			StreetKind streetKind = oracleManager.find(StreetKind.class,
+					street_kind_id);
+
+			streetKind.setStreet_kind_name(street_kind_name);
+			streetKind.setLoggedUserName(loggedUserName);
+
+			oracleManager.merge(streetKind);
+			oracleManager.flush();
+
+			streetKind = oracleManager.find(StreetKind.class, street_kind_id);
+
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return retItem;
+			return streetKind;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update StreetTypes Into Database : ", e);
+			logger.error("Error While Update StreetKind Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -1369,47 +1365,45 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating Street Type Status
+	 * Delete Street Kind
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public StreetType updateStreetTypeStatus(Map record) throws Exception {
+	public StreetKind deleteStreetKind(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateStreetTypeStatus.";
+			String log = "Method:CommonDMI.deleteStreetKind.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_type_Id = new Long(record.get("street_type_Id")
-					.toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long street_kind_id = new Long(dsRequest.getOldValues()
+					.get("street_kind_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing StreetKind.");
 
-			oracleManager.createNativeQuery(Q_UPDATE_STREET_TYPE_STATUS)
-					.setParameter(1, deleted).setParameter(2, loggedUserName)
-					.setParameter(3, street_type_Id).executeUpdate();
+			StreetKind streetKind = oracleManager.find(StreetKind.class,
+					street_kind_id);
+			streetKind.setLoggedUserName(loggedUserName);
 
-			StreetType retItem = oracleManager.find(StreetType.class,
-					street_type_Id);
-			streetTypes.remove(street_type_Id);
-			if (deleted.equals(0L)) {
-				streetTypes.put(street_type_Id, retItem);
-			}
+			oracleManager.remove(streetKind);
+			oracleManager.flush();
+
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return retItem;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Update Status StreetTypes Into Database : ", e);
+			logger.error("Error While Delete StreetKind From Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -1433,30 +1427,30 @@ public class CommonDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public ArrayList<StreetType> fetchStreetTypes(DSRequest dsRequest)
+	public ArrayList<StreetKind> fetchStreetTypes(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		try {
 			String log = "Method:CommonDMI.fetchStreetTypeStatus.";
 			oracleManager = EMF.getEntityManager();
-			if (streetTypes == null || streetTypes.isEmpty()) {
+			if (streetKinds == null || streetKinds.isEmpty()) {
 				log += " fetching StreetStatuses From DB ...";
-				streetTypes = new TreeMap<Long, StreetType>();
-				ArrayList<StreetType> list = (ArrayList<StreetType>) oracleManager
+				streetKinds = new TreeMap<Long, StreetKind>();
+				ArrayList<StreetKind> list = (ArrayList<StreetKind>) oracleManager
 						.createNamedQuery("StreetType.getAllActive")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
-					for (StreetType streetType : list) {
-						streetTypes.put(streetType.getStreet_type_Id(),
+					for (StreetKind streetType : list) {
+						streetKinds.put(streetType.getStreet_kind_id(),
 								streetType);
 					}
 				}
 			}
 			log += ". Fetching StreetTypes Finished SuccessFully. ";
 			logger.info(log);
-			ArrayList<StreetType> ret = new ArrayList<StreetType>();
-			if (streetTypes != null && !streetTypes.isEmpty()) {
-				ret.addAll(streetTypes.values());
+			ArrayList<StreetKind> ret = new ArrayList<StreetKind>();
+			if (streetKinds != null && !streetKinds.isEmpty()) {
+				ret.addAll(streetKinds.values());
 			}
 			return ret;
 		} catch (Exception e) {
@@ -1480,45 +1474,47 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Adding New City Region
+	 * Adding New Town District
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	public CityRegion addCityRegion(CityRegion cityRegion) throws Exception {
+	public TownDistrict addTownDistrict(TownDistrict townDistrict)
+			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addCityRegion.";
+			String log = "Method:CommonDMI.addTownDistrict.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			cityRegion.setRec_date(recDate);
-			cityRegion.setCity_region_type_id(1L);
-			cityRegion.setDeleted(0L);
-			cityRegion.setMap_id(0L);
-			oracleManager.persist(cityRegion);
+
+			String loggedUserName = townDistrict.getLoggedUserName();
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Detele TownDistrict.");
+
+			oracleManager.persist(townDistrict);
 
 			oracleManager.flush();
 
-			cityRegion = oracleManager.find(CityRegion.class,
-					cityRegion.getCity_region_id());
+			townDistrict = oracleManager.find(TownDistrict.class,
+					townDistrict.getTown_district_id());
 
-			cityRegions.put(cityRegion.getCity_region_id(), cityRegion);
-			TreeMap<Long, CityRegion> byCityId = cityRegionsByCityId
-					.get(cityRegion.getTown_id());
-			if (byCityId == null) {
-				byCityId = new TreeMap<Long, CityRegion>();
+			townDistricts.put(townDistrict.getTown_district_id(), townDistrict);
+			TreeMap<Long, TownDistrict> byTownId = townDistrictByTownId
+					.get(townDistrict.getTown_id());
+			if (byTownId == null) {
+				byTownId = new TreeMap<Long, TownDistrict>();
 			}
-			byCityId.put(cityRegion.getCity_region_id(), cityRegion);
-			cityRegionsByCityId.put(cityRegion.getTown_id(), byCityId);
+			byTownId.put(townDistrict.getTown_district_id(), townDistrict);
+			townDistrictByTownId.put(townDistrict.getTown_id(), byTownId);
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return cityRegion;
+			return townDistrict;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -1535,60 +1531,60 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating City Region
+	 * Updating Town District
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public CityRegion updateCityRegion(Map record) throws Exception {
+	public TownDistrict updateTownDistrict(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateCityRegion.";
+			String log = "Method:CommonDMI.TownDistrict.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp upd_date = new Timestamp(System.currentTimeMillis());
-			Long city_region_id = new Long(record.get("city_region_id")
+			Long town_district_id = new Long(record.get("town_district_id")
 					.toString());
 			Long town_id = new Long(record.get("town_id").toString());
-			String city_region_name_eng = record.get("city_region_name_eng")
+			String town_district_name = record.get("town_district_name")
 					.toString();
-			String city_region_name_geo = record.get("city_region_name_geo")
-					.toString();
+
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			CityRegion cityRegion = oracleManager.find(CityRegion.class,
-					city_region_id);
-			cityRegion.setTown_id(town_id);
-			cityRegion.setCity_region_name_eng(city_region_name_eng);
-			cityRegion.setCity_region_name_geo(city_region_name_geo);
-			cityRegion.setUpd_date(upd_date);
-			cityRegion.setUpd_user(loggedUserName);
+			TownDistrict townDistrict = oracleManager.find(TownDistrict.class,
+					town_district_id);
+			townDistrict.setTown_id(town_id);
+			townDistrict.setTown_district_name(town_district_name);
 
-			oracleManager.merge(cityRegion);
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update TownDistrict.");
+
+			oracleManager.merge(townDistrict);
 			oracleManager.flush();
 
-			cityRegion = oracleManager.find(CityRegion.class, city_region_id);
+			townDistrict = oracleManager.find(TownDistrict.class,
+					town_district_id);
 
-			cityRegions.remove(cityRegion.getCity_region_id());
-			cityRegions.put(cityRegion.getCity_region_id(), cityRegion);
-			TreeMap<Long, CityRegion> byCityId = cityRegionsByCityId
-					.get(cityRegion.getTown_id());
-			if (byCityId == null) {
-				byCityId = new TreeMap<Long, CityRegion>();
+			townDistricts.remove(townDistrict.getTown_district_id());
+			townDistricts.put(townDistrict.getTown_district_id(), townDistrict);
+			TreeMap<Long, TownDistrict> byTownId = townDistrictByTownId
+					.get(townDistrict.getTown_id());
+			if (byTownId == null) {
+				byTownId = new TreeMap<Long, TownDistrict>();
 			}
-			byCityId.remove(cityRegion.getCity_region_id());
-			byCityId.put(cityRegion.getCity_region_id(), cityRegion);
-			cityRegionsByCityId.remove(cityRegion.getTown_id());
-			cityRegionsByCityId.put(cityRegion.getTown_id(), byCityId);
+			byTownId.remove(townDistrict.getTown_district_id());
+			byTownId.put(townDistrict.getTown_district_id(), townDistrict);
+			townDistrictByTownId.remove(townDistrict.getTown_id());
+			townDistrictByTownId.put(townDistrict.getTown_id(), byTownId);
 
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return cityRegion;
+			return townDistrict;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -1611,46 +1607,35 @@ public class CommonDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public CityRegion updateCityRegionStatus(Map record) throws Exception {
+	public TownDistrict deleteTownDistrict(DSRequest dsRequest)
+			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateCityRegionStatus.";
+			String log = "Method:CommonDMI.deleteTownDistrict.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long city_region_id = new Long(record.get("city_region_id")
-					.toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long town_district_id = new Long(dsRequest.getOldValues()
+					.get("town_district_id").toString());
 
-			CityRegion cityRegion = oracleManager.find(CityRegion.class,
-					city_region_id);
-			cityRegion.setDeleted(deleted);
-			cityRegion.setUpd_user(loggedUserName);
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
 
-			oracleManager.merge(cityRegion);
+			TownDistrict townDistrict = oracleManager.find(TownDistrict.class,
+					town_district_id);
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Detele TownDistrict.");
+
+			oracleManager.remove(townDistrict);
 			oracleManager.flush();
 
-			cityRegion = oracleManager.find(CityRegion.class, city_region_id);
-
-			cityRegions.remove(cityRegion.getCity_region_id());
-			cityRegions.put(cityRegion.getCity_region_id(), cityRegion);
-			TreeMap<Long, CityRegion> byCityId = cityRegionsByCityId
-					.get(cityRegion.getTown_id());
-			if (byCityId == null) {
-				byCityId = new TreeMap<Long, CityRegion>();
-			}
-			byCityId.remove(cityRegion.getCity_region_id());
-			byCityId.put(cityRegion.getCity_region_id(), cityRegion);
-			cityRegionsByCityId.remove(cityRegion.getTown_id());
-			cityRegionsByCityId.put(cityRegion.getTown_id(), byCityId);
-
 			EMF.commitTransaction(transaction);
-			log += ". Status Updating Finished SuccessFully. ";
+			log += ". Status Delete Finished SuccessFully. ";
 			logger.info(log);
-			return cityRegion;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -1667,7 +1652,7 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<CityRegion> fetchCityRegions(DSRequest dsRequest)
+	public ArrayList<TownDistrict> fetchCityRegions(DSRequest dsRequest)
 			throws CallCenterException {
 		EntityManager oracleManager = null;
 		try {
@@ -1678,44 +1663,44 @@ public class CommonDMI implements QueryConstants {
 			}
 
 			logger.info("getting city regions names ...");
-			if (cityRegions == null || cityRegions.isEmpty()) {
+			if (townDistricts == null || townDistricts.isEmpty()) {
 
 				logger.info("getting city regions from DB. ");
 				oracleManager = EMF.getEntityManager();
 
-				cityRegions = new TreeMap<Long, CityRegion>();
-				cityRegionsByCityId = new TreeMap<Long, TreeMap<Long, CityRegion>>();
+				townDistricts = new TreeMap<Long, TownDistrict>();
+				townDistrictByTownId = new TreeMap<Long, TreeMap<Long, TownDistrict>>();
 
-				ArrayList<CityRegion> cityRegList = (ArrayList<CityRegion>) oracleManager
-						.createNamedQuery("CityRegion.getAllActive")
+				ArrayList<TownDistrict> cityRegList = (ArrayList<TownDistrict>) oracleManager
+						.createNamedQuery("TownDistrict.getAllActive")
 						.getResultList();
 
 				if (cityRegList != null && !cityRegList.isEmpty()) {
-					for (CityRegion cityRegion : cityRegList) {
+					for (TownDistrict cityRegion : cityRegList) {
 						Long town_id = cityRegion.getTown_id();
 						if (town_id != null) {
-							TreeMap<Long, CityRegion> listByCity = cityRegionsByCityId
+							TreeMap<Long, TownDistrict> listByCity = townDistrictByTownId
 									.get(town_id);
 							if (listByCity == null) {
-								listByCity = new TreeMap<Long, CityRegion>();
+								listByCity = new TreeMap<Long, TownDistrict>();
 							}
-							listByCity.put(cityRegion.getCity_region_id(),
+							listByCity.put(cityRegion.getTown_district_id(),
 									cityRegion);
-							cityRegionsByCityId.put(town_id, listByCity);
+							townDistrictByTownId.put(town_id, listByCity);
 						}
-						cityRegions.put(cityRegion.getCity_region_id(),
+						townDistricts.put(cityRegion.getTown_district_id(),
 								cityRegion);
 					}
 				}
 			}
 			if (pTown_id.equals(-100L)) {
-				ArrayList<CityRegion> ret = new ArrayList<CityRegion>();
-				ret.addAll(cityRegions.values());
+				ArrayList<TownDistrict> ret = new ArrayList<TownDistrict>();
+				ret.addAll(townDistricts.values());
 				return ret;
 			} else {
-				TreeMap<Long, CityRegion> map = cityRegionsByCityId
+				TreeMap<Long, TownDistrict> map = townDistrictByTownId
 						.get(pTown_id);
-				ArrayList<CityRegion> ret = new ArrayList<CityRegion>();
+				ArrayList<TownDistrict> ret = new ArrayList<TownDistrict>();
 				if (map != null) {
 					ret.addAll(map.values());
 				}
@@ -1735,7 +1720,7 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	public Towns cityAdd(DSRequest dsRequest) throws Exception {
+	public Towns townAdd(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -1743,7 +1728,9 @@ public class CommonDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
-			Timestamp rec_date = new Timestamp(System.currentTimeMillis());
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add Town.");
 			Long country_id = new Long(dsRequest.getFieldValue("country_id")
 					.toString());
 			Country country = null;
@@ -1755,22 +1742,13 @@ public class CommonDMI implements QueryConstants {
 			}
 			Long town_type_id = new Long(dsRequest
 					.getFieldValue("town_type_id").toString());
-			// CityType cityType = null;
-			// if (cityTypeId != null) {
-			// if (cityTypes.isEmpty()) {
-			// fetchCityTypes(dsRequest);
-			// }
-			// cityType = getCityType(cityTypeId);
-			// }
 
 			Towns town = new Towns();
 			town.setTown_code(dsRequest.getFieldValue("town_code") == null ? null
 					: dsRequest.getFieldValue("town_code").toString());
-			town.setTown_name(dsRequest.getFieldValue("city_name_eng") == null ? null
-					: dsRequest.getFieldValue("city_name_eng").toString());
 			town.setTown_name(dsRequest.getFieldValue("town_name") == null ? null
 					: dsRequest.getFieldValue("town_name").toString());
-			town.setTown_code(dsRequest.getFieldValue("town_new_code") == null ? null
+			town.setTown_new_code(dsRequest.getFieldValue("town_new_code") == null ? null
 					: dsRequest.getFieldValue("town_new_code").toString());
 			town.setCapital_town(dsRequest.getFieldValue("capital_town") == null ? null
 					: new Long(dsRequest.getFieldValue("capital_town")
@@ -1779,10 +1757,12 @@ public class CommonDMI implements QueryConstants {
 					: new Long(dsRequest.getFieldValue("normal_gmt").toString()));
 			town.setWinter_gmt(dsRequest.getFieldValue("winter_gmt") == null ? null
 					: new Long(dsRequest.getFieldValue("winter_gmt").toString()));
+
+			Description description = oracleManager.find(Description.class,
+					town_type_id);
 			town.setTown_type_id(town_type_id);
-			// if (cityType != null) {
-			// city.setCityType(cityType.getCity_type_geo());
-			// }
+			town.setTown_type_name(description.getDescription());
+
 			town.setCountry_id(country_id);
 			if (country != null) {
 				town.setCountry_name(country.getCountry_name());
@@ -1796,7 +1776,7 @@ public class CommonDMI implements QueryConstants {
 			oracleManager.persist(town);
 
 			EMF.commitTransaction(transaction);
-			cities.put(town.getTown_id(), town);
+			towns.put(town.getTown_id(), town);
 			return town;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
@@ -1814,129 +1794,71 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	@SuppressWarnings({ "rawtypes" })
-	public Towns townUpdate(Map fieldValues) throws Exception {
+	public Towns townUpdate(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
+			String log = "Method:CommonDMI.updateTown.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			Long town_id = new Long(fieldValues.get("town_id").toString());
-			Long country_id = new Long(fieldValues.get("country_id").toString());
-			String loggedUserName = fieldValues.get("loggedUserName")
-					.toString();
 
-			Towns old_city = oracleManager.find(Towns.class, town_id);
+			Long town_id = new Long(record.get("town_id").toString());
+			String town_name = record.get("town_name") == null ? null : record
+					.get("town_name").toString();
+			String town_code = record.get("town_code") == null ? null : record
+					.get("town_code").toString();
+			String town_new_code = record.get("town_new_code") == null ? null
+					: record.get("town_new_code").toString();
+			Long capital_town = new Long(record.get("capital_town").toString()) == null ? null
+					: new Long(record.get("capital_town").toString());
+			Long normal_gmt = new Long(record.get("normal_gmt").toString()) == null ? null
+					: new Long(record.get("normal_gmt").toString());
+			Long winter_gmt = new Long(record.get("winter_gmt").toString()) == null ? null
+					: new Long(record.get("winter_gmt").toString());
+			Long town_type_id = new Long(record.get("town_type_id").toString()) == null ? null
+					: new Long(record.get("town_type_id").toString());
+			Long country_id = new Long(record.get("country_id").toString()) == null ? null
+					: new Long(record.get("country_id").toString());
 
-			Country country = null;
-			if (country_id != null) {
-				if (countries.isEmpty()) {
-					fetchAllCountries(null);
-				}
-				country = getCountry(country_id);
-			}
-			Long town_type_id = new Long(fieldValues.get("town_type_id")
-					.toString());
-			// CityType cityType = null;
-			// if (cityTypeId != null) {
-			// if (cityTypes.isEmpty()) {
-			// fetchCityTypes(null);
-			// }
-			// cityType = getCityType(cityTypeId);
-			// }
+			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update Town.");
 
-			oracleManager
-					.createNativeQuery(Q_UPDATE_TOWN)
-					.setParameter(
-							1,
-							fieldValues.get("town_name") == null ? null
-									: fieldValues.get("town_name").toString())
-					.setParameter(2, country_id)
-					.setParameter(3, town_type_id)
-					.setParameter(
-							4,
-							fieldValues.get("normal_gmt") == null ? null
-									: new Long(fieldValues.get("normal_gmt")
-											.toString()))
-					.setParameter(
-							5,
-							fieldValues.get("winter_gmt") == null ? null
-									: new Long(fieldValues.get("winter_gmt")
-											.toString()))
-					.setParameter(
-							6,
-							fieldValues.get("capital_town") == null ? null
-									: new Long(fieldValues.get("capital_town")
-											.toString()))
-					.setParameter(
-							7,
-							fieldValues.get("town_code") == null ? null
-									: fieldValues.get("town_code").toString())
-					.setParameter(
-							8,
-							fieldValues.get("town_new_code") == null ? null
-									: fieldValues.get("town_new_code")
-											.toString())
-					.setParameter(9, town_id).executeUpdate();
-
-			if (old_city != null) {
-				boolean changed = false;
-				if (old_city.getCapital_town_name() != null) {
-					if (old_city.getCapital_town_name().compareTo(
-							fieldValues.get("town_name").toString()) > 0) {
-						changed = true;
-					}
-				} else if (fieldValues.get("town_name").toString()
-						.equals(old_city.getCapital_town_name())) {
-					changed = true;
-				}
-				if (changed) {
-					// ArrayList<TranspStation> trPlaces =
-					// (ArrayList<TranspStation>) oracleManager
-					// .createNamedQuery("TranspStation.getByCityId")
-					// .setParameter("town_id", town_id).getResultList();
-					// if (trPlaces != null && !trPlaces.isEmpty()) {
-					// String newCityName = fieldValues.get("town_name")
-					// .toString();
-					// for (TranspStation transportPlace : trPlaces) {
-					// Long transpTypeId = transportPlace
-					// .getTransport_type_id();
-					// TranspType transportType = oracleManager.find(
-					// TranspType.class, transpTypeId);
-					// String newDescr = newCityName
-					// + " "
-					// + transportPlace.getTransport_place_geo()
-					// + " ( "
-					// + (transportType == null ? "NULL"
-					// : transportType.getName_descr())
-					// + " ) ";
-					// transportPlace
-					// .setTransport_place_geo_descr(newDescr);
-					// oracleManager.merge(transportPlace);
-					// }
-					// }
-				}
-			}
-
-			oracleManager.flush();
 			Towns town = oracleManager.find(Towns.class, town_id);
-			if (country != null) {
-				town.setCountry_name(country.getCountry_name());
-			}
-			if (town_type_id != null) {
 
-				town.setTown_type_id(town_type_id);
-				Description description = oracleManager.find(Description.class,
-						town_type_id);
-				if (description != null) {
-					town.setTown_type_name(description.getDescription());
-				}
-			}
+			town.setTown_name(town_name);
+			town.setTown_code(town_code);
+			town.setTown_new_code(town_new_code);
+			town.setCapital_town(capital_town);
+			town.setNormal_gmt(normal_gmt);
+			town.setWinter_gmt(winter_gmt);
+			town.setTown_type_id(town_type_id);
+			town.setCountry_id(country_id);
+
 			town.setCapital_town_name(town.getCapital_town() != null
 					&& town.getCapital_town().equals(1L) ? "დედაქალაქი"
 					: "ჩვეულებრივი");
+
+			Country country = oracleManager.find(Country.class, country_id);
+
+			town.setCountry_name(country.getCountry_name());
+
+			Description description = oracleManager.find(Description.class,
+					town_type_id);
+
+			town.setTown_type_name(description.getDescription());
+
+			town.setLoggedUserName(loggedUserName);
+
+			oracleManager.merge(town);
+			oracleManager.flush();
+
+			town = oracleManager.find(Towns.class, town_id);
+
 			EMF.commitTransaction(transaction);
-			cities.remove(town_id);
-			cities.put(town_id, town);
+			log += ". Updating Finished SuccessFully. ";
+			logger.info(log);
 			return town;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
@@ -1954,54 +1876,32 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	public Towns cityStatusUpdate(Map fieldValues) throws Exception {
+	public Towns townDelete(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
+			String log = "Method:CommonDMI.townDelete.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			Long town_id = -1L;
-			Object oTown_id = fieldValues.get("town_id");
-			if (oTown_id != null) {
-				town_id = new Long(oTown_id.toString());
-			}
 
-			// String loggedUserName = fieldValues.get("loggedUserName")
-			// .toString();
+			Long town_id = new Long(dsRequest.getOldValues().get("town_id")
+					.toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing Town.");
 
-			oracleManager.createNativeQuery(Q_DELETE_TOWN)
-					.setParameter(1, town_id).executeUpdate();
+			Towns towns = oracleManager.find(Towns.class, town_id);
+			towns.setLoggedUserName(loggedUserName);
 
+			oracleManager.remove(towns);
 			oracleManager.flush();
-			Towns city = oracleManager.find(Towns.class, town_id);
-			Long country_id = city.getCountry_id();
-			if (country_id != null) {
-				if (countries.isEmpty()) {
-					fetchAllCountries(null);
-				}
-				Country country = getCountry(country_id);
-				if (country != null) {
-					city.setCountry_name(country.getCountry_name());
-				}
-			}
-			Long cityTypeId = city.getTown_type_id();
-			// if (cityTypeId != null) {
-			// if (cityTypes.isEmpty()) {
-			// fetchCityTypes(null);
-			// }
-			// CityType cityType = getCityType(cityTypeId);
-			// if (cityType != null) {
-			// city.setCityType(cityType.getCity_type_geo());
-			// }
-			// }
-			city.setCapital_town_name(city.getCapital_town() != null
-					&& city.getCapital_town().equals(1L) ? "დედაქალაქი"
-					: "ჩვეულებრივი");
+
 			EMF.commitTransaction(transaction);
-			cities.remove(town_id);
-			cities.put(town_id, city);
-			return city;
+			log += ". Status Updating Finished SuccessFully. ";
+			logger.info(log);
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -2319,7 +2219,7 @@ public class CommonDMI implements QueryConstants {
 
 			oracleManager = EMF.getEntityManager();
 
-			String town_type_name = "";
+			// String town_type_name = "";
 
 			ArrayList<Towns> result = (ArrayList<Towns>) oracleManager
 					.createQuery(query).getResultList();
@@ -2329,10 +2229,10 @@ public class CommonDMI implements QueryConstants {
 					if (cTypeId != null) {
 						com.smartgwt.client.data.DataSource descriptionsDS = com.smartgwt.client.data.DataSource
 								.get("DescriptionsDS");
-						DSRequest descriptionsDSRequest = new DSRequest();
+						// DSRequest descriptionsDSRequest = new DSRequest();
 						dsRequest.setOperationId("searchDescriptionsOrderById");
 
-						final RecordList list;
+						// final RecordList list;
 						descriptionsDS.fetchData(new Criteria(),
 								new DSCallback() {
 									@Override
@@ -2385,17 +2285,17 @@ public class CommonDMI implements QueryConstants {
 		EntityManager oracleManager = null;
 		try {
 			logger.info("getting Cities ... ");
-			if (cities == null || cities.isEmpty()) {
-				cities = new TreeMap<Long, Towns>();
+			if (towns == null || towns.isEmpty()) {
+				towns = new TreeMap<Long, Towns>();
 				ArrayList<Towns> tmpCities = fetchAllCitiesFromDB(dsRequest);
 				if (tmpCities != null && !tmpCities.isEmpty()) {
 					for (Towns town : tmpCities) {
-						cities.put(town.getTown_id(), town);
+						towns.put(town.getTown_id(), town);
 					}
 				}
 			}
 			ArrayList<Towns> ret = new ArrayList<Towns>();
-			ret.addAll(cities.values());
+			ret.addAll(towns.values());
 			return ret;
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {

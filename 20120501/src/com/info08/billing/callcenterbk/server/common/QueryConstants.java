@@ -177,10 +177,11 @@ public interface QueryConstants {
 			+ "   distinct p.phone\n" + "from ccare.abonents a\n"
 			+ "   inner join ccare.phones p on p.phone_id = a.phone_id\n"
 			+ "where a.organization_id in (\n" + "      select\n"
-			+ "         t.organization_id\n" + "      from ccare.main_services t\n"
+			+ "         t.organization_id\n"
+			+ "      from ccare.main_services t\n"
 			+ "      start with t.organization_id = ? and t.service_id = 3\n"
-			+ "      connect by prior t.organization_id = t.main_master_id\n" + " )\n"
-			+ " and p.deleted = 0 and a.deleted = 0";
+			+ "      connect by prior t.organization_id = t.main_master_id\n"
+			+ " )\n" + " and p.deleted = 0 and a.deleted = 0";
 
 	public static final String Q_GET_MAIN_DET_PHONES_HIERARCHY_NEW = "select /*+ index(p PHN_PRY_KS001)*/\n"
 			+ "\t distinct p.phone\n"
@@ -506,7 +507,8 @@ public interface QueryConstants {
 	// public static final String Q_GET_PHONE_LIST_ONLY_CONTR_LIST =
 	// "select distinct t.phone from ccare.phones t\n" +
 	// "inner join ccare.abonents a on a.phone_id = t.phone_id\n" +
-	// "inner join ccare.main_services ms on ms.organization_id = a.organization_id\n" +
+	// "inner join ccare.main_services ms on ms.organization_id = a.organization_id\n"
+	// +
 	// "where t.deleted = 0 and a.deleted = 0 and ms.service_id = 3 and a.organization_id = ? and ms.organization_id = ?\n"
 	// +
 	// "  and a.main_detail_id = ? and t.phone is not null and length(t.phone)>6 and t.phone not in (\n"
@@ -593,7 +595,8 @@ public interface QueryConstants {
 	// public static final String Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST =
 	// "select distinct t.phone from ccare.phones t\n" +
 	// "inner join ccare.abonents a on a.phone_id = t.phone_id\n" +
-	// "inner join ccare.main_services ms on ms.organization_id = a.organization_id\n" +
+	// "inner join ccare.main_services ms on ms.organization_id = a.organization_id\n"
+	// +
 	// "where t.deleted = 0 and a.deleted = 0 and ms.service_id = 3 and a.organization_id = ? and ms.organization_id = ?\n"
 	// +
 	// "  and a.main_detail_id = ? and t.phone is not null and length(t.phone)>6 and t.phone in (\n"
@@ -607,7 +610,8 @@ public interface QueryConstants {
 
 	// public static final String Q_GET_PHONE_LIST_ONLY_CONTR_LIST1 =
 	// "select distinct p.phone from ccare.main_services ms\n" +
-	// "       inner join ccare.abonents a on a.organization_id = ms.organization_id\n" +
+	// "       inner join ccare.abonents a on a.organization_id = ms.organization_id\n"
+	// +
 	// "       inner join ccare.phones p on p.phone_id = a.phone_id\n" +
 	// "where ms.organization_id in\n" +
 	// "      (select t.organization_id from ccare.main_services t\n" +
@@ -744,7 +748,8 @@ public interface QueryConstants {
 
 	// public static final String Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST1 =
 	// "select distinct p.phone from ccare.main_services ms\n" +
-	// "       inner join ccare.abonents a on a.organization_id = ms.organization_id\n" +
+	// "       inner join ccare.abonents a on a.organization_id = ms.organization_id\n"
+	// +
 	// "       inner join ccare.phones p on p.phone_id = a.phone_id\n" +
 	// "where ms.organization_id in\n" +
 	// "      (select t.organization_id from ccare.main_services t\n" +
@@ -932,16 +937,16 @@ public interface QueryConstants {
 	public static final String Q_GET_TRANSPORT_BY_ID = "select\n"
 			+ "        getdaysdescription(t.days) as days_descr,\n"
 			+ "        tt.name_descr transport_type,\n"
-			+ "        dep_c.city_name_geo||' '||dep_st.name_descr as departure_station,\n"
-			+ "        arr_c.city_name_geo||' '||arr_st.name_descr as arrival_station,\n"
+			+ "        dep_c.town_name||' '||dep_st.name_descr as departure_station,\n"
+			+ "        arr_c.town_name||' '||arr_st.name_descr as arrival_station,\n"
 			+ "        tc.name_descr as transport_company,\n"
 			+ "        tr.name_descr as transport_resource\n"
 			+ "\n"
 			+ "from transp_schedules t, transp_types tt,transp_stations dep_st, cities dep_c,transp_stations arr_st, cities arr_c, transp_companies tc, transp_resource tr\n"
 			+ "where\n"
 			+ "          t.transp_type_id = tt.transp_type_id and\n"
-			+ "          t.depart_transp_stat_id = dep_st.transp_stat_id and dep_st.city_id = dep_c.city_id and\n"
-			+ "          t.arrival_transp_stat_id = arr_st.transp_stat_id and arr_st.city_id = arr_c.city_id and\n"
+			+ "          t.depart_transp_stat_id = dep_st.transp_stat_id and dep_st.town_id = dep_c.town_id and\n"
+			+ "          t.arrival_transp_stat_id = arr_st.transp_stat_id and arr_st.town_id = arr_c.town_id and\n"
 			+ "          t.transp_comp_id = tc.transp_comp_id(+) and\n"
 			+ "          t.transp_res_id = tr.transp_res_id and\n"
 			+ "          t.transp_schedule_id = ? \n" + "order by t.days";;
@@ -1023,7 +1028,7 @@ public interface QueryConstants {
 			+ "inner join ccare.main_services ms on ms.organization_id = a.organization_id\n"
 			+ "inner join ccare.main_orgs mo on mo.organization_id = a.organization_id\n"
 			+ "where t.phone = ? and ms.service_id = 3 )";
-//Herio bichebo
+	// Herio bichebo
 	public static final String Q_GET_FIRST_NAME_COUNT = " select count(1) from ccare.firstnames t where t.firstname = ? ";
 	public static final String Q_GET_LAST_NAME_COUNT = " select count(1) from ccare.lastnames t where t.lastname = ? ";
 	public static final String Q_GET_FIRST_NAME_COUNT_ALL = " select count(1) from ccare.firstnames t ";
@@ -1033,7 +1038,7 @@ public interface QueryConstants {
 	public static final String Q_GET_USER_PERMISSIONS = " select t.permission_id from user_permission t where t.user_id = ? ";
 	public static final String Q_DELETE_USER_PERMISSIONS = " delete from user_permission t where t.user_id = ? ";
 
-	public static final String Q_GET_ALL_CITY_REGIONS = "select t.city_region_id, t.city_id, t.city_region_name_geo, t.deleted\n"
+	public static final String Q_GET_ALL_CITY_REGIONS = "select t.town_district_id, t.town_id, t.town_district_name, t.deleted\n"
 			+ "  from city_regions t\n"
 			+ " where t.deleted = 0\n"
 			+ " order by 3";
@@ -1057,16 +1062,15 @@ public interface QueryConstants {
 			+ "       p.phone_id,\n" + "       f.firstname,\n"
 			+ "       l.lastname,\n" + "       p.phone,\n"
 			+ "       ps.phone_state,\n" + "       ps.phone_state_id,\n"
-			+ "       t.upd_date,\n"
-			+ "       c.city_name_geo         as city,\n"
-			+ "       str.street_name_geo     as street,\n"
+			+ "       t.upd_date,\n" + "       c.town_name         as city,\n"
+			+ "       str.street_name     as street,\n"
 			+ "       t.upd_user,\n" + "       f.firstname_id,\n"
 			+ "       l.lastname_id,\n"
 			+ "       ap.is_hide               as abonent_hide,\n"
 			+ "       ap.is_parallel           as phone_parallel,\n"
 			+ "       ap.phone_status_id,\n" + "       p.phone_type_id,\n"
-			+ "       c.city_id,\n" + "       str.street_id,\n"
-			+ "       sd.city_region_id,\n" + "       ma.address_hide,\n"
+			+ "       c.town_id,\n" + "       str.street_id,\n"
+			+ "       sd.town_district_id,\n" + "       ma.address_hide,\n"
 			+ "       ma.address_suffix_geo,\n" + "       ma.addr_number,\n"
 			+ "       ma.addr_block,\n" + "       ma.addr_appt,\n"
 			+ "       ma.addr_descr,\n" + "       sd.street_district_id,\n"
@@ -1085,13 +1089,13 @@ public interface QueryConstants {
 			+ "   and ps.phone_state_id = p.phone_state_id\n"
 			+ "   and ma.organization_id = t.organization_id\n"
 			+ "   and str.street_id = ma.street_id\n"
-			+ "   and c.city_id = str.city_id\n"
-			+ "   and str.city_id = sd.city_id(+)\n"
+			+ "   and c.town_id = str.town_id\n"
+			+ "   and str.town_id = sd.town_id(+)\n"
 			+ "   and str.street_id = sd.street_id(+)\n"
 			+ "   AND t.abonent_id = ? ";
 
 	public static final String Q_GET_STREET_BY_ID = "select\n"
-			+ "  t.city_id,\n" + "  t.street_id,\n" + "  t.street_name_geo,\n"
+			+ "  t.town_id,\n" + "  t.street_id,\n" + "  t.street_name,\n"
 			+ "  t.street_name_eng,\n" + "  t.map_id,\n" + "  t.rec_date,\n"
 			+ "  t.rec_user,\n" + "  t.street_note_eng,\n" + "  t.deleted,\n"
 			+ "  t.street_location_geo,\n" + "  t.street_location_eng,\n"
@@ -1109,8 +1113,8 @@ public interface QueryConstants {
 			+ "  t.descr_type_id_level_10 \n" + "from\n"
 			+ "    ccare.streets t \n" + "where\n" + "  t.street_id = ? ";
 
-	public static final String Q_GET_STREET_ALL = "select\n" + "  t.city_id,\n"
-			+ "  t.street_id,\n" + "  t.street_name_geo,\n"
+	public static final String Q_GET_STREET_ALL = "select\n" + "  t.town_id,\n"
+			+ "  t.street_id,\n" + "  t.street_name,\n"
 			+ "  t.street_name_eng,\n" + "  t.map_id,\n" + "  t.rec_date,\n"
 			+ "  t.rec_user,\n" + "  t.street_note_eng,\n" + "  t.deleted,\n"
 			+ "  t.street_location_geo,\n" + "  t.street_location_eng,\n"
@@ -1128,20 +1132,26 @@ public interface QueryConstants {
 			+ "  t.descr_type_id_level_10 \n" + "from\n"
 			+ "    ccare.streets t\n";
 
-	public static final String Q_GET_STREET_DISTRICTS_ALL = "select t.street_district_id,t.street_id,t.city_region_id,c.city_region_name_geo from ccare.street_district t\n"
-			+ "inner join ccare.city_regions c on c.city_region_id = t.city_region_id\n"
-			+ "where t.street_district_id is not null and t.street_id is not null and t.city_region_id is not null and c.city_region_name_geo is not null";
+	public static final String Q_GET_STREET_DISTRICTS_ALL =
+
+	"select t.street_to_town_district_id\n" + "      ,t.street_id\n"
+			+ "      ,t.town_district_id\n" + "      ,c.town_district_name\n"
+			+ "  from ccare.street_to_town_districts t\n"
+			+ " inner join ccare.town_district c\n"
+			+ "    on c.town_district_id = t.town_district_id\n"
+			+ " where t.street_to_town_district_id is not null\n"
+			+ "   and t.street_id is not null\n"
+			+ "   and t.town_district_id is not null\n"
+			+ "   and c.town_district_name is not null";
 
 	// inserts
 	public static final String Q_INSERT_PERS_NOTES = "BEGIN insert into ccare.log_personell_notes t\n"
 			+ "(t.ym,t.session_id,t.user_name,t.note,t.rec_user,t.rec_date,t.visible_options,t.phone,t.call_date,t.particular)\n"
 			+ "values (?,?,?,?,?,?,?,?,?,?) returning id into ?; END; ";
 
-	public static final String Q_INSERT_SESSION = 
-			"insert into call_sessions\n" +
-					"  (call_session_id, year_month, uname, call_phone, session_id, call_kind)\n" + 
-					"values\n" + 
-					"  (Seq_Call_Session_Id.Nextval, ?, ?, ?, ?, ?";
+	public static final String Q_INSERT_SESSION = "insert into call_sessions\n"
+			+ "  (call_session_id, year_month, uname, call_phone, session_id, call_kind)\n"
+			+ "values\n" + "  (Seq_Call_Session_Id.Nextval, ?, ?, ?, ?, ?";
 	// updates
 	public static final String Q_UPDATE_PERS_NOTES = "update ccare.log_personell_notes t set t.note = ?, t.visible_options = ?, t.particular = ?\n"
 			+ "where t.note_id = ? ";
@@ -1174,27 +1184,23 @@ public interface QueryConstants {
 	public static final String Q_UPDATE_COUNTRY = "update ccare.countries t set\n"
 			+ "       t.country_name = ?,\n"
 			+ "       t.phone_code = ?,\n"
-			+ "       t.continent_id = ?\n"
-			+ "where t.country_id = ?";
+			+ "       t.continent_id = ?\n" + "where t.country_id = ?";
 
 	public static final String Q_DELETE_USER = " delete from users t \n"
 			+ "where t.user_id = ? ";
 
 	public static final String Q_DELETE_COUNTRY = "delete from ccare.countries t \n"
-			+" where t.country_id = ?";
+			+ " where t.country_id = ?";
 
-	public static final String Q_UPDATE_CITY = "update ccare.cities t set\n"
-			+ "       t.city_name_geo = ?, t.city_name_eng = ?,\n"
-			+ "       t.country_id = ?, t.city_type_id = ?,\n"
-			+ "       t.of_gmt = ?, t.of_gmt_winter = ?,\n"
-			+ "       t.is_capital = ?, t.upd_user = ?,\n"
-			+ "       t.city_code = ?, t.upd_date = ?,\n"
-			+ "       t.city_new_code = ? where t.city_id = ?";
+	public static final String Q_UPDATE_TOWN = "update towns t set\n"
+			+ "       t.town_name = ?, \n"
+			+ "       t.country_id = ?, t.town_type_id = ?,\n"
+			+ "       t.normal_gmt = ?, t.winter_gmt = ?,\n"
+			+ "       t.capital_town = ?, \n" + "       t.town_code = ?, \n"
+			+ "       t.town_new_code = ? where t.town_id = ?";
 
-	public static final String Q_UPDATE_CITY_STATUS = "update ccare.cities t set\n"
-			+ "       t.upd_user = ?,\n"
-			+ "       t.upd_date = ?,\n"
-			+ "       t.deleted = ? where t.city_id = ?";
+	public static final String Q_DELETE_TOWN = "delete from towns t \n"
+			+ "       where t.town_id = ?";
 
 	public static final String Q_UPDATE_STREET_TYPE = "update ccare.street_types t set t.street_type_name_geo = ?, t.street_type_name_eng = ?, t.upd_user = ? where t.street_type_id = ? ";
 
@@ -1205,8 +1211,8 @@ public interface QueryConstants {
 	public static final String Q_UPDATE_STREET_DESCR_STATUS = "update ccare.street_descr t set t.deleted = ?, t.upd_user = ? where t.street_descr_id = ? ";
 
 	public static final String Q_UPDATE_STREET = " update ccare.streets t set\n"
-			+ "        t.city_id = ?,\n"
-			+ "        t.street_name_geo = ?,\n"
+			+ "        t.town_id = ?,\n"
+			+ "        t.street_name = ?,\n"
 			+ "        t.street_location_geo = ?,\n"
 			+ "        t.upd_user = ?,\n"
 			+ "        t.record_type = ?,\n"
@@ -1241,7 +1247,7 @@ public interface QueryConstants {
 
 	public static final String Q_DELETE_USER_PERMISSION = " delete from user_permission t where t.user_id = ? ";
 
-	public static final String Q_DELETE_STREET_DISCTRICTS_BY_STREET_ID = " delete from ccare.street_district t where t.street_id = ? ";
+	public static final String Q_DELETE_STREET_DISCTRICTS_BY_STREET_ID = " delete from ccare.street_to_town_districts t where t.street_id = ? ";
 
 	public static final String Q_UPDATE_MAIN_SERVICE_SORT = " update ccare.main_services t set t.priority = ?,t.upd_user = ?,t.upd_date = ? where t.organization_id = ? ";
 
@@ -1272,7 +1278,7 @@ public interface QueryConstants {
 			+ "       mo1.new_identcode,\n"
 			+ "       mo1.legal_statuse_id,\n"
 			+ "       mo1.statuse,\n"
-			+ "       str.street_name_geo || ' ' || ma.address_suffix_geo as real_address\n"
+			+ "       str.street_name || ' ' || ma.address_suffix_geo as real_address\n"
 			+ "  from ccare.main_services ms,\n"
 			+ "       ccare.main_orgs     mo1,\n"
 			+ "       main_address       ma,\n"
@@ -1280,7 +1286,8 @@ public interface QueryConstants {
 			+ " where mo1.organization_id = ms.organization_id\n"
 			+ "   and ma.organization_id = ms.organization_id\n"
 			+ "   and str.street_id = ma.street_id\n"
-			+ "   and ms.service_id = 3\n" + "   and ms.organization_id = ?\n"
+			+ "   and ms.service_id = 3\n"
+			+ "   and ms.organization_id = ?\n"
 			+ " order by ms.priority";
 	public static final String Q_DELETE_TRANSPORT_ITEMS = "delete from transp_items t where t.transp_schedule_id = ? ";
 }

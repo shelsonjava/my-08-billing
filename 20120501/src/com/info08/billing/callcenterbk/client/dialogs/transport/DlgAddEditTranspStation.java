@@ -105,16 +105,16 @@ public class DlgAddEditTranspStation extends Window {
 		cityItem = new ComboBoxItem();
 		cityItem.setTitle("ქალაქი");
 		cityItem.setWidth(300);
-		cityItem.setName("city_name_geo");
+		cityItem.setName("town_name");
 		cityItem.setFetchMissingValues(true);
 		cityItem.setFilterLocally(false);
 		cityItem.setAddUnknownValues(false);
 
-		DataSource cityDS = DataSource.get("CityDS");
+		DataSource townsDS = DataSource.get("TownsDS");
 		cityItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-		cityItem.setOptionDataSource(cityDS);
-		cityItem.setValueField("city_id");
-		cityItem.setDisplayField("city_name_geo");
+		cityItem.setOptionDataSource(townsDS);
+		cityItem.setValueField("town_id");
+		cityItem.setDisplayField("town_name");
 
 		Criteria criteriaCity = new Criteria();
 		cityItem.setOptionCriteria(criteriaCity);
@@ -125,10 +125,10 @@ public class DlgAddEditTranspStation extends Window {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = cityItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_id");
+					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("city_id", nullO);
+						criteria.setAttribute("town_id", nullO);
 					}
 				}
 			}
@@ -180,9 +180,9 @@ public class DlgAddEditTranspStation extends Window {
 			if (transport_type_id != null) {
 				transpTypeItem.setValue(transport_type_id);
 			}
-			Integer city_id = editRecord.getAttributeAsInt("city_id");
+			Integer town_id = editRecord.getAttributeAsInt("town_id");
 			if (transport_type_id != null) {
-				cityItem.setValue(city_id);
+				cityItem.setValue(town_id);
 			}
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -201,8 +201,8 @@ public class DlgAddEditTranspStation extends Window {
 				SC.say("აირჩიეთ ტრანსპორტის ტიპი !");
 				return;
 			}
-			String city_id = cityItem.getValueAsString();
-			if (city_id == null || city_id.trim().equalsIgnoreCase("")) {
+			String town_id = cityItem.getValueAsString();
+			if (town_id == null || town_id.trim().equalsIgnoreCase("")) {
 				SC.say("აირჩიეთ ქალაქი !");
 				return;
 			}
@@ -215,7 +215,7 @@ public class DlgAddEditTranspStation extends Window {
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("name_descr", name_descr);			
 			record.setAttribute("transp_type_id", new Integer(transp_type_id));
-			record.setAttribute("city_id", new Integer(city_id));
+			record.setAttribute("town_id", new Integer(town_id));
 
 			if (editRecord != null) {
 				record.setAttribute("transp_stat_id",editRecord.getAttributeAsInt("transp_stat_id"));

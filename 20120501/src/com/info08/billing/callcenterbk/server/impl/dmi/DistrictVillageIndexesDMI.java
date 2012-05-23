@@ -11,7 +11,7 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.DistrictIndexes;
-import com.info08.billing.callcenterbk.shared.entity.StreetEnt;
+import com.info08.billing.callcenterbk.shared.entity.Street;
 import com.info08.billing.callcenterbk.shared.entity.StreetIndex;
 import com.info08.billing.callcenterbk.shared.entity.VillageIndexes;
 import com.isomorphic.datasource.DSRequest;
@@ -467,10 +467,10 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 
 			Long street_id = streetIndex.getStreet_id();
 			if (street_id != null) {
-				StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
+				Street streetEnt = oracleManager.find(Street.class,
 						street_id);
 				if (streetEnt != null) {
-					streetIndex.setStreetName(streetEnt.getStreet_name_geo());
+					streetIndex.setStreetName(streetEnt.getStreet_name());
 				}
 			}
 
@@ -535,10 +535,10 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 			streetIndex.setLoggedUserName(loggedUserName);
 
 			if (street_id != null) {
-				StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
+				Street streetEnt = oracleManager.find(Street.class,
 						street_id);
 				if (streetEnt != null) {
-					streetIndex.setStreetName(streetEnt.getStreet_name_geo());
+					streetIndex.setStreetName(streetEnt.getStreet_name());
 				}
 			}
 
@@ -597,10 +597,10 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 
 			Long street_id = streetIndex.getStreet_id();
 			if (street_id != null) {
-				StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
+				Street streetEnt = oracleManager.find(Street.class,
 						street_id);
 				if (streetEnt != null) {
-					streetIndex.setStreetName(streetEnt.getStreet_name_geo());
+					streetIndex.setStreetName(streetEnt.getStreet_name());
 				}
 			}
 

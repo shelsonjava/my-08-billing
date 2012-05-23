@@ -186,9 +186,9 @@ public class DlgAddEditBusRouteStreet extends Window {
 			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetItem.setOptionDataSource(streetsDS);
 			streetItem.setValueField("street_id");
-			streetItem.setDisplayField("street_name_geo");
+			streetItem.setDisplayField("street_name");
 
-			criteria.setAttribute("city_id", Constants.defCityTbilisiId);
+			criteria.setAttribute("town_id", Constants.defCityTbilisiId);
 			streetItem.setOptionCriteria(criteria);
 			streetItem.setAutoFetchData(false);
 

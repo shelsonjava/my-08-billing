@@ -495,7 +495,7 @@ public class EventDMI implements QueryConstants {
 				entPoster.setEvent_date(new Timestamp(poster_date.getTime()));
 			}
 			entPoster.setEvent_time(poster_time);
-			entPoster.setEvent_owner_name(event_price);
+			entPoster.setEvent_price(event_price);
 			entPoster.setDate_criteria(dt_crit);
 			entPoster.setDate_visibility(date_visibility);
 

@@ -1,16 +1,16 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
-import com.info08.billing.callcenterbk.client.content.TabCity;
+import com.info08.billing.callcenterbk.client.content.TabTowns;
 import com.info08.billing.callcenterbk.client.content.TabCityDistance;
-import com.info08.billing.callcenterbk.client.content.TabCityRegions;
+import com.info08.billing.callcenterbk.client.content.TabTownDistrict;
 import com.info08.billing.callcenterbk.client.content.TabCountry;
 import com.info08.billing.callcenterbk.client.content.TabVillageIndexes;
 import com.info08.billing.callcenterbk.client.content.TabDistrictIndexes;
 import com.info08.billing.callcenterbk.client.content.TabGeoStreetIdx;
 import com.info08.billing.callcenterbk.client.content.TabStreet;
-import com.info08.billing.callcenterbk.client.content.TabStreetDescr;
+import com.info08.billing.callcenterbk.client.content.TabStreetNames;
 import com.info08.billing.callcenterbk.client.content.TabStreetHist;
-import com.info08.billing.callcenterbk.client.content.TabStreetTypes;
+import com.info08.billing.callcenterbk.client.content.TabStreetKinds;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -160,10 +160,10 @@ public class AddressStackSelection extends SectionStackSection {
 			TabCountry tabCountry = new TabCountry();
 			body.addTab(tabCountry);
 		} else if (menuId.equals("101")) {
-			TabCity tabCity = new TabCity();
+			TabTowns tabCity = new TabTowns();
 			body.addTab(tabCity);
 		} else if (menuId.equals("102")) {
-			TabCityRegions tabCityRegions = new TabCityRegions();
+			TabTownDistrict tabCityRegions = new TabTownDistrict();
 			body.addTab(tabCityRegions);
 		} else if (menuId.equals("103")) {
 			TabCityDistance tabCityDistance = new TabCityDistance();
@@ -172,10 +172,10 @@ public class AddressStackSelection extends SectionStackSection {
 			TabStreet tabStreet = new TabStreet();
 			body.addTab(tabStreet);
 		} else if (menuId.equals("105")) {
-			TabStreetTypes tabStreetTypes = new TabStreetTypes();
+			TabStreetKinds tabStreetTypes = new TabStreetKinds();
 			body.addTab(tabStreetTypes);
 		} else if (menuId.equals("106")) {
-			TabStreetDescr tabStreetDescr = new TabStreetDescr();
+			TabStreetNames tabStreetDescr = new TabStreetNames();
 			body.addTab(tabStreetDescr);
 		} else if (menuId.equals("107")) {
 			TabStreetHist tabStreetHist = new TabStreetHist();

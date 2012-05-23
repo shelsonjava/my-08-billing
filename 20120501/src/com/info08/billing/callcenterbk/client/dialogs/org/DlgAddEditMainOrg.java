@@ -339,17 +339,17 @@ public class DlgAddEditMainOrg extends Window {
 
 			citiesItem = new ComboBoxItem();
 			citiesItem.setTitle(CallCenterBK.constants.city());
-			citiesItem.setName("city_name_geo");
+			citiesItem.setName("town_name");
 			citiesItem.setWidth(284);
 			citiesItem.setFetchMissingValues(true);
 			citiesItem.setFilterLocally(false);
 			citiesItem.setAddUnknownValues(false);
 
-			DataSource cityDS = DataSource.get("CityDS");
+			DataSource townsDS = DataSource.get("TownsDS");
 			citiesItem.setOptionOperationId("searchCitiesFromDBForCombos");
-			citiesItem.setOptionDataSource(cityDS);
-			citiesItem.setValueField("city_id");
-			citiesItem.setDisplayField("city_name_geo");
+			citiesItem.setOptionDataSource(townsDS);
+			citiesItem.setValueField("town_id");
+			citiesItem.setDisplayField("town_name");
 
 			citiesItem.setOptionCriteria(new Criteria());
 			citiesItem.setAutoFetchData(false);
@@ -359,10 +359,10 @@ public class DlgAddEditMainOrg extends Window {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = citiesItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("city_id");
+						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_id", nullO);
+							criteria.setAttribute("town_id", nullO);
 						}
 					}
 				}
@@ -371,7 +371,7 @@ public class DlgAddEditMainOrg extends Window {
 
 			streetItem = new ComboBoxItem();
 			streetItem.setTitle(CallCenterBK.constants.street());
-			streetItem.setName("street_name_geo");
+			streetItem.setName("street_name");
 			streetItem.setWidth(284);
 			streetItem.setFetchMissingValues(true);
 			streetItem.setFilterLocally(false);
@@ -381,7 +381,7 @@ public class DlgAddEditMainOrg extends Window {
 			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetItem.setOptionDataSource(streetsNewDS);
 			streetItem.setValueField("street_id");
-			streetItem.setDisplayField("street_name_geo");
+			streetItem.setDisplayField("street_name");
 			streetItem.setOptionCriteria(new Criteria());
 			streetItem.setAutoFetchData(false);
 
@@ -401,7 +401,7 @@ public class DlgAddEditMainOrg extends Window {
 
 			regionItem = new ComboBoxItem();
 			regionItem.setTitle(CallCenterBK.constants.cityRegion());
-			regionItem.setName("city_region_name_geo");
+			regionItem.setName("town_district_name");
 			regionItem.setWidth(284);
 			regionItem.setFetchMissingValues(true);
 			regionItem.setFilterLocally(false);
@@ -410,11 +410,11 @@ public class DlgAddEditMainOrg extends Window {
 			DataSource streetsDS = DataSource.get("CityRegionDS");
 			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
 			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("city_region_id");
-			regionItem.setDisplayField("city_region_name_geo");
+			regionItem.setValueField("town_district_id");
+			regionItem.setDisplayField("town_district_name");
 
 			Criteria criteria = new Criterion();
-			criteria.setAttribute("city_id", Constants.defCityTbilisiId);
+			criteria.setAttribute("town_id", Constants.defCityTbilisiId);
 			regionItem.setOptionCriteria(criteria);
 			regionItem.setAutoFetchData(false);
 
@@ -424,10 +424,10 @@ public class DlgAddEditMainOrg extends Window {
 					Criteria criteria = regionItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("city_region_id");
+								.getAttribute("town_district_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_region_id", nullO);
+							criteria.setAttribute("town_district_id", nullO);
 						}
 					}
 				}
@@ -633,9 +633,9 @@ public class DlgAddEditMainOrg extends Window {
 					if (value == null) {
 						return;
 					}
-					Integer city_id = null;
+					Integer town_id = null;
 					try {
-						city_id = Integer.parseInt(value);
+						town_id = Integer.parseInt(value);
 					} catch (NumberFormatException e) {
 						return;
 					}
@@ -643,8 +643,8 @@ public class DlgAddEditMainOrg extends Window {
 					regionItem.clearValue();
 					streetDescrItem.setValue("");
 					streetIdxItem.setValue("");
-					fillStreetsCombo(null, city_id);
-					fillCityRegionCombo(null, city_id);
+					fillStreetsCombo(null, town_id);
+					fillCityRegionCombo(null, town_id);
 				}
 			});
 			streetItem.addChangedHandler(new ChangedHandler() {
@@ -659,19 +659,19 @@ public class DlgAddEditMainOrg extends Window {
 						descr = "";
 					}
 					streetDescrItem.setValue(descr);
-					Integer city_region_id = record
-							.getAttributeAsInt("city_region_id");
-					Integer cityId = record.getAttributeAsInt("city_id");
-					if (city_region_id != null && cityId != null) {
+					Integer town_district_id = record
+							.getAttributeAsInt("town_district_id");
+					Integer cityId = record.getAttributeAsInt("town_id");
+					if (town_district_id != null && cityId != null) {
 						fillCityRegionCombo(null, cityId);
-						regionItem.setValue(city_region_id);
+						regionItem.setValue(town_district_id);
 						Criteria criteria = regionItem.getOptionCriteria();
 						if (criteria != null) {
 							String oldAttr = criteria
-									.getAttribute("city_region_id");
+									.getAttribute("town_district_id");
 							if (oldAttr != null) {
 								Object nullO = null;
-								criteria.setAttribute("city_region_id", nullO);
+								criteria.setAttribute("town_district_id", nullO);
 							}
 						}
 					}
@@ -749,9 +749,9 @@ public class DlgAddEditMainOrg extends Window {
 						.getAttributeAsString("founded"));
 				orgIndItem.setValue(listGridRecord.getAttributeAsString("ind"));
 				citiesItem
-						.setValue(listGridRecord.getAttributeAsInt("city_id"));
+						.setValue(listGridRecord.getAttributeAsInt("town_id"));
 				regionItem.setValue(listGridRecord
-						.getAttributeAsInt("city_region_id"));
+						.getAttributeAsInt("town_district_id"));
 				streetItem.setValue(listGridRecord
 						.getAttributeAsInt("street_id"));
 				blockItem.setValue(listGridRecord
@@ -807,11 +807,11 @@ public class DlgAddEditMainOrg extends Window {
 	private void fillStreetsCombo(final ListGridRecord abonentRecord,
 			Integer defCityTbilisiId) {
 		try {
-			Integer city_id = defCityTbilisiId;
+			Integer town_id = defCityTbilisiId;
 			if (abonentRecord != null) {
-				Integer fromEdit = abonentRecord.getAttributeAsInt("city_id");
+				Integer fromEdit = abonentRecord.getAttributeAsInt("town_id");
 				if (fromEdit != null) {
-					city_id = fromEdit;
+					town_id = fromEdit;
 				}
 			}
 
@@ -819,10 +819,10 @@ public class DlgAddEditMainOrg extends Window {
 			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetItem.setOptionDataSource(streetsDS);
 			streetItem.setValueField("street_id");
-			streetItem.setDisplayField("street_name_geo");
+			streetItem.setDisplayField("street_name");
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("city_id", city_id);
+			criteria.setAttribute("town_id", town_id);
 			streetItem.setOptionCriteria(criteria);
 			streetItem.setAutoFetchData(false);
 		} catch (Exception e) {
@@ -834,22 +834,22 @@ public class DlgAddEditMainOrg extends Window {
 	private void fillCityRegionCombo(final ListGridRecord abonentRecord,
 			Integer defCityTbilisiId) {
 		try {
-			Integer city_id = defCityTbilisiId;
+			Integer town_id = defCityTbilisiId;
 			if (abonentRecord != null) {
-				Integer fromEdit = abonentRecord.getAttributeAsInt("city_id");
+				Integer fromEdit = abonentRecord.getAttributeAsInt("town_id");
 				if (fromEdit != null) {
-					city_id = fromEdit;
+					town_id = fromEdit;
 				}
 			}
 
 			DataSource streetsDS = DataSource.get("CityRegionDS");
 			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
 			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("city_region_id");
-			regionItem.setDisplayField("city_region_name_geo");
+			regionItem.setValueField("town_district_id");
+			regionItem.setDisplayField("town_district_name");
 
 			Criteria criteria = new Criterion();
-			criteria.setAttribute("city_id", city_id);
+			criteria.setAttribute("town_id", town_id);
 			regionItem.setOptionCriteria(criteria);
 			regionItem.setAutoFetchData(false);
 

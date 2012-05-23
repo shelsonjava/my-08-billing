@@ -12,7 +12,7 @@ import com.info08.billing.callcenterbk.client.content.callcenter.TabFindIndexes;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindCallCenterNews;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindNonStandartInfo;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindOrg;
-import com.info08.billing.callcenterbk.client.content.callcenter.TabFindPoster;
+import com.info08.billing.callcenterbk.client.content.callcenter.TabFindEvent;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindStreets;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindTransport;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindWebSites;
@@ -232,7 +232,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 		iButtonPoster.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				TabFindPoster findPoster = new TabFindPoster();
+				TabFindEvent findPoster = new TabFindEvent();
 				body.addTab(findPoster);
 			}
 		});

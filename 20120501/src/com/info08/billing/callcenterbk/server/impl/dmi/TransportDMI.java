@@ -14,7 +14,7 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.Towns;
-import com.info08.billing.callcenterbk.shared.entity.StreetEnt;
+import com.info08.billing.callcenterbk.shared.entity.Street;
 import com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirection;
 import com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirectionStreet;
 import com.info08.billing.callcenterbk.shared.entity.transport.TranspCompany;
@@ -408,8 +408,8 @@ public class TransportDMI implements QueryConstants {
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 			String loggedUserName = transpStation.getLoggedUserName();
 
-			Long city_id = transpStation.getCity_id();
-			Towns city = oracleManager.find(Towns.class, city_id);
+			Long town_id = transpStation.getTown_id();
+			Towns city = oracleManager.find(Towns.class, town_id);
 
 			Long transpTypeId = transpStation.getTransp_type_id();
 			TranspType transportType = oracleManager.find(TranspType.class,
@@ -475,7 +475,7 @@ public class TransportDMI implements QueryConstants {
 					.toString());
 			Long transp_type_id = new Long(record.get("transp_type_id")
 					.toString());
-			Long city_id = new Long(record.get("city_id").toString());
+			Long town_id = new Long(record.get("town_id").toString());
 			String name_descr = record.get("name_descr") == null ? null
 					: record.get("name_descr").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
@@ -484,10 +484,10 @@ public class TransportDMI implements QueryConstants {
 					TranspStation.class, transp_stat_id);
 
 			transpStation.setTransp_type_id(transp_type_id);
-			transpStation.setCity_id(city_id);
+			transpStation.setTown_id(town_id);
 			transpStation.setName_descr(name_descr);
 
-			Towns city = oracleManager.find(Towns.class, city_id);
+			Towns city = oracleManager.find(Towns.class, town_id);
 			TranspType transportType = oracleManager.find(TranspType.class,
 					transp_type_id);
 
@@ -811,11 +811,11 @@ public class TransportDMI implements QueryConstants {
 			busRouteStreet.setLoggedUserName(loggedUserName);
 			Long streetId = busRouteStreet.getStreet_id();
 			if (streetId != null) {
-				StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
+				Street streetEnt = oracleManager.find(Street.class,
 						streetId);
 				if (streetEnt != null) {
 					busRouteStreet.setStreet_name(streetEnt
-							.getStreet_name_geo());
+							.getStreet_name());
 				}
 			}
 			Long route_id = busRouteStreet.getDir_id();
@@ -906,11 +906,11 @@ public class TransportDMI implements QueryConstants {
 
 			busRouteStreet.setLoggedUserName(loggedUserName);
 			if (street_id != null) {
-				StreetEnt streetEnt = oracleManager.find(StreetEnt.class,
+				Street streetEnt = oracleManager.find(Street.class,
 						street_id);
 				if (streetEnt != null) {
 					busRouteStreet.setStreet_name(streetEnt
-							.getStreet_name_geo());
+							.getStreet_name());
 				}
 			}
 			if (route_id != null) {
