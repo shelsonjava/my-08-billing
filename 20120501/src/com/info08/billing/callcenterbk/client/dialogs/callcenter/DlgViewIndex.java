@@ -104,8 +104,8 @@ public class DlgViewIndex extends Window {
 				"countryregion", CallCenterBK.constants.region());
 		DetailViewerField code = new DetailViewerField("code",
 				CallCenterBK.constants.oldCode());
-		DetailViewerField city_new_code = new DetailViewerField(
-				"city_new_code", CallCenterBK.constants.newCode());
+		DetailViewerField town_new_code = new DetailViewerField(
+				"town_new_code", CallCenterBK.constants.newCode());
 
 		DetailViewerField gmtoff = new DetailViewerField("gmtoff",
 				CallCenterBK.constants.gmtoff());
@@ -117,7 +117,7 @@ public class DlgViewIndex extends Window {
 		detailViewer.viewSelectedData(listGrid);
 
 		detailViewer.setFields(cityName, countrycode, countryregion,
-				city_new_code, code, gmtoff, gmtoffwinter, ctm);
+				town_new_code, code, gmtoff, gmtoffwinter, ctm);
 		mainLayout.addMember(detailViewer);
 
 		HLayout hLayoutItem = new HLayout(5);
@@ -248,14 +248,14 @@ public class DlgViewIndex extends Window {
 			}
 
 			String cityName = listGridRecord
-					.getAttributeAsString("city_name_geo");
+					.getAttributeAsString("town_name");
 			if (cityName != null && !cityName.trim().equals("")) {
 				sms_text.append(cityName).append(" ");
 			}
-			String city_new_code = listGridRecord
-					.getAttributeAsString("city_new_code");
-			if (city_new_code != null && !city_new_code.trim().equals("")) {
-				sms_text.append(city_new_code);
+			String town_new_code = listGridRecord
+					.getAttributeAsString("town_new_code");
+			if (town_new_code != null && !town_new_code.trim().equals("")) {
+				sms_text.append(town_new_code);
 			}
 			Integer seasonid = listGridRecord.getAttributeAsInt("seasonid");
 
@@ -338,7 +338,7 @@ public class DlgViewIndex extends Window {
 				sms_text.append(country_name).append("-");
 			}
 			
-			String cityName = listGridRecord.getAttributeAsString("city_name_geo");
+			String cityName = listGridRecord.getAttributeAsString("town_name");
 			if (cityName != null && !cityName.trim().equals("")) {
 				sms_text.append(cityName).append(";");
 			}

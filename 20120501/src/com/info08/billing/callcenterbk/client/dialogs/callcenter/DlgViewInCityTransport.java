@@ -105,9 +105,9 @@ public class DlgViewInCityTransport extends Window {
 		DetailViewerField service_descr = new DetailViewerField(
 				"service_descr", CallCenterBK.constants.transportType());
 
-		DetailViewerField icity_name_geo = new DetailViewerField(
-				"icity_name_geo", CallCenterBK.constants.stationTo());
-		icity_name_geo.setCellStyle("fontGreenWithBorder");
+		DetailViewerField itown_name = new DetailViewerField(
+				"itown_name", CallCenterBK.constants.stationTo());
+		itown_name.setCellStyle("fontGreenWithBorder");
 
 		DetailViewerField start_place = new DetailViewerField("start_place",
 				CallCenterBK.constants.stationFrom());

@@ -74,8 +74,8 @@ public class DlgAddVirtualCharge extends Window {
 			DetailViewerField orgOrAbonent = new DetailViewerField(
 					"orgOrAbonent", CallCenterBK.constants.type());
 
-			DetailViewerField city_name_geo = new DetailViewerField(
-					"city_name_geo", CallCenterBK.constants.city());
+			DetailViewerField town_name = new DetailViewerField(
+					"town_name", CallCenterBK.constants.city());
 
 			DetailViewerField streetName = new DetailViewerField("streetName",
 					CallCenterBK.constants.street());
@@ -84,7 +84,7 @@ public class DlgAddVirtualCharge extends Window {
 					"phone_status", CallCenterBK.constants.phoneStatus());
 
 			detailViewer.setFields(phone, fullName, orgOrAbonent,
-					city_name_geo, streetName, phone_status);
+					town_name, streetName, phone_status);
 
 			hLayout.addMember(detailViewer);
 

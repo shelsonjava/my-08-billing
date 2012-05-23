@@ -83,8 +83,8 @@ public class DlgViewAbonentOrOrg extends Window {
 		DetailViewerField fullName = new DetailViewerField("fullName",
 				CallCenterBK.constants.dasaxeleba());
 
-		DetailViewerField city_name_geo = new DetailViewerField(
-				"city_name_geo", CallCenterBK.constants.city());
+		DetailViewerField town_name = new DetailViewerField(
+				"town_name", CallCenterBK.constants.city());
 
 		DetailViewerField streetName = new DetailViewerField("streetName",
 				CallCenterBK.constants.street());
@@ -94,7 +94,7 @@ public class DlgViewAbonentOrOrg extends Window {
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(fullName, city_name_geo, streetName, phone);
+		detailViewer.setFields(fullName, town_name, streetName, phone);
 
 		mainLayout.addMember(detailViewer);
 

@@ -112,12 +112,10 @@ public class DlgAddEditContractor extends Window {
 			myComboBoxItemOrg.setMyDlgWidth(600);
 			DataSource orgDS = DataSource.get("OrgDS");
 			myComboBoxItemOrg.setMyDataSource(orgDS);
-			myComboBoxItemOrg
-					.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
+			myComboBoxItemOrg.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
 			myComboBoxItemOrg.setMyIdField("organization_id");
 			myComboBoxItemOrg.setMyDisplayField("org_name");
-			myComboBoxItemOrg.setMyChooserTitle(CallCenterBK.constants
-					.organization());
+			myComboBoxItemOrg.setMyChooserTitle(CallCenterBK.constants.organization());
 
 			hLayout.addMember(myComboBoxItemOrg);
 

@@ -85,8 +85,8 @@ public class DlgViewTransport extends Window {
 		detailViewer.setHeight(300);
 
 		dataSource.getField("trip_criteria").setHidden(false);
-		dataSource.getField("ocity_name_geo").setHidden(false);
-		dataSource.getField("icity_name_geo").setHidden(false);
+		dataSource.getField("otown_name").setHidden(false);
+		dataSource.getField("itown_name").setHidden(false);
 		dataSource.getField("ostation").setHidden(false);
 		dataSource.getField("istation").setHidden(false);
 		dataSource.getField("out_time").setHidden(false);
@@ -101,13 +101,13 @@ public class DlgViewTransport extends Window {
 		DetailViewerField trip_criteria = new DetailViewerField(
 				"trip_criteria", CallCenterBK.constants.routeNumber());
 
-		DetailViewerField ocity_name_geo = new DetailViewerField(
-				"ocity_name_geo", CallCenterBK.constants.stationFrom());
-		ocity_name_geo.setCellStyle("fontRedWithBorder");
+		DetailViewerField otown_name = new DetailViewerField(
+				"otown_name", CallCenterBK.constants.stationFrom());
+		otown_name.setCellStyle("fontRedWithBorder");
 
-		DetailViewerField icity_name_geo = new DetailViewerField(
-				"icity_name_geo", CallCenterBK.constants.stationTo());
-		icity_name_geo.setCellStyle("fontGreenWithBorder");
+		DetailViewerField itown_name = new DetailViewerField(
+				"itown_name", CallCenterBK.constants.stationTo());
+		itown_name.setCellStyle("fontGreenWithBorder");
 
 		DetailViewerField ostation = new DetailViewerField("ostation",
 				CallCenterBK.constants.station());
@@ -148,8 +148,8 @@ public class DlgViewTransport extends Window {
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(trip_criteria, ocity_name_geo, ostation,
-				out_time, icity_name_geo, istation, in_time, cmt,
+		detailViewer.setFields(trip_criteria, otown_name, ostation,
+				out_time, itown_name, istation, in_time, cmt,
 				transport_company_geo, transport_plane_geo, note_geo,
 				days_descr, transport_price_geo);
 
@@ -310,19 +310,19 @@ public class DlgViewTransport extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendTransportInfoSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String ocity_name_geo = listGridRecord
-					.getAttributeAsString("ocity_name_geo");
-			if (ocity_name_geo != null && !ocity_name_geo.trim().equals("")) {
-				sms_text.append(ocity_name_geo).append(" ");
+			String otown_name = listGridRecord
+					.getAttributeAsString("otown_name");
+			if (otown_name != null && !otown_name.trim().equals("")) {
+				sms_text.append(otown_name).append(" ");
 			}
 			String ostation = listGridRecord.getAttributeAsString("ostation");
 			if (ostation != null && !ostation.trim().equals("")) {
 				sms_text.append("(").append(ostation).append(")");
 			}
-			String icity_name_geo = listGridRecord
-					.getAttributeAsString("icity_name_geo");
-			if (icity_name_geo != null && !icity_name_geo.trim().equals("")) {
-				sms_text.append("-").append(icity_name_geo).append(" ");
+			String itown_name = listGridRecord
+					.getAttributeAsString("itown_name");
+			if (itown_name != null && !itown_name.trim().equals("")) {
+				sms_text.append("-").append(itown_name).append(" ");
 			}
 
 			String istation = listGridRecord.getAttributeAsString("istation");

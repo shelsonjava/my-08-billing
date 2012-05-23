@@ -87,11 +87,11 @@ public class DlgViewStreetInfo extends Window {
 		hLayout.addMember(detailViewer);
 
 		DetailViewerField real_address = new DetailViewerField(
-				"street_name_geo", CallCenterBK.constants.address());
-		DetailViewerField city_name_geo = new DetailViewerField(
-				"city_name_geo", CallCenterBK.constants.city());
-		DetailViewerField city_region_name_geo = new DetailViewerField(
-				"city_region_name_geo", CallCenterBK.constants.cityRegion());
+				"street_name", CallCenterBK.constants.address());
+		DetailViewerField town_name = new DetailViewerField(
+				"town_name", CallCenterBK.constants.city());
+		DetailViewerField town_district_name = new DetailViewerField(
+				"town_district_name", CallCenterBK.constants.cityRegion());
 		DetailViewerField street_location_geo = new DetailViewerField(
 				"street_location_geo", CallCenterBK.constants.streetDescr());
 		DetailViewerField index_text = new DetailViewerField("index_text",
@@ -99,7 +99,7 @@ public class DlgViewStreetInfo extends Window {
 		DetailViewerField street_old_name = new DetailViewerField(
 				"street_old_name", CallCenterBK.constants.streetOldName());
 
-		detailViewer.setFields(city_name_geo, city_region_name_geo,
+		detailViewer.setFields(town_name, town_district_name,
 				real_address, street_old_name, street_location_geo, index_text);
 
 		HLayout hLayoutItem = new HLayout(5);
@@ -166,12 +166,12 @@ public class DlgViewStreetInfo extends Window {
 				sms_text.append(index_text).append(" ");
 			}
 
-			String city_region_name_geo = pRecord
-					.getAttributeAsString("city_region_name_geo");
+			String town_district_name = pRecord
+					.getAttributeAsString("town_district_name");
 
-			if (city_region_name_geo != null
-					&& !city_region_name_geo.trim().equals("")) {
-				sms_text.append(city_region_name_geo).append(" ");
+			if (town_district_name != null
+					&& !town_district_name.trim().equals("")) {
+				sms_text.append(town_district_name).append(" ");
 			}
 
 			String street_location_geo = pRecord

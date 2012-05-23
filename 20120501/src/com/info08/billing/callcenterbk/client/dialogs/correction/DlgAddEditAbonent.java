@@ -141,7 +141,7 @@ public class DlgAddEditAbonent extends Window {
 
 			citiesItem = new ComboBoxItem();
 			citiesItem.setTitle("ქალაქი");
-			citiesItem.setName("city_name_geo");
+			citiesItem.setName("town_name");
 			citiesItem.setWidth(170);
 			citiesItem.setFetchMissingValues(true);
 			citiesItem.setFilterLocally(false);
@@ -149,7 +149,7 @@ public class DlgAddEditAbonent extends Window {
 
 			streetItem = new ComboBoxItem();
 			streetItem.setTitle("ქუჩა");
-			streetItem.setName("street_name_geo");
+			streetItem.setName("street_name");
 			streetItem.setWidth(322);
 			streetItem.setFetchMissingValues(true);
 			streetItem.setFilterLocally(false);
@@ -157,7 +157,7 @@ public class DlgAddEditAbonent extends Window {
 
 			regionItem = new ComboBoxItem();
 			regionItem.setTitle("უბანი");
-			regionItem.setName("city_region_name_geo");
+			regionItem.setName("town_district_name");
 			regionItem.setWidth(217);
 			regionItem.setFetchMissingValues(true);
 			regionItem.setFilterLocally(false);
@@ -194,10 +194,10 @@ public class DlgAddEditAbonent extends Window {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = citiesItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("city_id");
+						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_id", nullO);
+							criteria.setAttribute("town_id", nullO);
 						}
 					}
 				}
@@ -221,10 +221,10 @@ public class DlgAddEditAbonent extends Window {
 					Criteria criteria = regionItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("city_region_id");
+								.getAttribute("town_district_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_region_id", nullO);
+							criteria.setAttribute("town_district_id", nullO);
 						}
 					}
 				}
@@ -446,16 +446,16 @@ public class DlgAddEditAbonent extends Window {
 					if (value == null) {
 						return;
 					}
-					Integer city_id = null;
+					Integer town_id = null;
 					try {
-						city_id = Integer.parseInt(value);
+						town_id = Integer.parseInt(value);
 					} catch (NumberFormatException e) {
 						return;
 					}
 					streetItem.clearValue();
 					regionItem.clearValue();
-					fillStreetsCombo(null, city_id);
-					fillCityRegionCombo(null, city_id);
+					fillStreetsCombo(null, town_id);
+					fillCityRegionCombo(null, town_id);
 				}
 			});
 			streetItem.addChangedHandler(new ChangedHandler() {
@@ -470,19 +470,19 @@ public class DlgAddEditAbonent extends Window {
 						descr = "";
 					}
 					streetDescrItem.setValue(descr);
-					Integer city_region_id = record
-							.getAttributeAsInt("city_region_id");
-					Integer cityId = record.getAttributeAsInt("city_id");
-					if (city_region_id != null && cityId != null) {
+					Integer town_district_id = record
+							.getAttributeAsInt("town_district_id");
+					Integer cityId = record.getAttributeAsInt("town_id");
+					if (town_district_id != null && cityId != null) {
 						fillCityRegionCombo(null, cityId);
-						regionItem.setValue(city_region_id);
+						regionItem.setValue(town_district_id);
 						Criteria criteria = regionItem.getOptionCriteria();
 						if (criteria != null) {
 							String oldAttr = criteria
-									.getAttribute("city_region_id");
+									.getAttribute("town_district_id");
 							if (oldAttr != null) {
 								Object nullO = null;
-								criteria.setAttribute("city_region_id", nullO);
+								criteria.setAttribute("town_district_id", nullO);
 							}
 						}
 					}
@@ -519,9 +519,9 @@ public class DlgAddEditAbonent extends Window {
 			if (lastname_id != null) {
 				lastNameItem.setValue(lastname_id);
 			}
-			Integer city_id = abonentRecord.getAttributeAsInt("city_id");
-			if (city_id != null) {
-				citiesItem.setValue(city_id);
+			Integer town_id = abonentRecord.getAttributeAsInt("town_id");
+			if (town_id != null) {
+				citiesItem.setValue(town_id);
 			} else {
 				citiesItem.setValue(defCityTbilisiId);
 			}
@@ -529,10 +529,10 @@ public class DlgAddEditAbonent extends Window {
 			if (street_id != null) {
 				streetItem.setValue(street_id);
 			}
-			Integer city_region_id = abonentRecord
-					.getAttributeAsInt("city_region_id");
-			if (city_region_id != null) {
-				regionItem.setValue(city_region_id);
+			Integer town_district_id = abonentRecord
+					.getAttributeAsInt("town_district_id");
+			if (town_district_id != null) {
+				regionItem.setValue(town_district_id);
 			}
 
 			String street_location_geo = abonentRecord
@@ -707,11 +707,11 @@ public class DlgAddEditAbonent extends Window {
 	private void fillCitiesCombo(final ListGridRecord abonentRecord,
 			final Integer defCityTbilisiId) {
 		try {
-			DataSource citiesDS = DataSource.get("CityDS");
+			DataSource townsDS = DataSource.get("TownsDS");
 			citiesItem.setOptionOperationId("searchCitiesFromDBForCombos");
-			citiesItem.setOptionDataSource(citiesDS);
-			citiesItem.setValueField("city_id");
-			citiesItem.setDisplayField("city_name_geo");
+			citiesItem.setOptionDataSource(townsDS);
+			citiesItem.setValueField("town_id");
+			citiesItem.setDisplayField("town_name");
 
 			Criteria criteria = new Criteria();
 			// criteria.setAttribute("country_id", 194);
@@ -725,17 +725,17 @@ public class DlgAddEditAbonent extends Window {
 			// @Override
 			// public void execute(DSResponse response, Object rawData,
 			// DSRequest request) {
-			// Integer city_id = defCityTbilisiId;
+			// Integer town_id = defCityTbilisiId;
 			// if (abonentRecord != null) {
-			// city_id = abonentRecord.getAttributeAsInt("city_id");
+			// town_id = abonentRecord.getAttributeAsInt("town_id");
 			// }
-			// citiesItem.setValue(city_id);
+			// citiesItem.setValue(town_id);
 			// Criteria criteria = citiesItem.getOptionCriteria();
 			// if (criteria != null) {
-			// String oldAttr = criteria.getAttribute("city_id");
+			// String oldAttr = criteria.getAttribute("town_id");
 			// if (oldAttr != null) {
 			// Object nullO = null;
-			// criteria.setAttribute("city_id", nullO);
+			// criteria.setAttribute("town_id", nullO);
 			// }
 			// }
 			// }
@@ -749,11 +749,11 @@ public class DlgAddEditAbonent extends Window {
 	private void fillStreetsCombo(final ListGridRecord abonentRecord,
 			Integer defCityTbilisiId) {
 		try {
-			Integer city_id = defCityTbilisiId;
+			Integer town_id = defCityTbilisiId;
 			if (abonentRecord != null) {
-				Integer fromEdit = abonentRecord.getAttributeAsInt("city_id");
+				Integer fromEdit = abonentRecord.getAttributeAsInt("town_id");
 				if (fromEdit != null) {
-					city_id = fromEdit;
+					town_id = fromEdit;
 				}
 			}
 
@@ -761,10 +761,10 @@ public class DlgAddEditAbonent extends Window {
 			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetItem.setOptionDataSource(streetsDS);
 			streetItem.setValueField("street_id");
-			streetItem.setDisplayField("street_name_geo");
+			streetItem.setDisplayField("street_name");
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("city_id", city_id);
+			criteria.setAttribute("town_id", town_id);
 			streetItem.setOptionCriteria(criteria);
 			streetItem.setAutoFetchData(false);
 
@@ -803,22 +803,22 @@ public class DlgAddEditAbonent extends Window {
 	private void fillCityRegionCombo(final ListGridRecord abonentRecord,
 			Integer defCityTbilisiId) {
 		try {
-			Integer city_id = defCityTbilisiId;
+			Integer town_id = defCityTbilisiId;
 			if (abonentRecord != null) {
-				Integer fromEdit = abonentRecord.getAttributeAsInt("city_id");
+				Integer fromEdit = abonentRecord.getAttributeAsInt("town_id");
 				if (fromEdit != null) {
-					city_id = fromEdit;
+					town_id = fromEdit;
 				}
 			}
 
 			DataSource streetsDS = DataSource.get("CityRegionDS");
 			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
 			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("city_region_id");
-			regionItem.setDisplayField("city_region_name_geo");
+			regionItem.setValueField("town_district_id");
+			regionItem.setDisplayField("town_district_name");
 
 			Criteria criteria = new Criterion();
-			criteria.setAttribute("city_id", city_id);
+			criteria.setAttribute("town_id", town_id);
 			regionItem.setOptionCriteria(criteria);
 			regionItem.setAutoFetchData(false);
 
@@ -830,18 +830,18 @@ public class DlgAddEditAbonent extends Window {
 			// public void execute(DSResponse response, Object rawData,
 			// DSRequest request) {
 			// if (abonentRecord != null) {
-			// Integer city_region_id = abonentRecord
-			// .getAttributeAsInt("city_region_id");
-			// if (city_region_id != null) {
-			// regionItem.setValue(city_region_id);
+			// Integer town_district_id = abonentRecord
+			// .getAttributeAsInt("town_district_id");
+			// if (town_district_id != null) {
+			// regionItem.setValue(town_district_id);
 			//
 			// Criteria criteria = regionItem.getOptionCriteria();
 			// if (criteria != null) {
 			// String oldAttr = criteria
-			// .getAttribute("city_region_id");
+			// .getAttribute("town_district_id");
 			// if (oldAttr != null) {
 			// Object nullO = null;
-			// criteria.setAttribute("city_region_id",
+			// criteria.setAttribute("town_district_id",
 			// nullO);
 			// }
 			// }
@@ -874,7 +874,7 @@ public class DlgAddEditAbonent extends Window {
 
 			ListGridRecord cityRecord = citiesItem.getSelectedRecord();
 			if (cityRecord == null
-					|| cityRecord.getAttributeAsInt("city_id") == null) {
+					|| cityRecord.getAttributeAsInt("town_id") == null) {
 				SC.say("გთხოვთ აირჩიოთ ქალაქი !");
 				return;
 			}
@@ -949,11 +949,11 @@ public class DlgAddEditAbonent extends Window {
 					nameRecord.getAttributeAsInt("firstname_Id"));
 			record.setAttribute("lastname_id",
 					lastNameRecord.getAttributeAsInt("lastname_Id"));
-			record.setAttribute("city_id",
-					cityRecord.getAttributeAsInt("city_id"));
+			record.setAttribute("town_id",
+					cityRecord.getAttributeAsInt("town_id"));
 			record.setAttribute("street_id", streetRecord);
 			if (cityRegion != null) {
-				record.setAttribute("city_region_id", new Integer(cityRegion));
+				record.setAttribute("town_district_id", new Integer(cityRegion));
 			}
 
 			record.setAttribute("address_hide", iAddrStatType);

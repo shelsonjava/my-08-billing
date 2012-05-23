@@ -78,11 +78,11 @@ public class DlgViewStreet extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		DetailViewerField city_name_geo = new DetailViewerField(
-				"city_name_geo", CallCenterBK.constants.city());
+		DetailViewerField town_name = new DetailViewerField(
+				"town_name", CallCenterBK.constants.city());
 
-		DetailViewerField street_name_geo = new DetailViewerField(
-				"street_name_geo", CallCenterBK.constants.street());
+		DetailViewerField street_name = new DetailViewerField(
+				"street_name", CallCenterBK.constants.street());
 
 		DetailViewerField oldName = new DetailViewerField("oldName",
 				CallCenterBK.constants.oldStreetName());
@@ -102,7 +102,7 @@ public class DlgViewStreet extends Window {
 		arr[0] = listGridRecord;
 		detailViewer.setData(arr);
 
-		detailViewer.setFields(city_name_geo, street_name_geo, oldName,
+		detailViewer.setFields(town_name, street_name, oldName,
 				streetIndex, streetDistrict, street_location_geo);
 
 		mainLayout.addMember(detailViewer);
@@ -214,10 +214,10 @@ public class DlgViewStreet extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String street_name_geo = listGridRecord
-					.getAttributeAsString("street_name_geo");
-			if (street_name_geo != null && !street_name_geo.trim().equals("")) {
-				sms_text.append(street_name_geo).append(" ");
+			String street_name = listGridRecord
+					.getAttributeAsString("street_name");
+			if (street_name != null && !street_name.trim().equals("")) {
+				sms_text.append(street_name).append(" ");
 			}
 			String streetIndex = listGridRecord
 					.getAttributeAsString("streetIndex");

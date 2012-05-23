@@ -142,30 +142,30 @@ public class DlgViewOrg extends Window {
 			if (address_hide != null && address_hide.equals(1)) {
 				orgAddressInfo.setValue(CallCenterBK.constants.addressHide());
 			} else {
-				String city_name_geo1 = pRecord
-						.getAttributeAsString("city_name_geo");
+				String town_name1 = pRecord
+						.getAttributeAsString("town_name");
 				String real_address1 = pRecord
 						.getAttributeAsString("real_address");
-				String city_region_name_geo1 = pRecord
-						.getAttributeAsString("city_region_name_geo");
+				String town_district_name1 = pRecord
+						.getAttributeAsString("town_district_name");
 				String ind1 = pRecord.getAttributeAsString("ind");
 				ind1 = (ind1 == null ? "" : ind1);
-				city_region_name_geo1 = (city_region_name_geo1 == null ? ""
-						: city_region_name_geo1);
+				town_district_name1 = (town_district_name1 == null ? ""
+						: town_district_name1);
 				real_address1 = (real_address1 == null ? "" : real_address1);
 
 				orgAddressInfo
-						.setValue(city_name_geo1
-								+ (city_name_geo1 != null
-										&& !city_name_geo1.trim().equals("") ? ", "
+						.setValue(town_name1
+								+ (town_name1 != null
+										&& !town_name1.trim().equals("") ? ", "
 										: " ")
 								+ real_address1
 								+ (real_address1 != null
 										&& !real_address1.trim().equals("") ? ", "
 										: " ")
-								+ city_region_name_geo1
-								+ (city_region_name_geo1 != null
-										&& !city_region_name_geo1.trim()
+								+ town_district_name1
+								+ (town_district_name1 != null
+										&& !town_district_name1.trim()
 												.equals("") ? ", " : " ")
 								+ ind1);
 			}
@@ -1041,7 +1041,7 @@ public class DlgViewOrg extends Window {
 					sms_text.append(mainDetail).append(" ");
 				}
 			}
-			Integer city_id = record.getAttributeAsInt("city_id");
+			Integer town_id = record.getAttributeAsInt("town_id");
 			RecordList recordList = phonesGrid.getDataAsRecordList();
 			int length = recordList.getLength();
 			if (length > 0) {
@@ -1058,7 +1058,7 @@ public class DlgViewOrg extends Window {
 						continue;
 					}
 					if (dep_phone.startsWith("2")
-							&& city_id.equals(Constants.defCityTbilisiId)) {
+							&& town_id.equals(Constants.defCityTbilisiId)) {
 						dep_phone = "032" + dep_phone;
 					} else if (dep_phone.startsWith("79")) {
 						dep_phone = "0" + dep_phone;
