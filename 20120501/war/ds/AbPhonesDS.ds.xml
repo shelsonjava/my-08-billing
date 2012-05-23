@@ -1,24 +1,20 @@
 <DataSource
 	ID="AbPhonesDS"
 	serverType="sql"
-	tableName="ccare.phones"
+	tableName="ccare.phone_numbers"
 	qualifyColumnNames="false">
 	<fields>
-		<field name="phone_Id"			type="integer"	title="ID"					hidden="true" primaryKey="true" />
+		<field name="phone_number_id"			type="integer"	title="ID"					hidden="true" primaryKey="true" />
 		<field name="phone"				type="text" 	title="Phone"/>		
-		<field name="rec_date"			type="datetime"	title="Record Date"/>
-		<field name="rec_user"			type="text" 	title="Record User"/>
-		<field name="deleted"			type="integer"	title="Deleted" 			hidden="true"/>
-		<field name="upd_user"			type="text" 	title="Update User"/>
-		<field name="abonent_id"		type="integer"	title="Abonent ID" 			hidden="true"/>
-		<field name="is_hide"			type="integer"	title="Is Hide" 			hidden="true"/>
-		<field name="is_hide_descr"		type="text"		title="Is Hide Descr"/>
+		<field name="subscriber_id"		type="integer"	title="Abonent ID" 			hidden="true"/>
+		<field name="hidden_by_request"			type="integer"	title="Is Hide" 			hidden="true"/>
+		<field name="hidden_by_request_descr"		type="text"		title="Is Hide Descr"/>
 		<field name="is_parallel"		type="integer"	title="Is Hide" 			hidden="true"/>
 		<field name="is_parallel_descr"	type="text"		title="Is Parallel Descr"/>
 		<field name="phone_state_id"	type="integer"	title="Phone State ID"		hidden="true"/>		
 		<field name="phone_state"		type="text"		title="Phone State"/>
-		<field name="phone_status_id"	type="integer"	title="Phone Status ID"		hidden="true"/>
-		<field name="phone_status"		type="text"		title="Phone Status"/>
+		<field name="phone_contract_type_id"	type="integer"	title="Phone Status ID"		hidden="true"/>
+		<field name="phone_contract_type_desr"		type="text"		title="Phone Status"/>
 		<field name="phone_type_id"		type="integer"	title="Phone Type ID"		hidden="true"/>
 		<field name="phone_type"		type="text"		title="Phone Type"/>
 	</fields>	
@@ -27,32 +23,41 @@
 	<operationBindings>
 		<operationBinding operationId="getPhonesByAbonentId" operationType="fetch">    		
     		<selectClause>  
-    			t.phone_Id, 
-    			t.phone, 
-    			t.phone_state_id, 
-    			t.rec_date,
-    			t.rec_user,
-    			t.deleted,
-    			t.upd_user,
-    			t.phone_type_id,
-    			ap.abonent_id,
-    			ap.is_hide,
-    			decode(ap.is_hide,0,'ღია',1,'დაფარულია')as is_hide_descr,
-    			ap.is_parallel,
-    			decode(ap.is_parallel,0,'ჩვეულებრივი',1,'პარალელური')as is_parallel_descr,
-    			ps.phone_state_id,
-    			ps.phone_state,
-    			pst.phone_status_id,
-    			pst.phone_status,
-    			pt.phone_type
+			       t.phone_number_id,
+			       t.phone,
+			       t.phone_state_id,
+			       t.phone_type_id,
+			       sp.hidden_by_request,
+			       decode(sp.hidden_by_request, 0, 'ღია', 1, 'დაფარულია') hidden_by_request_descr,
+			       t.is_parallel,
+			       decode(t.is_parallel,
+			              0,
+			              'ჩვეულებრივი',
+			              1,
+			              'პარალელური') as is_parallel_descr,
+			       t.phone_state_id,
+			       ps.description phone_state,
+			       sp.phone_contract_type,
+			       pst.description phone_contract_type_desr,
+			       t.phone_type_id,
+			       pt.description phone_type
 			</selectClause> 
-			<tableClause>phones t, abonent_to_phones ap, phone_states ps,phone_statuses pst, phone_types pt</tableClause>
+			<tableClause>
+				   PHONE_NUMBERS        t,
+			       subscriber_to_phones sp,
+			       descriptions         ps,
+			       descriptions         pst,
+			       descriptions         pt
+       </tableClause>
 			<whereClause><![CDATA[ 
-				t.phone_id = ap.phone_id and 			
-				ap.phone_status_id = pst.phone_status_id and	
-				t.phone_state_id = ps.phone_state_id and
-				t.phone_type_id = pt.phone_type_id and							
-				ap.abonent_id = $criteria.abonent_id		
+				   t.phone_number_id = sp.phone_number_id
+				   and (t.phone_state_id = ps.description_id and
+				       ps.description_type_id = 52000)
+				   and (t.phone_type_id = pt.description_id and
+				       pt.description_type_id = 54000)
+				   and (sp.phone_contract_type = pst.description_id and
+				       pst.description_type_id = 53000)
+				   and sp.subscriber_id = $criteria.subscriber_id
 				]]>  
 			</whereClause> 
 			<orderClause>t.phone</orderClause>
@@ -66,7 +71,7 @@
 			</selectClause> 
 			<tableClause>phones t, abonent_to_phones ap, abonents a,main_services ms, firstnames f, lastnames l</tableClause>
 			<whereClause><![CDATA[ 
-				 t.phone_id = ap.phone_id and 
+				 t.phone_number_id = ap.phone_number_id and 
 				 ap.abonent_id = a.abonent_id and 
 				 a.organization_id = ms.organization_id and 
 				 f.firstname_id = a.firstname_id and 
