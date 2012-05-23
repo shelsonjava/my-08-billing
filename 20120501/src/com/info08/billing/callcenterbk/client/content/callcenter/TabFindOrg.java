@@ -158,7 +158,7 @@ public class TabFindOrg extends Tab {
 
 			streetItem = new TextItem();
 			streetItem.setTitle(CallCenterBK.constants.street());
-			streetItem.setName("street_name_geo");
+			streetItem.setName("street_name");
 			streetItem.setWidth(245);
 
 			adressItem = new TextItem();
@@ -168,17 +168,17 @@ public class TabFindOrg extends Tab {
 
 			citiesItem = new ComboBoxItem();
 			citiesItem.setTitle(CallCenterBK.constants.city());
-			citiesItem.setName("city_name_geo");
+			citiesItem.setName("town_name");
 			citiesItem.setWidth(245);
 			citiesItem.setFetchMissingValues(true);
 			citiesItem.setFilterLocally(false);
 			citiesItem.setAddUnknownValues(false);
 
-			DataSource cityDS = DataSource.get("CityDS");
+			DataSource townsDS = DataSource.get("TownsDS");
 			citiesItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-			citiesItem.setOptionDataSource(cityDS);
-			citiesItem.setValueField("city_id");
-			citiesItem.setDisplayField("city_name_geo");
+			citiesItem.setOptionDataSource(townsDS);
+			citiesItem.setValueField("town_id");
+			citiesItem.setDisplayField("town_name");
 
 			citiesItem.setOptionCriteria(new Criteria());
 			citiesItem.setAutoFetchData(false);
@@ -188,10 +188,10 @@ public class TabFindOrg extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = citiesItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("city_id");
+						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_id", nullO);
+							criteria.setAttribute("town_id", nullO);
 						}
 					}
 				}
@@ -199,7 +199,7 @@ public class TabFindOrg extends Tab {
 
 			regionItem = new ComboBoxItem();
 			regionItem.setTitle(CallCenterBK.constants.cityRegion());
-			regionItem.setName("city_region_name_geo");
+			regionItem.setName("town_district_name");
 			regionItem.setWidth(245);
 			regionItem.setFetchMissingValues(true);
 			regionItem.setFilterLocally(false);
@@ -208,8 +208,8 @@ public class TabFindOrg extends Tab {
 			DataSource streetsDS = DataSource.get("CityRegionDS");
 			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
 			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("city_region_id");
-			regionItem.setDisplayField("city_region_name_geo");
+			regionItem.setValueField("town_district_id");
+			regionItem.setDisplayField("town_district_name");
 
 			Criteria criteria = new Criterion();
 			regionItem.setOptionCriteria(criteria);
@@ -221,10 +221,10 @@ public class TabFindOrg extends Tab {
 					Criteria criteria = regionItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("city_region_id");
+								.getAttribute("town_district_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_region_id", nullO);
+							criteria.setAttribute("town_district_id", nullO);
 						}
 					}
 				}
@@ -528,11 +528,11 @@ public class TabFindOrg extends Tab {
 			DataSource streetsDS = DataSource.get("CityRegionDS");
 			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
 			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("city_region_id");
-			regionItem.setDisplayField("city_region_name_geo");
+			regionItem.setValueField("town_district_id");
+			regionItem.setDisplayField("town_district_name");
 
 			Criteria criteria = new Criterion();
-			criteria.setAttribute("city_id", defCityTbilisiId);
+			criteria.setAttribute("town_id", defCityTbilisiId);
 			regionItem.setOptionCriteria(criteria);
 			regionItem.setAutoFetchData(false);
 
@@ -610,7 +610,7 @@ public class TabFindOrg extends Tab {
 			}
 			String city = citiesItem.getValueAsString();
 			if (city != null && !city.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("city_id", new Integer(city));
+				criteria.setAttribute("town_id", new Integer(city));
 			}
 			String workinghours = orgWorkingHoursItem.getValueAsString();
 			if (workinghours != null
@@ -662,10 +662,10 @@ public class TabFindOrg extends Tab {
 				criteria.setAttribute("mail", mail);
 			}
 
-			String city_region_id = regionItem.getValueAsString();
-			if (city_region_id != null && !city_region_id.trim().equals("")) {
-				criteria.setAttribute("city_region_id", new Integer(
-						city_region_id));
+			String town_district_id = regionItem.getValueAsString();
+			if (town_district_id != null && !town_district_id.trim().equals("")) {
+				criteria.setAttribute("town_district_id", new Integer(
+						town_district_id));
 			}
 
 			if ((org_name == null || org_name.trim().equals(""))

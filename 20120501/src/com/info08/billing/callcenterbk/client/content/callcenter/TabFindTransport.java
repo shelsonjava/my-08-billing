@@ -168,11 +168,11 @@ public class TabFindTransport extends Tab {
 		cityFromItem.setAddUnknownValues(false);
 		cityFromItem.setCompleteOnTab(true);
 
-		DataSource cityDS = DataSource.get("CityDS");
+		DataSource townsDS = DataSource.get("TownsDS");
 		cityFromItem.setOptionOperationId("searchCitiesByTransportType");
-		cityFromItem.setOptionDataSource(cityDS);
-		cityFromItem.setValueField("city_id");
-		cityFromItem.setDisplayField("city_name_geo");
+		cityFromItem.setOptionDataSource(townsDS);
+		cityFromItem.setValueField("town_id");
+		cityFromItem.setDisplayField("town_name");
 		Criteria criteriaFromCity = new Criteria();
 		criteriaFromCity.setAttribute("transp_type_id", 1000005);
 		cityFromItem.setOptionCriteria(criteriaFromCity);
@@ -183,10 +183,10 @@ public class TabFindTransport extends Tab {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = cityFromItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_id");
+					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("city_id", nullO);
+						criteria.setAttribute("town_id", nullO);
 					}
 				}
 			}
@@ -202,9 +202,9 @@ public class TabFindTransport extends Tab {
 		cityToItem.setCompleteOnTab(true);
 
 		cityToItem.setOptionOperationId("searchCitiesByTransportType");
-		cityToItem.setOptionDataSource(cityDS);
-		cityToItem.setValueField("city_id");
-		cityToItem.setDisplayField("city_name_geo");
+		cityToItem.setOptionDataSource(townsDS);
+		cityToItem.setValueField("town_id");
+		cityToItem.setDisplayField("town_name");
 		Criteria criteriaToCity = new Criteria();
 		criteriaToCity.setAttribute("transp_type_id", 1000005);
 		cityToItem.setOptionCriteria(criteriaToCity);
@@ -215,10 +215,10 @@ public class TabFindTransport extends Tab {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = cityToItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_id");
+					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("city_id", nullO);
+						criteria.setAttribute("town_id", nullO);
 					}
 				}
 			}
@@ -394,15 +394,15 @@ public class TabFindTransport extends Tab {
 		trip_criteria.setAlign(Alignment.LEFT);
 		trip_criteria.setCanFilter(true);
 
-		ListGridField ocity_name_geo = new ListGridField("ocity_name_geo",
+		ListGridField oTown_name = new ListGridField("otown_name",
 				CallCenterBK.constants.stationFrom(), 100);
-		ocity_name_geo.setAlign(Alignment.LEFT);
-		ocity_name_geo.setCanFilter(true);
+		oTown_name.setAlign(Alignment.LEFT);
+		oTown_name.setCanFilter(true);
 
-		ListGridField icity_name_geo = new ListGridField("icity_name_geo",
+		ListGridField itown_name = new ListGridField("itown_name",
 				CallCenterBK.constants.stationTo(), 100);
-		icity_name_geo.setAlign(Alignment.LEFT);
-		icity_name_geo.setCanFilter(true);
+		itown_name.setAlign(Alignment.LEFT);
+		itown_name.setCanFilter(true);
 
 		ListGridField ostation = new ListGridField("ostation",
 				CallCenterBK.constants.station(), 100);
@@ -449,8 +449,8 @@ public class TabFindTransport extends Tab {
 		alarm.setAlign(Alignment.CENTER);
 		alarm.setCanFilter(false);
 
-		listGrid.setFields(trip_criteria, ocity_name_geo, ostation, out_time,
-				icity_name_geo, istation, in_time, cmt, transport_plane_geo,
+		listGrid.setFields(trip_criteria, oTown_name, ostation, out_time,
+				itown_name, istation, in_time, cmt, transport_plane_geo,
 				name_descr, days_descr, alarm);
 
 		mainLayout.addMember(listGrid);
@@ -529,18 +529,18 @@ public class TabFindTransport extends Tab {
 				}
 				break;
 			case 2:
-				String o_city_id = cityFromItem.getValueAsString();
-				if (o_city_id != null && !o_city_id.trim().equals("")) {
-					criteria.setAttribute("o_city_id", new Integer(o_city_id));
+				String o_town_id = cityFromItem.getValueAsString();
+				if (o_town_id != null && !o_town_id.trim().equals("")) {
+					criteria.setAttribute("o_town_id", new Integer(o_town_id));
 				}
-				String i_city_id = cityToItem.getValueAsString();
-				if (i_city_id != null && !i_city_id.trim().equals("")) {
-					criteria.setAttribute("i_city_id", new Integer(i_city_id));
+				String i_town_id = cityToItem.getValueAsString();
+				if (i_town_id != null && !i_town_id.trim().equals("")) {
+					criteria.setAttribute("i_town_id", new Integer(i_town_id));
 				}
 
-				if (o_city_id != null && !o_city_id.trim().equals("")
-						&& i_city_id != null && !i_city_id.trim().equals("")
-						&& o_city_id.equals(i_city_id)) {
+				if (o_town_id != null && !o_town_id.trim().equals("")
+						&& i_town_id != null && !i_town_id.trim().equals("")
+						&& o_town_id.equals(i_town_id)) {
 					SC.say(CallCenterBK.constants.warning(),
 							CallCenterBK.constants.chooseDifCities());
 					return;

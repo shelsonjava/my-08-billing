@@ -71,17 +71,17 @@ public class TabFindStreets extends Tab {
 
 		citiesItem = new ComboBoxItem();
 		citiesItem.setTitle(CallCenterBK.constants.city());
-		citiesItem.setName("city_name_geo");
+		citiesItem.setName("town_name");
 		citiesItem.setWidth(250);
 		citiesItem.setFetchMissingValues(true);
 		citiesItem.setFilterLocally(false);
 		citiesItem.setAddUnknownValues(false);
 
-		DataSource cityDS = DataSource.get("CityDS");
+		DataSource townsDS = DataSource.get("TownsDS");
 		citiesItem.setOptionOperationId("searchCitiesFromDBForCombos");
-		citiesItem.setOptionDataSource(cityDS);
-		citiesItem.setValueField("city_id");
-		citiesItem.setDisplayField("city_name_geo");
+		citiesItem.setOptionDataSource(townsDS);
+		citiesItem.setValueField("town_id");
+		citiesItem.setDisplayField("town_name");
 		Criteria criteria = new Criteria();
 		// criteria.setAttribute("country_id", Constants.defCountryGeorgiaId);
 		citiesItem.setOptionCriteria(criteria);
@@ -92,10 +92,10 @@ public class TabFindStreets extends Tab {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = citiesItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_id");
+					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("city_id", nullO);
+						criteria.setAttribute("town_id", nullO);
 					}
 				}
 			}
@@ -154,13 +154,13 @@ public class TabFindStreets extends Tab {
 		listGrid.setFixedRecordHeights(false);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField city_name_geo = new ListGridField("city_name_geo",
+		ListGridField town_name = new ListGridField("town_name",
 				CallCenterBK.constants.city(), 120);
-		city_name_geo.setAlign(Alignment.LEFT);
+		town_name.setAlign(Alignment.LEFT);
 
-		ListGridField street_name_geo = new ListGridField("street_name_geo",
+		ListGridField street_name = new ListGridField("street_name",
 				CallCenterBK.constants.street(), 170);
-		street_name_geo.setAlign(Alignment.LEFT);
+		street_name.setAlign(Alignment.LEFT);
 
 		ListGridField oldName = new ListGridField("oldName",
 				CallCenterBK.constants.oldStreetName(), 170);
@@ -178,7 +178,7 @@ public class TabFindStreets extends Tab {
 				"street_location_geo", CallCenterBK.constants.streetDescr());
 		street_location_geo.setAlign(Alignment.LEFT);
 
-		listGrid.setFields(city_name_geo, street_name_geo, oldName,
+		listGrid.setFields(town_name, street_name, oldName,
 				streetIndex, streetDistrict, street_location_geo);
 
 		mainLayout.addMember(listGrid);
@@ -230,32 +230,32 @@ public class TabFindStreets extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("deleted", 0);
 
-			String city_id = citiesItem.getValueAsString();
+			String town_id = citiesItem.getValueAsString();
 			String streetIndex = indexItem.getValueAsString();
-			String street_name_geo = streetNameItem.getValueAsString();
+			String street_name = streetNameItem.getValueAsString();
 
 			if ((streetIndex == null || streetIndex.trim().equals(""))
-					&& (street_name_geo == null || street_name_geo.trim()
+					&& (street_name == null || street_name.trim()
 							.equals(""))) {
 				SC.say(CallCenterBK.constants.plzEnterStreetNameOrIdx());
 				return;
 			}
 
-			if (city_id != null && !city_id.trim().equals("")) {
-				criteria.setAttribute("city_id", new Integer(city_id));
+			if (town_id != null && !town_id.trim().equals("")) {
+				criteria.setAttribute("town_id", new Integer(town_id));
 			}
 
 			if (streetIndex != null && !streetIndex.trim().equals("")) {
 				criteria.setAttribute("streetIndex", streetIndex);
 			}
 
-			if (street_name_geo != null && !street_name_geo.trim().equals("")) {
-				String tmp = street_name_geo.trim();
+			if (street_name != null && !street_name.trim().equals("")) {
+				String tmp = street_name.trim();
 				String arrStr[] = tmp.split(" ");
 				int i = 1;
 				for (String string : arrStr) {
 					String item = string.trim();
-					criteria.setAttribute("street_name_geo" + i, item);
+					criteria.setAttribute("street_name" + i, item);
 					i++;
 				}
 			}

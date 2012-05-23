@@ -74,11 +74,11 @@ public class TabFindDistBetwCity extends Tab {
 		cityFromItem.setAddUnknownValues(false);
 		cityFromItem.setCompleteOnTab(true);
 
-		DataSource cityDS = DataSource.get("CityDS");
+		DataSource TownsDS = DataSource.get("TownsDS");
 		cityFromItem.setOptionOperationId("searchFromDB");
-		cityFromItem.setOptionDataSource(cityDS);
-		cityFromItem.setValueField("city_id");
-		cityFromItem.setDisplayField("city_name_geo");
+		cityFromItem.setOptionDataSource(TownsDS);
+		cityFromItem.setValueField("town_id");
+		cityFromItem.setDisplayField("town_name");
 		cityFromItem.setAutoFetchData(false);
 
 		cityFromItem.addKeyPressHandler(new KeyPressHandler() {
@@ -86,10 +86,10 @@ public class TabFindDistBetwCity extends Tab {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = cityFromItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_id");
+					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("city_id", nullO);
+						criteria.setAttribute("town_id", nullO);
 					}
 				}
 			}
@@ -105,9 +105,9 @@ public class TabFindDistBetwCity extends Tab {
 		cityToItem.setCompleteOnTab(true);
 
 		cityToItem.setOptionOperationId("searchFromDB");
-		cityToItem.setOptionDataSource(cityDS);
-		cityToItem.setValueField("city_id");
-		cityToItem.setDisplayField("city_name_geo");
+		cityToItem.setOptionDataSource(TownsDS);
+		cityToItem.setValueField("town_id");
+		cityToItem.setDisplayField("town_name");
 		cityToItem.setAutoFetchData(false);
 
 		cityToItem.addKeyPressHandler(new KeyPressHandler() {
@@ -115,10 +115,10 @@ public class TabFindDistBetwCity extends Tab {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = cityToItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_id");
+					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("city_id", nullO);
+						criteria.setAttribute("town_id", nullO);
 					}
 				}
 			}
@@ -218,14 +218,14 @@ public class TabFindDistBetwCity extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("deleted", 0);
 
-			String city_id_start = cityFromItem.getValueAsString();
-			if (city_id_start != null && !city_id_start.trim().equals("")) {
-				criteria.setAttribute("city_id_start", new Integer(
-						city_id_start));
+			String town_id_start = cityFromItem.getValueAsString();
+			if (town_id_start != null && !town_id_start.trim().equals("")) {
+				criteria.setAttribute("town_id_start", new Integer(
+						town_id_start));
 			}
-			String city_id_end = cityToItem.getValueAsString();
-			if (city_id_end != null && !city_id_end.trim().equals("")) {
-				criteria.setAttribute("city_id_end", new Integer(city_id_end));
+			String town_id_end = cityToItem.getValueAsString();
+			if (town_id_end != null && !town_id_end.trim().equals("")) {
+				criteria.setAttribute("town_id_end", new Integer(town_id_end));
 			}
 
 			DSRequest dsRequest = new DSRequest();

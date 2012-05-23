@@ -184,9 +184,9 @@ public class TabFindByNumber extends Tab {
 				CallCenterBK.constants.type(), 50);
 		orgOrAbonent.setAlign(Alignment.CENTER);
 
-		ListGridField city_name_geo = new ListGridField("city_name_geo",
+		ListGridField town_name = new ListGridField("town_name",
 				CallCenterBK.constants.city(), 100);
-		city_name_geo.setAlign(Alignment.LEFT);
+		town_name.setAlign(Alignment.LEFT);
 
 		ListGridField streetName = new ListGridField("streetName",
 				CallCenterBK.constants.street(), 350);
@@ -198,7 +198,7 @@ public class TabFindByNumber extends Tab {
 		ListGridField phone_status = new ListGridField("phone_status",
 				CallCenterBK.constants.phoneStatus(), 100);
 
-		listGrid.setFields(fullName, orgOrAbonent, city_name_geo, streetName,
+		listGrid.setFields(fullName, orgOrAbonent, town_name, streetName,
 				phone, phone_status);
 
 		mainLayout.addMember(listGrid);
@@ -316,18 +316,18 @@ public class TabFindByNumber extends Tab {
 								record.getAttributeAsString("webaddress"));
 						pRecord.setAttribute("mail",
 								record.getAttributeAsString("mail"));
-						pRecord.setAttribute("city_name_geo",
-								record.getAttributeAsString("city_name_geo"));
-						pRecord.setAttribute("city_region_name_geo", record
-								.getAttributeAsString("city_region_name_geo"));
+						pRecord.setAttribute("town_name",
+								record.getAttributeAsString("town_name"));
+						pRecord.setAttribute("town_district_name", record
+								.getAttributeAsString("town_district_name"));
 						pRecord.setAttribute("street_location_geo", record
 								.getAttributeAsString("street_location_geo"));
 						pRecord.setAttribute("index_text",
 								record.getAttributeAsString("index_text"));
 						pRecord.setAttribute("legal_statuse",
 								record.getAttributeAsString("legal_statuse"));
-						pRecord.setAttribute("city_id",
-								record.getAttributeAsInt("city_id"));
+						pRecord.setAttribute("town_id",
+								record.getAttributeAsInt("town_id"));
 						pRecord.setAttribute("org_allert_by_buss_det", record
 								.getAttributeAsString("org_allert_by_buss_det"));
 

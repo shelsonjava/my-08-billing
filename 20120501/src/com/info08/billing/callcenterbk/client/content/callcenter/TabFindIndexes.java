@@ -62,13 +62,13 @@ public class TabFindIndexes extends Tab {
 	private TabSet tabSet;
 
 	// DataSource
-	private DataSource localCityDS;
+	private DataSource localTownsDS;
 
 	public TabFindIndexes() {
 		setTitle(CallCenterBK.constants.findCodes());
 		setCanClose(true);
 
-		localCityDS = DataSource.get("CityDS");
+		localTownsDS = DataSource.get("TownsDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -215,7 +215,7 @@ public class TabFindIndexes extends Tab {
 		listGrid.setWidth100();
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(localCityDS);
+		listGrid.setDataSource(localTownsDS);
 		listGrid.setAutoFetchData(false);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
@@ -235,7 +235,7 @@ public class TabFindIndexes extends Tab {
 				CallCenterBK.constants.region());
 		ListGridField code = new ListGridField("code",
 				CallCenterBK.constants.oldCode(), 230);
-		ListGridField city_new_code = new ListGridField("city_new_code",
+		ListGridField town_new_code = new ListGridField("town_new_code",
 				CallCenterBK.constants.newCode(), 230);
 		ListGridField gmtoff = new ListGridField("gmtoff",
 				CallCenterBK.constants.gmtoff(), 80);
@@ -248,7 +248,7 @@ public class TabFindIndexes extends Tab {
 		countrycode.setAlign(Alignment.CENTER);
 		countryregion.setAlign(Alignment.LEFT);
 		code.setAlign(Alignment.CENTER);
-		city_new_code.setAlign(Alignment.CENTER);
+		town_new_code.setAlign(Alignment.CENTER);
 		gmtoff.setAlign(Alignment.CENTER);
 		gmtoffwinter.setAlign(Alignment.CENTER);
 		ctm.setAlign(Alignment.CENTER);
@@ -261,7 +261,7 @@ public class TabFindIndexes extends Tab {
 		gmtoffwinter.setCanFilter(false);
 		ctm.setCanFilter(false);
 
-		listGrid.setFields(cityName, countryregion, countrycode, city_new_code,
+		listGrid.setFields(cityName, countryregion, countrycode, town_new_code,
 				code, gmtoff, gmtoffwinter, ctm);
 
 		tabMainInfo.setPane(listGrid);
@@ -271,7 +271,7 @@ public class TabFindIndexes extends Tab {
 		listGridOperators.setWidth100();
 		listGridOperators.setHeight100();
 		listGridOperators.setAlternateRecordStyles(true);
-		listGridOperators.setDataSource(localCityDS);
+		listGridOperators.setDataSource(localTownsDS);
 		listGridOperators.setAutoFetchData(false);
 		listGridOperators.setShowFilterEditor(false);
 		listGridOperators.setCanEdit(false);
@@ -345,7 +345,7 @@ public class TabFindIndexes extends Tab {
 
 				} else {
 					DlgViewIndex dlgViewIndex = new DlgViewIndex(listGrid,
-							localCityDS, listGrid.getSelectedRecord());
+							localTownsDS, listGrid.getSelectedRecord());
 					dlgViewIndex.show();
 				}
 			}
@@ -356,7 +356,7 @@ public class TabFindIndexes extends Tab {
 					@Override
 					public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 						DlgViewCountryOpers dlgViewCountryOpers = new DlgViewCountryOpers(
-								listGridOperators, localCityDS,
+								listGridOperators, localTownsDS,
 								listGridOperators.getSelectedRecord());
 						dlgViewCountryOpers.show();
 					}
@@ -393,11 +393,11 @@ public class TabFindIndexes extends Tab {
 	private void search(int searchType) {
 		try {
 			String countryid_str = countryItem.getValueAsString();
-			String city_name_geo = cityItem.getValueAsString();
+			String town_name = cityItem.getValueAsString();
 			String code = codeItem.getValueAsString();
 
 			if ((countryid_str == null || countryid_str.trim().equals(""))
-					&& (city_name_geo == null || city_name_geo.trim()
+					&& (town_name == null || town_name.trim()
 							.equals(""))
 					&& (code == null || code.trim().equals(""))) {
 				SC.say(CallCenterBK.constants.warning(),
@@ -436,8 +436,8 @@ public class TabFindIndexes extends Tab {
 					&& !countryid_str.trim().equals("")) {
 				criteria.setAttribute("countryid", new Integer(countryid_str));
 			}
-			if (city_name_geo != null && !city_name_geo.trim().equals("")) {
-				criteria.setAttribute("p_city_name_geo", city_name_geo.trim());
+			if (town_name != null && !town_name.trim().equals("")) {
+				criteria.setAttribute("p_town_name", town_name.trim());
 			}
 			criteria.setAttribute("codeSearchType", new Integer(searchType));
 

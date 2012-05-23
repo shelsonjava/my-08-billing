@@ -35,14 +35,14 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class TabFindPoster extends Tab {
+public class TabFindEvent extends Tab {
 
 	// search form
 	private DynamicForm searchForm;
 
 	// fields
-	private TextItem entPostGeoAndComItem;
-	private DateItem posterDateStartItem;
+	private TextItem eventAndComItem;
+	private DateItem eventDateStartItem;
 
 	// main content layout
 	private VLayout mainLayout;
@@ -58,7 +58,7 @@ public class TabFindPoster extends Tab {
 	// DataSource
 	private DataSource EventDS;
 
-	public TabFindPoster() {
+	public TabFindEvent() {
 
 		setTitle(CallCenterBK.constants.findPoster());
 		setCanClose(true);
@@ -143,19 +143,19 @@ public class TabFindPoster extends Tab {
 		searchForm.setTitleOrientation(TitleOrientation.TOP);
 		mainLayout.addMember(searchForm);
 
-		entPostGeoAndComItem = new TextItem();
-		entPostGeoAndComItem.setTitle(CallCenterBK.constants
+		eventAndComItem = new TextItem();
+		eventAndComItem.setTitle(CallCenterBK.constants
 				.entPosterNameAndComm());
-		entPostGeoAndComItem.setName("entPostGeoAndComItem");
-		entPostGeoAndComItem.setWidth(280);
+		eventAndComItem.setName("entPostGeoAndComItem");
+		eventAndComItem.setWidth(280);
 
-		posterDateStartItem = new DateItem();
-		posterDateStartItem.setTitle(CallCenterBK.constants.date());
-		posterDateStartItem.setWidth(280);
-		posterDateStartItem.setName("posterDateStartItem");
-		posterDateStartItem.setUseTextField(true);
+		eventDateStartItem = new DateItem();
+		eventDateStartItem.setTitle(CallCenterBK.constants.date());
+		eventDateStartItem.setWidth(280);
+		eventDateStartItem.setName("posterDateStartItem");
+		eventDateStartItem.setUseTextField(true);
 
-		searchForm.setFields(entPostGeoAndComItem, posterDateStartItem);
+		searchForm.setFields(eventAndComItem, eventDateStartItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(560);
@@ -246,11 +246,11 @@ public class TabFindPoster extends Tab {
 			public void onClick(ClickEvent event) {
 				listGridEntType.deselectAllRecords();
 				listGridEntPlace.deselectAllRecords();
-				entPostGeoAndComItem.clearValue();
-				posterDateStartItem.clearValue();
+				eventAndComItem.clearValue();
+				eventDateStartItem.clearValue();
 			}
 		});
-		entPostGeoAndComItem.addKeyPressHandler(new KeyPressHandler() {
+		eventAndComItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
@@ -348,8 +348,8 @@ public class TabFindPoster extends Tab {
 								record.getAttributeAsString("mail"));
 						pRecord.setAttribute("town_name",
 								record.getAttributeAsString("town_name"));
-						pRecord.setAttribute("city_region_name_geo", record
-								.getAttributeAsString("city_region_name_geo"));
+						pRecord.setAttribute("town_district_name", record
+								.getAttributeAsString("town_district_name"));
 						pRecord.setAttribute("street_location_geo", record
 								.getAttributeAsString("street_location_geo"));
 						pRecord.setAttribute("index_text",
@@ -401,7 +401,7 @@ public class TabFindPoster extends Tab {
 				}
 			}
 
-			String entPostGeoAndCom = entPostGeoAndComItem.getValueAsString();
+			String entPostGeoAndCom = eventAndComItem.getValueAsString();
 			if (entPostGeoAndCom != null && !entPostGeoAndCom.trim().equals("")) {
 				String tmp = entPostGeoAndCom.trim();
 				String arrStr[] = tmp.split(" ");
@@ -417,7 +417,7 @@ public class TabFindPoster extends Tab {
 			}
 			Date poster_date_p = null;
 			try {
-				poster_date_p = posterDateStartItem.getValueAsDate();
+				poster_date_p = eventDateStartItem.getValueAsDate();
 				if (poster_date_p != null) {
 					criteria.setAttribute("poster_date_p", poster_date_p);
 				}
