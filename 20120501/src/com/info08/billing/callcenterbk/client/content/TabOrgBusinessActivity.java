@@ -1,6 +1,8 @@
 package com.info08.billing.callcenterbk.client.content;
 
-import com.info08.billing.callcenterbk.client.dialogs.event.DlgAddEditEventCategory;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditOrgActivity;
+import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -15,21 +17,20 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
-import com.smartgwt.client.widgets.viewer.DetailViewer;
 
 public class TabOrgBusinessActivity extends Tab {
 
@@ -37,7 +38,9 @@ public class TabOrgBusinessActivity extends Tab {
 	private VLayout mainLayout;
 
 	// form fields
-	private TextItem entTypeGeoItem;
+	private TextItem activityDescriptionItem;
+	private TextItem remarkItem;
+	private SelectItem isBankActivityItem;
 
 	// actions
 	private IButton findButton;
@@ -54,10 +57,10 @@ public class TabOrgBusinessActivity extends Tab {
 
 	public TabOrgBusinessActivity() {
 		try {
-			setTitle("აფიშა-კატეგორიების მართვა");
+			setTitle(CallCenterBK.constants.orgActivities());
 			setCanClose(true);
 
-			datasource = DataSource.get("EventCategoryDS");
+			datasource = DataSource.get("OrgActDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -71,12 +74,27 @@ public class TabOrgBusinessActivity extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			entTypeGeoItem = new TextItem();
-			entTypeGeoItem.setTitle("კატეგორიის დასახელება(ქართ.)");
-			entTypeGeoItem.setWidth(300);
-			entTypeGeoItem.setName("event_category_name");
+			activityDescriptionItem = new TextItem();
+			activityDescriptionItem.setTitle(CallCenterBK.constants
+					.orgActivity());
+			activityDescriptionItem.setWidth(300);
+			activityDescriptionItem.setName("activityDescriptionItem");
 
-			searchForm.setFields(entTypeGeoItem);
+			remarkItem = new TextItem();
+			remarkItem.setTitle(CallCenterBK.constants.remark());
+			remarkItem.setWidth(300);
+			remarkItem.setName("remarkItem");
+
+			isBankActivityItem = new SelectItem();
+			isBankActivityItem.setName("isBankActivityItem");
+			isBankActivityItem.setWidth(300);
+			isBankActivityItem.setTitle(CallCenterBK.constants.bankActivity());
+			isBankActivityItem.setValueMap(ClientMapUtil.getInstance()
+					.getAllYesAndNo());
+			isBankActivityItem.setDefaultToFirstOption(true);
+
+			searchForm.setFields(activityDescriptionItem, remarkItem,
+					isBankActivityItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -84,10 +102,10 @@ public class TabOrgBusinessActivity extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle("გასუფთავება");
+			clearButton.setTitle(CallCenterBK.constants.clear());
 
 			findButton = new IButton();
-			findButton.setTitle("ძებნა");
+			findButton.setTitle(CallCenterBK.constants.find());
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
@@ -97,61 +115,60 @@ public class TabOrgBusinessActivity extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton("დამატება", "addIcon.png");
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
+					"addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton("შეცვლა", "editIcon.png");
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
+					"editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			deleteBtn = new ToolStripButton("გაუქმება", "deleteIcon.png");
+			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
+					"deleteIcon.png");
 			deleteBtn.setLayoutAlign(Alignment.LEFT);
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
 			toolStrip.addSeparator();
 
-			listGrid = new ListGrid() {
-				protected String getCellCSSText(ListGridRecord record,
-						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					if (countryRecord == null) {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-				};
-			};
+			listGrid = new ListGrid();
 
 			listGrid.setWidth(730);
-			listGrid.setHeight(430);
+			listGrid.setHeight100();
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(datasource);
 			listGrid.setAutoFetchData(false);
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchAllEventCategory");
+			listGrid.setFetchOperation("OrgActDS");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("event_category_name").setTitle(
-					"დასახელება (ქართ.)");
+			datasource.getField("activity_description").setTitle(
+					CallCenterBK.constants.orgActivity());
+			datasource.getField("remark").setTitle(
+					CallCenterBK.constants.comment());
 
-			ListGridField event_category_name = new ListGridField(
-					"event_category_name", "დასახელება (ქართ.)", 300);
+			ListGridField activity_description = new ListGridField(
+					"activity_description",
+					CallCenterBK.constants.orgActivity(), 300);
 
-			listGrid.setFields(event_category_name);
+			ListGridField is_bank_activity_descr = new ListGridField(
+					"is_bank_activity_descr",
+					CallCenterBK.constants.bankActivity(), 150);
+
+			ListGridField remark = new ListGridField("remark",
+					CallCenterBK.constants.comment());
+
+			listGrid.setFields(activity_description, is_bank_activity_descr,
+					remark);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -163,15 +180,15 @@ public class TabOrgBusinessActivity extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					entTypeGeoItem.clearValue();
+					activityDescriptionItem.clearValue();
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditEventCategory dlgAddEditEventCategory = new DlgAddEditEventCategory(
+					DlgAddEditOrgActivity dlgAddEditOrgActivity = new DlgAddEditOrgActivity(
 							listGrid, null);
-					dlgAddEditEventCategory.show();
+					dlgAddEditOrgActivity.show();
 				}
 			});
 
@@ -184,10 +201,9 @@ public class TabOrgBusinessActivity extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-
-					DlgAddEditEventCategory dlgAddEditEventCategory = new DlgAddEditEventCategory(
+					DlgAddEditOrgActivity dlgAddEditOrgActivity = new DlgAddEditOrgActivity(
 							listGrid, listGridRecord);
-					dlgAddEditEventCategory.show();
+					dlgAddEditOrgActivity.show();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
@@ -200,9 +216,9 @@ public class TabOrgBusinessActivity extends Tab {
 						return;
 					}
 
-					final Integer event_category_id = listGridRecord
-							.getAttributeAsInt("event_category_id");
-					if (event_category_id == null) {
+					final Integer org_activity_id = listGridRecord
+							.getAttributeAsInt("org_activity_id");
+					if (org_activity_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -212,26 +228,13 @@ public class TabOrgBusinessActivity extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(event_category_id);
+										remove(org_activity_id);
 									}
 								}
 							});
 				}
 			});
 
-			TabSet tabSet = new TabSet();
-			tabSet.setWidth(730);
-			Tab tabDetViewer = new Tab("დათვალიერება");
-			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(datasource);
-			detailViewer.setWidth(710);
-			tabDetViewer.setPane(detailViewer);
-
-			listGrid.addRecordClickHandler(new RecordClickHandler() {
-				public void onRecordClick(RecordClickEvent event) {
-					detailViewer.viewSelectedData(listGrid);
-				}
-			});
 			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 				@Override
 				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
@@ -242,14 +245,30 @@ public class TabOrgBusinessActivity extends Tab {
 						return;
 					}
 
-					DlgAddEditEventCategory dlgAddEditEventCategory = new DlgAddEditEventCategory(
+					DlgAddEditOrgActivity dlgAddEditOrgActivity = new DlgAddEditOrgActivity(
 							listGrid, listGridRecord);
-					dlgAddEditEventCategory.show();
+					dlgAddEditOrgActivity.show();
 				}
 			});
 
-			tabSet.setTabs(tabDetViewer);
-			mainLayout.addMember(tabSet);
+			activityDescriptionItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			});
+
+			remarkItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			});
+
 			setPane(mainLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -259,13 +278,21 @@ public class TabOrgBusinessActivity extends Tab {
 
 	private void search() {
 		try {
-			String event_category_name = entTypeGeoItem.getValueAsString();
+			String activity_description = activityDescriptionItem
+					.getValueAsString();
+			String remark = remarkItem.getValueAsString();
+			Integer is_bank_activity = new Integer(
+					isBankActivityItem.getValueAsString());
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("event_category_name", event_category_name);
-
+			criteria.setAttribute("activity_description", activity_description);
+			criteria.setAttribute("remark", remark);
+			if (!is_bank_activity.equals(new Integer(-1))) {
+				criteria.setAttribute("is_bank_activity", is_bank_activity);
+			}
+			
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllEventCategory");
+			dsRequest.setAttribute("operationId", "searchAllBusinesActivities");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -278,17 +305,17 @@ public class TabOrgBusinessActivity extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer event_category_id) {
+	private void remove(Integer org_activity_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
-			record.setAttribute("event_category_id", event_category_id);
+			record.setAttribute("org_activity_id", org_activity_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "removeEventCategory");
+			req.setAttribute("operationId", "removeOrgActivity");
 			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
