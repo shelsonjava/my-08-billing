@@ -97,44 +97,44 @@
 				
 				#if($criteria.start_place_id1) 
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id1||'%')			 
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id1||'%')			 
 				#end
 				#if($criteria.start_place_id2) 
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id2||'%')
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id2||'%')
 				#end
 				#if($criteria.start_place_id3) 
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id3||'%')			 
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id3||'%')			 
 				#end
 				#if($criteria.start_place_id4) 
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id4||'%')			 
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id4||'%')			 
 				#end
 				#if($criteria.start_place_id5) 
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.start_place_id5||'%')
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id5||'%')
 				#end
 				
 				#if($criteria.end_place_id1)
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id1||'%')			 	
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id1||'%')			 	
 				#end
 				#if($criteria.end_place_id2)
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id2||'%')
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id2||'%')
 				#end
 				#if($criteria.end_place_id3)
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id3||'%')				 	
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id3||'%')				 	
 				#end
 				#if($criteria.end_place_id4)
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id4||'%')				 	
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id4||'%')				 	
 				#end
 				#if($criteria.end_place_id5)
 					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name_geo ||' '||tt.notes) like '%'||$criteria.end_place_id5||'%')				 	
+						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id5||'%')				 	
 				#end					
 				]]>  
 			</whereClause> 

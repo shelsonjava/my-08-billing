@@ -47,7 +47,7 @@
 			<selectClause>
 				t.pts_id,
 				r.dir_num as descr,
-				s.street_name_geo as street_name,
+				s.street_name as street_name,
 				t.remarks,
 				decode(t.dir,1,'წინ',2,'უკან','უცნობი') as dir_descr,
 				t.dir_order,

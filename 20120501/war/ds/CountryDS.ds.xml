@@ -85,7 +85,7 @@
 					 		from 
 					 			transport_places t, cities c 
 					 		where 
-					 			c.city_id = t.city_id and t.transport_type_id = $criteria.transport_type_id
+					 			c.town_id = t.town_id and t.transport_type_id = $criteria.transport_type_id
 					 	)
 				#end
 				]]>  

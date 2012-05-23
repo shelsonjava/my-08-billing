@@ -8,7 +8,7 @@
 	<fields>
 		<field name="transp_stat_id"			type="integer"		title="transp_stat_id"			hidden="true" primaryKey="true" />
 		<field name="transp_type_id"			type="integer"		title="transp_type_id" 			hidden="true"/>
-		<field name="city_id"					type="integer"		title="city_id" 				hidden="true"/>		
+		<field name="town_id"					type="integer"		title="town_id" 				hidden="true"/>		
 		<field name="name_descr"				type="text"			title="name_descr"/>
 		<field name="city_descr"				type="text"			title="city_descr"/>
 		<field name="transpport_type"			type="text"			title="transpport_type"/>
@@ -38,16 +38,16 @@
     		<selectClause>   			
     			t.transp_stat_id,
 				t.transp_type_id,
-				t.city_id,
+				t.town_id,
 				t.name_descr,
-				c.city_name_geo as city_descr,
+				c.town_name as city_descr,
 				tt.name_descr as transpport_type
 			</selectClause> 
 			<tableClause>transp_stations t, transp_types tt, cities c</tableClause>
 			<whereClause><![CDATA[
-				t.transp_type_id = tt.transp_type_id and t.city_id = c.city_id 
+				t.transp_type_id = tt.transp_type_id and t.town_id = c.town_id 
 				#if($criteria.transp_type_id) and t.transp_type_id = $criteria.transp_type_id #end
-				#if($criteria.city_id) and t.city_id = $criteria.city_id #end
+				#if($criteria.town_id) and t.town_id = $criteria.town_id #end
 				#if($criteria.name_descr) and t.name_descr like '%'||($criteria.name_descr)||'%' #end
 				]]>  
 			</whereClause> 

@@ -1,0 +1,61 @@
+<DataSource
+	ID="StreetKindDS"
+	serverType="sql"
+	tableName="street_kinds"
+	qualifyColumnNames="false">
+	<fields>
+		<field name="street_kind_id"		type="integer"	title="street_kind_id"				hidden="true" primaryKey="true" />
+		<field name="street_kind_name"	type="text" 	title="street_kind_name"/>		
+		<field name="loggedUserName"		type="text"		title="Logged UserName" hidden="true" />
+	</fields>
+	
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+
+		<!-- Add StreetKind -->
+		<operationBinding operationType="add" operationId="addStreetKind" serverMethod="addStreetKind">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+		<!-- StreetKind Update -->
+		<operationBinding operationType="update" operationId="updateStreetKind" serverMethod="updateStreetKind">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- StreetKind Delete -->
+		<operationBinding operationType="remove" operationId="deleteStreetKind" serverMethod="deleteStreetKind">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+	
+		<!-- Fetching StreetKinds - Cached  -->
+		<operationBinding operationId="fetchStreetKinds" operationType="fetch" serverMethod="fetchStreetKinds">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>    	
+    	
+    	<operationBinding operationId="searchFromDB" operationType="fetch">
+    		<selectClause>   			
+    			t.street_kind_id,
+    			t.street_kind_name
+			</selectClause> 
+			<tableClause>street_kinds t</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1
+				#if($criteria.street_kind_name) AND t.street_kind_name like ($criteria.street_kind_name)||'%' #end
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchStrKindsFromDBForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.street_kind_id,
+    			t.street_kind_name
+			</selectClause> 
+			<tableClause>street_kinds t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause)			
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

@@ -1,0 +1,61 @@
+<DataSource
+	ID="StreetNamesDS"
+	serverType="sql"
+	tableName="street_names"
+	qualifyColumnNames="false">
+	<fields>
+		<field name="street_name_id"		type="integer"	title="street_name_id"				hidden="true" primaryKey="true" />
+		<field name="street_name_descr"		type="text" 	title="street_name_descr"/>		
+		<field name="loggedUserName"		type="text"		title="Logged UserName" 			hidden="true" />
+	</fields>
+	
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+
+		<!-- Add StreetNames -->
+		<operationBinding operationType="add" operationId="addStreetName" serverMethod="addStreetName">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+		<!-- StreetNames Update -->
+		<operationBinding operationType="update" operationId="updateStreetName" serverMethod="updateStreetName">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- StreetNames Delete -->
+		<operationBinding operationType="remove" operationId="deleteStreetName" serverMethod="deleteStreetName">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+	
+		<!-- Fetching StreetNames - Cached  -->
+		<operationBinding operationId="fetchStreetNames" operationType="fetch" serverMethod="fetchStreetNames">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>    	
+    	
+    	<operationBinding operationId="fetchStreetNamesFromDB" operationType="fetch">
+    		<selectClause>   			
+    			t.street_name_id,
+    			t.street_name_descr
+			</selectClause> 
+			<tableClause>street_names t</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1
+				#if($criteria.street_name_descr) AND t.street_name_descr like ($criteria.street_name_descr)||'%' #end
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    	
+    	<operationBinding operationId="fetchStreetNamesForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.street_name_id,
+    			t.street_name_descr
+			</selectClause> 
+			<tableClause>street_names t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause)
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

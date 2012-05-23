@@ -29,12 +29,12 @@
 		<field name="legal_statuse_id"			type="integer"  	title="legal_statuse_id"	hidden="true"/>
 		<field name="statuse"					type="integer"  	title="statuse"				hidden="true"/>
 		<field name="note_crit"					type="integer"  	title="note_crit"/>
-		<field name="city_name_geo"				type="text"  		title="city_name_geo"/>
-		<field name="city_region_name_geo"		type="text"  		title="city_region_name_geo"/>
+		<field name="town_name"				type="text"  		title="town_name"/>
+		<field name="town_district_name"		type="text"  		title="town_district_name"/>
 		<field name="street_location_geo"		type="text"  		title="street_location_geo"/>
 		<field name="index_text"				type="text"  		title="index_text"/>
 		<field name="legal_statuse"				type="text"  		title="legal_statuse"/>
-		<field name="city_id"					type="integer"  	title="city_id"				hidden="true"/>
+		<field name="town_id"					type="integer"  	title="town_id"				hidden="true"/>
 		<field name="priority"					type="integer"  	title="priority"			hidden="true"/>
 		<field name="extra_priority"			type="integer"  	title="extra_priority"		hidden="true"/>
 		<field name="fullName"					type="text"  		title="fullName"/>
@@ -48,14 +48,14 @@
 		<field name="full_address"				type="text"  		title="full_address"/>
 		<field name="phoneStatusID"				type="integer"  	title="phoneStatusID"		hidden="true"/>
 		<field name="street_old_name"			type="text"  		title="street_old_name"/>
-		<field name="street_name_geo"			type="text"  		title="street_name_geo"/>
+		<field name="street_name"			type="text"  		title="street_name"/>
 		<field name="address_hide"				type="integer"  	title="address_hide"		hidden="true"/>		
 		<field name="contact_phones"			type="integer"  	title="contact_phones"		hidden="true"/>
 		<field name="phone_status"				type="text"  		title="phone_status"/>
 		<field name="org_name_tree"				type="text"  		title="org_name_tree"/>
 		<field name="is_abonent"				type="integer"  	title="is_abonent"			hidden="true"/>
 		<field name="p_bank_organization_id"			type="integer"  	title="p_bank_organization_id"		hidden="true"/>
-		<field name="city_region_id"			type="integer"  	title="city_region_id"		hidden="true"/>
+		<field name="town_district_id"			type="integer"  	title="town_district_id"		hidden="true"/>
 		<field name="street_id"					type="integer"  	title="street_id"			hidden="true"/>
 		<field name="tree_org_parrent"			type="text"  		title="tree_org_parrent"/>
 		<field name="tree_org_child"			type="text"  		title="tree_org_child"/>
@@ -100,23 +100,23 @@
 						mo1.legal_statuse_id,
 						mo1.statuse,
 						ma.street_id,
-						decode(ma.address_hide,1,'მისამართი დაფარულია',c.city_name_geo || ', ' ||getDistrict(str.street_id)||', '||str.street_name_geo||' '||ma.address_suffix_geo) as real_address,
-						c.city_name_geo,
-						getDistrict(str.street_id) as city_region_name_geo,
+						decode(ma.address_hide,1,'მისამართი დაფარულია',c.town_name || ', ' ||getDistrict(str.street_id)||', '||str.street_name||' '||ma.address_suffix_geo) as real_address,
+						c.town_name,
+						getDistrict(str.street_id) as town_district_name,
 						str.street_location_geo,
 						getindex(str.street_id) as index_text,
 						mo1.note_crit,
 						ls.legal_statuse,
-						c.city_id,
+						c.town_id,
 						ms.priority,
              			mo1.extra_priority,
-             			ma.city_region_id,
+             			ma.town_district_id,
              			p.partnerbank,
              			p.organization_id as p_bank_organization_id,
-             		    decode(ma.address_hide,1,'მისამართი დაფარულია',(c.city_name_geo||' / '|| getDistrict(str.street_id)||' / '||str.street_name_geo||' '||ma.address_suffix_geo)) as full_address,
-		                ccare.getTbilisiOrder(c.city_id) as cust_order,
+             		    decode(ma.address_hide,1,'მისამართი დაფარულია',(c.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||ma.address_suffix_geo)) as full_address,
+		                ccare.getTbilisiOrder(c.town_id) as cust_order,
 		                ccare.getStreetOldNames(str.street_id) as street_old_name, 
-		                str.street_name_geo,
+		                str.street_name,
 		                ma.address_hide,
 		                decode(ms.main_master_id,0,null,'home') as tree_org_parrent,
 		                decode((select min(1) from ccare.main_services ms1 where ms1.main_master_id = ms.organization_id and ms1.deleted=0),null,null,'associations') as tree_org_child,
@@ -126,14 +126,14 @@
 						ma.addr_descr,
 						ma.addr_number,
 						getStreetIdxs(str.street_id) as street_indexes,
-						(c.city_name_geo||' / '|| getDistrict(str.street_id)||' / '||str.street_name_geo||' '||ma.address_suffix_geo) as full_address_not_hidden,
+						(c.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||ma.address_suffix_geo) as full_address_not_hidden,
 						ccare.getorgbusiness_alerts(ms.organization_id) as org_allert_by_buss_det
 			</selectClause>
 			<tableClause>ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls, org_partnerbank_lists p</tableClause>
 			<whereClause>
 				 <![CDATA[
 						 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and mo1.partnerbank_id = p.organization_id(+) and 
-						 c.city_id = ma.city_id and mo1.legal_statuse_id = ls.legal_statuse_id(+) and ms.service_id = 3
+						 c.town_id = ma.town_id and mo1.legal_statuse_id = ls.legal_statuse_id(+) and ms.service_id = 3
 						 and ms.organization_id in (
 						 	SELECT 
 						 		ms1.organization_id
@@ -151,7 +151,7 @@
 						 				org_partnerbank_lists p
 						 			where 
 						 				 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and mo1.partnerbank_id = p.organization_id(+) and 
-						 				 c.city_id = ma.city_id and mo1.legal_statuse_id = ls.legal_statuse_id(+) and ms.service_id = 3						 		 
+						 				 c.town_id = ma.town_id and mo1.legal_statuse_id = ls.legal_statuse_id(+) and ms.service_id = 3						 		 
 								 		 #if($criteria.main_master_id) and ms.main_master_id = $criteria.main_master_id #end
 										 #if(!$criteria.main_master_id && $criteria.deleted) and ms.deleted = $criteria.deleted #end
 										 #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id #end
@@ -174,11 +174,11 @@
 										 #if(!$criteria.main_master_id && $criteria.note7) and mo1.note like '%'||($criteria.note7)||'%' #end
 										 #if(!$criteria.main_master_id && $criteria.note8) and mo1.note like '%'||($criteria.note8)||'%' #end
 										 #if(!$criteria.main_master_id && $criteria.note9) and mo1.note like '%'||($criteria.note9)||'%' #end
-										 #if(!$criteria.main_master_id && $criteria.real_address1) and str.street_name_geo like '%'||($criteria.real_address1)||'%' #end
-										 #if(!$criteria.main_master_id && $criteria.real_address2) and str.street_name_geo like '%'||($criteria.real_address2)||'%' #end
-										 #if(!$criteria.main_master_id && $criteria.real_address3) and str.street_name_geo like '%'||($criteria.real_address3)||'%' #end
-										 #if(!$criteria.main_master_id && $criteria.real_address4) and str.street_name_geo like '%'||($criteria.real_address4)||'%' #end
-										 #if(!$criteria.main_master_id && $criteria.real_address5) and str.street_name_geo like '%'||($criteria.real_address5)||'%' #end
+										 #if(!$criteria.main_master_id && $criteria.real_address1) and str.street_name like '%'||($criteria.real_address1)||'%' #end
+										 #if(!$criteria.main_master_id && $criteria.real_address2) and str.street_name like '%'||($criteria.real_address2)||'%' #end
+										 #if(!$criteria.main_master_id && $criteria.real_address3) and str.street_name like '%'||($criteria.real_address3)||'%' #end
+										 #if(!$criteria.main_master_id && $criteria.real_address4) and str.street_name like '%'||($criteria.real_address4)||'%' #end
+										 #if(!$criteria.main_master_id && $criteria.real_address5) and str.street_name like '%'||($criteria.real_address5)||'%' #end
 										 #if(!$criteria.main_master_id && $criteria.note10) and mo1.org_name like '%'||($criteria.org_name10)||'%' #end					 					 
 										 #if(!$criteria.main_master_id && $criteria.org_name_eng) and mo1.org_name_eng like ($criteria.org_name_eng)||'%' #end
 										 #if(!$criteria.main_master_id && $criteria.legaladdress) and mo1.legaladdress like '%'||($criteria.legaladdress)||'%' #end
@@ -202,17 +202,17 @@
 										 #if(!$criteria.main_master_id && $criteria.identcode) and mo1.identcode = $criteria.identcode #end
 										 #if(!$criteria.main_master_id && $criteria.ind) and mo1.ind = $criteria.ind #end						 
 										 #if(!$criteria.main_master_id && $criteria.street_id) and ma.street_id = $criteria.street_id #end
-										 #if(!$criteria.main_master_id && $criteria.city_id) and ma.city_id = $criteria.city_id #end
+										 #if(!$criteria.main_master_id && $criteria.town_id) and ma.town_id = $criteria.town_id #end
 										 #if(!$criteria.main_master_id && $criteria.ident_code) and (mo1.identcode = $criteria.ident_code or mo1.new_identcode = $criteria.ident_code )  #end
-										 #if(!$criteria.main_master_id && $criteria.city_region_id) 
-										 	and exists (select * from ccare.street_district tt where tt.street_id = str.street_id and  tt.city_region_id = $criteria.city_region_id)  
+										 #if(!$criteria.main_master_id && $criteria.town_district_id) 
+										 	and exists (select * from ccare.street_district tt where tt.street_id = str.street_id and  tt.town_district_id = $criteria.town_district_id)  
 										 #end
 						 	)						 
 						 	connect by prior ms1.organization_id = ms1.main_master_id
 						 )						 
 				 ]]>
 			</whereClause>
-			<orderClause>ccare.getTbilisiOrder(c.city_id), mo1.extra_priority,ms.main_master_id, ms.priority</orderClause>
+			<orderClause>ccare.getTbilisiOrder(c.town_id), mo1.extra_priority,ms.main_master_id, ms.priority</orderClause>
 		</operationBinding>
 		
 	</operationBindings>

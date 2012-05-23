@@ -47,7 +47,7 @@
 				t.rec_user,
 				t.upd_user,
 				t.deleted,
-    			s.street_name_geo as streetName    			
+    			s.street_name as streetName    			
 			</selectClause> 
 			<tableClause>street_index t, streets s</tableClause>
 			<whereClause><![CDATA[ 

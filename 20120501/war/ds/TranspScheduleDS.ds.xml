@@ -74,21 +74,21 @@
 				ts.transp_type_id,        
 				ts.transp_model_descr,
 				tt.name_descr as transport_type,
-				oc.city_name_geo||' '||o.name_descr as depart_station,
-				ic.city_name_geo||' '||i.name_descr as arrival_station,
+				oc.town_name||' '||o.name_descr as depart_station,
+				ic.town_name||' '||i.name_descr as arrival_station,
 				tc.name_descr as transp_company,
 				tp.name_descr as transp_resource,
-				oc.city_name_geo as depart_city,
-				ic.city_name_geo as arrival_city,
-				to_char((ts.arrival_time+ic.of_gmt/24),'HH24:mi') cmt,
+				oc.town_name as depart_city,
+				ic.town_name as arrival_city,
+				to_char((ts.arrival_time+ic.normal_gmt/24),'HH24:mi') cmt,
 				to_char(ts.depart_time,'HH24:MI') formated_depart_time,
        			to_char(ts.arrival_time ,'HH24:MI') formated_arrival_time
 			</selectClause> 
 			<tableClause>ccare.transp_schedules ts, transp_types tt,transp_stations o, cities oc,transp_stations i, cities ic, transp_companies tc, transp_resource tp</tableClause>
 			<whereClause><![CDATA[
 					ts.transp_type_id = tt.transp_type_id and
-					ts.depart_transp_stat_id = o.transp_stat_id and o.city_id = oc.city_id and
-					ts.arrival_transp_stat_id = i.transp_stat_id and i.city_id = ic.city_id and
+					ts.depart_transp_stat_id = o.transp_stat_id and o.town_id = oc.town_id and
+					ts.arrival_transp_stat_id = i.transp_stat_id and i.town_id = ic.town_id and
 					ts.transp_comp_id = tc.transp_comp_id(+) and
 					ts.transp_res_id = tp.transp_res_id(+)  
 					#if($criteria.transp_type_id) and ts.transp_type_id = $criteria.transp_type_id #end
@@ -98,12 +98,12 @@
 					#if($criteria.transp_res_id) and ts.transp_res_id = $criteria.transp_res_id #end
 					#if($criteria.remark) and ts.remark like '%'||($criteria.remark)||'%' #end					
 					#if($criteria.transp_model_descr) and ts.transp_model_descr like '%'||($criteria.transp_model_descr)||'%' #end
-					#if($criteria.depart_city) and oc.city_name_geo like '%'||($criteria.depart_city)||'%' #end
-					#if($criteria.arrival_city) and ic.city_name_geo like '%'||($criteria.arrival_city)||'%' #end
+					#if($criteria.depart_city) and oc.town_name like '%'||($criteria.depart_city)||'%' #end
+					#if($criteria.arrival_city) and ic.town_name like '%'||($criteria.arrival_city)||'%' #end
 					#if($criteria.depart_station) and o.name_descr like '%'||($criteria.depart_station)||'%' #end
 					#if($criteria.arrival_station) and i.name_descr like '%'||($criteria.arrival_station)||'%' #end					
-					#if($criteria.o_city_id) and oc.city_id = $criteria.o_city_id #end
-					#if($criteria.i_city_id) and ic.city_id = $criteria.i_city_id #end
+					#if($criteria.o_town_id) and oc.town_id = $criteria.o_town_id #end
+					#if($criteria.i_town_id) and ic.town_id = $criteria.i_town_id #end
 					#if($criteria.o_country_id) and oc.country_id = $criteria.o_country_id #end
 					#if($criteria.i_country_id) and ic.country_id = $criteria.i_country_id #end
 					#if($criteria.c_days) and (bitand(t.days,$criteria.c_days) = $criteria.c_days OR t.days = 0)   #end

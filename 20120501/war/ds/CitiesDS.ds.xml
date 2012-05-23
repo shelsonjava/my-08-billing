@@ -1,30 +1,30 @@
 <DataSource ID="CitiesDS" serverType="sql"
 	tableName="ccare.cities" qualifyColumnNames="false">
 	<fields>
-		<field name="city_id" 		type="integer"	title="City ID"  hidden="true" primaryKey="true" />
-		<field name="city_name_geo" type="text" 	title="City Name"/>
-		<field name="is_capital"  	type="integer"	title="Is Capital" />
+		<field name="town_id" 		type="integer"	title="City ID"  hidden="true" primaryKey="true" />
+		<field name="town_name" type="text" 	title="City Name"/>
+		<field name="capital_town"  	type="integer"	title="Is Capital" />
 	</fields>
 
 	<operationBindings>
 		<!-- FETCH -->
 		<operationBinding operationId="customCitiesSearch"
-			operationType="fetch" customFields="city_id, city_name_geo, is_capital">			
+			operationType="fetch" customFields="town_id, town_name, capital_town">			
 			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.City"/>
 			<selectClause>				
-      			t.city_id,
-      			t.city_name_geo,
-      			t.is_capital
+      			t.town_id,
+      			t.town_name,
+      			t.capital_town
 			</selectClause>
 			<tableClause>				
 				cities t
 			</tableClause>
 			<whereClause><![CDATA[ 
-				t.country_id = 194 and t.city_id <> 0 and t.deleted = 0
-				#if($criteria.city_name_geo) and t.city_name_geo like ($criteria.city_name_geo)||'%' #end
+				t.country_id = 194 and t.town_id <> 0 and t.deleted = 0
+				#if($criteria.town_name) and t.town_name like ($criteria.town_name)||'%' #end
 				]]>
 			</whereClause>
-			<orderClause>t.city_name_geo</orderClause>
+			<orderClause>t.town_name</orderClause>
 		</operationBinding>		
 	</operationBindings>
 </DataSource>

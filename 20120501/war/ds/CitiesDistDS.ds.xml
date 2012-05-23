@@ -17,8 +17,8 @@
 		<field name="upd_user"				type="text"			title="Update User"/>
 		<field name="upd_date"				type="datetime"		title="Update Date"/>
 		<field name="city_distance_type"	type="integer"		title="City Distance Type" 		hidden="true"/>
-		<field name="city_id_end"			type="integer"		title="City Id End" 			hidden="true"/>
-		<field name="city_id_start"			type="integer"		title="City Id Start" 			hidden="true"/>
+		<field name="town_id_end"			type="integer"		title="City Id End" 			hidden="true"/>
+		<field name="town_id_start"			type="integer"		title="City Id Start" 			hidden="true"/>
 		<field name="deleted"				type="integer"		title="Deleted" 				hidden="true"/>
 		<field name="note_eng"				type="text" 		title="Note Eng"				hidden="true"/>						
 		<field name="loggedUserName"		type="text"			title="Logged UserName" 		hidden="true" />
@@ -49,8 +49,8 @@
     			t.city_distance_eng,
     			t.city_distance_geo,
     			t.city_distance_type,
-    			t.city_id_end,
-    			t.city_id_start,
+    			t.town_id_end,
+    			t.town_id_start,
     			t.deleted,
     			t.note_eng,
     			t.note_geo,
@@ -58,19 +58,19 @@
     			t.rec_user,
     			t.upd_user,
     			t.upd_date,
-    			c1.city_name_geo as cityStart,
-    			c2.city_name_geo as cityEnd,
+    			c1.town_name as cityStart,
+    			c2.town_name as cityEnd,
     			decode(t.city_distance_type,0,'სახმელეთო',1,'საჰაერო',2,'საზღვაო','უცნობია') as cityDistTypeDesc
 			</selectClause> 
 			<tableClause>city_distances t,ccare.cities c1,ccare.cities c2</tableClause>
 			<whereClause><![CDATA[ 
-				t.city_id_start = c1.city_id and
-				t.city_id_end = c2.city_id
+				t.town_id_start = c1.town_id and
+				t.town_id_end = c2.town_id
 				#if($criteria.city_distance_type) AND t.city_distance_type = $criteria.city_distance_type #end
-				#if($criteria.city_id_start) AND t.city_id_start = $criteria.city_id_start #end
-				#if($criteria.city_id_end) AND t.city_id_end = $criteria.city_id_end #end
-				#if($criteria.cityStart) AND c1.city_name_geo like '%'||$criteria.cityStart||'%' #end
-				#if($criteria.cityEnd) AND c2.city_name_geo like '%'||$criteria.cityEnd||'%' #end
+				#if($criteria.town_id_start) AND t.town_id_start = $criteria.town_id_start #end
+				#if($criteria.town_id_end) AND t.town_id_end = $criteria.town_id_end #end
+				#if($criteria.cityStart) AND c1.town_name like '%'||$criteria.cityStart||'%' #end
+				#if($criteria.cityEnd) AND c2.town_name like '%'||$criteria.cityEnd||'%' #end
 				#if($criteria.city_distance_geo) AND t.city_distance_geo like '%'||$criteria.city_distance_geo||'%' #end
 				#if($criteria.note_geo) AND t.note_geo like '%'||$criteria.note_geo||'%' #end
 				]]>  
@@ -85,8 +85,8 @@
     			t.city_distance_eng,
     			t.city_distance_geo,
     			t.city_distance_type,
-    			t.city_id_end,
-    			t.city_id_start,
+    			t.town_id_end,
+    			t.town_id_start,
     			t.deleted,
     			t.note_eng,
     			t.note_geo,
@@ -94,19 +94,19 @@
     			t.rec_user,
     			t.upd_user,
     			t.upd_date,
-    			c1.city_name_geo as cityStart,
-    			c2.city_name_geo as cityEnd,
+    			c1.town_name as cityStart,
+    			c2.town_name as cityEnd,
     			decode(t.city_distance_type,0,'სახმელეთო',1,'საჰაერო',2,'საზღვაო','უცნობია') as cityDistTypeDesc
 			</selectClause> 
 			<tableClause>city_distances t,ccare.cities c1,ccare.cities c2</tableClause>
 			<whereClause><![CDATA[ 
-				t.city_id_start = c1.city_id and
-				t.city_id_end = c2.city_id
+				t.town_id_start = c1.town_id and
+				t.town_id_end = c2.town_id
 				
-				#if($criteria.city_id_start) AND (t.city_id_start = $criteria.city_id_start or t.city_id_end = $criteria.city_id_start) #end
-				#if($criteria.city_id_end)   AND (t.city_id_end = $criteria.city_id_end or t.city_id_start = $criteria.city_id_end) #end
-				#if($criteria.cityStart) AND c1.city_name_geo like '%'||$criteria.cityStart||'%' #end
-				#if($criteria.cityEnd) AND c2.city_name_geo like '%'||$criteria.cityEnd||'%' #end
+				#if($criteria.town_id_start) AND (t.town_id_start = $criteria.town_id_start or t.town_id_end = $criteria.town_id_start) #end
+				#if($criteria.town_id_end)   AND (t.town_id_end = $criteria.town_id_end or t.town_id_start = $criteria.town_id_end) #end
+				#if($criteria.cityStart) AND c1.town_name like '%'||$criteria.cityStart||'%' #end
+				#if($criteria.cityEnd) AND c2.town_name like '%'||$criteria.cityEnd||'%' #end
 				#if($criteria.city_distance_geo) AND t.city_distance_geo like '%'||$criteria.city_distance_geo||'%' #end
 				
 				#if($criteria.note_geo) AND t.note_geo like '%'||$criteria.note_geo||'%' #end

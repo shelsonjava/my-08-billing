@@ -1,44 +1,201 @@
-<DataSource ID="StreetsDS" serverType="sql"
-	tableName="ccare.streets" qualifyColumnNames="false">
+<DataSource
+	ID="StreetsDS"
+	serverType="sql"
+	tableName="streets"
+	qualifyColumnNames="false"
+	dropExtraFields="false">
 	<fields>
-		<field name="street_district_id" 	type="integer"	title="City District ID"	hidden="true"  primaryKey="true" />
-	    <field name="street_id" 			type="integer"	title="Street ID"			hidden="true"/>
-		<field name="city_id" 				type="integer"	title="City ID" 			hidden="true" />
-		<field name="street_name_geo"		type="text" 	title="City Name"/>
-		<field name="deleted"				type="integer"	title="Deleted" 			hidden="true" />
-		<field name="street_location_geo"	type="text" 	title="Street Location GEO"/>
-		<field name="city_region_id" 		type="integer"	title="City Region ID" 		hidden="true" />		
+		<field name="street_id"					type="integer"	title="ID"						hidden="true" 	primaryKey="true" />
+		<field name="town_id"					type="integer"	title="City ID" 				hidden="true"/>
+		<field name="descr_id_level_1"			type="integer"	title="descr_id_level_1"		hidden="true"/>
+		<field name="descr_id_level_2"			type="integer"	title="descr_id_level_2"		hidden="true"/>
+		<field name="descr_id_level_3"			type="integer"	title="descr_id_level_3"		hidden="true"/>
+		<field name="descr_id_level_4"			type="integer"	title="descr_id_level_4"		hidden="true"/>
+		<field name="descr_id_level_5"			type="integer"	title="descr_id_level_5"		hidden="true"/>
+		<field name="descr_id_level_6"			type="integer"	title="descr_id_level_6"		hidden="true"/>
+		<field name="descr_id_level_7"			type="integer"	title="descr_id_level_7"		hidden="true"/>
+		<field name="descr_id_level_8"			type="integer"	title="descr_id_level_8"		hidden="true"/>
+		<field name="descr_id_level_9"			type="integer"	title="descr_id_level_9"		hidden="true"/>
+		<field name="descr_id_level_10"			type="integer"	title="descr_id_level_10"		hidden="true"/>
+		<field name="descr_type_id_level_1"		type="integer"	title="descr_type_id_level_1"	hidden="true"/>
+		<field name="descr_type_id_level_2"		type="integer"	title="descr_type_id_level_2"	hidden="true"/>
+		<field name="descr_type_id_level_3"		type="integer"	title="descr_type_id_level_3"	hidden="true"/>
+		<field name="descr_type_id_level_4"		type="integer"	title="descr_type_id_level_4"	hidden="true"/>
+		<field name="descr_type_id_level_5"		type="integer"	title="descr_type_id_level_5"	hidden="true"/>
+		<field name="descr_type_id_level_6"		type="integer"	title="descr_type_id_level_6"	hidden="true"/>
+		<field name="descr_type_id_level_7"		type="integer"	title="descr_type_id_level_7"	hidden="true"/>
+		<field name="descr_type_id_level_8"		type="integer"	title="descr_type_id_level_8"	hidden="true"/>
+		<field name="descr_type_id_level_9"		type="integer"	title="descr_type_id_level_9"	hidden="true"/>
+		<field name="descr_type_id_level_10"	type="integer"	title="descr_type_id_level_10"	hidden="true"/>
+		<field name="record_type"				type="integer"	title="record_type"				hidden="true"/>		
+		<field name="street_location"			type="text" 	title="street_location"		hidden="true"/>
+		<field name="street_name"				type="text" 	title="Street Name"/>
+		<field name="town_name"					type="text"		title="City Name"/>
+		<field name="town_district_name"		type="text"		title="town_district_name"/>			
+		<field name="street_remark"				type="text" 	title="street_remark"			hidden="true"/>
+		<field name="visible_options"			type="integer"	title="Visible Options"			hidden="true"/>		
+		<field name="loggedUserName"			type="text"		title="Logged UserName" 		hidden="true" />
+		<field name="town_district_id"			type="text"		title="City Region ID" 			hidden="true" />	
+		<field name="street_old_name_descr"		type="text"		title="street_old_name_descr"/>
+		<field name="streetIndex"				type="text"		title="streetIndex"		hidden="true" />
 	</fields>
-	<operationBindings>
-		<!-- FETCH - Cached -->
-		<operationBinding operationId="streetSearchCached" operationType="fetch" serverMethod="fetchStreets">
-	    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
-	   	</operationBinding>
-	   	
-		<!-- FETCH -->
-		<operationBinding operationId="customStreetsSearch"
-			operationType="fetch" customFields="street_district_id, street_id, city_id, street_name_geo,deleted,street_location_geo,city_region_id ">			
-			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.shared.items.Street"/>
-			<selectClause>
-				d.street_district_id,
-      			t.street_id,
-      			t.city_id,
-      			t.street_name_geo,
-      			t.deleted,
-      			t.street_location_geo,
-      			d.city_region_id
-			</selectClause>
-			<tableClause>				
-				streets t, street_district d
-			</tableClause>
+	
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+
+		<!-- Add Street -->
+		<operationBinding operationType="add" operationId="addStreet" serverMethod="addStreet">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+		<!-- Street Update -->
+		<operationBinding operationType="update" operationId="updateStreetEnt" serverMethod="updateStreetEnt">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- Street Status Update -->
+		<operationBinding operationType="remove" operationId="deleteStreet" serverMethod="deleteStreet">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+	
+		<!-- Fetching Streets - Cached  -->
+		<operationBinding operationId="fetchStreetEnts" operationType="fetch" serverMethod="fetchStreetEnts">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>    	
+    	
+    	<operationBinding operationId="fetchStreetsFromDB" operationType="fetch">
+    		<selectClause>   			
+    			t.street_id,
+				t.town_id,
+				t.descr_id_level_1,
+				t.descr_id_level_2,   
+				t.descr_id_level_3,
+				t.descr_id_level_4,
+				t.descr_id_level_5,
+				t.descr_id_level_6,
+				t.descr_id_level_7,
+				t.descr_id_level_8,
+				t.descr_id_level_9,
+				t.descr_id_level_10,
+				t.descr_type_id_level_1,
+				t.descr_type_id_level_2,
+				t.descr_type_id_level_3,
+				t.descr_type_id_level_4,
+				t.descr_type_id_level_5,
+				t.descr_type_id_level_6,
+				t.descr_type_id_level_7,
+				t.descr_type_id_level_8,
+				t.descr_type_id_level_9,
+				t.descr_type_id_level_10,
+				t.record_type,
+				t.street_location, 
+				t.street_name,
+				t.street_remark,
+				t.visible_options,
+				sr.town_district_name,
+				c.town_name,
+				getSreetOldNames(t.street_id) as street_old_name_descr
+								
+			</selectClause> 
+			<tableClause>ccare.streets t,ccare.towns c,street_to_town_districts sd,town_district sr</tableClause>
 			<whereClause><![CDATA[ 
-				t.street_id = d.street_id and 
-				t.city_id = d.city_id and t.deleted = 0
-				#if($criteria.city_id) and t.city_id = $criteria.city_id #end
-				#if($criteria.street_name_geo) and t.street_name_geo like ($criteria.street_name_geo)||'%' #end
-				]]>
+				 t.town_id = c.town_id and
+				 t.street_id = sd.street_id(+) and
+				 sd.town_district_id = sr.town_district_id(+)
+				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+				 #if($criteria.record_type) AND t.record_type = $criteria.record_type #end
+				 #if($criteria.street_name) AND t.street_name like '%'||($criteria.street_name)||'%' #end
+				 #if($criteria.street_location) AND t.street_location like '%'||($criteria.street_location)||'%' #end
+				]]>  
 			</whereClause>
-			<orderClause>t.street_name_geo</orderClause>
-		</operationBinding>		
-	</operationBindings>
+			<orderClause>t.street_name</orderClause>
+    	</operationBinding>
+
+    	<operationBinding operationId="searchStreetFromDBForCombos" operationType="fetch" customFields="street_id, town_id, street_name, town_district_id ">
+    		<selectClause>   			
+    			t.street_id,
+    			t.town_id,
+    			t.street_location,
+				t.street_name,
+				sd.town_district_id
+			</selectClause> 
+			<tableClause>ccare.streets t,street_to_town_districts sd</tableClause>
+			<whereClause><![CDATA[ 
+				t.street_id = sd.street_id(+) 
+				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+				#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+				#if($criteria.street_name) AND t.street_name like ($criteria.street_name)||'%' #end
+				]]>  
+			</whereClause> 
+    	</operationBinding>    	
+    	
+    	
+    	<operationBinding operationId="searchStreetFromDBForCombosNoDistr" operationType="fetch">
+    		<selectClause>   			
+    			t.street_id,
+    			t.street_name				
+			</selectClause> 
+			<tableClause>ccare.streets t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) AND t.deleted = 0
+				]]>  
+			</whereClause>
+			<orderClause>t.street_name</orderClause> 
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchStreetFromDBForCombosNoDistrTbil" operationType="fetch">
+    		<selectClause>   			
+    			t.street_id,
+    			t.street_name				
+			</selectClause> 
+			<tableClause>ccare.streets t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) AND t.deleted = 0 AND t.town_id = 2208
+				]]>  
+			</whereClause>
+			<orderClause>t.street_name</orderClause> 
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchStreetForCallCenter" operationType="fetch">
+    		<selectClause>
+    			   /*+ index (t STR_IND_KS001)*/   			
+    			   t.street_id,
+			       t.street_name,
+			       t.street_location_geo,
+			       t.town_id,
+			       t.oldName,
+			       t.streetIndex,
+			       t.streetDistrict,
+			       c.town_name		
+			</selectClause> 
+			<tableClause>streets_v t, cities c </tableClause>
+			<whereClause><![CDATA[ 
+				 c.town_id = t.town_id
+				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+				 #if($criteria.street_name1) 
+				 	AND (t.street_name like '%'||$criteria.street_name1||'%' OR t.oldName like '%'||$criteria.street_name1||'%') 
+				 #end
+				 #if($criteria.street_name2) 
+				 	AND (t.street_name like '%'||$criteria.street_name2||'%' OR t.oldName like '%'||$criteria.street_name2||'%') 
+				 #end
+				 #if($criteria.street_name3) 
+				 	AND (t.street_name like '%'||$criteria.street_name3||'%' OR t.oldName like '%'||$criteria.street_name3||'%') 
+				 #end
+				 #if($criteria.street_name4) 
+				 	AND (t.street_name like '%'||$criteria.street_name4||'%' OR t.oldName like '%'||$criteria.street_name4||'%') 
+				 #end
+				 #if($criteria.street_name5) 
+				 	AND (t.street_name like '%'||$criteria.street_name5||'%' OR t.oldName like '%'||$criteria.street_name5||'%') 
+				 #end
+				 #if($criteria.streetIndex) AND t.streetIndex like '%'||($criteria.streetIndex)||'%' #end
+				]]>  
+			</whereClause>
+			<groupClause>c.town_name, t.street_id, t.street_name, t.street_location_geo, t.town_id, t.oldName</groupClause>
+			<orderClause>t.town_id, t.street_name</orderClause> 
+    	</operationBinding>
+    	
+    </operationBindings>	
 </DataSource>

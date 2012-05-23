@@ -22,8 +22,8 @@
 		<field name="note_eng"					type="text"			title="note_eng"/>
 		<field name="transport_no"				type="text"			title="transport_no"/>
 		<field name="transport_price_eng"		type="text"			title="transport_price_eng"/>
-		<field name="ocity_name_geo"			type="text"			title="ocity_name_geo"/>
-		<field name="icity_name_geo"			type="text"			title="icity_name_geo"/>
+		<field name="otown_name"			type="text"			title="otown_name"/>
+		<field name="itown_name"			type="text"			title="itown_name"/>
 		<field name="ostation"					type="text"			title="ostation"/>
 		<field name="istation"					type="text"			title="istation"/>
 		<field name="cmt"						type="text"			title="cmt"/>
@@ -50,16 +50,16 @@
 				       t.transport_price_geo,
 				       t.trip_criteria,
 				       tt.name_descr,
-				       oc.city_name_geo||' '||o.transport_place_geo as transport_place_geo_out,
-				       ic.city_name_geo||' '||i.transport_place_geo as transport_place_geo_in,
+				       oc.town_name||' '||o.transport_place_geo as transport_place_geo_out,
+				       ic.town_name||' '||i.transport_place_geo as transport_place_geo_in,
 				       tc.transport_company_geo,
 					   tp.transport_plane_geo,
-				       oc.city_name_geo as ocity_name_geo,
-				       ic.city_name_geo as icity_name_geo,
+				       oc.town_name as otown_name,
+				       ic.town_name as itown_name,
 				       o.transport_place_geo as ostation,
 				       i.transport_place_geo as istation,
-				       to_char((t.in_time+ic.of_gmt/24),'HH24:mi') cmt1,
-				       to_char((t.in_time+      decode(icc.season_id,0,ic.OF_GMT/24,ic.OF_GMT_WINTER/24)      ),'HH24:mi') cmt,
+				       to_char((t.in_time+ic.normal_gmt/24),'HH24:mi') cmt1,
+				       to_char((t.in_time+      decode(icc.season_id,0,ic.normal_gmt/24,ic.winter_gmt/24)      ),'HH24:mi') cmt,
 				       to_char(t.out_time,'HH24:MI') c_out_time,
 				       to_char(t.in_time ,'HH24:MI') c_in_time,
 				       '!!!!!' as alarm
@@ -72,21 +72,21 @@
  						 left join  ccare.transport_plane tp on t.transport_plane_id = tp.transport_plane_id
 						 left join  ccare.transport_details d on t.transport_id = d.transport_id and d.deleted = 0
 						 
-						 #if( ($criteria.o_city_id && $criteria.i_city_id) || ($criteria.o_country_id && $criteria.i_country_id) )
+						 #if( ($criteria.o_town_id && $criteria.i_town_id) || ($criteria.o_country_id && $criteria.i_country_id) )
 						  	left join  ccare.transport_details d1 on t.transport_id = d1.transport_id and d1.deleted = 0 and d1.transport_detail_order >= d.transport_detail_order 
 						 #end
 						  
 						 inner join  ccare.transport_places o on o.transport_place_id = t.out_transport_place_id and o.deleted = 0
 						 inner join  ccare.transport_places i on i.transport_place_id = t.in_transport_place_id and i.deleted = 0
-						 left join  ccare.cities oc on oc.city_id = o.city_id
-						 left join  ccare.cities ic on ic.city_id = i.city_id
+						 left join  ccare.cities oc on oc.town_id = o.town_id
+						 left join  ccare.cities ic on ic.town_id = i.town_id
 						 left join  ccare.countries icc on icc.country_id = ic.country_id
 						 left join  ccare.transport_places dp on dp.transport_place_id = d.transport_place_id
-						 left join  ccare.cities dpc on dpc.city_id = dp.city_id
+						 left join  ccare.cities dpc on dpc.town_id = dp.town_id
 						 
-						 #if( ($criteria.o_city_id && $criteria.i_city_id) || ($criteria.o_country_id && $criteria.i_country_id) )
+						 #if( ($criteria.o_town_id && $criteria.i_town_id) || ($criteria.o_country_id && $criteria.i_country_id) )
 							 left join  ccare.transport_places dp1 on dp1.transport_place_id = d1.transport_place_id
-							 left join  ccare.cities dpc1 on dpc1.city_id = dp1.city_id
+							 left join  ccare.cities dpc1 on dpc1.town_id = dp1.town_id
 						  #end
 				]]>  
 			</tableClause>
@@ -97,8 +97,8 @@
 				       #if($criteria.trip_criteria_param) and t.trip_criteria like '%'||($criteria.trip_criteria_param)||'%' #end
 					   #if($criteria.trip_criteria) and t.trip_criteria like '%'||($criteria.trip_criteria)||'%' #end
 					   #if($criteria.note_geo) and t.note_geo like '%'||($criteria.note_geo)||'%' #end
-					   #if($criteria.ocity_name_geo) and oc.city_name_geo like '%'||($criteria.ocity_name_geo)||'%' #end
-					   #if($criteria.icity_name_geo) and ic.city_name_geo like '%'||($criteria.icity_name_geo)||'%' #end
+					   #if($criteria.otown_name) and oc.town_name like '%'||($criteria.otown_name)||'%' #end
+					   #if($criteria.itown_name) and ic.town_name like '%'||($criteria.itown_name)||'%' #end
 					   #if($criteria.ostation) and o.transport_place_geo like '%'||($criteria.ostation)||'%' #end
 					   #if($criteria.istation) and i.transport_place_geo  like '%'||($criteria.istation)||'%' #end
 					   #if($criteria.transport_no) and t.transport_no like '%'||($criteria.transport_no)||'%' #end
@@ -107,16 +107,16 @@
 					   #if($criteria.days_descr) and getdaysdescription(t.days) like '%'||($criteria.days_descr)||'%' #end
 				       
 				       
-				       #if($criteria.o_city_id && $criteria.i_city_id) 
+				       #if($criteria.o_town_id && $criteria.i_town_id) 
 				       	    AND (
-           						    (oc.city_id = $criteria.o_city_id or dpc.city_id = $criteria.o_city_id) 
-       							and (ic.city_id = $criteria.i_city_id or dpc1.city_id = $criteria.i_city_id)                                
+           						    (oc.town_id = $criteria.o_town_id or dpc.town_id = $criteria.o_town_id) 
+       							and (ic.town_id = $criteria.i_town_id or dpc1.town_id = $criteria.i_town_id)                                
    							)	
-				       #elseif($criteria.o_city_id)
-				       		and (oc.city_id = $criteria.o_city_id or dpc.city_id = $criteria.o_city_id)
+				       #elseif($criteria.o_town_id)
+				       		and (oc.town_id = $criteria.o_town_id or dpc.town_id = $criteria.o_town_id)
 				       		
-				       #elseif($criteria.i_city_id)
-				        	and (ic.city_id = $criteria.i_city_id or dpc.city_id = $criteria.i_city_id)				        	
+				       #elseif($criteria.i_town_id)
+				        	and (ic.town_id = $criteria.i_town_id or dpc.town_id = $criteria.i_town_id)				        	
 				       #end
 				       
 				       
@@ -135,7 +135,7 @@
 				       
 				]]>  
 			</whereClause> 
-			<orderClause>oc.city_name_geo, ic.city_name_geo, t.out_time</orderClause>
+			<orderClause>oc.town_name, ic.town_name, t.out_time</orderClause>
     	</operationBinding>
     	
     	

@@ -29,14 +29,14 @@
 		<field name="legal_statuse_id"			type="integer"  	title="legal_statuse_id"	hidden="true"/>
 		<field name="statuse"					type="integer"  	title="statuse"				hidden="true"/>
 		<field name="note_crit"					type="integer"  	title="note_crit"/>
-		<field name="city_name_geo"				type="text"  		title="city_name_geo"/>
-		<field name="city_region_name_geo"		type="text"  		title="city_region_name_geo"/>
+		<field name="town_name"				type="text"  		title="town_name"/>
+		<field name="town_district_name"		type="text"  		title="town_district_name"/>
 		<field name="street_location_geo"		type="text"  		title="street_location_geo"/>
 		<field name="index_text"				type="text"  		title="index_text"/>
 		<field name="legal_statuse"				type="text"  		title="legal_statuse"/>
 		<field name="org_name_tree_like"		type="text"  		title="org_name_tree_like"/>
 		<field name="partnerbank"				type="text"  		title="partnerbank"/>
-		<field name="city_id"					type="integer"  	title="city_id"				hidden="true"/>
+		<field name="town_id"					type="integer"  	title="town_id"				hidden="true"/>
 		<field name="priority"					type="integer"  	title="priority"			hidden="true"/>
 		<field name="extra_priority"			type="integer"  	title="extra_priority"		hidden="true"/>		
 		<field name="partnerbank_id"			type="integer"  	title="partnerbank_id"		hidden="true"/>
@@ -77,18 +77,18 @@
 			        t.legal_statuse_id,
 			        t.statuse,
 			        t.real_address,
-			        t.city_name_geo,
-			        t.city_region_name_geo,
+			        t.town_name,
+			        t.town_district_name,
 			        t.street_location_geo,
 			        t.index_text,
 			        t.note_crit,
 			        t.legal_statuse,
-			        t.city_id,
+			        t.town_id,
 			        t.priority,
 			        t.extra_priority,
 			        p.partnerbank,
 			        t.partnerbank_id,
-			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.city_name_geo||' / '|| getDistrict(t.street_id)||' / '||t.street_name_geo||' '||t.address_suffix_geo)) as full_address
+			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.town_name||' / '|| getDistrict(t.street_id)||' / '||t.street_name||' '||t.address_suffix_geo)) as full_address
 			</selectClause>
 			<tableClause>ccare.nb_org_search t, org_partnerbank_lists p</tableClause>
 			<whereClause>
@@ -139,18 +139,18 @@
 			        t.legal_statuse_id,
 			        t.statuse,
 			        t.real_address,
-			        t.city_name_geo,
-			        t.city_region_name_geo,
+			        t.town_name,
+			        t.town_district_name,
 			        t.street_location_geo,
 			        t.index_text,
 			        t.note_crit,
 			        t.legal_statuse,
-			        t.city_id,
+			        t.town_id,
 			        t.priority,
 			        t.extra_priority,
 			        p.partnerbank,
 			        t.partnerbank_id,
-			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.city_name_geo||' / '|| getDistrict(t.street_id)||' / '||t.street_name_geo||' '||t.address_suffix_geo)) as full_address
+			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.town_name||' / '|| getDistrict(t.street_id)||' / '||t.street_name||' '||t.address_suffix_geo)) as full_address
 			</selectClause>
 			<tableClause>ccare.nb_org_search t, org_partnerbank_lists p</tableClause>
 			<whereClause>

@@ -1,0 +1,229 @@
+<DataSource
+	ID="TownsDS"
+	serverType="sql"
+	tableName="towns"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="town_id"				type="integer"		title="ID"					hidden="true"	primaryKey="true" />
+		<field name="town_name"			type="text" 		title="City Name Geo"/>
+		<field name="town_type_name"			type="text" 		title="town_type_name"/>
+		<field name="country_id"			type="integer"		title="Country Id" 			hidden="true"/>
+		<field name="town_type_id"			type="integer"		title="City Type Id" 		hidden="true"/>
+		<field name="country_district_id"		type="integer"		title="country_district_id" 	hidden="true"/>
+		<field name="normal_gmt"				type="integer"		title="OFF GMT" 			hidden="true"/>
+		<field name="winter_gmt"			type="integer"		title="OFF GMT Winter" 		hidden="true"/>
+		<field name="capital_town"			type="integer"		title="Is Capital" 			hidden="true"/>
+		<field name="town_code"				type="text"			title="City Code"/>
+		<field name="town_new_code"			type="text"			title="City Code New"/>
+		<field name="country_name"			type="text"			title="Country Name"/>
+		<field name="capital_town_name"			type="text"			title="Is Capital Text"/>
+		<field name="cityName"				type="text"			title="cityName"			hidden="true"/>
+		<field name="gmtoff"				type="integer"		title="gmtoff"				hidden="true"/>
+		<field name="gmtoffwinter"			type="integer"		title="gmtoffwinter"		hidden="true"/>
+		<field name="ctm"					type="text"			title="ctm"					hidden="true"/>
+		<field name="capital"				type="integer"		title="capital"				hidden="true"/>
+		<field name="code"					type="text"			title="code"				hidden="true"/>
+		<field name="countrycode"			type="text"			title="countrycode"			hidden="true"/>
+		<field name="countryid"				type="integer"		title="countryid"			hidden="true"/>
+		<field name="seasonid"				type="integer"		title="seasonid"			hidden="true"/>
+		<field name="countryregion"			type="text"			title="countryregion"		hidden="true"/>
+		<field name="stringOne"				type="text"			title="stringOne"			hidden="true"/>
+		<field name="stringTwo"				type="text"			title="stringTwo"			hidden="true"/>
+		<field name="country_id"			type="integer"		title="country_id"			hidden="true"/>
+		<field name="country_detail_id"		type="integer"		title="country_detail_id"	hidden="true"/>
+		
+	</fields>
+
+	<operationBindings>
+    	
+    	
+    	<!-- Searching Cities - Cached -->
+    	<operationBinding operationId="citiesSearchCached" operationType="fetch" serverMethod="fetchAllCities">
+    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+    	</operationBinding>
+    	
+    	<!-- Add New City -->
+		<operationBinding operationId="townAdd" operationType="add" serverMethod="townAdd">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- Modify City -->
+		<operationBinding operationId="townUpdate" operationType="update" serverMethod="townUpdate">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- Modify City Status -->
+		<operationBinding operationId="townDelete" operationType="remove" serverMethod="townDelete">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- Search From DB -->
+        <operationBinding operationId="citiesSearchFromDB" operationType="fetch">
+    		<selectClause>   			
+    		   t.town_id
+		      ,t.town_name
+		      ,t.country_id
+		      ,t.town_type_id
+		      ,t.country_district_id
+		      ,t.normal_gmt
+		      ,t.winter_gmt
+		      ,t.capital_town
+		      ,decode(t.capital_town, 0, 'ჩვეულებრივი', 1, 'დედაქალაქი', 'უცნობი') as capital_town_name
+		      ,t.town_code
+		      ,t.town_new_code
+		      ,getDescription(t.town_type_id) as town_type_name
+		      ,c.country_name
+			</selectClause> 
+			<tableClause>ccare.towns t, ccare.countries c</tableClause>
+			<whereClause><![CDATA[ 
+				c.country_id = t.country_id
+				#if($criteria.capital_town) and t.capital_town = $criteria.capital_town #end
+				#if($criteria.country_id) and t.country_id = $criteria.country_id #end
+				#if($criteria.town_code) and t.town_code like '%' || $criteria.town_code || '%' #end
+				#if($criteria.town_new_code) and t.town_new_code like '%' || $criteria.town_new_code || '%' #end
+				#if($criteria.normal_gmt) and t.normal_gmt = $criteria.normal_gmt #end
+				#if($criteria.winter_gmt) and t.winter_gmt = $criteria.winter_gmt #end
+				#if($criteria.town_type_id) and t.town_type_id = $criteria.town_type_id #end
+				#if($criteria.town_name) and t.town_name like '%' || $criteria.town_name || '%' #end
+				]]>  
+			</whereClause>
+			<orderClause>t.town_id</orderClause>
+        </operationBinding>
+        
+        <operationBinding operationId="searchFromDB" operationType="fetch" customFields="town_id, town_name">
+    		<selectClause>   			
+    			t.town_id,
+    			t.town_name
+			</selectClause> 
+			<tableClause>towns t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) and 1 = 1
+				#if($criteria.town_id) and t.town_id = $criteria.town_id #end
+				
+				]]>  
+			</whereClause> 
+			<orderClause>t.town_id</orderClause>
+        </operationBinding>
+        
+        
+         <!-- Search From DB -->
+        <operationBinding operationId="searchCitiesFromDBForCombos" operationType="fetch">
+    		<selectClause>   			
+    			t.town_id,
+    			t.town_name    			
+			</selectClause> 
+			<tableClause>cities t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) AND t.deleted = 0 AND t.country_id = 194
+				]]>  
+			</whereClause> 
+        </operationBinding>
+        
+         <!-- Search From DB -->
+        <operationBinding operationId="searchCitiesFromDBForCombosAll" operationType="fetch">
+    		<selectClause>   			
+    			t.town_id,
+    			t.town_name    			
+			</selectClause> 
+			<tableClause>towns t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause)
+				]]>  
+			</whereClause> 
+        </operationBinding>
+        
+         <!-- Search From DB -->
+        <operationBinding operationId="searchCitiesFromDBForCombos1" operationType="fetch">
+    		<selectClause>   			
+    			t.town_id,
+    			t.town_name,
+    			trim(nvl(t.town_code||t.town_new_code,'')) as town_code
+			</selectClause> 
+			<tableClause>cities t</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) AND t.deleted = 0 
+				]]>  
+			</whereClause> 
+        </operationBinding>
+        
+        
+         <!-- Search From DB -->
+        <operationBinding operationId="searchCitiesByTransportType" operationType="fetch">
+    		<selectClause>   	
+    			distinct 		
+    			c.town_id, 
+    			c.town_name
+			</selectClause> 
+			<tableClause>cities c</tableClause>
+			<whereClause><![CDATA[ 
+				($defaultWhereClause) 
+				#if($criteria.transport_type_id) 
+					 and c.town_id in (select town_id from transport_places where transport_type_id = $criteria.transport_type_id) 
+				#end
+				]]>  
+			</whereClause> 
+			<groupClause>c.town_id, c.town_name</groupClause>
+			<orderClause>c.town_name</orderClause>
+        </operationBinding>
+        
+        
+        <!-- Search From DB For CallCenter -->
+        <operationBinding operationId="searchCitiesFromDBForCallCenter" operationType="fetch">
+    		<selectClause>   			
+    			t.cityName,
+    			t.gmtoff,
+    			t.gmtoffwinter,
+    			t.ctm,
+    			t.capital,
+    			trim(t.town_code) as code,
+    			trim(t.countrycode) as countrycode,
+    			t.countryid,
+    			t.seasonid,
+    			t.countryregion,
+    			t.town_id,
+    			t.country_name,
+    			t.town_new_code,
+    			t.town_name			
+			</selectClause> 
+			<tableClause>ccare.v_countrycitycodes t</tableClause>
+			<whereClause><![CDATA[ 
+				 1 = 1 and t.deleted = 0
+				 #if($criteria.countryid) and t.countryid = $criteria.countryid #end
+				 #if($criteria.town_id) and t.town_id = $criteria.town_id #end
+				 #if($criteria.codeSearchType && $criteria.p_code && $criteria.codeSearchType == 1)
+				 	AND  trim(t.countrycode) like '%'||$criteria.p_code||'%'
+				 #end
+				 #if($criteria.codeSearchType && $criteria.p_code && $criteria.codeSearchType == 2)
+				 	AND  trim(t.town_code||' '||t.town_new_code) like '%'||$criteria.p_code||'%'
+				 #end
+				 #if($criteria.countryregion) and t.countryregion like '%'||$criteria.countryregion||'%' #end
+				 #if($criteria.cityName) and t.cityName like '%'||$criteria.cityName||'%' #end
+				 #if($criteria.p_town_name) and t.cityName like '%'||$criteria.p_town_name||'%' #end
+				 #if($criteria.code) and trim(t.town_code) like '%'||$criteria.code||'%' #end
+				 #if($criteria.town_new_code) and trim(t.town_new_code) like '%'||$criteria.town_new_code||'%' #end
+				]]>  
+			</whereClause> 
+        </operationBinding>
+        
+        <!-- Search From DB For CallCenter -->
+        <operationBinding operationId="searchCityOpersForCallCenter" operationType="fetch">
+    		<selectClause>   			
+    			t.stringOne,
+    			t.stringTwo,
+    			t.country_id,
+    			t.country_detail_id
+			</selectClause> 
+			<tableClause>ccare.v_countrymobilecodes t</tableClause>
+			<whereClause><![CDATA[ 
+				 1 = 1
+				 #if($criteria.country_id) and t.country_id = $criteria.country_id #end
+				 #if($criteria.stringOne) and t.stringOne like '%'||$criteria.stringOne||'%' #end
+				 #if($criteria.stringTwo) and t.stringTwo like '%'||$criteria.stringTwo||'%' #end
+				]]>  
+			</whereClause> 
+        </operationBinding>
+        
+    </operationBindings>
+</DataSource>
