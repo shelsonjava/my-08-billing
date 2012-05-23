@@ -1,0 +1,70 @@
+<DataSource
+	ID="OrgActDS"
+	serverType="sql"
+	tableName="organization_activities"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="org_activity_id"				type="integer"		title="org_activity_id"					hidden="true" primaryKey="true" />
+		<field name="activity_description"			type="text"			title="activity_description"/>
+		<field name="remark"						type="text"			title="remark"/>
+		<field name="loggedUserName"				type="text"			title="loggedUserName" 					hidden="true" />
+		<field name="is_bank_activity"				type="integer"		title="is_bank_activity" 				hidden="true" />	
+		<field name="is_bank_activity_descr"		type="text"			title="is_bank_activity_descr" 			hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<!-- Add BusinessDetail -->
+		<operationBinding operationType="add" operationId="addOrgActivity" serverMethod="addOrgActivity">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+        
+		<!-- BusinessDetailr Update -->
+		<operationBinding operationType="update" operationId="updateOrgActivity" serverMethod="updateOrgActivity">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+        
+        <!-- BusinessDetail Status Update -->
+		<operationBinding operationType="remove" operationId="removeOrgActivity" serverMethod="removeOrgActivity">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchAllBusinesActivities" operationType="fetch">
+    		<selectClause>   			
+    			t.org_activity_id,
+				t.activity_description,
+				t.remark,
+				t.is_bank_activity,
+				decode(t.is_bank_activity,0, 'არა', 1, 'დიახ', 'უცნობი') is_bank_activity_descr
+			</selectClause> 
+			<tableClause>organization_activities t</tableClause>
+			<whereClause><![CDATA[
+				1=1
+				#if($criteria.activity_description) and t.activity_description like '%'||($criteria.activity_description)||'%' #end
+				#if($criteria.remark) and t.remark like '%'||($criteria.remark)||'%' #end
+				#if($criteria.is_bank_activity) and t.is_bank_activity = $criteria.is_bank_activity #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.org_activity_id</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllBusinesActivitiesForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.org_activity_id, 
+				t.activity_description,
+				t.is_bank_activity,
+				t.remark,
+				decode(t.is_bank_activity,0, 'არა', 1, 'დიახ', 'უცნობი') is_bank_activity_descr
+			</selectClause> 
+			<tableClause>organization_activities t</tableClause>
+			<whereClause><![CDATA[
+				($defaultWhereClause)
+				]]>  
+			</whereClause> 
+			<orderClause>t.activity_description</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

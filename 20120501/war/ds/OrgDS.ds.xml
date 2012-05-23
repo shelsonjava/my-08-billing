@@ -1,77 +1,69 @@
 <DataSource 
 	ID="OrgDS"
     serverType="sql"
-    tableName="ccare.main_services"      
+    tableName="organizations"      
     qualifyColumnNames="false"
     dropExtraFields = "false">
     
 	<fields>
-		<field name="organization_id"					type="integer"		title="ID"					hidden="true" 	primaryKey="true" />
-		<field name="main_master_id"			type="integer"  	title="parrent"				hidden="true"	required="true" foreignKey="OrgDS.organization_id"  detail="true"/>
-		<field name="org_name"					type="text"  		title="org_name"/>
-		<field name="note"						type="text"  		title="note"/>
-		<field name="identcode"					type="text"  		title="identcode"/>
+		<field name="organization_id"			type="integer"		title="organization_id"				hidden="true" 	primaryKey="true" />
+		<field name="parrent_organization_id"	type="integer"  	title="parrent_organization_id"		hidden="true"	required="true" foreignKey="OrgDS.organization_id"  detail="true"/>
+		<field name="organization_name"			type="text"  		title="organization_name"/>
+		<field name="remark"					type="text"  		title="remark"/>
+		<field name="ident_code"				type="text"  		title="ident_code"/>
 		<field name="new_identcode"				type="text"  		title="new_identcode"/>
-		<field name="director"					type="text"  		title="director"/>
-		<field name="legaladdress"				type="text"  		title="legaladdress"/>
-		<field name="workinghours"				type="text"  		title="workinghours"/>
-		<field name="founded"					type="text"  		title="founded"/>
-		<field name="mail"						type="text"  		title="mail"/>
-		<field name="webaddress"				type="text"  		title="webaddress"/>
-		<field name="org_info"					type="text"  		title="org_info"/>
-		<field name="contactperson"				type="text"  		title="contactperson"/>
-		<field name="dayoffs"					type="text"  		title="dayoffs"/>
-		<field name="workpersoncountity"		type="text"  		title="workpersoncountity"/>
-		<field name="ind"						type="text"  		title="ind"/>
-		<field name="org_name_eng"				type="text"  		title="org_name_eng"/>
-		<field name="real_address"				type="text"  		title="real_address"/>
-		<field name="deleted"					type="integer"  	title="deleted"				hidden="true"/>
-		<field name="legal_statuse_id"			type="integer"  	title="legal_statuse_id"	hidden="true"/>
-		<field name="statuse"					type="integer"  	title="statuse"				hidden="true"/>
-		<field name="note_crit"					type="integer"  	title="note_crit"/>
-		<field name="city_name_geo"				type="text"  		title="city_name_geo"/>
-		<field name="city_region_name_geo"		type="text"  		title="city_region_name_geo"/>
-		<field name="street_location_geo"		type="text"  		title="street_location_geo"/>
-		<field name="index_text"				type="text"  		title="index_text"/>
-		<field name="legal_statuse"				type="text"  		title="legal_statuse"/>
-		<field name="city_id"					type="integer"  	title="city_id"				hidden="true"/>
-		<field name="priority"					type="integer"  	title="priority"			hidden="true"/>
-		<field name="extra_priority"			type="integer"  	title="extra_priority"		hidden="true"/>
-		<field name="fullName"					type="text"  		title="fullName"/>
-		<field name="streetName"				type="text"  		title="streetName"/>
-		<field name="phone"						type="text"  		title="phone"/>
-		<field name="mainID"					type="integer"  	title="mainID"				hidden="true"/>
-		<field name="service_id"				type="integer"  	title="service_id"			hidden="true"/>
-		<field name="hide"						type="integer"  	title="hide"				hidden="true"/>
-		<field name="orgOrAbonent"				type="text"  		title="orgOrAbonent"/>
-		<field name="partnerbank"				type="text"  		title="partnerbank"/>
-		<field name="full_address"				type="text"  		title="full_address"/>
-		<field name="phoneStatusID"				type="integer"  	title="phoneStatusID"		hidden="true"/>
+		<field name="ident_code_new"			type="text"  		title="ident_code_new"/>
+		<field name="work_hours"				type="text"  		title="work_hours"/>
+		<field name="found_date"				type="datetime"  	title="found_date"/>
+		<field name="email_address"				type="text"  		title="email_address"/>
+		<field name="web_address"				type="text"  		title="web_address"/>
+		<field name="additional_info"			type="text"  		title="additional_info"/>
+		<field name="contact_person"			type="text"  		title="contact_person"/>
+		<field name="day_offs"					type="integer"  	title="day_offs"/>
+		<field name="day_offs_descr"			type="text"  		title="day_offs_descr"/>
+		<field name="staff_count"				type="integer"  	title="staff_count"/>
+		<field name="organization_index"		type="text"  		title="organization_index"/>
+		<field name="organization_name_eng"		type="text"  		title="organization_name_eng"/>
+		<field name="real_address_descr"		type="text"  		title="real_address_descr"/>
+		<field name="legal_address_descr"		type="text"  		title="legal_address_descr"/>
+		<field name="full_address_not_hidden"	type="text"  		title="full_address_not_hidden"/>
+		<field name="legal_form_desc_id"		type="integer"  	title="legal_form_desc_id"			hidden="true"/>
+		<field name="status"					type="integer"  	title="status"						hidden="true"/>		
+		<field name="important"					type="integer"  	title="important"					hidden="true"/>		
+		<field name="town_name"					type="text"  		title="town_name"/>
+		<field name="town_district_name"		type="text"  		title="town_district_name"/>	
+		<field name="street_location"			type="text"  		title="street_location"/>
+		<field name="street_index_text"			type="text"  		title="street_index_text"/>		
+		<field name="legal_form_desc"			type="text"  		title="legal_form_desc"/>		
+		<field name="town_id"					type="integer"  	title="town_id"						hidden="true"/>		
+		<field name="priority"					type="integer"  	title="priority"					hidden="true"/>
+		<field name="super_priority"			type="integer"  	title="super_priority"				hidden="true"/>		
+		<field name="street_name"				type="text"  		title="street_name"/>
+		<field name="phone_number"				type="text"  		title="phone_number"/>		
+		<field name="org_or_abon_type"			type="integer"  	title="org_or_abon_type"			hidden="true"/>
+		<field name="hide"						type="integer"  	title="hide"						hidden="true"/>
+		<field name="org_or_abon"				type="text"  		title="org_or_abon"/>
+		<field name="phoneStatusID"				type="integer"  	title="phoneStatusID"				hidden="true"/>
 		<field name="street_old_name"			type="text"  		title="street_old_name"/>
-		<field name="street_name_geo"			type="text"  		title="street_name_geo"/>
-		<field name="address_hide"				type="integer"  	title="address_hide"		hidden="true"/>		
-		<field name="contact_phones"			type="integer"  	title="contact_phones"		hidden="true"/>
+		<field name="address_hide"				type="integer"  	title="address_hide"				hidden="true"/>		
+		<field name="contact_phones"			type="integer"  	title="contact_phones"				hidden="true"/>
 		<field name="phone_status"				type="text"  		title="phone_status"/>
-		<field name="org_name_tree"				type="text"  		title="org_name_tree"/>
-		<field name="is_abonent"				type="integer"  	title="is_abonent"			hidden="true"/>
-		<field name="p_bank_organization_id"			type="integer"  	title="p_bank_organization_id"		hidden="true"/>
-		<field name="city_region_id"			type="integer"  	title="city_region_id"		hidden="true"/>
-		<field name="street_id"					type="integer"  	title="street_id"			hidden="true"/>
+		<field name="organization_name_tree"				type="text"  		title="organization_name_tree"/>
+		<field name="is_abonent"				type="integer"  	title="is_abonent"					hidden="true"/>
+		<field name="town_district_id"			type="integer"  	title="town_district_id"			hidden="true"/>
+		<field name="street_id"					type="integer"  	title="street_id"					hidden="true"/>
+		<field name="legal_address_id"			type="integer"  	title="legal_address_id"			hidden="true"/>
+		<field name="physical_address_id"		type="integer"  	title="physical_address_id"			hidden="true"/>
 		<field name="tree_org_parrent"			type="text"  		title="tree_org_parrent"/>
 		<field name="tree_org_child"			type="text"  		title="tree_org_child"/>
-		<field name="address_suffix_geo"		type="text"  		title="address_suffix_geo"/>
-		<field name="addr_block"				type="text"  		title="addr_block"/>
-		<field name="addr_appt"					type="text"  		title="addr_appt"/>
-		<field name="addr_descr"				type="text"  		title="addr_descr"/>
-		<field name="addr_number"				type="text"  		title="addr_number"/>
+		<field name="full_address"				type="text"  		title="full_address"/>
+		<field name="block"						type="text"  		title="block"/>
+		<field name="appt"						type="text"  		title="appt"/>
+		<field name="descr"						type="text"  		title="descr"/>
+		<field name="anumber"					type="text"  		title="anumber"/>
 		<field name="street_indexes"			type="text"  		title="street_indexes"/>
-		<field name="business_detail_id"		type="integer"  	title="business_detail_id"	hidden="true"/>
-		<field name="business_detail_name_geo"	type="text"  		title="business_detail_name_geo"/>			
-		<field name="full_address_not_hidden"	type="text"  		title="full_address_not_hidden"/>	
 		<field name="org_allert_by_buss_det"	type="text"  		title="org_allert_by_buss_det"/>
-		<field name="main_detail_geo"			type="text"  		title="main_detail_geo"		hidden="true"/>
-		<field name="phone_type"				type="text"  		title="phone_type"			hidden="true"/>
-		<field name="fields_order"				type="integer"  	title="fields_order"		hidden="true"/>
+		<field name="chief"						type="text"  		title="chief"/>		
 	</fields>
 	<operationBindings>
 	
@@ -100,113 +92,27 @@
         </operationBinding>
 	
 		<!-- FETCH -->
-		<operationBinding operationId="customOrgSearch" operationType="fetch">			
-			<selectClause>
-				ms.organization_id,
-				ms.main_master_id,
-				mo1.org_name,
-				mo1.identcode,
-				mo1.director,
-				mo1.legaladdress,
-				ms.deleted,
-				mo1.note,
-				ma.street_id,
-				mo1.workinghours,
-				mo1.founded,
-				mo1.mail,
-				mo1.org_info,
-				mo1.webaddress,
-				mo1.contactperson,
-				mo1.dayoffs,
-				mo1.workpersoncountity,
-				mo1.ind,
-				mo1.org_name_eng,
-				mo1.new_identcode,
-				mo1.legal_statuse_id,
-				mo1.statuse,
-				str.street_name_geo||' '||ma.address_suffix_geo as real_address,
-				ma.address_suffix_geo,
-				ma.addr_block,
-				ma.addr_appt,
-				ma.addr_descr,
-				ma.addr_number
-			</selectClause>
-			<tableClause>ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str</tableClause>
-			<whereClause>
-				 <![CDATA[
-					 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and ms.service_id = 3
-					 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
-					 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
-					 #if($criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
-					 #if($criteria.org_name4) and mo1.org_name like '%'||($criteria.org_name4)||'%' #end
-					 #if($criteria.org_name5) and mo1.org_name like '%'||($criteria.org_name5)||'%' #end
-					 #if($criteria.org_name6) and mo1.org_name like '%'||($criteria.org_name6)||'%' #end
-					 #if($criteria.org_name7) and mo1.org_name like '%'||($criteria.org_name7)||'%' #end
-					 #if($criteria.org_name8) and mo1.org_name like '%'||($criteria.org_name8)||'%' #end
-					 #if($criteria.org_name9) and mo1.org_name like '%'||($criteria.org_name9)||'%' #end
-					 #if($criteria.org_name10) and mo1.org_name like '%'||($criteria.org_name10)||'%' #end
-					 #if($criteria.org_name11) and mo1.org_name like '%'||($criteria.org_name11)||'%' #end
-					 #if($criteria.org_name12) and mo1.org_name like '%'||($criteria.org_name12)||'%' #end
-					 #if($criteria.org_name13) and mo1.org_name like '%'||($criteria.org_name13)||'%' #end
-					 #if($criteria.org_name14) and mo1.org_name like '%'||($criteria.org_name14)||'%' #end
-					 #if($criteria.org_name15) and mo1.org_name like '%'||($criteria.org_name15)||'%' #end
-					 #if($criteria.org_name16) and mo1.org_name like '%'||($criteria.org_name16)||'%' #end
-					 #if($criteria.org_name17) and mo1.org_name like '%'||($criteria.org_name17)||'%' #end
-					 #if($criteria.org_name18) and mo1.org_name like '%'||($criteria.org_name18)||'%' #end
-					 #if($criteria.org_name19) and mo1.org_name like '%'||($criteria.org_name19)||'%' #end
-					 #if($criteria.org_name20) and mo1.org_name like '%'||($criteria.org_name20)||'%' #end
-					 #if($criteria.org_name_eng) and mo1.org_name_eng like ($criteria.org_name_eng)||'%' #end
-					 #if($criteria.legaladdress) and mo1.legaladdress like ($criteria.legaladdress)||'%' #end
-					 #if($criteria.note) and mo1.note like '%'||($criteria.note)||'%' #end
-					 #if($criteria.director) and mo1.director like '%'||($criteria.director)||'%' #end
-					 #if($criteria.legal_statuse_id) and mo1.legal_statuse_id = $criteria.legal_statuse_id #end
-					 #if($criteria.identcode) and mo1.identcode = $criteria.identcode #end
-					 #if($criteria.ind) and mo1.ind = $criteria.ind #end
-					 #if($criteria.main_master_id) and ms.main_master_id = $criteria.main_master_id #end
-					 order by ms.priority
-				 ]]>
-			</whereClause>
-		</operationBinding>		
-		
-		
-		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchByMainId" operationType="fetch">			
 			<selectClause>
-				ms.organization_id,
-				ms.main_master_id,
-				mo1.org_name,
-				mo1.identcode,
-				mo1.director,
-				mo1.legaladdress,
-				ms.deleted,
-				mo1.note,
-				mo1.workinghours,
-				mo1.founded,
-				mo1.mail,
-				mo1.org_info,
-				mo1.webaddress,
-				mo1.contactperson,
-				mo1.dayoffs,
-				mo1.workpersoncountity,
-				mo1.ind,
-				mo1.org_name_eng,
-				mo1.new_identcode,
-				mo1.legal_statuse_id,
-				mo1.statuse,
-				str.street_name_geo||' '||ma.address_suffix_geo as real_address,
-				ma.street_id,
-				ma.address_suffix_geo,
-				ma.addr_block,
-				ma.addr_appt,
-				ma.addr_descr,
-				ma.addr_number
+				o.organization_id,
+				o.parrent_organization_id,
+				o.organization_name,
+				o.ident_code,
+				o.chief,
+				o.remark,
+				o.work_hours,
+				o.found_date,
+				o.important,
+				o.super_priority,
+				o.status,
+				str.street_name||' '||a.full_address as real_address_descr
 			</selectClause>
-			<tableClause>ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str</tableClause>
+			<tableClause>organizations o, addresses a, streets str</tableClause>
 			<whereClause>
 				 <![CDATA[
-					 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and ms.service_id = 3
-					 and ms.main_master_id = $criteria.organization_id
-					 order by ms.priority
+					 o.physical_address_id = a.addr_id(+) and a.street_id = str.street_id(+)
+					 and o.parrent_organization_id = $criteria.organization_id
+					 order by o.priority
 				 ]]>
 			</whereClause>
 		</operationBinding>
@@ -216,7 +122,7 @@
 		<operationBinding operationId="searchCustomMainOrgBanks" operationType="fetch">			
 			<selectClause>
 				mo.organization_id, 
-				mo.org_name
+				mo.organization_name
 			</selectClause>
 			<tableClause>ccare.main_services ms, ccare.main_orgs mo, ccare.business_org bo</tableClause>
 			<whereClause>
@@ -226,7 +132,7 @@
 					#if($criteria.organization_id) AND ms.organization_id = $criteria.organization_id #end
 				 ]]>
 			</whereClause>
-			<orderClause>mo.org_name asc</orderClause>
+			<orderClause>mo.organization_name asc</orderClause>
 		</operationBinding>
 		
 		
@@ -250,7 +156,7 @@
 			<selectClause>
 						select  ms.organization_id,
 								ms.main_master_id,
-								mo1.org_name,
+								mo1.organization_name,
 								mo1.identcode,
 								mo1.director,
 								mo1.legaladdress,
@@ -265,12 +171,12 @@
 								mo1.dayoffs,
 								mo1.workpersoncountity,
 								mo1.ind,
-								mo1.org_name_eng,
+								mo1.organization_name_eng,
 								mo1.new_identcode,
 								mo1.legal_statuse_id,
 								mo1.statuse,
 								ma.street_id,
-								str.street_name_geo||' '||ma.address_suffix_geo as real_address,
+								str.street_name_geo||' '||ma.address_suffix_geo as real_address_descr,
 								c.city_name_geo,
 								getDistrict(str.street_id) as city_region_name_geo,
 								str.street_location_geo,
@@ -289,26 +195,26 @@
 						 where  
 						 		 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and 
 								 c.city_id = str.city_id and ls.legal_statuse_id = mo1.legal_statuse_id and ms.service_id = 3 and ms.deleted = 0
-								 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
-								 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
-								 #if($criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
-								 #if($criteria.org_name4) and mo1.org_name like '%'||($criteria.org_name4)||'%' #end
-								 #if($criteria.org_name5) and mo1.org_name like '%'||($criteria.org_name5)||'%' #end
-								 #if($criteria.org_name6) and mo1.org_name like '%'||($criteria.org_name6)||'%' #end
-								 #if($criteria.org_name7) and mo1.org_name like '%'||($criteria.org_name7)||'%' #end
-								 #if($criteria.org_name8) and mo1.org_name like '%'||($criteria.org_name8)||'%' #end
-								 #if($criteria.org_name9) and mo1.org_name like '%'||($criteria.org_name9)||'%' #end
-								 #if($criteria.org_name10) and mo1.org_name like '%'||($criteria.org_name10)||'%' #end
-								 #if($criteria.org_name11) and mo1.org_name like '%'||($criteria.org_name11)||'%' #end
-								 #if($criteria.org_name12) and mo1.org_name like '%'||($criteria.org_name12)||'%' #end
-								 #if($criteria.org_name13) and mo1.org_name like '%'||($criteria.org_name13)||'%' #end
-								 #if($criteria.org_name14) and mo1.org_name like '%'||($criteria.org_name14)||'%' #end
-								 #if($criteria.org_name15) and mo1.org_name like '%'||($criteria.org_name15)||'%' #end
-								 #if($criteria.org_name16) and mo1.org_name like '%'||($criteria.org_name16)||'%' #end
-								 #if($criteria.org_name17) and mo1.org_name like '%'||($criteria.org_name17)||'%' #end
-								 #if($criteria.org_name18) and mo1.org_name like '%'||($criteria.org_name18)||'%' #end
-								 #if($criteria.org_name19) and mo1.org_name like '%'||($criteria.org_name19)||'%' #end
-								 #if($criteria.org_name20) and mo1.org_name like '%'||($criteria.org_name20)||'%' #end
+								 #if($criteria.organization_name1) and mo1.organization_name like '%'||($criteria.organization_name1)||'%' #end
+								 #if($criteria.organization_name2) and mo1.organization_name like '%'||($criteria.organization_name2)||'%' #end
+								 #if($criteria.organization_name3) and mo1.organization_name like '%'||($criteria.organization_name3)||'%' #end
+								 #if($criteria.organization_name4) and mo1.organization_name like '%'||($criteria.organization_name4)||'%' #end
+								 #if($criteria.organization_name5) and mo1.organization_name like '%'||($criteria.organization_name5)||'%' #end
+								 #if($criteria.organization_name6) and mo1.organization_name like '%'||($criteria.organization_name6)||'%' #end
+								 #if($criteria.organization_name7) and mo1.organization_name like '%'||($criteria.organization_name7)||'%' #end
+								 #if($criteria.organization_name8) and mo1.organization_name like '%'||($criteria.organization_name8)||'%' #end
+								 #if($criteria.organization_name9) and mo1.organization_name like '%'||($criteria.organization_name9)||'%' #end
+								 #if($criteria.organization_name10) and mo1.organization_name like '%'||($criteria.organization_name10)||'%' #end
+								 #if($criteria.organization_name11) and mo1.organization_name like '%'||($criteria.organization_name11)||'%' #end
+								 #if($criteria.organization_name12) and mo1.organization_name like '%'||($criteria.organization_name12)||'%' #end
+								 #if($criteria.organization_name13) and mo1.organization_name like '%'||($criteria.organization_name13)||'%' #end
+								 #if($criteria.organization_name14) and mo1.organization_name like '%'||($criteria.organization_name14)||'%' #end
+								 #if($criteria.organization_name15) and mo1.organization_name like '%'||($criteria.organization_name15)||'%' #end
+								 #if($criteria.organization_name16) and mo1.organization_name like '%'||($criteria.organization_name16)||'%' #end
+								 #if($criteria.organization_name17) and mo1.organization_name like '%'||($criteria.organization_name17)||'%' #end
+								 #if($criteria.organization_name18) and mo1.organization_name like '%'||($criteria.organization_name18)||'%' #end
+								 #if($criteria.organization_name19) and mo1.organization_name like '%'||($criteria.organization_name19)||'%' #end
+								 #if($criteria.organization_name20) and mo1.organization_name like '%'||($criteria.organization_name20)||'%' #end
 								 #if($criteria.note1) and mo1.note like '%'||($criteria.note1)||'%' #end
 								 #if($criteria.note2) and mo1.note like '%'||($criteria.note2)||'%' #end
 								 #if($criteria.note3) and mo1.note like '%'||($criteria.note3)||'%' #end
@@ -318,8 +224,8 @@
 								 #if($criteria.note7) and mo1.note like '%'||($criteria.note7)||'%' #end
 								 #if($criteria.note8) and mo1.note like '%'||($criteria.note8)||'%' #end
 								 #if($criteria.note9) and mo1.note like '%'||($criteria.note9)||'%' #end
-								 #if($criteria.note10) and mo1.org_name like '%'||($criteria.org_name10)||'%' #end					 					 
-								 #if($criteria.org_name_eng) and mo1.org_name_eng like ($criteria.org_name_eng)||'%' #end
+								 #if($criteria.note10) and mo1.organization_name like '%'||($criteria.organization_name10)||'%' #end					 					 
+								 #if($criteria.organization_name_eng) and mo1.organization_name_eng like ($criteria.organization_name_eng)||'%' #end
 								 #if($criteria.legaladdress) and mo1.legaladdress like '%'||($criteria.legaladdress)||'%' #end
 								 #if($criteria.note) and mo1.note like '%'||($criteria.note)||'%' #end
 								 #if($criteria.director1) and mo1.director like '%'||($criteria.director1)||'%' #end
@@ -329,7 +235,7 @@
 								 #if($criteria.dayoffs2) and mo1.dayoffs like '%'||($criteria.dayoffs2)||'%' #end
 								 #if($criteria.dayoffs3) and mo1.dayoffs like '%'||($criteria.dayoffs3)||'%' #end
 								 #if($criteria.address_suffix_geo) and ma.address_suffix_geo like '%'||($criteria.address_suffix_geo)||'%' #end
-								 #if($criteria.real_address) and str.street_name_geo like '%'||($criteria.real_address)||'%' #end
+								 #if($criteria.real_address_descr) and str.street_name_geo like '%'||($criteria.real_address_descr)||'%' #end
 								 #if($criteria.workinghours) and mo1.workinghours like '%'||($criteria.workinghours)||'%' #end
 								 #if($criteria.webaddress) and mo1.webaddress like '%'||($criteria.webaddress)||'%' #end
 								 #if($criteria.mail) and mo1.mail like '%'||($criteria.mail)||'%' #end
@@ -360,7 +266,7 @@
             	 	select distinct * from (
             	 	   select   ms.organization_id,
 								ms.main_master_id,
-								mo1.org_name,
+								mo1.organization_name,
 								mo1.identcode,
 								mo1.director,
 								mo1.legaladdress,
@@ -375,11 +281,11 @@
 								mo1.dayoffs,
 								mo1.workpersoncountity,
 								mo1.ind,
-								mo1.org_name_eng,
+								mo1.organization_name_eng,
 								mo1.new_identcode,
 								mo1.legal_statuse_id,
 								mo1.statuse,
-								str.street_name_geo||' '||ma.address_suffix_geo as real_address,
+								str.street_name_geo||' '||ma.address_suffix_geo as real_address_descr,
 								c.city_name_geo,
 								getDistrict(str.street_id) as city_region_name_geo,
 								str.street_location_geo,
@@ -400,15 +306,15 @@
 						 		 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and 
 								 c.city_id = str.city_id and ls.legal_statuse_id = mo1.legal_statuse_id and ms.service_id = 3 and ms.deleted = 0
 								 #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id #end
-								 #if($criteria.org_name1) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name1)||'%' #end
-								 #if($criteria.org_name2) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name2)||'%' #end
-								 #if($criteria.org_name3) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name3)||'%' #end
-								 #if($criteria.org_name4) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name4)||'%' #end
-								 #if($criteria.org_name5) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name5)||'%' #end
-								 #if($criteria.org_name6) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name6)||'%' #end
-								 #if($criteria.org_name7) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name7)||'%' #end
-								 #if($criteria.org_name8) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name8)||'%' #end
-								 #if($criteria.org_name9) and mo1.org_name||' '||mo1.note like '%'||($criteria.org_name9)||'%' #end								 
+								 #if($criteria.organization_name1) and mo1.organization_name||' '||mo1.note like '%'||($criteria.organization_name1)||'%' #end
+								 #if($criteria.organization_name2) and mo1.organization_name||' '||mo1.note like '%'||($criteria.organization_name2)||'%' #end
+								 #if($criteria.organization_name3) and mo1.organization_name||' '||mo1.note like '%'||($criteria.organization_name3)||'%' #end
+								 #if($criteria.organization_name4) and mo1.organization_name||' '||mo1.note like '%'||($criteria.organization_name4)||'%' #end
+								 #if($criteria.organization_name5) and mo1.organization_name||' '||mo1.note like '%'||($criteria.organization_name5)||'%' #end
+								 #if($criteria.organization_name6) and mo1.organization_name||' '||mo1.note like '%'||($criteria.organization_name6)||'%' #end
+								 #if($criteria.organization_name7) and mo1.organization_name||' '||mo1.note like '%'||($criteria.organization_name7)||'%' #end
+								 #if($criteria.organization_name8) and mo1.organization_name||' '||mo1.note like '%'||($criteria.organization_name8)||'%' #end
+								 #if($criteria.organization_name9) and mo1.organization_name||' '||mo1.note like '%'||($criteria.organization_name9)||'%' #end								 
 								 #if($criteria.note1) and mo1.note like '%'||($criteria.note1)||'%' #end
 								 #if($criteria.note2) and mo1.note like '%'||($criteria.note2)||'%' #end
 								 #if($criteria.note3) and mo1.note like '%'||($criteria.note3)||'%' #end
@@ -418,8 +324,8 @@
 								 #if($criteria.note7) and mo1.note like '%'||($criteria.note7)||'%' #end
 								 #if($criteria.note8) and mo1.note like '%'||($criteria.note8)||'%' #end
 								 #if($criteria.note9) and mo1.note like '%'||($criteria.note9)||'%' #end
-								 #if($criteria.note10) and mo1.org_name like '%'||($criteria.org_name10)||'%' #end					 					 
-								 #if($criteria.org_name_eng) and mo1.org_name_eng like ($criteria.org_name_eng)||'%' #end
+								 #if($criteria.note10) and mo1.organization_name like '%'||($criteria.organization_name10)||'%' #end					 					 
+								 #if($criteria.organization_name_eng) and mo1.organization_name_eng like ($criteria.organization_name_eng)||'%' #end
 								 #if($criteria.legaladdress) and mo1.legaladdress like '%'||($criteria.legaladdress)||'%' #end
 								 #if($criteria.note) and mo1.note like '%'||($criteria.note)||'%' #end
 								 #if($criteria.director1) and mo1.director like '%'||($criteria.director1)||'%' #end
@@ -429,7 +335,7 @@
 								 #if($criteria.dayoffs2) and mo1.dayoffs like '%'||($criteria.dayoffs2)||'%' #end
 								 #if($criteria.dayoffs3) and mo1.dayoffs like '%'||($criteria.dayoffs3)||'%' #end
 								 #if($criteria.address_suffix_geo) and ma.address_suffix_geo like '%'||($criteria.address_suffix_geo)||'%' #end
-								 #if($criteria.real_address) and str.street_name_geo like '%'||($criteria.real_address)||'%' #end
+								 #if($criteria.real_address_descr) and str.street_name_geo like '%'||($criteria.real_address_descr)||'%' #end
 								 #if($criteria.workinghours) and mo1.workinghours like '%'||($criteria.workinghours)||'%' #end
 								 #if($criteria.webaddress) and mo1.webaddress like '%'||($criteria.webaddress)||'%' #end
 								 #if($criteria.mail) and mo1.mail like '%'||($criteria.mail)||'%' #end
@@ -451,126 +357,121 @@
             </customSQL>
 		</operationBinding>	
 		
-		
-		
-		
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchForCallCenterNew" operationType="fetch">			
 			<selectClause>distinct 
-						ms.organization_id,
-						ms.main_master_id,
-						mo1.org_name,
-						mo1.identcode,
-						mo1.director,
-						mo1.legaladdress,
-						ms.deleted,
-						mo1.note,
-						mo1.workinghours,
-						mo1.founded,
-						mo1.mail,
-						mo1.org_info,
-						mo1.webaddress,
-						mo1.contactperson,
-						mo1.dayoffs,
-						mo1.workpersoncountity,
-						mo1.ind,
-						mo1.org_name_eng,
-						mo1.new_identcode,
-						mo1.legal_statuse_id,
-						mo1.statuse,
-						ma.street_id,
-						decode(ma.address_hide,1,'მისამართი დაფარულია',c.city_name_geo || ', ' ||getDistrict(str.street_id)||', '||str.street_name_geo||' '||ma.address_suffix_geo) as real_address,
-						c.city_name_geo,
-						getDistrict(str.street_id) as city_region_name_geo,
-						str.street_location_geo,
-						getindex(str.street_id) as index_text,
-						mo1.note_crit,
-						ls.legal_statuse,
-						c.city_id,
-						ms.priority,
-             			mo1.extra_priority,
-             			ma.city_region_id,
-             			p.partnerbank,
-             			p.organization_id as p_bank_organization_id,
-             		    decode(ma.address_hide,1,'მისამართი დაფარულია',(c.city_name_geo||' / '|| getDistrict(str.street_id)||' / '||str.street_name_geo||' '||ma.address_suffix_geo)) as full_address,
-		                ccare.getTbilisiOrder(c.city_id) as cust_order,
-		                ccare.getStreetOldNames(str.street_id) as street_old_name, 
-		                str.street_name_geo,
-		                ma.address_hide,
-		                decode(ms.main_master_id,0,null,'home') as tree_org_parrent,
-		                decode((select min(1) from ccare.main_services ms1 where ms1.main_master_id = ms.organization_id and ms1.deleted=0),null,null,'associations') as tree_org_child,
-		                ma.address_suffix_geo,
-						ma.addr_block,
-						ma.addr_appt,
-						ma.addr_descr,
-						ma.addr_number,
-						getStreetIdxs(str.street_id) as street_indexes,
-						(c.city_name_geo||' / '|| getDistrict(str.street_id)||' / '||str.street_name_geo||' '||ma.address_suffix_geo) as full_address_not_hidden,
-						ccare.getorgbusiness_alerts(ms.organization_id) as org_allert_by_buss_det
+						o.organization_id,
+						o.parrent_organization_id,
+						o.organization_name,
+						o.ident_code,
+						o.chief,
+						o.remark,
+						o.work_hours,
+						o.found_date,
+						o.email_address,
+						o.additional_info,
+						o.web_address,
+						o.contact_person,
+						o.day_offs,
+						getdaysdescription(o.day_offs) as day_offs_descr,
+						o.staff_count,
+						o.organization_index,
+						o.organization_name_eng,
+						o.ident_code,
+						o.legal_form_desc_id,
+						getdaysdescription(o.legal_form_desc_id) as legal_form_desc,
+						o.status,
+						a.street_id,
+						decode(a.hidden_by_request,1,'მისამართი დაფარულია',tw.town_name || ', ' ||getDistrict(str.street_id)||', '||str.street_name||' '||a.full_address) as real_address_descr,
+						tw.town_name,
+						getDistrict(str.street_id) as town_district,
+						str.street_location,
+						getindex(str.street_id) as street_index_text,
+						o.important,
+						tw.town_id,
+						o.priority,
+             			0.super_priority,
+             			a.town_district_id,
+             		    decode(a.hidden_by_request,1,'მისამართი დაფარულია',(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address)) as full_address,
+		                getTbilisiOrder(tw.town_id) as cust_order,
+		                /*getStreetOldNames(str.street_id) as street_old_name,*/ 
+		                str.street_name,
+		                a.hidden_by_request,
+		                decode(o.parrent_organization_id,null,null,'home') as tree_org_parrent,
+		                decode((select min(1) from organizations ms1 where ms1.parrent_organization_id = o.organization_id),null,null,'associations') as tree_org_child,
+		                a.full_address,
+						a.block,
+						a.appt,
+						a.descr,
+						a.anumber,
+						o.super_priority,
+						/*getStreetIdxs(str.street_id) as street_indexes,*/
+						(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden,
+						getorgbusiness_alerts(o.organization_id) as org_allert_by_buss_det,
+						o.legal_address_id,
+						o.physical_address_id
 			</selectClause>
-			<tableClause>ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls, org_partnerbank_lists p</tableClause>
+			<tableClause>organizations o, addresses a, streets str, towns tw</tableClause>
 			<whereClause>
 				 <![CDATA[
-						 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id = ma.street_id and mo1.partnerbank_id = p.organization_id(+) and 
-						 c.city_id = ma.city_id and mo1.legal_statuse_id = ls.legal_statuse_id(+) and ms.service_id = 3
-						 #if($criteria.main_master_id) and ms.main_master_id = $criteria.main_master_id #end
-						 #if(!$criteria.main_master_id && $criteria.deleted) and ms.deleted = $criteria.deleted #end
-						 #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id #end
-						 #if($criteria.pp_organization_id) and ms.organization_id = $criteria.pp_organization_id #end
-						 #if(!$criteria.main_master_id && $criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.org_name4) and mo1.org_name like '%'||($criteria.org_name4)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.org_name5) and mo1.org_name like '%'||($criteria.org_name5)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.org_name6) and mo1.org_name like '%'||($criteria.org_name6)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.org_name7) and mo1.org_name like '%'||($criteria.org_name7)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.org_name8) and mo1.org_name like '%'||($criteria.org_name8)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.org_name9) and mo1.org_name like '%'||($criteria.org_name9)||'%' #end								 
-						 #if(!$criteria.main_master_id && $criteria.note1) and mo1.note like '%'||($criteria.note1)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note2) and mo1.note like '%'||($criteria.note2)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note3) and mo1.note like '%'||($criteria.note3)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note4) and mo1.note like '%'||($criteria.note4)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note5) and mo1.note like '%'||($criteria.note5)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note6) and mo1.note like '%'||($criteria.note6)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note7) and mo1.note like '%'||($criteria.note7)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note8) and mo1.note like '%'||($criteria.note8)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note9) and mo1.note like '%'||($criteria.note9)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.real_address1) and str.street_name_geo like '%'||($criteria.real_address1)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.real_address2) and str.street_name_geo like '%'||($criteria.real_address2)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.real_address3) and str.street_name_geo like '%'||($criteria.real_address3)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.real_address4) and str.street_name_geo like '%'||($criteria.real_address4)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.real_address5) and str.street_name_geo like '%'||($criteria.real_address5)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note10) and mo1.org_name like '%'||($criteria.org_name10)||'%' #end					 					 
-						 #if(!$criteria.main_master_id && $criteria.org_name_eng) and mo1.org_name_eng like ($criteria.org_name_eng)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.legaladdress) and mo1.legaladdress like '%'||($criteria.legaladdress)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.legaladdress1) and mo1.legaladdress like '%'||($criteria.legaladdress1)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.legaladdress2) and mo1.legaladdress like '%'||($criteria.legaladdress2)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.legaladdress3) and mo1.legaladdress like '%'||($criteria.legaladdress3)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.legaladdress4) and mo1.legaladdress like '%'||($criteria.legaladdress4)||'%' #end
+						 o.physical_address_id = a.addr_id(+) and str.street_id = a.street_id and tw.town_id = a.town_id 
+						 #if($criteria.parrent_organization_id) and o.parrent_organization_id = $criteria.parrent_organization_id #end
+						 #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+						 #if($criteria.pp_organization_id) and o.organization_id = $criteria.pp_organization_id #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name1) and o.organization_name like '%'||($criteria.organization_name1)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name2) and o.organization_name like '%'||($criteria.organization_name2)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name3) and o.organization_name like '%'||($criteria.organization_name3)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name4) and o.organization_name like '%'||($criteria.organization_name4)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name5) and o.organization_name like '%'||($criteria.organization_name5)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name6) and o.organization_name like '%'||($criteria.organization_name6)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name7) and o.organization_name like '%'||($criteria.organization_name7)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name8) and o.organization_name like '%'||($criteria.organization_name8)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name9) and o.organization_name like '%'||($criteria.organization_name9)||'%' #end								 
+						 #if(!$criteria.main_master_id && $criteria.remark1) and o.remark like '%'||($criteria.remark1)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark2) and o.remark like '%'||($criteria.remark2)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark3) and o.remark like '%'||($criteria.remark3)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark4) and o.remark like '%'||($criteria.remark4)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark5) and o.remark like '%'||($criteria.remark5)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark6) and o.remark like '%'||($criteria.remark6)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark7) and o.remark like '%'||($criteria.remark7)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark8) and o.remark like '%'||($criteria.remark8)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark9) and o.remark like '%'||($criteria.remark9)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark10) and o.remark like '%'||($criteria.remark)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.real_address1) and str.street_name like '%'||($criteria.real_address1)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.real_address2) and str.street_name like '%'||($criteria.real_address2)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.real_address3) and str.street_name like '%'||($criteria.real_address3)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.real_address4) and str.street_name like '%'||($criteria.real_address4)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.real_address5) and str.street_name like '%'||($criteria.real_address5)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.organization_name_eng) and o.organization_name_eng like ($criteria.organization_name_eng)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.legaladdress) and o.legaladdress like '%'||($criteria.legaladdress)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.legaladdress1) and o.legaladdress like '%'||($criteria.legaladdress1)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.legaladdress2) and o.legaladdress like '%'||($criteria.legaladdress2)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.legaladdress3) and o.legaladdress like '%'||($criteria.legaladdress3)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.legaladdress4) and o.legaladdress like '%'||($criteria.legaladdress4)||'%' #end
 						 #if(!$criteria.main_master_id && $criteria.legaladdress5) and mo1.legaladdress like '%'||($criteria.legaladdress5)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.note) and mo1.note like '%'||($criteria.note)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.remark) and mo1.remark like '%'||($criteria.remark)||'%' #end
 						 #if(!$criteria.main_master_id && $criteria.director1) and mo1.director like '%'||($criteria.director1)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.director2) and mo1.director like '%'||($criteria.director2)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.director3) and mo1.director like '%'||($criteria.director3)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.dayoffs1) and mo1.dayoffs like '%'||($criteria.dayoffs1)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.dayoffs2) and mo1.dayoffs like '%'||($criteria.dayoffs2)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.dayoffs3) and mo1.dayoffs like '%'||($criteria.dayoffs3)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.director2) and o.director like '%'||($criteria.director2)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.director3) and o.director like '%'||($criteria.director3)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.dayoffs1) and o.dayoffs like '%'||($criteria.dayoffs1)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.dayoffs2) and o.dayoffs like '%'||($criteria.dayoffs2)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.dayoffs3) and o.dayoffs like '%'||($criteria.dayoffs3)||'%' #end
 						 #if(!$criteria.main_master_id && $criteria.address_suffix_geo) and ma.address_suffix_geo like '%'||($criteria.address_suffix_geo)||'%' #end						 
-						 #if(!$criteria.main_master_id && $criteria.workinghours) and mo1.workinghours like '%'||($criteria.workinghours)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.webaddress) and mo1.webaddress like '%'||($criteria.webaddress)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.mail) and mo1.mail like '%'||($criteria.mail)||'%' #end
-						 #if(!$criteria.main_master_id && $criteria.legal_statuse_id) and mo1.legal_statuse_id = $criteria.legal_statuse_id #end
-						 #if(!$criteria.main_master_id && $criteria.identcode) and mo1.identcode = $criteria.identcode #end
-						 #if(!$criteria.main_master_id && $criteria.ind) and mo1.ind = $criteria.ind #end						 
+						 #if(!$criteria.main_master_id && $criteria.workinghours) and o.workinghours like '%'||($criteria.workinghours)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.webaddress) and o.webaddress like '%'||($criteria.webaddress)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.mail) and o.mail like '%'||($criteria.mail)||'%' #end
+						 #if(!$criteria.main_master_id && $criteria.legal_statuse_id) and o.legal_statuse_id = $criteria.legal_statuse_id #end
+						 #if(!$criteria.main_master_id && $criteria.identcode) and o.identcode = $criteria.identcode #end
+						 #if(!$criteria.main_master_id && $criteria.ind) and o.ind = $criteria.ind #end						 
 						 #if(!$criteria.main_master_id && $criteria.street_id) and ma.street_id = $criteria.street_id #end
 						 #if(!$criteria.main_master_id && $criteria.city_id) and ma.city_id = $criteria.city_id #end
-						 #if(!$criteria.main_master_id && $criteria.ident_code) and (mo1.identcode = $criteria.ident_code or mo1.new_identcode = $criteria.ident_code )  #end
+						 #if(!$criteria.main_master_id && $criteria.ident_code) and (o.identcode = $criteria.ident_code or o.new_identcode = $criteria.ident_code )  #end
 						 #if(!$criteria.main_master_id && $criteria.city_region_id) 
 						 	and exists (select * from ccare.street_district tt where tt.street_id = str.street_id and  tt.city_region_id = $criteria.city_region_id)  
 						 #end
 				 ]]>
 			</whereClause>
-			<orderClause>ccare.getTbilisiOrder(c.city_id), mo1.extra_priority,ms.main_master_id, ms.priority</orderClause>
+			<orderClause>getTbilisiOrder(tw.town_id), o.super_priority,o.parrent_organization_id, o.priority</orderClause>
 		</operationBinding>
 		
 		
@@ -627,7 +528,7 @@
             	 <![CDATA[
             	 	   select   ms.organization_id,
 								ms.main_master_id,
-								mo1.org_name,
+								mo1.organization_name,
 								mo1.identcode,
 								mo1.director,
 								mo1.legaladdress,
@@ -642,7 +543,7 @@
 								mo1.dayoffs,
 								mo1.workpersoncountity,
 								mo1.ind,
-								mo1.org_name_eng,
+								mo1.organization_name_eng,
 								mo1.new_identcode,
 								mo1.legal_statuse_id,
 								mo1.statuse,
@@ -691,20 +592,20 @@
         <!-- FETCH -->
 		<operationBinding operationId="customOrgSearchForCorrect" operationType="fetch">			
 			<selectClause>
-				  level,case when level = 1 then tmp.org_name
-			            when level = 2 then '...' || tmp.org_name
-			            when level = 3 then '.........' || tmp.org_name
-			            when level = 4 then '...............' || tmp.org_name
-			            when level = 5 then '.....................' || tmp.org_name
-			            when level = 6 then '...........................' || tmp.org_name
-			            when level = 7 then '.................................' || tmp.org_name
-			            else tmp.org_name
-			       end as org_name_tree,
+				  level,case when level = 1 then tmp.organization_name
+			            when level = 2 then '...' || tmp.organization_name
+			            when level = 3 then '.........' || tmp.organization_name
+			            when level = 4 then '...............' || tmp.organization_name
+			            when level = 5 then '.....................' || tmp.organization_name
+			            when level = 6 then '...........................' || tmp.organization_name
+			            when level = 7 then '.................................' || tmp.organization_name
+			            else tmp.organization_name
+			       end as organization_name_tree,
 			       tmp.*
 			</selectClause>
 			<tableClause>  (SELECT distinct ms.organization_id,
 			                ms.main_master_id,
-			                mo1.org_name,
+			                mo1.organization_name,
 			                mo1.identcode,
 			                mo1.director,
 			                mo1.legaladdress,
@@ -719,7 +620,7 @@
 			                mo1.dayoffs,
 			                mo1.workpersoncountity,
 			                mo1.ind,
-			                mo1.org_name_eng,
+			                mo1.organization_name_eng,
 			                mo1.new_identcode,
 			                mo1.legal_statuse_id,
 			                mo1.statuse,
@@ -778,15 +679,15 @@
 						 #if($criteria.deleted) and ms.deleted = $criteria.deleted #end
 						 #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id #end
 						 #if($criteria.pp_organization_id) and ms.organization_id = $criteria.pp_organization_id #end
-						 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
-						 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
-						 #if($criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
-						 #if($criteria.org_name4) and mo1.org_name like '%'||($criteria.org_name4)||'%' #end
-						 #if($criteria.org_name5) and mo1.org_name like '%'||($criteria.org_name5)||'%' #end
-						 #if($criteria.org_name6) and mo1.org_name like '%'||($criteria.org_name6)||'%' #end
-						 #if($criteria.org_name7) and mo1.org_name like '%'||($criteria.org_name7)||'%' #end
-						 #if($criteria.org_name8) and mo1.org_name like '%'||($criteria.org_name8)||'%' #end
-						 #if($criteria.org_name9) and mo1.org_name like '%'||($criteria.org_name9)||'%' #end								 
+						 #if($criteria.organization_name1) and mo1.organization_name like '%'||($criteria.organization_name1)||'%' #end
+						 #if($criteria.organization_name2) and mo1.organization_name like '%'||($criteria.organization_name2)||'%' #end
+						 #if($criteria.organization_name3) and mo1.organization_name like '%'||($criteria.organization_name3)||'%' #end
+						 #if($criteria.organization_name4) and mo1.organization_name like '%'||($criteria.organization_name4)||'%' #end
+						 #if($criteria.organization_name5) and mo1.organization_name like '%'||($criteria.organization_name5)||'%' #end
+						 #if($criteria.organization_name6) and mo1.organization_name like '%'||($criteria.organization_name6)||'%' #end
+						 #if($criteria.organization_name7) and mo1.organization_name like '%'||($criteria.organization_name7)||'%' #end
+						 #if($criteria.organization_name8) and mo1.organization_name like '%'||($criteria.organization_name8)||'%' #end
+						 #if($criteria.organization_name9) and mo1.organization_name like '%'||($criteria.organization_name9)||'%' #end								 
 						 #if($criteria.note1) and mo1.note like '%'||($criteria.note1)||'%' #end
 						 #if($criteria.note2) and mo1.note like '%'||($criteria.note2)||'%' #end
 						 #if($criteria.note3) and mo1.note like '%'||($criteria.note3)||'%' #end
@@ -801,8 +702,8 @@
 						 #if($criteria.real_address3) and str.street_name_geo like '%'||($criteria.real_address3)||'%' #end
 						 #if($criteria.real_address4) and str.street_name_geo like '%'||($criteria.real_address4)||'%' #end
 						 #if($criteria.real_address5) and str.street_name_geo like '%'||($criteria.real_address5)||'%' #end
-						 #if($criteria.note10) and mo1.org_name like '%'||($criteria.org_name10)||'%' #end					 					 
-						 #if($criteria.org_name_eng) and mo1.org_name_eng like ($criteria.org_name_eng)||'%' #end
+						 #if($criteria.note10) and mo1.organization_name like '%'||($criteria.organization_name10)||'%' #end					 					 
+						 #if($criteria.organization_name_eng) and mo1.organization_name_eng like ($criteria.organization_name_eng)||'%' #end
 						 #if($criteria.legaladdress) and mo1.legaladdress like '%'||($criteria.legaladdress)||'%' #end
 						 #if($criteria.note) and mo1.note like '%'||($criteria.note)||'%' #end
 						 #if($criteria.director1) and mo1.director like '%'||($criteria.director1)||'%' #end
@@ -844,7 +745,7 @@
             	 	select 
             	 		   ms.organization_id,
 					       ms.main_master_id,
-					       mo1.org_name,
+					       mo1.organization_name,
 					       mo1.identcode,
 					       mo1.director,
 					       mo1.legaladdress,
@@ -859,7 +760,7 @@
 					       mo1.dayoffs,
 					       mo1.workpersoncountity,
 					       mo1.ind,
-					       mo1.org_name_eng,
+					       mo1.organization_name_eng,
 					       mo1.new_identcode,
 					       mo1.legal_statuse_id,
 					       mo1.statuse,
@@ -931,43 +832,43 @@
 		<operationBinding operationId="searchMainOrgsForCB" operationType="fetch">
     		<selectClause>   			
     			mo.organization_id,
-    			mo.org_name 
+    			mo.organization_name 
 			</selectClause> 
 			<tableClause>ccare.main_orgs mo, ccare.main_services ms</tableClause>	
 			<whereClause>
 				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id and
 				    ($defaultWhereClause)
 			</whereClause>	
-			<orderClause>mo.org_name</orderClause>		
+			<orderClause>mo.organization_name</orderClause>		
     	</operationBinding>
     	
     	
     	<operationBinding operationId="searchMainOrgsForCB1" operationType="fetch">
     		<selectClause>   			
     			mo.organization_id,
-    			mo.org_name 
+    			mo.organization_name 
 			</selectClause> 
 			<tableClause>ccare.main_orgs mo, ccare.main_services ms</tableClause>	
 			<whereClause>
 				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id
 				    #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id and mo.organization_id = $criteria.organization_id #end
-					#if($criteria.org_name) and mo.org_name like $criteria.org_name||'%' #end				    
+					#if($criteria.organization_name) and mo.organization_name like $criteria.organization_name||'%' #end				    
 			</whereClause>	
-			<orderClause>mo.org_name</orderClause>		
+			<orderClause>mo.organization_name</orderClause>		
     	</operationBinding>
     	
     	<operationBinding operationId="searchMainOrgsForCBDoubleLike" operationType="fetch">
     		<selectClause>   			
     			mo.organization_id,
-    			mo.org_name || ' ( '||mo.note||' ) ' as org_name 
+    			mo.organization_name || ' ( '||mo.note||' ) ' as organization_name 
 			</selectClause> 
 			<tableClause>ccare.main_orgs mo, ccare.main_services ms</tableClause>	
 			<whereClause>
 				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id
 				    #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id and mo.organization_id = $criteria.organization_id #end
-					#if($criteria.org_name) and mo.org_name like '%'||$criteria.org_name||'%' #end				    
+					#if($criteria.organization_name) and mo.organization_name like '%'||$criteria.organization_name||'%' #end				    
 			</whereClause>	
-			<orderClause>mo.org_name</orderClause>		
+			<orderClause>mo.organization_name</orderClause>		
     	</operationBinding>
     	
     	
@@ -975,7 +876,7 @@
     		<customSQL>
             	 <![CDATA[
             	 	select distinct 
-				       mo.org_name,
+				       mo.organization_name,
 				       md.main_detail_geo, 
 				       p.phone, 
 				       ccare.isPhoneMobile(substr(p.phone,1,3)) as phone_type,
