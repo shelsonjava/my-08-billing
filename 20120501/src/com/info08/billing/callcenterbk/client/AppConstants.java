@@ -33,6 +33,11 @@ import com.google.gwt.i18n.client.Constants;
  * 
  */
 public interface AppConstants extends Constants {
+	String bankActivity();
+	String addOrgActivity();
+	String modifyOrgActivity();
+	String orgActivities();
+	String orgActivity();
 	String save();
 	String close();
 	String addEntPoster();
