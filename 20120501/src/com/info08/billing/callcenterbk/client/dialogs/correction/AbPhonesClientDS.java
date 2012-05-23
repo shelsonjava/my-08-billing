@@ -23,13 +23,13 @@ public class AbPhonesClientDS extends DataSource {
 				"ტელეფონის ნომერი", 140);
 
 		DataSourceTextField opCloseField = new DataSourceTextField(
-				"is_hide_descr", "ღია/დაფარული", 100);
+				"hidden_by_request_descr", "ღია/დაფარული", 100);
 		// is parallel or not field
 		DataSourceTextField parallelUsualField = new DataSourceTextField(
 				"is_parallel_descr", "პარალელური", 120);
 		// phone status field
 		DataSourceTextField phoneStatusField = new DataSourceTextField(
-				"phone_status", "სტატუსი", 100);
+				"phone_contract_type_desr", "სტატუსი", 100);
 		// phone state field
 		DataSourceTextField phoneStateField = new DataSourceTextField(
 				"phone_state", "მდგომარეობა", 100);
@@ -45,7 +45,7 @@ public class AbPhonesClientDS extends DataSource {
 		is_parallel.setHidden(true);
 
 		DataSourceIntegerField phone_status_id = new DataSourceIntegerField(
-				"phone_status_id");
+				"phone_contract_type_id");
 		phone_status_id.setHidden(true);
 
 		DataSourceIntegerField phone_state_id = new DataSourceIntegerField(
