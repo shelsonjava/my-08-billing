@@ -1,5 +1,6 @@
 package com.info08.billing.callcenterbk.client.content;
 
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddEditAbonent;
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgOrgInfoViewByPhone;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
@@ -45,7 +46,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 public class TabAbonent extends Tab {
 
 	private VLayout mainLayout;
-	private DataSource abonentsDS;
+	private DataSource subscriberDS;
 	private DynamicForm searchForm;
 	private ComboBoxItem firstNameItem;
 	private ComboBoxItem lastNameItem;
@@ -79,7 +80,7 @@ public class TabAbonent extends Tab {
 			setTitle("აბონენტების მართვა");
 			setCanClose(true);
 
-			abonentsDS = DataSource.get("AbonentsDS");
+			subscriberDS = DataSource.get("SubscriberDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -91,7 +92,7 @@ public class TabAbonent extends Tab {
 			searchForm.setWidth100();
 			searchForm.setTitleWidth(200);
 			searchForm.setNumCols(10);
-			searchForm.setDataSource(abonentsDS);
+			searchForm.setDataSource(subscriberDS);
 			mainLayout.addMember(searchForm);
 
 			firstNameItem = new ComboBoxItem();
@@ -112,7 +113,7 @@ public class TabAbonent extends Tab {
 
 			citiesItem = new ComboBoxItem();
 			citiesItem.setTitle("ქალ.");
-			citiesItem.setName("town_id");
+			citiesItem.setName("city_id");
 			citiesItem.setWidth(150);
 			citiesItem.setFetchMissingValues(true);
 			citiesItem.setFilterLocally(false);
@@ -128,7 +129,7 @@ public class TabAbonent extends Tab {
 
 			regionItem = new ComboBoxItem();
 			regionItem.setTitle("უბანი");
-			regionItem.setName("town_district_id");
+			regionItem.setName("city_region_id");
 			regionItem.setWidth(150);
 			regionItem.setFetchMissingValues(true);
 			regionItem.setFilterLocally(false);
@@ -165,10 +166,10 @@ public class TabAbonent extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = citiesItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("town_id");
+						String oldAttr = criteria.getAttribute("city_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("town_id", nullO);
+							criteria.setAttribute("city_id", nullO);
 						}
 					}
 				}
@@ -192,10 +193,10 @@ public class TabAbonent extends Tab {
 					Criteria criteria = regionItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("town_district_id");
+								.getAttribute("city_region_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("town_district_id", nullO);
+							criteria.setAttribute("city_region_id", nullO);
 						}
 					}
 				}
@@ -332,30 +333,26 @@ public class TabAbonent extends Tab {
 			exportButton.setWidth(50);
 			toolStrip.addButton(exportButton);
 
-			ListGridField firstName = new ListGridField("firstname", "სახელი",
-					70);
-			ListGridField lastName = new ListGridField("lastname", "გვარი", 100);
-			ListGridField phone = new ListGridField("phone", "ნომერი", 70);
-			ListGridField phone_state = new ListGridField("phone_state",
-					"სტატუსი", 60);
+			ListGridField firstName = new ListGridField("name", "სახელი", 70);
+			ListGridField lastName = new ListGridField("family_name", "გვარი",
+					100);
+			ListGridField phone = new ListGridField("phones",
+					CallCenterBK.constants.phones(), 70);
+			// ListGridField phone_state = new ListGridField("phone_state",
+			// "სტატუსი", 60);
 			// ListGridField city = new ListGridField("city", "ქალაქი", 70);
-			ListGridField street = new ListGridField("street", "ქუჩა", 230);
+			ListGridField street = new ListGridField("street_name", "ქუჩა", 230);
 
-			ListGridField addr_number = new ListGridField("addr_number",
-					"სახლი", 50);
-			ListGridField addr_block = new ListGridField("addr_block", "კორპ.",
+			ListGridField addr_number = new ListGridField("anumber", "სახლი",
 					50);
-			ListGridField addr_appt = new ListGridField("addr_appt", "ბინა", 50);
-			ListGridField addr_descr = new ListGridField("addr_descr",
+			ListGridField addr_block = new ListGridField("block", "კორპ.", 50);
+			ListGridField addr_appt = new ListGridField("appt", "ბინა", 50);
+			ListGridField addr_descr = new ListGridField("descr",
 					"დამ. ინფორმაცია", 120);
 
 			addr_number.setAlign(Alignment.CENTER);
 			addr_block.setAlign(Alignment.CENTER);
 			addr_appt.setAlign(Alignment.CENTER);
-
-			ListGridField upd_date = new ListGridField("upd_date",
-					"განახ. თარიღი", 140);
-			upd_date.setDateFormatter(DateDisplayFormat.TOEUROPEANSHORTDATE);
 
 			abonentsGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -373,7 +370,7 @@ public class TabAbonent extends Tab {
 			abonentsGrid.setWidth100();
 			abonentsGrid.setHeight100();
 			abonentsGrid.setAlternateRecordStyles(true);
-			abonentsGrid.setDataSource(abonentsDS);
+			abonentsGrid.setDataSource(subscriberDS);
 			abonentsGrid.setAutoFetchData(false);
 			abonentsGrid.setShowFilterEditor(false);
 			abonentsGrid.setCanEdit(false);
@@ -387,9 +384,8 @@ public class TabAbonent extends Tab {
 			abonentsGrid.setWrapCells(true);
 			abonentsGrid.setCanSelectText(true);
 
-			abonentsGrid.setFields(firstName, lastName, phone, phone_state,
-					street, addr_number, addr_block, addr_appt, addr_descr,
-					upd_date);
+			abonentsGrid.setFields(firstName, lastName, phone, street,
+					addr_number, addr_block, addr_appt, addr_descr);
 
 			mainLayout.addMember(abonentsGrid);
 
@@ -449,7 +445,7 @@ public class TabAbonent extends Tab {
 
 					Criteria criteria = new Criteria();
 
-					String town_id = citiesItem.getValueAsString();
+					String city = citiesItem.getValueAsString();
 					String region = regionItem.getValueAsString();
 					String isHide = isHideItem.getValueAsString();
 					String isParallel = isParallelItem.getValueAsString();
@@ -464,8 +460,8 @@ public class TabAbonent extends Tab {
 					criteria.setAttribute("firstname_id", selFirstName);
 					criteria.setAttribute("lastname_id", selLastName);
 					criteria.setAttribute("phone", phone);
-					criteria.setAttribute("town_id", town_id);
-					criteria.setAttribute("town_district_id", region);
+					criteria.setAttribute("city_id", city);
+					criteria.setAttribute("city_region_id", region);
 					criteria.setAttribute("street_id", street);
 					criteria.setAttribute("addr_number", adress);
 					criteria.setAttribute("addr_block", block);
@@ -477,7 +473,7 @@ public class TabAbonent extends Tab {
 					criteria.setAttribute("phone_type_id", phoneType);
 					criteria.setAttribute("is_hide", isHide);
 
-					abonentsDS.exportData(criteria, dsRequestProperties,
+					subscriberDS.exportData(criteria, dsRequestProperties,
 							new DSCallback() {
 								@Override
 								public void execute(DSResponse response,
@@ -613,10 +609,10 @@ public class TabAbonent extends Tab {
 								if (street_id != null) {
 									streetItem.setValue(street_id);
 								}
-								Integer town_district_id = record
-										.getAttributeAsInt("town_district_id");
-								if (town_district_id != null) {
-									regionItem.setValue(town_district_id);
+								Integer city_region_id = record
+										.getAttributeAsInt("city_region_id");
+								if (city_region_id != null) {
+									regionItem.setValue(city_region_id);
 								}
 								break;
 							case 6: // address number
@@ -654,14 +650,14 @@ public class TabAbonent extends Tab {
 					if (value == null) {
 						return;
 					}
-					Integer town_id = null;
+					Integer city_id = null;
 					try {
-						town_id = Integer.parseInt(value);
+						city_id = Integer.parseInt(value);
 					} catch (NumberFormatException e) {
 						return;
 					}
-					fillStreetsCombo(town_id);
-					fillCityRegionCombo(town_id);
+					fillStreetsCombo(city_id);
+					fillCityRegionCombo(city_id);
 				}
 			});
 			streetItem.addChangedHandler(new ChangedHandler() {
@@ -671,19 +667,19 @@ public class TabAbonent extends Tab {
 					if (record == null) {
 						return;
 					}
-					Integer town_district_id = record
-							.getAttributeAsInt("town_district_id");
-					Integer cityId = record.getAttributeAsInt("town_id");
-					if (town_district_id != null && cityId != null) {
+					Integer city_region_id = record
+							.getAttributeAsInt("city_region_id");
+					Integer cityId = record.getAttributeAsInt("city_id");
+					if (city_region_id != null && cityId != null) {
 						fillCityRegionCombo(cityId);
-						regionItem.setValue(town_district_id);
+						regionItem.setValue(city_region_id);
 						Criteria criteria = regionItem.getOptionCriteria();
 						if (criteria != null) {
 							String oldAttr = criteria
-									.getAttribute("town_district_id");
+									.getAttribute("city_region_id");
 							if (oldAttr != null) {
 								Object nullO = null;
-								criteria.setAttribute("town_district_id", nullO);
+								criteria.setAttribute("city_region_id", nullO);
 							}
 						}
 					}
@@ -696,13 +692,13 @@ public class TabAbonent extends Tab {
 					if (value == null) {
 						return;
 					}
-					Integer town_id = null;
+					Integer city_id = null;
 					try {
-						town_id = Integer.parseInt(value);
+						city_id = Integer.parseInt(value);
 					} catch (NumberFormatException e) {
 						return;
 					}
-					fillCityRegionCombo(town_id);
+					fillCityRegionCombo(city_id);
 				}
 			});
 			setPane(mainLayout);
@@ -774,18 +770,18 @@ public class TabAbonent extends Tab {
 			return;
 		}
 		DlgAddEditAbonent dlgAddEditAbonent = new DlgAddEditAbonent(
-				listGridRecord, abonentsDS, this, abonentsGrid);
+				listGridRecord, subscriberDS, this, abonentsGrid);
 		dlgAddEditAbonent.show();
 	}
 
 	private void fillCityCombo() {
 		try {
 			final Integer defCityTbilisiId = Constants.defCityTbilisiId;
-			DataSource townsDS = DataSource.get("TownsDS");
+			DataSource citiesDS = DataSource.get("CityDS");
 			citiesItem.setOptionOperationId("searchCitiesFromDBForCombos");
-			citiesItem.setOptionDataSource(townsDS);
-			citiesItem.setValueField("town_id");
-			citiesItem.setDisplayField("town_name");
+			citiesItem.setOptionDataSource(citiesDS);
+			citiesItem.setValueField("city_id");
+			citiesItem.setDisplayField("city_name_geo");
 
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("country_id", 194);
@@ -801,14 +797,14 @@ public class TabAbonent extends Tab {
 			// @Override
 			// public void execute(DSResponse response, Object rawData,
 			// DSRequest request) {
-			// Integer town_id = defCityTbilisiId;
-			// citiesItem.setValue(town_id);
+			// Integer city_id = defCityTbilisiId;
+			// citiesItem.setValue(city_id);
 			// Criteria criteria = citiesItem.getOptionCriteria();
 			// if (criteria != null) {
-			// String oldAttr = criteria.getAttribute("town_id");
+			// String oldAttr = criteria.getAttribute("city_id");
 			// if (oldAttr != null) {
 			// Object nullO = null;
-			// criteria.setAttribute("town_id", nullO);
+			// criteria.setAttribute("city_id", nullO);
 			// }
 			// }
 			// }
@@ -820,16 +816,16 @@ public class TabAbonent extends Tab {
 		}
 	}
 
-	private void fillStreetsCombo(Integer town_id) {
+	private void fillStreetsCombo(Integer city_id) {
 		try {
 			DataSource streetsDS = DataSource.get("StreetsNewDS");
 			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetItem.setOptionDataSource(streetsDS);
 			streetItem.setValueField("street_id");
-			streetItem.setDisplayField("street_name");
+			streetItem.setDisplayField("street_name_geo");
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("town_id", town_id);
+			criteria.setAttribute("city_id", city_id);
 			streetItem.setOptionCriteria(criteria);
 			streetItem.setAutoFetchData(false);
 
@@ -847,16 +843,16 @@ public class TabAbonent extends Tab {
 		}
 	}
 
-	private void fillCityRegionCombo(Integer town_id) {
+	private void fillCityRegionCombo(Integer city_id) {
 		try {
 			DataSource streetsDS = DataSource.get("CityRegionDS");
 			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
 			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("town_district_id");
-			regionItem.setDisplayField("town_district_name");
+			regionItem.setValueField("city_region_id");
+			regionItem.setDisplayField("city_region_name_geo");
 
 			Criteria criteria = new Criterion();
-			criteria.setAttribute("town_id", town_id);
+			criteria.setAttribute("city_id", city_id);
 			regionItem.setOptionCriteria(criteria);
 			regionItem.setAutoFetchData(false);
 
@@ -882,7 +878,8 @@ public class TabAbonent extends Tab {
 			}
 			Integer abonent_id = listGridRecord.getAttributeAsInt("abonent_id");
 			Integer address_id = listGridRecord.getAttributeAsInt("address_id");
-			Integer organization_id = listGridRecord.getAttributeAsInt("organization_id");
+			Integer organization_id = listGridRecord
+					.getAttributeAsInt("organization_id");
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 
@@ -934,11 +931,11 @@ public class TabAbonent extends Tab {
 		String addrAddInfo = addrAddInfoItem.getValueAsString();
 
 		Criteria criteria = new Criteria();
-		criteria.setAttribute("firstname_id", selFirstName);
-		criteria.setAttribute("lastname_id", selLastName);
+		criteria.setAttribute("name_id", selFirstName);
+		criteria.setAttribute("family_name_id", selLastName);
 		criteria.setAttribute("phone", phone);
-		criteria.setAttribute("town_id", city);
-		criteria.setAttribute("town_district_id", region);
+		criteria.setAttribute("city_id", city);
+		criteria.setAttribute("city_region_id", region);
 		criteria.setAttribute("street_id", street);
 		criteria.setAttribute("addr_number", adress);
 		criteria.setAttribute("addr_block", block);
