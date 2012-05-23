@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -13,6 +14,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -26,6 +28,7 @@ public class DlgAddEditOrgActivity extends Window {
 	private DynamicForm dynamicForm;
 	private TextItem activityDescriptionItem;
 	private TextAreaItem remarkItem;
+	private SelectItem isBankActivityItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
@@ -37,7 +40,7 @@ public class DlgAddEditOrgActivity extends Window {
 		setTitle(pRecord == null ? CallCenterBK.constants.addOrgActivity()
 				: CallCenterBK.constants.modifyOrgActivity());
 
-		setHeight(210);
+		setHeight(240);
 		setWidth(670);
 		setShowMinimizeButton(false);
 		setIsModal(true);
@@ -68,9 +71,17 @@ public class DlgAddEditOrgActivity extends Window {
 		remarkItem = new TextAreaItem();
 		remarkItem.setTitle(CallCenterBK.constants.comment());
 		remarkItem.setWidth(430);
-		remarkItem.setName("activityDescriptionItem");
+		remarkItem.setName("remarkItem");
 
-		dynamicForm.setFields(activityDescriptionItem, remarkItem);
+		isBankActivityItem = new SelectItem();
+		isBankActivityItem.setName("isBankActivityItem");
+		isBankActivityItem.setWidth(430);
+		isBankActivityItem.setTitle(CallCenterBK.constants.bankActivity());
+		isBankActivityItem.setValueMap(ClientMapUtil.getInstance()
+				.getYesAndNo());
+
+		dynamicForm.setFields(activityDescriptionItem, remarkItem,
+				isBankActivityItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -110,8 +121,13 @@ public class DlgAddEditOrgActivity extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			activityDescriptionItem.setValue(editRecord.getAttribute("activity_description"));
-			remarkItem.setValue(editRecord.getAttribute("remark"));
+			activityDescriptionItem.setValue(editRecord
+					.getAttributeAsString("activity_description"));
+			remarkItem.setValue(editRecord.getAttributeAsString("remark"));
+
+			isBankActivityItem.setValue(editRecord
+					.getAttributeAsString("is_bank_activity"));
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -119,23 +135,29 @@ public class DlgAddEditOrgActivity extends Window {
 
 	private void save() {
 		try {
-			String activity_description = activityDescriptionItem.getValueAsString();
-			if (activity_description == null || activity_description.trim().equalsIgnoreCase("")) {
+			String activity_description = activityDescriptionItem
+					.getValueAsString();
+			if (activity_description == null
+					|| activity_description.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ დასახელება !");
 				return;
 			}
-			String remark = remarkItem.getValueAsString(); 
-			
+			String remark = remarkItem.getValueAsString();
+
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
-			String loggedUser = CommonSingleton.getInstance().getSessionPerson().getUser_name();
+			String loggedUser = CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("activity_description", activity_description);
 			record.setAttribute("remark", remark);
-			
+			record.setAttribute("is_bank_activity",
+					Integer.parseInt(isBankActivityItem.getValueAsString()));
+
 			if (editRecord != null) {
-				record.setAttribute("org_activity_id", editRecord.getAttributeAsInt("org_activity_id"));
+				record.setAttribute("org_activity_id",
+						editRecord.getAttributeAsInt("org_activity_id"));
 			}
 
 			DSRequest req = new DSRequest();
@@ -150,7 +172,7 @@ public class DlgAddEditOrgActivity extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "editOrgActivity");
+				req.setAttribute("operationId", "updateOrgActivity");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

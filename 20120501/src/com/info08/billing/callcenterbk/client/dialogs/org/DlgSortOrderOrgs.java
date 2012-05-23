@@ -25,8 +25,6 @@ public class DlgSortOrderOrgs extends Window {
 	private VLayout hLayout;
 	private ListGrid listGrid;
 
-//	private ToolStripButton upBtn;
-//	private ToolStripButton downBtn;
 	private TabOrganization tabOrganization;
 
 	public DlgSortOrderOrgs(TabOrganization tabOrganization, Record records[]) {
@@ -50,23 +48,6 @@ public class DlgSortOrderOrgs extends Window {
 			hLayout.setHeight100();
 			hLayout.setPadding(10);
 
-//			ToolStrip toolStrip = new ToolStrip();
-//			toolStrip.setWidth100();
-//			toolStrip.setPadding(5);
-//			hLayout.addMember(toolStrip);
-//
-//			upBtn = new ToolStripButton(CallCenter.constants.sortUp(),
-//					"sortUp.png");
-//			upBtn.setLayoutAlign(Alignment.LEFT);
-//			upBtn.setWidth(50);
-//			toolStrip.addButton(upBtn);
-//
-//			downBtn = new ToolStripButton(CallCenter.constants.sortDown(),
-//					"sortDown.png");
-//			downBtn.setLayoutAlign(Alignment.LEFT);
-//			downBtn.setWidth(50);
-//			toolStrip.addButton(downBtn);
-
 			listGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
@@ -74,21 +55,36 @@ public class DlgSortOrderOrgs extends Window {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
+					Integer status = countryRecord.getAttributeAsInt("status");
+					Integer super_priority = countryRecord.getAttributeAsInt("super_priority");
+					Integer important = countryRecord.getAttributeAsInt("important");
+
+					if (super_priority != null && super_priority < 0) {
 						return "color:red;";
-					} else {
-						Integer statuse = countryRecord
-								.getAttributeAsInt("statuse");
-						switch (statuse) {
-						case 1: // not functions
-							return "color:pink;";
-						case 2: // disabled
-							return "text-decoration:line-through;";
-						default:
-							return super.getCellCSSText(record, rowNum, colNum);
+					} else if (status != null && status.equals(2)) {
+						if (important != null && important.intValue() == -1
+								&& colNum == 4) {
+							return "color:red;";
+						} else {
+							return "color:gray;";
 						}
+					} else if (status != null && status.equals(1)) {
+						if (important != null && important.intValue() == -1
+								&& colNum == 4) {
+							return "color:red;";
+						} else {
+							return "color:blue;";
+						}
+
+					} else if (status != null && status.equals(3)) {
+						if (important != null && important.intValue() == -1
+								&& colNum == 4) {
+							return "color:red;";
+						} else {
+							return "color:green;";
+						}
+					} else {
+						return super.getCellCSSText(record, rowNum, colNum);
 					}
 				};
 			};
@@ -100,23 +96,16 @@ public class DlgSortOrderOrgs extends Window {
 			listGrid.setCanSelectAll(false);
 			listGrid.setData(records);
 
-			ListGridField nameField = new ListGridField("org_name",
-					CallCenterBK.constants.orgName(), 400);
+			ListGridField organization_name = new ListGridField("organization_name",CallCenterBK.constants.orgName(), 400);
+			ListGridField ident_code = new ListGridField("ident_code",CallCenterBK.constants.identCode(), 150);
+			ListGridField chief = new ListGridField("chief", CallCenterBK.constants.director(), 150);
+			ListGridField real_address = new ListGridField("real_address_descr",CallCenterBK.constants.orgAddress(), 230);
 
-			ListGridField identcode = new ListGridField("identcode",
-					CallCenterBK.constants.identCode(), 150);
-
-			ListGridField director = new ListGridField("director",
-					CallCenterBK.constants.director(), 150);
-
-			ListGridField real_address = new ListGridField("real_address",
-					CallCenterBK.constants.orgAddress(), 230);
-
-			identcode.setAlign(Alignment.CENTER);
-			director.setAlign(Alignment.CENTER);
+			ident_code.setAlign(Alignment.CENTER);
+			chief.setAlign(Alignment.CENTER);
 			real_address.setAlign(Alignment.LEFT);
 
-			listGrid.setFields(nameField, identcode, director, real_address);
+			listGrid.setFields(organization_name, ident_code, chief, real_address);
 
 			hLayout.addMember(listGrid);
 
@@ -169,8 +158,7 @@ public class DlgSortOrderOrgs extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("mainIdList", mainIdList);
-			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name());
+			record.setAttribute("loggedUserName", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 			req.setAttribute("operationId", "updateMainServiceOrders");
 			dataSource.updateData(record, new DSCallback() {
