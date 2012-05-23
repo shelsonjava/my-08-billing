@@ -114,7 +114,7 @@
     			t.town_id,
     			t.town_name    			
 			</selectClause> 
-			<tableClause>cities t</tableClause>
+			<tableClause>towns t</tableClause>
 			<whereClause><![CDATA[ 
 				($defaultWhereClause) AND t.deleted = 0 AND t.country_id = 194
 				]]>  
