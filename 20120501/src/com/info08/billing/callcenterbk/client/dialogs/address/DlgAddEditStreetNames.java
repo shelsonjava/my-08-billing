@@ -18,22 +18,21 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditStreetType extends Window {
+public class DlgAddEditStreetNames extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
-	private TextItem streetTypeNameGeoItem;
-	private TextItem streetTypeNameEngItem;
+	private TextItem streetNameDescrItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditStreetType(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditStreetNames(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
-		setTitle(pRecord == null ? "ახალი ქუჩის ტიპის დამატება"
-				: "ქუჩის ტიპის მოდიფიცირება");
+		setTitle(pRecord == null ? "ახალი ქუჩის დასახელების დამატება"
+				: "ქუჩის დასახელების მოდიფიცირება");
 
 		setHeight(140);
 		setWidth(520);
@@ -58,17 +57,12 @@ public class DlgAddEditStreetType extends Window {
 		dynamicForm.setNumCols(2);
 		hLayout.addMember(dynamicForm);
 
-		streetTypeNameGeoItem = new TextItem();
-		streetTypeNameGeoItem.setTitle("დასახელება (ქართულად)");
-		streetTypeNameGeoItem.setWidth(300);
-		streetTypeNameGeoItem.setName("street_type_name_geo");
+		streetNameDescrItem = new TextItem();
+		streetNameDescrItem.setTitle("დასახელება");
+		streetNameDescrItem.setWidth(300);
+		streetNameDescrItem.setName("street_name_descr");
 
-		streetTypeNameEngItem = new TextItem();
-		streetTypeNameEngItem.setTitle("დასახელება (ინგლისურად)");
-		streetTypeNameEngItem.setWidth(300);
-		streetTypeNameEngItem.setName("street_type_name_eng");
-
-		dynamicForm.setFields(streetTypeNameGeoItem, streetTypeNameEngItem);
+		dynamicForm.setFields(streetNameDescrItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -108,10 +102,8 @@ public class DlgAddEditStreetType extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			streetTypeNameGeoItem.setValue(editRecord
-					.getAttribute("street_type_name_geo"));
-			streetTypeNameEngItem.setValue(editRecord
-					.getAttribute("street_type_name_eng"));
+			streetNameDescrItem.setValue(editRecord
+					.getAttribute("street_name_descr"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -119,24 +111,11 @@ public class DlgAddEditStreetType extends Window {
 
 	private void save() {
 		try {
-			String streetTypeNameGeo = streetTypeNameGeoItem.getValueAsString();
-			if (streetTypeNameGeo == null
-					|| streetTypeNameGeo.trim().equalsIgnoreCase("")) {
+			String street_name_descr = streetNameDescrItem
+					.getValueAsString();
+			if (street_name_descr == null
+					|| street_name_descr.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ ქართული დასახელება !");
-				return;
-			}
-			String streetTypeNameEng = streetTypeNameEngItem.getValueAsString();
-			if (streetTypeNameEng == null
-					|| streetTypeNameEng.trim().equalsIgnoreCase("")) {
-				SC.say("შეიყვანეთ ინგლისური დასახელება !");
-				return;
-			}
-			if (streetTypeNameGeo.length() > 155) {
-				SC.say("ქართული დასახელება შედგება მაქსიმუმ 155 სიმბოლოსაგან !");
-				return;
-			}
-			if (streetTypeNameEng.length() > 155) {
-				SC.say("ინგლისური დასახელება შედგება მაქსიმუმ 155 სიმბოლოსაგან !");
 				return;
 			}
 
@@ -146,21 +125,17 @@ public class DlgAddEditStreetType extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("street_type_name_geo", streetTypeNameGeo);
-			record.setAttribute("street_type_name_eng", streetTypeNameEng);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("searcher_zone", 0);
+			record.setAttribute("street_name_descr", street_name_descr);
 
 			if (editRecord != null) {
-				record.setAttribute("street_type_Id",
-						editRecord.getAttributeAsInt("street_type_Id"));
+				record.setAttribute("street_name_id",
+						editRecord.getAttributeAsInt("street_name_id"));
 			}
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addStreetType");
+				req.setAttribute("operationId", "addStreetName");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -169,7 +144,7 @@ public class DlgAddEditStreetType extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateStreetType");
+				req.setAttribute("operationId", "updateStreetName");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

@@ -69,7 +69,7 @@ public class DlgAddEditStreetIndex extends Window {
 		streetsItem = new ComboBoxItem();
 		streetsItem.setTitle("ქუჩა");
 		streetsItem.setWidth(350);
-		streetsItem.setName("street_name_geo");
+		streetsItem.setName("street_name");
 		streetsItem.setFetchMissingValues(true);
 		streetsItem.setFilterLocally(false);
 		streetsItem.setAddUnknownValues(false);
@@ -78,7 +78,7 @@ public class DlgAddEditStreetIndex extends Window {
 		streetsItem.setOptionOperationId("searchStreetFromDBForCombosNoDistrTbil");
 		streetsItem.setOptionDataSource(streetsNewDS);
 		streetsItem.setValueField("street_id");
-		streetsItem.setDisplayField("street_name_geo");
+		streetsItem.setDisplayField("street_name");
 
 		streetsItem.setOptionCriteria(new Criteria());
 		streetsItem.setAutoFetchData(false);

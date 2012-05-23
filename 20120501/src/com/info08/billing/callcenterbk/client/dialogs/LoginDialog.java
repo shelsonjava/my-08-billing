@@ -137,12 +137,14 @@ public class LoginDialog extends Window {
 						@Override
 						public void onFailure(Throwable caught) {
 							SC.say(caught.toString());
+							buttonItem.setDisabled(false);
 						}
 					});
 		} catch (Exception e) {
 			SC.say(e.toString());
+			buttonItem.setDisabled(false);
 		}
-		buttonItem.setDisabled(false);
+		
 	}
 
 	private void setCookieValues() {

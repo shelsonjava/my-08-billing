@@ -1,9 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.address;
 
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
-import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -23,19 +21,18 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditCityRegion extends Window {
+public class DlgAddEditTownDistrict extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private TextItem cityRegionNameGeoItem;
-	private TextItem cityRegionNameEngItem;
-	private ComboBoxItem citiesItem;
+	private TextItem townDistrictNameItem;
+	private ComboBoxItem townsItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditCityRegion(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditTownDistrict(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
@@ -65,24 +62,18 @@ public class DlgAddEditCityRegion extends Window {
 		dynamicForm.setNumCols(2);
 		hLayout.addMember(dynamicForm);
 
-		cityRegionNameGeoItem = new TextItem();
-		cityRegionNameGeoItem.setTitle("დასახელება (ქართულად)");
-		cityRegionNameGeoItem.setWidth(300);
-		cityRegionNameGeoItem.setName("city_region_name_geo");
+		townDistrictNameItem = new TextItem();
+		townDistrictNameItem.setTitle("დასახელება");
+		townDistrictNameItem.setWidth(300);
+		townDistrictNameItem.setName("town_district_name");
 
-		cityRegionNameEngItem = new TextItem();
-		cityRegionNameEngItem.setTitle("დასახელება (ინგლისურად)");
-		cityRegionNameEngItem.setWidth(300);
-		cityRegionNameEngItem.setName("city_region_name_eng");
+		townsItem = new ComboBoxItem();
+		townsItem.setTitle("ქალაქი");
+		townsItem.setName("town_id");
+		townsItem.setWidth(300);
+		townsItem.setFetchMissingValues(false);
 
-		citiesItem = new ComboBoxItem();
-		citiesItem.setTitle("ქალაქი");
-		citiesItem.setName("city_id");
-		citiesItem.setWidth(300);
-		citiesItem.setFetchMissingValues(false);
-
-		dynamicForm.setFields(cityRegionNameGeoItem, cityRegionNameEngItem,
-				citiesItem);
+		dynamicForm.setFields(townDistrictNameItem, townsItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -119,37 +110,27 @@ public class DlgAddEditCityRegion extends Window {
 
 	private void fillCityCombo() {
 		try {
-			DataSource citiesDS = DataSource.get("CityDS");
-			if (citiesDS != null) {
-				citiesItem.setOptionOperationId("citiesSearchCached");
-				citiesItem.setOptionDataSource(citiesDS);
-				citiesItem.setValueField("city_id");
-				citiesItem.setDisplayField("city_name_geo");
-				Criteria criteria = new Criteria();
-				criteria.setAttribute(
-						"filterCityName_11_"
-								+ CommonSingleton.getInstance()
-										.getUnixTimeStamp(),
-						"city_111_"
-								+ CommonSingleton.getInstance()
-										.getUnixTimeStamp() + "_"
-								+ HTMLPanel.createUniqueId());
-				citiesItem.setOptionCriteria(criteria);
-				citiesItem.setAutoFetchData(true);
-				citiesItem.fetchData(new DSCallback() {
+			DataSource townsDS = DataSource.get("TownsDS");
+			if (townsDS != null) {
+				townsItem.setOptionOperationId("searchFromDB");
+				townsItem.setOptionDataSource(townsDS);
+				townsItem.setValueField("town_id");
+				townsItem.setDisplayField("town_name");
+				townsItem.setAutoFetchData(true);
+				townsItem.fetchData(new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
 							DSRequest request) {
 						if (editRecord != null) {
-							Integer city_id = editRecord
-									.getAttributeAsInt("city_id");
-							if (city_id != null) {
-								citiesItem.setValue(city_id);
+							Integer town_id = editRecord
+									.getAttributeAsInt("town_id");
+							if (town_id != null) {
+								townsItem.setValue(town_id);
 							} else {
-								citiesItem.setValue(Constants.defCityTbilisiId);
+								townsItem.setValue(Constants.defCityTbilisiId);
 							}
 						} else {
-							citiesItem.setValue(Constants.defCityTbilisiId);
+							townsItem.setValue(Constants.defCityTbilisiId);
 						}
 					}
 				});
@@ -164,10 +145,8 @@ public class DlgAddEditCityRegion extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			cityRegionNameGeoItem.setValue(editRecord
-					.getAttribute("city_region_name_geo"));
-			cityRegionNameEngItem.setValue(editRecord
-					.getAttribute("city_region_name_eng"));
+			townDistrictNameItem.setValue(editRecord
+					.getAttribute("town_district_name"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -175,31 +154,20 @@ public class DlgAddEditCityRegion extends Window {
 
 	private void save() {
 		try {
-			String city_region_name_geo = cityRegionNameGeoItem
+			String town_district_name_param = townDistrictNameItem
 					.getValueAsString();
-			if (city_region_name_geo == null
-					|| city_region_name_geo.trim().equalsIgnoreCase("")) {
+			if (town_district_name_param == null
+					|| town_district_name_param.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ ქართული დასახელება !");
 				return;
 			}
-			String city_region_name_eng = cityRegionNameEngItem
-					.getValueAsString();
-			if (city_region_name_geo.length() > 155) {
-				SC.say("ქართული დასახელება შედგება მაქსიმუმ 155 სიმბოლოსაგან !");
-				return;
-			}
-			if (city_region_name_eng != null
-					&& city_region_name_eng.length() > 155) {
-				SC.say("ინგლისური დასახელება შედგება მაქსიმუმ 155 სიმბოლოსაგან !");
-				return;
-			}
-			ListGridRecord city_record = citiesItem.getSelectedRecord();
-			if (city_record == null) {
+			ListGridRecord town_record = townsItem.getSelectedRecord();
+			if (town_record == null) {
 				SC.say("გთხოვთ აირჩიოთ ქალაქი !");
 				return;
 			}
-			Integer city_id = city_record.getAttributeAsInt("city_id");
-			if (city_id == null) {
+			Integer town_id = town_record.getAttributeAsInt("town_id");
+			if (town_id == null) {
 				SC.say("გთხოვთ აირჩიოთ ქალაქი - 1 !");
 				return;
 			}
@@ -210,21 +178,18 @@ public class DlgAddEditCityRegion extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("city_region_name_geo", city_region_name_geo);
-			record.setAttribute("city_region_name_eng", city_region_name_eng);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("city_id", city_id);
-			record.setAttribute("rec_user", loggedUser);
+			record.setAttribute("town_district_name", town_district_name_param);
+			record.setAttribute("town_id", town_id);
 
 			if (editRecord != null) {
-				record.setAttribute("city_region_id",
-						editRecord.getAttributeAsInt("city_region_id"));
+				record.setAttribute("town_district_id",
+						editRecord.getAttributeAsInt("town_district_id"));
 			}
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addCityRegion");
+				req.setAttribute("operationId", "addTownDistrict");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -233,7 +198,7 @@ public class DlgAddEditCityRegion extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateCityRegion");
+				req.setAttribute("operationId", "updateTownDistrict");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

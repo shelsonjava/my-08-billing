@@ -72,16 +72,16 @@ public class DlgAddEditCityDistance extends Window {
 		cityStartItem = new ComboBoxItem();
 		cityStartItem.setTitle("საწყისი ქალაქი");
 		cityStartItem.setWidth(300);
-		cityStartItem.setName("city_id_start");
+		cityStartItem.setName("town_id_start");
 		cityStartItem.setFetchMissingValues(true);
 		cityStartItem.setFilterLocally(false);
 		cityStartItem.setAddUnknownValues(false);
 
-		DataSource cityDS = DataSource.get("CityDS");
+		DataSource townsDS = DataSource.get("TownsDS");
 		cityStartItem.setOptionOperationId("searchCitiesFromDBForCombos1");
-		cityStartItem.setOptionDataSource(cityDS);
-		cityStartItem.setValueField("city_id");
-		cityStartItem.setDisplayField("city_name_geo");
+		cityStartItem.setOptionDataSource(townsDS);
+		cityStartItem.setValueField("town_id");
+		cityStartItem.setDisplayField("town_name");
 
 		Criteria criteriaCity = new Criteria();
 		cityStartItem.setOptionCriteria(criteriaCity);
@@ -92,10 +92,10 @@ public class DlgAddEditCityDistance extends Window {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = cityStartItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_id");
+					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("city_id", nullO);
+						criteria.setAttribute("town_id", nullO);
 					}
 				}
 			}
@@ -104,16 +104,16 @@ public class DlgAddEditCityDistance extends Window {
 		cityEndItem = new ComboBoxItem();
 		cityEndItem.setTitle("საბოლოო ქალაქი");
 		cityEndItem.setWidth(300);
-		cityEndItem.setName("city_id_end");
+		cityEndItem.setName("town_id_end");
 		cityEndItem.setFetchMissingValues(true);
 		cityEndItem.setFilterLocally(false);
 		cityEndItem.setAddUnknownValues(false);
 
-		DataSource cityDS1 = DataSource.get("CityDS");
+		DataSource townsDS1 = DataSource.get("TownsDS");
 		cityEndItem.setOptionOperationId("searchCitiesFromDBForCombos1");
-		cityEndItem.setOptionDataSource(cityDS1);
-		cityEndItem.setValueField("city_id");
-		cityEndItem.setDisplayField("city_name_geo");
+		cityEndItem.setOptionDataSource(townsDS1);
+		cityEndItem.setValueField("town_id");
+		cityEndItem.setDisplayField("town_name");
 
 		Criteria criteriaCity1 = new Criteria();
 		cityEndItem.setOptionCriteria(criteriaCity1);
@@ -124,10 +124,10 @@ public class DlgAddEditCityDistance extends Window {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = cityEndItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_id");
+					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("city_id", nullO);
+						criteria.setAttribute("town_id", nullO);
 					}
 				}
 			}
@@ -135,7 +135,7 @@ public class DlgAddEditCityDistance extends Window {
 
 		distanceTypeItem = new ComboBoxItem();
 		distanceTypeItem.setTitle("მანძილის ტიპი");
-		distanceTypeItem.setName("city_id");
+		distanceTypeItem.setName("town_id");
 		distanceTypeItem.setWidth(300);
 		distanceTypeItem.setValueMap(SharedUtils.getInstance()
 				.getMapDistanceTypes());
@@ -192,8 +192,8 @@ public class DlgAddEditCityDistance extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			cityStartItem.setValue(editRecord.getAttributeAsInt("city_id_start"));
-			cityEndItem.setValue(editRecord.getAttributeAsInt("city_id_end"));
+			cityStartItem.setValue(editRecord.getAttributeAsInt("town_id_start"));
+			cityEndItem.setValue(editRecord.getAttributeAsInt("town_id_end"));
 			distanceTypeItem.setValue(editRecord.getAttributeAsInt("city_distance_type"));
 			distanceItem.setValue(editRecord.getAttributeAsString("city_distance_geo"));
 			noteGeoItem.setValue(editRecord.getAttribute("note_geo"));
@@ -231,8 +231,8 @@ public class DlgAddEditCityDistance extends Window {
 			record.setAttribute("city_distance_geo", city_distance_geo);
 			record.setAttribute("city_distance_type", new Integer(
 					distanceTypeItem.getValueAsString()));
-			record.setAttribute("city_id_end", city_end_record);
-			record.setAttribute("city_id_start", city_start_record);
+			record.setAttribute("town_id_end", city_end_record);
+			record.setAttribute("town_id_start", city_start_record);
 			record.setAttribute("deleted", 0);
 			record.setAttribute("note_geo", note_geo);
 			record.setAttribute("rec_user", loggedUser);

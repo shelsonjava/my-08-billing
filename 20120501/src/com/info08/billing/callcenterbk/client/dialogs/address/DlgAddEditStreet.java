@@ -44,14 +44,14 @@ public class DlgAddEditStreet extends Window {
 	private DynamicForm dynamicForm;
 	private DynamicForm dynamicForm1;
 
-	private ComboBoxItem cityItem;
-	private TextItem streetNameGeoItem;
-	private TextAreaItem streetLocationGeoItem;
+	private ComboBoxItem townItem;
+	private TextItem streetNameItem;
+	private TextAreaItem streetLocationItem;
 	private TextAreaItem streetOldNameItem;
 
-	private ListGrid cityRegionsGrid;
-	private ListGrid streetCityRegionsGrid;
-	private StreetCityRegsClientDS streetCityRegsClientDS;
+	private ListGrid townDistrictsGrid;
+	private ListGrid streetToTownDistrictsGrid;
+	private StreetToTownDistrictsClientDS streetToTownDistrictsClientDS;
 
 	private ComboBoxItem streetLevelItem_1;
 	private ComboBoxItem streetLevelItem_2;
@@ -109,39 +109,39 @@ public class DlgAddEditStreet extends Window {
 			dynamicForm.setNumCols(2);
 			hLayout.addMember(dynamicForm);
 
-			cityItem = new ComboBoxItem();
-			cityItem.setTitle("ქალაქი");
-			cityItem.setWidth("100%");
-			cityItem.setName("city_name_geo");
-			cityItem.setFetchMissingValues(true);
-			cityItem.setFilterLocally(false);
-			cityItem.setAddUnknownValues(false);
+			townItem = new ComboBoxItem();
+			townItem.setTitle("ქალაქი");
+			townItem.setWidth("100%");
+			townItem.setName("town_name");
+			townItem.setFetchMissingValues(true);
+			townItem.setFilterLocally(false);
+			townItem.setAddUnknownValues(false);
 
-			cityItem.addKeyPressHandler(new KeyPressHandler() {
+			townItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = cityItem.getOptionCriteria();
+					Criteria criteria = townItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("city_id");
+						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_id", nullO);
+							criteria.setAttribute("town_id", nullO);
 						}
 					}
 				}
 			});
 
-			streetNameGeoItem = new TextItem();
-			streetNameGeoItem.setTitle("ძველი დასახ.");
-			streetNameGeoItem.setWidth("100%");
-			streetNameGeoItem.setName("street_name_geo");
-			streetNameGeoItem.setCanEdit(false);
+			streetNameItem = new TextItem();
+			streetNameItem.setTitle("ძველი დასახ.");
+			streetNameItem.setWidth("100%");
+			streetNameItem.setName("street_name");
+			streetNameItem.setCanEdit(false);
 
-			streetLocationGeoItem = new TextAreaItem();
-			streetLocationGeoItem.setTitle("ქუჩის აღწერა");
-			streetLocationGeoItem.setWidth("100%");
-			streetLocationGeoItem.setHeight(50);
-			streetLocationGeoItem.setName("street_location_geo");
+			streetLocationItem = new TextAreaItem();
+			streetLocationItem.setTitle("ქუჩის აღწერა");
+			streetLocationItem.setWidth("100%");
+			streetLocationItem.setHeight(50);
+			streetLocationItem.setName("street_location");
 
 			streetOldNameItem = new TextAreaItem();
 			streetOldNameItem.setTitle(CallCenterBK.constants.oldStreetName());
@@ -156,71 +156,71 @@ public class DlgAddEditStreet extends Window {
 			saveStreetHistOrNotItem.setWidth("100%");
 			saveStreetHistOrNotItem.setName("saveStreetHistOrNotItem");
 
-			dynamicForm.setFields(cityItem, streetNameGeoItem,
-					streetLocationGeoItem, streetOldNameItem,
+			dynamicForm.setFields(townItem, streetNameItem,
+					streetLocationItem, streetOldNameItem,
 					saveStreetHistOrNotItem);
 
 			// regions ...
-			DataSource cityRegionsDS = DataSource.get("CityRegionDS");
-			cityRegionsGrid = new ListGrid();
-			cityRegionsGrid.setWidth(240);
-			cityRegionsGrid.setHeight(200);
-			cityRegionsGrid.setDataSource(cityRegionsDS);
-			cityRegionsGrid.setCanDragRecordsOut(true);
-			cityRegionsGrid.setDragDataAction(DragDataAction.COPY);
-			cityRegionsGrid.setAlternateRecordStyles(true);
-			cityRegionsGrid.setAutoFetchData(false);
-			cityRegionsGrid.setFetchOperation("fetchCityRegions");
-			cityRegionsGrid.setCanDragSelectText(true);
+			DataSource cityRegionsDS = DataSource.get("TownDistrictDS");
+			townDistrictsGrid = new ListGrid();
+			townDistrictsGrid.setWidth(240);
+			townDistrictsGrid.setHeight(200);
+			townDistrictsGrid.setDataSource(cityRegionsDS);
+			townDistrictsGrid.setCanDragRecordsOut(true);
+			townDistrictsGrid.setDragDataAction(DragDataAction.COPY);
+			townDistrictsGrid.setAlternateRecordStyles(true);
+			townDistrictsGrid.setAutoFetchData(false);
+			townDistrictsGrid.setFetchOperation("fetchCityRegions");
+			townDistrictsGrid.setCanDragSelectText(true);
 
-			ListGridField city_region_name_geo = new ListGridField(
-					"city_region_name_geo", "რეგიონების სია");
-			cityRegionsGrid.setFields(city_region_name_geo);
+			ListGridField town_district_name = new ListGridField(
+					"town_district_name", "რეგიონების სია");
+			townDistrictsGrid.setFields(town_district_name);
 
-			streetCityRegsClientDS = StreetCityRegsClientDS.getInstance();
+			streetToTownDistrictsClientDS = StreetToTownDistrictsClientDS.getInstance();
 
-			streetCityRegionsGrid = new ListGrid();
-			streetCityRegionsGrid.setWidth(240);
-			streetCityRegionsGrid.setHeight(200);
-			streetCityRegionsGrid.setDataSource(streetCityRegsClientDS);
-			streetCityRegionsGrid.setCanAcceptDroppedRecords(true);
-			streetCityRegionsGrid.setCanRemoveRecords(true);
-			streetCityRegionsGrid.setAutoFetchData(true);
-			streetCityRegionsGrid.setPreventDuplicates(true);
-			streetCityRegionsGrid
+			streetToTownDistrictsGrid = new ListGrid();
+			streetToTownDistrictsGrid.setWidth(240);
+			streetToTownDistrictsGrid.setHeight(200);
+			streetToTownDistrictsGrid.setDataSource(streetToTownDistrictsClientDS);
+			streetToTownDistrictsGrid.setCanAcceptDroppedRecords(true);
+			streetToTownDistrictsGrid.setCanRemoveRecords(true);
+			streetToTownDistrictsGrid.setAutoFetchData(true);
+			streetToTownDistrictsGrid.setPreventDuplicates(true);
+			streetToTownDistrictsGrid
 					.setDuplicateDragMessage("ასეთი რაიონი უკვე არჩეულია !");
 
 			Img arrowImg = new Img("arrow_right.png", 32, 32);
 			arrowImg.setLayoutAlign(Alignment.CENTER);
 			arrowImg.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					streetCityRegionsGrid.transferSelectedData(cityRegionsGrid);
+					streetToTownDistrictsGrid.transferSelectedData(townDistrictsGrid);
 				}
 			});
-			cityRegionsGrid
+			townDistrictsGrid
 					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 						@Override
 						public void onRecordDoubleClick(
 								RecordDoubleClickEvent event) {
-							streetCityRegionsGrid
-									.transferSelectedData(cityRegionsGrid);
+							streetToTownDistrictsGrid
+									.transferSelectedData(townDistrictsGrid);
 						}
 					});
 
-			cityItem.addChangedHandler(new ChangedHandler() {
+			townItem.addChangedHandler(new ChangedHandler() {
 				@Override
 				public void onChanged(ChangedEvent event) {
-					ListGridRecord listGridRecord = cityItem
+					ListGridRecord listGridRecord = townItem
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						return;
 					}
-					Integer city_id = listGridRecord
-							.getAttributeAsInt("city_id");
-					if (city_id == null) {
+					Integer town_id = listGridRecord
+							.getAttributeAsInt("town_id");
+					if (town_id == null) {
 						return;
 					}
-					fillCityRegionsCombo(city_id);
+					fillCityRegionsCombo(town_id);
 				}
 			});
 
@@ -232,8 +232,8 @@ public class DlgAddEditStreet extends Window {
 			hLayoutImg.setAlign(Alignment.CENTER);
 			hLayoutImg.addMember(arrowImg);
 
-			gridsLayout.setMembers(cityRegionsGrid, hLayoutImg,
-					streetCityRegionsGrid);
+			gridsLayout.setMembers(townDistrictsGrid, hLayoutImg,
+					streetToTownDistrictsGrid);
 
 			hLayout.addMember(gridsLayout);
 
@@ -460,10 +460,10 @@ public class DlgAddEditStreet extends Window {
 							.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("street_type_Id");
+								.getAttribute("street_kind_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("street_type_Id", nullO);
+							criteria.setAttribute("street_kind_id", nullO);
 						}
 					}
 				}
@@ -476,10 +476,10 @@ public class DlgAddEditStreet extends Window {
 							.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("street_type_Id");
+								.getAttribute("street_kind_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("street_type_Id", nullO);
+							criteria.setAttribute("street_kind_id", nullO);
 						}
 					}
 				}
@@ -492,10 +492,10 @@ public class DlgAddEditStreet extends Window {
 							.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("street_type_Id");
+								.getAttribute("street_kind_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("street_type_Id", nullO);
+							criteria.setAttribute("street_kind_id", nullO);
 						}
 					}
 				}
@@ -508,10 +508,10 @@ public class DlgAddEditStreet extends Window {
 							.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("street_type_Id");
+								.getAttribute("street_kind_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("street_type_Id", nullO);
+							criteria.setAttribute("street_kind_id", nullO);
 						}
 					}
 				}
@@ -524,10 +524,10 @@ public class DlgAddEditStreet extends Window {
 							.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("street_type_Id");
+								.getAttribute("street_kind_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("street_type_Id", nullO);
+							criteria.setAttribute("street_kind_id", nullO);
 						}
 					}
 				}
@@ -653,14 +653,14 @@ public class DlgAddEditStreet extends Window {
 	private void fillCombos(final ListGridRecord editRecord) {
 		try {
 			if (editRecord != null) {
-				streetNameGeoItem.setValue(editRecord
-						.getAttributeAsString("street_name_geo"));
-				streetLocationGeoItem.setValue(editRecord
-						.getAttributeAsString("street_location_geo"));
+				streetNameItem.setValue(editRecord
+						.getAttributeAsString("street_name"));
+				streetLocationItem.setValue(editRecord
+						.getAttributeAsString("street_location"));
 				streetOldNameItem.setValue(editRecord
-						.getAttributeAsString("oldName"));
+						.getAttributeAsString("street_old_name_descr"));
 
-				DataSource streetsDS = DataSource.get("StreetsNewDS");
+				DataSource streetsDS = DataSource.get("StreetsDS");
 
 				Criteria criteria = new Criteria();
 				criteria.setAttribute("street_id",
@@ -680,16 +680,16 @@ public class DlgAddEditStreet extends Window {
 									.getAttributeAsMap("mapStreDistricts");
 							if (mapRegions != null && !mapRegions.isEmpty()) {
 								Set<String> keys = mapRegions.keySet();
-								for (String city_region_id : keys) {
-									String city_region_name_geo = mapRegions
-											.get(city_region_id);
+								for (String town_district_id : keys) {
+									String town_district_name = mapRegions
+											.get(town_district_id);
 									ListGridRecord listGridRecord = new ListGridRecord();
 									listGridRecord.setAttribute(
-											"city_region_id", city_region_id);
+											"town_district_id", town_district_id);
 									listGridRecord.setAttribute(
-											"city_region_name_geo",
-											city_region_name_geo);
-									streetCityRegionsGrid
+											"town_district_name",
+											town_district_name);
+									streetToTownDistrictsGrid
 											.addData(listGridRecord);
 								}
 							}
@@ -698,64 +698,64 @@ public class DlgAddEditStreet extends Window {
 				}, dsRequest);
 			}
 
-			DataSource citiesDS = DataSource.get("CityDS");
-			cityItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-			cityItem.setOptionDataSource(citiesDS);
-			cityItem.setValueField("city_id");
-			cityItem.setDisplayField("city_name_geo");
+			DataSource townsDS = DataSource.get("TownsDS");
+			townItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
+			townItem.setOptionDataSource(townsDS);
+			townItem.setValueField("town_id");
+			townItem.setDisplayField("town_name");
 
 			Criteria criteria1 = new Criteria();
-			cityItem.setOptionCriteria(criteria1);
-			cityItem.setAutoFetchData(false);
-			Integer pcity_id = Constants.defCityTbilisiId;
+			townItem.setOptionCriteria(criteria1);
+			townItem.setAutoFetchData(false);
+			Integer ptown_id = Constants.defCityTbilisiId;
 			if (editRecord != null) {
-				Integer city_id = editRecord.getAttributeAsInt("city_id");
-				if (city_id != null) {
-					cityItem.setValue(city_id);
-					pcity_id = city_id;
+				Integer town_id = editRecord.getAttributeAsInt("town_id");
+				if (town_id != null) {
+					townItem.setValue(town_id);
+					ptown_id = town_id;
 				} else {
-					pcity_id = Constants.defCityTbilisiId;
-					cityItem.setValue(pcity_id);
+					ptown_id = Constants.defCityTbilisiId;
+					townItem.setValue(ptown_id);
 				}
 			} else {
-				pcity_id = Constants.defCityTbilisiId;
-				cityItem.setValue(pcity_id);
+				ptown_id = Constants.defCityTbilisiId;
+				townItem.setValue(ptown_id);
 			}
-			fillCityRegionsCombo(pcity_id);
+			fillCityRegionsCombo(ptown_id);
 
-			DataSource descrDS = DataSource.get("StreetDescrDS");
-			streetLevelItem_1.setOptionOperationId("fetchStreetDescrsForCB");
+			DataSource descrDS = DataSource.get("StreetNamesDS");
+			streetLevelItem_1.setOptionOperationId("fetchStreetNamesForCB");
 			streetLevelItem_1.setOptionDataSource(descrDS);
-			streetLevelItem_1.setValueField("street_descr_id");
-			streetLevelItem_1.setDisplayField("street_descr_name_geo");
+			streetLevelItem_1.setValueField("street_name_id");
+			streetLevelItem_1.setDisplayField("street_name_descr");
 			streetLevelItem_1.setOptionCriteria(criteria1);
 			streetLevelItem_1.setAutoFetchData(false);
 
-			streetLevelItem_2.setOptionOperationId("fetchStreetDescrsForCB");
+			streetLevelItem_2.setOptionOperationId("fetchStreetNamesForCB");
 			streetLevelItem_2.setOptionDataSource(descrDS);
-			streetLevelItem_2.setValueField("street_descr_id");
-			streetLevelItem_2.setDisplayField("street_descr_name_geo");
+			streetLevelItem_2.setValueField("street_name_id");
+			streetLevelItem_2.setDisplayField("street_name_descr");
 			streetLevelItem_2.setOptionCriteria(criteria1);
 			streetLevelItem_2.setAutoFetchData(false);
 
-			streetLevelItem_3.setOptionOperationId("fetchStreetDescrsForCB");
+			streetLevelItem_3.setOptionOperationId("fetchStreetNamesForCB");
 			streetLevelItem_3.setOptionDataSource(descrDS);
-			streetLevelItem_3.setValueField("street_descr_id");
-			streetLevelItem_3.setDisplayField("street_descr_name_geo");
+			streetLevelItem_3.setValueField("street_name_id");
+			streetLevelItem_3.setDisplayField("street_name_descr");
 			streetLevelItem_3.setOptionCriteria(criteria1);
 			streetLevelItem_3.setAutoFetchData(false);
 
-			streetLevelItem_4.setOptionOperationId("fetchStreetDescrsForCB");
+			streetLevelItem_4.setOptionOperationId("fetchStreetNamesForCB");
 			streetLevelItem_4.setOptionDataSource(descrDS);
-			streetLevelItem_4.setValueField("street_descr_id");
-			streetLevelItem_4.setDisplayField("street_descr_name_geo");
+			streetLevelItem_4.setValueField("street_name_id");
+			streetLevelItem_4.setDisplayField("street_name_descr");
 			streetLevelItem_4.setOptionCriteria(criteria1);
 			streetLevelItem_4.setAutoFetchData(false);
 
-			streetLevelItem_5.setOptionOperationId("fetchStreetDescrsForCB");
+			streetLevelItem_5.setOptionOperationId("fetchStreetNamesForCB");
 			streetLevelItem_5.setOptionDataSource(descrDS);
-			streetLevelItem_5.setValueField("street_descr_id");
-			streetLevelItem_5.setDisplayField("street_descr_name_geo");
+			streetLevelItem_5.setValueField("street_name_id");
+			streetLevelItem_5.setDisplayField("street_name_descr");
 			streetLevelItem_5.setOptionCriteria(criteria1);
 			streetLevelItem_5.setAutoFetchData(false);
 
@@ -847,138 +847,138 @@ public class DlgAddEditStreet extends Window {
 				// }
 			}
 
-			DataSource descrTypeDS = DataSource.get("StreetTypesDS");
+			DataSource descrTypeDS = DataSource.get("StreetKindDS");
 			streetLevelTypeItem_1
-					.setOptionOperationId("searchStrTypesFromDBForCB");
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_1.setOptionDataSource(descrTypeDS);
-			streetLevelTypeItem_1.setValueField("street_type_Id");
-			streetLevelTypeItem_1.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_1.setValueField("street_kind_Id");
+			streetLevelTypeItem_1.setDisplayField("street_kind_name");
 			streetLevelTypeItem_1.setOptionCriteria(criteria1);
 			streetLevelTypeItem_1.setAutoFetchData(false);
 
 			streetLevelTypeItem_2
-					.setOptionOperationId("searchStrTypesFromDBForCB");
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_2.setOptionDataSource(descrTypeDS);
-			streetLevelTypeItem_2.setValueField("street_type_Id");
-			streetLevelTypeItem_2.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_2.setValueField("street_kind_Id");
+			streetLevelTypeItem_2.setDisplayField("street_kind_name");
 			streetLevelTypeItem_2.setOptionCriteria(criteria1);
 			streetLevelTypeItem_2.setAutoFetchData(false);
 
 			streetLevelTypeItem_3
-					.setOptionOperationId("searchStrTypesFromDBForCB");
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_3.setOptionDataSource(descrTypeDS);
-			streetLevelTypeItem_3.setValueField("street_type_Id");
-			streetLevelTypeItem_3.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_3.setValueField("street_kind_Id");
+			streetLevelTypeItem_3.setDisplayField("street_kind_name");
 			streetLevelTypeItem_3.setOptionCriteria(criteria1);
 			streetLevelTypeItem_3.setAutoFetchData(false);
 
 			streetLevelTypeItem_4
-					.setOptionOperationId("searchStrTypesFromDBForCB");
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_4.setOptionDataSource(descrTypeDS);
-			streetLevelTypeItem_4.setValueField("street_type_Id");
-			streetLevelTypeItem_4.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_4.setValueField("street_kind_Id");
+			streetLevelTypeItem_4.setDisplayField("street_kind_name");
 			streetLevelTypeItem_4.setOptionCriteria(criteria1);
 			streetLevelTypeItem_4.setAutoFetchData(false);
 
 			streetLevelTypeItem_5
-					.setOptionOperationId("searchStrTypesFromDBForCB");
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_5.setOptionDataSource(descrTypeDS);
-			streetLevelTypeItem_5.setValueField("street_type_Id");
-			streetLevelTypeItem_5.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_5.setValueField("street_kind_Id");
+			streetLevelTypeItem_5.setDisplayField("street_kind_name");
 			streetLevelTypeItem_5.setOptionCriteria(criteria1);
 			streetLevelTypeItem_5.setAutoFetchData(false);
 
 			// streetLevelTypeItem_6
 			// .setOptionOperationId("searchStrTypesFromDBForCB");
 			// streetLevelTypeItem_6.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_6.setValueField("street_type_Id");
-			// streetLevelTypeItem_6.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_6.setValueField("street_kind_id");
+			// streetLevelTypeItem_6.setDisplayField("street_kind_name");
 			// streetLevelTypeItem_6.setOptionCriteria(criteria1);
 			// streetLevelTypeItem_6.setAutoFetchData(false);
 			//
 			// streetLevelTypeItem_7
 			// .setOptionOperationId("searchStrTypesFromDBForCB");
 			// streetLevelTypeItem_7.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_7.setValueField("street_type_Id");
-			// streetLevelTypeItem_7.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_7.setValueField("street_kind_id");
+			// streetLevelTypeItem_7.setDisplayField("street_kind_name");
 			// streetLevelTypeItem_7.setOptionCriteria(criteria1);
 			// streetLevelTypeItem_7.setAutoFetchData(false);
 			//
 			// streetLevelTypeItem_8
 			// .setOptionOperationId("searchStrTypesFromDBForCB");
 			// streetLevelTypeItem_8.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_8.setValueField("street_type_Id");
-			// streetLevelTypeItem_8.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_8.setValueField("street_kind_id");
+			// streetLevelTypeItem_8.setDisplayField("street_kind_name");
 			// streetLevelTypeItem_8.setOptionCriteria(criteria1);
 			// streetLevelTypeItem_8.setAutoFetchData(false);
 			//
 			// streetLevelTypeItem_9
 			// .setOptionOperationId("searchStrTypesFromDBForCB");
 			// streetLevelTypeItem_9.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_9.setValueField("street_type_Id");
-			// streetLevelTypeItem_9.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_9.setValueField("street_kind_id");
+			// streetLevelTypeItem_9.setDisplayField("street_kind_name");
 			// streetLevelTypeItem_9.setOptionCriteria(criteria1);
 			// streetLevelTypeItem_9.setAutoFetchData(false);
 			//
 			// streetLevelTypeItem_10
 			// .setOptionOperationId("searchStrTypesFromDBForCB");
 			// streetLevelTypeItem_10.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_10.setValueField("street_type_Id");
-			// streetLevelTypeItem_10.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_10.setValueField("street_kind_id");
+			// streetLevelTypeItem_10.setDisplayField("street_kind_name");
 			// streetLevelTypeItem_10.setOptionCriteria(criteria1);
 			// streetLevelTypeItem_10.setAutoFetchData(false);
 
-			DataSource descrsTypeDS = DataSource.get("StreetTypesDS");
+			DataSource descrsTypeDS = DataSource.get("StreetKindDS");
 
-			streetLevelTypeItem_1.setOptionOperationId("fetchStreetTypes");
+			streetLevelTypeItem_1.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_1.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_1.setValueField("street_type_Id");
-			streetLevelTypeItem_1.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_1.setValueField("street_kind_id");
+			streetLevelTypeItem_1.setDisplayField("street_kind_name");
 
-			streetLevelTypeItem_2.setOptionOperationId("fetchStreetTypes");
+			streetLevelTypeItem_2.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_2.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_2.setValueField("street_type_Id");
-			streetLevelTypeItem_2.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_2.setValueField("street_kind_id");
+			streetLevelTypeItem_2.setDisplayField("street_kind_name");
 
-			streetLevelTypeItem_3.setOptionOperationId("fetchStreetTypes");
+			streetLevelTypeItem_3.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_3.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_3.setValueField("street_type_Id");
-			streetLevelTypeItem_3.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_3.setValueField("street_kind_id");
+			streetLevelTypeItem_3.setDisplayField("street_kind_name");
 
-			streetLevelTypeItem_4.setOptionOperationId("fetchStreetTypes");
+			streetLevelTypeItem_4.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_4.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_4.setValueField("street_type_Id");
-			streetLevelTypeItem_4.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_4.setValueField("street_kind_id");
+			streetLevelTypeItem_4.setDisplayField("street_kind_name");
 
-			streetLevelTypeItem_5.setOptionOperationId("fetchStreetTypes");
+			streetLevelTypeItem_5.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_5.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_5.setValueField("street_type_Id");
-			streetLevelTypeItem_5.setDisplayField("street_type_name_geo");
+			streetLevelTypeItem_5.setValueField("street_kind_id");
+			streetLevelTypeItem_5.setDisplayField("street_kind_name");
 
-			// streetLevelTypeItem_6.setOptionOperationId("fetchStreetTypes");
+			// streetLevelTypeItem_6.setOptionOperationId("searchStrKindsFromDBForCB");
 			// streetLevelTypeItem_6.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_6.setValueField("street_type_Id");
-			// streetLevelTypeItem_6.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_6.setValueField("street_kind_id");
+			// streetLevelTypeItem_6.setDisplayField("street_kind_name");
 			//
-			// streetLevelTypeItem_7.setOptionOperationId("fetchStreetTypes");
+			// streetLevelTypeItem_7.setOptionOperationId("searchStrKindsFromDBForCB");
 			// streetLevelTypeItem_7.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_7.setValueField("street_type_Id");
-			// streetLevelTypeItem_7.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_7.setValueField("street_kind_id");
+			// streetLevelTypeItem_7.setDisplayField("street_kind_name");
 			//
-			// streetLevelTypeItem_8.setOptionOperationId("fetchStreetTypes");
+			// streetLevelTypeItem_8.setOptionOperationId("searchStrKindsFromDBForCB");
 			// streetLevelTypeItem_8.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_8.setValueField("street_type_Id");
-			// streetLevelTypeItem_8.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_8.setValueField("street_kind_id");
+			// streetLevelTypeItem_8.setDisplayField("street_kind_name");
 			//
-			// streetLevelTypeItem_9.setOptionOperationId("fetchStreetTypes");
+			// streetLevelTypeItem_9.setOptionOperationId("searchStrKindsFromDBForCB");
 			// streetLevelTypeItem_9.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_9.setValueField("street_type_Id");
-			// streetLevelTypeItem_9.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_9.setValueField("street_kind_id");
+			// streetLevelTypeItem_9.setDisplayField("street_kind_name");
 			//
-			// streetLevelTypeItem_10.setOptionOperationId("fetchStreetTypes");
+			// streetLevelTypeItem_10.setOptionOperationId("searchStrKindsFromDBForCB");
 			// streetLevelTypeItem_10.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_10.setValueField("street_type_Id");
-			// streetLevelTypeItem_10.setDisplayField("street_type_name_geo");
+			// streetLevelTypeItem_10.setValueField("street_kind_id");
+			// streetLevelTypeItem_10.setDisplayField("street_kind_name");
 
 			if (editRecord != null) {
 				Integer levelType_1 = editRecord
@@ -1047,14 +1047,14 @@ public class DlgAddEditStreet extends Window {
 		}
 	}
 
-	private void fillCityRegionsCombo(Integer city_id) {
+	private void fillCityRegionsCombo(Integer town_id) {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("city_id", city_id);
+			criteria.setAttribute("town_id", town_id);
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("fetchCityRegions");
-			cityRegionsGrid.fetchData(criteria, new DSCallback() {
+			townDistrictsGrid.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -1068,9 +1068,9 @@ public class DlgAddEditStreet extends Window {
 
 	private void save(final ListGridRecord editRecord, final ListGrid listGrid) {
 		try {
-			ListGridRecord city_record = cityItem.getSelectedRecord();
+			ListGridRecord city_record = townItem.getSelectedRecord();
 			if (city_record == null
-					|| city_record.getAttributeAsInt("city_id") == null) {
+					|| city_record.getAttributeAsInt("town_id") == null) {
 				SC.say("აირჩიეთ ქალაქი !");
 				return;
 			}
@@ -1085,16 +1085,16 @@ public class DlgAddEditStreet extends Window {
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("city_id",
-					city_record.getAttributeAsInt("city_id"));
+			record.setAttribute("town_id",
+					city_record.getAttributeAsInt("town_id"));
 			record.setAttribute("deleted", 0);
 			record.setAttribute("map_id", 0);
 			record.setAttribute("visible_options", 0);
 			record.setAttribute("record_type", 1);
-			record.setAttribute("street_name_geo",
-					streetNameGeoItem.getValueAsString());
-			record.setAttribute("street_location_geo",
-					streetLocationGeoItem.getValueAsString());
+			record.setAttribute("street_name",
+					streetNameItem.getValueAsString());
+			record.setAttribute("street_location",
+					streetLocationItem.getValueAsString());
 
 			boolean bSaveStreetHistOrNotItem = saveStreetHistOrNotItem
 					.getValueAsBoolean();
@@ -1102,15 +1102,15 @@ public class DlgAddEditStreet extends Window {
 					bSaveStreetHistOrNotItem);
 
 			TreeMap<String, String> mapStreDistricts = new TreeMap<String, String>();
-			ListGridRecord cityRegions[] = streetCityRegionsGrid.getRecords();
+			ListGridRecord cityRegions[] = streetToTownDistrictsGrid.getRecords();
 			if (cityRegions != null && cityRegions.length > 0) {
 				for (ListGridRecord listGridRecord : cityRegions) {
-					String city_region_id = listGridRecord
-							.getAttributeAsString("city_region_id");
-					String city_region_name_geo = listGridRecord
-							.getAttributeAsString("city_region_name_geo");
-					mapStreDistricts.put(city_region_id + "",
-							city_region_name_geo);
+					String town_district_id = listGridRecord
+							.getAttributeAsString("town_district_id");
+					String town_district_name = listGridRecord
+							.getAttributeAsString("town_district_name");
+					mapStreDistricts.put(town_district_id + "",
+							town_district_name);
 				}
 			}
 			if (mapStreDistricts != null && !mapStreDistricts.isEmpty()) {
@@ -1157,7 +1157,7 @@ public class DlgAddEditStreet extends Window {
 			}
 			DSRequest req = new DSRequest();
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addStreetEnt");
+				req.setAttribute("operationId", "addStreet");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
