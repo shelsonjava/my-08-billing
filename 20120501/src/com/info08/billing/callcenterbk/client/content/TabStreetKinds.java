@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content;
 
-import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditStreetNames;
+import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditStreetKind;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -16,30 +16,22 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
-import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabStreetNames extends Tab {
+public class TabStreetKinds extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
 
 	// form fields
-	private TextItem streetNameDescrItem;
+	private TextItem streetKindNameItem;
 
 	// actions
 	private IButton findButton;
@@ -54,12 +46,12 @@ public class TabStreetNames extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabStreetNames() {
+	public TabStreetKinds() {
 		try {
-			setTitle("ქუჩის დასახელებების მართვა");
+			setTitle("ქუჩის ტიპების მართვა");
 			setCanClose(true);
 
-			datasource = DataSource.get("StreetNamesDS");
+			datasource = DataSource.get("StreetKindDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -73,12 +65,12 @@ public class TabStreetNames extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			streetNameDescrItem = new TextItem();
-			streetNameDescrItem.setTitle("დასახელება");
-			streetNameDescrItem.setWidth(350);
-			streetNameDescrItem.setName("street_name_descr");
+			streetKindNameItem = new TextItem();
+			streetKindNameItem.setTitle("დასახელება");
+			streetKindNameItem.setWidth(350);
+			streetKindNameItem.setName("street_kind_name");
 
-			searchForm.setFields(streetNameDescrItem);
+			searchForm.setFields(streetKindNameItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -135,38 +127,38 @@ public class TabStreetNames extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("fetchStreetNamesFromDB");
+			listGrid.setFetchOperation("searchFromDB");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("street_name_descr").setTitle("დასახელება");
+			datasource.getField("street_kind_name").setTitle("დასახელება");
 
-			ListGridField street_name_descr = new ListGridField(
-					"street_name_descr", "დასახელება", 500);
+			ListGridField street_kind_name = new ListGridField(
+					"street_kind_name", "დასახელება", 400);
 
-			listGrid.setFields(street_name_descr);
+			listGrid.setFields(street_kind_name);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					search();
+					searchCity();
 				}
 			});
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					streetNameDescrItem.clearValue();
+					streetKindNameItem.clearValue();
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditStreetNames addEditStreetDescr = new DlgAddEditStreetNames(
+					DlgAddEditStreetKind dlgAddEditStreetKind = new DlgAddEditStreetKind(
 							listGrid, null);
-					addEditStreetDescr.show();
+					dlgAddEditStreetKind.show();
 				}
 			});
 
@@ -180,9 +172,9 @@ public class TabStreetNames extends Tab {
 						return;
 					}
 
-					DlgAddEditStreetNames addEditStreetDescr = new DlgAddEditStreetNames(
+					DlgAddEditStreetKind dlgAddEditStreetKind = new DlgAddEditStreetKind(
 							listGrid, listGridRecord);
-					addEditStreetDescr.show();
+					dlgAddEditStreetKind.show();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
@@ -194,9 +186,10 @@ public class TabStreetNames extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					final Integer street_name_id = listGridRecord
-							.getAttributeAsInt("street_name_id");
-					if (street_name_id == null) {
+
+					final Integer street_kind_Id = listGridRecord
+							.getAttributeAsInt("street_kind_id");
+					if (street_kind_Id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -206,53 +199,13 @@ public class TabStreetNames extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										delete(street_name_id);
+										delete(street_kind_Id);
 									}
 								}
 							});
 				}
 			});
 
-			TabSet tabSet = new TabSet();
-			tabSet.setWidth(730);
-			Tab tabDetViewer = new Tab("დათვალიერება");
-			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(datasource);
-			detailViewer.setWidth(710);
-			tabDetViewer.setPane(detailViewer);
-
-			listGrid.addRecordClickHandler(new RecordClickHandler() {
-				public void onRecordClick(RecordClickEvent event) {
-					detailViewer.viewSelectedData(listGrid);
-				}
-			});
-			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-				@Override
-				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-
-					DlgAddEditStreetNames addEditStreetDescr = new DlgAddEditStreetNames(
-							listGrid, listGridRecord);
-					addEditStreetDescr.show();
-				}
-			});
-
-			streetNameDescrItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					if (event.getKeyName().equals("Enter")) {
-						search();
-					}
-				}
-			});
-
-			tabSet.setTabs(tabDetViewer);
-			mainLayout.addMember(tabSet);
 			setPane(mainLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -260,17 +213,14 @@ public class TabStreetNames extends Tab {
 		}
 	}
 
-	private void search() {
+	private void searchCity() {
 		try {
-			String street_name_descr = streetNameDescrItem
-					.getValueAsString();
+			String street_kind_name = streetKindNameItem.getValueAsString();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("street_name_descr",
-					street_name_descr);
-			
+			criteria.setAttribute("street_kind_name", street_kind_name);
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "fetchStreetNamesFromDB");
+			dsRequest.setAttribute("operationId", "searchFromDB");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -283,16 +233,16 @@ public class TabStreetNames extends Tab {
 		}
 	}
 
-	private void delete(Integer street_name_id) {
+	private void delete(Integer street_kind_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("street_name_id", street_name_id);
+			record.setAttribute("street_kind_id", street_kind_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "deleteStreetName");
+			req.setAttribute("operationId", "deleteStreetKind");
 			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

@@ -112,7 +112,7 @@ public class TabAbonent extends Tab {
 
 			citiesItem = new ComboBoxItem();
 			citiesItem.setTitle("ქალ.");
-			citiesItem.setName("city_id");
+			citiesItem.setName("town_id");
 			citiesItem.setWidth(150);
 			citiesItem.setFetchMissingValues(true);
 			citiesItem.setFilterLocally(false);
@@ -128,7 +128,7 @@ public class TabAbonent extends Tab {
 
 			regionItem = new ComboBoxItem();
 			regionItem.setTitle("უბანი");
-			regionItem.setName("city_region_id");
+			regionItem.setName("town_district_id");
 			regionItem.setWidth(150);
 			regionItem.setFetchMissingValues(true);
 			regionItem.setFilterLocally(false);
@@ -165,10 +165,10 @@ public class TabAbonent extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = citiesItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("city_id");
+						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_id", nullO);
+							criteria.setAttribute("town_id", nullO);
 						}
 					}
 				}
@@ -192,10 +192,10 @@ public class TabAbonent extends Tab {
 					Criteria criteria = regionItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria
-								.getAttribute("city_region_id");
+								.getAttribute("town_district_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_region_id", nullO);
+							criteria.setAttribute("town_district_id", nullO);
 						}
 					}
 				}
@@ -449,7 +449,7 @@ public class TabAbonent extends Tab {
 
 					Criteria criteria = new Criteria();
 
-					String city = citiesItem.getValueAsString();
+					String town_id = citiesItem.getValueAsString();
 					String region = regionItem.getValueAsString();
 					String isHide = isHideItem.getValueAsString();
 					String isParallel = isParallelItem.getValueAsString();
@@ -464,8 +464,8 @@ public class TabAbonent extends Tab {
 					criteria.setAttribute("firstname_id", selFirstName);
 					criteria.setAttribute("lastname_id", selLastName);
 					criteria.setAttribute("phone", phone);
-					criteria.setAttribute("city_id", city);
-					criteria.setAttribute("city_region_id", region);
+					criteria.setAttribute("town_id", town_id);
+					criteria.setAttribute("town_district_id", region);
 					criteria.setAttribute("street_id", street);
 					criteria.setAttribute("addr_number", adress);
 					criteria.setAttribute("addr_block", block);
@@ -613,10 +613,10 @@ public class TabAbonent extends Tab {
 								if (street_id != null) {
 									streetItem.setValue(street_id);
 								}
-								Integer city_region_id = record
-										.getAttributeAsInt("city_region_id");
-								if (city_region_id != null) {
-									regionItem.setValue(city_region_id);
+								Integer town_district_id = record
+										.getAttributeAsInt("town_district_id");
+								if (town_district_id != null) {
+									regionItem.setValue(town_district_id);
 								}
 								break;
 							case 6: // address number
@@ -654,14 +654,14 @@ public class TabAbonent extends Tab {
 					if (value == null) {
 						return;
 					}
-					Integer city_id = null;
+					Integer town_id = null;
 					try {
-						city_id = Integer.parseInt(value);
+						town_id = Integer.parseInt(value);
 					} catch (NumberFormatException e) {
 						return;
 					}
-					fillStreetsCombo(city_id);
-					fillCityRegionCombo(city_id);
+					fillStreetsCombo(town_id);
+					fillCityRegionCombo(town_id);
 				}
 			});
 			streetItem.addChangedHandler(new ChangedHandler() {
@@ -671,19 +671,19 @@ public class TabAbonent extends Tab {
 					if (record == null) {
 						return;
 					}
-					Integer city_region_id = record
-							.getAttributeAsInt("city_region_id");
-					Integer cityId = record.getAttributeAsInt("city_id");
-					if (city_region_id != null && cityId != null) {
+					Integer town_district_id = record
+							.getAttributeAsInt("town_district_id");
+					Integer cityId = record.getAttributeAsInt("town_id");
+					if (town_district_id != null && cityId != null) {
 						fillCityRegionCombo(cityId);
-						regionItem.setValue(city_region_id);
+						regionItem.setValue(town_district_id);
 						Criteria criteria = regionItem.getOptionCriteria();
 						if (criteria != null) {
 							String oldAttr = criteria
-									.getAttribute("city_region_id");
+									.getAttribute("town_district_id");
 							if (oldAttr != null) {
 								Object nullO = null;
-								criteria.setAttribute("city_region_id", nullO);
+								criteria.setAttribute("town_district_id", nullO);
 							}
 						}
 					}
@@ -696,13 +696,13 @@ public class TabAbonent extends Tab {
 					if (value == null) {
 						return;
 					}
-					Integer city_id = null;
+					Integer town_id = null;
 					try {
-						city_id = Integer.parseInt(value);
+						town_id = Integer.parseInt(value);
 					} catch (NumberFormatException e) {
 						return;
 					}
-					fillCityRegionCombo(city_id);
+					fillCityRegionCombo(town_id);
 				}
 			});
 			setPane(mainLayout);
@@ -781,11 +781,11 @@ public class TabAbonent extends Tab {
 	private void fillCityCombo() {
 		try {
 			final Integer defCityTbilisiId = Constants.defCityTbilisiId;
-			DataSource citiesDS = DataSource.get("CityDS");
+			DataSource townsDS = DataSource.get("TownsDS");
 			citiesItem.setOptionOperationId("searchCitiesFromDBForCombos");
-			citiesItem.setOptionDataSource(citiesDS);
-			citiesItem.setValueField("city_id");
-			citiesItem.setDisplayField("city_name_geo");
+			citiesItem.setOptionDataSource(townsDS);
+			citiesItem.setValueField("town_id");
+			citiesItem.setDisplayField("town_name");
 
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("country_id", 194);
@@ -801,14 +801,14 @@ public class TabAbonent extends Tab {
 			// @Override
 			// public void execute(DSResponse response, Object rawData,
 			// DSRequest request) {
-			// Integer city_id = defCityTbilisiId;
-			// citiesItem.setValue(city_id);
+			// Integer town_id = defCityTbilisiId;
+			// citiesItem.setValue(town_id);
 			// Criteria criteria = citiesItem.getOptionCriteria();
 			// if (criteria != null) {
-			// String oldAttr = criteria.getAttribute("city_id");
+			// String oldAttr = criteria.getAttribute("town_id");
 			// if (oldAttr != null) {
 			// Object nullO = null;
-			// criteria.setAttribute("city_id", nullO);
+			// criteria.setAttribute("town_id", nullO);
 			// }
 			// }
 			// }
@@ -820,16 +820,16 @@ public class TabAbonent extends Tab {
 		}
 	}
 
-	private void fillStreetsCombo(Integer city_id) {
+	private void fillStreetsCombo(Integer town_id) {
 		try {
 			DataSource streetsDS = DataSource.get("StreetsNewDS");
 			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetItem.setOptionDataSource(streetsDS);
 			streetItem.setValueField("street_id");
-			streetItem.setDisplayField("street_name_geo");
+			streetItem.setDisplayField("street_name");
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("city_id", city_id);
+			criteria.setAttribute("town_id", town_id);
 			streetItem.setOptionCriteria(criteria);
 			streetItem.setAutoFetchData(false);
 
@@ -847,16 +847,16 @@ public class TabAbonent extends Tab {
 		}
 	}
 
-	private void fillCityRegionCombo(Integer city_id) {
+	private void fillCityRegionCombo(Integer town_id) {
 		try {
 			DataSource streetsDS = DataSource.get("CityRegionDS");
 			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
 			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("city_region_id");
-			regionItem.setDisplayField("city_region_name_geo");
+			regionItem.setValueField("town_district_id");
+			regionItem.setDisplayField("town_district_name");
 
 			Criteria criteria = new Criterion();
-			criteria.setAttribute("city_id", city_id);
+			criteria.setAttribute("town_id", town_id);
 			regionItem.setOptionCriteria(criteria);
 			regionItem.setAutoFetchData(false);
 
@@ -937,8 +937,8 @@ public class TabAbonent extends Tab {
 		criteria.setAttribute("firstname_id", selFirstName);
 		criteria.setAttribute("lastname_id", selLastName);
 		criteria.setAttribute("phone", phone);
-		criteria.setAttribute("city_id", city);
-		criteria.setAttribute("city_region_id", region);
+		criteria.setAttribute("town_id", city);
+		criteria.setAttribute("town_district_id", region);
 		criteria.setAttribute("street_id", street);
 		criteria.setAttribute("addr_number", adress);
 		criteria.setAttribute("addr_block", block);

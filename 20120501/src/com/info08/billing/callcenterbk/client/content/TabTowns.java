@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditCity;
+import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditTown;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -37,14 +37,13 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabCity extends Tab {
+public class TabTowns extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
 
 	// form fields
 	private TextItem cityNameGeoItem;
-	private TextItem cityNameEngItem;
 	private TextItem cityCodeItem;
 	private ComboBoxItem countryItem;
 	private ComboBoxItem cityTypeItem;
@@ -59,7 +58,6 @@ public class TabCity extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 	private ToolStripButton exportButton;
 
 	// ListGrid
@@ -68,12 +66,12 @@ public class TabCity extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabCity() {
+	public TabTowns() {
 		try {
 			setTitle("ქალაქების მართვა");
 			setCanClose(true);
 
-			datasource = DataSource.get("CityDS");
+			datasource = DataSource.get("TownsDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -88,19 +86,14 @@ public class TabCity extends Tab {
 			mainLayout.addMember(searchForm);
 
 			cityNameGeoItem = new TextItem();
-			cityNameGeoItem.setTitle("დასახელება(ქართ.)");
+			cityNameGeoItem.setTitle("დასახელება");
 			cityNameGeoItem.setWidth(200);
-			cityNameGeoItem.setName("city_name_geo");
-
-			cityNameEngItem = new TextItem();
-			cityNameEngItem.setTitle("დასახელება(ინგლ.)");
-			cityNameEngItem.setWidth(200);
-			cityNameEngItem.setName("city_name_eng");
+			cityNameGeoItem.setName("town_name");
 
 			cityCodeItem = new TextItem();
 			cityCodeItem.setTitle("ქალაქის კოდი");
 			cityCodeItem.setWidth(200);
-			cityCodeItem.setName("city_code");
+			cityCodeItem.setName("town_code");
 
 			countryItem = new ComboBoxItem();
 			countryItem.setTitle("ქვეყანა");
@@ -110,33 +103,33 @@ public class TabCity extends Tab {
 			cityTypeItem = new ComboBoxItem();
 			cityTypeItem.setTitle("ქალაქის ტიპი");
 			cityTypeItem.setWidth(200);
-			cityTypeItem.setName("city_type_id");
+			cityTypeItem.setName("town_type_id");
 
 			ofGMTItem = new TextItem();
 			ofGMTItem.setTitle("დრო");
 			ofGMTItem.setWidth(200);
-			ofGMTItem.setName("of_gmt");
+			ofGMTItem.setName("normal_gmt");
 
 			ofGMTWinterItem = new TextItem();
 			ofGMTWinterItem.setTitle("ზამთრის დრო");
 			ofGMTWinterItem.setWidth(200);
-			ofGMTWinterItem.setName("of_gmt_winter");
+			ofGMTWinterItem.setName("winter_gmt");
 
 			cityNewCodeItem = new TextItem();
 			cityNewCodeItem.setTitle("ქალაქის კოდი (ახალი)");
 			cityNewCodeItem.setWidth(200);
-			cityNewCodeItem.setName("city_new_code");
+			cityNewCodeItem.setName("town_new_code");
 
 			isCapitalItem = new ComboBoxItem();
 			isCapitalItem.setTitle("დედაქალაქი");
 			isCapitalItem.setWidth(200);
-			isCapitalItem.setName("is_capital");
+			isCapitalItem.setName("capital_town");
 			isCapitalItem.setValueMap(ClientMapUtil.getInstance()
 					.getIsCapital());
 
-			searchForm.setFields(cityNameGeoItem, cityNameEngItem,
-					cityTypeItem, countryItem, cityCodeItem, cityNewCodeItem,
-					isCapitalItem, ofGMTItem, ofGMTWinterItem);
+			searchForm.setFields(cityNameGeoItem, cityTypeItem, countryItem,
+					cityCodeItem, cityNewCodeItem, isCapitalItem, ofGMTItem,
+					ofGMTWinterItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth100();
@@ -172,11 +165,6 @@ public class TabCity extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "person_add.png");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			exportButton = new ToolStripButton("Excel - ში გადატანა",
@@ -192,13 +180,8 @@ public class TabCity extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+					return super.getCellCSSText(record, rowNum, colNum);
+
 				};
 			};
 
@@ -216,49 +199,41 @@ public class TabCity extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("city_name_geo").setTitle("დასახელება (ქართ.)");
-			datasource.getField("city_name_eng").setTitle("დასახელება (ინგლ.)");
-			datasource.getField("city_code").setTitle("ქალაქის კოდი");
-			datasource.getField("city_new_code")
+			datasource.getField("town_name").setTitle("დასახელება");
+			datasource.getField("town_code").setTitle("ქალაქის კოდი");
+			datasource.getField("town_new_code")
 					.setTitle("ქალაქის კოდი(ახალი)");
-			datasource.getField("cityType").setTitle("ქალაქის ტიპი");
-			datasource.getField("countryName").setTitle("ქვეყანა");
-			datasource.getField("isCapitalText").setTitle("დედაქალაქი");
-			datasource.getField("of_gmt").setTitle("დრო");
-			datasource.getField("of_gmt_winter").setTitle("ზამთრის დრო");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("rec_date").setTitle("თარიღი");
+			datasource.getField("town_type_name").setTitle("ქალაქის ტიპი");
+			datasource.getField("country_name").setTitle("ქვეყანა");
+			datasource.getField("capital_town").setTitle("დედაქალაქი");
+			datasource.getField("capital_town_name").setTitle("დედაქალაქი");
+			datasource.getField("normal_gmt").setTitle("დრო");
+			datasource.getField("winter_gmt").setTitle("ზამთრის დრო");
 			// datasoutce.getField("upd_user").setTitle("განაახლა");
 			// datasoutce.getField("upd_date").setTitle("როდის განახლდა");
 
-			ListGridField city_name_geo = new ListGridField("city_name_geo",
-					"დასახელება (ქართ.)", 150);
-			// ListGridField city_name_eng = new ListGridField("city_name_eng",
-			// "დასახელება (ინგლ.)", 150);
-			ListGridField city_code = new ListGridField("city_code",
+			ListGridField town_name = new ListGridField("town_name",
+					"დასახელება ", 150);
+			ListGridField town_code = new ListGridField("town_code",
 					"ქალაქის კოდი", 100);
-			ListGridField city_new_code = new ListGridField("city_new_code",
+			ListGridField town_new_code = new ListGridField("town_new_code",
 					"ქალაქის კოდი(ახალი)", 150);
-			ListGridField cityType = new ListGridField("cityType",
+			ListGridField town_type_name = new ListGridField("town_type_name",
 					"ქალაქის ტიპი", 100);
-			ListGridField countryName = new ListGridField("countryName",
+			ListGridField countryName = new ListGridField("country_name",
 					"ქვეყანა", 150);
-			ListGridField isCapitalText = new ListGridField("isCapitalText",
+			ListGridField isCapitalText = new ListGridField("capital_town_name",
 					"დედაქალაქი", 100);
-			ListGridField of_gmt = new ListGridField("of_gmt", "დრო", 100);
-			ListGridField of_gmt_winter = new ListGridField("of_gmt_winter",
+			ListGridField normal_gmt = new ListGridField("normal_gmt", "დრო",
+					100);
+			ListGridField winter_gmt = new ListGridField("winter_gmt",
 					"ზამთრის დრო", 100);
-			// ListGridField rec_user = new ListGridField("rec_user",
-			// "შემქმნელი",90);
-			// ListGridField rec_date = new ListGridField("rec_date",
-			// "თარიღი",120);
-			// ListGridField upd_user = new ListGridField("upd_user",
-			// "განაახლა",90);
+
 
 			// rec_date.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(city_name_geo, city_code, city_new_code,
-					cityType, countryName, isCapitalText, of_gmt, of_gmt_winter);
+			listGrid.setFields(town_name, town_code, town_new_code, town_type_name,
+					countryName, isCapitalText, normal_gmt, winter_gmt);
 			// city_name_eng, rec_user, rec_date, upd_user
 
 			mainLayout.addMember(listGrid);
@@ -271,7 +246,6 @@ public class TabCity extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					cityNameEngItem.clearValue();
 					cityNameGeoItem.clearValue();
 					cityCodeItem.clearValue();
 					cityNewCodeItem.clearValue();
@@ -284,7 +258,7 @@ public class TabCity extends Tab {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditCity addEditUserNew = new DlgAddEditCity(
+					DlgAddEditTown addEditUserNew = new DlgAddEditTown(
 							listGrid, null);
 					addEditUserNew.show();
 				}
@@ -300,7 +274,7 @@ public class TabCity extends Tab {
 						return;
 					}
 
-					DlgAddEditCity addEditUserNew = new DlgAddEditCity(
+					DlgAddEditTown addEditUserNew = new DlgAddEditTown(
 							listGrid, listGridRecord);
 					addEditUserNew.show();
 				}
@@ -314,15 +288,9 @@ public class TabCity extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
-					final Integer city_id = listGridRecord
-							.getAttributeAsInt("city_id");
-					if (city_id == null) {
+					final Integer town_id = listGridRecord
+							.getAttributeAsInt("town_id");
+					if (town_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -332,45 +300,13 @@ public class TabCity extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(city_id, 1);
+										delete(town_id);
 									}
 								}
 							});
 				}
 			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer city_id = listGridRecord
-							.getAttributeAsInt("city_id");
-					if (city_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
 
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(city_id, 0);
-									}
-								}
-							});
-				}
-			});
 			exportButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -380,7 +316,7 @@ public class TabCity extends Tab {
 					dsRequestProperties
 							.setExportDisplay(ExportDisplay.DOWNLOAD);
 					dsRequestProperties
-							.setOperationId("fetchAllCountriesFromDB");
+							.setOperationId("citiesSearchFromDB");
 					listGrid.exportData(dsRequestProperties);
 				}
 			});
@@ -407,7 +343,7 @@ public class TabCity extends Tab {
 						return;
 					}
 
-					DlgAddEditCity addEditUserNew = new DlgAddEditCity(
+					DlgAddEditTown addEditUserNew = new DlgAddEditTown(
 							listGrid, listGridRecord);
 					addEditUserNew.show();
 				}
@@ -472,25 +408,23 @@ public class TabCity extends Tab {
 
 	private void searchCity() {
 		try {
-			String city_name_geo = cityNameGeoItem.getValueAsString();
-			String city_name_eng = cityNameEngItem.getValueAsString();
+			String town_name = cityNameGeoItem.getValueAsString();
 			String country_id = countryItem.getValueAsString();
 			String city_type_id = cityTypeItem.getValueAsString();
-			String is_capital = isCapitalItem.getValueAsString();
-			String city_code = cityCodeItem.getValueAsString();
-			String city_new_code = cityNewCodeItem.getValueAsString();
-			String of_gmt = ofGMTItem.getValueAsString();
-			String of_gmt_winter = ofGMTWinterItem.getValueAsString();
+			String capital_town = isCapitalItem.getValueAsString();
+			String town_code = cityCodeItem.getValueAsString();
+			String town_new_code = cityNewCodeItem.getValueAsString();
+			String normal_gmt = ofGMTItem.getValueAsString();
+			String winter_gmt = ofGMTWinterItem.getValueAsString();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("city_name_geo", city_name_geo);
-			criteria.setAttribute("city_name_eng", city_name_eng);
+			criteria.setAttribute("town_name", town_name);
 			criteria.setAttribute("country_id", country_id);
-			criteria.setAttribute("city_type_id", city_type_id);
-			criteria.setAttribute("is_capital", is_capital);
-			criteria.setAttribute("city_code", city_code);
-			criteria.setAttribute("city_new_code", city_new_code);
-			criteria.setAttribute("of_gmt", of_gmt);
-			criteria.setAttribute("of_gmt_winter", of_gmt_winter);
+			criteria.setAttribute("town_type_id", city_type_id);
+			criteria.setAttribute("capital_town", capital_town);
+			criteria.setAttribute("town_code", town_code);
+			criteria.setAttribute("town_new_code", town_new_code);
+			criteria.setAttribute("normal_gmt", normal_gmt);
+			criteria.setAttribute("winter_gmt", winter_gmt);
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "citiesSearchFromDB");
@@ -506,18 +440,17 @@ public class TabCity extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer city_id, Integer deleted) {
+	private void delete(Integer town_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("city_id", city_id);
+			record.setAttribute("town_id", town_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "cityStatusUpdate");
-			datasource.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "townDelete");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

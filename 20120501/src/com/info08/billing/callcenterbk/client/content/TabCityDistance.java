@@ -81,16 +81,16 @@ public class TabCityDistance extends Tab {
 			cityStartItem = new ComboBoxItem();
 			cityStartItem.setTitle("საწყისი ქალაქი");
 			cityStartItem.setWidth(350);
-			cityStartItem.setName("city_id_start");
+			cityStartItem.setName("town_id_start");
 			cityStartItem.setFetchMissingValues(true);
 			cityStartItem.setFilterLocally(false);
 			cityStartItem.setAddUnknownValues(false);
 
-			DataSource cityDS = DataSource.get("CityDS");
+			DataSource townsDS = DataSource.get("TownsDS");
 			cityStartItem.setOptionOperationId("searchCitiesFromDBForCombos1");
-			cityStartItem.setOptionDataSource(cityDS);
-			cityStartItem.setValueField("city_id");
-			cityStartItem.setDisplayField("city_name_geo");
+			cityStartItem.setOptionDataSource(townsDS);
+			cityStartItem.setValueField("town_id");
+			cityStartItem.setDisplayField("town_name");
 
 			Criteria criteriaCity = new Criteria();
 			cityStartItem.setOptionCriteria(criteriaCity);
@@ -101,10 +101,10 @@ public class TabCityDistance extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = cityStartItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("city_id");
+						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_id", nullO);
+							criteria.setAttribute("town_id", nullO);
 						}
 					}
 				}
@@ -113,16 +113,16 @@ public class TabCityDistance extends Tab {
 			cityEndItem = new ComboBoxItem();
 			cityEndItem.setTitle("საბოლოო ქალაქი");
 			cityEndItem.setWidth(350);
-			cityEndItem.setName("city_id_end");
+			cityEndItem.setName("town_id_end");
 			cityEndItem.setFetchMissingValues(true);
 			cityEndItem.setFilterLocally(false);
 			cityEndItem.setAddUnknownValues(false);
 
-			DataSource cityDS1 = DataSource.get("CityDS");
+			DataSource townsDS1 = DataSource.get("TownsDS");
 			cityEndItem.setOptionOperationId("searchCitiesFromDBForCombos1");
-			cityEndItem.setOptionDataSource(cityDS1);
-			cityEndItem.setValueField("city_id");
-			cityEndItem.setDisplayField("city_name_geo");
+			cityEndItem.setOptionDataSource(townsDS1);
+			cityEndItem.setValueField("town_id");
+			cityEndItem.setDisplayField("town_name");
 
 			Criteria criteriaCity1 = new Criteria();
 			cityEndItem.setOptionCriteria(criteriaCity1);
@@ -133,10 +133,10 @@ public class TabCityDistance extends Tab {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = cityEndItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("city_id");
+						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("city_id", nullO);
+							criteria.setAttribute("town_id", nullO);
 						}
 					}
 				}
@@ -145,7 +145,7 @@ public class TabCityDistance extends Tab {
 
 			distanceTypeItem = new ComboBoxItem();
 			distanceTypeItem.setTitle("მანძილის ტიპი");
-			distanceTypeItem.setName("city_id");
+			distanceTypeItem.setName("town_id");
 			distanceTypeItem.setWidth(350);
 			distanceTypeItem.setValueMap(SharedUtils.getInstance()
 					.getMapDistanceTypes());
@@ -407,12 +407,12 @@ public class TabCityDistance extends Tab {
 			ListGridRecord city_end_record = cityEndItem.getSelectedRecord();
 			Criteria criteria = new Criteria();
 			if (city_start_record != null) {
-				criteria.setAttribute("city_id_start",
-						city_start_record.getAttributeAsString("city_id"));
+				criteria.setAttribute("town_id_start",
+						city_start_record.getAttributeAsString("town_id"));
 			}
 			if (city_end_record != null) {
-				criteria.setAttribute("city_id_end",
-						city_end_record.getAttributeAsString("city_id"));
+				criteria.setAttribute("town_id_end",
+						city_end_record.getAttributeAsString("town_id"));
 			}
 			if (distanceTypeItem.getValueAsString() != null) {
 				criteria.setAttribute("city_distance_type", new Integer(

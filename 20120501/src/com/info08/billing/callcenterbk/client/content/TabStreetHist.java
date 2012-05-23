@@ -31,14 +31,13 @@ public class TabStreetHist extends Tab {
 	private VLayout mainLayout;
 
 	// form fields
-	private TextItem streetOldNameGeoItem;
+	private TextItem streetOldNameDescrItem;
 	private ComboBoxItem streetNameItem;
 
 	// actions
 	private IButton findButton;
 	private IButton clearButton;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -51,7 +50,7 @@ public class TabStreetHist extends Tab {
 			setTitle("ქუჩის ისტორია");
 			setCanClose(true);
 
-			datasource = DataSource.get("StreetsOldDS");
+			datasource = DataSource.get("StreetOldNamesDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -65,20 +64,20 @@ public class TabStreetHist extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			streetOldNameGeoItem = new TextItem();
-			streetOldNameGeoItem.setTitle("ქუჩის დასახელება(ისტორია)");
-			streetOldNameGeoItem.setWidth(300);
-			streetOldNameGeoItem.setName("street_old_name_geo");
+			streetOldNameDescrItem = new TextItem();
+			streetOldNameDescrItem.setTitle("ქუჩის დასახელება(ისტორია)");
+			streetOldNameDescrItem.setWidth(300);
+			streetOldNameDescrItem.setName("street_old_name_geo");
 
 			streetNameItem = new ComboBoxItem();
 			streetNameItem.setTitle("ქუჩის დასახელება");
 			streetNameItem.setWidth(300);
-			streetNameItem.setName("street_name_geo");
+			streetNameItem.setName("street_name");
 			streetNameItem.setFetchMissingValues(true);
 			streetNameItem.setFilterLocally(false);
 			streetNameItem.setAddUnknownValues(false);
 
-			searchForm.setFields(streetOldNameGeoItem, streetNameItem);
+			searchForm.setFields(streetOldNameDescrItem, streetNameItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -103,11 +102,6 @@ public class TabStreetHist extends Tab {
 			deleteBtn.setLayoutAlign(Alignment.LEFT);
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
-
-			restoreBtn = new ToolStripButton("აღდგენა", "person_add.png");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
 
 			toolStrip.addSeparator();
 
@@ -142,27 +136,12 @@ public class TabStreetHist extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("street_old_name_geo").setTitle(
+			datasource.getField("street_old_name_descr").setTitle(
 					"ქუჩის დასახელება");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
-
 			ListGridField street_old_name_geo = new ListGridField(
-					"street_old_name_geo", "დასახელება (ქართ.)", 180);
-			ListGridField rec_date = new ListGridField("rec_date",
-					"შექმინის თარიღი", 130);
-			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",
-					100);
-			ListGridField upd_user = new ListGridField("upd_user",
-					"ვინ განაახლა", 120);
+					"street_old_name_descr", "დასახელება", 500);
 
-			rec_date.setAlign(Alignment.CENTER);
-			rec_user.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
-
-			listGrid.setFields(street_old_name_geo, rec_date, rec_user,
-					upd_user);
+			listGrid.setFields(street_old_name_geo);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -175,7 +154,7 @@ public class TabStreetHist extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					streetNameItem.clearValue();
-					streetOldNameGeoItem.clearValue();
+					streetOldNameDescrItem.clearValue();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
@@ -187,15 +166,9 @@ public class TabStreetHist extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
-					final Integer old_id = listGridRecord
-							.getAttributeAsInt("old_id");
-					if (old_id == null) {
+					final Integer street_old_id = listGridRecord
+							.getAttributeAsInt("street_old_id");
+					if (street_old_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -205,45 +178,13 @@ public class TabStreetHist extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(old_id, 1);
+										changeStatus(street_old_id, 1);
 									}
 								}
 							});
 				}
 			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer old_id = listGridRecord
-							.getAttributeAsInt("old_id");
-					if (old_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
 
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(old_id, 0);
-									}
-								}
-							});
-				}
-			});
 			setPane(mainLayout);
 			fillCombos();
 		} catch (Exception e) {
@@ -254,14 +195,14 @@ public class TabStreetHist extends Tab {
 
 	public void fillCombos() throws Exception {
 		try {
-			
+
 			DataSource streetsDS = DataSource.get("StreetsNewDS");
 			streetNameItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetNameItem.setOptionDataSource(streetsDS);
 			streetNameItem.setValueField("street_id");
-			streetNameItem.setDisplayField("street_name_geo");
+			streetNameItem.setDisplayField("street_name");
 
-			Criteria criteria = new Criteria();			
+			Criteria criteria = new Criteria();
 			streetNameItem.setOptionCriteria(criteria);
 			streetNameItem.setAutoFetchData(false);
 		} catch (Exception e) {
@@ -272,11 +213,11 @@ public class TabStreetHist extends Tab {
 
 	private void search() {
 		try {
-			String street_old_name_geo = streetOldNameGeoItem
+			String street_old_name_geo = streetOldNameDescrItem
 					.getValueAsString();
 			String street_id = streetNameItem.getValueAsString();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("street_old_name_geo", street_old_name_geo);
+			criteria.setAttribute("street_old_name_descr", street_old_name_geo);
 			criteria.setAttribute("street_id", street_id);
 
 			DSRequest dsRequest = new DSRequest();
