@@ -36,6 +36,22 @@ public interface Constants {
 	public static final int servicePosterInfo = 10;
 	public static final int serviceInCityTransportInfo = 26;
 	public static final int serviceCurrencyInfo = 11;
-	
+
 	public static final int criticalNumberIgnore = -999999999;
+
+	// DESCRIPTION TYPES
+	public static final int DT_CITYTYPE = 50000;
+	public static final int DT_PHONECONTRACTTYPES = 53000;
+	public static final int DT_LEGALSTATUSES = 51000;
+	public static final int DT_PHONESTATES = 52000;
+	public static final int DT_PHONETYPES = 54000;
+	public static final int DT_STATES = 55000;
+	public static final int DT_CITYTYPES = 59000;
+	public static final int DT_FACTDESCRIPTORS = 60000;
+	public static final int DT_FACTSTATUSES = 61000;
+	public static final int DT_CALLCENTERNOTES = 56000;
+	public static final int DT_CALLCENTERREQUIREDMSG = 57000;
+	public static final int DT_ORGANIZATIONALERTBYBUSINESSDETAIL = 58000;
+	public static final int DT_FACTTYPES = 62000;
+
 }
