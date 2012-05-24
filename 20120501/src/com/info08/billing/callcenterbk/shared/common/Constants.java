@@ -40,6 +40,9 @@ public interface Constants {
 	public static final int criticalNumberIgnore = -999999999;
 
 	// DESCRIPTION TYPES
+	/*
+	 * select 'public static final int DT_'||upper(replace(t.descr_type,' ',''))||' = '||t.descr_type_id||';' from DESCRIPTION_TYPES t
+	 */
 	public static final int DT_CITYTYPE = 50000;
 	public static final int DT_PHONECONTRACTTYPES = 53000;
 	public static final int DT_LEGALSTATUSES = 51000;
