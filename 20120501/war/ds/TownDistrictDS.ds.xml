@@ -63,7 +63,13 @@
 			<tableClause>town_district t</tableClause>
 			<whereClause><![CDATA[ 
 				($defaultWhereClause) 
-				#if($criteria.town_id) AND t.town_id = $criteria.town_id #end 
+				#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+				#if($criteria.street_id) AND t.town_district_id in 
+					(select sd.town_district_id from street_to_town_districts sd 
+					where sd.street_id=$criteria.street_id
+						#if($criteria.town_id) AND sd.town_id = $criteria.town_id #end
+					) 
+				#end 
 				]]>  
 			</whereClause> 
 			<orderClause>t.town_district_id</orderClause>
