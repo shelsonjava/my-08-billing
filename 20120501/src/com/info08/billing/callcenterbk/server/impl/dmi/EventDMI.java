@@ -14,7 +14,7 @@ import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.event.Event;
 import com.info08.billing.callcenterbk.shared.entity.event.EventCategory;
 import com.info08.billing.callcenterbk.shared.entity.event.EventOwner;
-import com.info08.billing.callcenterbk.shared.entity.org.Organizations;
+import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 
@@ -222,8 +222,8 @@ public class EventDMI implements QueryConstants {
 
 			Long organization_id = eventOwner.getOrganization_id();
 			if (organization_id != null && organization_id.longValue() > 0) {
-				Organizations organizations = oracleManager.find(
-						Organizations.class, organization_id);
+				Organization organizations = oracleManager.find(
+						Organization.class, organization_id);
 				if (organizations != null) {
 					eventOwner.setOrganization_name(organizations
 							.getOrganization_name());
@@ -305,8 +305,8 @@ public class EventDMI implements QueryConstants {
 			}
 
 			if (organizations_id != null && organizations_id.longValue() > 0) {
-				Organizations organizations = oracleManager.find(
-						Organizations.class, organizations_id);
+				Organization organizations = oracleManager.find(
+						Organization.class, organizations_id);
 				if (organizations != null) {
 					entPlace.setOrganization_name(organizations
 							.getOrganization_name());

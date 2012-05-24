@@ -25,7 +25,7 @@ import com.info08.billing.callcenterbk.shared.entity.contractors.Contract;
 import com.info08.billing.callcenterbk.shared.entity.contractors.ContractPriceItem;
 import com.info08.billing.callcenterbk.shared.entity.contractors.ContractorPhone;
 import com.info08.billing.callcenterbk.shared.entity.main.MainDetail;
-import com.info08.billing.callcenterbk.shared.entity.org.Organizations;
+import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
@@ -231,7 +231,7 @@ public class ContractorsDMI implements QueryConstants {
 					contract.getContract_id());
 			contract.setLoggedUserName(loggedUserName);
 			if (organization_id != null) {
-				Organizations mainOrg = oracleManager.find(Organizations.class,
+				Organization mainOrg = oracleManager.find(Organization.class,
 						organization_id);
 				if (mainOrg != null) {
 					contract.setOrgName(mainOrg.getOrganization_name());
@@ -489,7 +489,7 @@ public class ContractorsDMI implements QueryConstants {
 			contract = oracleManager.find(Contract.class, contract_id);
 			contract.setLoggedUserName(loggedUserName);
 			if (organization_id != null) {
-				Organizations mainOrg = oracleManager.find(Organizations.class,
+				Organization mainOrg = oracleManager.find(Organization.class,
 						organization_id);
 				if (mainOrg != null) {
 					contract.setOrgName(mainOrg.getOrganization_name());
@@ -622,7 +622,7 @@ public class ContractorsDMI implements QueryConstants {
 			contract = oracleManager.find(Contract.class, contract_id);
 			contract.setLoggedUserName(loggedUserName);
 			if (contract.getOrganization_id() != null) {
-				Organizations mainOrg = oracleManager.find(Organizations.class,
+				Organization mainOrg = oracleManager.find(Organization.class,
 						contract.getOrganization_id());
 				if (mainOrg != null) {
 					contract.setOrgName(mainOrg.getOrganization_name());
@@ -678,7 +678,7 @@ public class ContractorsDMI implements QueryConstants {
 			Contract contract = oracleManager.find(Contract.class, contract_id);
 			contract.setLoggedUserName(loggedUserName);
 			if (contract.getOrganization_id() != null) {
-				Organizations mainOrg = oracleManager.find(Organizations.class,
+				Organization mainOrg = oracleManager.find(Organization.class,
 						contract.getOrganization_id());
 				if (mainOrg != null) {
 					contract.setOrgName(mainOrg.getOrganization_name());
@@ -820,7 +820,7 @@ public class ContractorsDMI implements QueryConstants {
 			contract.setLoggedUserName(loggedUserName);
 			if (contract.getOrganization_id() != null
 					&& contract.getOrganization_id().longValue() > 0) {
-				Organizations mainOrg = oracleManager.find(Organizations.class,
+				Organization mainOrg = oracleManager.find(Organization.class,
 						contract.getOrganization_id());
 				if (mainOrg != null) {
 					contract.setOrgName(mainOrg.getOrganization_name());
@@ -900,7 +900,7 @@ public class ContractorsDMI implements QueryConstants {
 			contract.setLoggedUserName(loggedUserName);
 			if (contract.getOrganization_id() != null
 					&& contract.getOrganization_id().longValue() > 0) {
-				Organizations mainOrg = oracleManager.find(Organizations.class,
+				Organization mainOrg = oracleManager.find(Organization.class,
 						contract.getOrganization_id());
 				if (mainOrg != null) {
 					contract.setOrgName(mainOrg.getOrganization_name());

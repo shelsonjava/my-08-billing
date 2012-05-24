@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationActivity;
+import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 
@@ -218,6 +219,67 @@ public class OrganizationDMI {
 			logger.error(
 					"Error While remove organizationActivity from Database : ",
 					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	/**
+	 * Updating Organizations
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("rawtypes")
+	public Organization updateMainServiceOrg(Map record) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			System.out
+					.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			String log = "Method:CommonDMI.updateMainServiceOrg.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long parrent_organization_id = record
+					.get("parrent_organization_id") == null ? null : new Long(
+					record.get("parrent_organization_id").toString());
+			Long organization_id = new Long(record.get("organization_id")
+					.toString());
+			String loggedUserName = record.get("loggedUserName").toString();
+
+			System.out.println("parrent_organization_id = "
+					+ parrent_organization_id);
+			System.out.println("organization_id = " + organization_id);
+			System.out.println("loggedUserName = " + loggedUserName);
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update Organization.");
+
+			Organization organization = oracleManager.find(Organization.class,
+					organization_id);
+
+			organization.setParrent_organization_id(parrent_organization_id);
+			oracleManager.merge(organization);
+			EMF.commitTransaction(transaction);
+			DMIUtils.findRecordById("OrgDS", "customOrgSearchForCallCenterNew",
+					organization_id, "organization_id", organization);
+			organization.setLoggedUserName(loggedUserName);
+			log += ". Updating Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Update organization Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {

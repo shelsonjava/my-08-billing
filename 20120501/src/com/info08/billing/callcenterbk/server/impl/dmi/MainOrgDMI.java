@@ -255,5 +255,5 @@ public class MainOrgDMI implements QueryConstants {
 				EMF.returnEntityManager(oracleManager);
 			}
 		}
-	}
+	}		
 }

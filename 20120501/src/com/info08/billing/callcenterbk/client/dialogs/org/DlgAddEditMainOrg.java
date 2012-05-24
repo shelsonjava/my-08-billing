@@ -13,6 +13,7 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
+import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
@@ -40,6 +41,8 @@ import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 
 public class DlgAddEditMainOrg extends Window {
@@ -54,6 +57,8 @@ public class DlgAddEditMainOrg extends Window {
 
 	// org. address
 	// private DynamicForm dynFormOrgAddress;
+	
+	private TabSet topTabSet;
 
 	// main info fields.
 	private TextAreaItem orgNameItem;
@@ -122,6 +127,11 @@ public class DlgAddEditMainOrg extends Window {
 			hLayout.setHeight100();
 			hLayout.setPadding(10);
 
+			topTabSet = new TabSet();
+			topTabSet.setTabBarPosition(Side.TOP);
+			topTabSet.setWidth100();
+			topTabSet.setHeight100();
+
 			dynamicFormMainInfo = new DynamicForm();
 			dynamicFormMainInfo.setAutoFocus(true);
 			dynamicFormMainInfo.setWidth100();
@@ -144,8 +154,20 @@ public class DlgAddEditMainOrg extends Window {
 			rightLayOut.addMember(dynamicFormMainInfo);
 
 			formsLayout.setMembers(rightLayOut, dynamicFormMainInfo1);
-
-			hLayout.addMember(formsLayout);
+			Tab tabMainInfo = new Tab(CallCenterBK.constants.maininfo());
+			tabMainInfo.setPane(formsLayout);
+			topTabSet.addTab(tabMainInfo);
+			
+			
+			HLayout formsLayoutAddInfo = new HLayout();
+			formsLayoutAddInfo.setWidth100();
+			formsLayoutAddInfo.setHeight100();
+			
+			Tab tabAddInfo = new Tab(CallCenterBK.constants.addInfo());
+			tabAddInfo.setPane(formsLayoutAddInfo);
+			topTabSet.addTab(tabAddInfo);
+			
+			hLayout.addMember(topTabSet);
 
 			HeaderItem headerItemOrgInfo = new HeaderItem();
 			String campTex = "";
@@ -191,7 +213,8 @@ public class DlgAddEditMainOrg extends Window {
 			orgContactPersonItem = new TextItem();
 			orgContactPersonItem.setName("contact_person");
 			orgContactPersonItem.setWidth(284);
-			orgContactPersonItem.setTitle(CallCenterBK.constants.contactPerson());
+			orgContactPersonItem.setTitle(CallCenterBK.constants
+					.contactPerson());
 
 			orgIdentCodeItem = new TextItem();
 			orgIdentCodeItem.setName("ident_code");
@@ -279,7 +302,8 @@ public class DlgAddEditMainOrg extends Window {
 			});
 
 			orgPartnerBankItem = new ComboBoxItem();
-			orgPartnerBankItem.setTitle(CallCenterBK.constants.orgPartnerBank());
+			orgPartnerBankItem
+					.setTitle(CallCenterBK.constants.orgPartnerBank());
 			orgPartnerBankItem.setName("org_partner_bank");
 			orgPartnerBankItem.setWidth(284);
 			orgPartnerBankItem.setFetchMissingValues(true);
@@ -300,7 +324,8 @@ public class DlgAddEditMainOrg extends Window {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = orgPartnerBankItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("organization_id");
+						String oldAttr = criteria
+								.getAttribute("organization_id");
 						if (oldAttr != null) {
 							Object nullO = null;
 							criteria.setAttribute("organization_id", nullO);
@@ -367,7 +392,7 @@ public class DlgAddEditMainOrg extends Window {
 					}
 				}
 			});
-			citiesItem.setValue(Constants.defCityTbilisiId);
+			// citiesItem.setValue(Constants.defCityTbilisiId);
 
 			streetItem = new ComboBoxItem();
 			streetItem.setTitle(CallCenterBK.constants.street());
@@ -504,7 +529,7 @@ public class DlgAddEditMainOrg extends Window {
 					oldAddItem, orgWebAddressItem, orgMailItem,
 					streetDescrItem, streetIdxItem);
 
-			DataSource businessDetDS = DataSource.get("BusinessDetDS");
+			DataSource orgActDS = DataSource.get("OrgActDS");
 
 			activityGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -524,45 +549,30 @@ public class DlgAddEditMainOrg extends Window {
 			};
 			activityGrid.setWidth(300);
 			activityGrid.setHeight100();
-			activityGrid.setDataSource(businessDetDS);
+			activityGrid.setDataSource(orgActDS);
 			activityGrid.setShowFilterEditor(true);
 			activityGrid.setFilterOnKeypress(true);
 			activityGrid.setCanDragRecordsOut(true);
 			activityGrid.setDragDataAction(DragDataAction.COPY);
 			activityGrid.setAlternateRecordStyles(true);
 			activityGrid.setAutoFetchData(true);
-			activityGrid.setFetchOperation("searchAllBusinessDetailsForCB");
+			activityGrid.setFetchOperation("searchAllBusinesActivitiesForCB");
 
-			ListGridField activity = new ListGridField(
-					"business_detail_name_geo", CallCenterBK.constants.activity());
+			ListGridField activity = new ListGridField("activity_description",
+					CallCenterBK.constants.activity());
 			activity.setAlign(Alignment.LEFT);
 
 			activityGrid.setFields(activity);
 
 			mainOrgActClientDS = MainOrgActClientDS.getInstance();
 
-			orgActivityGrid = new ListGrid() {
-				protected String getCellCSSText(ListGridRecord record,
-						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					if (countryRecord == null) {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-				};
-			};
+			orgActivityGrid = new ListGrid();
 			orgActivityGrid.setWidth(300);
 			orgActivityGrid.setHeight100();
-			orgActivityGrid.setDataSource(mainOrgActClientDS);
+			// orgActivityGrid.setDataSource(mainOrgActClientDS);
 			orgActivityGrid.setCanAcceptDroppedRecords(true);
 			orgActivityGrid.setCanRemoveRecords(true);
-			orgActivityGrid.setAutoFetchData(true);
+			// orgActivityGrid.setAutoFetchData(true);
 			orgActivityGrid.setPreventDuplicates(true);
 			orgActivityGrid.setDuplicateDragMessage(CallCenterBK.constants
 					.thisOrgActAlreadyChoosen());

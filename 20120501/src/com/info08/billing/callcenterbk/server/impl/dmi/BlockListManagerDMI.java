@@ -18,7 +18,7 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.shared.entity.block.BlockList;
 import com.info08.billing.callcenterbk.shared.entity.block.BlockListPhone;
 import com.info08.billing.callcenterbk.shared.entity.main.MainDetail;
-import com.info08.billing.callcenterbk.shared.entity.org.Organizations;
+import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
@@ -107,7 +107,7 @@ public class BlockListManagerDMI implements QueryConstants {
 			blockList = oracleManager.find(BlockList.class, blockList.getId());
 			blockList.setLoggedUserName(loggedUserName);
 			if (organization_id != null) {
-				Organizations mainOrg = oracleManager.find(Organizations.class,
+				Organization mainOrg = oracleManager.find(Organization.class,
 						organization_id);
 				if (mainOrg != null) {
 					blockList.setOrgName(mainOrg.getOrganization_name());
@@ -209,7 +209,7 @@ public class BlockListManagerDMI implements QueryConstants {
 			blockList = oracleManager.find(BlockList.class, blockList.getId());
 			blockList.setLoggedUserName(loggedUserName);
 			if (organization_id != null) {
-				Organizations mainOrg = oracleManager.find(Organizations.class,
+				Organization mainOrg = oracleManager.find(Organization.class,
 						organization_id);
 				if (mainOrg != null) {
 					blockList.setOrgName(mainOrg.getOrganization_name());
@@ -276,7 +276,7 @@ public class BlockListManagerDMI implements QueryConstants {
 			blockList.setLoggedUserName(loggedUserName);
 			Long organization_id = blockList.getOrganization_id();
 			if (organization_id != null) {
-				Organizations mainOrg = oracleManager.find(Organizations.class,
+				Organization mainOrg = oracleManager.find(Organization.class,
 						organization_id);
 				if (mainOrg != null) {
 					blockList.setOrgName(mainOrg.getOrganization_name());

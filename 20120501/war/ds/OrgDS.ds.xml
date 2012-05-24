@@ -7,7 +7,7 @@
     
 	<fields>
 		<field name="organization_id"			type="integer"		title="organization_id"				hidden="true" 	primaryKey="true" />
-		<field name="parrent_organization_id"	type="integer"  	title="parrent_organization_id"		hidden="true"	required="true" foreignKey="OrgDS.organization_id"  detail="true"/>
+		<field name="parrent_organization_id"	type="integer"  	title="parrent_organization_id"		hidden="true"	foreignKey="OrgDS.organization_id"  detail="true"/>
 		<field name="organization_name"			type="text"  		title="organization_name"/>
 		<field name="remark"					type="text"  		title="remark"/>
 		<field name="ident_code"				type="text"  		title="ident_code"/>
@@ -48,7 +48,7 @@
 		<field name="address_hide"				type="integer"  	title="address_hide"				hidden="true"/>		
 		<field name="contact_phones"			type="integer"  	title="contact_phones"				hidden="true"/>
 		<field name="phone_status"				type="text"  		title="phone_status"/>
-		<field name="organization_name_tree"				type="text"  		title="organization_name_tree"/>
+		<field name="organization_name_tree"	type="text"  		title="organization_name_tree"/>
 		<field name="is_abonent"				type="integer"  	title="is_abonent"					hidden="true"/>
 		<field name="town_district_id"			type="integer"  	title="town_district_id"			hidden="true"/>
 		<field name="street_id"					type="integer"  	title="street_id"					hidden="true"/>
@@ -69,26 +69,17 @@
 	
 		 <!-- Sort Order Update For Orgs -->
 		<operationBinding operationType="update" operationId="updateMainServiceOrders" serverMethod="updateMainServiceOrders">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
         </operationBinding>
         
         <!-- Delete Or Restore Update For Orgs -->
 		<operationBinding operationType="update" operationId="updateMainOrgDeleteOrRestore" serverMethod="updateMainOrgDeleteOrRestore">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
         </operationBinding>
         
-        <!-- Status Update For Orgs -->
-		<operationBinding operationType="update" operationId="updateMainOrgStatus" serverMethod="updateMainOrgStatus">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MainOrgDMI"/>
-        </operationBinding>
-	
 		<!-- Main Service Update On Drag And Drop -->
-		<operationBinding operationId="updateMainServiceOrg" operationType="update">
-            <customSQL>
-            	 <![CDATA[
-            		update ccare.main_services set main_master_id = $values.main_master_id where organization_id = $criteria.organization_id
-            	 ]]>
-            </customSQL> 
+		<operationBinding operationType="update" operationId="updateMainServiceOrg" serverMethod="updateMainServiceOrg">
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>            
         </operationBinding>
 	
 		<!-- FETCH -->
