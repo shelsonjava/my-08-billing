@@ -16,6 +16,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ClientUtils {
 
@@ -27,34 +28,60 @@ public class ClientUtils {
 	public static void makeDependancy(final FormItem formItemParent,
 			String publicParentId, Map<?, ?> publicAditionalCriteria,
 			final FormItem... formItemChilds) {
+		makeDependancy(formItemParent, null, publicParentId, null, false,
+				formItemChilds);
+	}
+
+	public static void makeDependancy(final FormItem formItemParent,
+			String valueSet, String publicParentId,
+			Map<?, ?> publicAditionalCriteria, boolean set,
+			final FormItem... formItemChilds) {
 		ArrayList<FormItemDescr> newformItemChilds = new ArrayList<FormItemDescr>();
 		for (FormItem formItem : formItemChilds) {
 			newformItemChilds.add(new FormItemDescr(formItem, publicParentId,
-					publicAditionalCriteria));
+					publicAditionalCriteria, valueSet));
 		}
-		makeDependancy(formItemParent,
+		makeDependancy(formItemParent, set,
 				newformItemChilds.toArray(new FormItemDescr[] {}));
 	}
 
 	public static void makeDependancy(final FormItem formItemParent,
-			final FormItemDescr... formItemChilds) {
+			final boolean set, final FormItemDescr... formItemChilds) {
 		formItemParent.addChangedHandler(new ChangedHandler() {
 
 			@Override
 			public void onChanged(ChangedEvent event) {
 				Object value = formItemParent.getValue();
 				if (value == null) {
-					return;
+					value = (String) null;
+				} else {
+					value = value.toString();
 				}
 				for (FormItemDescr formItem : formItemChilds) {
 					formItem.formItem.clearValue();
-
+					if (set && formItem.valueSet != null) {
+						ListGridRecord record = formItemParent
+								.getSelectedRecord();
+						String val = null;
+						if (record != null) {
+							val = record.getAttribute(formItem.valueSet);
+						}
+						formItem.formItem.setValue(val);
+					}
+					if (!(formItem.formItem instanceof ComboBoxItem)
+							&& !(formItem.formItem instanceof SelectItem)) {
+						return;
+					}
 					Criteria cr = formItem.formItem.getOptionCriteria();
 					if (cr == null) {
 						cr = new Criteria();
 						formItem.formItem.setOptionCriteria(cr);
 					}
+					cr.setAttribute(formItem.parentName, value);
 					addEditionalCriteria(formItem.aditionalCriteria, cr);
+
+					formItem.formItem.setOptionCriteria(cr);
+
 				}
 
 			}
@@ -68,7 +95,7 @@ public class ClientUtils {
 	}
 
 	public static void fillCombo(final FormItem formItem, String sDataSource,
-			String sFetchOperation, String valueField, String nameField,
+			String sFetchOperation, final String valueField, String nameField,
 			Map<?, ?> aditionalCriteria) {
 
 		try {
@@ -109,9 +136,9 @@ public class ClientUtils {
 				public void onKeyPress(KeyPressEvent event) {
 					Criteria criteria = formItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("id");
+						Object oldAttr = criteria.getAttribute(valueField);
 						if (oldAttr != null) {
-							criteria.setAttribute("id", (Long) null);
+							criteria.setAttribute(valueField, (String) null);
 						}
 					}
 				}
