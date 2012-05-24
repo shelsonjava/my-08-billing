@@ -148,6 +148,7 @@ public class ClientUtils {
 			Map<?, ?> aditionalCriteria) {
 		Criteria criteria = new Criteria();
 		addEditionalCriteria(aditionalCriteria, criteria);
+		formItem.setOptionCriteria(criteria);
 	}
 
 	private static void addEditionalCriteria(Map<?, ?> aditionalCriteria,
