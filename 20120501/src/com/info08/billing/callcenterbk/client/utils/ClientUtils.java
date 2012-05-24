@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.utils;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.smartgwt.client.data.Criteria;
@@ -66,7 +67,6 @@ public class ClientUtils {
 						formItem.formItem.setOptionCriteria(cr);
 					}
 
-					
 					if (set && formItem.valueSet != null) {
 						ListGridRecord record = formItemParent
 								.getSelectedRecord();
@@ -81,6 +81,26 @@ public class ClientUtils {
 
 			}
 		});
+	}
+
+	public static void fillDescriptionCombo(final FormItem formItem, int type) {
+		fillDescriptionCombo(formItem, type, false);
+	}
+
+	public static void fillDescriptionCombo(final FormItem formItem, int type,
+			boolean sortByName) {
+		fillDescriptionCombo(formItem, type, sortByName, null);
+	}
+
+	public static void fillDescriptionCombo(final FormItem formItem, int type,
+			boolean sortByName, Map<String, Object> aditionalCriteria) {
+		if (sortByName) {
+			if (aditionalCriteria == null)
+				aditionalCriteria = new TreeMap<String, Object>();
+			aditionalCriteria.put("by_name", 1);
+		}
+		fillCombo(formItem, "DescriptionsDS", "searchDescriptions",
+				"description_id", "description", aditionalCriteria);
 	}
 
 	public static void fillCombo(final FormItem formItem, String sDataSource,
