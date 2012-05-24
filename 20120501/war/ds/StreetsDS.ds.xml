@@ -120,11 +120,13 @@
     			t.town_id,
     			t.street_location,
 				t.street_name,
-				sd.town_district_id
+				(select min(town_district_id)
+			          from street_to_town_districts sd
+			         where sd.street_id = t.street_id) town_district_id
 			</selectClause> 
-			<tableClause>ccare.streets t,street_to_town_districts sd</tableClause>
+			<tableClause>ccare.streets t</tableClause>
 			<whereClause><![CDATA[ 
-				t.street_id = sd.street_id(+) 
+				1=1 
 				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
 				#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
 				#if($criteria.street_name) AND t.street_name like ($criteria.street_name)||'%' #end
