@@ -157,7 +157,7 @@ public class ClientUtils {
 				if (key != null) {
 					Object value = aditionalCriteria.get(key);
 					if (key != null)
-						criteria.setAttribute(key.toString(), value.toString());
+						criteria.setAttribute(key.toString(), value);
 				}
 			}
 		}
