@@ -678,6 +678,7 @@ public interface AppConstants extends Constants {
 	String addFact();
 	String editFact();
 	String infoShort();
+	String paraller();
 }
 
 
