@@ -54,6 +54,19 @@ public class ClientUtils {
 				Object value = formItemParent.getValue();
 				for (FormItemDescr formItem : formItemChilds) {
 					formItem.formItem.clearValue();
+					if ((formItem.formItem instanceof ComboBoxItem)
+							|| (formItem.formItem instanceof SelectItem)) {
+						Criteria cr = formItem.formItem.getOptionCriteria();
+						if (cr == null) {
+							cr = new Criteria();
+							formItem.formItem.setOptionCriteria(cr);
+						}
+						cr.setAttribute(formItem.parentName, value);
+						addEditionalCriteria(formItem.aditionalCriteria, cr);
+						formItem.formItem.setOptionCriteria(cr);
+					}
+
+					
 					if (set && formItem.valueSet != null) {
 						ListGridRecord record = formItemParent
 								.getSelectedRecord();
@@ -63,19 +76,6 @@ public class ClientUtils {
 						}
 						formItem.formItem.setValue(val);
 					}
-					if (!(formItem.formItem instanceof ComboBoxItem)
-							&& !(formItem.formItem instanceof SelectItem)) {
-						continue;
-					}
-					Criteria cr = formItem.formItem.getOptionCriteria();
-					if (cr == null) {
-						cr = new Criteria();
-						formItem.formItem.setOptionCriteria(cr);
-					}
-					cr.setAttribute(formItem.parentName, value);
-					addEditionalCriteria(formItem.aditionalCriteria, cr);
-
-					formItem.formItem.setOptionCriteria(cr);
 
 				}
 
