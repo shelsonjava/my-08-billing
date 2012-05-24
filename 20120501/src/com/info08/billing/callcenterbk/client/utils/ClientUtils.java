@@ -70,7 +70,7 @@ public class ClientUtils {
 					}
 					if (!(formItem.formItem instanceof ComboBoxItem)
 							&& !(formItem.formItem instanceof SelectItem)) {
-						return;
+						continue;
 					}
 					Criteria cr = formItem.formItem.getOptionCriteria();
 					if (cr == null) {
@@ -147,6 +147,12 @@ public class ClientUtils {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
+	}
+
+	public static void setDefauldCriterias(FormItem formItem,
+			Map<?, ?> aditionalCriteria) {
+		Criteria criteria = new Criteria();
+		addEditionalCriteria(aditionalCriteria, criteria);
 	}
 
 	private static void addEditionalCriteria(Map<?, ?> aditionalCriteria,
