@@ -1,8 +1,13 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.client.utils.FormItemDescr;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.Criterion;
@@ -54,10 +59,11 @@ public class DlgAddEditMainOrg extends Window {
 	// org. main info
 	private DynamicForm dynamicFormMainInfo;
 	private DynamicForm dynamicFormMainInfo1;
+	private DynamicForm dynamicFormAddInfo;
 
 	// org. address
 	// private DynamicForm dynFormOrgAddress;
-	
+
 	private TabSet topTabSet;
 
 	// main info fields.
@@ -87,13 +93,17 @@ public class DlgAddEditMainOrg extends Window {
 	private ComboBoxItem citiesItem;
 	private ComboBoxItem streetItem;
 	private ComboBoxItem regionItem;
-	private TextAreaItem streetDescrItem;
-	private TextItem streetIdxItem;
 	private TextItem oldAddItem;
 	private ComboBoxItem adressOpCloseItem;
 	private TextItem adressItem;
 	private TextItem blockItem;
 	private TextItem appartItem;
+
+	private ComboBoxItem legAddrTownItem;
+	private ComboBoxItem legalAddrStreetItem;
+	private ComboBoxItem legalAddrRegionItem;
+	private TextAreaItem legalAddrStreetDescrItem;
+	private TextAreaItem legalAddrStreetIdxItem;
 
 	private TreeGrid orgTreeGrid;
 	private ListGridRecord listGridRecord;
@@ -157,16 +167,72 @@ public class DlgAddEditMainOrg extends Window {
 			Tab tabMainInfo = new Tab(CallCenterBK.constants.maininfo());
 			tabMainInfo.setPane(formsLayout);
 			topTabSet.addTab(tabMainInfo);
-			
-			
+
 			HLayout formsLayoutAddInfo = new HLayout();
 			formsLayoutAddInfo.setWidth100();
 			formsLayoutAddInfo.setHeight100();
+
+			dynamicFormAddInfo = new DynamicForm();
+			dynamicFormAddInfo.setAutoFocus(true);
+			dynamicFormAddInfo.setWidth100();
+			dynamicFormAddInfo.setNumCols(1);
+			dynamicFormAddInfo.setTitleOrientation(TitleOrientation.TOP);
+			formsLayoutAddInfo.setMembers(dynamicFormAddInfo);
+
+			legAddrTownItem = new ComboBoxItem();
+			legAddrTownItem.setTitle(CallCenterBK.constants.city());
+			legAddrTownItem.setName("town_id");
+			legAddrTownItem.setWidth(170);
+			ClientUtils.fillCombo(legAddrTownItem, "TownsDS",
+					"searchCitiesFromDBForCombos", "town_id", "town_name");
+
+			legalAddrStreetItem = new ComboBoxItem();
+			legalAddrStreetItem.setTitle(CallCenterBK.constants.street());
+			legalAddrStreetItem.setName("street_id");
+			legalAddrStreetItem.setWidth(322);
+
+			Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
+			aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
+			aditionalCriteria.put("need_indexes", 1);
 			
+
+			ClientUtils.fillCombo(legalAddrStreetItem, "StreetsDS",
+					"searchStreetFromDBForCombos", "street_id", "street_name",
+					aditionalCriteria);
+
+			legalAddrRegionItem = new ComboBoxItem();
+			legalAddrRegionItem.setTitle(CallCenterBK.constants.region());
+			legalAddrRegionItem.setName("town_district_id");
+			legalAddrRegionItem.setWidth(217);
+
+			ClientUtils.fillCombo(legalAddrRegionItem, "TownDistrictDS",
+					"searchCityRegsFromDBForCombos", "town_district_id",
+					"town_district_name", aditionalCriteria);
+			
+			legalAddrStreetDescrItem = new TextAreaItem();
+			legalAddrStreetDescrItem.setTitle(CallCenterBK.constants.streetDescr());
+			legalAddrStreetDescrItem.setName("streetDescrItem");
+			legalAddrStreetDescrItem.setWidth(569);
+			legalAddrStreetDescrItem.setHeight(49);
+			legalAddrStreetDescrItem.setCanEdit(false);
+
+			legalAddrStreetIdxItem = new TextAreaItem();
+			legalAddrStreetIdxItem.setTitle(CallCenterBK.constants.streetIdx());
+			legalAddrStreetIdxItem.setName("street_index");
+			legalAddrStreetIdxItem.setWidth(569);
+			legalAddrStreetIdxItem.setHeight(50);
+			legalAddrStreetIdxItem.setCanEdit(false);			
+			
+			ClientUtils.makeDependancy(legAddrTownItem, "town_id", legalAddrStreetItem, legalAddrRegionItem);
+			ClientUtils.makeDependancy(legAddrTownItem, true, new FormItemDescr(legalAddrStreetDescrItem, "","d"), new FormItemDescr(legalAddrStreetIdxItem, "","k"));
+			ClientUtils.makeDependancy(legalAddrStreetItem, true, new FormItemDescr(legalAddrRegionItem, "street_id", "town_district_id"),new FormItemDescr(legalAddrStreetDescrItem, "","street_location"), new FormItemDescr(legalAddrStreetIdxItem, "","street_index"));
+
+			dynamicFormAddInfo.setFields(legAddrTownItem, legalAddrStreetItem, legalAddrRegionItem, legalAddrStreetDescrItem,legalAddrStreetIdxItem);
+
 			Tab tabAddInfo = new Tab(CallCenterBK.constants.addInfo());
 			tabAddInfo.setPane(formsLayoutAddInfo);
 			topTabSet.addTab(tabAddInfo);
-			
+
 			hLayout.addMember(topTabSet);
 
 			HeaderItem headerItemOrgInfo = new HeaderItem();
@@ -458,22 +524,6 @@ public class DlgAddEditMainOrg extends Window {
 				}
 			});
 
-			streetDescrItem = new TextAreaItem();
-			streetDescrItem.setTitle(CallCenterBK.constants.streetDescr());
-			streetDescrItem.setName("streetDescrItem");
-			streetDescrItem.setWidth(569);
-			streetDescrItem.setColSpan(2);
-			streetDescrItem.setHeight(49);
-			streetDescrItem.setCanEdit(false);
-
-			streetIdxItem = new TextItem();
-			streetIdxItem.setTitle(CallCenterBK.constants.streetIdx());
-			streetIdxItem.setName("street_index");
-			streetIdxItem.setWidth(569);
-			// streetIdxItem.setHeight(50);
-			streetIdxItem.setCanEdit(false);
-			streetIdxItem.setColSpan(2);
-
 			oldAddItem = new TextItem();
 			oldAddItem.setTitle(CallCenterBK.constants.oldAddress());
 			oldAddItem.setName("oldAddItem");
@@ -526,8 +576,7 @@ public class DlgAddEditMainOrg extends Window {
 					orgStatusItem, orgFoundedItem, orgIndItem, spacerItem,
 					headerItemAddr1, citiesItem, regionItem, streetItem,
 					adressOpCloseItem, adressItem, blockItem, appartItem,
-					oldAddItem, orgWebAddressItem, orgMailItem,
-					streetDescrItem, streetIdxItem);
+					oldAddItem, orgWebAddressItem, orgMailItem);
 
 			DataSource orgActDS = DataSource.get("OrgActDS");
 
@@ -636,82 +685,6 @@ public class DlgAddEditMainOrg extends Window {
 				}
 			});
 
-			citiesItem.addChangedHandler(new ChangedHandler() {
-				@Override
-				public void onChanged(ChangedEvent event) {
-					String value = citiesItem.getValueAsString();
-					if (value == null) {
-						return;
-					}
-					Integer town_id = null;
-					try {
-						town_id = Integer.parseInt(value);
-					} catch (NumberFormatException e) {
-						return;
-					}
-					streetItem.clearValue();
-					regionItem.clearValue();
-					streetDescrItem.setValue("");
-					streetIdxItem.setValue("");
-					fillStreetsCombo(null, town_id);
-					fillCityRegionCombo(null, town_id);
-				}
-			});
-			streetItem.addChangedHandler(new ChangedHandler() {
-				@Override
-				public void onChanged(ChangedEvent event) {
-					ListGridRecord record = streetItem.getSelectedRecord();
-					if (record == null) {
-						return;
-					}
-					String descr = record.getAttribute("street_location_geo");
-					if (descr == null) {
-						descr = "";
-					}
-					streetDescrItem.setValue(descr);
-					Integer town_district_id = record
-							.getAttributeAsInt("town_district_id");
-					Integer cityId = record.getAttributeAsInt("town_id");
-					if (town_district_id != null && cityId != null) {
-						fillCityRegionCombo(null, cityId);
-						regionItem.setValue(town_district_id);
-						Criteria criteria = regionItem.getOptionCriteria();
-						if (criteria != null) {
-							String oldAttr = criteria
-									.getAttribute("town_district_id");
-							if (oldAttr != null) {
-								Object nullO = null;
-								criteria.setAttribute("town_district_id", nullO);
-							}
-						}
-					}
-
-					DataSource dataSource = DataSource.get("StreetIndexDS");
-					Criteria criteria = new Criteria();
-					criteria.setAttribute("street_id",
-							record.getAttributeAsInt("street_id"));
-					DSRequest requestProperties = new DSRequest();
-					requestProperties.setOperationId("searchStrIdxDescrs");
-					dataSource.fetchData(criteria, new DSCallback() {
-						@Override
-						public void execute(DSResponse response,
-								Object rawData, DSRequest request) {
-							Record records[] = response.getData();
-							if (records != null && records.length > 0) {
-								String str = "";
-								for (Record recordItem : records) {
-									String item = recordItem
-											.getAttribute("idx_descr");
-									if (item != null && !item.trim().equals("")) {
-										str += (item + " ; ");
-									}
-								}
-								streetIdxItem.setValue(str);
-							}
-						}
-					}, requestProperties);
-				}
-			});
 			fillFields();
 			addItem(hLayout);
 		} catch (Exception e) {
@@ -775,11 +748,7 @@ public class DlgAddEditMainOrg extends Window {
 				orgWebAddressItem.setValue(listGridRecord
 						.getAttributeAsString("webaddress"));
 				orgMailItem.setValue(listGridRecord
-						.getAttributeAsString("mail"));
-				streetDescrItem.setValue(listGridRecord
-						.getAttributeAsString("street_location_geo"));
-				streetIdxItem.setValue(listGridRecord
-						.getAttributeAsString("street_indexes"));
+						.getAttributeAsString("mail"));				
 				adressOpCloseItem.setValue(listGridRecord
 						.getAttributeAsInt("address_hide"));
 
@@ -808,61 +777,6 @@ public class DlgAddEditMainOrg extends Window {
 				}, dsRequest);
 
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			SC.say(e.toString());
-		}
-	}
-
-	private void fillStreetsCombo(final ListGridRecord abonentRecord,
-			Integer defCityTbilisiId) {
-		try {
-			Integer town_id = defCityTbilisiId;
-			if (abonentRecord != null) {
-				Integer fromEdit = abonentRecord.getAttributeAsInt("town_id");
-				if (fromEdit != null) {
-					town_id = fromEdit;
-				}
-			}
-
-			DataSource streetsDS = DataSource.get("StreetsNewDS");
-			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
-			streetItem.setOptionDataSource(streetsDS);
-			streetItem.setValueField("street_id");
-			streetItem.setDisplayField("street_name");
-
-			Criteria criteria = new Criteria();
-			criteria.setAttribute("town_id", town_id);
-			streetItem.setOptionCriteria(criteria);
-			streetItem.setAutoFetchData(false);
-		} catch (Exception e) {
-			e.printStackTrace();
-			SC.say(e.toString());
-		}
-	}
-
-	private void fillCityRegionCombo(final ListGridRecord abonentRecord,
-			Integer defCityTbilisiId) {
-		try {
-			Integer town_id = defCityTbilisiId;
-			if (abonentRecord != null) {
-				Integer fromEdit = abonentRecord.getAttributeAsInt("town_id");
-				if (fromEdit != null) {
-					town_id = fromEdit;
-				}
-			}
-
-			DataSource streetsDS = DataSource.get("CityRegionDS");
-			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
-			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("town_district_id");
-			regionItem.setDisplayField("town_district_name");
-
-			Criteria criteria = new Criterion();
-			criteria.setAttribute("town_id", town_id);
-			regionItem.setOptionCriteria(criteria);
-			regionItem.setAutoFetchData(false);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

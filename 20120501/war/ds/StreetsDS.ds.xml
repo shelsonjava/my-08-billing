@@ -123,6 +123,9 @@
 				(select min(town_district_id)
 			          from street_to_town_districts sd
 			         where sd.street_id = t.street_id) town_district_id
+			   #if($criteria.need_indexes) 
+			   		, getStreetIdxs(t.street_id) as street_index 
+			   #end
 			</selectClause> 
 			<tableClause>ccare.streets t</tableClause>
 			<whereClause><![CDATA[ 
