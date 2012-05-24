@@ -677,6 +677,7 @@ public interface AppConstants extends Constants {
 	String factStatus();
 	String addFact();
 	String editFact();
+	String infoShort();
 }
 
 
