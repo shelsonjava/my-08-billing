@@ -680,6 +680,7 @@ public interface AppConstants extends Constants {
 	String infoShort();
 	String paraller();
 	String socialAddress();
+	String parrentOrgName();
 }
 
 
