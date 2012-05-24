@@ -37,7 +37,9 @@
 		<field name="loggedUserName"			type="text"		title="Logged UserName" 		hidden="true" />
 		<field name="town_district_id"			type="text"		title="City Region ID" 			hidden="true" />	
 		<field name="street_old_name_descr"		type="text"		title="street_old_name_descr"/>
-		<field name="streetIndex"				type="text"		title="streetIndex"		hidden="true" />
+		<field name="street_index"				type="text"		title="street_index"		/>
+		<field name="street_to_town_district"	type="text"		title="street_to_town_district"/>
+		
 	</fields>
 	
 	<operationBindings>		
@@ -50,7 +52,7 @@
         </operationBinding>
         
 		<!-- Street Update -->
-		<operationBinding operationType="update" operationId="updateStreetEnt" serverMethod="updateStreetEnt">
+		<operationBinding operationType="update" operationId="updateStreet" serverMethod="updateStreet">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
         
@@ -149,9 +151,9 @@
     			t.street_id,
     			t.street_name				
 			</selectClause> 
-			<tableClause>ccare.streets t</tableClause>
+			<tableClause>streets t</tableClause>
 			<whereClause><![CDATA[ 
-				($defaultWhereClause) AND t.deleted = 0 AND t.town_id = 2208
+				($defaultWhereClause) AND t.town_id = 2208
 				]]>  
 			</whereClause>
 			<orderClause>t.street_name</orderClause> 
@@ -164,36 +166,37 @@
     			   /*+ index (t STR_IND_KS001)*/   			
     			   t.street_id,
 			       t.street_name,
-			       t.street_location_geo,
+			       t.street_location,
 			       t.town_id,
-			       t.oldName,
-			       t.streetIndex,
-			       t.streetDistrict,
+			       t.street_old_name_descr,
+			       t.street_index,
+			       t.street_to_town_district,
 			       c.town_name		
 			</selectClause> 
-			<tableClause>streets_v t, cities c </tableClause>
+			<tableClause>streets_v t, towns c </tableClause>
 			<whereClause><![CDATA[ 
 				 c.town_id = t.town_id
 				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+				 #if($criteria.street_index) AND t.street_index like '%' || ($criteria.street_index)||'%' #end
 				 #if($criteria.street_name1) 
-				 	AND (t.street_name like '%'||$criteria.street_name1||'%' OR t.oldName like '%'||$criteria.street_name1||'%') 
+				 	AND (t.street_name like '%'||$criteria.street_name1||'%' OR t.street_old_name_descr like '%'||$criteria.street_name1||'%') 
 				 #end
 				 #if($criteria.street_name2) 
-				 	AND (t.street_name like '%'||$criteria.street_name2||'%' OR t.oldName like '%'||$criteria.street_name2||'%') 
+				 	AND (t.street_name like '%'||$criteria.street_name2||'%' OR t.street_old_name_descr like '%'||$criteria.street_name2||'%') 
 				 #end
 				 #if($criteria.street_name3) 
-				 	AND (t.street_name like '%'||$criteria.street_name3||'%' OR t.oldName like '%'||$criteria.street_name3||'%') 
+				 	AND (t.street_name like '%'||$criteria.street_name3||'%' OR t.street_old_name_descr like '%'||$criteria.street_name3||'%') 
 				 #end
 				 #if($criteria.street_name4) 
-				 	AND (t.street_name like '%'||$criteria.street_name4||'%' OR t.oldName like '%'||$criteria.street_name4||'%') 
+				 	AND (t.street_name like '%'||$criteria.street_name4||'%' OR t.street_old_name_descr like '%'||$criteria.street_name4||'%') 
 				 #end
 				 #if($criteria.street_name5) 
-				 	AND (t.street_name like '%'||$criteria.street_name5||'%' OR t.oldName like '%'||$criteria.street_name5||'%') 
+				 	AND (t.street_name like '%'||$criteria.street_name5||'%' OR t.street_old_name_descr like '%'||$criteria.street_name5||'%') 
 				 #end
-				 #if($criteria.streetIndex) AND t.streetIndex like '%'||($criteria.streetIndex)||'%' #end
+				 #if($criteria.street_index) AND t.street_index like '%'||($criteria.street_index)||'%' #end
 				]]>  
 			</whereClause>
-			<groupClause>c.town_name, t.street_id, t.street_name, t.street_location_geo, t.town_id, t.oldName</groupClause>
+			<groupClause>c.town_name, t.street_id, t.street_name, t.street_location, t.town_id, t.street_old_name_descr</groupClause>
 			<orderClause>t.town_id, t.street_name</orderClause> 
     	</operationBinding>
     	

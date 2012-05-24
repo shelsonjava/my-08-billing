@@ -141,9 +141,9 @@
     			t.town_name,
     			trim(nvl(t.town_code||t.town_new_code,'')) as town_code
 			</selectClause> 
-			<tableClause>cities t</tableClause>
+			<tableClause>towns t</tableClause>
 			<whereClause><![CDATA[ 
-				($defaultWhereClause) AND t.deleted = 0 
+				($defaultWhereClause)  
 				]]>  
 			</whereClause> 
         </operationBinding>
