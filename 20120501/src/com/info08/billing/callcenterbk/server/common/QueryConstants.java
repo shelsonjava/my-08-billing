@@ -1243,7 +1243,7 @@ public interface QueryConstants {
 	// deletes
 	public static final String Q_DELETE_PERS_NOTES = "delete from ccare.log_personell_notes t where t.note_id = ?";
 
-	public static final String Q_DELETE_PHONES_BY_ABONENT = "delete from ccare.abonent_to_phones t where t.abonent_id = ? ";
+	public static final String Q_DELETE_PHONES_BY_ABONENT = "delete from ccare.SUBSCRIBER_TO_PHONES t where t.SUBSCRIBER_ID = ? ";
 
 	public static final String Q_DELETE_USER_PERMISSION = " delete from user_permission t where t.user_id = ? ";
 
