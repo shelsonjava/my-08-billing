@@ -52,11 +52,6 @@ public class ClientUtils {
 			@Override
 			public void onChanged(ChangedEvent event) {
 				Object value = formItemParent.getValue();
-				if (value == null) {
-					value = (String) null;
-				} else {
-					value = value.toString();
-				}
 				for (FormItemDescr formItem : formItemChilds) {
 					formItem.formItem.clearValue();
 					if (set && formItem.valueSet != null) {
