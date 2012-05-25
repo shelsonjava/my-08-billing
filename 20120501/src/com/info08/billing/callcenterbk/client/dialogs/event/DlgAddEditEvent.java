@@ -46,21 +46,26 @@ public class DlgAddEditEvent extends Window {
 	private TextAreaItem entSMSCommentItem;
 	private CheckboxItem dtCritItem;
 	private CheckboxItem dtViewCritItem;
-
+	private Date defaultDate;
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
+	@SuppressWarnings("unused")
+	private int action;
 
 	private Integer event_owner_id;
 	private Integer event_category_id;
 
 	public DlgAddEditEvent(ListGrid listGrid, ListGridRecord pRecord,
-			Integer event_owner_id, Integer event_category_id) {
+			Integer event_owner_id, Integer event_category_id,
+			Date defaultDate, int action) {
 		try {
 
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
 			this.event_owner_id = event_owner_id;
 			this.event_category_id = event_category_id;
+			this.defaultDate = defaultDate;
+			this.action = action;
 
 			setTitle(pRecord == null ? CallCenterBK.constants.addEntPoster()
 					: CallCenterBK.constants.modifyEntPoster());
@@ -169,7 +174,9 @@ public class DlgAddEditEvent extends Window {
 			posterDateItem = new DateItem();
 			posterDateItem.setTitle(CallCenterBK.constants.date());
 			posterDateItem.setWidth("100%");
-			posterDateItem.setValue(new Date());
+			if (action == 0) {
+				posterDateItem.setValue(this.defaultDate);
+			}
 			posterDateItem.setName("event_date");
 			posterDateItem.setHint(CallCenterBK.constants.choose());
 
@@ -267,11 +274,13 @@ public class DlgAddEditEvent extends Window {
 			if (posterTime != null) {
 				postTimeItem.setValue(posterTime);
 			}
-			Integer date_criteria = editRecord.getAttributeAsInt("date_criteria");
+			Integer date_criteria = editRecord
+					.getAttributeAsInt("date_criteria");
 			if (date_criteria != null && date_criteria.intValue() == -1) {
 				dtCritItem.setValue(true);
 			}
-			Integer date_visibility = editRecord.getAttributeAsInt("date_visibility");
+			Integer date_visibility = editRecord
+					.getAttributeAsInt("date_visibility");
 			if (date_visibility != null && date_visibility.intValue() == -1) {
 				dtViewCritItem.setValue(true);
 			}
