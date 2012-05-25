@@ -5,7 +5,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddEditAbonent;
+/*changed*/
+import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddEditSubscriber;
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgOrgInfoViewByPhone;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -579,7 +580,7 @@ public class TabSubscriber extends Tab {
 			SC.say("მონიშნეთ ჩანაწერი ცხრილში");
 			return;
 		}
-		DlgAddEditAbonent dlgAddEditAbonent = new DlgAddEditAbonent(
+		DlgAddEditSubscriber dlgAddEditAbonent = new DlgAddEditSubscriber(
 				listGridRecord, subscriberDS, this, abonentsGrid);
 		dlgAddEditAbonent.show();
 	}
