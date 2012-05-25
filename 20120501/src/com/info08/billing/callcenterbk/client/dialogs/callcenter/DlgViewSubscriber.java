@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgViewAbonent extends Window {
+public class DlgViewSubscriber extends Window {
 
 	private VLayout mainLayout;
 
@@ -38,7 +38,7 @@ public class DlgViewAbonent extends Window {
 	private boolean smsSend = false;
 	private ToolStripButton sendAbonentInfoSMS;
 
-	public DlgViewAbonent(ListGrid listGrid, DataSource dataSource,
+	public DlgViewSubscriber(ListGrid listGrid, DataSource dataSource,
 			ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
@@ -80,18 +80,18 @@ public class DlgViewAbonent extends Window {
 		detailViewer.setDataSource(dataSource);
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
-		
+
 		dataSource.getField("address").setHidden(false);
 
-		DetailViewerField firstname = new DetailViewerField("firstname",
+		DetailViewerField firstname = new DetailViewerField("name",
 				CallCenterBK.constants.name());
-		DetailViewerField lastname = new DetailViewerField("lastname",
+		DetailViewerField lastname = new DetailViewerField("family_name",
 				CallCenterBK.constants.lastName());
-		DetailViewerField city = new DetailViewerField("city",
-				CallCenterBK.constants.city());
+		DetailViewerField city = new DetailViewerField("town_name",
+				CallCenterBK.constants.town());
 		DetailViewerField address = new DetailViewerField("address",
 				CallCenterBK.constants.address());
-		DetailViewerField phone = new DetailViewerField("phone",
+		DetailViewerField phone = new DetailViewerField("phones",
 				CallCenterBK.constants.phone());
 
 		detailViewer.viewSelectedData(listGrid);
@@ -136,7 +136,7 @@ public class DlgViewAbonent extends Window {
 
 	private void destroyDlg() {
 		try {
-			final DlgViewAbonent dlgViewAbonent = this;
+			final DlgViewSubscriber dlgViewAbonent = this;
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
@@ -207,21 +207,17 @@ public class DlgViewAbonent extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendAbonentInfoSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			sms_text.append(listGridRecord.getAttributeAsString("firstname"))
+			sms_text.append(listGridRecord.getAttributeAsString("name"))
 					.append(" ");
-			sms_text.append(listGridRecord.getAttributeAsString("lastname"))
+			sms_text.append(listGridRecord.getAttributeAsString("family_name"))
 					.append(";");
 			String address = listGridRecord.getAttributeAsString("address");
 			if (address != null && !address.trim().equals("")) {
 				sms_text.append(address).append(";");
 			}
 
-			String pPhone = listGridRecord.getAttributeAsString("phone");
-			Integer abonent_hide = listGridRecord
-					.getAttributeAsInt("abonent_hide");
-			if (pPhone != null && !pPhone.trim().equals("")
-					&& (abonent_hide == null || !abonent_hide.equals(1))) {
-				sms_text.append("032");
+			String pPhone = listGridRecord.getAttributeAsString("shown_phones");
+			if (pPhone != null && !pPhone.trim().equals("")) {
 				sms_text.append(pPhone).append(";");
 			}
 

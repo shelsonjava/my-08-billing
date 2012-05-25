@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgViewAbonentOrOrg extends Window {
+public class DlgViewSubscriberOrOrg extends Window {
 
 	private VLayout mainLayout;
 
@@ -38,7 +38,7 @@ public class DlgViewAbonentOrOrg extends Window {
 	private boolean smsSend = false;
 	private ToolStripButton sendSMS;
 
-	public DlgViewAbonentOrOrg(ListGrid listGrid, DataSource dataSource,
+	public DlgViewSubscriberOrOrg(ListGrid listGrid, DataSource dataSource,
 			ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
@@ -84,7 +84,7 @@ public class DlgViewAbonentOrOrg extends Window {
 				CallCenterBK.constants.dasaxeleba());
 
 		DetailViewerField town_name = new DetailViewerField(
-				"town_name", CallCenterBK.constants.city());
+				"town_name", CallCenterBK.constants.town());
 
 		DetailViewerField streetName = new DetailViewerField("streetName",
 				CallCenterBK.constants.street());
@@ -134,7 +134,7 @@ public class DlgViewAbonentOrOrg extends Window {
 
 	private void destroyDlg() {
 		try {
-			final DlgViewAbonentOrOrg dlgViewIndex = this;
+			final DlgViewSubscriberOrOrg dlgViewIndex = this;
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
