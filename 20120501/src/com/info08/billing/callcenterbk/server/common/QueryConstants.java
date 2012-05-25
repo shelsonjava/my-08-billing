@@ -800,6 +800,7 @@ public interface QueryConstants {
 			+ "      and ms.service_id = 3 and ms.deleted = 0";
 
 	public static final String Q_DELETE_CONTRACT_PRICES = "delete from ccare.contract_price_items t where t.contract_id = ? ";
+	public static final String Q_DELETE_OLD_STREET_NAMES = "delete from street_old_names t where t.street_id = ? ";
 	public static final String Q_DELETE_CONTRACT_PHONES = "delete from ccare.contractor_phones t where t.contract_id = ? ";
 	public static final String Q_DELETE_BLOCKLIST_PHONES = "delete from ccare.block_list_phones t where t.block_list_id = ? ";
 	public static final String Q_DELETE_BILLINGCOMP = "delete from ccare.BILLING_COMPANIES t where t.billing_company_id = ? ";
@@ -975,6 +976,37 @@ public interface QueryConstants {
 			+ "   and t.user_name = r.user_name(+)\n"
 			+ "   and t.rec_user = s.user_name(+)";
 
+	public static final String Q_CHECK_COUNTRY_FK = "select count(t1.country_id) as cnt, 1 as n\n"
+			+ "  from country_indexes t1\n"
+			+ " where country_id = ? \n"
+			+ "union all\n"
+			+ "select count(t2.country_id) as cnt, 2 as n\n"
+			+ "  from currency t2\n"
+			+ " where t2.country_id = ? \n"
+			+ "union all\n"
+			+ "select count(t3.country_id) as cnt, 3 as n\n"
+			+ "  from towns t3\n"
+			+ " where t3.country_id = ? \n"
+			+ "union all\n"
+			+ "select count(t4.country_id) as cnt, 4 as n\n"
+			+ "  from c_regional_centers t4\n" + " where country_id = ?";
+	
+	public static final String Q_CHECK_TOWN_FK = 
+
+	"select count(t1.town_id) as cnt, 'ქალაქის რეგიონები' as n\n" + "  from town_district t1\n"
+			+ " where town_id = ? \n" + "union all\n"
+			+ "select count(t2.town_id) as cnt, 'ქუჩების რეგიონები' as n\n"
+			+ "  from street_to_town_districts t2\n"
+			+ " where t2.town_id = ? \n" + "union all\n"
+			+ "select count(t3.town_id) as cnt, 'ქუჩების ძველი სახელები' as n\n"
+			+ "  from street_old_names t3\n" + " where t3.town_id = ? \n"
+			+ "union all\n" + "select count(t4.town_id) as cnt, 'ქუჩები' as n\n"
+			+ "  from streets t4\n" + " where town_id = ? \n" + "union all\n"
+			+ "select count(t5.town_id) as cnt, 'მისამართები' as n\n"
+			+ "  from addresses t5\n" + " where town_id = ?";
+
+
+
 	public static final String Q_GET_ALL_USERS = "select * from (\n"
 			+ "select t.user_id,\n"
 			+ "       t.user_firstname,\n"
@@ -1073,8 +1105,9 @@ public interface QueryConstants {
 			+ "       sd.town_district_id,\n" + "       ma.address_hide,\n"
 			+ "       ma.address_suffix_geo,\n" + "       ma.addr_number,\n"
 			+ "       ma.addr_block,\n" + "       ma.addr_appt,\n"
-			+ "       ma.addr_descr,\n" + "       sd.street_district_id,\n"
-			+ "       str.street_location_geo,\n" + "       t.deleted\n"
+			+ "       ma.addr_descr,\n"
+			+ "       sd.street_to_town_district_id,\n"
+			+ "       str.street_location,\n" + "       t.deleted\n"
 			+ "  from abonents        t,\n" + "       main_services   tt,\n"
 			+ "       firstnames      f,\n" + "       lastnames       l,\n"
 			+ "       phones          p,\n" + "       abonent_to_phones ap,\n"
@@ -1098,7 +1131,7 @@ public interface QueryConstants {
 			+ "  t.town_id,\n" + "  t.street_id,\n" + "  t.street_name,\n"
 			+ "  t.street_name_eng,\n" + "  t.map_id,\n" + "  t.rec_date,\n"
 			+ "  t.rec_user,\n" + "  t.street_note_eng,\n" + "  t.deleted,\n"
-			+ "  t.street_location_geo,\n" + "  t.street_location_eng,\n"
+			+ "  t.street_location,\n" + "  t.street_location_eng,\n"
 			+ "  t.upd_user,\n" + "  t.visible_options,\n"
 			+ "  t.record_type, \n" + "  t.descr_id_level_1, \n"
 			+ "  t.descr_id_level_2, \n" + "  t.descr_id_level_3, \n"
@@ -1117,7 +1150,7 @@ public interface QueryConstants {
 			+ "  t.street_id,\n" + "  t.street_name,\n"
 			+ "  t.street_name_eng,\n" + "  t.map_id,\n" + "  t.rec_date,\n"
 			+ "  t.rec_user,\n" + "  t.street_note_eng,\n" + "  t.deleted,\n"
-			+ "  t.street_location_geo,\n" + "  t.street_location_eng,\n"
+			+ "  t.street_location,\n" + "  t.street_location_eng,\n"
 			+ "  t.upd_user,\n" + "  t.visible_options,\n"
 			+ "  t.record_type,\n" + "  t.descr_id_level_1, \n"
 			+ "  t.descr_id_level_2, \n" + "  t.descr_id_level_3, \n"
@@ -1213,7 +1246,7 @@ public interface QueryConstants {
 	public static final String Q_UPDATE_STREET = " update ccare.streets t set\n"
 			+ "        t.town_id = ?,\n"
 			+ "        t.street_name = ?,\n"
-			+ "        t.street_location_geo = ?,\n"
+			+ "        t.street_location = ?,\n"
 			+ "        t.upd_user = ?,\n"
 			+ "        t.record_type = ?,\n"
 			+ "        t.descr_id_level_1 = ?,\n"

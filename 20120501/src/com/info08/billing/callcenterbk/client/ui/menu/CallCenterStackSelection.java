@@ -5,7 +5,7 @@ import com.info08.billing.callcenterbk.client.content.callcenter.TabFindSubscrib
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindByNumber;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindFacts;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindCurrencyRates;
-import com.info08.billing.callcenterbk.client.content.callcenter.TabFindDistBetwCity;
+import com.info08.billing.callcenterbk.client.content.callcenter.TabFindDistBetweenTowns;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindDistrictVillageIndexes;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindInCityTransport;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindIndexes;
@@ -267,7 +267,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 		iButtonCityDist.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				TabFindDistBetwCity findDistBetwCity = new TabFindDistBetwCity();
+				TabFindDistBetweenTowns findDistBetwCity = new TabFindDistBetweenTowns();
 				body.addTab(findDistBetwCity);
 			}
 		});

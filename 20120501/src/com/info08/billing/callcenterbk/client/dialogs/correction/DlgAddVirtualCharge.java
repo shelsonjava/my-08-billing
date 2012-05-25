@@ -75,7 +75,7 @@ public class DlgAddVirtualCharge extends Window {
 					"orgOrAbonent", CallCenterBK.constants.type());
 
 			DetailViewerField town_name = new DetailViewerField(
-					"town_name", CallCenterBK.constants.city());
+					"town_name", CallCenterBK.constants.town());
 
 			DetailViewerField streetName = new DetailViewerField("streetName",
 					CallCenterBK.constants.street());

@@ -1,16 +1,17 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.content.TabTowns;
-import com.info08.billing.callcenterbk.client.content.TabCityDistance;
+import com.info08.billing.callcenterbk.client.content.TabDistBetweenTowns;
 import com.info08.billing.callcenterbk.client.content.TabTownDistrict;
 import com.info08.billing.callcenterbk.client.content.TabCountry;
 import com.info08.billing.callcenterbk.client.content.TabVillageIndexes;
 import com.info08.billing.callcenterbk.client.content.TabDistrictIndexes;
-import com.info08.billing.callcenterbk.client.content.TabGeoStreetIdx;
+import com.info08.billing.callcenterbk.client.content.TabStreetIndex;
 import com.info08.billing.callcenterbk.client.content.TabStreet;
 import com.info08.billing.callcenterbk.client.content.TabStreetNames;
-import com.info08.billing.callcenterbk.client.content.TabStreetHist;
+import com.info08.billing.callcenterbk.client.content.TabStreetOldNames;
 import com.info08.billing.callcenterbk.client.content.TabStreetKinds;
+import com.info08.billing.callcenterbk.client.content.admin.TabCountryIndexes;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -32,15 +33,17 @@ public class AddressStackSelection extends SectionStackSection {
 			new MenuNode("100", "1", "ქვეყნები", true, "country.png"),
 			new MenuNode("101", "1", "ქალაქები", true, "city.png"),
 			new MenuNode("102", "1", "ქალაქის რეგიონები", true, "city.png"),
-			new MenuNode("103", "1", "მანძილი ქალაქებს შორის", true, "measure_distance.gif"),
+			new MenuNode("103", "1", "მანძილი ქალაქებს შორის", true,
+					"measure_distance.gif"),
 			new MenuNode("104", "1", "ქუჩების მართვა", true, "street.png"),
-			new MenuNode("105", "1", "ქუჩების ტიპების მართვა", true, "street.png"),
+			new MenuNode("105", "1", "ქუჩების ტიპების მართვა", true,
+					"street.png"),
 			new MenuNode("106", "1", "ქუჩების დასახელებები", true, "street.png"),
 			new MenuNode("107", "1", "ქუჩების ისტორია", true, "street.png"),
 			new MenuNode("108", "1", "ინდექსები - რაიონები", true, "index.jpg"),
 			new MenuNode("109", "1", "ინდექსები - სოფლები", true, "index.jpg"),
-			new MenuNode("110", "1", "ინდექსები - ქუჩები", true, "index.jpg")
-	};
+			new MenuNode("110", "1", "ინდექსები - ქუჩები", true, "index.jpg"),
+			new MenuNode("111", "1", "ინდექსები - ქვეყნები", true, "index.jpg") };
 
 	private TreeGrid menuTreeGrid;
 
@@ -132,19 +135,22 @@ public class AddressStackSelection extends SectionStackSection {
 			boolean hasStreetHistPerm = CommonSingleton.getInstance()
 					.hasPermission("150000");
 			menuData[7].setAttribute("enabled", hasStreetHistPerm);
-			
+
 			boolean hasGeoRegIdxPerm = CommonSingleton.getInstance()
 					.hasPermission("160000");
 			menuData[8].setAttribute("enabled", hasGeoRegIdxPerm);
-			
+
 			boolean hasGeoCouIdxPerm = CommonSingleton.getInstance()
 					.hasPermission("170000");
 			menuData[9].setAttribute("enabled", hasGeoCouIdxPerm);
-			
+
 			boolean hasGeoStrIdxPerm = CommonSingleton.getInstance()
 					.hasPermission("180000");
 			menuData[10].setAttribute("enabled", hasGeoStrIdxPerm);
-			
+
+			boolean hasCountryIndexes = CommonSingleton.getInstance()
+					.hasPermission("110000");
+			menuData[11].setAttribute("enabled", hasCountryIndexes);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -166,8 +172,8 @@ public class AddressStackSelection extends SectionStackSection {
 			TabTownDistrict tabCityRegions = new TabTownDistrict();
 			body.addTab(tabCityRegions);
 		} else if (menuId.equals("103")) {
-			TabCityDistance tabCityDistance = new TabCityDistance();
-			body.addTab(tabCityDistance);
+			TabDistBetweenTowns tabDistBetweenTowns = new TabDistBetweenTowns();
+			body.addTab(tabDistBetweenTowns);
 		} else if (menuId.equals("104")) {
 			TabStreet tabStreet = new TabStreet();
 			body.addTab(tabStreet);
@@ -178,16 +184,19 @@ public class AddressStackSelection extends SectionStackSection {
 			TabStreetNames tabStreetDescr = new TabStreetNames();
 			body.addTab(tabStreetDescr);
 		} else if (menuId.equals("107")) {
-			TabStreetHist tabStreetHist = new TabStreetHist();
+			TabStreetOldNames tabStreetHist = new TabStreetOldNames();
 			body.addTab(tabStreetHist);
-		}else if (menuId.equals("108")) {
+		} else if (menuId.equals("108")) {
 			TabDistrictIndexes tabGeoRegIdx = new TabDistrictIndexes();
 			body.addTab(tabGeoRegIdx);
-		}else if (menuId.equals("109")) {
+		} else if (menuId.equals("109")) {
 			TabVillageIndexes tabGeoCountryIdx = new TabVillageIndexes();
 			body.addTab(tabGeoCountryIdx);
-		}else if (menuId.equals("110")) {
-			TabGeoStreetIdx tabGeoStreetIdx = new TabGeoStreetIdx();
+		} else if (menuId.equals("110")) {
+			TabStreetIndex tabGeoStreetIdx = new TabStreetIndex();
+			body.addTab(tabGeoStreetIdx);
+		} else if (menuId.equals("111")) {
+			TabCountryIndexes tabGeoStreetIdx = new TabCountryIndexes();
 			body.addTab(tabGeoStreetIdx);
 		}
 	}
