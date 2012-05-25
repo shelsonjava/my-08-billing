@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.content.TabAbonent;
+import com.info08.billing.callcenterbk.client.content.TabSubscriber;
 import com.info08.billing.callcenterbk.client.content.TabAbonentLastNames;
 import com.info08.billing.callcenterbk.client.content.TabAbonentNames;
 import com.info08.billing.callcenterbk.client.content.TabOrgBusinessActivity;
@@ -125,7 +125,7 @@ public class CorrectionStackSelection extends SectionStackSection {
 			TabOrganization controlTabPane = new TabOrganization();
 			body.addTab(controlTabPane);
 		} else if (menuId.equals("102")) {
-			TabAbonent tabAbonent = new TabAbonent();
+			TabSubscriber tabAbonent = new TabSubscriber();
 			body.addTab(tabAbonent);
 		} else if (menuId.equals("103")) {
 			TabAbonentNames tabAbonentName = new TabAbonentNames();
