@@ -6,33 +6,33 @@
 	dropExtraFields = "false">
 	
 	<fields>
-		<field name="town_id"				type="integer"		title="ID"					hidden="true"	primaryKey="true" />
-		<field name="town_name"			type="text" 		title="City Name Geo"/>
+		<field name="town_id"					type="integer"		title="ID"					hidden="true"	primaryKey="true" />
+		<field name="town_name"					type="text" 		title="City Name Geo"/>
 		<field name="town_type_name"			type="text" 		title="town_type_name"/>
-		<field name="country_id"			type="integer"		title="Country Id" 			hidden="true"/>
-		<field name="town_type_id"			type="integer"		title="City Type Id" 		hidden="true"/>
+		<field name="country_id"				type="integer"		title="Country Id" 			hidden="true"/>
+		<field name="town_type_id"				type="integer"		title="City Type Id" 		hidden="true"/>
 		<field name="country_district_id"		type="integer"		title="country_district_id" 	hidden="true"/>
 		<field name="normal_gmt"				type="integer"		title="OFF GMT" 			hidden="true"/>
-		<field name="winter_gmt"			type="integer"		title="OFF GMT Winter" 		hidden="true"/>
-		<field name="capital_town"			type="integer"		title="Is Capital" 			hidden="true"/>
-		<field name="town_code"				type="text"			title="City Code"/>
-		<field name="town_new_code"			type="text"			title="City Code New"/>
-		<field name="country_name"			type="text"			title="Country Name"/>
+		<field name="winter_gmt"				type="integer"		title="OFF GMT Winter" 		hidden="true"/>
+		<field name="capital_town"				type="integer"		title="Is Capital" 			hidden="true"/>
+		<field name="town_code"					type="text"			title="City Code"/>
+		<field name="town_new_code"				type="text"			title="City Code New"/>
+		<field name="country_name"				type="text"			title="Country Name"/>
 		<field name="capital_town_name"			type="text"			title="Is Capital Text"/>
-		<field name="cityName"				type="text"			title="cityName"			hidden="true"/>
-		<field name="gmtoff"				type="integer"		title="gmtoff"				hidden="true"/>
-		<field name="gmtoffwinter"			type="integer"		title="gmtoffwinter"		hidden="true"/>
-		<field name="ctm"					type="text"			title="ctm"					hidden="true"/>
-		<field name="capital"				type="integer"		title="capital"				hidden="true"/>
-		<field name="code"					type="text"			title="code"				hidden="true"/>
-		<field name="countrycode"			type="text"			title="countrycode"			hidden="true"/>
-		<field name="countryid"				type="integer"		title="countryid"			hidden="true"/>
-		<field name="seasonid"				type="integer"		title="seasonid"			hidden="true"/>
-		<field name="countryregion"			type="text"			title="countryregion"		hidden="true"/>
-		<field name="stringOne"				type="text"			title="stringOne"			hidden="true"/>
-		<field name="stringTwo"				type="text"			title="stringTwo"			hidden="true"/>
-		<field name="country_id"			type="integer"		title="country_id"			hidden="true"/>
-		<field name="country_detail_id"		type="integer"		title="country_detail_id"	hidden="true"/>
+		<field name="cityName"					type="text"			title="cityName"			hidden="true"/>
+		<field name="gmtoff"					type="integer"		title="gmtoff"				hidden="true"/>
+		<field name="gmtoffwinter"				type="integer"		title="gmtoffwinter"		hidden="true"/>
+		<field name="ctm"						type="text"			title="ctm"					hidden="true"/>
+		<field name="capital"					type="integer"		title="capital"				hidden="true"/>
+		<field name="code"						type="text"			title="code"				hidden="true"/>
+		<field name="countrycode"				type="text"			title="countrycode"			hidden="true"/>
+		<field name="countryid"					type="integer"		title="countryid"			hidden="true"/>
+		<field name="seasonid"					type="integer"		title="seasonid"			hidden="true"/>
+		<field name="countryregion"				type="text"			title="countryregion"		hidden="true"/>
+		<field name="stringOne"					type="text"			title="stringOne"			hidden="true"/>
+		<field name="stringTwo"					type="text"			title="stringTwo"			hidden="true"/>
+		<field name="country_id"				type="integer"		title="country_id"			hidden="true"/>
+		<field name="country_detail_id"			type="integer"		title="country_detail_id"	hidden="true"/>
 		
 	</fields>
 
