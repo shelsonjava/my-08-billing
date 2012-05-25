@@ -1,10 +1,15 @@
 package com.info08.billing.callcenterbk.client.common.components;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.smartgwt.client.data.Criteria;
+import com.smartgwt.client.data.DSCallback;
+import com.smartgwt.client.data.DSRequest;
+import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.SC;
@@ -13,7 +18,6 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -21,7 +25,7 @@ public class MyComboBoxItem extends HLayout {
 
 	final private HandlerManager handlerManager = new HandlerManager(this);
 
-	private ListGridRecord selectedRecord;
+	private Record selectedRecord;
 	private String myIdField;
 	private ArrayList<MyComboBoxRecord> myFields;
 	private DataSource myDataSource;
@@ -34,13 +38,16 @@ public class MyComboBoxItem extends HLayout {
 	private Integer myDlgWidth;
 	private String myChooserTitle;
 
+	private String nameField;
+	private Object currentValue;
+
 	private DynamicForm dynamicForm;
 
 	private TextItem displayFormItem;
 	private IButton buttonItem;
 
-	public MyComboBoxItem(String myFieldName,String myFieldTitle, Integer myFieldTitleWidth,
-			Integer myFieldWidth) {
+	public MyComboBoxItem(String myFieldName, String myFieldTitle,
+			Integer myFieldTitleWidth, Integer myFieldWidth) {
 
 		this.myFieldName = myFieldName;
 		this.myFieldTitleWidth = myFieldTitleWidth;
@@ -85,6 +92,47 @@ public class MyComboBoxItem extends HLayout {
 				showChooserDlg(event);
 			}
 		});
+	}
+
+	public void setDataValue(Record record) {
+		setDataValue(record.toMap());
+	}
+
+	public void setDataValue(Map<?, ?> map) {
+		if (nameField == null)
+			return;
+		if (map == null)
+			return;
+		currentValue = map.get(nameField);
+		refreshView();
+	}
+
+	private void refreshView() {
+		if (myDataSource == null)
+			return;
+		if (currentValue == null) {
+			displayFormItem.clearValue();
+			return;
+		}
+
+		Criteria cr = new Criteria();
+		cr.setAttribute(myIdField, currentValue);
+		DSRequest req = new DSRequest();
+		if (myDataSourceOperation != null)
+			req.setOperationId(myDataSourceOperation);
+		myDataSource.fetchData(cr, new DSCallback() {
+
+			@Override
+			public void execute(DSResponse response, Object rawData,
+					DSRequest request) {
+				Record[] records = response.getData();
+				if (records == null || records.length == 0)
+					return;
+				setSelectedRecord(records[0]);
+
+			}
+		}, req);
+
 	}
 
 	private void showChooserDlg(ClickEvent event) {
@@ -200,11 +248,11 @@ public class MyComboBoxItem extends HLayout {
 		this.myDlgWidth = myDlgWidth;
 	}
 
-	public ListGridRecord getSelectedRecord() {
+	public Record getSelectedRecord() {
 		return selectedRecord;
 	}
 
-	public void setSelectedRecord(ListGridRecord selectedRecord) {
+	public void setSelectedRecord(Record selectedRecord) {
 		this.selectedRecord = selectedRecord;
 		String diplayValue = "";
 		int index = 0;
@@ -218,6 +266,7 @@ public class MyComboBoxItem extends HLayout {
 			index++;
 		}
 		displayFormItem.setValue(diplayValue);
+		currentValue = selectedRecord.getAttribute(myIdField);
 	}
 
 	public String getMyChooserTitle() {
@@ -230,5 +279,21 @@ public class MyComboBoxItem extends HLayout {
 
 	public HandlerManager getHandlerManagerMy() {
 		return handlerManager;
+	}
+
+	public String getNameField() {
+		return nameField;
+	}
+
+	public void setNameField(String nameField) {
+		this.nameField = nameField;
+	}
+
+	public Object getCurrentValue() {
+		return currentValue;
+	}
+
+	public void setCurrentValue(Object currentValue) {
+		this.currentValue = currentValue;
 	}
 }

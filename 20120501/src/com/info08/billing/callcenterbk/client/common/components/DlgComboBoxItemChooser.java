@@ -31,7 +31,7 @@ public class DlgComboBoxItemChooser extends Window {
 	public DlgComboBoxItemChooser(MyComboBoxItem comboBoxItem,
 			DataSource dataSource, Criteria criteria, String operationId,
 			ArrayList<MyComboBoxRecord> myFields, Integer height,
-			Integer width, String myIdField, String myChooserTitle) {
+			Integer width, final String myIdField, String myChooserTitle) {
 		this.comboBoxItem = comboBoxItem;
 		setTitle(CallCenterBK.constants.shoose() + " : " + myChooserTitle
 				+ " !");
@@ -127,7 +127,6 @@ public class DlgComboBoxItemChooser extends Window {
 				save(event);
 			}
 		});
-
 		addItem(hLayout);
 	}
 

@@ -179,6 +179,7 @@ public class DlgAddEditMainOrg extends Window {
 			hLayout.addMember(topTabSet);
 
 			parrentOrgItem = new MyComboBoxItem("parrent_organization_name", CallCenterBK.constants.parrentOrgName(), 0, 650);
+			parrentOrgItem.setNameField("parrent_organization_id");
 			parrentOrgItem.setMyDlgHeight(400);
 			parrentOrgItem.setMyDlgWidth(900);
 			DataSource orgDS = DataSource.get("OrgDS");
@@ -562,8 +563,10 @@ public class DlgAddEditMainOrg extends Window {
 	private void fillFields() {
 		try {
 			if (listGridRecord != null) {
-				Map<?,?> map = listGridRecord.toMap();
-				parrentOrgItem.setSelectedRecord(listGridRecord);
+				SC.say(listGridRecord.getAttributeAsInt("parrent_organization_id")+"");
+				Map<String,Object> map = listGridRecord.toMap();
+				map.put("parrent_organization_id", 80353L);
+				parrentOrgItem.setDataValue(map);				
 				dynamicFormMainInfo.setValues(map);
 			}
 		} catch (Exception e) {

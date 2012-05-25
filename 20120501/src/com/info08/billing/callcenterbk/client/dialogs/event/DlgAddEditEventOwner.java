@@ -225,7 +225,7 @@ public class DlgAddEditEventOwner extends Window {
 			}
 			Integer reservable = new Integer(reservable_str);
 			Integer organization_id = null;
-			ListGridRecord organization_record = organizationItem.getSelectedRecord();
+			Record organization_record = organizationItem.getSelectedRecord();
 			if (organization_record != null) {
 				organization_id = organization_record.getAttributeAsInt("organization_id");				
 			}
