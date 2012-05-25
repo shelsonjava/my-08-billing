@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewAbonent;
+import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewSubscriber;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.Criterion;
@@ -24,14 +24,13 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 
-public class TabFindAbonent extends Tab {
+public class TabFindSubscriber extends Tab {
 
 	// search form
 	private DynamicForm searchForm;
@@ -56,7 +55,7 @@ public class TabFindAbonent extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabFindAbonent() {
+	public TabFindSubscriber() {
 		setTitle(CallCenterBK.constants.findAbonent());
 		setCanClose(true);
 
@@ -95,7 +94,7 @@ public class TabFindAbonent extends Tab {
 		streetItem.setWidth(250);
 
 		citiesItem = new ComboBoxItem();
-		citiesItem.setTitle(CallCenterBK.constants.city());
+		citiesItem.setTitle(CallCenterBK.constants.town());
 		citiesItem.setName("city_name_geo");
 		citiesItem.setWidth(250);
 		citiesItem.setFetchMissingValues(true);
@@ -174,21 +173,7 @@ public class TabFindAbonent extends Tab {
 		buttonLayout.setMembers(findButton, clearButton);
 		mainLayout.addMember(buttonLayout);
 
-		listGrid = new ListGrid() {
-			protected String getCellCSSText(ListGridRecord record, int rowNum,
-					int colNum) {
-				ListGridRecord countryRecord = (ListGridRecord) record;
-				if (countryRecord == null) {
-					return super.getCellCSSText(record, rowNum, colNum);
-				}
-				Integer deleted = countryRecord.getAttributeAsInt("deleted");
-				if (deleted != null && !deleted.equals(0)) {
-					return "color:red;";
-				} else {
-					return super.getCellCSSText(record, rowNum, colNum);
-				}
-			};
-		};
+		listGrid = new ListGrid();
 
 		listGrid.setWidth(1000);
 		listGrid.setHeight100();
@@ -198,7 +183,7 @@ public class TabFindAbonent extends Tab {
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
 		listGrid.setCanRemoveRecords(false);
-		listGrid.setFetchOperation("customSearchForCC");
+		listGrid.setFetchOperation("customSearch");
 		listGrid.setCanSort(false);
 		listGrid.setCanResizeFields(false);
 		listGrid.setCanSelectText(true);
@@ -214,8 +199,8 @@ public class TabFindAbonent extends Tab {
 				CallCenterBK.constants.lastName(), 150);
 		family_name.setCanFilter(true);
 
-		ListGridField city = new ListGridField("city",
-				CallCenterBK.constants.city(), 140);
+		ListGridField city = new ListGridField("town_name",
+				CallCenterBK.constants.town(), 140);
 		city.setCanFilter(false);
 
 		ListGridField address = new ListGridField("address",
@@ -274,35 +259,24 @@ public class TabFindAbonent extends Tab {
 				}
 			}
 		});
-		family_nameItem.addKeyPressHandler(new KeyPressHandler() {
+		KeyPressHandler kp = new KeyPressHandler() {
+
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
 					search();
 				}
+
 			}
-		});
-		phoneItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		streetItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
+		};
+		family_nameItem.addKeyPressHandler(kp);
+		phoneItem.addKeyPressHandler(kp);
+		streetItem.addKeyPressHandler(kp);
 
 		listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-				DlgViewAbonent dlgViewAbonent = new DlgViewAbonent(listGrid,
+				DlgViewSubscriber dlgViewAbonent = new DlgViewSubscriber(listGrid,
 						datasource, listGrid.getSelectedRecord());
 				dlgViewAbonent.show();
 			}
@@ -360,28 +334,23 @@ public class TabFindAbonent extends Tab {
 				criteria.setAttribute("family_name_param", family_name);
 			}
 			if (phone != null && !phone.trim().equals("")) {
-				criteria.setAttribute("phone_param", phone);
+				criteria.setAttribute("phone", phone);
 			}
 			if (street_id_str != null && !street_id_str.trim().equals("")) {
 				String tmp = street_id_str.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					criteria.setAttribute("street_name_geo_param" + i, item);
-					i++;
-				}
+				criteria.setAttribute("street_name_param", tmp);
 			}
 			if (town_id_str != null && !town_id_str.trim().equals("")) {
 				criteria.setAttribute("town_id", new Integer(town_id_str));
 			}
 			if (city_region_id_str != null
 					&& !city_region_id_str.trim().equals("")) {
-				criteria.setAttribute("city_region_id", new Integer(
+				criteria.setAttribute("town_district_id", new Integer(
 						city_region_id_str));
 			}
+			criteria.setAttribute("for_call_center", 1);
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "customSearchForCC");
+			dsRequest.setAttribute("operationId", "customSearch");
 			listGrid.invalidateCache();
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override
