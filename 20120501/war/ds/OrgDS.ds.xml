@@ -11,12 +11,12 @@
 		<field name="organization_name"			type="text"  		title="organization_name"/>
 		<field name="remark"					type="text"  		title="remark"/>
 		<field name="ident_code"				type="text"  		title="ident_code"/>
-		<field name="new_identcode"				type="text"  		title="new_identcode"/>
 		<field name="ident_code_new"			type="text"  		title="ident_code_new"/>
 		<field name="work_hours"				type="text"  		title="work_hours"/>
 		<field name="found_date"				type="datetime"  	title="found_date"/>
 		<field name="email_address"				type="text"  		title="email_address"/>
 		<field name="web_address"				type="text"  		title="web_address"/>
+		<field name="social_address"			type="text"  		title="social_address"/>
 		<field name="additional_info"			type="text"  		title="additional_info"/>
 		<field name="contact_person"			type="text"  		title="contact_person"/>
 		<field name="day_offs"					type="integer"  	title="day_offs"/>
@@ -400,7 +400,8 @@
 						(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden,
 						getorgbusiness_alerts(o.organization_id) as org_allert_by_buss_det,
 						o.legal_address_id,
-						o.physical_address_id
+						o.physical_address_id,
+						o.social_address
 			</selectClause>
 			<tableClause>organizations o, addresses a, streets str, towns tw</tableClause>
 			<whereClause>
@@ -850,16 +851,58 @@
     	
     	<operationBinding operationId="searchMainOrgsForCBDoubleLike" operationType="fetch">
     		<selectClause>   			
-    			mo.organization_id,
-    			mo.organization_name || ' ( '||mo.note||' ) ' as organization_name 
+    			o.organization_id,
+    			o.organization_name,
+    			o.remark,
+    			(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden
 			</selectClause> 
-			<tableClause>ccare.main_orgs mo, ccare.main_services ms</tableClause>	
+			<tableClause>organizations o, addresses a, streets str, towns tw</tableClause>	
 			<whereClause>
-				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id
-				    #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id and mo.organization_id = $criteria.organization_id #end
-					#if($criteria.organization_name) and mo.organization_name like '%'||$criteria.organization_name||'%' #end				    
-			</whereClause>	
-			<orderClause>mo.organization_name</orderClause>		
+					o.physical_address_id = a.addr_id and str.street_id = a.street_id and tw.town_id = a.town_id
+				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+					#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end				    
+					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
+					#if($criteria.full_address_not_hidden) and (tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) like '%'||$criteria.full_address_not_hidden||'%' #end					
+			</whereClause>				
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchOrgPartnerBanks" operationType="fetch">
+    		<selectClause>   			
+    			o.organization_id,
+    			o.organization_name,
+    			o.remark,
+    			(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden
+			</selectClause> 
+			<tableClause>organization_partnet_banks t,organizations o, addresses a, streets str, towns tw</tableClause>	
+			<whereClause>
+					o.organization_id = t.organization_id and o.physical_address_id = a.addr_id and str.street_id = a.street_id and tw.town_id = a.town_id
+				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+					#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end				    
+					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
+					#if($criteria.full_address_not_hidden) and (tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) like '%'||$criteria.full_address_not_hidden||'%' #end					
+			</whereClause>				
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchPartnerBanks" operationType="fetch">
+    		<selectClause>   			
+    			o.organization_id,
+    			o.organization_name,
+    			o.remark,
+    			(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden
+			</selectClause> 
+			<tableClause>organizations o, organization_to_activities oa, organization_activities aa, addresses a, streets str, towns tw</tableClause>	
+			<whereClause>
+					o.organization_id = oa.organization_id and oa.org_activity_id = aa.org_activity_id and aa.is_bank_activity = 1 and 
+					o.physical_address_id = a.addr_id and str.street_id = a.street_id and tw.town_id = a.town_id
+				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+					#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end				    
+					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
+					#if($criteria.full_address_not_hidden) and (tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) like '%'||$criteria.full_address_not_hidden||'%' #end					
+			</whereClause>				
+			<orderClause>gettbilisiorder(tw.town_id),o.organization_name</orderClause>	
     	</operationBinding>
     	
     	

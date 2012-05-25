@@ -545,8 +545,7 @@ public class TabOrganization extends Tab {
 		addNewOrgBtn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(
-						true, null, orgTreeGrid);
+				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(null, orgTreeGrid);
 				dlgAddEditMainOrg.show();
 			}
 		});
@@ -560,8 +559,7 @@ public class TabOrganization extends Tab {
 							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
-				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(
-						false, listGridRecord, orgTreeGrid);
+				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(listGridRecord, orgTreeGrid);
 				dlgAddEditMainOrg.show();
 			}
 		});

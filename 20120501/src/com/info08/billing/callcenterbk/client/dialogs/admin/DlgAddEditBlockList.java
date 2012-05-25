@@ -1,11 +1,13 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxEvent;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItemDataChangedHandler;
+import com.info08.billing.callcenterbk.client.common.components.MyComboBoxRecord;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -78,8 +80,10 @@ public class DlgAddEditBlockList extends Window {
 			hLayout.setHeight100();
 			hLayout.setPadding(10);
 
-			myComboBoxItemOrg = new MyComboBoxItem("org_name",
-					CallCenterBK.constants.orgNameFull(), 168, 580);
+			String arrCapt[] = new String[2];
+			arrCapt[0] = CallCenterBK.constants.orgNameFull();
+			arrCapt[1] = CallCenterBK.constants.remark();	
+			myComboBoxItemOrg = new MyComboBoxItem("org_name",CallCenterBK.constants.orgName(),168, 580);
 			myComboBoxItemOrg.setMyDlgHeight(400);
 			myComboBoxItemOrg.setMyDlgWidth(600);
 			DataSource orgDS = DataSource.get("OrgDS");
@@ -87,22 +91,34 @@ public class DlgAddEditBlockList extends Window {
 			myComboBoxItemOrg
 					.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
 			myComboBoxItemOrg.setMyIdField("organization_id");
-			myComboBoxItemOrg.setMyDisplayField("org_name");
+			
+			ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>(); 
+			MyComboBoxRecord organization_name = new MyComboBoxRecord("organization_name", CallCenterBK.constants.parrentOrgName(), true);
+			MyComboBoxRecord remark = new MyComboBoxRecord("remark", CallCenterBK.constants.comment(), false);
+			MyComboBoxRecord full_address_not_hidden = new MyComboBoxRecord("full_address_not_hidden", CallCenterBK.constants.address(), true);
+			
+			fieldRecords.add(full_address_not_hidden);
+			fieldRecords.add(remark);
+			fieldRecords.add(organization_name);
+			
+			myComboBoxItemOrg.setMyFields(fieldRecords);		
+			
 			myComboBoxItemOrg.setMyChooserTitle(CallCenterBK.constants
 					.organization());
 
 			hLayout.addMember(myComboBoxItemOrg);
 
-			myComboBoxItemOrgDetails = new MyComboBoxItem("main_detail_geo",
-					CallCenterBK.constants.department(), 168, 580);
+			
+			String arrCapt1[] = new String[1];
+			arrCapt1[0] = CallCenterBK.constants.department();
+			myComboBoxItemOrgDetails = new MyComboBoxItem("main_detail_geo",CallCenterBK.constants.department(),168, 580);
 			myComboBoxItemOrgDetails.setMyDlgHeight(400);
 			myComboBoxItemOrgDetails.setMyDlgWidth(600);
 			DataSource mainDetDS = DataSource.get("MainDetDS");
 			myComboBoxItemOrgDetails.setMyDataSource(mainDetDS);
 			myComboBoxItemOrgDetails
 					.setMyDataSourceOperation("searchMainDetailsAdv");
-			myComboBoxItemOrgDetails.setMyIdField("main_detail_id");
-			myComboBoxItemOrgDetails.setMyDisplayField("main_detail_geo");
+			myComboBoxItemOrgDetails.setMyIdField("main_detail_id");			
 			myComboBoxItemOrgDetails.setMyChooserTitle(CallCenterBK.constants
 					.department());
 			Criteria myCriteria = new Criteria();
@@ -277,15 +293,15 @@ public class DlgAddEditBlockList extends Window {
 					.addDataChangedHandler(new MyComboBoxItemDataChangedHandler() {
 						@Override
 						public void onDataChanged(MyComboBoxEvent event) {
-							Integer organization_id = event.getSelectedId();
-							myComboBoxItemOrgDetails.setMyId(-1);
-							myComboBoxItemOrgDetails.setMyValue("");
-							if (organization_id != null && organization_id.intValue() > 0) {
-								Criteria myCriteria = new Criteria();
-								myCriteria.setAttribute("organization_id", organization_id);
-								myComboBoxItemOrgDetails
-										.setMyCriteria(myCriteria);
-							}
+//							Integer organization_id = event.getSelectedId();
+//							myComboBoxItemOrgDetails.setMyId(-1);
+//							myComboBoxItemOrgDetails.setMyValue("");
+//							if (organization_id != null && organization_id.intValue() > 0) {
+//								Criteria myCriteria = new Criteria();
+//								myCriteria.setAttribute("organization_id", organization_id);
+//								myComboBoxItemOrgDetails
+//										.setMyCriteria(myCriteria);
+//							}
 						}
 					});
 			addItem(hLayout);
@@ -331,9 +347,9 @@ public class DlgAddEditBlockList extends Window {
 			}, dsRequest);
 			Integer organization_id = editRecord.getAttributeAsInt("organization_id");
 			if (organization_id != null && organization_id.intValue() > 0) {
-				String org_name = editRecord.getAttributeAsString("orgName");
-				myComboBoxItemOrg.setMyId(organization_id);
-				myComboBoxItemOrg.setMyValue(org_name);
+//				String org_name = editRecord.getAttributeAsString("orgName");
+//				myComboBoxItemOrg.setMyId(organization_id);
+//				myComboBoxItemOrg.setMyValue(org_name);
 
 				Criteria myCriteria = myComboBoxItemOrgDetails.getMyCriteria();
 				if (myCriteria == null) {
@@ -347,10 +363,10 @@ public class DlgAddEditBlockList extends Window {
 					.getAttributeAsInt("main_detail_id");
 
 			if (main_detail_id != null && main_detail_id.intValue() > 0) {
-				String orgDepName = editRecord
-						.getAttributeAsString("orgDepName");
-				myComboBoxItemOrgDetails.setMyId(main_detail_id);
-				myComboBoxItemOrgDetails.setMyValue(orgDepName);
+//				String orgDepName = editRecord
+//						.getAttributeAsString("orgDepName");
+//				myComboBoxItemOrgDetails.setMyId(main_detail_id);
+//				myComboBoxItemOrgDetails.setMyValue(orgDepName);
 			}
 
 			String note = editRecord.getAttributeAsString("note");
@@ -364,12 +380,12 @@ public class DlgAddEditBlockList extends Window {
 
 	private void save() {
 		try {
-			Integer organization_id = myComboBoxItemOrg.getMyId();
-			if (organization_id == null || organization_id.intValue() <= 0) {
-				SC.say(CallCenterBK.constants.plzSelectOrg());
-				return;
-			}
-			Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
+//			Integer organization_id = myComboBoxItemOrg.getMyId();
+//			if (organization_id == null || organization_id.intValue() <= 0) {
+//				SC.say(CallCenterBK.constants.plzSelectOrg());
+//				return;
+//			}
+//			Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
 			String note = noteItem.getValueAsString();
 			String phone_list_type_str = blockListType.getValueAsString();
 			Integer phone_list_type = new Integer(phone_list_type_str);
@@ -396,8 +412,8 @@ public class DlgAddEditBlockList extends Window {
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("upd_user", loggedUser);
 			record.setAttribute("deleted", 0);
-			record.setAttribute("organization_id", organization_id);
-			record.setAttribute("main_detail_id", main_detail_id);
+//			record.setAttribute("organization_id", organization_id);
+//			record.setAttribute("main_detail_id", main_detail_id);
 			record.setAttribute("note", note);
 			record.setAttribute("phone_list_type", phone_list_type);
 

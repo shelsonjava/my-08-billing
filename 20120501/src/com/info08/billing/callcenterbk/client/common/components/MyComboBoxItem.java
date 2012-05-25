@@ -1,26 +1,30 @@
 package com.info08.billing.callcenterbk.client.common.components;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.shared.HandlerManager;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
+import com.smartgwt.client.types.TitleOrientation;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 public class MyComboBoxItem extends HLayout {
 
 	final private HandlerManager handlerManager = new HandlerManager(this);
 
+	private ListGridRecord selectedRecord;
 	private String myIdField;
-	private String myDisplayField;
-	private Integer myId;
-	private String myValue;
+	private ArrayList<MyComboBoxRecord> myFields;
 	private DataSource myDataSource;
-	private String myFieldTitle;
 	private String myDataSourceOperation;
 	private String myFieldName;
 	private Integer myFieldTitleWidth;
@@ -32,15 +36,14 @@ public class MyComboBoxItem extends HLayout {
 
 	private DynamicForm dynamicForm;
 
-	private TextItem formItem;
+	private TextItem displayFormItem;
 	private IButton buttonItem;
 
-	public MyComboBoxItem(String myFieldName, String myFieldTitle,
-			Integer myFieldTitleWidth, Integer myFieldWidth) {
+	public MyComboBoxItem(String myFieldName,String myFieldTitle, Integer myFieldTitleWidth,
+			Integer myFieldWidth) {
 
 		this.myFieldName = myFieldName;
 		this.myFieldTitleWidth = myFieldTitleWidth;
-		this.myFieldTitle = myFieldTitle;
 		this.myFieldWidth = myFieldWidth;
 
 		setPadding(0);
@@ -52,24 +55,29 @@ public class MyComboBoxItem extends HLayout {
 		dynamicForm.setWidth100();
 		dynamicForm.setTitleWidth(myFieldTitleWidth);
 		dynamicForm.setNumCols(2);
-		dynamicForm.setID("formId_"+myFieldName);
-		
-
+		dynamicForm.setTitleOrientation(TitleOrientation.TOP);
 		addMember(dynamicForm);
 
-		formItem = new TextItem();
-		formItem.setWidth(myFieldWidth);
-		formItem.setName("formItem" + myFieldName);
-		formItem.setTitle(myFieldTitle);
-		formItem.setCanEdit(false);
+		displayFormItem = new TextItem();
+		displayFormItem.setWidth(myFieldWidth - 25);
 
-		dynamicForm.setFields(formItem);
+		displayFormItem.setName("formItem" + myFieldName);
+		displayFormItem.setTitle(myFieldTitle);
+		displayFormItem.setCanEdit(false);
+
+		dynamicForm.setFields(displayFormItem);
 
 		buttonItem = new IButton();
 		buttonItem.setTitle(" ... ");
 		buttonItem.setWidth(20);
+		buttonItem.setHeight(23);
 
-		addMember(buttonItem);
+		VLayout hLayout = new VLayout();
+		hLayout.addMember(buttonItem);
+		hLayout.setHeight(40);
+		hLayout.setLayoutMargin(2);
+		hLayout.setAlign(VerticalAlignment.BOTTOM);
+		addMember(hLayout);
 
 		buttonItem.addClickHandler(new ClickHandler() {
 			@Override
@@ -83,8 +91,8 @@ public class MyComboBoxItem extends HLayout {
 		try {
 			DlgComboBoxItemChooser boxItemChooser = new DlgComboBoxItemChooser(
 					this, myDataSource, myCriteria, myDataSourceOperation,
-					myDisplayField, myFieldTitle, myDlgHeight, myDlgWidth,
-					myIdField, myChooserTitle);
+					myFields, myDlgHeight, myDlgWidth, myIdField,
+					myChooserTitle);
 			boxItemChooser.show();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,7 +104,7 @@ public class MyComboBoxItem extends HLayout {
 		handlerManager.addHandler(MyComboBoxEvent.getType(), handler);
 	}
 
- 	public String getMyIdField() {
+	public String getMyIdField() {
 		return myIdField;
 	}
 
@@ -104,12 +112,12 @@ public class MyComboBoxItem extends HLayout {
 		this.myIdField = myIdField;
 	}
 
-	public String getMyDisplayField() {
-		return myDisplayField;
+	public ArrayList<MyComboBoxRecord> getMyFields() {
+		return myFields;
 	}
 
-	public void setMyDisplayField(String myDisplayField) {
-		this.myDisplayField = myDisplayField;
+	public void setMyFields(ArrayList<MyComboBoxRecord> myFields) {
+		this.myFields = myFields;
 	}
 
 	public DataSource getMyDataSource() {
@@ -118,14 +126,6 @@ public class MyComboBoxItem extends HLayout {
 
 	public void setMyDataSource(DataSource myDataSource) {
 		this.myDataSource = myDataSource;
-	}
-
-	public String getMyFieldTitle() {
-		return myFieldTitle;
-	}
-
-	public void setMyFieldTitle(String myFieldTitle) {
-		this.myFieldTitle = myFieldTitle;
 	}
 
 	public String getMyDataSourceOperation() {
@@ -153,11 +153,11 @@ public class MyComboBoxItem extends HLayout {
 	}
 
 	public TextItem getFormItem() {
-		return formItem;
+		return displayFormItem;
 	}
 
 	public void setFormItem(TextItem formItem) {
-		this.formItem = formItem;
+		this.displayFormItem = formItem;
 	}
 
 	public Integer getMyFieldTitleWidth() {
@@ -200,21 +200,24 @@ public class MyComboBoxItem extends HLayout {
 		this.myDlgWidth = myDlgWidth;
 	}
 
-	public Integer getMyId() {
-		return myId;
+	public ListGridRecord getSelectedRecord() {
+		return selectedRecord;
 	}
 
-	public void setMyId(Integer myId) {
-		this.myId = myId;
-	}
-
-	public String getMyValue() {
-		return myValue;
-	}
-
-	public void setMyValue(String myValue) {
-		this.myValue = myValue;
-		formItem.setValue(myValue);
+	public void setSelectedRecord(ListGridRecord selectedRecord) {
+		this.selectedRecord = selectedRecord;
+		String diplayValue = "";
+		int index = 0;
+		for (MyComboBoxRecord recordItem : myFields) {
+			if (!recordItem.isDisplayField()) {
+				continue;
+			}
+			String value = selectedRecord.getAttributeAsString(recordItem
+					.getFieldName());
+			diplayValue += (index == 0 ? value : " -- " + value);
+			index++;
+		}
+		displayFormItem.setValue(diplayValue);
 	}
 
 	public String getMyChooserTitle() {

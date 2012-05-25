@@ -83,6 +83,10 @@ public class Organization implements Serializable {
 	@Basic
 	@Column(name = "WEB_ADDRESS")
 	private String web_address;
+	
+	@Basic
+	@Column(name = "SOCIAL_ADDRESS")
+	private String social_address;
 
 	@Basic
 	@Column(name = "DAY_OFFS")
@@ -578,5 +582,13 @@ public class Organization implements Serializable {
 
 	public void setAnumber(String anumber) {
 		this.anumber = anumber;
+	}
+
+	public String getSocial_address() {
+		return social_address;
+	}
+
+	public void setSocial_address(String social_address) {
+		this.social_address = social_address;
 	}
 }

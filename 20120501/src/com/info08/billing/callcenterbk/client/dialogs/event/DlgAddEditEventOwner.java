@@ -1,7 +1,10 @@
 package com.info08.billing.callcenterbk.client.dialogs.event;
 
+import java.util.ArrayList;
+
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
+import com.info08.billing.callcenterbk.client.common.components.MyComboBoxRecord;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -120,21 +123,31 @@ public class DlgAddEditEventOwner extends Window {
 		
 		
 		
-
-		organizationItem = new MyComboBoxItem("organization_name", CallCenterBK.constants.orgNameFull(), 168, 380);
+		String arrCapt[] = new String[2];
+		arrCapt[0] = CallCenterBK.constants.orgNameFull();		
+		arrCapt[1] = CallCenterBK.constants.remark();
+		organizationItem = new MyComboBoxItem("organization_name",CallCenterBK.constants.orgName(), 168, 380);
 		organizationItem.setMyDlgHeight(400);
 		organizationItem.setMyDlgWidth(600);
 		DataSource orgDS = DataSource.get("EventOwnerDS");
 		organizationItem.setMyDataSource(orgDS);
 		organizationItem.setMyDataSourceOperation("searchOrganizationsForCBDoubleLike");
 		organizationItem.setMyIdField("organization_id");
-		organizationItem.setMyDisplayField("organization_name");
+		
+		ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>(); 
+		MyComboBoxRecord organization_name = new MyComboBoxRecord("organization_name", CallCenterBK.constants.parrentOrgName(), true);
+		MyComboBoxRecord remark = new MyComboBoxRecord("remark", CallCenterBK.constants.comment(), false);
+		MyComboBoxRecord full_address_not_hidden = new MyComboBoxRecord("full_address_not_hidden", CallCenterBK.constants.address(), true);
+		
+		fieldRecords.add(organization_name);
+		fieldRecords.add(full_address_not_hidden);
+		fieldRecords.add(remark);
+		
+		organizationItem.setMyFields(fieldRecords);		
 		organizationItem.setMyChooserTitle(CallCenterBK.constants.organization());
 		
 		hLayout.addMember(organizationItem);
 		
-		
-
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
 		hLayoutItem.setAlign(Alignment.RIGHT);
@@ -187,16 +200,8 @@ public class DlgAddEditEventOwner extends Window {
 			if (reservable != null) {
 				reservableItem.setValue(reservable);
 			}
-			Integer organization_id = editRecord
-					.getAttributeAsInt("organization_id");
-			if (organization_id != null) {
-				organizationItem.setMyId(organization_id);
-			}
-			String organization_name = editRecord
-					.getAttributeAsString("organization_name");
-			if (organization_name != null){
-				organizationItem.setMyValue(organization_name);
-			}
+			
+			organizationItem.setSelectedRecord(editRecord);
 			
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -220,10 +225,9 @@ public class DlgAddEditEventOwner extends Window {
 			}
 			Integer reservable = new Integer(reservable_str);
 			Integer organization_id = null;
-			String organization_id_str = organizationItem.getMyValue();
-			if (organization_id_str != null
-					&& !organization_id_str.trim().equals("")) {
-				organization_id = new Integer(organizationItem.getMyId());
+			ListGridRecord organization_record = organizationItem.getSelectedRecord();
+			if (organization_record != null) {
+				organization_id = organization_record.getAttributeAsInt("organization_id");				
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();

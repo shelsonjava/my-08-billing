@@ -106,21 +106,24 @@ public class DlgAddEditContractor extends Window {
 			hLayout.setHeight100();
 			hLayout.setPadding(10);
 
-			myComboBoxItemOrg = new MyComboBoxItem("org_name",
-					CallCenterBK.constants.orgNameFull(), 168, 580);
+			String arrCapt[] = new String[2];
+			arrCapt[0] = CallCenterBK.constants.orgNameFull();
+			arrCapt[1] = CallCenterBK.constants.remark();	
+			myComboBoxItemOrg = new MyComboBoxItem("org_name",CallCenterBK.constants.orgName(), 168, 580);
 			myComboBoxItemOrg.setMyDlgHeight(400);
 			myComboBoxItemOrg.setMyDlgWidth(600);
 			DataSource orgDS = DataSource.get("OrgDS");
 			myComboBoxItemOrg.setMyDataSource(orgDS);
 			myComboBoxItemOrg.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
 			myComboBoxItemOrg.setMyIdField("organization_id");
-			myComboBoxItemOrg.setMyDisplayField("org_name");
+			//myComboBoxItemOrg.setMyDisplayField("organization_name","remark");
 			myComboBoxItemOrg.setMyChooserTitle(CallCenterBK.constants.organization());
 
 			hLayout.addMember(myComboBoxItemOrg);
 
-			myComboBoxItemOrgDetails = new MyComboBoxItem("main_detail_geo",
-					CallCenterBK.constants.department(), 168, 580);
+			String arrCapt1[] = new String[2];
+			arrCapt1[0] = CallCenterBK.constants.department();
+			myComboBoxItemOrgDetails = new MyComboBoxItem("main_detail_geo",CallCenterBK.constants.department(),168, 580);
 			myComboBoxItemOrgDetails.setMyDlgHeight(400);
 			myComboBoxItemOrgDetails.setMyDlgWidth(600);
 			DataSource mainDetDS = DataSource.get("MainDetDS");
@@ -128,7 +131,7 @@ public class DlgAddEditContractor extends Window {
 			myComboBoxItemOrgDetails
 					.setMyDataSourceOperation("searchMainDetailsAdv");
 			myComboBoxItemOrgDetails.setMyIdField("main_detail_id");
-			myComboBoxItemOrgDetails.setMyDisplayField("main_detail_geo");
+//			myComboBoxItemOrgDetails.setMyDisplayField("main_detail_geo");
 			myComboBoxItemOrgDetails.setMyChooserTitle(CallCenterBK.constants
 					.department());
 			Criteria myCriteria = new Criteria();
@@ -471,39 +474,39 @@ public class DlgAddEditContractor extends Window {
 					.addDataChangedHandler(new MyComboBoxItemDataChangedHandler() {
 						@Override
 						public void onDataChanged(MyComboBoxEvent event) {
-							Integer organization_id = event.getSelectedId();
-							myComboBoxItemOrgDetails.setMyId(-1);
-							myComboBoxItemOrgDetails.setMyValue("");
-							if (organization_id != null && organization_id.intValue() > 0) {
-								Criteria myCriteria = new Criteria();
-								myCriteria.setAttribute("organization_id", organization_id);
-								myComboBoxItemOrgDetails
-										.setMyCriteria(myCriteria);
-							}
+//							Integer organization_id = event.getSelectedId();
+//							myComboBoxItemOrgDetails.setMyId(-1);
+//							myComboBoxItemOrgDetails.setMyValue("");
+//							if (organization_id != null && organization_id.intValue() > 0) {
+//								Criteria myCriteria = new Criteria();
+//								myCriteria.setAttribute("organization_id", organization_id);
+//								myComboBoxItemOrgDetails
+//										.setMyCriteria(myCriteria);
+//							}
 						}
 					});
 
 			checkOrgCallsBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					Integer organization_id = myComboBoxItemOrg.getMyId();
-					Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
-					if (organization_id == null && main_detail_id == null) {
-						SC.say(CallCenterBK.constants.noOrgOrDepSelected());
-						return;
-					}
-					if (organization_id == null) {
-						organization_id = 0;
-					}
-					if (main_detail_id == null) {
-						main_detail_id = 0;
-					}
-					if (organization_id == 0 && main_detail_id == 0) {
-						SC.say(CallCenterBK.constants.noOrgOrDepSelected());
-						return;
-					}
+//					Integer organization_id = myComboBoxItemOrg.getMyId();
+//					Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
+//					if (organization_id == null && main_detail_id == null) {
+//						SC.say(CallCenterBK.constants.noOrgOrDepSelected());
+//						return;
+//					}
+//					if (organization_id == null) {
+//						organization_id = 0;
+//					}
+//					if (main_detail_id == null) {
+//						main_detail_id = 0;
+//					}
+//					if (organization_id == 0 && main_detail_id == 0) {
+//						SC.say(CallCenterBK.constants.noOrgOrDepSelected());
+//						return;
+//					}
 
-					getCallCountByOrgOrDep(organization_id, main_detail_id);
+//					getCallCountByOrgOrDep(organization_id, main_detail_id);
 				}
 			});
 
@@ -516,7 +519,7 @@ public class DlgAddEditContractor extends Window {
 		}
 	}
 
-	private void getCallCountByOrgOrDep(Integer organization_id, Integer main_detail_id) {
+	protected void getCallCountByOrgOrDep(Integer organization_id, Integer main_detail_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Criteria record = new Criteria();
@@ -631,9 +634,9 @@ public class DlgAddEditContractor extends Window {
 
 			Integer organization_id = editRecord.getAttributeAsInt("organization_id");
 			if (organization_id != null && organization_id.intValue() > 0) {
-				String org_name = editRecord.getAttributeAsString("orgName");
-				myComboBoxItemOrg.setMyId(organization_id);
-				myComboBoxItemOrg.setMyValue(org_name);
+//				String org_name = editRecord.getAttributeAsString("orgName");
+//				myComboBoxItemOrg.setMyId(organization_id);
+//				myComboBoxItemOrg.setMyValue(org_name);
 
 				Criteria myCriteria = myComboBoxItemOrgDetails.getMyCriteria();
 				if (myCriteria == null) {
@@ -647,10 +650,10 @@ public class DlgAddEditContractor extends Window {
 					.getAttributeAsInt("main_detail_id");
 
 			if (main_detail_id != null && main_detail_id.intValue() > 0) {
-				String orgDepName = editRecord
-						.getAttributeAsString("orgDepName");
-				myComboBoxItemOrgDetails.setMyId(main_detail_id);
-				myComboBoxItemOrgDetails.setMyValue(orgDepName);
+//				String orgDepName = editRecord
+//						.getAttributeAsString("orgDepName");
+//				myComboBoxItemOrgDetails.setMyId(main_detail_id);
+//				myComboBoxItemOrgDetails.setMyValue(orgDepName);
 			}
 
 			String note = editRecord.getAttributeAsString("note");
@@ -711,15 +714,15 @@ public class DlgAddEditContractor extends Window {
 
 	private void save() {
 		try {
-			Integer organization_id = myComboBoxItemOrg.getMyId();
-			if (organization_id == null || organization_id.intValue() <= 0) {
-				SC.say(CallCenterBK.constants.plzSelectOrg());
-				return;
-			}
-			Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
-			if (main_detail_id != null && main_detail_id.intValue() < 0) {
-				main_detail_id = 0;
-			}
+//			Integer organization_id = myComboBoxItemOrg.getMyId();
+//			if (organization_id == null || organization_id.intValue() <= 0) {
+//				SC.say(CallCenterBK.constants.plzSelectOrg());
+//				return;
+//			}
+//			Integer main_detail_id = myComboBoxItemOrgDetails.getMyId();
+//			if (main_detail_id != null && main_detail_id.intValue() < 0) {
+//				main_detail_id = 0;
+//			}
 
 			String note = noteItem.getValueAsString();
 			String is_budget_str = contractorType.getValueAsString();
@@ -911,8 +914,8 @@ public class DlgAddEditContractor extends Window {
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("upd_user", loggedUser);
 			record.setAttribute("deleted", 0);
-			record.setAttribute("organization_id", organization_id);
-			record.setAttribute("main_detail_id", main_detail_id);
+//			record.setAttribute("organization_id", organization_id);
+//			record.setAttribute("main_detail_id", main_detail_id);
 			record.setAttribute("note", note);
 			record.setAttribute("is_budget", is_budget);
 			record.setAttribute("start_date", start_date);

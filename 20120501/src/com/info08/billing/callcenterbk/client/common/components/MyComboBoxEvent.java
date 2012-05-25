@@ -1,16 +1,15 @@
 package com.info08.billing.callcenterbk.client.common.components;
 
 import com.google.gwt.event.shared.GwtEvent;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class MyComboBoxEvent extends GwtEvent<MyComboBoxItemDataChangedHandler> {
 
-	private Integer selectedId;
-	private String selectedValue;
+	private ListGridRecord listGridRecord;
 
-	public MyComboBoxEvent(Integer selectedId, String selectedValue) {
+	public MyComboBoxEvent(ListGridRecord listGridRecord) {
 		super();
-		this.selectedId = selectedId;
-		this.selectedValue = selectedValue;
+		this.listGridRecord = listGridRecord;
 	}
 
 	public static final Type<MyComboBoxItemDataChangedHandler> TYPE = new Type<MyComboBoxItemDataChangedHandler>();
@@ -25,20 +24,12 @@ public class MyComboBoxEvent extends GwtEvent<MyComboBoxItemDataChangedHandler> 
 		handler.onDataChanged(this);
 	}
 
-	public Integer getSelectedId() {
-		return selectedId;
+	public ListGridRecord getListGridRecord() {
+		return listGridRecord;
 	}
 
-	public void setSelectedId(Integer selectedId) {
-		this.selectedId = selectedId;
-	}
-
-	public String getSelectedValue() {
-		return selectedValue;
-	}
-
-	public void setSelectedValue(String selectedValue) {
-		this.selectedValue = selectedValue;
+	public void setListGridRecord(ListGridRecord listGridRecord) {
+		this.listGridRecord = listGridRecord;
 	}
 
 	public static Type<MyComboBoxItemDataChangedHandler> getType() {
