@@ -131,8 +131,8 @@ public class ClientMapUtil {
 		streetRecTypes.put("0", "ძველი");
 		streetRecTypes.put("1", "ახალი");
 
-		raionCentTypes.put("1", "ქალაქი");
 		raionCentTypes.put("0", "სოფელი");
+		raionCentTypes.put("1", "ქალაქი");		
 		raionCentTypes.put("-1", "რაიონული ცენტრი");
 
 		transpTypeInt.put("0", "საქალაქო");
@@ -177,7 +177,7 @@ public class ClientMapUtil {
 		orgNoteCrits.put("-1", "გაწითლებული");
 		
 		indexSearchTypes.put("1", CallCenterBK.constants.findByCountry());
-		indexSearchTypes.put("2", CallCenterBK.constants.findByCity());
+		indexSearchTypes.put("2", CallCenterBK.constants.findByTown());
 		indexSearchTypes.put("3", CallCenterBK.constants.findByOperator());
 
 		smsStatuses.put("2", CallCenterBK.constants.all());
