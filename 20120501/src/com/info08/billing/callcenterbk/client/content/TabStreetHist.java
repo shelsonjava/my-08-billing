@@ -1,18 +1,24 @@
 package com.info08.billing.callcenterbk.client.content;
 
-import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditStreetOldNames;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.DoubleClickEvent;
+import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -32,12 +38,15 @@ public class TabStreetHist extends Tab {
 
 	// form fields
 	private TextItem streetOldNameDescrItem;
-	private ComboBoxItem streetNameItem;
+	private ComboBoxItem addrTownItem;
+	private ComboBoxItem addrStreetItem;
+
+	// private ComboBoxItem streetNameItem;
 
 	// actions
 	private IButton findButton;
 	private IButton clearButton;
-	private ToolStripButton deleteBtn;
+	private ToolStripButton manageBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -69,15 +78,30 @@ public class TabStreetHist extends Tab {
 			streetOldNameDescrItem.setWidth(300);
 			streetOldNameDescrItem.setName("street_old_name_geo");
 
-			streetNameItem = new ComboBoxItem();
-			streetNameItem.setTitle("ქუჩის დასახელება");
-			streetNameItem.setWidth(300);
-			streetNameItem.setName("street_name");
-			streetNameItem.setFetchMissingValues(true);
-			streetNameItem.setFilterLocally(false);
-			streetNameItem.setAddUnknownValues(false);
+			addrTownItem = new ComboBoxItem();
+			addrTownItem.setTitle(CallCenterBK.constants.town());
+			addrTownItem.setName("town_id");
+			addrTownItem.setWidth(300);
+			ClientUtils.fillCombo(addrTownItem, "TownsDS",
+					"searchCitiesFromDBForCombos", "town_id", "town_name");
 
-			searchForm.setFields(streetOldNameDescrItem, streetNameItem);
+			addrStreetItem = new ComboBoxItem();
+			addrStreetItem.setTitle(CallCenterBK.constants.street());
+			addrStreetItem.setName("street_id");
+			addrStreetItem.setWidth(300);
+
+			Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
+			aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
+			aditionalCriteria.put("need_indexes", 1);
+
+			ClientUtils.fillCombo(addrStreetItem, "StreetsDS",
+					"searchStreetFromDBForCombos", "street_id", "street_name",
+					aditionalCriteria);
+
+			ClientUtils.makeDependancy(addrTownItem, "town_id", addrStreetItem);
+
+			searchForm.setFields(streetOldNameDescrItem, addrTownItem,
+					addrStreetItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -98,10 +122,10 @@ public class TabStreetHist extends Tab {
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			deleteBtn = new ToolStripButton("გაუქმება", "person_delete.png");
-			deleteBtn.setLayoutAlign(Alignment.LEFT);
-			deleteBtn.setWidth(50);
-			toolStrip.addButton(deleteBtn);
+			manageBtn = new ToolStripButton("მართვა", "manage.png");
+			manageBtn.setLayoutAlign(Alignment.LEFT);
+			manageBtn.setWidth(50);
+			toolStrip.addButton(manageBtn);
 
 			toolStrip.addSeparator();
 
@@ -112,13 +136,7 @@ public class TabStreetHist extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+					return super.getCellCSSText(record, rowNum, colNum);
 				};
 			};
 
@@ -136,6 +154,18 @@ public class TabStreetHist extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
+			listGrid.addDoubleClickHandler(new DoubleClickHandler() {
+				@Override
+				public void onDoubleClick(DoubleClickEvent event) {
+					ListGridRecord listGridRecord = listGrid
+							.getSelectedRecord();
+					DlgAddEditStreetOldNames dlgAddEditStreetOldNames = new DlgAddEditStreetOldNames(
+							TabStreetHist.this, listGrid, listGridRecord);
+					dlgAddEditStreetOldNames.show();
+
+				}
+			});
+
 			datasource.getField("street_old_name_descr").setTitle(
 					"ქუჩის დასახელება");
 			ListGridField street_old_name_geo = new ListGridField(
@@ -147,86 +177,62 @@ public class TabStreetHist extends Tab {
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					search();
+					search(false);
 				}
 			});
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					streetNameItem.clearValue();
+					addrStreetItem.clearValue();
 					streetOldNameDescrItem.clearValue();
 				}
 			});
-			deleteBtn.addClickHandler(new ClickHandler() {
+			manageBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					final Integer street_old_id = listGridRecord
-							.getAttributeAsInt("street_old_id");
-					if (street_old_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ ჩანაწერის გაუქმება ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(street_old_id, 1);
-									}
-								}
-							});
+					DlgAddEditStreetOldNames dlgAddEditStreetOldNames = new DlgAddEditStreetOldNames(
+							TabStreetHist.this, listGrid, listGridRecord);
+					dlgAddEditStreetOldNames.show();
 				}
 			});
-
 			setPane(mainLayout);
-			fillCombos();
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.getMessage().toString());
 		}
 	}
 
-	public void fillCombos() throws Exception {
-		try {
-
-			DataSource streetsDS = DataSource.get("StreetsNewDS");
-			streetNameItem.setOptionOperationId("searchStreetFromDBForCombos");
-			streetNameItem.setOptionDataSource(streetsDS);
-			streetNameItem.setValueField("street_id");
-			streetNameItem.setDisplayField("street_name");
-
-			Criteria criteria = new Criteria();
-			streetNameItem.setOptionCriteria(criteria);
-			streetNameItem.setAutoFetchData(false);
-		} catch (Exception e) {
-			e.printStackTrace();
-			SC.say(e.toString());
-		}
-	}
-
-	private void search() {
+	public void search(boolean refresh) {
 		try {
 			String street_old_name_geo = streetOldNameDescrItem
 					.getValueAsString();
-			String street_id = streetNameItem.getValueAsString();
+			String street_id = addrStreetItem.getValueAsString();
+			String town_id = addrTownItem.getValueAsString();
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("street_old_name_descr", street_old_name_geo);
 			criteria.setAttribute("street_id", street_id);
+			criteria.setAttribute("town_id", town_id);
 
 			DSRequest dsRequest = new DSRequest();
+//			if (refresh) {
+//				Integer[] visibleRows = listGrid.getVisibleRows();
+//				Integer startRow = visibleRows[0];
+//				Integer endRow = visibleRows[1];
+//				int preloadSize = 10;
+//				dsRequest.setStartRow(((startRow - preloadSize) < 0) ? 0
+//						: (startRow - preloadSize));
+//				dsRequest.setEndRow(endRow + preloadSize);
+//			}
+			
 			dsRequest.setAttribute("operationId", "searchFromDB");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
+
 				}
 			}, dsRequest);
 		} catch (Exception e) {
@@ -234,26 +240,4 @@ public class TabStreetHist extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer old_id, Integer deleted) {
-		try {
-			com.smartgwt.client.rpc.RPCManager.startQueue();
-			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("old_id", old_id);
-			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name());
-			DSRequest req = new DSRequest();
-
-			req.setAttribute("operationId", "updateStreetsOldEntStatus");
-			listGrid.updateData(record, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, req);
-			com.smartgwt.client.rpc.RPCManager.sendQueue();
-		} catch (Exception e) {
-			SC.say(e.toString());
-		}
-	}
 }
