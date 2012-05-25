@@ -17,7 +17,7 @@
 		<field name="upd_date" 				type="datetime" title="Upd Date" />
 		<field name="city"					type="text" 	title="City" />
 		<field name="street"				type="text" 	title="Street" />
-		<field name="street_location_geo"	type="text" 	title="Street Location Geo" hidden="true"/>
+		<field name="street_location"	type="text" 	title="Street Location Geo" hidden="true"/>
 		<field name="upd_user" 				type="text" 	title="Upd User" />				
 		<field name="firstname_id" 			type="integer"	title="First Name ID"		hidden="true"/>		
 		<field name="lastname_id" 			type="integer"	title="Last Name ID" 		hidden="true"/>
@@ -34,7 +34,7 @@
 		<field name="addr_block"			type="text"		title="Address Block"		hidden="true"/>
 		<field name="addr_appt"				type="text"		title="Address Appt"		hidden="true"/>
 		<field name="addr_descr"			type="text"		title="Address Descr"		hidden="true"/>
-		<field name="street_district_id" 	type="integer"	title="Street District ID"	hidden="true"/>		
+		<field name="street_to_town_district_id" 	type="integer"	title="Street District ID"	hidden="true"/>		
 		<field name="deleted" 				type="integer"	title="Deleted"				hidden="true"/>	
 		<field name="address" 				type="integer"	title="address"				hidden="true"/>	
 	</fields>
@@ -94,8 +94,8 @@
       			ma.addr_block,
       			ma.addr_appt,
       			ma.addr_descr,
-      			sd.street_district_id,
-      			str.street_location_geo,
+      			sd.street_to_town_district_id,
+      			str.street_location,
       			t.deleted,
       			str.street_name||' '||ma.address_suffix_geo as address
 			</selectClause>
@@ -184,8 +184,8 @@
       			ma.addr_block,
       			ma.addr_appt,
       			ma.addr_descr,
-      			sd.street_district_id,
-      			str.street_location_geo,
+      			sd.street_to_town_district_id,
+      			str.street_location,
       			t.deleted,
       			decode(ma.address_hide,1,'დაფარულია',(str.street_name||' '||ma.address_suffix_geo)) as address1,
       			str.street_name || ' ' ||

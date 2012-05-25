@@ -31,7 +31,7 @@
 		<field name="note_crit"					type="integer"  	title="note_crit"/>
 		<field name="town_name"				type="text"  		title="town_name"/>
 		<field name="town_district_name"		type="text"  		title="town_district_name"/>
-		<field name="street_location_geo"		type="text"  		title="street_location_geo"/>
+		<field name="street_location"		type="text"  		title="street_location"/>
 		<field name="index_text"				type="text"  		title="index_text"/>
 		<field name="legal_statuse"				type="text"  		title="legal_statuse"/>
 		<field name="org_name_tree_like"		type="text"  		title="org_name_tree_like"/>
@@ -79,7 +79,7 @@
 			        t.real_address,
 			        t.town_name,
 			        t.town_district_name,
-			        t.street_location_geo,
+			        t.street_location,
 			        t.index_text,
 			        t.note_crit,
 			        t.legal_statuse,
@@ -141,7 +141,7 @@
 			        t.real_address,
 			        t.town_name,
 			        t.town_district_name,
-			        t.street_location_geo,
+			        t.street_location,
 			        t.index_text,
 			        t.note_crit,
 			        t.legal_statuse,

@@ -1,0 +1,99 @@
+<DataSource
+	ID="DistBetweenTownsDS"
+	serverType="sql"
+	tableName="dist_between_towns"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="dist_between_towns_id"			type="integer"		title="ID"						hidden="true" primaryKey="true" />
+		<field name="town_start"					type="text"			title="town_start"/>
+		<field name="town_end"						type="text"			title="town_end"/>
+		<field name="town_distance_type_descr"		type="text"			title="town_distance_type_descr"/>		
+		<field name="dist_between_towns_value"		type="text" 		title="dist_between_towns_value"/>
+		<field name="dist_between_towns_remark"		type="text" 		title="dist_between_towns_remark"/>
+		<field name="town_distance_type"			type="integer"		title="town_distance_type" 		hidden="true"/>
+		<field name="town_id_end"					type="integer"		title="town_id_end" 			hidden="true"/>
+		<field name="town_id_start"					type="integer"		title="town_id_start" 			hidden="true"/>
+		<field name="loggedUserName"				type="text"			title="Logged UserName" 		hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+
+		<!-- Add DistBetweenTowns -->
+		<operationBinding operationType="add" operationId="addDistBetweenTowns" serverMethod="addDistBetweenTowns">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+		<!-- DistBetweenTowns Update -->
+		<operationBinding operationType="update" operationId="updateDistBetweenTowns" serverMethod="updateDistBetweenTowns">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+        
+        <!-- DistBetweenTowns Delete -->
+		<operationBinding operationType="remove" operationId="deleteDistBetweenTowns" serverMethod="deleteDistBetweenTowns">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchFromDB" operationType="fetch">
+    		<selectClause>   			
+    			t.dist_between_towns_id,
+    			t.dist_between_towns_value,
+    			t.town_distance_type,
+    			t.town_id_end,
+    			t.town_id_start,
+    			t.dist_between_towns_remark,
+    			c1.town_name as town_start,
+    			c2.town_name as town_end,
+    			decode(t.town_distance_type,0,'სახმელეთო',1,'საჰაერო',2,'საზღვაო','უცნობია') as town_distance_type_descr
+			</selectClause> 
+			<tableClause>dist_between_towns t,towns c1,towns c2</tableClause>
+			<whereClause><![CDATA[ 
+				t.town_id_start = c1.town_id and
+				t.town_id_end = c2.town_id
+				#if($criteria.town_distance_type) AND t.town_distance_type = $criteria.town_distance_type #end
+				#if($criteria.town_id_start) AND t.town_id_start = $criteria.town_id_start #end
+				#if($criteria.town_id_end) AND t.town_id_end = $criteria.town_id_end #end
+				#if($criteria.town_start) AND c1.town_name like '%'||$criteria.town_start||'%' #end
+				#if($criteria.town_end) AND c2.town_name like '%'||$criteria.town_end||'%' #end
+				#if($criteria.dist_between_towns_value) AND t.dist_between_towns_value like '%'||$criteria.dist_between_towns_value||'%' #end
+				#if($criteria.dist_between_towns_remark) AND t.dist_between_towns_remark like '%'||$criteria.dist_between_towns_remark||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.dist_between_towns_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchFromDBForCC" operationType="fetch">
+    		<selectClause>   			
+    			t.dist_between_towns_id,
+    			t.dist_between_towns_value,
+    			t.town_distance_type,
+    			t.town_id_end,
+    			t.town_id_start,
+    			t.dist_between_towns_remark,
+    			c1.town_name as town_start,
+    			c2.town_name as town_end,
+    			decode(t.town_distance_type,0,'სახმელეთო',1,'საჰაერო',2,'საზღვაო','უცნობია') as town_distance_type_descr
+			</selectClause> 
+			<tableClause>dist_between_towns t,towns c1,towns c2</tableClause>
+			<whereClause><![CDATA[ 
+				t.town_id_start = c1.town_id and
+				t.town_id_end = c2.town_id				
+				#if($criteria.town_id_start) AND (t.town_id_start = $criteria.town_id_start or t.town_id_end = $criteria.town_id_start) #end
+				#if($criteria.town_id_end)   AND (t.town_id_end = $criteria.town_id_end or t.town_id_start = $criteria.town_id_end) #end
+				#if($criteria.town_start) AND c1.town_name like '%'||$criteria.town_start||'%' #end
+				#if($criteria.town_end) AND c2.town_name like '%'||$criteria.town_end||'%' #end
+				#if($criteria.dist_between_towns_value) AND t.dist_between_towns_value like '%'||$criteria.dist_between_towns_value||'%' #end
+				
+				#if($criteria.dist_between_towns_remark) AND t.dist_between_towns_remark like '%'||$criteria.dist_between_towns_remark||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.dist_between_towns_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    </operationBindings>	
+</DataSource>

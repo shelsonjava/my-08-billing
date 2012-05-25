@@ -1,0 +1,56 @@
+<DataSource
+	ID="CountryIndexesDS"
+	serverType="sql"
+	tableName="country_indexes"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">	
+	<fields>
+		<field name="country_index_id"			type="integer"	title="country_index_id"	hidden="true" primaryKey="true" />
+		<field name="country_id"				type="text"		title="country_id"/>		
+		<field name="country_name"				type="text"		title="country_name"/>
+		<field name="country_index_value"		type="text"		title="country_index_value"/>
+		<field name="country_index_remark_geo"	type="text"		title="country_index_remark_geo"/>
+		<field name="country_index_remark_eng"	type="text"		title="country_index_remark_eng"/>
+		<field name="loggedUserName"			type="text"		title="Logged UserName"	hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<!-- Add CountryIndexes -->
+		<operationBinding operationType="add" operationId="addCountryIndexes" serverMethod="addCountryIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+
+		<!-- Update CountryIndexes -->
+		<operationBinding operationType="update" operationId="updateCountryIndexes" serverMethod="updateCountryIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+
+        <!-- Delete CountryIndexes -->
+		<operationBinding operationType="remove" operationId="deleteCountryIndexes" serverMethod="deleteCountryIndexes">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+        
+    	<operationBinding operationId="searchCountryIndexes" operationType="fetch">
+    		<selectClause>   			
+    			t.country_index_id, 
+				t.country_id, 
+				c.country_name,
+				t.country_index_value, 
+				t.country_index_remark_geo, 
+				t.country_index_remark_eng
+			</selectClause> 
+			<tableClause>country_indexes t, countries c</tableClause>
+			<whereClause><![CDATA[
+				1 = 1 and c.country_id = t.country_id
+				#if($criteria.country_id) AND t.country_id = $criteria.country_id #end
+				#if($criteria.country_index_value) AND t.country_index_value like '%' || ($criteria.country_index_value) ||'%' #end
+				#if($criteria.country_index_remark_geo) AND t.country_index_remark_geo like '%'||($criteria.country_index_remark_geo)||'%' #end
+				#if($criteria.country_index_remark_eng) AND t.country_index_remark_eng like '%'||($criteria.country_index_remark_eng)||'%' #end				
+				]]>  
+			</whereClause> 	
+			<orderClause>c.country_name, t.country_index_value</orderClause>		
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
