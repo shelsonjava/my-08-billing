@@ -10,7 +10,7 @@
 		<field name="name" 							type="text" 	title="First Name"/>
 		<field name="family_name"  					type="text"		title="Last Name" />
 		<field name="phones" 						type="text"		title="Phones" />
-		<field name="shown_phones" 						type="text"		title="Phones" />
+		<field name="shown_phones" 					type="text"		title="Phones" />
 		<field name="city"							type="text" 	title="City" />
 		<field name="street_name"					type="text" 	title="Street" />
 		<field name="street_location"				type="text" 	title="Street Location Geo" hidden="true"/>
@@ -28,12 +28,12 @@
 		<field name="street_to_town_district_id" 	type="integer"	title="Street District ID"	hidden="true"/>		
 		<field name="address" 						type="text"		title="address"				hidden="true"/>
 		<field name="loggedUserName" 				type="text"		title="address"				hidden="true"/>
-		<field name="town_name" 				type="text"		title="address"				hidden="true"/>
+		<field name="town_name" 					type="text"		title="address"				hidden="true"/>
 				
 	</fields>
 	
 	<operationBindings>
-	
+	 
 		<!-- Add Subscriber -->
 		<operationBinding operationType="add" operationId="addSubscriber" serverMethod="saveOrUpdateSubscriber">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SubscriberDMI"/>
