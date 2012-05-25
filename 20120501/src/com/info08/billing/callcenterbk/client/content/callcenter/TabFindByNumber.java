@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewAbonentOrOrg;
+import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewSubscriberOrOrg;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
@@ -185,7 +185,7 @@ public class TabFindByNumber extends Tab {
 		orgOrAbonent.setAlign(Alignment.CENTER);
 
 		ListGridField town_name = new ListGridField("town_name",
-				CallCenterBK.constants.city(), 100);
+				CallCenterBK.constants.town(), 100);
 		town_name.setAlign(Alignment.LEFT);
 
 		ListGridField streetName = new ListGridField("streetName",
@@ -227,7 +227,7 @@ public class TabFindByNumber extends Tab {
 		listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-				DlgViewAbonentOrOrg dlgViewAbonentOrOrg = new DlgViewAbonentOrOrg(
+				DlgViewSubscriberOrOrg dlgViewAbonentOrOrg = new DlgViewSubscriberOrOrg(
 						listGrid, orgDS, listGrid.getSelectedRecord());
 				dlgViewAbonentOrOrg.show();
 			}
