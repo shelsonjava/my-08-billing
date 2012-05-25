@@ -8,13 +8,15 @@ import java.util.TreeMap;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.types.TextMatchStyle;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.fields.events.KeyDownEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyDownHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -94,9 +96,11 @@ public class ClientUtils {
 
 	public static void fillDescriptionCombo(final FormItem formItem, int type,
 			boolean sortByName, Map<String, Object> aditionalCriteria) {
+		if (aditionalCriteria == null)
+			aditionalCriteria = new TreeMap<String, Object>();
+		aditionalCriteria.put("description_type_id", type);
+
 		if (sortByName) {
-			if (aditionalCriteria == null)
-				aditionalCriteria = new TreeMap<String, Object>();
 			aditionalCriteria.put("by_name", 1);
 		}
 		fillCombo(formItem, "DescriptionsDS", "searchDescriptions",
@@ -118,13 +122,14 @@ public class ClientUtils {
 					&& !(formItem instanceof SelectItem)) {
 				return;
 			}
+
 			formItem.setFetchMissingValues(true);
 			formItem.setFilterLocally(false);
 			if (formItem instanceof ComboBoxItem) {
 				ComboBoxItem cItem = (ComboBoxItem) formItem;
 				cItem.setAddUnknownValues(false);
 				cItem.setAutoFetchData(false);
-				cItem.setTextMatchStyle(TextMatchStyle.SUBSTRING);
+				// cItem.setTextMatchStyle(TextMatchStyle.SUBSTRING);
 
 			} else {
 				SelectItem sItem = (SelectItem) formItem;
@@ -145,10 +150,22 @@ public class ClientUtils {
 			addEditionalCriteria(aditionalCriteria, criteria);
 
 			formItem.setOptionCriteria(criteria);
+			if (formItem instanceof SelectItem)
+				formItem.addKeyDownHandler(new KeyDownHandler() {
 
+					@Override
+					public void onKeyDown(KeyDownEvent event) {
+						String key = event.getKeyName();
+						if ((key.equals("Escape") || key.equals("Delete"))) {
+							formItem.clearValue();
+						}
+
+					}
+				});
 			formItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
+
 					Criteria criteria = formItem.getOptionCriteria();
 					if (criteria != null) {
 						Object oldAttr = criteria.getAttribute(valueField);
@@ -186,4 +203,26 @@ public class ClientUtils {
 
 		criteria.setAttribute("_UUUUUUUIDUUU", HTMLPanel.createUniqueId());
 	}
+
+	public static Map<String, Object> fillMapFromForm(Map<String, Object> mp,
+			DynamicForm... dms) {
+		if (mp == null)
+			mp = new TreeMap<String, Object>();
+		for (DynamicForm dm : dms) {
+			Map<?, ?> vals = dm.getValues();
+			Set<?> keys = vals.keySet();
+			for (Object key : keys) {
+				String sKey = key.toString();
+				if (dm.getField(sKey) != null)
+					mp.put(sKey, vals.get(key));
+				else
+					System.out.println("");
+			}
+		}
+		mp.remove("_ref");
+		return mp;
+	}
+	
+	
+	
 }
