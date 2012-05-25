@@ -174,7 +174,7 @@ public class TabOrganization extends Tab {
 		adressItem.setWidth(245);
 
 		citiesItem = new ComboBoxItem();
-		citiesItem.setTitle(CallCenterBK.constants.city());
+		citiesItem.setTitle(CallCenterBK.constants.town());
 		citiesItem.setName("citiesItem");
 		citiesItem.setWidth(245);
 		citiesItem.setFetchMissingValues(true);
