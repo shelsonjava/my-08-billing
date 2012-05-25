@@ -10,6 +10,7 @@
 		<field name="name" 							type="text" 	title="First Name"/>
 		<field name="family_name"  					type="text"		title="Last Name" />
 		<field name="phones" 						type="text"		title="Phones" />
+		<field name="shown_phones" 						type="text"		title="Phones" />
 		<field name="city"							type="text" 	title="City" />
 		<field name="street_name"					type="text" 	title="Street" />
 		<field name="street_location"				type="text" 	title="Street Location Geo" hidden="true"/>
@@ -19,114 +20,128 @@
 		<field name="street_id" 					type="integer"	title="Street ID"			hidden="true"/>
 		<field name="town_district_id" 				type="integer"	title="City Region ID"		hidden="true"/>
 		<field name="hidden_by_request" 			type="integer"	title="Address Hide"		hidden="true"/>
-		<field name="full_address"	type="text"		title="Address Suffix Geo"	hidden="true"/>
+		<field name="full_address"					type="text"		title="Address Suffix Geo"	hidden="true"/>
 		<field name="anumber"						type="text"		title="Address Number"		hidden="true"/>
 		<field name="block"							type="text"		title="Address Block"		hidden="true"/>
 		<field name="appt"							type="text"		title="Address Appt"		hidden="true"/>
 		<field name="descr"							type="text"		title="Address Descr"		hidden="true"/>
 		<field name="street_to_town_district_id" 	type="integer"	title="Street District ID"	hidden="true"/>		
-		<field name="address" 						type="integer"	title="address"				hidden="true"/>	
+		<field name="address" 						type="text"		title="address"				hidden="true"/>
+		<field name="loggedUserName" 				type="text"		title="address"				hidden="true"/>
+		<field name="town_name" 				type="text"		title="address"				hidden="true"/>
+				
 	</fields>
 	
 	<operationBindings>
 	
-		<!-- Add Abonent -->
-		<operationBinding operationType="add" operationId="addAbonent" serverMethod="saveOrUpdateAbonent">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.AbonentDMI"/>
+		<!-- Add Subscriber -->
+		<operationBinding operationType="add" operationId="addSubscriber" serverMethod="saveOrUpdateSubscriber">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SubscriberDMI"/>
+        </operationBinding>
+		<operationBinding operationType="update" operationId="updateSubscriber" serverMethod="saveOrUpdateAbonent">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SubscriberDMI"/>
         </operationBinding>
         
-        <!-- Update Abonent -->
-		<operationBinding operationType="update" operationId="updateAbonent" serverMethod="saveOrUpdateAbonent">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.AbonentDMI"/>
+        
+        <!-- remove Subscriber -->
+		<operationBinding operationType="remove" operationId="removeSubscriber" serverMethod="removeSubscriber">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SubscriberDMI"/>
         </operationBinding>
         
-        <!-- Update Abonent Status -->
-		<operationBinding operationType="update" operationId="updateAbonentStatus" serverMethod="setAbonentStatusToDelete">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.AbonentDMI"/>
-        </operationBinding>
-        
-        <!-- Search organizations by phone for abonent -->
-		<operationBinding operationType="fetch" operationId="getOrgInfoByPhoneForAbonent" serverMethod="getOrgInfosByPhone">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.AbonentDMI"/>
-        </operationBinding>
+      
         
 		<!-- FETCH -->
 		<operationBinding operationId="customSearch"
 			operationType="fetch">			
-			<selectClause>				
-				   t.subscriber_id,
-			       addr_id,
-			       lnm.lastname family_name,
-			       fn.firstname name,
-			       (select wm_concat(decode(sp.hidden_by_request, 1, 'დ*', '') ||
-			                         pn.phone)
-			          from subscriber_to_phones sp
-			         inner join phone_numbers pn
-			            on pn.phone_number_id = sp.phone_number_id
-			         where sp.subscriber_id = t.subscriber_id) phones,
-			       tow.town_name,
-			       str.street_name,
-			       str.street_location,
-			       t.name_id,
-			       t.family_name_id,
-			       str.town_id,
-			       ma.street_id,
-			       sd.town_district_id,
-			       ma.hidden_by_request,
-			       ma.full_address,
-			       ma.anumber,
-			       ma.block,
-			       ma.appt,
-			       ma.descr,
-			       sd.street_to_town_district_id,
-			       str.street_location || ' ' ||
-			       (decode(ma.anumber, null, '', ma.anumber) ||
-			       decode(ma.block, null, '', 'კ.' || ma.block) ||
-			       decode(ma.appt, null, '', ' ბ.' || ma.appt) || ma.descr) as address
+			<selectClause>
+					/*+ index(lmn,#if($criteria.family_name) UK_LASTNAMES) #else PK_LASTNAMES_ID #end
+						index(lmn,#if($criteria.name) UK_FIRSTNAME) #else PK_FIRSTNAME_ID #end 
+					*/
+					
+				   family_name,
+			       name,
+			       phones,
+			       subscriber_id,
+			       #if($criteria.for_call_center) 
+			       	shown_phones,
+			       #else
+				       addr_id,
+				       street_name,
+				       street_location,
+				       name_id,
+				       family_name_id,
+				       town_id,
+				       street_id,
+				       town_district_id,
+				       hidden_by_request,
+				       full_address,
+				       anumber,
+				       block,
+				       appt,
+				       descr,
+				       street_to_town_district_id,
+				    #end
+ 					   town_name,
+				       address
 			</selectClause>
 			<tableClause>
-			  	   subscribers              t,
-			       addresses                ma,
-			       street_to_town_districts sd,
-			       streets                  str,
-			       towns                    tow,
-			       firstnames               fn,
-			       lastnames                lnm
+			  	   v_full_subscriber              t
        		</tableClause>
 			<whereClause><![CDATA[ 
-				   1 = 1
-				   and ma.addr_id = t.address_id
-				   and ma.street_id = str.street_id
-				   and sd.street_id(+) = str.street_id
-				   and ma.town_id = tow.town_id
-				   and fn.firstname_id = t.name_id
-				   and lnm.lastname_id = t.family_name_id
-
+				   	1 = 1
 					#if($criteria.subscriber_id) AND t.subscriber_id = $criteria.subscriber_id #end
 					#if($criteria.name_id) AND t.name_id = $criteria.name_id #end
 					#if($criteria.family_name_id) AND t.family_name_id = $criteria.family_name_id #end
+					#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+					#if($criteria.town_district_id) AND t.town_district_id = $criteria.town_district_id #end
+					#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+					#if($criteria.street_name_geo) AND street_location like '%'||$criteria.street_name_geo||'%' #end
+					#if($criteria.anumber) AND anumber like '%%'||($criteria.anumber)||'%' #end
+					#if($criteria.block) AND block like '%%'||($criteria.block)||'%' #end
+					#if($criteria.appt) AND appt like '%%'||($criteria.appt)||'%' #end
+					#if($criteria.descr) AND descr like '%%'||($criteria.descr)||'%' #end
+					#if($criteria.name) AND name like '%%'||($criteria.name)||'%' #end
+					#if($criteria.family_name) AND family_name like '%%'||($criteria.family_name)||'%' #end
+					#if($criteria.full_address) AND full_address like '%%'||($criteria.full_address)||'%' #end
+					#if($criteria.hidden_by_request) AND hidden_by_request = $criteria.hidden_by_request #end
 					
-					#if($criteria.phone) AND exists (select 1
-			          from subscriber_to_phones sp
-			         inner join phone_numbers pn
-			            on pn.phone_number_id = sp.phone_number_id
-			         where sp.subscriber_id = t.subscriber_id and pn.phone like ($criteria.phone)||'%') #end
-			         
-					#if($criteria.town_id) AND c.town_id = $criteria.town_id #end
-					#if($criteria.town_district_id) AND sd.town_district_id = $criteria.town_district_id #end
-					#if($criteria.street_id) AND sd.street_id = $criteria.street_id #end
-					#if($criteria.street_name_geo) AND str.street_name_geo like '%'||$criteria.street_name_geo||'%' #end
-					#if($criteria.addr_number) AND ma.addr_number like '%%'||($criteria.addr_number)||'%' #end
-					#if($criteria.addr_block) AND ma.addr_block like '%%'||($criteria.addr_block)||'%' #end
-					#if($criteria.addr_appt) AND ma.addr_appt like '%%'||($criteria.addr_appt)||'%' #end
-					#if($criteria.addr_descr) AND ma.addr_descr like '%%'||($criteria.addr_descr)||'%' #end
-					#if($criteria.is_parallel) AND ap.is_parallel = $criteria.is_parallel #end
-					#if($criteria.phone_status_id) AND ap.phone_status_id = $criteria.phone_status_id #end
-					#if($criteria.phone_state_id) AND p.phone_state_id = $criteria.phone_state_id #end
-					#if($criteria.phone_type_id) AND p.phone_type_id = $criteria.phone_type_id #end
-					#if($criteria.is_hide) AND ap.is_hide = $criteria.is_hide #end
-					#if($criteria.name) AND f.name like '%%'||($criteria.name)||'%' #end
-					#if($criteria.family_name) AND l.family_name like '%%'||($criteria.family_name)||'%' #end				
+					
+					#if($criteria.name_param) AND name like '%%'||($criteria.name_param)||'%' #end
+					#if($criteria.family_name_param) AND family_name like '%%'||($criteria.family_name_param)||'%' #end
+					#if($criteria.street_name_param) AND exists (
+							select 1 from (SELECT TRIM(SUBSTR(txt,
+		                                    INSTR(txt, ' ' , 1, level) + 1,
+		                                    INSTR(txt, ' ' , 1, level + 1) -
+		                                    INSTR(txt, ' ' , 1, level) - 1)) AS dem
+							                   FROM (SELECT ' '  ||
+							                                trim($criteria.street_name_param) || ' '  AS txt
+							                           FROM dual)
+							                 CONNECT BY level <=
+							                            LENGTH(txt) - LENGTH(REPLACE(txt, ' ' , '')) - 1)
+							where address like '%'||dem||'%')
+					 #end
+					
+					#if($criteria.phone||$criteria.is_parallel
+							||$criteria.phone_contract_type||$criteria.phone_contract_type
+							||$criteria.phone_state_id||$criteria.phone_type_id||$criteria.ph_hidden_by_request
+						)
+							AND exists (select 1
+					          from subscriber_to_phones sp
+					         inner join phone_numbers pn
+					            on pn.phone_number_id = sp.phone_number_id
+					         where sp.subscriber_id = t.subscriber_id 
+						         #if($criteria.phone) and pn.phone like ($criteria.phone)||'%' #end
+						         #if($criteria.is_parallel) AND pn.is_parallel = $criteria.is_parallel #end
+								 #if($criteria.phone_contract_type) AND sp.phone_contract_type = $criteria.phone_contract_type #end
+								 #if($criteria.phone_state_id) AND pn.phone_state_id = $criteria.phone_state_id #end
+								 #if($criteria.phone_type_id) AND pn.phone_type_id = $criteria.phone_type_id #end
+								 #if($criteria.ph_hidden_by_request) AND sp.hidden_by_request = $criteria.ph_hidden_by_request #end
+								)
+			        #end
+					
+					
+					
+									
 				]]>
 			</whereClause>			
 		</operationBinding>

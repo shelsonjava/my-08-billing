@@ -5,18 +5,18 @@
 	qualifyColumnNames="false">
 	<fields>
 		<field name="phone_number_id"			type="integer"	title="ID"					hidden="true" primaryKey="true" />
-		<field name="phone"				type="text" 	title="Phone"/>		
-		<field name="subscriber_id"		type="integer"	title="Abonent ID" 			hidden="true"/>
+		<field name="phone"						type="text" 	title="Phone"/>		
+		<field name="subscriber_id"				type="integer"	title="Abonent ID" 			hidden="true"/>
 		<field name="hidden_by_request"			type="integer"	title="Is Hide" 			hidden="true"/>
-		<field name="hidden_by_request_descr"		type="text"		title="Is Hide Descr"/>
-		<field name="is_parallel"		type="integer"	title="Is Hide" 			hidden="true"/>
-		<field name="is_parallel_descr"	type="text"		title="Is Parallel Descr"/>
-		<field name="phone_state_id"	type="integer"	title="Phone State ID"		hidden="true"/>		
-		<field name="phone_state"		type="text"		title="Phone State"/>
-		<field name="phone_contract_type_id"	type="integer"	title="Phone Status ID"		hidden="true"/>
-		<field name="phone_contract_type_desr"		type="text"		title="Phone Status"/>
-		<field name="phone_type_id"		type="integer"	title="Phone Type ID"		hidden="true"/>
-		<field name="phone_type"		type="text"		title="Phone Type"/>
+		<field name="hidden_by_request_descr"	type="text"		title="Is Hide Descr"/>
+		<field name="is_parallel"				type="integer"	title="Is Hide" 			hidden="true"/>
+		<field name="is_parallel_descr"			type="text"		title="Is Parallel Descr"/>
+		<field name="phone_state_id"			type="integer"	title="Phone State ID"		hidden="true"/>		
+		<field name="phone_state"				type="text"		title="Phone State"/>
+		<field name="phone_contract_type"		type="integer"	title="Phone Status ID"		hidden="true"/>
+		<field name="phone_contract_type_desr"	type="text"		title="Phone Status"/>
+		<field name="phone_type_id"				type="integer"	title="Phone Type ID"		hidden="true"/>
+		<field name="phone_type"				type="text"		title="Phone Type"/>
 	</fields>	
 	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 	
@@ -69,16 +69,14 @@
     			l.lastname as lastname,
     			t.phone
 			</selectClause> 
-			<tableClause>phones t, abonent_to_phones ap, abonents a,main_services ms, firstnames f, lastnames l</tableClause>
+			<tableClause>phone_numbers t,subscriber_to_phones sp,subscribers a, firstnames f, lastnames l</tableClause>
 			<whereClause><![CDATA[ 
-				 t.phone_number_id = ap.phone_number_id and 
-				 ap.abonent_id = a.abonent_id and 
-				 a.organization_id = ms.organization_id and 
-				 f.firstname_id = a.firstname_id and 
-				 l.lastname_id = a.lastname_id and
-				 t.phone = $criteria.phone and 
-				 ms.service_id = 7 and 
-				 a.deleted = 0
+				 t.phone_number_id = sp.phone_number_id
+			     and sp.subscriber_id = a.subscriber_id
+			     and f.firstname_id = a.name_id
+			     and l.lastname_id = a.family_name_id
+				 and t.phone = $criteria.phone
+				 #if($criteria.subscriber_id) AND a.subscriber_id != $criteria.subscriber_id  #end 
 				]]>  
 			</whereClause> 
 			<orderClause>t.phone</orderClause>
