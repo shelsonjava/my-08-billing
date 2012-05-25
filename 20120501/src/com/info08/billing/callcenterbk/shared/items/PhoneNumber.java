@@ -27,7 +27,7 @@ public class PhoneNumber implements Serializable {
 	@SequenceGenerator(name = "SEQ_PHONE_NUMBERS_GENERATOR", sequenceName = "SEQ_PHONE_NUMBERS")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PHONE_NUMBERS_GENERATOR")
 	@Column(name = "PHONE_NUMBER_ID")
-	private Integer phone_number_Id;
+	private Integer phone_number_id;
 
 	@Basic
 	@Column(name = "PHONE")
@@ -43,7 +43,8 @@ public class PhoneNumber implements Serializable {
 	@Basic
 	@Column(name = "PHONE_STATE_ID")
 	private Integer phone_state_id;
-
+	
+	@Transient
 	private String phone_state;
 
 	@Basic
@@ -53,12 +54,12 @@ public class PhoneNumber implements Serializable {
 	@Transient
 	private String is_parallel_descr;
 
-	public Integer getPhone_Id() {
-		return phone_number_Id;
+	public Integer getPhone_number_id() {
+		return phone_number_id;
 	}
 
-	public void setPhone_Id(Integer phone_Id) {
-		this.phone_number_Id = phone_Id;
+	public void setPhone_number_id(Integer phone_number_id) {
+		this.phone_number_id = phone_number_id;
 	}
 
 	public String getPhone() {

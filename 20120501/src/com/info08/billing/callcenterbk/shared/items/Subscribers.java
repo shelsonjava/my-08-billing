@@ -25,6 +25,10 @@ public class Subscribers implements Serializable {
 	private Integer subscriber_id;
 
 	@Basic
+	@Column(name = "ADDR_ID")
+	private Integer addr_id;
+	
+	@Basic
 	@Column(name = "NAME_ID")
 	private Integer name_id;
 
@@ -37,6 +41,7 @@ public class Subscribers implements Serializable {
 
 	@Transient
 	private String lastname;
+	
 
 	public Integer getSubscriber_id() {
 		return subscriber_id;
@@ -76,6 +81,14 @@ public class Subscribers implements Serializable {
 
 	public void setFamily_name_id(Integer family_name_id) {
 		this.family_name_id = family_name_id;
+	}
+
+	public Integer getAddr_id() {
+		return addr_id;
+	}
+
+	public void setAddr_id(Integer addr_id) {
+		this.addr_id = addr_id;
 	}
 
 }
