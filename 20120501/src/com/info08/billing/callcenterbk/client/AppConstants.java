@@ -60,6 +60,8 @@ public interface AppConstants extends Constants {
 	String enterEntPosterGeo();
 	String manageCurrency();
 	String country();
+	String indexRemarkGeo();
+	String indexRemarkEng();
 	String currencyName();
 	String currencyAbbr();
 	String find();
@@ -185,7 +187,7 @@ public interface AppConstants extends Constants {
 	String orgCommonInfo();
 	String orgAddressHeaderReal();
 	String orgAddressHeaderLegal();
-	String city();
+	String town();
 	String cityRegion();
 	String streetDescr();
 	String activity();
@@ -301,7 +303,7 @@ public interface AppConstants extends Constants {
 	String cityCode();
 	String searchByCodeCountrCityAndOper();
 	String findByCountry();
-	String findByCity();
+	String findByTown();
 	String findByOperator();
 	String operators();
 	String code();
@@ -324,8 +326,8 @@ public interface AppConstants extends Constants {
 	String routeNumber();
 	String days();
 	String transportTextConstant();
-	String cityFrom();
-	String cityTo();
+	String townFrom();
+	String townTo();
 	String countryFrom();
 	String countryTo();
 	String stationFrom();
@@ -349,7 +351,7 @@ public interface AppConstants extends Constants {
 	String distance();
 	String smsCityDistance();
 	String regCountry();
-	String cityCountry();
+	String townCountry();
 	String smsGeoInd();
 	String information();
 	String findSites();
