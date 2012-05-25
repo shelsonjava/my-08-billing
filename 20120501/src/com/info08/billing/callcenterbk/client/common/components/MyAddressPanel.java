@@ -54,7 +54,7 @@ public class MyAddressPanel extends HLayout {
 		dynamicForm.setTitleOrientation(TitleOrientation.TOP);
 		
 		addrTownItem = new ComboBoxItem();
-		addrTownItem.setTitle(CallCenterBK.constants.city());
+		addrTownItem.setTitle(CallCenterBK.constants.town());
 		addrTownItem.setName("town_id");
 		addrTownItem.setWidth(200);
 		ClientUtils.fillCombo(addrTownItem, "TownsDS",
