@@ -38,7 +38,7 @@
 		<operationBinding operationType="add" operationId="addSubscriber" serverMethod="saveOrUpdateSubscriber">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SubscriberDMI"/>
         </operationBinding>
-		<operationBinding operationType="update" operationId="updateSubscriber" serverMethod="saveOrUpdateAbonent">
+		<operationBinding operationType="update" operationId="updateSubscriber" serverMethod="saveOrUpdateSubscriber">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SubscriberDMI"/>
         </operationBinding>
         
