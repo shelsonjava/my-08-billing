@@ -222,7 +222,5 @@ public class ClientUtils {
 		mp.remove("_ref");
 		return mp;
 	}
-	
-	
-	
+
 }
