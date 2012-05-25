@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content;
 
-import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditCityDistance;
+import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditDistBetweenTowns;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.SharedUtils;
@@ -23,27 +23,23 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
-import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabCityDistance extends Tab {
+public class TabDistBetweenTowns extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
 
 	// form fields
-	private ComboBoxItem cityStartItem;
-	private ComboBoxItem cityEndItem;
-	private ComboBoxItem distanceTypeItem;
+	private ComboBoxItem townStartItem;
+	private ComboBoxItem townEndItem;
+	private ComboBoxItem townDistanceTypeItem;
 
 	// actions
 	private IButton findButton;
@@ -51,7 +47,6 @@ public class TabCityDistance extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -59,12 +54,12 @@ public class TabCityDistance extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabCityDistance() {
+	public TabDistBetweenTowns() {
 		try {
 			setTitle("მანძილი ქალაქებს შორის");
 			setCanClose(true);
 
-			datasource = DataSource.get("CitiesDistDS");
+			datasource = DataSource.get("DistBetweenTownsDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -78,28 +73,28 @@ public class TabCityDistance extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			cityStartItem = new ComboBoxItem();
-			cityStartItem.setTitle("საწყისი ქალაქი");
-			cityStartItem.setWidth(350);
-			cityStartItem.setName("town_id_start");
-			cityStartItem.setFetchMissingValues(true);
-			cityStartItem.setFilterLocally(false);
-			cityStartItem.setAddUnknownValues(false);
+			townStartItem = new ComboBoxItem();
+			townStartItem.setTitle("საწყისი ქალაქი");
+			townStartItem.setWidth(350);
+			townStartItem.setName("town_id_start");
+			townStartItem.setFetchMissingValues(true);
+			townStartItem.setFilterLocally(false);
+			townStartItem.setAddUnknownValues(false);
 
 			DataSource townsDS = DataSource.get("TownsDS");
-			cityStartItem.setOptionOperationId("searchCitiesFromDBForCombos1");
-			cityStartItem.setOptionDataSource(townsDS);
-			cityStartItem.setValueField("town_id");
-			cityStartItem.setDisplayField("town_name");
+			townStartItem.setOptionOperationId("searchCitiesFromDBForCombos1"); // searchCitiesFromDBForCombosAll
+			townStartItem.setOptionDataSource(townsDS);
+			townStartItem.setValueField("town_id");
+			townStartItem.setDisplayField("town_name");
 
-			Criteria criteriaCity = new Criteria();
-			cityStartItem.setOptionCriteria(criteriaCity);
-			cityStartItem.setAutoFetchData(false);
+			Criteria criteriaTown = new Criteria();
+			townStartItem.setOptionCriteria(criteriaTown);
+			townStartItem.setAutoFetchData(false);
 
-			cityStartItem.addKeyPressHandler(new KeyPressHandler() {
+			townStartItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = cityStartItem.getOptionCriteria();
+					Criteria criteria = townStartItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
@@ -110,28 +105,28 @@ public class TabCityDistance extends Tab {
 				}
 			});
 
-			cityEndItem = new ComboBoxItem();
-			cityEndItem.setTitle("საბოლოო ქალაქი");
-			cityEndItem.setWidth(350);
-			cityEndItem.setName("town_id_end");
-			cityEndItem.setFetchMissingValues(true);
-			cityEndItem.setFilterLocally(false);
-			cityEndItem.setAddUnknownValues(false);
+			townEndItem = new ComboBoxItem();
+			townEndItem.setTitle("საბოლოო ქალაქი");
+			townEndItem.setWidth(350);
+			townEndItem.setName("town_id_end");
+			townEndItem.setFetchMissingValues(true);
+			townEndItem.setFilterLocally(false);
+			townEndItem.setAddUnknownValues(false);
 
 			DataSource townsDS1 = DataSource.get("TownsDS");
-			cityEndItem.setOptionOperationId("searchCitiesFromDBForCombos1");
-			cityEndItem.setOptionDataSource(townsDS1);
-			cityEndItem.setValueField("town_id");
-			cityEndItem.setDisplayField("town_name");
+			townEndItem.setOptionOperationId("searchCitiesFromDBForCombos1");
+			townEndItem.setOptionDataSource(townsDS1);
+			townEndItem.setValueField("town_id");
+			townEndItem.setDisplayField("town_name");
 
-			Criteria criteriaCity1 = new Criteria();
-			cityEndItem.setOptionCriteria(criteriaCity1);
-			cityEndItem.setAutoFetchData(false);
+			Criteria criteriaTown1 = new Criteria();
+			townEndItem.setOptionCriteria(criteriaTown1);
+			townEndItem.setAutoFetchData(false);
 
-			cityEndItem.addKeyPressHandler(new KeyPressHandler() {
+			townEndItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = cityEndItem.getOptionCriteria();
+					Criteria criteria = townEndItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
@@ -141,17 +136,17 @@ public class TabCityDistance extends Tab {
 					}
 				}
 			});
-			
 
-			distanceTypeItem = new ComboBoxItem();
-			distanceTypeItem.setTitle("მანძილის ტიპი");
-			distanceTypeItem.setName("town_id");
-			distanceTypeItem.setWidth(350);
-			distanceTypeItem.setValueMap(SharedUtils.getInstance()
+			townDistanceTypeItem = new ComboBoxItem();
+			townDistanceTypeItem.setTitle("მანძილის ტიპი");
+			townDistanceTypeItem.setName("town_id");
+			townDistanceTypeItem.setWidth(350);
+			townDistanceTypeItem.setValueMap(SharedUtils.getInstance()
 					.getMapDistanceTypes());
-			distanceTypeItem.setDefaultToFirstOption(true);
+			townDistanceTypeItem.setDefaultToFirstOption(true);
 
-			searchForm.setFields(cityStartItem, cityEndItem, distanceTypeItem);
+			searchForm.setFields(townStartItem, townEndItem,
+					townDistanceTypeItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -187,11 +182,6 @@ public class TabCityDistance extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "person_add.png");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			listGrid = new ListGrid() {
@@ -201,18 +191,12 @@ public class TabCityDistance extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+					return super.getCellCSSText(record, rowNum, colNum);
 				};
 			};
 
 			listGrid.setWidth(900);
-			listGrid.setHeight(290);
+			listGrid.setHeight(500);
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(datasource);
 			listGrid.setAutoFetchData(false);
@@ -225,36 +209,28 @@ public class TabCityDistance extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("cityStart").setTitle("საწყისი ქალაქი");
-			datasource.getField("cityEnd").setTitle("საბოლოო ქალაქი");
-			datasource.getField("cityDistTypeDesc").setTitle("მანძილის ტიპი");
-			datasource.getField("note_geo").setTitle("კომენტარი");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
-			datasource.getField("upd_date").setTitle("როდის განაახლა");
-			datasource.getField("city_distance_geo").setTitle("მანძილი (კმ.)");
+			datasource.getField("town_start").setTitle("საწყისი ქალაქი");
+			datasource.getField("town_end").setTitle("საბოლოო ქალაქი");
+			datasource.getField("town_distance_type_descr").setTitle(
+					"მანძილის ტიპი");
+			datasource.getField("dist_between_towns_remark").setTitle(
+					"კომენტარი");
+			datasource.getField("dist_between_towns_value").setTitle(
+					"მანძილი (კმ.)");
 
-			ListGridField cityStart = new ListGridField("cityStart",
+			ListGridField town_start = new ListGridField("town_start",
 					"საწყისი ქალაქი", 130); // 150
-			ListGridField cityEnd = new ListGridField("cityEnd",
+			ListGridField town_end = new ListGridField("town_end",
 					"საბოლოო ქალაქი", 130); // 150
-			ListGridField cityDistTypeDesc = new ListGridField(
-					"cityDistTypeDesc", "მანძილის ტიპი", 100); // 150
-			ListGridField city_distance_geo = new ListGridField(
-					"city_distance_geo", "მანძილი (კმ.)", 100);
-			ListGridField note_geo = new ListGridField("note_geo", "კომენტარი",
-					150); // 150
-			ListGridField rec_date = new ListGridField("rec_date",
-					"შექმინის თარიღი", 130);
-			ListGridField upd_user = new ListGridField("upd_user",
-					"ვინ განაახლა", 100);
+			ListGridField town_distance_type_descr = new ListGridField(
+					"town_distance_type_descr", "მანძილის ტიპი", 100); // 150
+			ListGridField dist_between_towns_value = new ListGridField(
+					"dist_between_towns_value", "მანძილი (კმ.)", 100);
+			ListGridField dist_between_towns_remark = new ListGridField(
+					"dist_between_towns_remark", "კომენტარი", 300); // 150
 
-			rec_date.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
-
-			listGrid.setFields(cityStart, cityEnd, cityDistTypeDesc,
-					city_distance_geo, note_geo, rec_date, upd_user);
+			listGrid.setFields(town_start, town_end, town_distance_type_descr,
+					dist_between_towns_value, dist_between_towns_remark);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -266,17 +242,17 @@ public class TabCityDistance extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					cityEndItem.clearValue();
-					cityStartItem.clearValue();
-					distanceTypeItem.setValue(Constants.defCityTbilisiId);
+					townEndItem.clearValue();
+					townStartItem.clearValue();
+					townDistanceTypeItem.setValue(Constants.defCityTbilisiId);
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditCityDistance dlgAddEditCityDistance = new DlgAddEditCityDistance(
+					DlgAddEditDistBetweenTowns dlgAddEditDistBetweenTowns = new DlgAddEditDistBetweenTowns(
 							listGrid, null);
-					dlgAddEditCityDistance.show();
+					dlgAddEditDistBetweenTowns.show();
 				}
 			});
 
@@ -290,9 +266,9 @@ public class TabCityDistance extends Tab {
 						return;
 					}
 
-					DlgAddEditCityDistance dlgAddEditCityDistance = new DlgAddEditCityDistance(
+					DlgAddEditDistBetweenTowns dlgAddEditDistBetweenTowns = new DlgAddEditDistBetweenTowns(
 							listGrid, listGridRecord);
-					dlgAddEditCityDistance.show();
+					dlgAddEditDistBetweenTowns.show();
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
@@ -304,15 +280,9 @@ public class TabCityDistance extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
-					final Integer city_distance_id = listGridRecord
-							.getAttributeAsInt("city_distance_id");
-					if (city_distance_id == null) {
+					final Integer dist_between_towns_id = listGridRecord
+							.getAttributeAsInt("dist_between_towns_id");
+					if (dist_between_towns_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -322,59 +292,13 @@ public class TabCityDistance extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(city_distance_id, 1);
-									}
-								}
-							});
-				}
-			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer city_distance_id = listGridRecord
-							.getAttributeAsInt("city_distance_id");
-					if (city_distance_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(city_distance_id, 0);
+										delete(dist_between_towns_id);
 									}
 								}
 							});
 				}
 			});
 
-			TabSet tabSet = new TabSet();
-			tabSet.setWidth(900);
-			Tab tabDetViewer = new Tab("დათვალიერება");
-			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(datasource);
-			detailViewer.setWidth(870);
-			tabDetViewer.setPane(detailViewer);
-
-			listGrid.addRecordClickHandler(new RecordClickHandler() {
-				public void onRecordClick(RecordClickEvent event) {
-					detailViewer.viewSelectedData(listGrid);
-				}
-			});
 			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 				@Override
 				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
@@ -385,14 +309,12 @@ public class TabCityDistance extends Tab {
 						return;
 					}
 
-					DlgAddEditCityDistance dlgAddEditCityDistance = new DlgAddEditCityDistance(
+					DlgAddEditDistBetweenTowns dlgAddEditDistBetweenTowns = new DlgAddEditDistBetweenTowns(
 							listGrid, listGridRecord);
-					dlgAddEditCityDistance.show();
+					dlgAddEditDistBetweenTowns.show();
 				}
 			});
 
-			tabSet.setTabs(tabDetViewer);
-			mainLayout.addMember(tabSet);
 			setPane(mainLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -402,21 +324,21 @@ public class TabCityDistance extends Tab {
 
 	private void search() {
 		try {
-			ListGridRecord city_start_record = cityStartItem
+			ListGridRecord town_id_start = townStartItem
 					.getSelectedRecord();
-			ListGridRecord city_end_record = cityEndItem.getSelectedRecord();
+			ListGridRecord town_id_end = townEndItem.getSelectedRecord();
 			Criteria criteria = new Criteria();
-			if (city_start_record != null) {
+			if (town_id_start != null) {
 				criteria.setAttribute("town_id_start",
-						city_start_record.getAttributeAsString("town_id"));
+						town_id_start.getAttributeAsString("town_id"));
 			}
-			if (city_end_record != null) {
+			if (town_id_end != null) {
 				criteria.setAttribute("town_id_end",
-						city_end_record.getAttributeAsString("town_id"));
+						town_id_end.getAttributeAsString("town_id"));
 			}
-			if (distanceTypeItem.getValueAsString() != null) {
-				criteria.setAttribute("city_distance_type", new Integer(
-						distanceTypeItem.getValueAsString()));
+			if (townDistanceTypeItem.getValueAsString() != null) {
+				criteria.setAttribute("town_distance_type", new Integer(
+						townDistanceTypeItem.getValueAsString()));
 			}
 
 			DSRequest dsRequest = new DSRequest();
@@ -433,18 +355,17 @@ public class TabCityDistance extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer city_distance_id, Integer deleted) {
+	private void delete(Integer dist_between_towns_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("city_distance_id", city_distance_id);
+			record.setAttribute("dist_between_towns_id", dist_between_towns_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateCityDistanceStatus");
-			listGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "deleteDistBetweenTowns");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

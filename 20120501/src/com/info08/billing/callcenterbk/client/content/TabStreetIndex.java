@@ -22,27 +22,23 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
-import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class TabGeoStreetIdx extends Tab {
+public class TabStreetIndex extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
 
 	// form fields
 	private ComboBoxItem streetsItem;
-	private TextItem streetCommentItem;
-	private TextItem streetIndexItem;
+	private TextItem streetIndexRemarkItem;
+	private TextItem streetIndexValueItem;
 
 	// actions
 	private IButton findButton;
@@ -50,7 +46,6 @@ public class TabGeoStreetIdx extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -58,7 +53,7 @@ public class TabGeoStreetIdx extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabGeoStreetIdx() {
+	public TabStreetIndex() {
 		try {
 			setTitle("ქუჩის ინდექსების მართვა");
 			setCanClose(true);
@@ -85,8 +80,9 @@ public class TabGeoStreetIdx extends Tab {
 			streetsItem.setFilterLocally(false);
 			streetsItem.setAddUnknownValues(false);
 
-			DataSource streetsNewDS = DataSource.get("StreetsNewDS");
-			streetsItem.setOptionOperationId("searchStreetFromDBForCombosNoDistrTbil");
+			DataSource streetsNewDS = DataSource.get("StreetsDS");
+			streetsItem
+					.setOptionOperationId("searchStreetFromDBForCombosNoDistrTbil");
 			streetsItem.setOptionDataSource(streetsNewDS);
 			streetsItem.setValueField("street_id");
 			streetsItem.setDisplayField("street_name");
@@ -107,19 +103,19 @@ public class TabGeoStreetIdx extends Tab {
 					}
 				}
 			});
-			
 
-			streetCommentItem = new TextItem();
-			streetCommentItem.setTitle("კომენტარი");
-			streetCommentItem.setWidth(350);
-			streetCommentItem.setName("street_comment");
+			streetIndexRemarkItem = new TextItem();
+			streetIndexRemarkItem.setTitle("კომენტარი");
+			streetIndexRemarkItem.setWidth(350);
+			streetIndexRemarkItem.setName("street_index_remark");
 
-			streetIndexItem = new TextItem();
-			streetIndexItem.setTitle("ინდექსი");
-			streetIndexItem.setWidth(350);
-			streetIndexItem.setName("street_index");
+			streetIndexValueItem = new TextItem();
+			streetIndexValueItem.setTitle("ინდექსი");
+			streetIndexValueItem.setWidth(350);
+			streetIndexValueItem.setName("street_index_value");
 
-			searchForm.setFields(streetsItem, streetCommentItem, streetIndexItem);
+			searchForm.setFields(streetsItem, streetIndexRemarkItem,
+					streetIndexValueItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -155,11 +151,6 @@ public class TabGeoStreetIdx extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton("აღდგენა", "person_add.png");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			listGrid = new ListGrid() {
@@ -169,13 +160,7 @@ public class TabGeoStreetIdx extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+					return super.getCellCSSText(record, rowNum, colNum);
 				};
 			};
 
@@ -193,27 +178,21 @@ public class TabGeoStreetIdx extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("streetName").setTitle("ქუჩა");
-			datasource.getField("street_comment").setTitle("კომენტარი");
-			datasource.getField("street_index").setTitle("ინდექსი");
-			datasource.getField("rec_date").setTitle("შექმინის თარიღი");
-			datasource.getField("rec_user").setTitle("შემქმნელი");
-			datasource.getField("upd_user").setTitle("ვინ განაახლა");
+			datasource.getField("street_name").setTitle("ქუჩა");
+			datasource.getField("street_index_remark").setTitle("კომენტარი");
+			datasource.getField("street_index_value").setTitle("ინდექსი");
 
-			ListGridField streetName = new ListGridField("streetName", "ქუჩა", 250);
-			ListGridField street_comment = new ListGridField("street_comment", "კომენტარი", 100);
-			ListGridField street_index = new ListGridField("street_index", "ინდექსი", 100);
-			ListGridField rec_date = new ListGridField("rec_date","შექმინის თარიღი", 130);
-			ListGridField rec_user = new ListGridField("rec_user", "შემქმნელი",100);
-			ListGridField upd_user = new ListGridField("upd_user","ვინ განაახლა", 150);
+			ListGridField streetName = new ListGridField("street_name", "ქუჩა",
+					250);
+			ListGridField street_index_remark = new ListGridField(
+					"street_index_remark", "კომენტარი", 100);
+			ListGridField street_index_value = new ListGridField(
+					"street_index_value", "ინდექსი", 100);
 
-			rec_date.setAlign(Alignment.CENTER);
-			rec_user.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
-			street_index.setAlign(Alignment.CENTER);
+			street_index_value.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(streetName, street_comment,street_index,
-					rec_date, rec_user, upd_user);
+			listGrid.setFields(streetName, street_index_remark,
+					street_index_value);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -225,8 +204,8 @@ public class TabGeoStreetIdx extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					streetCommentItem.clearValue();
-					streetIndexItem.clearValue();
+					streetIndexRemarkItem.clearValue();
+					streetIndexValueItem.clearValue();
 					streetsItem.clearValue();
 				}
 			});
@@ -263,12 +242,6 @@ public class TabGeoStreetIdx extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
 					final Integer street_index_id = listGridRecord
 							.getAttributeAsInt("street_index_id");
 					if (street_index_id == null) {
@@ -281,59 +254,13 @@ public class TabGeoStreetIdx extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(street_index_id, 1);
-									}
-								}
-							});
-				}
-			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია !");
-						return;
-					}
-					final Integer street_index_id = listGridRecord
-							.getAttributeAsInt("street_index_id");
-					if (street_index_id == null) {
-						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-						return;
-					}
-
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(street_index_id, 0);
+										delete(street_index_id);
 									}
 								}
 							});
 				}
 			});
 
-			TabSet tabSet = new TabSet();
-			tabSet.setWidth(880);
-			Tab tabDetViewer = new Tab("დათვალიერება");
-			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(datasource);
-			detailViewer.setWidth(860);
-			tabDetViewer.setPane(detailViewer);
-
-			listGrid.addRecordClickHandler(new RecordClickHandler() {
-				public void onRecordClick(RecordClickEvent event) {
-					detailViewer.viewSelectedData(listGrid);
-				}
-			});
 			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 				@Override
 				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
@@ -348,10 +275,9 @@ public class TabGeoStreetIdx extends Tab {
 					dlgAddEditStreetIndex.show();
 				}
 			});
-			tabSet.setTabs(tabDetViewer);
-			mainLayout.addMember(tabSet);
+
 			setPane(mainLayout);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.getMessage().toString());
@@ -361,13 +287,14 @@ public class TabGeoStreetIdx extends Tab {
 	private void search() {
 		try {
 			String street_id = streetsItem.getValueAsString();
-			String street_comment = streetCommentItem.getValueAsString();
-			String street_index = streetIndexItem.getValueAsString();
-			
+			String street_index_remark = streetIndexRemarkItem
+					.getValueAsString();
+			String street_index_value = streetIndexValueItem.getValueAsString();
+
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("street_id",street_id);
-			criteria.setAttribute("street_comment",street_comment);
-			criteria.setAttribute("street_index",street_index);			
+			criteria.setAttribute("street_id", street_id);
+			criteria.setAttribute("street_index_remark", street_index_remark);
+			criteria.setAttribute("street_index_value", street_index_value);
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "searchStreetIndexesFromDB");
@@ -383,18 +310,17 @@ public class TabGeoStreetIdx extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer street_index_id, Integer deleted) {
+	private void delete(Integer street_index_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
 			record.setAttribute("street_index_id", street_index_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateStreetIndexStatus");
-			listGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "deleteStreetIndex");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

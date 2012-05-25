@@ -310,7 +310,7 @@ public class TabStreet extends Tab {
 					dsRequestProperties
 							.setExportDisplay(ExportDisplay.DOWNLOAD);
 					dsRequestProperties
-							.setOperationId("fetchAllCountriesFromDB");
+							.setOperationId("fetchStreetsFromDB");
 					listGrid.exportData(dsRequestProperties);
 				}
 			});
@@ -346,10 +346,6 @@ public class TabStreet extends Tab {
 			citiesItem.setOptionDataSource(townsDS);
 			citiesItem.setValueField("town_id");
 			citiesItem.setDisplayField("town_name");
-
-			//Criteria criteria = new Criteria();
-			// criteria.setAttribute("country_id", 194);
-			//citiesItem.setOptionCriteria(criteria);
 			citiesItem.setAutoFetchData(true);
 			citiesItem.setValue(Constants.defCityTbilisiId);
 

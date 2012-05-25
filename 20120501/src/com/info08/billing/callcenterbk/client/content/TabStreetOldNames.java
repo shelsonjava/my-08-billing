@@ -31,7 +31,7 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class TabStreetHist extends Tab {
+public class TabStreetOldNames extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
@@ -54,7 +54,7 @@ public class TabStreetHist extends Tab {
 	// DataSource
 	private DataSource datasource;
 
-	public TabStreetHist() {
+	public TabStreetOldNames() {
 		try {
 			setTitle("ქუჩის ისტორია");
 			setCanClose(true);
@@ -160,7 +160,7 @@ public class TabStreetHist extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					DlgAddEditStreetOldNames dlgAddEditStreetOldNames = new DlgAddEditStreetOldNames(
-							TabStreetHist.this, listGrid, listGridRecord);
+							TabStreetOldNames.this, listGrid, listGridRecord);
 					dlgAddEditStreetOldNames.show();
 
 				}
@@ -193,7 +193,7 @@ public class TabStreetHist extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					DlgAddEditStreetOldNames dlgAddEditStreetOldNames = new DlgAddEditStreetOldNames(
-							TabStreetHist.this, listGrid, listGridRecord);
+							TabStreetOldNames.this, listGrid, listGridRecord);
 					dlgAddEditStreetOldNames.show();
 				}
 			});
@@ -216,16 +216,16 @@ public class TabStreetHist extends Tab {
 			criteria.setAttribute("town_id", town_id);
 
 			DSRequest dsRequest = new DSRequest();
-//			if (refresh) {
-//				Integer[] visibleRows = listGrid.getVisibleRows();
-//				Integer startRow = visibleRows[0];
-//				Integer endRow = visibleRows[1];
-//				int preloadSize = 10;
-//				dsRequest.setStartRow(((startRow - preloadSize) < 0) ? 0
-//						: (startRow - preloadSize));
-//				dsRequest.setEndRow(endRow + preloadSize);
-//			}
-			
+			// if (refresh) {
+			// Integer[] visibleRows = listGrid.getVisibleRows();
+			// Integer startRow = visibleRows[0];
+			// Integer endRow = visibleRows[1];
+			// int preloadSize = 10;
+			// dsRequest.setStartRow(((startRow - preloadSize) < 0) ? 0
+			// : (startRow - preloadSize));
+			// dsRequest.setEndRow(endRow + preloadSize);
+			// }
+
 			dsRequest.setAttribute("operationId", "searchFromDB");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {

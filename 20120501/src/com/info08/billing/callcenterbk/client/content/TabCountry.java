@@ -23,17 +23,13 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
-import com.smartgwt.client.widgets.viewer.DetailViewer;
 
 public class TabCountry extends Tab {
 
@@ -147,7 +143,7 @@ public class TabCountry extends Tab {
 			};
 
 			listGrid.setWidth(835);
-			listGrid.setHeight(280);
+			listGrid.setHeight100();
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(datasoutce);
 			listGrid.setAutoFetchData(false);
@@ -165,11 +161,11 @@ public class TabCountry extends Tab {
 			datasoutce.getField("continent").setTitle("კონტინენტი");
 
 			ListGridField country_name = new ListGridField("country_name",
-					"დასახელება", 150);
+					"დასახელება", 250);
 			ListGridField phone_code = new ListGridField("phone_code", "კოდი",
-					60);
+					100);
 			ListGridField continent = new ListGridField("continent",
-					"კონტინენტი", 100);
+					"კონტინენტი", 150);
 
 			listGrid.setFields(country_name, phone_code, continent);
 
@@ -284,19 +280,7 @@ public class TabCountry extends Tab {
 					listGrid.exportData(dsRequestProperties);
 				}
 			});
-			TabSet tabSet = new TabSet();
-			tabSet.setWidth(835);
-			Tab tabDetViewer = new Tab("დათვალიერება");
-			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(datasoutce);
-			detailViewer.setWidth(800);
-			tabDetViewer.setPane(detailViewer);
-
-			listGrid.addRecordClickHandler(new RecordClickHandler() {
-				public void onRecordClick(RecordClickEvent event) {
-					detailViewer.viewSelectedData(listGrid);
-				}
-			});
+			
 			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 				@Override
 				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
@@ -313,8 +297,6 @@ public class TabCountry extends Tab {
 				}
 			});
 
-			tabSet.setTabs(tabDetViewer);
-			mainLayout.addMember(tabSet);
 			setPane(mainLayout);
 
 		} catch (Exception e) {
