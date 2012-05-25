@@ -33,6 +33,9 @@ public class StreetsOldNames implements Serializable {
 	@Column(name = "STREET_ID")
 	private Long street_id;
 
+	@Column(name = "STREET_OLD_ORDER")
+	private Long street_old_order;
+
 	@Column(name = "STREET_OLD_NAME_DESCR")
 	private String street_old_name_descr;
 
@@ -69,6 +72,14 @@ public class StreetsOldNames implements Serializable {
 
 	public void setStreet_old_name_descr(String street_old_name_descr) {
 		this.street_old_name_descr = street_old_name_descr;
+	}
+
+	public Long getStreet_old_order() {
+		return street_old_order;
+	}
+
+	public void setStreet_old_order(Long street_old_order) {
+		this.street_old_order = street_old_order;
 	}
 
 }

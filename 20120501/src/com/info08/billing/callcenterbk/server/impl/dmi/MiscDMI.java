@@ -18,7 +18,9 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.server.common.ServerSingleton;
+import com.info08.billing.callcenterbk.shared.entity.Country;
 import com.info08.billing.callcenterbk.shared.entity.Service;
+import com.info08.billing.callcenterbk.shared.entity.admin.CountryIndexes;
 import com.info08.billing.callcenterbk.shared.entity.admin.LandlineIndexes;
 import com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes;
 import com.info08.billing.callcenterbk.shared.entity.facts.FactStatus;
@@ -471,7 +473,8 @@ public class MiscDMI implements QueryConstants {
 					.toString();
 			Integer pOrganization_id = new Integer(
 					dsRequest.getFieldValue("organization_id") == null ? "-100"
-							: dsRequest.getFieldValue("organization_id").toString());
+							: dsRequest.getFieldValue("organization_id")
+									.toString());
 			Integer pMainDetailId = new Integer(
 					dsRequest.getFieldValue("main_detail_id") == null ? "-100"
 							: dsRequest.getFieldValue("main_detail_id")
@@ -774,6 +777,201 @@ public class MiscDMI implements QueryConstants {
 	}
 
 	/**
+	 * Adding New CoutryIndex
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public CountryIndexes addCountryIndexes(CountryIndexes countryIndexes)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.addCountryIndexes.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			String loggedUserName = countryIndexes.getLoggedUserName();
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add CountryIndexes.");
+
+			oracleManager.persist(countryIndexes);
+
+			CountryIndexes retItem = oracleManager.find(CountryIndexes.class,
+					countryIndexes.getCountry_index_id());
+			Country country = oracleManager.find(Country.class,
+					retItem.getCountry_id());
+			retItem.setCountry_name(country.getCountry_name());
+			EMF.commitTransaction(transaction);
+			log += ". Inserting Finished SuccessFully. ";
+			logger.info(log);
+			return retItem;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Insert CountryIndexes Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			try {
+				if (oracleManager != null) {
+					EMF.returnEntityManager(oracleManager);
+				}
+			} catch (Exception e2) {
+				logger.error("Error While Closing Connection : ", e2);
+				throw new CallCenterException(
+						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			}
+		}
+	}
+
+	/**
+	 * Updating CountryIndexes
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("rawtypes")
+	public CountryIndexes updateCountryIndexes(Map record) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.updateCountryIndexes.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long country_index_id = new Long(record.get("country_index_id")
+					.toString());
+			Long country_id = new Long(record.get("country_id").toString());
+
+			String country_index_value = record.get("country_index_value") == null ? null
+					: record.get("country_index_value").toString();
+			String country_index_remark_geo = record
+					.get("country_index_remark_geo") == null ? null : record
+					.get("country_index_remark_geo").toString();
+			String country_index_remark_eng = record
+					.get("country_index_remark_eng") == null ? null : record
+					.get("country_index_remark_eng").toString();
+
+			String loggedUserName = record.get("loggedUserName").toString();
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update StreetKind.");
+
+			CountryIndexes countryIndexes = oracleManager.find(
+					CountryIndexes.class, country_index_id);
+
+			countryIndexes.setCountry_index_id(country_index_id);
+			countryIndexes.setCountry_id(country_id);
+			countryIndexes.setCountry_index_value(country_index_value);
+			countryIndexes
+					.setCountry_index_remark_geo(country_index_remark_geo);
+			countryIndexes
+					.setCountry_index_remark_eng(country_index_remark_eng);
+			countryIndexes.setLoggedUserName(loggedUserName);
+
+			oracleManager.merge(countryIndexes);
+			oracleManager.flush();
+
+			countryIndexes = oracleManager.find(CountryIndexes.class,
+					country_index_id);
+
+			Country country = oracleManager.find(Country.class,
+					countryIndexes.getCountry_id());
+			countryIndexes.setCountry_name(country.getCountry_name());
+
+			EMF.commitTransaction(transaction);
+			log += ". Updating Finished SuccessFully. ";
+			logger.info(log);
+			return countryIndexes;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Update CountryIndexes Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			try {
+				if (oracleManager != null) {
+					EMF.returnEntityManager(oracleManager);
+				}
+			} catch (Exception e2) {
+				logger.error("Error While Closing Connection : ", e2);
+				throw new CallCenterException(
+						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			}
+		}
+	}
+
+	/**
+	 * Delete CountryIndexes
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public CountryIndexes deleteCountryIndexes(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.deleteCountryIndexes.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long country_index_id = new Long(dsRequest.getOldValues()
+					.get("country_index_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing CountryIndexes.");
+
+			CountryIndexes countryIndexes = oracleManager.find(
+					CountryIndexes.class, country_index_id);
+			countryIndexes.setLoggedUserName(loggedUserName);
+
+			oracleManager.remove(countryIndexes);
+			oracleManager.flush();
+
+			EMF.commitTransaction(transaction);
+			log += ". Status Updating Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Delete CountryIndexes From Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			try {
+				if (oracleManager != null) {
+					EMF.returnEntityManager(oracleManager);
+				}
+			} catch (Exception e2) {
+				logger.error("Error While Closing Connection : ", e2);
+				throw new CallCenterException(
+						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			}
+		}
+	}
+
+	/**
 	 * Adding New LandlineIndexes
 	 * 
 	 * @param record
@@ -848,8 +1046,7 @@ public class MiscDMI implements QueryConstants {
 
 			EMF.commitTransaction(transaction);
 
-			ServerSingleton.getInstance().updateLandlineIndexes(
-					landlineIndex);
+			ServerSingleton.getInstance().updateLandlineIndexes(landlineIndex);
 
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
@@ -878,8 +1075,7 @@ public class MiscDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public LandlineIndexes deleteLandlineIndexes(Map record)
-			throws Exception {
+	public LandlineIndexes deleteLandlineIndexes(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -897,8 +1093,8 @@ public class MiscDMI implements QueryConstants {
 
 			EMF.commitTransaction(transaction);
 
-			ServerSingleton.getInstance().updateLandlineIndexes(
-					landlineIndexes);
+			ServerSingleton.getInstance()
+					.updateLandlineIndexes(landlineIndexes);
 
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
@@ -952,8 +1148,8 @@ public class MiscDMI implements QueryConstants {
 				throw new CallCenterException("არასწორი თარიღი !");
 			}
 			Integer organization_id = Integer.parseInt(dsRequest
-					.getFieldValue("organization_id") == null ? "-1" : dsRequest
-					.getFieldValue("organization_id").toString());
+					.getFieldValue("organization_id") == null ? "-1"
+					: dsRequest.getFieldValue("organization_id").toString());
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
 

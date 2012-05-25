@@ -5,14 +5,13 @@ import java.io.Serializable;
 @Deprecated
 public class Street implements Serializable {
 
-	private static final long serialVersionUID = -5016417466764808176L;
+	private static final long serialVersionUID = -5016417455764808176L;
 	private Long street_id;
 	private Long town_id;
 	private String street_name;
-	private Long deleted;
-	private String street_location_geo;
+	private String street_location;
 	private Long town_district_id;
-	private Long street_district_id;
+	private Long street_to_town_district_id;
 
 	public Long getStreet_id() {
 		return street_id;
@@ -38,20 +37,12 @@ public class Street implements Serializable {
 		this.street_name = street_name;
 	}
 
-	public Long getDeleted() {
-		return deleted;
+	public String getStreet_location() {
+		return street_location;
 	}
 
-	public void setDeleted(Long deleted) {
-		this.deleted = deleted;
-	}
-
-	public String getStreet_location_geo() {
-		return street_location_geo;
-	}
-
-	public void setStreet_location_geo(String street_location_geo) {
-		this.street_location_geo = street_location_geo;
+	public void setStreet_location(String street_location) {
+		this.street_location = street_location;
 	}
 
 	public Long getTown_district_id() {
@@ -62,11 +53,12 @@ public class Street implements Serializable {
 		this.town_district_id = town_district_id;
 	}
 
-	public Long getStreet_district_id() {
-		return street_district_id;
+	public Long getStreet_to_town_district_id() {
+		return street_to_town_district_id;
 	}
 
-	public void setStreet_district_id(Long street_district_id) {
-		this.street_district_id = street_district_id;
+	public void setStreet_to_town_district_id(Long street_to_town_district_id) {
+		this.street_to_town_district_id = street_to_town_district_id;
 	}
+
 }

@@ -7,7 +7,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<!-- <jta-data-source>java:jboss/datasources/OracleDS</jta-data-source> -->
 		<class>com.info08.billing.callcenterbk.shared.entity.Towns</class>
-		<class>com.info08.billing.callcenterbk.shared.entity.CityDistance</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.DistBetweenTowns</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.TownDistrict</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.DistrictIndexes</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.VillageIndexes</class>
@@ -51,6 +51,7 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.org.BusinessSector</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.BusinessUnion</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.admin.LandlineIndexes</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.admin.CountryIndexes</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.CallCenterNews</class>

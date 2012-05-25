@@ -453,10 +453,11 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 			String loggedUserName = streetIndex.getLoggedUserName();
-			streetIndex.setRec_date(recDate);
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add streetIndex.");
 
 			oracleManager.persist(streetIndex);
 			oracleManager.flush();
@@ -467,10 +468,9 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 
 			Long street_id = streetIndex.getStreet_id();
 			if (street_id != null) {
-				Street streetEnt = oracleManager.find(Street.class,
-						street_id);
-				if (streetEnt != null) {
-					streetIndex.setStreetName(streetEnt.getStreet_name());
+				Street street = oracleManager.find(Street.class, street_id);
+				if (street != null) {
+					streetIndex.setStreet_name(street.getStreet_name());
 				}
 			}
 
@@ -513,19 +513,22 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 					.toString());
 			Long street_id = record.get("street_id") == null ? null : new Long(
 					record.get("street_id").toString());
-			String street_comment = record.get("street_comment") == null ? null
-					: record.get("street_comment").toString();
-			String street_index = record.get("street_index") == null ? null
-					: record.get("street_index").toString();
+			String street_index_remark = record.get("street_index_remark") == null ? null
+					: record.get("street_index_remark").toString();
+			String street_index_value = record.get("street_index_value") == null ? null
+					: record.get("street_index_value").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update StreetIndex.");
 
 			StreetIndex streetIndex = oracleManager.find(StreetIndex.class,
 					street_index_id);
 
 			streetIndex.setStreet_id(street_id);
-			streetIndex.setStreet_comment(street_comment);
-			streetIndex.setStreet_index(street_index);
-			streetIndex.setUpd_user(loggedUserName);
+			streetIndex.setStreet_index_remark(street_index_remark);
+			streetIndex.setStreet_index_value(street_index_value);
 
 			oracleManager.merge(streetIndex);
 			oracleManager.flush();
@@ -535,10 +538,9 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 			streetIndex.setLoggedUserName(loggedUserName);
 
 			if (street_id != null) {
-				Street streetEnt = oracleManager.find(Street.class,
-						street_id);
+				Street streetEnt = oracleManager.find(Street.class, street_id);
 				if (streetEnt != null) {
-					streetIndex.setStreetName(streetEnt.getStreet_name());
+					streetIndex.setStreet_name(streetEnt.getStreet_name());
 				}
 			}
 
@@ -562,14 +564,13 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating StreetIndex Status
+	 * Delete StreetIndex Status
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public StreetIndex updateStreetIndexStatus(Map record) throws Exception {
+	public StreetIndex deleteStreetIndex(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -577,37 +578,26 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_index_id = new Long(record.get("street_index_id")
-					.toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long street_index_id = new Long(dsRequest.getOldValues()
+					.get("street_index_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing StreetIndex.");
 
 			StreetIndex streetIndex = oracleManager.find(StreetIndex.class,
 					street_index_id);
-
-			streetIndex.setDeleted(deleted);
-			streetIndex.setUpd_user(loggedUserName);
-
-			oracleManager.merge(streetIndex);
-			oracleManager.flush();
-			streetIndex = oracleManager
-					.find(StreetIndex.class, street_index_id);
-
 			streetIndex.setLoggedUserName(loggedUserName);
 
-			Long street_id = streetIndex.getStreet_id();
-			if (street_id != null) {
-				Street streetEnt = oracleManager.find(Street.class,
-						street_id);
-				if (streetEnt != null) {
-					streetIndex.setStreetName(streetEnt.getStreet_name());
-				}
-			}
+			oracleManager.remove(streetIndex);
+			oracleManager.flush();
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
-			return streetIndex;
+			return null;
+
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {

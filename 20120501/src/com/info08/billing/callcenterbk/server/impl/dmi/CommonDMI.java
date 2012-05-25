@@ -20,9 +20,9 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.common.SharedUtils;
-import com.info08.billing.callcenterbk.shared.entity.CityDistance;
 import com.info08.billing.callcenterbk.shared.entity.Continents;
 import com.info08.billing.callcenterbk.shared.entity.Country;
+import com.info08.billing.callcenterbk.shared.entity.DistBetweenTowns;
 import com.info08.billing.callcenterbk.shared.entity.Street;
 import com.info08.billing.callcenterbk.shared.entity.StreetKind;
 import com.info08.billing.callcenterbk.shared.entity.StreetNames;
@@ -59,6 +59,8 @@ public class CommonDMI implements QueryConstants {
 	private static TreeMap<Long, Street> streetEnts = new TreeMap<Long, Street>();
 	private static TreeMap<Long, TownDistrict> townDistricts = new TreeMap<Long, TownDistrict>();
 	private static TreeMap<Long, TreeMap<Long, TownDistrict>> townDistrictByTownId = new TreeMap<Long, TreeMap<Long, TownDistrict>>();
+
+	String errorText = "ნაპოვნია %s %s, გთხოვთ ჯერ წაშალოთ ქვეყნის %s, წინააღმდეგ შემთხვევაში %s წაშლა შეუძლებელია!";
 
 	public static Street getStreetEnt(Long steetEntId) {
 		return streetEnts.get(steetEntId);
@@ -97,47 +99,54 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Adding New CityDistance
+	 * Adding New DistBetweenTowns
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	public CityDistance addCityDistance(CityDistance cityDistance)
-			throws Exception {
+	public DistBetweenTowns addDistBetweenTowns(
+			DistBetweenTowns distBetweenTowns) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addCityDistance.";
+			String log = "Method:CommonDMI.addDistBetweenTowns.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			cityDistance.setRec_date(recDate);
 
-			oracleManager.persist(cityDistance);
+			String loggedUserName = distBetweenTowns.getLoggedUserName();
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add DistBetweenTowns.");
+
+			oracleManager.persist(distBetweenTowns);
 			oracleManager.flush();
 
-			cityDistance = oracleManager.find(CityDistance.class,
-					cityDistance.getCity_distance_id());
+			distBetweenTowns = oracleManager.find(DistBetweenTowns.class,
+					distBetweenTowns.getDist_between_towns_id());
 
-			Towns cityStart = getTown(cityDistance.getTown_id_start());
-			if (cityStart != null) {
-				cityDistance.setCityStart(cityStart.getCapital_town_name());
+			Towns town_start = getTown(distBetweenTowns.getTown_id_start());
+			if (town_start != null) {
+				distBetweenTowns.setTown_start(town_start
+						.getCapital_town_name());
 			}
-			Towns cityEnd = getTown(cityDistance.getTown_id_end());
-			if (cityEnd != null) {
-				cityDistance.setCityEnd(cityEnd.getCapital_town_name());
+			Towns town_end = getTown(distBetweenTowns.getTown_id_end());
+			if (town_end != null) {
+				distBetweenTowns.setTown_end(town_end.getCapital_town_name());
 			}
-			cityDistance.setLoggedUserName(cityDistance.getRec_user());
-			cityDistance.setCityDistTypeDesc(SharedUtils.getInstance()
-					.getDistanceTypeDescr(
-							cityDistance.getCity_distance_type().toString()));
+			distBetweenTowns.setLoggedUserName(distBetweenTowns
+					.getLoggedUserName());
+			distBetweenTowns
+					.setTown_distance_type_descr(SharedUtils.getInstance()
+							.getDistanceTypeDescr(
+									distBetweenTowns.getTown_distance_type()
+											.toString()));
 
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return cityDistance;
+			return distBetweenTowns;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -155,66 +164,72 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating CityDistance
+	 * Updating DistBetweenTowns
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public CityDistance updateCityDistance(Map record) throws Exception {
+	public DistBetweenTowns updateDistBetweenTowns(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateCityDistance.";
+			String log = "Method:CommonDMI.updateDistBetweenTowns.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			Long city_distance_id = new Long(record.get("city_distance_id")
-					.toString());
-			String city_distance_geo = record.get("city_distance_geo")
-					.toString();
+			Long dist_between_towns_id = new Long(record.get(
+					"dist_between_towns_id").toString());
+			String dist_between_towns_value = record.get(
+					"dist_between_towns_value").toString();
 			Long town_id_start = new Long(record.get("town_id_start")
 					.toString());
 			Long town_id_end = new Long(record.get("town_id_end").toString());
-			Long city_distance_type = new Long(record.get("city_distance_type")
+			Long town_distance_type = new Long(record.get("town_distance_type")
 					.toString());
-			String note_geo = record.get("note_geo").toString();
+			String dist_between_towns_remark = record.get(
+					"dist_between_towns_remark").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 
-			CityDistance cityDistance = oracleManager.find(CityDistance.class,
-					city_distance_id);
-			cityDistance.setCity_distance_geo(city_distance_geo);
-			cityDistance.setTown_id_start(town_id_start);
-			cityDistance.setTown_id_end(town_id_end);
-			cityDistance.setCity_distance_type(city_distance_type);
-			cityDistance.setNote_geo(note_geo);
-			cityDistance.setUpd_date(timestamp);
-			cityDistance.setUpd_user(loggedUserName);
+			DistBetweenTowns distBetweenTowns = oracleManager.find(
+					DistBetweenTowns.class, dist_between_towns_id);
+			distBetweenTowns
+					.setDist_between_towns_value(dist_between_towns_value);
+			distBetweenTowns.setTown_id_start(town_id_start);
+			distBetweenTowns.setTown_id_end(town_id_end);
+			distBetweenTowns.setTown_distance_type(town_distance_type);
+			distBetweenTowns
+					.setDist_between_towns_remark(dist_between_towns_remark);
+			distBetweenTowns.setLoggedUserName(loggedUserName);
 
-			oracleManager.merge(cityDistance);
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update DistBetweenTowns.");
+
+			oracleManager.merge(distBetweenTowns);
 			oracleManager.flush();
 
-			cityDistance = oracleManager.find(CityDistance.class,
-					city_distance_id);
+			distBetweenTowns = oracleManager.find(DistBetweenTowns.class,
+					dist_between_towns_id);
 
-			Towns cityStart = getTown(town_id_start);
+			Towns cityStart = oracleManager.find(Towns.class, town_id_start);
 			if (cityStart != null) {
-				cityDistance.setCityStart(cityStart.getCapital_town_name());
+				distBetweenTowns.setTown_start(cityStart.getTown_name());
 			}
-			Towns cityEnd = getTown(town_id_end);
-			if (cityEnd != null) {
-				cityDistance.setCityEnd(cityEnd.getCapital_town_name());
+			Towns town_end = oracleManager.find(Towns.class, town_id_end);
+			if (town_end != null) {
+				distBetweenTowns.setTown_end(town_end.getTown_name());
 			}
-			cityDistance.setLoggedUserName(loggedUserName);
-			cityDistance.setCityDistTypeDesc(SharedUtils.getInstance()
-					.getDistanceTypeDescr(city_distance_type.toString()));
+			distBetweenTowns.setLoggedUserName(loggedUserName);
+			distBetweenTowns.setTown_distance_type_descr(SharedUtils
+					.getInstance().getDistanceTypeDescr(
+							town_distance_type.toString()));
 
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return cityDistance;
+			return distBetweenTowns;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -231,63 +246,46 @@ public class CommonDMI implements QueryConstants {
 	}
 
 	/**
-	 * Updating CityDistance Status
+	 * deleteDistBetweenTowns
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public CityDistance updateCityDistanceStatus(Map record) throws Exception {
+	public DistBetweenTowns deleteDistBetweenTowns(DSRequest dsRequest)
+			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateCityDistanceStatus.";
+			String log = "Method:CommonDMI.deleteDistBetweenTowns.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			Long city_distance_id = new Long(record.get("city_distance_id")
-					.toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long dist_between_towns_id = new Long(dsRequest.getOldValues()
+					.get("dist_between_towns_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing DistBetweenTowns.");
 
-			CityDistance cityDistance = oracleManager.find(CityDistance.class,
-					city_distance_id);
-			cityDistance.setUpd_date(timestamp);
-			cityDistance.setDeleted(deleted);
-			cityDistance.setUpd_user(loggedUserName);
+			DistBetweenTowns distBetweenTowns = oracleManager.find(
+					DistBetweenTowns.class, dist_between_towns_id);
+			distBetweenTowns.setLoggedUserName(loggedUserName);
 
-			oracleManager.merge(cityDistance);
+			oracleManager.remove(distBetweenTowns);
 			oracleManager.flush();
-			cityDistance = oracleManager.find(CityDistance.class,
-					city_distance_id);
-
-			Towns cityStart = getTown(cityDistance.getTown_id_start());
-			if (cityStart != null) {
-				cityDistance.setCityStart(cityStart.getCapital_town_name());
-			}
-			Towns cityEnd = getTown(cityDistance.getTown_id_end());
-			if (cityEnd != null) {
-				cityDistance.setCityEnd(cityEnd.getCapital_town_name());
-			}
-			cityDistance.setLoggedUserName(loggedUserName);
-			cityDistance.setCityDistTypeDesc(SharedUtils.getInstance()
-					.getDistanceTypeDescr(
-							cityDistance.getCity_distance_type().toString()));
 
 			EMF.commitTransaction(transaction);
-			log += ". Status Updating Finished SuccessFully. ";
+			log += ". Delete Finished SuccessFully. ";
 			logger.info(log);
-			return cityDistance;
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Update Status CityDistance Into Database : ",
-					e);
+			logger.error("Error While Delete DistBetweenTowns : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -608,17 +606,17 @@ public class CommonDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Street updateStreetEnt(Map record) throws Exception {
+	public Street updateStreet(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateStreetEnt.";
+			String log = "Method:CommonDMI.updateStreet.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
 			Long street_id = new Long(record.get("street_id").toString());
 			Long town_id = new Long(record.get("town_id").toString());
-			String street_location_geo = record.get("street_location") == null ? null
+			String street_location = record.get("street_location") == null ? null
 					: record.get("street_location").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
@@ -747,7 +745,7 @@ public class CommonDMI implements QueryConstants {
 			String streetName = buildStreetName(streetEntForGen, oracleManager);
 			streetEntForGen.setStreet_name(streetName);
 			streetEntForGen.setTown_id(town_id);
-			streetEntForGen.setStreet_location(street_location_geo);
+			streetEntForGen.setStreet_location(street_location);
 			streetEntForGen.setRecord_type(1L);
 			oracleManager.merge(streetEntForGen);
 
@@ -1876,6 +1874,7 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Towns townDelete(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -1886,6 +1885,29 @@ public class CommonDMI implements QueryConstants {
 
 			Long town_id = new Long(dsRequest.getOldValues().get("town_id")
 					.toString());
+
+			List result = oracleManager
+					.createNativeQuery(QueryConstants.Q_CHECK_TOWN_FK)
+					.setParameter(1, town_id).setParameter(2, town_id)
+					.setParameter(3, town_id).setParameter(4, town_id)
+					.setParameter(5, town_id).getResultList();
+
+			if (result != null && !result.isEmpty()) {
+				for (Object row : result) {
+					Object cols[] = (Object[]) row;
+					Long cnt = new Long(cols[0] == null ? "-1"
+							: cols[0].toString());
+					String type = cols[1] == null ? "" : cols[1].toString();
+					if (cnt != null && cnt.intValue() > 0) {
+						throw new CallCenterException(
+								"შეცდომა ქალაქის წაშლის დროს : "
+										+ String.format(errorText, "ქალაქის",
+												type, type, "ქალაქის"));
+					}
+
+				}
+			}
+
 			String loggedUserName = dsRequest.getOldValues()
 					.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
@@ -2028,18 +2050,59 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
+	private String getFKErrorDescription(int type) {
+		String retText = "ნაპოვნია ქვეყნის %s, გთხოვთ ჯერ წაშალოთ ქვეყნის %s, წინააღმდეგ შემთხვევაში ქვეყნის წაშლა შეუძლებელია!";
+		switch (type) {
+		case 1:
+			return String.format(retText, "ინდექსები", "ინდექსები");
+		case 2:
+			return String.format(retText, "ვალუტა", "ვალუტა");
+		case 3:
+			return String.format(retText, "ქალაქები", "ქალაქები");
+		case 4:
+			return String.format(retText, "რეგიონალური ცენტრები",
+					"რეგიონალური ცენტრები");
+		default:
+			return "სისტემური შეცდომა";
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
 	public Country deleteCountry(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
+
 			Long country_id = -1L;
 			Object oCountry_id = dsRequest.getOldValues().get("country_id");
 			String loggedUserName = dsRequest.getOldValues()
 					.get("loggedUserName").toString();
 			if (oCountry_id != null) {
 				country_id = new Long(oCountry_id.toString());
+			}
+
+			List result = oracleManager
+					.createNativeQuery(QueryConstants.Q_CHECK_COUNTRY_FK)
+					.setParameter(1, country_id).setParameter(2, country_id)
+					.setParameter(3, country_id).setParameter(4, country_id)
+					.getResultList();
+
+			if (result != null && !result.isEmpty()) {
+				for (Object row : result) {
+					Object cols[] = (Object[]) row;
+					Long cnt = new Long(cols[0] == null ? "-1"
+							: cols[0].toString());
+					Long type = new Long(cols[1] == null ? "-1"
+							: cols[1].toString());
+					if (cnt != null && cnt.intValue() > 0) {
+						throw new CallCenterException(
+								"შეცდომა ქვეყნის წაშლის დროს : "
+										+ getFKErrorDescription(type.intValue()));
+					}
+
+				}
 			}
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
@@ -3198,4 +3261,76 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
+	/**
+	 * updateStreetOldNames
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public StreetNames updateStreetOldNames(Map record) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.updateStreetOldNames.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			// Long street_old_id = new Long(record.get("street_old_id")
+			// .toString());
+			String street_id = record.get("street_id").toString();
+			String town_id = record.get("town_id").toString();
+
+			String loggedUserName = record.get("loggedUserName").toString();
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update StreetNames.");
+
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_OLD_STREET_NAMES)
+					.setParameter(1, street_id).executeUpdate();
+
+			Map<String, String> streetOldNamesMap = (Map<String, String>) record
+					.get("streetOldNamesMap");
+
+			Set<String> sortKeys = streetOldNamesMap.keySet();
+			for (String sortKey : sortKeys) {
+				String street_old_name_descr = streetOldNamesMap.get(sortKey)
+						.toString();
+				StreetsOldNames obj = new StreetsOldNames();
+				obj.setStreet_id(new Long(street_id));
+				obj.setTown_id(new Long(town_id));
+				obj.setStreet_old_name_descr(street_old_name_descr);
+				obj.setStreet_old_order(new Long(sortKey));
+
+				oracleManager.persist(obj);
+			}
+
+			EMF.commitTransaction(transaction);
+			log += ". Updating Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Update Street Name Into Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			try {
+				if (oracleManager != null) {
+					EMF.returnEntityManager(oracleManager);
+				}
+			} catch (Exception e2) {
+				logger.error("Error While Closing Connection : ", e2);
+				throw new CallCenterException(
+						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			}
+		}
+	}
 }
