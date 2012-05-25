@@ -84,7 +84,7 @@ public class DlgViewDistrictVillageIndexes extends Window {
 				"district_index_name", CallCenterBK.constants.region());
 
 		DetailViewerField village_index_name = new DetailViewerField(
-				"village_index_name", CallCenterBK.constants.cityCountry());
+				"village_index_name", CallCenterBK.constants.townCountry());
 
 		DetailViewerField village_index = new DetailViewerField(
 				"village_index", CallCenterBK.constants.index());

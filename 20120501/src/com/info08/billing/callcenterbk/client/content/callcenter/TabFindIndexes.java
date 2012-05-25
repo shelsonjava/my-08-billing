@@ -41,7 +41,7 @@ public class TabFindIndexes extends Tab {
 	// fields
 	private ComboBoxItem countryItem;
 	private TextItem countyCodeItem;
-	private TextItem cityItem;
+	private TextItem townItem;
 	private TextItem codeItem;
 
 	// main content layout
@@ -49,7 +49,7 @@ public class TabFindIndexes extends Tab {
 
 	// actions
 	private IButton findByCountryBtn;
-	private IButton findByCityBtn;
+	private IButton findByTownBtn;
 	private IButton findByOperBtn;
 	private IButton callInfoBtn;
 
@@ -134,17 +134,17 @@ public class TabFindIndexes extends Tab {
 		countyCodeItem.setName("countyCodeItem");
 		countyCodeItem.setCanEdit(false);
 
-		cityItem = new TextItem();
-		cityItem.setTitle(CallCenterBK.constants.city());
-		cityItem.setName("cityItem");
-		cityItem.setWidth(400);
+		townItem = new TextItem();
+		townItem.setTitle(CallCenterBK.constants.town());
+		townItem.setName("townItem");
+		townItem.setWidth(400);
 
 		codeItem = new TextItem();
 		codeItem.setTitle(CallCenterBK.constants.code());
 		codeItem.setWidth(350);
 		codeItem.setName("codeItem");
 
-		searchForm.setFields(countryItem, countyCodeItem, cityItem, codeItem);
+		searchForm.setFields(countryItem, countyCodeItem, townItem, codeItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(750);
@@ -159,8 +159,8 @@ public class TabFindIndexes extends Tab {
 		findByCountryBtn = new IButton();
 		findByCountryBtn.setTitle(CallCenterBK.constants.findByCountry());
 
-		findByCityBtn = new IButton();
-		findByCityBtn.setTitle(CallCenterBK.constants.findByCity());
+		findByTownBtn = new IButton();
+		findByTownBtn.setTitle(CallCenterBK.constants.findByTown());
 
 		findByOperBtn = new IButton();
 		findByOperBtn.setTitle(CallCenterBK.constants.findByOperator());
@@ -172,7 +172,7 @@ public class TabFindIndexes extends Tab {
 		buttonLayout.addMember(new LayoutSpacer());
 
 		buttonLayout.addMember(findByCountryBtn);
-		buttonLayout.addMember(findByCityBtn);
+		buttonLayout.addMember(findByTownBtn);
 		buttonLayout.addMember(findByOperBtn);
 		buttonLayout.addMember(clearButton);
 
@@ -227,8 +227,8 @@ public class TabFindIndexes extends Tab {
 		listGrid.setFilterOnKeypress(true);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField cityName = new ListGridField("cityName",
-				CallCenterBK.constants.city(), 200);
+		ListGridField townName = new ListGridField("cityName",
+				CallCenterBK.constants.town(), 200);
 		ListGridField countrycode = new ListGridField("countrycode",
 				CallCenterBK.constants.countryCodeShort(), 80);
 		ListGridField countryregion = new ListGridField("countryregion",
@@ -244,7 +244,7 @@ public class TabFindIndexes extends Tab {
 		ListGridField ctm = new ListGridField("ctm",
 				CallCenterBK.constants.ctm(), 80);
 
-		cityName.setAlign(Alignment.LEFT);
+		townName.setAlign(Alignment.LEFT);
 		countrycode.setAlign(Alignment.CENTER);
 		countryregion.setAlign(Alignment.LEFT);
 		code.setAlign(Alignment.CENTER);
@@ -253,7 +253,7 @@ public class TabFindIndexes extends Tab {
 		gmtoffwinter.setAlign(Alignment.CENTER);
 		ctm.setAlign(Alignment.CENTER);
 
-		cityName.setCanFilter(true);
+		townName.setCanFilter(true);
 		countrycode.setCanFilter(false);
 		countryregion.setCanFilter(true);
 		code.setCanFilter(true);
@@ -261,7 +261,7 @@ public class TabFindIndexes extends Tab {
 		gmtoffwinter.setCanFilter(false);
 		ctm.setCanFilter(false);
 
-		listGrid.setFields(cityName, countryregion, countrycode, town_new_code,
+		listGrid.setFields(townName, countryregion, countrycode, town_new_code,
 				code, gmtoff, gmtoffwinter, ctm);
 
 		tabMainInfo.setPane(listGrid);
@@ -296,7 +296,7 @@ public class TabFindIndexes extends Tab {
 			public void onClick(ClickEvent event) {
 				countryItem.clearValue();
 				countyCodeItem.clearValue();
-				cityItem.clearValue();
+				townItem.clearValue();
 				codeItem.clearValue();
 			}
 		});
@@ -308,7 +308,7 @@ public class TabFindIndexes extends Tab {
 			}
 		});
 
-		findByCityBtn.addClickHandler(new ClickHandler() {
+		findByTownBtn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				search(2);
@@ -339,7 +339,7 @@ public class TabFindIndexes extends Tab {
 					}
 					countryItem.setValue(countryid);
 					countyCodeItem.clearValue();
-					cityItem.clearValue();
+					townItem.clearValue();
 					codeItem.clearValue();
 					search(1);
 
@@ -370,7 +370,7 @@ public class TabFindIndexes extends Tab {
 				}
 			}
 		});
-		cityItem.addKeyPressHandler(new KeyPressHandler() {
+		townItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
@@ -393,7 +393,7 @@ public class TabFindIndexes extends Tab {
 	private void search(int searchType) {
 		try {
 			String countryid_str = countryItem.getValueAsString();
-			String town_name = cityItem.getValueAsString();
+			String town_name = townItem.getValueAsString();
 			String code = codeItem.getValueAsString();
 
 			if ((countryid_str == null || countryid_str.trim().equals(""))

@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgViewCityDist extends Window {
+public class DlgViewDistBetweenTowns extends Window {
 
 	private VLayout mainLayout;
 
@@ -38,7 +38,7 @@ public class DlgViewCityDist extends Window {
 	private boolean smsSend = false;
 	private ToolStripButton sendSMS;
 
-	public DlgViewCityDist(ListGrid listGrid, DataSource dataSource,
+	public DlgViewDistBetweenTowns(ListGrid listGrid, DataSource dataSource,
 			ListGridRecord listGridRecord) {
 		this.listGridRecord = listGridRecord;
 
@@ -81,25 +81,25 @@ public class DlgViewCityDist extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		DetailViewerField cityStart = new DetailViewerField("cityStart",
-				CallCenterBK.constants.cityFrom());
+		DetailViewerField town_start = new DetailViewerField("town_start",
+				CallCenterBK.constants.townFrom());
 
-		DetailViewerField cityEnd = new DetailViewerField("cityEnd",
-				CallCenterBK.constants.cityTo());
+		DetailViewerField town_end = new DetailViewerField("town_end",
+				CallCenterBK.constants.townTo());
 
-		DetailViewerField cityDistTypeDesc = new DetailViewerField(
-				"cityDistTypeDesc", CallCenterBK.constants.type());
+		DetailViewerField town_distance_type_descr = new DetailViewerField(
+				"town_distance_type_descr", CallCenterBK.constants.type());
 
-		DetailViewerField city_distance_geo = new DetailViewerField(
-				"city_distance_geo", CallCenterBK.constants.distance());
+		DetailViewerField dist_between_towns_value = new DetailViewerField(
+				"dist_between_towns_value", CallCenterBK.constants.distance());
 
-		DetailViewerField note_geo = new DetailViewerField("note_geo",
+		DetailViewerField dist_between_towns_remark = new DetailViewerField("dist_between_towns_remark",
 				CallCenterBK.constants.comment());
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(cityStart, cityEnd, cityDistTypeDesc,
-				city_distance_geo, note_geo);
+		detailViewer.setFields(town_start, town_end, town_distance_type_descr,
+				dist_between_towns_value, dist_between_towns_remark);
 
 		mainLayout.addMember(detailViewer);
 
@@ -139,7 +139,7 @@ public class DlgViewCityDist extends Window {
 
 	private void destroyDlg() {
 		try {
-			final DlgViewCityDist dlgViewIndex = this;
+			final DlgViewDistBetweenTowns dlgViewIndex = this;
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
@@ -210,24 +210,24 @@ public class DlgViewCityDist extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String cityStart = listGridRecord.getAttributeAsString("cityStart");
-			if (cityStart != null && !cityStart.trim().equals("")) {
-				sms_text.append(cityStart).append("-");
+			String town_start = listGridRecord.getAttributeAsString("town_start");
+			if (town_start != null && !town_start.trim().equals("")) {
+				sms_text.append(town_start).append("-");
 			}
-			String cityEnd = listGridRecord.getAttributeAsString("cityEnd");
-			if (cityEnd != null && !cityEnd.trim().equals("")) {
-				sms_text.append(cityEnd).append(" ");
+			String town_end = listGridRecord.getAttributeAsString("town_end");
+			if (town_end != null && !town_end.trim().equals("")) {
+				sms_text.append(town_end).append(" ");
 			}
-			String city_distance_geo = listGridRecord
-					.getAttributeAsString("city_distance_geo");
-			if (city_distance_geo != null
-					&& !city_distance_geo.trim().equals("")) {
-				sms_text.append(city_distance_geo).append("km.; ");
+			String dist_between_towns_value = listGridRecord
+					.getAttributeAsString("dist_between_towns_value");
+			if (dist_between_towns_value != null
+					&& !dist_between_towns_value.trim().equals("")) {
+				sms_text.append(dist_between_towns_value).append("km.; ");
 			}
 
-			String note_geo = listGridRecord.getAttributeAsString("note_geo");
-			if (note_geo != null && !note_geo.trim().equals("")) {
-				sms_text.append(note_geo).append(";");
+			String dist_between_towns_remark = listGridRecord.getAttributeAsString("dist_between_towns_remark");
+			if (dist_between_towns_remark != null && !dist_between_towns_remark.trim().equals("")) {
+				sms_text.append(dist_between_towns_remark).append(";");
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();

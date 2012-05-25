@@ -129,7 +129,7 @@ public class TabFindDistrictVillageIndexes extends Tab {
 		district_index_name.setCanFilter(false);
 
 		ListGridField village_index_name = new ListGridField("village_index_name",
-				CallCenterBK.constants.cityCountry());
+				CallCenterBK.constants.townCountry());
 		village_index_name.setAlign(Alignment.LEFT);
 		village_index_name.setCanFilter(true);
 

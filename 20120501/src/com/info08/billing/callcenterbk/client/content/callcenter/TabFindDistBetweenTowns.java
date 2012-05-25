@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewCityDist;
+import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewDistBetweenTowns;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -25,14 +25,14 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 
-public class TabFindDistBetwCity extends Tab {
+public class TabFindDistBetweenTowns extends Tab {
 
 	// search form
 	private DynamicForm searchForm;
 
 	// fields
-	private ComboBoxItem cityFromItem;
-	private ComboBoxItem cityToItem;
+	private ComboBoxItem townFromItem;
+	private ComboBoxItem townToItem;
 
 	// main content layout
 	private VLayout mainLayout;
@@ -45,13 +45,13 @@ public class TabFindDistBetwCity extends Tab {
 	private ListGrid listGrid;
 
 	// DataSource
-	private DataSource citiesDistDS;
+	private DataSource distBetweenTowns;
 
-	public TabFindDistBetwCity() {
+	public TabFindDistBetweenTowns() {
 		setTitle(CallCenterBK.constants.distBetweenCities());
 		setCanClose(true);
 
-		citiesDistDS = DataSource.get("CitiesDistDS");
+		distBetweenTowns = DataSource.get("DistBetweenTownsDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -65,26 +65,26 @@ public class TabFindDistBetwCity extends Tab {
 		searchForm.setTitleOrientation(TitleOrientation.TOP);
 		mainLayout.addMember(searchForm);
 
-		cityFromItem = new ComboBoxItem();
-		cityFromItem.setTitle(CallCenterBK.constants.cityFrom());
-		cityFromItem.setName("cityFromItem");
-		cityFromItem.setWidth(375);
-		cityFromItem.setFetchMissingValues(true);
-		cityFromItem.setFilterLocally(false);
-		cityFromItem.setAddUnknownValues(false);
-		cityFromItem.setCompleteOnTab(true);
+		townFromItem = new ComboBoxItem();
+		townFromItem.setTitle(CallCenterBK.constants.townFrom());
+		townFromItem.setName("townFromItem");
+		townFromItem.setWidth(375);
+		townFromItem.setFetchMissingValues(true);
+		townFromItem.setFilterLocally(false);
+		townFromItem.setAddUnknownValues(false);
+		townFromItem.setCompleteOnTab(true);
 
 		DataSource TownsDS = DataSource.get("TownsDS");
-		cityFromItem.setOptionOperationId("searchFromDB");
-		cityFromItem.setOptionDataSource(TownsDS);
-		cityFromItem.setValueField("town_id");
-		cityFromItem.setDisplayField("town_name");
-		cityFromItem.setAutoFetchData(false);
+		townFromItem.setOptionOperationId("searchFromDB");
+		townFromItem.setOptionDataSource(TownsDS);
+		townFromItem.setValueField("town_id");
+		townFromItem.setDisplayField("town_name");
+		townFromItem.setAutoFetchData(false);
 
-		cityFromItem.addKeyPressHandler(new KeyPressHandler() {
+		townFromItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = cityFromItem.getOptionCriteria();
+				Criteria criteria = townFromItem.getOptionCriteria();
 				if (criteria != null) {
 					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
@@ -95,25 +95,25 @@ public class TabFindDistBetwCity extends Tab {
 			}
 		});
 
-		cityToItem = new ComboBoxItem();
-		cityToItem.setTitle(CallCenterBK.constants.cityTo());
-		cityToItem.setName("cityToItem");
-		cityToItem.setWidth(375);
-		cityToItem.setFetchMissingValues(true);
-		cityToItem.setFilterLocally(false);
-		cityToItem.setAddUnknownValues(false);
-		cityToItem.setCompleteOnTab(true);
+		townToItem = new ComboBoxItem();
+		townToItem.setTitle(CallCenterBK.constants.townTo());
+		townToItem.setName("townToItem");
+		townToItem.setWidth(375);
+		townToItem.setFetchMissingValues(true);
+		townToItem.setFilterLocally(false);
+		townToItem.setAddUnknownValues(false);
+		townToItem.setCompleteOnTab(true);
 
-		cityToItem.setOptionOperationId("searchFromDB");
-		cityToItem.setOptionDataSource(TownsDS);
-		cityToItem.setValueField("town_id");
-		cityToItem.setDisplayField("town_name");
-		cityToItem.setAutoFetchData(false);
+		townToItem.setOptionOperationId("searchFromDB");
+		townToItem.setOptionDataSource(TownsDS);
+		townToItem.setValueField("town_id");
+		townToItem.setDisplayField("town_name");
+		townToItem.setAutoFetchData(false);
 
-		cityToItem.addKeyPressHandler(new KeyPressHandler() {
+		townToItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = cityToItem.getOptionCriteria();
+				Criteria criteria = townToItem.getOptionCriteria();
 				if (criteria != null) {
 					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
@@ -124,7 +124,7 @@ public class TabFindDistBetwCity extends Tab {
 			}
 		});
 
-		searchForm.setFields(cityFromItem, cityToItem);
+		searchForm.setFields(townFromItem, townToItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(750);
@@ -144,7 +144,7 @@ public class TabFindDistBetwCity extends Tab {
 		listGrid.setWidth(900);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(citiesDistDS);
+		listGrid.setDataSource(distBetweenTowns);
 		listGrid.setAutoFetchData(false);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
@@ -158,33 +158,33 @@ public class TabFindDistBetwCity extends Tab {
 		listGrid.setFixedRecordHeights(false);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField cityStart = new ListGridField("cityStart",
-				CallCenterBK.constants.cityFrom(), 140);
-		cityStart.setAlign(Alignment.LEFT);
-		cityStart.setCanFilter(false);
+		ListGridField town_start = new ListGridField("town_start",
+				CallCenterBK.constants.townFrom(), 140);
+		town_start.setAlign(Alignment.LEFT);
+		town_start.setCanFilter(false);
 
-		ListGridField cityEnd = new ListGridField("cityEnd",
-				CallCenterBK.constants.cityTo(), 140);
-		cityEnd.setAlign(Alignment.LEFT);
-		cityEnd.setCanFilter(false);
+		ListGridField town_end = new ListGridField("town_end",
+				CallCenterBK.constants.townTo(), 140);
+		town_end.setAlign(Alignment.LEFT);
+		town_end.setCanFilter(false);
 
-		ListGridField cityDistTypeDesc = new ListGridField("cityDistTypeDesc",
+		ListGridField town_distance_type_descr = new ListGridField("town_distance_type_descr",
 				CallCenterBK.constants.type(), 140);
-		cityDistTypeDesc.setAlign(Alignment.LEFT);
-		cityDistTypeDesc.setCanFilter(false);
+		town_distance_type_descr.setAlign(Alignment.LEFT);
+		town_distance_type_descr.setCanFilter(false);
 
-		ListGridField city_distance_geo = new ListGridField(
-				"city_distance_geo", CallCenterBK.constants.distance(), 180);
-		city_distance_geo.setAlign(Alignment.LEFT);
-		city_distance_geo.setCanFilter(false);
+		ListGridField dist_between_towns_value = new ListGridField(
+				"dist_between_towns_value", CallCenterBK.constants.distance(), 180);
+		dist_between_towns_value.setAlign(Alignment.LEFT);
+		dist_between_towns_value.setCanFilter(false);
 
-		ListGridField note_geo = new ListGridField("note_geo",
+		ListGridField dist_between_towns_remark = new ListGridField("dist_between_towns_remark",
 				CallCenterBK.constants.comment());
-		note_geo.setAlign(Alignment.LEFT);
-		note_geo.setCanFilter(true);
+		dist_between_towns_remark.setAlign(Alignment.LEFT);
+		dist_between_towns_remark.setCanFilter(true);
 
-		listGrid.setFields(cityStart, cityEnd, cityDistTypeDesc,
-				city_distance_geo, note_geo);
+		listGrid.setFields(town_start, town_end, town_distance_type_descr,
+				dist_between_towns_value, dist_between_towns_remark);
 
 		mainLayout.addMember(listGrid);
 
@@ -197,16 +197,16 @@ public class TabFindDistBetwCity extends Tab {
 		clearButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				cityFromItem.clearValue();
-				cityToItem.clearValue();
+				townFromItem.clearValue();
+				townToItem.clearValue();
 			}
 		});
 
 		listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-				DlgViewCityDist dlgViewTransport = new DlgViewCityDist(
-						listGrid, citiesDistDS, listGrid.getSelectedRecord());
+				DlgViewDistBetweenTowns dlgViewTransport = new DlgViewDistBetweenTowns(
+						listGrid, distBetweenTowns, listGrid.getSelectedRecord());
 				dlgViewTransport.show();
 			}
 		});
@@ -216,14 +216,13 @@ public class TabFindDistBetwCity extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", 0);
 
-			String town_id_start = cityFromItem.getValueAsString();
+			String town_id_start = townFromItem.getValueAsString();
 			if (town_id_start != null && !town_id_start.trim().equals("")) {
 				criteria.setAttribute("town_id_start", new Integer(
 						town_id_start));
 			}
-			String town_id_end = cityToItem.getValueAsString();
+			String town_id_end = townToItem.getValueAsString();
 			if (town_id_end != null && !town_id_end.trim().equals("")) {
 				criteria.setAttribute("town_id_end", new Integer(town_id_end));
 			}

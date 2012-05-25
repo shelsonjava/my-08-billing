@@ -55,7 +55,7 @@ public class TabFindStreets extends Tab {
 		setTitle(CallCenterBK.constants.streetsFind());
 		setCanClose(true);
 
-		streetsDS = DataSource.get("StreetsNewDS");
+		streetsDS = DataSource.get("StreetsDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -70,7 +70,7 @@ public class TabFindStreets extends Tab {
 		mainLayout.addMember(searchForm);
 
 		citiesItem = new ComboBoxItem();
-		citiesItem.setTitle(CallCenterBK.constants.city());
+		citiesItem.setTitle(CallCenterBK.constants.town());
 		citiesItem.setName("town_name");
 		citiesItem.setWidth(250);
 		citiesItem.setFetchMissingValues(true);
@@ -78,7 +78,7 @@ public class TabFindStreets extends Tab {
 		citiesItem.setAddUnknownValues(false);
 
 		DataSource townsDS = DataSource.get("TownsDS");
-		citiesItem.setOptionOperationId("searchCitiesFromDBForCombos");
+		citiesItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
 		citiesItem.setOptionDataSource(townsDS);
 		citiesItem.setValueField("town_id");
 		citiesItem.setDisplayField("town_name");
@@ -155,31 +155,31 @@ public class TabFindStreets extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField town_name = new ListGridField("town_name",
-				CallCenterBK.constants.city(), 120);
+				CallCenterBK.constants.town(), 120);
 		town_name.setAlign(Alignment.LEFT);
 
 		ListGridField street_name = new ListGridField("street_name",
 				CallCenterBK.constants.street(), 170);
 		street_name.setAlign(Alignment.LEFT);
 
-		ListGridField oldName = new ListGridField("oldName",
+		ListGridField street_old_name_descr = new ListGridField("street_old_name_descr",
 				CallCenterBK.constants.oldStreetName(), 170);
-		oldName.setAlign(Alignment.LEFT);
+		street_old_name_descr.setAlign(Alignment.LEFT);
 
-		ListGridField streetIndex = new ListGridField("streetIndex",
+		ListGridField streetIndex = new ListGridField("street_index",
 				CallCenterBK.constants.indexes(), 120);
 		streetIndex.setAlign(Alignment.LEFT);
 
-		ListGridField streetDistrict = new ListGridField("streetDistrict",
+		ListGridField streetDistrict = new ListGridField("street_to_town_district",
 				CallCenterBK.constants.district(), 120);
 		streetDistrict.setAlign(Alignment.LEFT);
 
-		ListGridField street_location_geo = new ListGridField(
-				"street_location_geo", CallCenterBK.constants.streetDescr());
-		street_location_geo.setAlign(Alignment.LEFT);
+		ListGridField street_location = new ListGridField(
+				"street_location", CallCenterBK.constants.streetDescr());
+		street_location.setAlign(Alignment.LEFT);
 
-		listGrid.setFields(town_name, street_name, oldName,
-				streetIndex, streetDistrict, street_location_geo);
+		listGrid.setFields(town_name, street_name, street_old_name_descr,
+				streetIndex, streetDistrict, street_location);
 
 		mainLayout.addMember(listGrid);
 
@@ -246,7 +246,7 @@ public class TabFindStreets extends Tab {
 			}
 
 			if (streetIndex != null && !streetIndex.trim().equals("")) {
-				criteria.setAttribute("streetIndex", streetIndex);
+				criteria.setAttribute("street_index", streetIndex);
 			}
 
 			if (street_name != null && !street_name.trim().equals("")) {

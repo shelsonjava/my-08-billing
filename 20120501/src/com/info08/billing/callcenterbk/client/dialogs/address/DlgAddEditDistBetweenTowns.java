@@ -25,21 +25,21 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditCityDistance extends Window {
+public class DlgAddEditDistBetweenTowns extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private ComboBoxItem cityStartItem;
-	private ComboBoxItem cityEndItem;
+	private ComboBoxItem townStartItem;
+	private ComboBoxItem townEndItem;
 	private ComboBoxItem distanceTypeItem;
 	private TextItem distanceItem;
-	private TextAreaItem noteGeoItem;
+	private TextAreaItem distBetweenTownsRemarkItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditCityDistance(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditDistBetweenTowns(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
@@ -69,28 +69,28 @@ public class DlgAddEditCityDistance extends Window {
 		dynamicForm.setNumCols(2);
 		hLayout.addMember(dynamicForm);
 
-		cityStartItem = new ComboBoxItem();
-		cityStartItem.setTitle("საწყისი ქალაქი");
-		cityStartItem.setWidth(300);
-		cityStartItem.setName("town_id_start");
-		cityStartItem.setFetchMissingValues(true);
-		cityStartItem.setFilterLocally(false);
-		cityStartItem.setAddUnknownValues(false);
+		townStartItem = new ComboBoxItem();
+		townStartItem.setTitle("საწყისი ქალაქი");
+		townStartItem.setWidth(300);
+		townStartItem.setName("town_id_start");
+		townStartItem.setFetchMissingValues(true);
+		townStartItem.setFilterLocally(false);
+		townStartItem.setAddUnknownValues(false);
 
 		DataSource townsDS = DataSource.get("TownsDS");
-		cityStartItem.setOptionOperationId("searchCitiesFromDBForCombos1");
-		cityStartItem.setOptionDataSource(townsDS);
-		cityStartItem.setValueField("town_id");
-		cityStartItem.setDisplayField("town_name");
+		townStartItem.setOptionOperationId("searchCitiesFromDBForCombos1");
+		townStartItem.setOptionDataSource(townsDS);
+		townStartItem.setValueField("town_id");
+		townStartItem.setDisplayField("town_name");
 
 		Criteria criteriaCity = new Criteria();
-		cityStartItem.setOptionCriteria(criteriaCity);
-		cityStartItem.setAutoFetchData(false);
+		townStartItem.setOptionCriteria(criteriaCity);
+		townStartItem.setAutoFetchData(false);
 
-		cityStartItem.addKeyPressHandler(new KeyPressHandler() {
+		townStartItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = cityStartItem.getOptionCriteria();
+				Criteria criteria = townStartItem.getOptionCriteria();
 				if (criteria != null) {
 					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
@@ -100,29 +100,29 @@ public class DlgAddEditCityDistance extends Window {
 				}
 			}
 		});
-		
-		cityEndItem = new ComboBoxItem();
-		cityEndItem.setTitle("საბოლოო ქალაქი");
-		cityEndItem.setWidth(300);
-		cityEndItem.setName("town_id_end");
-		cityEndItem.setFetchMissingValues(true);
-		cityEndItem.setFilterLocally(false);
-		cityEndItem.setAddUnknownValues(false);
+
+		townEndItem = new ComboBoxItem();
+		townEndItem.setTitle("საბოლოო ქალაქი");
+		townEndItem.setWidth(300);
+		townEndItem.setName("town_id_end");
+		townEndItem.setFetchMissingValues(true);
+		townEndItem.setFilterLocally(false);
+		townEndItem.setAddUnknownValues(false);
 
 		DataSource townsDS1 = DataSource.get("TownsDS");
-		cityEndItem.setOptionOperationId("searchCitiesFromDBForCombos1");
-		cityEndItem.setOptionDataSource(townsDS1);
-		cityEndItem.setValueField("town_id");
-		cityEndItem.setDisplayField("town_name");
+		townEndItem.setOptionOperationId("searchCitiesFromDBForCombos1");
+		townEndItem.setOptionDataSource(townsDS1);
+		townEndItem.setValueField("town_id");
+		townEndItem.setDisplayField("town_name");
 
 		Criteria criteriaCity1 = new Criteria();
-		cityEndItem.setOptionCriteria(criteriaCity1);
-		cityEndItem.setAutoFetchData(false);
+		townEndItem.setOptionCriteria(criteriaCity1);
+		townEndItem.setAutoFetchData(false);
 
-		cityEndItem.addKeyPressHandler(new KeyPressHandler() {
+		townEndItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = cityEndItem.getOptionCriteria();
+				Criteria criteria = townEndItem.getOptionCriteria();
 				if (criteria != null) {
 					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
@@ -144,16 +144,16 @@ public class DlgAddEditCityDistance extends Window {
 		distanceItem = new TextItem();
 		distanceItem.setTitle("მანძილი (კმ.)");
 		distanceItem.setWidth(300);
-		distanceItem.setName("city_distance_geo");
+		distanceItem.setName("dist_between_towns_value");
 
-		noteGeoItem = new TextAreaItem();
-		noteGeoItem.setTitle("კომენტარი");
-		noteGeoItem.setWidth(300);
-		noteGeoItem.setHeight(50);
-		noteGeoItem.setName("note_geo");
+		distBetweenTownsRemarkItem = new TextAreaItem();
+		distBetweenTownsRemarkItem.setTitle("კომენტარი");
+		distBetweenTownsRemarkItem.setWidth(300);
+		distBetweenTownsRemarkItem.setHeight(50);
+		distBetweenTownsRemarkItem.setName("dist_between_towns_remark");
 
-		dynamicForm.setFields(cityStartItem, cityEndItem, distanceTypeItem,
-				distanceItem, noteGeoItem);
+		dynamicForm.setFields(townStartItem, townEndItem, distanceTypeItem,
+				distanceItem, distBetweenTownsRemarkItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -192,11 +192,15 @@ public class DlgAddEditCityDistance extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			cityStartItem.setValue(editRecord.getAttributeAsInt("town_id_start"));
-			cityEndItem.setValue(editRecord.getAttributeAsInt("town_id_end"));
-			distanceTypeItem.setValue(editRecord.getAttributeAsInt("city_distance_type"));
-			distanceItem.setValue(editRecord.getAttributeAsString("city_distance_geo"));
-			noteGeoItem.setValue(editRecord.getAttribute("note_geo"));
+			townStartItem.setValue(editRecord
+					.getAttributeAsInt("town_id_start"));
+			townEndItem.setValue(editRecord.getAttributeAsInt("town_id_end"));
+			distanceTypeItem.setValue(editRecord
+					.getAttributeAsInt("town_distance_type"));
+			distanceItem.setValue(editRecord
+					.getAttributeAsString("dist_between_towns_value"));
+			distBetweenTownsRemarkItem.setValue(editRecord
+					.getAttribute("dist_between_towns_remark"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -204,13 +208,13 @@ public class DlgAddEditCityDistance extends Window {
 
 	private void save() {
 		try {
-			String city_start_record = cityStartItem.getValueAsString();
-			if (city_start_record == null) {
+			String town_id_start = townStartItem.getValueAsString();
+			if (town_id_start == null) {
 				SC.say("აირჩიეთ საწყისი ქალაქი !");
 				return;
 			}
-			String city_end_record = cityEndItem.getValueAsString();
-			if (city_end_record == null) {
+			String town_id_end = townEndItem.getValueAsString();
+			if (town_id_end == null) {
 				SC.say("აირჩიეთ საბოლოო ქალაქი !");
 				return;
 			}
@@ -219,8 +223,9 @@ public class DlgAddEditCityDistance extends Window {
 				SC.say("აირჩიეთ მანძილის ტიპი !");
 				return;
 			}
-			String city_distance_geo = distanceItem.getValueAsString();
-			String note_geo = noteGeoItem.getValueAsString();
+			String dist_between_towns_value = distanceItem.getValueAsString();
+			String dist_between_towns_remark = distBetweenTownsRemarkItem
+					.getValueAsString();
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
@@ -228,24 +233,24 @@ public class DlgAddEditCityDistance extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("city_distance_geo", city_distance_geo);
-			record.setAttribute("city_distance_type", new Integer(
+			record.setAttribute("dist_between_towns_value",
+					dist_between_towns_value);
+			record.setAttribute("town_distance_type", new Integer(
 					distanceTypeItem.getValueAsString()));
-			record.setAttribute("town_id_end", city_end_record);
-			record.setAttribute("town_id_start", city_start_record);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("note_geo", note_geo);
-			record.setAttribute("rec_user", loggedUser);
+			record.setAttribute("town_id_end", town_id_end);
+			record.setAttribute("town_id_start", town_id_start);
+			record.setAttribute("dist_between_towns_remark",
+					dist_between_towns_remark);
 
 			if (editRecord != null) {
-				record.setAttribute("city_distance_id",
-						editRecord.getAttributeAsInt("city_distance_id"));
+				record.setAttribute("dist_between_towns_id",
+						editRecord.getAttributeAsInt("dist_between_towns_id"));
 			}
 
 			DSRequest req = new DSRequest();
 
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addCityDistance");
+				req.setAttribute("operationId", "addDistBetweenTowns");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -254,7 +259,7 @@ public class DlgAddEditCityDistance extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateCityDistance");
+				req.setAttribute("operationId", "updateDistBetweenTowns");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

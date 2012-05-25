@@ -350,8 +350,8 @@ public class TabFindEvent extends Tab {
 								record.getAttributeAsString("town_name"));
 						pRecord.setAttribute("town_district_name", record
 								.getAttributeAsString("town_district_name"));
-						pRecord.setAttribute("street_location_geo", record
-								.getAttributeAsString("street_location_geo"));
+						pRecord.setAttribute("street_location", record
+								.getAttributeAsString("street_location"));
 						pRecord.setAttribute("index_text",
 								record.getAttributeAsString("index_text"));
 						pRecord.setAttribute("legal_statuse",

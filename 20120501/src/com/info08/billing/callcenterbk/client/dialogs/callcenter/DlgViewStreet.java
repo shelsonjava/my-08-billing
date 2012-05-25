@@ -78,11 +78,11 @@ public class DlgViewStreet extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		DetailViewerField town_name = new DetailViewerField(
-				"town_name", CallCenterBK.constants.city());
+		DetailViewerField town_name = new DetailViewerField("town_name",
+				CallCenterBK.constants.town());
 
-		DetailViewerField street_name = new DetailViewerField(
-				"street_name", CallCenterBK.constants.street());
+		DetailViewerField street_name = new DetailViewerField("street_name",
+				CallCenterBK.constants.street());
 
 		DetailViewerField oldName = new DetailViewerField("oldName",
 				CallCenterBK.constants.oldStreetName());
@@ -94,16 +94,16 @@ public class DlgViewStreet extends Window {
 		DetailViewerField streetDistrict = new DetailViewerField(
 				"streetDistrict", CallCenterBK.constants.district());
 
-		DetailViewerField street_location_geo = new DetailViewerField(
-				"street_location_geo", CallCenterBK.constants.streetDescr());
+		DetailViewerField street_location = new DetailViewerField(
+				"street_location", CallCenterBK.constants.streetDescr());
 
 		detailViewer.selectRecord(listGridRecord);
 		ListGridRecord arr[] = new ListGridRecord[1];
 		arr[0] = listGridRecord;
 		detailViewer.setData(arr);
 
-		detailViewer.setFields(town_name, street_name, oldName,
-				streetIndex, streetDistrict, street_location_geo);
+		detailViewer.setFields(town_name, street_name, oldName, streetIndex,
+				streetDistrict, street_location);
 
 		mainLayout.addMember(detailViewer);
 
@@ -229,11 +229,10 @@ public class DlgViewStreet extends Window {
 			if (streetDistrict != null && !streetDistrict.trim().equals("")) {
 				sms_text.append(streetDistrict).append(" ");
 			}
-			String street_location_geo = listGridRecord
-					.getAttributeAsString("street_location_geo");
-			if (street_location_geo != null
-					&& !street_location_geo.trim().equals("")) {
-				sms_text.append(street_location_geo).append(" ");
+			String street_location = listGridRecord
+					.getAttributeAsString("street_location");
+			if (street_location != null && !street_location.trim().equals("")) {
+				sms_text.append(street_location).append(" ");
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
@@ -247,7 +246,6 @@ public class DlgViewStreet extends Window {
 			recordParam.setAttribute("phone", phone);
 			recordParam.setAttribute("rec_user", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");

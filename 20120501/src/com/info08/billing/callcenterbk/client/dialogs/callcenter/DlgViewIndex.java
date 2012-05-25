@@ -97,7 +97,7 @@ public class DlgViewIndex extends Window {
 		dataSource.getField("country_name").setHidden(false);
 
 		DetailViewerField cityName = new DetailViewerField("cityName",
-				CallCenterBK.constants.city());
+				CallCenterBK.constants.town());
 		DetailViewerField countrycode = new DetailViewerField("countrycode",
 				CallCenterBK.constants.countryCode());
 		DetailViewerField countryregion = new DetailViewerField(

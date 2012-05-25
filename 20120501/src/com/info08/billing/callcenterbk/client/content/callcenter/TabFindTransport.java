@@ -160,8 +160,8 @@ public class TabFindTransport extends Tab {
 		dateItem.setUseTextField(true);
 
 		cityFromItem = new ComboBoxItem();
-		cityFromItem.setTitle(CallCenterBK.constants.cityFrom());
-		cityFromItem.setName("cityFromItem");
+		cityFromItem.setTitle(CallCenterBK.constants.townFrom());
+		cityFromItem.setName("townFromItem");
 		cityFromItem.setWidth(250);
 		cityFromItem.setFetchMissingValues(true);
 		cityFromItem.setFilterLocally(false);
@@ -193,7 +193,7 @@ public class TabFindTransport extends Tab {
 		});
 
 		cityToItem = new ComboBoxItem();
-		cityToItem.setTitle(CallCenterBK.constants.cityTo());
+		cityToItem.setTitle(CallCenterBK.constants.townTo());
 		cityToItem.setName("cityToItem");
 		cityToItem.setWidth(250);
 		cityToItem.setFetchMissingValues(true);

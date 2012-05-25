@@ -86,21 +86,21 @@ public class DlgViewStreetInfo extends Window {
 
 		hLayout.addMember(detailViewer);
 
-		DetailViewerField real_address = new DetailViewerField(
-				"street_name", CallCenterBK.constants.address());
-		DetailViewerField town_name = new DetailViewerField(
-				"town_name", CallCenterBK.constants.city());
+		DetailViewerField real_address = new DetailViewerField("street_name",
+				CallCenterBK.constants.address());
+		DetailViewerField town_name = new DetailViewerField("town_name",
+				CallCenterBK.constants.town());
 		DetailViewerField town_district_name = new DetailViewerField(
 				"town_district_name", CallCenterBK.constants.cityRegion());
-		DetailViewerField street_location_geo = new DetailViewerField(
-				"street_location_geo", CallCenterBK.constants.streetDescr());
+		DetailViewerField street_location = new DetailViewerField(
+				"street_location", CallCenterBK.constants.streetDescr());
 		DetailViewerField index_text = new DetailViewerField("index_text",
 				CallCenterBK.constants.streetIdx());
 		DetailViewerField street_old_name = new DetailViewerField(
 				"street_old_name", CallCenterBK.constants.streetOldName());
 
-		detailViewer.setFields(town_name, town_district_name,
-				real_address, street_old_name, street_location_geo, index_text);
+		detailViewer.setFields(town_name, town_district_name, real_address,
+				street_old_name, street_location, index_text);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -174,11 +174,11 @@ public class DlgViewStreetInfo extends Window {
 				sms_text.append(town_district_name).append(" ");
 			}
 
-			String street_location_geo = pRecord
-					.getAttributeAsString("street_location_geo");
-			if (street_location_geo != null
-					&& !street_location_geo.trim().equalsIgnoreCase("")) {
-				sms_text.append(street_location_geo).append(" ");
+			String street_location = pRecord
+					.getAttributeAsString("street_location");
+			if (street_location != null
+					&& !street_location.trim().equalsIgnoreCase("")) {
+				sms_text.append(street_location).append(" ");
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();

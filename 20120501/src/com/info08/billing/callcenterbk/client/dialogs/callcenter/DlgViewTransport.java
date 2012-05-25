@@ -176,7 +176,7 @@ public class DlgViewTransport extends Window {
 		listGridInner.setFilterOnKeypress(true);
 
 		ListGridField outCity = new ListGridField("outCity",
-				CallCenterBK.constants.city());
+				CallCenterBK.constants.town());
 		outCity.setAlign(Alignment.LEFT);
 		outCity.setCanFilter(true);
 

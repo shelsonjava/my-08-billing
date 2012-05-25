@@ -30,9 +30,9 @@ public class DlgAddEditStreetIndex extends Window {
 
 	// form fields
 	private ComboBoxItem streetsItem;
-	private TextItem streetCommentItem;
-	private TextItem streetIndexItem;
-	
+	private TextItem streetIndexRemarkItem;
+	private TextItem streetIndexValueItem;
+
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
@@ -74,8 +74,9 @@ public class DlgAddEditStreetIndex extends Window {
 		streetsItem.setFilterLocally(false);
 		streetsItem.setAddUnknownValues(false);
 
-		DataSource streetsNewDS = DataSource.get("StreetsNewDS");
-		streetsItem.setOptionOperationId("searchStreetFromDBForCombosNoDistrTbil");
+		DataSource streetsNewDS = DataSource.get("StreetsDS");
+		streetsItem
+				.setOptionOperationId("searchStreetFromDBForCombosNoDistrTbil");
 		streetsItem.setOptionDataSource(streetsNewDS);
 		streetsItem.setValueField("street_id");
 		streetsItem.setDisplayField("street_name");
@@ -97,17 +98,18 @@ public class DlgAddEditStreetIndex extends Window {
 			}
 		});
 
-		streetCommentItem = new TextItem();
-		streetCommentItem.setTitle("კომენტარი");
-		streetCommentItem.setWidth(350);
-		streetCommentItem.setName("street_comment");
+		streetIndexRemarkItem = new TextItem();
+		streetIndexRemarkItem.setTitle("კომენტარი");
+		streetIndexRemarkItem.setWidth(350);
+		streetIndexRemarkItem.setName("street_index_remark");
 
-		streetIndexItem = new TextItem();
-		streetIndexItem.setTitle("ინდექსი");
-		streetIndexItem.setWidth(350);
-		streetIndexItem.setName("street_index");
+		streetIndexValueItem = new TextItem();
+		streetIndexValueItem.setTitle("ინდექსი");
+		streetIndexValueItem.setWidth(350);
+		streetIndexValueItem.setName("street_index_value");
 
-		dynamicForm.setFields(streetsItem, streetCommentItem, streetIndexItem);
+		dynamicForm.setFields(streetsItem, streetIndexRemarkItem,
+				streetIndexValueItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -146,10 +148,12 @@ public class DlgAddEditStreetIndex extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			streetCommentItem.setValue(editRecord.getAttributeAsString("street_comment"));
-			streetIndexItem.setValue(editRecord.getAttributeAsString("street_index"));
+			streetIndexRemarkItem.setValue(editRecord
+					.getAttributeAsString("street_index_remark"));
+			streetIndexValueItem.setValue(editRecord
+					.getAttributeAsString("street_index_value"));
 			streetsItem.setValue(editRecord.getAttributeAsInt("street_id"));
-			
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -162,13 +166,13 @@ public class DlgAddEditStreetIndex extends Window {
 				SC.say("აირჩიეთ ქუჩა !");
 				return;
 			}
-			String street_comment = streetCommentItem.getValueAsString();
-			if (street_comment == null || street_comment.trim().equals("")) {
+			String street_index_remark = streetIndexRemarkItem.getValueAsString();
+			if (street_index_remark == null || street_index_remark.trim().equals("")) {
 				SC.say("შეიყვანეთ კომენტარი !");
 				return;
 			}
-			String street_index = streetIndexItem.getValueAsString();
-			if (street_index == null || street_index.trim().equals("")) {
+			String street_index_value = streetIndexValueItem.getValueAsString();
+			if (street_index_value == null || street_index_value.trim().equals("")) {
 				SC.say("შეიყვანეთ ინდექსი !");
 				return;
 			}
@@ -180,11 +184,9 @@ public class DlgAddEditStreetIndex extends Window {
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("street_id", street_id);
-			record.setAttribute("street_comment", street_comment);
-			record.setAttribute("street_index",street_index);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("rec_user", loggedUser);
-
+			record.setAttribute("street_index_remark", street_index_remark);
+			record.setAttribute("street_index_value", street_index_value);
+			
 			if (editRecord != null) {
 				record.setAttribute("street_index_id",
 						editRecord.getAttributeAsInt("street_index_id"));
