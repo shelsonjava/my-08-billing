@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.content.callcenter.TabFindAbonent;
+import com.info08.billing.callcenterbk.client.content.callcenter.TabFindSubscriber;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindByNumber;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindFacts;
 import com.info08.billing.callcenterbk.client.content.callcenter.TabFindCurrencyRates;
@@ -204,7 +204,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 		iButtonAbFind.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				TabFindAbonent tabFindAbonent = new TabFindAbonent();
+				TabFindSubscriber tabFindAbonent = new TabFindSubscriber();
 				body.addTab(tabFindAbonent);
 			}
 		});
