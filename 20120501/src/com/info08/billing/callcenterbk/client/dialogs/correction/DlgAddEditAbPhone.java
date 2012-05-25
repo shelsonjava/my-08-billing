@@ -1,8 +1,14 @@
 package com.info08.billing.callcenterbk.client.dialogs.correction;
 
+import java.util.Map;
+import java.util.Set;
+
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -17,7 +23,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -29,16 +35,18 @@ public class DlgAddEditAbPhone extends Window {
 	private VLayout hLayout;
 	private DynamicForm formPhone;
 	private TextItem phoneItem;
-	private ComboBoxItem isHideItem;
-	private ComboBoxItem isParallelItem;
-	private ComboBoxItem phoneStatusItem;
-	private ComboBoxItem phoneStateItem;
-	private ComboBoxItem phoneTypeItem;
+	private SelectItem isHideItem;
+	private SelectItem isParallelItem;
+	private SelectItem phoneContractType;
+	private SelectItem phoneStateItem;
+	private SelectItem phoneTypeItem;
 	private ListGrid listGridPhones;
+	private Integer subscriber_id;
 
 	public DlgAddEditAbPhone(final ListGridRecord listGridRecord,
-			ListGrid listGridPhones) {
+			ListGrid listGridPhones, Integer subscriber_id) {
 		this.listGridPhones = listGridPhones;
+		this.subscriber_id = subscriber_id;
 		setWidth(750);
 		setHeight(150);
 		setTitle(listGridRecord == null ? "ახალი ნომრის დამატება"
@@ -65,64 +73,54 @@ public class DlgAddEditAbPhone extends Window {
 		formPhone.setTitleOrientation(TitleOrientation.TOP);
 
 		phoneItem = new TextItem();
-		phoneItem.setTitle("ტელეფონი");
 		phoneItem.setName("phone");
+		phoneItem.setTitle(CallCenterBK.constants.phone());
 		phoneItem.setWidth(170);
 
-		isHideItem = new ComboBoxItem();
+		isHideItem = new SelectItem();
 		isHideItem.setValueMap(ClientMapUtil.getInstance().getMapOpClose());
 		isHideItem.setDefaultToFirstOption(true);
-		isHideItem.setTitle("ღია/დაფარული");
-		isHideItem.setName("is_hide");
+		isHideItem.setTitle(CallCenterBK.constants.paraller());
+		isHideItem.setName("hidden_by_request");
 		isHideItem.setWidth(112);
 		isHideItem.setFetchMissingValues(false);
 
-		isParallelItem = new ComboBoxItem();
+		isParallelItem = new SelectItem();
 		isParallelItem.setValueMap(ClientMapUtil.getInstance().getMapParall());
 		isParallelItem.setDefaultToFirstOption(true);
-		isParallelItem.setTitle("პარალელური");
+		isParallelItem.setTitle(CallCenterBK.constants.openClose());
 		isParallelItem.setName("is_parallel");
 		isParallelItem.setWidth(120);
 		isParallelItem.setFetchMissingValues(false);
 
-		phoneStatusItem = new ComboBoxItem();
-		phoneStatusItem.setValueMap(ClientMapUtil.getInstance().getMapStatuses());
-		phoneStatusItem.setDefaultToFirstOption(true);
-		phoneStatusItem.setTitle("სტატუსი");
-		phoneStatusItem.setName("phone_status_id");
-		phoneStatusItem.setWidth(100);
-		phoneStatusItem.setFetchMissingValues(false);
+		phoneContractType = new SelectItem();
+		ClientUtils.fillDescriptionCombo(phoneContractType,
+				Constants.DT_PHONECONTRACTTYPES);
+		phoneContractType.setTitle(CallCenterBK.constants.status());
+		phoneContractType.setName("phone_contract_type");
+		phoneContractType.setWidth(100);
 
-		phoneStateItem = new ComboBoxItem();
-		phoneStateItem.setValueMap(ClientMapUtil.getInstance().getMapStates());
-		phoneStateItem.setDefaultToFirstOption(true);
-		phoneStateItem.setTitle("მდგომარეობა");
+		phoneStateItem = new SelectItem();
+		ClientUtils.fillDescriptionCombo(phoneStateItem,
+				Constants.DT_PHONESTATES);
+		phoneStateItem.setTitle(CallCenterBK.constants.state());
 		phoneStateItem.setName("phone_state_id");
-		phoneStateItem.setWidth(100);
-		phoneStateItem.setFetchMissingValues(false);
 
-		phoneTypeItem = new ComboBoxItem();
-		phoneTypeItem.setValueMap(ClientMapUtil.getInstance().getMapTypes());
-		phoneTypeItem.setDefaultToFirstOption(true);
-		phoneTypeItem.setTitle("ტიპი");
+		phoneStateItem.setWidth(100);
+
+		phoneTypeItem = new SelectItem();
+		ClientUtils
+				.fillDescriptionCombo(phoneTypeItem, Constants.DT_PHONETYPES);
+		phoneTypeItem.setTitle(CallCenterBK.constants.type());
 		phoneTypeItem.setName("phone_type_id");
 		phoneTypeItem.setWidth(119);
-		phoneTypeItem.setFetchMissingValues(false);
-
-		if (listGridRecord != null) {
-			phoneItem.setValue(listGridRecord.getAttribute("phone"));
-			isHideItem.setValue(listGridRecord.getAttribute("is_hide"));
-			isParallelItem.setValue(listGridRecord.getAttribute("is_parallel"));
-			phoneStatusItem.setValue(listGridRecord
-					.getAttribute("phone_status_id"));
-			phoneStateItem.setValue(listGridRecord
-					.getAttribute("phone_state_id"));
-			phoneTypeItem
-					.setValue(listGridRecord.getAttribute("phone_type_id"));
-		}
 
 		formPhone.setFields(phoneItem, isHideItem, isParallelItem,
-				phoneStatusItem, phoneStateItem, phoneTypeItem);
+				phoneContractType, phoneStateItem, phoneTypeItem);
+
+		if (listGridRecord != null) {
+			formPhone.setValues(listGridRecord.toMap());
+		}
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -201,7 +199,7 @@ public class DlgAddEditAbPhone extends Window {
 				SC.say("გთხოვთ აირჩიოთ ტელეფონის ნომერი პარალელურია თუ ჩვეულებრივი !");
 				return;
 			}
-			String phoneStatus = phoneStatusItem.getValueAsString();
+			String phoneStatus = phoneContractType.getValueAsString();
 			if (phoneStatus == null) {
 				SC.say("გთხოვთ აირჩიოთ ტელეფონის სტატუსი !");
 				return;
@@ -287,6 +285,8 @@ public class DlgAddEditAbPhone extends Window {
 				DataSource dataSource = DataSource.get("AbPhonesDS");
 				Criteria criteria = new Criteria();
 				criteria.setAttribute("phone", phone + "");
+				if (subscriber_id != null)
+					criteria.setAttribute("subscriber_id", subscriber_id);
 				DSRequest req = new DSRequest();
 				req.setAttribute("operationId", "getPhone");
 				dataSource.fetchData(criteria, new DSCallback() {
@@ -343,25 +343,28 @@ public class DlgAddEditAbPhone extends Window {
 			Integer iOpClose, Integer iParalelUsual, Integer iPhoneStatus,
 			Integer iPhoneState, Integer iPhoneType) throws CallCenterException {
 		try {
+			Map<?, ?> mp = formPhone.getValues();
+
+			Set<?> keys = mp.keySet();
+			for (Object key : keys) {
+				String sKey = key.toString();
+				listGridRecord.setAttribute(sKey, mp.get(key));
+			}
 			listGridRecord.setAttribute("phone", phone + "");
-			listGridRecord.setAttribute("is_hide", iOpClose);
-			listGridRecord.setAttribute("is_parallel", iParalelUsual);
-			listGridRecord.setAttribute("phone_status_id", iPhoneStatus);
-			listGridRecord.setAttribute("phone_state_id", iPhoneState);
-			listGridRecord.setAttribute("phone_type_id", iPhoneType);
-			listGridRecord.setAttribute("is_hide_descr", ClientMapUtil.getInstance()
-					.getMapOpClose().get(iOpClose + ""));
+			listGridRecord.setAttribute(
+					"hidden_by_request_descr",
+					ClientMapUtil.getInstance().getMapOpClose()
+							.get(iOpClose + ""));
 			listGridRecord.setAttribute("is_parallel_descr", ClientMapUtil
 					.getInstance().getMapParall().get(iParalelUsual + ""));
-			listGridRecord.setAttribute("phone_status", ClientMapUtil.getInstance()
-					.getMapStatuses().get(iPhoneStatus + ""));
-			listGridRecord.setAttribute("phone_state", ClientMapUtil.getInstance()
-					.getMapStates().get(iPhoneState + ""));
-			listGridRecord.setAttribute("phone_type", ClientMapUtil.getInstance()
-					.getMapTypes().get(iPhoneType + ""));
+			listGridRecord.setAttribute("phone_contract_type_desr",
+					phoneContractType.getDisplayValue());
+			listGridRecord.setAttribute("phone_state",
+					phoneStateItem.getDisplayValue());
+			listGridRecord.setAttribute("phone_type",
+					phoneTypeItem.getDisplayValue());
 			listGridRecord.setAttribute("loggedUserName", CommonSingleton
 					.getInstance().getSessionPerson() + "");
-			listGridRecord.setAttribute("deleted", 0);
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}

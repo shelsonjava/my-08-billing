@@ -6,13 +6,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.info08.billing.callcenterbk.client.content.TabAbonent;
+import com.info08.billing.callcenterbk.client.content.TabSubscriber;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.client.utils.FormItemDescr;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
-import com.smartgwt.client.data.Criterion;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -38,12 +38,14 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditAbonent extends Window {
+public class DlgAddEditSubscriber extends Window {
 
 	private VLayout hLayout;
+
 	private DynamicForm formPersInfo;
 	private DynamicForm formAddress;
 	private DynamicForm formAddressParams;
+
 	private ComboBoxItem firstNameItem;
 	private ComboBoxItem lastNameItem;
 	private TextItem oldAddItem;
@@ -59,10 +61,10 @@ public class DlgAddEditAbonent extends Window {
 	private ListGrid listGridPhones;
 	private ListGrid abonentsGrid;
 
-	final static Integer defCityTbilisiId = 2208;
+	private Integer subscriber_id;
 
-	public DlgAddEditAbonent(final ListGridRecord abonentRecord,
-			DataSource subscriberDS, final TabAbonent tabAbonent,
+	public DlgAddEditSubscriber(final ListGridRecord abonentRecord,
+			DataSource subscriberDS, final TabSubscriber tabAbonent,
 			ListGrid abonentsGrid) {
 		try {
 			this.abonentsGrid = abonentsGrid;
@@ -98,7 +100,7 @@ public class DlgAddEditAbonent extends Window {
 
 			firstNameItem = new ComboBoxItem();
 			firstNameItem.setTitle("სახელი");
-			firstNameItem.setName("name");
+			firstNameItem.setName("name_id");
 			firstNameItem.setWidth(270);
 			ClientUtils.fillCombo(firstNameItem, "FirstNameDS",
 					"searchFNamesFromDBCustomForCombos", "firstname_Id",
@@ -106,13 +108,12 @@ public class DlgAddEditAbonent extends Window {
 
 			lastNameItem = new ComboBoxItem();
 			lastNameItem.setTitle("გვარი");
-			lastNameItem.setName("family_name");
+			lastNameItem.setName("family_name_id");
 			lastNameItem.setWidth(324);
 
 			ClientUtils.fillCombo(lastNameItem, "LastNameDS",
 					"searchLastNamesFromDBCustomForCombos", "lastname_Id",
 					"lastname");
-
 
 			formPersInfo.setFields(headerItemPersInfo, firstNameItem,
 					lastNameItem);
@@ -154,14 +155,13 @@ public class DlgAddEditAbonent extends Window {
 			streetItem.setName("street_id");
 			streetItem.setWidth(322);
 
-			Map<String, String> aditionalCriteria = new TreeMap<String, String>();
-			
-			aditionalCriteria.put("town_id", defCityTbilisiId.toString());
+			Map<String, Object> aditionalCriteria = new TreeMap<String, Object>();
+
+			aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
 
 			ClientUtils.fillCombo(streetItem, "StreetsDS",
 					"searchStreetFromDBForCombos", "street_id", "street_name",
 					aditionalCriteria);
-
 
 			regionItem = new ComboBoxItem();
 			regionItem.setTitle("უბანი");
@@ -171,7 +171,6 @@ public class DlgAddEditAbonent extends Window {
 			ClientUtils.fillCombo(regionItem, "TownDistrictDS",
 					"searchCityRegsFromDBForCombos", "town_district_id",
 					"town_district_name", aditionalCriteria);
-
 
 			streetDescrItem = new TextAreaItem();
 			streetDescrItem.setTitle("ქუჩის აღწერა");
@@ -183,11 +182,13 @@ public class DlgAddEditAbonent extends Window {
 
 			ClientUtils.makeDependancy(citiesItem, "town_id", streetItem,
 					regionItem);
-			
+
+			ClientUtils.makeDependancy(citiesItem, true, new FormItemDescr(
+					streetDescrItem, "", "g"));
+
 			ClientUtils.makeDependancy(streetItem, true, new FormItemDescr(
 					regionItem, "street_id", "town_district_id"),
-					new FormItemDescr(streetDescrItem, "",
-							"street_location"));
+					new FormItemDescr(streetDescrItem, "", "street_location"));
 
 			formAddress.setFields(headerItemAddr, citiesItem, streetItem,
 					regionItem, streetDescrItem);
@@ -324,7 +325,7 @@ public class DlgAddEditAbonent extends Window {
 				@Override
 				public void onClick(ClickEvent event) {
 					DlgAddEditAbPhone addEditAbPhone = new DlgAddEditAbPhone(
-							null, listGridPhones);
+							null, listGridPhones, subscriber_id);
 					addEditAbPhone.show();
 				}
 			});
@@ -343,7 +344,7 @@ public class DlgAddEditAbonent extends Window {
 						return;
 					}
 					DlgAddEditAbPhone addEditAbPhone = new DlgAddEditAbPhone(
-							listGridRecord, listGridPhones);
+							listGridRecord, listGridPhones, subscriber_id);
 					addEditAbPhone.show();
 				}
 			});
@@ -390,7 +391,6 @@ public class DlgAddEditAbonent extends Window {
 				}
 			});
 
-			
 			saveItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -415,9 +415,8 @@ public class DlgAddEditAbonent extends Window {
 			formPersInfo.setValues(values);
 			formAddress.setValues(values);
 			formAddressParams.setValues(values);
-			
-			Integer subscriber_id = abonentRecord
-					.getAttributeAsInt("subscriber_id");
+
+			subscriber_id = abonentRecord.getAttributeAsInt("subscriber_id");
 			if (subscriber_id != null) {
 				DataSource phoneDataSource = DataSource.get("AbPhonesDS");
 				Criteria criteria = new Criteria();
@@ -446,20 +445,16 @@ public class DlgAddEditAbonent extends Window {
 	public void fillCombos(final ListGridRecord abonentRecord) {
 		try {
 
-			
-
-			fillFields(abonentRecord, defCityTbilisiId);
+			fillFields(abonentRecord, Constants.defCityTbilisiId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
 
-	
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void saveAbonentsData(ListGridRecord abonentRecord,
-			final TabAbonent tabAbonent) {
+			final TabSubscriber tabAbonent) {
 		try {
 			ListGridRecord nameRecord = firstNameItem.getSelectedRecord();
 			if (nameRecord == null
@@ -476,38 +471,25 @@ public class DlgAddEditAbonent extends Window {
 
 			ListGridRecord cityRecord = citiesItem.getSelectedRecord();
 			if (cityRecord == null
-					|| cityRecord.getAttributeAsInt("city_id") == null) {
+					|| cityRecord.getAttributeAsInt("town_id") == null) {
 				SC.say("გთხოვთ აირჩიოთ ქალაქი !");
 				return;
 			}
 
-			String streetRecord = streetItem.getValueAsString();
-			if (streetRecord == null) {
+			if (streetItem.getValueAsString() == null) {
 				SC.say("გთხოვთ აირჩიოთ ქუჩა !");
 				return;
 			}
-
-			String cityRegion = regionItem.getValueAsString();
-
-			String addrStatType = adressOpCloseItem.getValueAsString();
-			if (addrStatType == null) {
-				SC.say("გთხოვთ აირჩიოთ მისამართი ღიაა თუ დაფარული !");
-				return;
-			}
-			Integer iAddrStatType = null;
 			try {
-				iAddrStatType = Integer.parseInt(addrStatType);
+				Integer.parseInt(adressOpCloseItem.getValueAsString());
 			} catch (NumberFormatException e) {
 				SC.say("გთხოვთ აირჩიოთ მისამართი ღიაა თუ დაფარული !");
 				return;
 			}
-			String sAddress = adressItem.getValueAsString();
 
-			String sBlock = blockItem.getValueAsString();
-
-			String sAppart = appartItem.getValueAsString();
-
-			String sAddrAddInfo = addrAddInfoItem.getValueAsString();
+			Map<String, Object> mp = ClientUtils.fillMapFromForm(
+					abonentRecord == null ? null : abonentRecord.toMap(),
+					formPersInfo, formAddress, formAddressParams);
 
 			ListGridRecord phoneRecors[] = listGridPhones.getRecords();
 			if (phoneRecors == null || phoneRecors.length <= 0) {
@@ -517,68 +499,20 @@ public class DlgAddEditAbonent extends Window {
 
 			Map items = new LinkedHashMap();
 			for (ListGridRecord listGridRecord : phoneRecors) {
-				Map mapPhoneProps = new LinkedHashMap();
-				mapPhoneProps.put("deleted", 0);
-				mapPhoneProps.put("is_hide",
-						listGridRecord.getAttributeAsInt("is_hide"));
-				mapPhoneProps.put("is_hide_descr",
-						listGridRecord.getAttribute("is_hide_descr"));
-				mapPhoneProps.put("is_parallel",
-						listGridRecord.getAttributeAsInt("is_parallel"));
-				mapPhoneProps.put("is_parallel_descr",
-						listGridRecord.getAttribute("is_parallel_descr"));
-				mapPhoneProps
-						.put("phone", listGridRecord.getAttribute("phone"));
-				mapPhoneProps.put("phone_state",
-						listGridRecord.getAttribute("phone_state"));
-				mapPhoneProps.put("phone_state_id",
-						listGridRecord.getAttributeAsInt("phone_state_id"));
-				mapPhoneProps.put("phone_status",
-						listGridRecord.getAttribute("phone_status"));
-				mapPhoneProps.put("phone_status_id",
-						listGridRecord.getAttribute("phone_status_id"));
-				mapPhoneProps.put("phone_type",
-						listGridRecord.getAttribute("phone_type"));
-				mapPhoneProps.put("phone_type_id",
-						listGridRecord.getAttributeAsInt("phone_type_id"));
+				Map mapPhoneProps = listGridRecord.toMap();
+				mapPhoneProps.remove("_ref");
 				items.put(listGridRecord.getAttribute("phone"), mapPhoneProps);
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
-			Record record = new Record();
+			Record record = new Record(mp);
 			record.setAttribute("listPhones", items);
-			record.setAttribute("firstname_id",
-					nameRecord.getAttributeAsInt("firstname_Id"));
-			record.setAttribute("lastname_id",
-					lastNameRecord.getAttributeAsInt("lastname_Id"));
-			record.setAttribute("city_id",
-					cityRecord.getAttributeAsInt("city_id"));
-			record.setAttribute("street_id", streetRecord);
-			if (cityRegion != null) {
-				record.setAttribute("city_region_id", new Integer(cityRegion));
-			}
-
-			record.setAttribute("address_hide", iAddrStatType);
-			record.setAttribute("addr_number", sAddress);
-			record.setAttribute("addr_block", sBlock);
-			record.setAttribute("addr_appt", sAppart);
-			record.setAttribute("addr_descr", sAddrAddInfo);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-
-			// Edit
-			if (abonentRecord != null) {
-				record.setAttribute("abonent_id",
-						abonentRecord.getAttributeAsInt("abonent_id"));
-				record.setAttribute("organization_id",
-						abonentRecord.getAttributeAsInt("organization_id"));
-				record.setAttribute("address_id",
-						abonentRecord.getAttributeAsInt("address_id"));
-			}
 			DSRequest req = new DSRequest();
 			// add
 			if (abonentRecord == null) {
-				req.setAttribute("operationId", "addAbonent");
+				req.setAttribute("operationId", "addSubscriber");
 				abonentsGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -589,7 +523,7 @@ public class DlgAddEditAbonent extends Window {
 			}
 			// edit
 			else {
-				req.setAttribute("operationId", "updateAbonent");
+				req.setAttribute("operationId", "updateSubscriber");
 				abonentsGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
