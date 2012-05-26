@@ -62,7 +62,7 @@ public class DlgAddEditMainOrg extends Window {
 
 	// org. address
 	private MyAddressPanel physicalAddress;
-	//private MyAddressPanel legalAddress;
+	private MyAddressPanel legalAddress;
 
 	private TabSet topTabSet;
 
@@ -175,12 +175,11 @@ public class DlgAddEditMainOrg extends Window {
 			hLayoutForAddresses.setPadding(0);
 			hLayoutForAddresses.setMargin(0);
 
-			
-			physicalAddress = new MyAddressPanel("PhysicalAddress",					
+			physicalAddress = new MyAddressPanel("PhysicalAddress",
 					CallCenterBK.constants.orgAddressHeaderReal(), 614, 0);
-			
-			//legalAddress = new MyAddressPanel("LegalAddress",
-			//		CallCenterBK.constants.orgAddressHeaderLegal(), 614, 0);
+
+			legalAddress = new MyAddressPanel("LegalAddress",
+					CallCenterBK.constants.orgAddressHeaderLegal(), 614, 0);
 
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setWidth(1228);
@@ -192,9 +191,8 @@ public class DlgAddEditMainOrg extends Window {
 			sameAddress.setWidth(50);
 			toolStrip.addButton(sameAddress);
 
-			//hLayoutForAddresses.setMembers(physicalAddress, legalAddress);
-			hLayoutForAddresses.setMembers(physicalAddress);
-			
+			hLayoutForAddresses.setMembers(physicalAddress, legalAddress);
+
 			formsLayoutAddInfo.addMember(toolStrip);
 			formsLayoutAddInfo.addMember(hLayoutForAddresses);
 			formsLayoutAddInfo.addMember(dynamicFormMainInfo2);
@@ -578,6 +576,7 @@ public class DlgAddEditMainOrg extends Window {
 				parrentOrgItem.setDataValue(map);
 				dynamicFormMainInfo.setValues(map);
 				dynamicFormMainInfo1.setValues(map);
+				dynamicFormMainInfo2.setValues(map);
 
 				Integer important_remark = (Integer) map
 						.get("important_remark");
@@ -651,7 +650,22 @@ public class DlgAddEditMainOrg extends Window {
 					.getAttributeAsString("appt"));
 			physicalAddress.setAdressValue(listGridRecord
 					.getAttributeAsString("anumber"));
+			physicalAddress.setStreetLocation(listGridRecord
+					.getAttributeAsString("street_location"));
+			physicalAddress.setStreetIndexes(listGridRecord
+					.getAttributeAsString("street_index_text"));
 
+			physicalAddress.setTownValue(listGridRecord.getAttributeAsInt("legal_addr_town_id"));
+			physicalAddress.setStreetValue(listGridRecord.getAttributeAsInt("legal_addr_street_id"));
+			physicalAddress.setStreetDistrictValue(listGridRecord.getAttributeAsInt("legal_addr_town_district_id"));
+			physicalAddress.setOpCloseValue(listGridRecord.getAttributeAsInt("legal_addr_hidden_by_request"));
+			physicalAddress.setOldAddressValue(listGridRecord.getAttributeAsString("legal_addr_full_address"));
+			physicalAddress.setBlockValue(listGridRecord.getAttributeAsString("legal_addr_block"));
+			physicalAddress.setAppartValue(listGridRecord.getAttributeAsString("legal_addr_appt"));
+			physicalAddress.setAdressValue(listGridRecord.getAttributeAsString("legal_addr_anumber"));
+			physicalAddress.setStreetLocation(listGridRecord.getAttributeAsString("legal_addr_street_location"));
+			physicalAddress.setStreetIndexes(listGridRecord.getAttributeAsString("legal_addr_street_index_text"));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

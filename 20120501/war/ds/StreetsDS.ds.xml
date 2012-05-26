@@ -158,7 +158,7 @@
 			</selectClause> 
 			<tableClause>streets t</tableClause>
 			<whereClause><![CDATA[ 
-				($defaultWhereClause) AND t.town_id = 2208
+				($defaultWhereClause)
 				]]>  
 			</whereClause>
 			<orderClause>t.street_name</orderClause> 

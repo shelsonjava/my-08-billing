@@ -59,7 +59,7 @@ public class MyAddressPanel extends HLayout {
 		addrTownItem.setWidth(200);
 		ClientUtils.fillCombo(addrTownItem, "TownsDS",
 				"searchCitiesFromDBForCombos", "town_id", "town_name");
-		//addrTownItem.setValue(Constants.defCityTbilisiId);
+		addrTownItem.setValue(Constants.defCityTbilisiId);
 
 		addrStreetItem = new ComboBoxItem();
 		addrStreetItem.setTitle(CallCenterBK.constants.street());
@@ -132,15 +132,16 @@ public class MyAddressPanel extends HLayout {
 		legalAddHeaderItem.setValue(title);
 		legalAddHeaderItem.setTextBoxStyle("headerStyle");
 
-//		ClientUtils.makeDependancy(addrTownItem, "town_id", addrStreetItem,
-//				addrRegionItem);
-//		ClientUtils.makeDependancy(addrTownItem, true, new FormItemDescr(
-//				addrStreetDescrItem, "", "d"), new FormItemDescr(
-//				addrStreetIdxItem, "", "k"));
-//		ClientUtils.makeDependancy(addrStreetItem, true, new FormItemDescr(
-//				addrRegionItem, "street_id", "town_district_id"),
-//				new FormItemDescr(addrStreetDescrItem, "", "street_location"),
-//				new FormItemDescr(addrStreetIdxItem, "", "street_index"));
+		ClientUtils.makeDependancy(addrTownItem, "town_id", addrStreetItem,
+				addrRegionItem);
+
+		ClientUtils.makeDependancy(addrTownItem, true, new FormItemDescr(
+				addrStreetDescrItem, "", "d"), new FormItemDescr(
+				addrStreetIdxItem, "", "k"));
+		ClientUtils.makeDependancy(addrStreetItem, true, new FormItemDescr(
+				addrRegionItem, "street_id", "town_district_id"),
+				new FormItemDescr(addrStreetDescrItem, "", "street_location"),
+				new FormItemDescr(addrStreetIdxItem, "", "street_index"));
 
 		dynamicForm.setFields(legalAddHeaderItem, addrTownItem, addrStreetItem,
 				addrRegionItem, adressOpCloseItem, oldAddItem, adressItem,
@@ -203,6 +204,20 @@ public class MyAddressPanel extends HLayout {
 			return;
 		}
 		appartItem.setValue(appartValue);
+	}
+
+	public void setStreetLocation(String streetLocation) {
+		if (streetLocation == null || streetLocation.trim().equals("")) {
+			return;
+		}
+		addrStreetDescrItem.setValue(streetLocation);
+	}
+
+	public void setStreetIndexes(String streetIndexes) {
+		if (streetIndexes == null || streetIndexes.trim().equals("")) {
+			return;
+		}
+		addrStreetIdxItem.setValue(streetIndexes);
 	}
 
 	public String getTownValue() {
