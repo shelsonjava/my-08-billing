@@ -684,6 +684,7 @@ public interface AppConstants extends Constants {
 	String socialAddress();
 	String parrentOrgName();
 	String sameAddress();
+	String chooseEmpty();
 }
 
 
