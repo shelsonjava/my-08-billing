@@ -191,8 +191,8 @@
 			<tableClause>organizations o, addresses a, streets str, towns tw, addresses a1, streets str1, towns tw1</tableClause>
 			<whereClause>
 				 <![CDATA[
-						 o.physical_address_id = a.addr_id(+) and a.street_id = str.street_id(+) and a.town_id = tw.town_id 
-						 o.legal_address_id = a1.addr_id(+) and a1.street_id = str1.street_id(+) and a1.town_id = tw1.town_id						 
+						 o.physical_address_id = a.addr_id(+) and a.street_id = str.street_id(+) and a.town_id = tw.town_id(+) and 
+						 o.legal_address_id = a1.addr_id(+) and a1.street_id = str1.street_id(+) and a1.town_id = tw1.town_id(+)
 						 #if($criteria.parrent_organization_id) and o.parrent_organization_id = $criteria.parrent_organization_id #end
 						 #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
 						 #if($criteria.pp_organization_id) and o.organization_id = $criteria.pp_organization_id #end
