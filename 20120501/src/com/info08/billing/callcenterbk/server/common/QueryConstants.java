@@ -990,22 +990,47 @@ public interface QueryConstants {
 			+ "union all\n"
 			+ "select count(t4.country_id) as cnt, 4 as n\n"
 			+ "  from c_regional_centers t4\n" + " where country_id = ?";
-	
-	public static final String Q_CHECK_TOWN_FK = 
 
-	"select count(t1.town_id) as cnt, 'ქალაქის რეგიონები' as n\n" + "  from town_district t1\n"
-			+ " where town_id = ? \n" + "union all\n"
+	public static final String Q_CHECK_TOWN_FK =
+
+	"select count(t1.town_id) as cnt, 'ქალაქის რეგიონები' as n\n"
+			+ "  from town_district t1\n"
+			+ " where town_id = ? \n"
+			+ "union all\n"
 			+ "select count(t2.town_id) as cnt, 'ქუჩების რეგიონები' as n\n"
 			+ "  from street_to_town_districts t2\n"
-			+ " where t2.town_id = ? \n" + "union all\n"
+			+ " where t2.town_id = ? \n"
+			+ "union all\n"
 			+ "select count(t3.town_id) as cnt, 'ქუჩების ძველი სახელები' as n\n"
 			+ "  from street_old_names t3\n" + " where t3.town_id = ? \n"
-			+ "union all\n" + "select count(t4.town_id) as cnt, 'ქუჩები' as n\n"
+			+ "union all\n"
+			+ "select count(t4.town_id) as cnt, 'ქუჩები' as n\n"
 			+ "  from streets t4\n" + " where town_id = ? \n" + "union all\n"
 			+ "select count(t5.town_id) as cnt, 'მისამართები' as n\n"
 			+ "  from addresses t5\n" + " where town_id = ?";
 
+	public static final String Q_CHECK_TOWN_DISTRICT_FK =
 
+	"select count(t2.town_district_id) as cnt, 'ქუჩების რეგიონები' as n\n"
+			+ "  from street_to_town_districts t2\n"
+			+ " where t2.town_district_id = ? \n" + "union all\n"
+			+ " select count(t5.town_district_id) as cnt, 'მისამართები' as n\n"
+			+ "  from addresses t5\n" + " where t5.town_district_id = ?";
+
+	public static final String Q_CHECK_STREET_FK = "select count(t2.street_id) as cnt, 'ქუჩების ძველი სახელები' as n\n"
+			+ "  from street_old_names t2\n"
+			+ " where t2.street_id = ?\n"
+			+ "union all\n"
+			+ "select count(t3.street_id) as cnt, 'ქუჩების ინდექსები' as n\n"
+			+ "  from street_indexes t3\n"
+			+ " where t3.street_id = ?\n"
+			+ "union all\n"
+			+ "select count(t4.street_id) as cnt, 'ტრანსპორტები' as n\n"
+			+ "  from public_transp_dir_street t4\n"
+			+ " where street_id = ?\n"
+			+ "union all\n"
+			+ "select count(t5.street_id) as cnt, 'მისამართები' as n\n"
+			+ "  from addresses t5\n" + " where street_id = ?";
 
 	public static final String Q_GET_ALL_USERS = "select * from (\n"
 			+ "select t.user_id,\n"
