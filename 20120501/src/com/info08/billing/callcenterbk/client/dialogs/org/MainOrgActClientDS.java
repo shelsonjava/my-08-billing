@@ -13,16 +13,14 @@ public class MainOrgActClientDS extends DataSource {
 
 	public MainOrgActClientDS(String id) {
 		//setID(id);
-		DataSourceIntegerField business_detail_id = new DataSourceIntegerField(
-				"business_detail_id");
-		business_detail_id.setHidden(true);
-		business_detail_id.setPrimaryKey(true);
-		business_detail_id.setRequired(true);
+		DataSourceIntegerField org_activity_id = new DataSourceIntegerField("org_activity_id");
+		org_activity_id.setHidden(true);
+		org_activity_id.setPrimaryKey(true);
+		org_activity_id.setRequired(true);
 
-		DataSourceTextField business_detail_name_geo = new DataSourceTextField(
-				"business_detail_name_geo", CallCenterBK.constants.activity());
+		DataSourceTextField activity_description = new DataSourceTextField("activity_description", CallCenterBK.constants.activity());
 
-		setFields(business_detail_id, business_detail_name_geo);
+		setFields(org_activity_id, activity_description);
 		setClientOnly(true);
 	}
 }

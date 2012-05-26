@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditTown;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -377,7 +378,7 @@ public class TabTowns extends Tab {
 					@Override
 					public void execute(DSResponse response, Object rawData,
 							DSRequest request) {
-						countryItem.setValue(194);
+						countryItem.setValue(Constants.defCountryGeorgiaId);
 					}
 				});
 			}

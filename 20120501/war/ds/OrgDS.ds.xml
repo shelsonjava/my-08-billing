@@ -55,6 +55,7 @@
 		<field name="street_id"					type="integer"  	title="street_id"					hidden="true"/>
 		<field name="legal_address_id"			type="integer"  	title="legal_address_id"			hidden="true"/>
 		<field name="physical_address_id"		type="integer"  	title="physical_address_id"			hidden="true"/>
+		<field name="hidden_by_request"			type="integer"  	title="hidden_by_request"			hidden="true"/>
 		<field name="tree_org_parrent"			type="text"  		title="tree_org_parrent"/>
 		<field name="tree_org_child"			type="text"  		title="tree_org_child"/>
 		<field name="full_address"				type="text"  		title="full_address"/>
@@ -163,7 +164,8 @@
 						getorgbusiness_alerts(o.organization_id) as org_allert_by_buss_det,
 						o.legal_address_id,
 						o.physical_address_id,
-						o.social_address
+						o.social_address,
+						a.hidden_by_request
 			</selectClause>
 			<tableClause>organizations o, addresses a, streets str, towns tw</tableClause>
 			<whereClause>

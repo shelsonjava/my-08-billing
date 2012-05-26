@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.address;
 
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -205,7 +206,7 @@ public class DlgAddEditTown extends Window {
 			if (lCityRecord != null) {
 				countryItem.setValue(lCityRecord.getAttribute("country_id"));
 			} else {
-				countryItem.setValue(194);
+				countryItem.setValue(Constants.defCountryGeorgiaId);
 			}
 
 			if (lCityRecord == null) {

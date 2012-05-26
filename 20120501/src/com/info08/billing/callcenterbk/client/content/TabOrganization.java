@@ -314,20 +314,19 @@ public class TabOrganization extends Tab {
 				Integer status = countryRecord.getAttributeAsInt("status");
 				Integer super_priority = countryRecord
 						.getAttributeAsInt("super_priority");
-				Integer important = countryRecord
-						.getAttributeAsInt("important");
+				Integer important_remark = countryRecord.getAttributeAsInt("important_remark");
 
 				if (super_priority != null && super_priority < 0) {
 					return "color:red;";
 				} else if (status != null && status.equals(2)) {
-					if (important != null && important.intValue() == -1
+					if (important_remark != null && important_remark.intValue() == -1
 							&& colNum == 2) {
 						return "color:red;";
 					} else {
 						return "color:gray;";
 					}
 				} else if (status != null && status.equals(1)) {
-					if (important != null && important.intValue() == -1
+					if (important_remark != null && important_remark.intValue() == -1
 							&& colNum == 2) {
 						return "color:red;";
 					} else {
@@ -335,7 +334,7 @@ public class TabOrganization extends Tab {
 					}
 
 				} else if (status != null && status.equals(3)) {
-					if (important != null && important.intValue() == -1
+					if (important_remark != null && important_remark.intValue() == -1
 							&& colNum == 2) {
 						return "color:red;";
 					} else {

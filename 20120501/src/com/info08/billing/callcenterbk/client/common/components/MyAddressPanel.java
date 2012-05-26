@@ -36,34 +36,35 @@ public class MyAddressPanel extends HLayout {
 	private TextItem oldAddItem;
 	protected String addressName;
 
-	public MyAddressPanel(String addressName, String title, Integer width, Integer height) {
+	public MyAddressPanel(String addressName, String title, Integer width,
+			Integer height) {
 
 		this.height = height;
 		this.width = width;
 		this.addressName = addressName;
 
-		//setHeight(height);
 		setWidth(width);
 		setPadding(0);
 		setMargin(0);
-		
+
 		dynamicForm = new DynamicForm();
 		dynamicForm.setAutoFocus(true);
 		dynamicForm.setWidth100();
 		dynamicForm.setNumCols(2);
 		dynamicForm.setTitleOrientation(TitleOrientation.TOP);
-		
+
 		addrTownItem = new ComboBoxItem();
 		addrTownItem.setTitle(CallCenterBK.constants.town());
-		addrTownItem.setName("town_id");
+		addrTownItem.setName(addressName + "_town_id");
 		addrTownItem.setWidth(200);
 		ClientUtils.fillCombo(addrTownItem, "TownsDS",
 				"searchCitiesFromDBForCombos", "town_id", "town_name");
+		//addrTownItem.setValue(Constants.defCityTbilisiId);
 
 		addrStreetItem = new ComboBoxItem();
 		addrStreetItem.setTitle(CallCenterBK.constants.street());
-		addrStreetItem.setName("street_id");
-		addrStreetItem.setWidth(400);
+		addrStreetItem.setName(addressName + "_street_id");
+		addrStreetItem.setWidth(414);
 
 		Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
 		aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
@@ -75,7 +76,7 @@ public class MyAddressPanel extends HLayout {
 
 		addrRegionItem = new ComboBoxItem();
 		addrRegionItem.setTitle(CallCenterBK.constants.district());
-		addrRegionItem.setName("town_district_id");
+		addrRegionItem.setName(addressName + "_town_district_id");
 		addrRegionItem.setWidth(200);
 
 		ClientUtils.fillCombo(addrRegionItem, "TownDistrictDS",
@@ -84,16 +85,16 @@ public class MyAddressPanel extends HLayout {
 
 		addrStreetDescrItem = new TextAreaItem();
 		addrStreetDescrItem.setTitle(CallCenterBK.constants.streetDescr());
-		addrStreetDescrItem.setName("streetDescrItem");
-		addrStreetDescrItem.setWidth(600);
+		addrStreetDescrItem.setName(addressName + "_streetDescrItem");
+		addrStreetDescrItem.setWidth(614);
 		addrStreetDescrItem.setHeight(49);
 		addrStreetDescrItem.setCanEdit(false);
 		addrStreetDescrItem.setColSpan(2);
 
 		addrStreetIdxItem = new TextItem();
 		addrStreetIdxItem.setTitle(CallCenterBK.constants.streetIdx());
-		addrStreetIdxItem.setName("street_index");
-		addrStreetIdxItem.setWidth(600);
+		addrStreetIdxItem.setName(addressName + "_street_index");
+		addrStreetIdxItem.setWidth(614);
 		addrStreetIdxItem.setColSpan(2);
 		addrStreetIdxItem.setCanEdit(false);
 
@@ -102,28 +103,28 @@ public class MyAddressPanel extends HLayout {
 				.getAddrMapOpClose());
 		adressOpCloseItem.setDefaultToFirstOption(true);
 		adressOpCloseItem.setTitle(CallCenterBK.constants.openClose());
-		adressOpCloseItem.setName("legalAdressOpCloseItem");
-		adressOpCloseItem.setWidth(400);
+		adressOpCloseItem.setName(addressName + "_legalAdressOpCloseItem");
+		adressOpCloseItem.setWidth(414);
 		adressOpCloseItem.setFetchMissingValues(false);
 
 		adressItem = new TextItem();
 		adressItem.setTitle(CallCenterBK.constants.home());
-		adressItem.setName("legalAdressItem");
-		adressItem.setWidth(400);
+		adressItem.setName(addressName + "_legalAdressItem");
+		adressItem.setWidth(414);
 
 		blockItem = new TextItem();
 		blockItem.setTitle(CallCenterBK.constants.block());
-		blockItem.setName("legalBlockItem");
+		blockItem.setName(addressName + "_legalBlockItem");
 		blockItem.setWidth(200);
 
 		appartItem = new TextItem();
 		appartItem.setTitle(CallCenterBK.constants.appartment());
-		appartItem.setName("appartItem");
-		appartItem.setWidth(400);
+		appartItem.setName(addressName + "_appartItem");
+		appartItem.setWidth(414);
 
 		oldAddItem = new TextItem();
 		oldAddItem.setTitle(CallCenterBK.constants.oldAddress());
-		oldAddItem.setName("legalOldAddItem");
+		oldAddItem.setName(addressName + "_legalOldAddItem");
 		oldAddItem.setWidth(200);
 		oldAddItem.setCanEdit(false);
 
@@ -131,24 +132,221 @@ public class MyAddressPanel extends HLayout {
 		legalAddHeaderItem.setValue(title);
 		legalAddHeaderItem.setTextBoxStyle("headerStyle");
 
-		ClientUtils.makeDependancy(addrTownItem, "town_id", addrStreetItem,
-				addrRegionItem);
-		ClientUtils.makeDependancy(addrTownItem, true, new FormItemDescr(
-				addrStreetDescrItem, "", "d"), new FormItemDescr(
-				addrStreetIdxItem, "", "k"));
-		ClientUtils.makeDependancy(addrStreetItem, true, new FormItemDescr(
-				addrRegionItem, "street_id", "town_district_id"),
-				new FormItemDescr(addrStreetDescrItem, "", "street_location"),
-				new FormItemDescr(addrStreetIdxItem, "", "street_index"));
+//		ClientUtils.makeDependancy(addrTownItem, "town_id", addrStreetItem,
+//				addrRegionItem);
+//		ClientUtils.makeDependancy(addrTownItem, true, new FormItemDescr(
+//				addrStreetDescrItem, "", "d"), new FormItemDescr(
+//				addrStreetIdxItem, "", "k"));
+//		ClientUtils.makeDependancy(addrStreetItem, true, new FormItemDescr(
+//				addrRegionItem, "street_id", "town_district_id"),
+//				new FormItemDescr(addrStreetDescrItem, "", "street_location"),
+//				new FormItemDescr(addrStreetIdxItem, "", "street_index"));
 
 		dynamicForm.setFields(legalAddHeaderItem, addrTownItem, addrStreetItem,
 				addrRegionItem, adressOpCloseItem, oldAddItem, adressItem,
 				blockItem, appartItem, addrStreetDescrItem, addrStreetIdxItem);
-		
+
 		addMember(dynamicForm);
 	}
 
-	public void setValues() {
-
+	public void setTownValue(Integer townValue) {
+		if (townValue == null) {
+			return;
+		}
+		addrTownItem.setValue(townValue);
 	}
+
+	public void setStreetValue(Integer streetValue) {
+		if (streetValue == null) {
+			return;
+		}
+		addrStreetItem.setValue(streetValue);
+	}
+
+	public void setStreetDistrictValue(Integer streetDistrictValue) {
+		if (streetDistrictValue == null) {
+			return;
+		}
+		addrRegionItem.setValue(streetDistrictValue);
+	}
+
+	public void setOpCloseValue(Integer opCloseValue) {
+		if (opCloseValue == null) {
+			return;
+		}
+		adressOpCloseItem.setValue(opCloseValue);
+	}
+
+	public void setOldAddressValue(String oldAddressValue) {
+		if (oldAddressValue == null || oldAddressValue.trim().equals("")) {
+			return;
+		}
+		oldAddItem.setValue(oldAddressValue);
+	}
+
+	public void setAdressValue(String adressValue) {
+		if (adressValue == null || adressValue.trim().equals("")) {
+			return;
+		}
+		adressItem.setValue(adressValue);
+	}
+
+	public void setBlockValue(String blockValue) {
+		if (blockValue == null || blockValue.trim().equals("")) {
+			return;
+		}
+		blockItem.setValue(blockValue);
+	}
+
+	public void setAppartValue(String appartValue) {
+		if (appartValue == null || appartValue.trim().equals("")) {
+			return;
+		}
+		appartItem.setValue(appartValue);
+	}
+
+	public String getTownValue() {
+		return addrTownItem.getValueAsString();
+	}
+
+	public String getStreetValue() {
+		return addrStreetItem.getValueAsString();
+	}
+
+	public String getStreetDistrictValue() {
+		return addrRegionItem.getValueAsString();
+	}
+
+	public String getOpCloseValue() {
+		return adressOpCloseItem.getValueAsString();
+	}
+
+	public String getOldAddressValue() {
+		return oldAddItem.getValueAsString();
+	}
+
+	public String getAdressValue() {
+		return adressItem.getValueAsString();
+	}
+
+	public String getBlockValue() {
+		return blockItem.getValueAsString();
+	}
+
+	public String getAppartValue() {
+		return appartItem.getValueAsString();
+	}
+
+	public Integer getWidth() {
+		return width;
+	}
+
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+
+	public DynamicForm getDynamicForm() {
+		return dynamicForm;
+	}
+
+	public void setDynamicForm(DynamicForm dynamicForm) {
+		this.dynamicForm = dynamicForm;
+	}
+
+	public ComboBoxItem getAddrTownItem() {
+		return addrTownItem;
+	}
+
+	public void setAddrTownItem(ComboBoxItem addrTownItem) {
+		this.addrTownItem = addrTownItem;
+	}
+
+	public ComboBoxItem getAddrStreetItem() {
+		return addrStreetItem;
+	}
+
+	public void setAddrStreetItem(ComboBoxItem addrStreetItem) {
+		this.addrStreetItem = addrStreetItem;
+	}
+
+	public ComboBoxItem getAddrRegionItem() {
+		return addrRegionItem;
+	}
+
+	public void setAddrRegionItem(ComboBoxItem addrRegionItem) {
+		this.addrRegionItem = addrRegionItem;
+	}
+
+	public TextAreaItem getAddrStreetDescrItem() {
+		return addrStreetDescrItem;
+	}
+
+	public void setAddrStreetDescrItem(TextAreaItem addrStreetDescrItem) {
+		this.addrStreetDescrItem = addrStreetDescrItem;
+	}
+
+	public TextItem getAddrStreetIdxItem() {
+		return addrStreetIdxItem;
+	}
+
+	public void setAddrStreetIdxItem(TextItem addrStreetIdxItem) {
+		this.addrStreetIdxItem = addrStreetIdxItem;
+	}
+
+	public SelectItem getAdressOpCloseItem() {
+		return adressOpCloseItem;
+	}
+
+	public void setAdressOpCloseItem(SelectItem adressOpCloseItem) {
+		this.adressOpCloseItem = adressOpCloseItem;
+	}
+
+	public TextItem getAdressItem() {
+		return adressItem;
+	}
+
+	public void setAdressItem(TextItem adressItem) {
+		this.adressItem = adressItem;
+	}
+
+	public TextItem getBlockItem() {
+		return blockItem;
+	}
+
+	public void setBlockItem(TextItem blockItem) {
+		this.blockItem = blockItem;
+	}
+
+	public TextItem getAppartItem() {
+		return appartItem;
+	}
+
+	public void setAppartItem(TextItem appartItem) {
+		this.appartItem = appartItem;
+	}
+
+	public TextItem getOldAddItem() {
+		return oldAddItem;
+	}
+
+	public void setOldAddItem(TextItem oldAddItem) {
+		this.oldAddItem = oldAddItem;
+	}
+
+	public String getAddressName() {
+		return addressName;
+	}
+
+	public void setAddressName(String addressName) {
+		this.addressName = addressName;
+	}
+
 }

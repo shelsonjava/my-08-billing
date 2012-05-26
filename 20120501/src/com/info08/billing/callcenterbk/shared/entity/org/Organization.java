@@ -105,8 +105,8 @@ public class Organization implements Serializable {
 	private Long staff_count;
 
 	@Basic
-	@Column(name = "IMPORTANT")
-	private Long important;
+	@Column(name = "IMPORTANT_REMARK")
+	private Long important_remark;
 
 	@Basic
 	@Column(name = "PRIORITY")
@@ -353,11 +353,11 @@ public class Organization implements Serializable {
 	}
 
 	public Long getImportant() {
-		return important;
+		return important_remark;
 	}
 
 	public void setImportant(Long important) {
-		this.important = important;
+		this.important_remark = important;
 	}
 
 	public Long getPriority() {

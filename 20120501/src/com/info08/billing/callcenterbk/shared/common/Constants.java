@@ -7,7 +7,7 @@ public interface Constants {
 	public static final String hrImagesDirLink = "http://192.168.1.254:8083/hrimages/";
 	public static final Integer defDiscTypeId = 2;
 	public static final Integer defCityTbilisiId = 2208;
-	public static final Integer defCountryGeorgiaId = 194;
+	public static final Integer defCountryGeorgiaId = 50185;
 	public static final int[] dayArray = { 0, 1, 2, 4, 8, 16, 32, 64 };
 	public static final String callStart = "start";
 	public static final int callTypeAbonent = 0;

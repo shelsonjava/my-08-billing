@@ -12,6 +12,7 @@
 		<field name="loggedUserName"				type="text"			title="loggedUserName" 					hidden="true" />
 		<field name="is_bank_activity"				type="integer"		title="is_bank_activity" 				hidden="true" />	
 		<field name="is_bank_activity_descr"		type="text"			title="is_bank_activity_descr" 			hidden="true" />
+		<field name="org_to_act_id"					type="text"			title="org_to_act_id" 					hidden="true" />
 	</fields>
 
 	<operationBindings>		
@@ -65,6 +66,28 @@
 			</whereClause> 
 			<orderClause>t.activity_description</orderClause>
     	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchOrgBusinessActivities" operationType="fetch">
+    		<selectClause>
+    			t.org_activity_id,
+				t.activity_description,
+				t.remark,
+				t.is_bank_activity,
+				decode(t.is_bank_activity,0, 'არა', 1, 'დიახ', 'უცნობი') is_bank_activity_descr
+			</selectClause> 
+			<tableClause>organization_activities t,organization_to_activities tt</tableClause>
+			<whereClause><![CDATA[
+				t.org_activity_id = tt.org_activity_id
+				#if($criteria.organization_id) and tt.organization_id = $criteria.organization_id #end
+				#if($criteria.activity_description) and t.activity_description like '%'||($criteria.activity_description)||'%' #end
+				#if($criteria.remark) and t.remark like '%'||($criteria.remark)||'%' #end
+				#if($criteria.is_bank_activity) and t.is_bank_activity = $criteria.is_bank_activity #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.org_activity_id</orderClause>
+    	</operationBinding>
+    	
     	
     </operationBindings>	
 </DataSource>

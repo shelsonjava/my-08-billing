@@ -9,6 +9,8 @@ import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxRecord;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -32,8 +34,6 @@ import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -43,6 +43,8 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
+import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 
 public class DlgAddEditMainOrg extends Window {
@@ -54,12 +56,13 @@ public class DlgAddEditMainOrg extends Window {
 	// org. main info
 	private DynamicForm dynamicFormMainInfo;
 	private DynamicForm dynamicFormMainInfo1;
+	private DynamicForm dynamicFormMainInfo2;
 
 	private MyComboBoxItem parrentOrgItem;
 
 	// org. address
-	private MyAddressPanel legalAddress;
 	private MyAddressPanel physicalAddress;
+	//private MyAddressPanel legalAddress;
 
 	private TabSet topTabSet;
 
@@ -81,7 +84,7 @@ public class DlgAddEditMainOrg extends Window {
 	private ComboBoxItem orgLegalStatusItem;
 	private DateItem orgFoundedItem;
 	private SelectItem extraPriorityItem;
-	private CheckboxItem noteCritItem;
+	private CheckboxItem importantRemark;
 	private SelectItem orgStatusItem;
 
 	// address fields.
@@ -90,11 +93,10 @@ public class DlgAddEditMainOrg extends Window {
 	private ListGridRecord listGridRecord;
 
 	private ListGrid dayOffsGrid;
-	private ListGrid transpDayOffsGrid;
+	private ListGrid orgDayOffsGrid;
 
 	private ListGrid activityGrid;
 	private ListGrid orgActivityGrid;
-	protected MainOrgActClientDS mainOrgActClientDS;
 
 	private ListGrid bankOrgsGrid;
 	private ListGrid orgPartBankOrgsGrid;
@@ -106,7 +108,7 @@ public class DlgAddEditMainOrg extends Window {
 			setTitle(CallCenterBK.constants.manageOrgs());
 
 			setHeight(760);
-			setWidth(1270);
+			setWidth(1272);
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);
@@ -138,6 +140,12 @@ public class DlgAddEditMainOrg extends Window {
 			dynamicFormMainInfo1.setNumCols(2);
 			dynamicFormMainInfo1.setTitleOrientation(TitleOrientation.TOP);
 
+			dynamicFormMainInfo2 = new DynamicForm();
+			dynamicFormMainInfo2.setAutoFocus(false);
+			dynamicFormMainInfo2.setWidth100();
+			dynamicFormMainInfo2.setNumCols(2);
+			dynamicFormMainInfo2.setTitleOrientation(TitleOrientation.TOP);
+
 			HLayout formsLayout = new HLayout();
 			formsLayout.setWidth100();
 			formsLayout.setHeight100();
@@ -160,17 +168,36 @@ public class DlgAddEditMainOrg extends Window {
 			formsLayoutAddInfo.setHeight100();
 			formsLayoutAddInfo.setPadding(0);
 			formsLayoutAddInfo.setMargin(0);
+			formsLayoutAddInfo.setMembersMargin(10);
 
 			HLayout hLayoutForAddresses = new HLayout();
 			hLayoutForAddresses.setWidth100();
 			hLayoutForAddresses.setPadding(0);
 			hLayoutForAddresses.setMargin(0);
 
-			legalAddress = new MyAddressPanel("LegalAddress",CallCenterBK.constants.orgAddressHeaderLegal(), 600, 400);
-			physicalAddress = new MyAddressPanel("PhysicalAddress",CallCenterBK.constants.orgAddressHeaderReal(), 600, 400);
 			
-			hLayoutForAddresses.setMembers(physicalAddress, legalAddress);
+			physicalAddress = new MyAddressPanel("PhysicalAddress",					
+					CallCenterBK.constants.orgAddressHeaderReal(), 614, 0);
+			
+			//legalAddress = new MyAddressPanel("LegalAddress",
+			//		CallCenterBK.constants.orgAddressHeaderLegal(), 614, 0);
+
+			ToolStrip toolStrip = new ToolStrip();
+			toolStrip.setWidth(1228);
+			toolStrip.setPadding(5);
+
+			ToolStripButton sameAddress = new ToolStripButton(
+					CallCenterBK.constants.sameAddress(), "copy.png");
+			sameAddress.setLayoutAlign(Alignment.LEFT);
+			sameAddress.setWidth(50);
+			toolStrip.addButton(sameAddress);
+
+			//hLayoutForAddresses.setMembers(physicalAddress, legalAddress);
+			hLayoutForAddresses.setMembers(physicalAddress);
+			
+			formsLayoutAddInfo.addMember(toolStrip);
 			formsLayoutAddInfo.addMember(hLayoutForAddresses);
+			formsLayoutAddInfo.addMember(dynamicFormMainInfo2);
 
 			Tab tabAddInfo = new Tab(CallCenterBK.constants.addInfo());
 			tabAddInfo.setPane(formsLayoutAddInfo);
@@ -178,26 +205,34 @@ public class DlgAddEditMainOrg extends Window {
 
 			hLayout.addMember(topTabSet);
 
-			parrentOrgItem = new MyComboBoxItem("parrent_organization_name", CallCenterBK.constants.parrentOrgName(), 0, 650);
-			parrentOrgItem.setNameField("parrent_organization_id");
+			parrentOrgItem = new MyComboBoxItem("parrent_organization_name",
+					CallCenterBK.constants.parrentOrgName(), 0, 650);
+			parrentOrgItem.setNameField("parrent_organization_id1");
 			parrentOrgItem.setMyDlgHeight(400);
 			parrentOrgItem.setMyDlgWidth(900);
 			DataSource orgDS = DataSource.get("OrgDS");
 			parrentOrgItem.setMyDataSource(orgDS);
-			parrentOrgItem.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
+			parrentOrgItem
+					.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
 			parrentOrgItem.setMyIdField("organization_id");
 
 			ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>();
-			MyComboBoxRecord organization_name = new MyComboBoxRecord("organization_name",CallCenterBK.constants.parrentOrgName(), true);
-			MyComboBoxRecord remark = new MyComboBoxRecord("remark",CallCenterBK.constants.comment(), false);
-			MyComboBoxRecord full_address_not_hidden = new MyComboBoxRecord("full_address_not_hidden",CallCenterBK.constants.address(), true);
+			MyComboBoxRecord organization_name = new MyComboBoxRecord(
+					"organization_name",
+					CallCenterBK.constants.parrentOrgName(), true);
+			MyComboBoxRecord remark = new MyComboBoxRecord("remark",
+					CallCenterBK.constants.comment(), false);
+			MyComboBoxRecord full_address_not_hidden = new MyComboBoxRecord(
+					"full_address_not_hidden",
+					CallCenterBK.constants.address(), true);
 
 			fieldRecords.add(organization_name);
 			fieldRecords.add(full_address_not_hidden);
 			fieldRecords.add(remark);
 
 			parrentOrgItem.setMyFields(fieldRecords);
-			parrentOrgItem.setMyChooserTitle(CallCenterBK.constants.organization());
+			parrentOrgItem.setMyChooserTitle(CallCenterBK.constants
+					.organization());
 
 			leftLayOut.setMembers(parrentOrgItem, dynamicFormMainInfo);
 
@@ -263,7 +298,7 @@ public class DlgAddEditMainOrg extends Window {
 
 			orgIndItem = new TextItem();
 			orgIndItem.setName("organization_index");
-			orgIndItem.setWidth(284);
+			orgIndItem.setWidth(614);
 			orgIndItem.setTitle(CallCenterBK.constants.postIndex());
 
 			orgWorkPersQuantItem = new TextItem();
@@ -275,7 +310,7 @@ public class DlgAddEditMainOrg extends Window {
 			orgInfoItem = new TextAreaItem();
 			orgInfoItem.setName("additional_info");
 			orgInfoItem.setWidth(568);
-			orgInfoItem.setHeight(102);
+			orgInfoItem.setHeight(142);
 			orgInfoItem.setColSpan(2);
 			orgInfoItem.setTitle(CallCenterBK.constants.orgInfo());
 
@@ -283,34 +318,8 @@ public class DlgAddEditMainOrg extends Window {
 			orgLegalStatusItem.setTitle(CallCenterBK.constants.legalStatuse());
 			orgLegalStatusItem.setName("legal_form_desc_id");
 			orgLegalStatusItem.setWidth(284);
-			orgLegalStatusItem.setFetchMissingValues(true);
-			orgLegalStatusItem.setFilterLocally(false);
-			orgLegalStatusItem.setAddUnknownValues(false);
-
-			DataSource orgLegalStatusDS = DataSource.get("OrgLegalStatusDS");
-			orgLegalStatusItem
-					.setOptionOperationId("searchAllLegalStatusesForCB");
-			orgLegalStatusItem.setOptionDataSource(orgLegalStatusDS);
-			orgLegalStatusItem.setValueField("legal_statuse_id");
-			orgLegalStatusItem.setDisplayField("legal_statuse");
-
-			orgLegalStatusItem.setOptionCriteria(new Criteria());
-			orgLegalStatusItem.setAutoFetchData(false);
-
-			orgLegalStatusItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = orgLegalStatusItem.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("legal_statuse_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("legal_statuse_id", nullO);
-						}
-					}
-				}
-			});
+			ClientUtils.fillDescriptionCombo(orgLegalStatusItem, new Integer(
+					51000));
 
 			orgFoundedItem = new DateItem();
 			orgFoundedItem.setTitle(CallCenterBK.constants.founded());
@@ -320,8 +329,8 @@ public class DlgAddEditMainOrg extends Window {
 
 			extraPriorityItem = new SelectItem();
 			extraPriorityItem.setTitle(CallCenterBK.constants.extraPriority());
-			extraPriorityItem.setWidth(284);
-			extraPriorityItem.setName("extraPriority");
+			extraPriorityItem.setWidth(614);
+			extraPriorityItem.setName("extraPriorityItem");
 			extraPriorityItem.setDefaultToFirstOption(true);
 			extraPriorityItem.setValueMap(ClientMapUtil.getInstance()
 					.getOrgNoteCrits());
@@ -329,30 +338,31 @@ public class DlgAddEditMainOrg extends Window {
 					.hasPermission("105550");
 			extraPriorityItem.setDisabled(!hasPermission);
 
-			noteCritItem = new CheckboxItem();
-			noteCritItem.setTitle(CallCenterBK.constants.noteCrit());
-			noteCritItem.setName("note_crit");
-			noteCritItem.setWidth(650);
-			noteCritItem.setHeight(23);
+			importantRemark = new CheckboxItem();
+			importantRemark.setTitle(CallCenterBK.constants.noteCrit());
+			importantRemark.setName("important_remark");
+			importantRemark.setWidth(650);
+			importantRemark.setHeight(23);
 
 			orgStatusItem = new SelectItem();
 			orgStatusItem.setTitle(CallCenterBK.constants.status());
-			orgStatusItem.setName("response_type");
+			orgStatusItem.setName("status");
 			orgStatusItem.setWidth(284);
 			orgStatusItem.setValueMap(ClientMapUtil.getInstance()
 					.getOrgStatuses());
 			orgStatusItem.setDefaultToFirstOption(true);
 
 			dynamicFormMainInfo.setFields(orgNameItem, orgNameEngItem,
-					noteCritItem, orgNoteItem);
+					importantRemark, orgNoteItem);
 
 			dynamicFormMainInfo1.setFields(orgDirectorItem,
 					orgContactPersonItem, orgIdentCodeItem,
 					orgNewIdentCodeItem, orgWorkHoursItem,
-					orgWorkPersQuantItem, orgLegalStatusItem,
-					extraPriorityItem, orgStatusItem, orgFoundedItem,
-					orgIndItem, orgSocialAddressItem, orgWebAddressItem,
+					orgWorkPersQuantItem, orgLegalStatusItem, orgStatusItem,
+					orgFoundedItem, orgSocialAddressItem, orgWebAddressItem,
 					orgMailItem, orgInfoItem);
+
+			dynamicFormMainInfo2.setFields(orgIndItem, extraPriorityItem);
 
 			DataSource orgActDS = DataSource.get("OrgActDS");
 
@@ -374,15 +384,16 @@ public class DlgAddEditMainOrg extends Window {
 
 			activityGrid.setFields(activity);
 
-			mainOrgActClientDS = MainOrgActClientDS.getInstance();
+			MainOrgActClientDS mainOrgActClientDS = MainOrgActClientDS
+					.getInstance();
 
 			orgActivityGrid = new ListGrid();
 			orgActivityGrid.setWidth(305);
 			orgActivityGrid.setHeight100();
-			// orgActivityGrid.setDataSource(mainOrgActClientDS);
+			orgActivityGrid.setDataSource(mainOrgActClientDS);
 			orgActivityGrid.setCanAcceptDroppedRecords(true);
 			orgActivityGrid.setCanRemoveRecords(true);
-			// orgActivityGrid.setAutoFetchData(true);
+			orgActivityGrid.setAutoFetchData(true);
 			orgActivityGrid.setPreventDuplicates(true);
 			orgActivityGrid.setDuplicateDragMessage(CallCenterBK.constants
 					.thisOrgActAlreadyChoosen());
@@ -446,21 +457,21 @@ public class DlgAddEditMainOrg extends Window {
 
 			OrgDayOffsClientDS orgDayOffsClientDS = OrgDayOffsClientDS
 					.getInstance();
-			transpDayOffsGrid = new ListGrid();
-			transpDayOffsGrid.setWidth(267);
-			transpDayOffsGrid.setHeight100();
-			transpDayOffsGrid.setDataSource(orgDayOffsClientDS);
-			transpDayOffsGrid.setCanAcceptDroppedRecords(true);
-			transpDayOffsGrid.setCanRemoveRecords(true);
-			transpDayOffsGrid.setAutoFetchData(true);
-			transpDayOffsGrid.setPreventDuplicates(true);
-			transpDayOffsGrid.setDuplicateDragMessage("ასეთი უკვე არჩეულია !");
+			orgDayOffsGrid = new ListGrid();
+			orgDayOffsGrid.setWidth(267);
+			orgDayOffsGrid.setHeight100();
+			orgDayOffsGrid.setDataSource(orgDayOffsClientDS);
+			orgDayOffsGrid.setCanAcceptDroppedRecords(true);
+			orgDayOffsGrid.setCanRemoveRecords(true);
+			orgDayOffsGrid.setAutoFetchData(true);
+			orgDayOffsGrid.setPreventDuplicates(true);
+			orgDayOffsGrid.setDuplicateDragMessage("ასეთი უკვე არჩეულია !");
 
 			Img arrowImg1 = new Img("arrow_right.png", 32, 32);
 			arrowImg1.setLayoutAlign(Alignment.CENTER);
 			arrowImg1.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					transpDayOffsGrid.transferSelectedData(dayOffsGrid);
+					orgDayOffsGrid.transferSelectedData(dayOffsGrid);
 				}
 			});
 			dayOffsGrid
@@ -468,14 +479,14 @@ public class DlgAddEditMainOrg extends Window {
 						@Override
 						public void onRecordDoubleClick(
 								RecordDoubleClickEvent event) {
-							transpDayOffsGrid.transferSelectedData(dayOffsGrid);
+							orgDayOffsGrid.transferSelectedData(dayOffsGrid);
 						}
 					});
 
 			HLayout gridsLayout1 = new HLayout(0);
 			gridsLayout1.setMargin(2);
 
-			gridsLayout1.setMembers(dayOffsGrid, arrowImg1, transpDayOffsGrid);
+			gridsLayout1.setMembers(dayOffsGrid, arrowImg1, orgDayOffsGrid);
 			rigthLayOut.addMember(gridsLayout1);
 
 			cancItem.addClickHandler(new ClickHandler() {
@@ -493,7 +504,7 @@ public class DlgAddEditMainOrg extends Window {
 
 			DataSource orgDSForBanks = DataSource.get("OrgDS");
 			bankOrgsGrid = new ListGrid();
-			bankOrgsGrid.setWidth(600);
+			bankOrgsGrid.setWidth(612);
 			bankOrgsGrid.setHeight100();
 			bankOrgsGrid.setDataSource(orgActDS);
 			bankOrgsGrid.setShowFilterEditor(true);
@@ -530,7 +541,7 @@ public class DlgAddEditMainOrg extends Window {
 			OrgPartnetBanksClientDS orgPartnetBanksClientDS = OrgPartnetBanksClientDS
 					.getInstance();
 			orgPartBankOrgsGrid = new ListGrid();
-			orgPartBankOrgsGrid.setWidth(600);
+			orgPartBankOrgsGrid.setWidth(610);
 			orgPartBankOrgsGrid.setHeight100();
 			orgPartBankOrgsGrid.setDataSource(orgActDS);
 			orgPartBankOrgsGrid.setPreventDuplicates(true);
@@ -563,12 +574,84 @@ public class DlgAddEditMainOrg extends Window {
 	private void fillFields() {
 		try {
 			if (listGridRecord != null) {
-				SC.say(listGridRecord.getAttributeAsInt("parrent_organization_id")+"");
-				Map<String,Object> map = listGridRecord.toMap();
-				map.put("parrent_organization_id", 80353L);
-				parrentOrgItem.setDataValue(map);				
+				Map<?, ?> map = listGridRecord.toMap();
+				parrentOrgItem.setDataValue(map);
 				dynamicFormMainInfo.setValues(map);
+				dynamicFormMainInfo1.setValues(map);
+
+				Integer important_remark = (Integer) map
+						.get("important_remark");
+				if (important_remark != null
+						&& important_remark.equals(new Integer(-1))) {
+					importantRemark.setValue(true);
+				}
+
+				DataSource dataSource = DataSource.get("OrgActDS");
+				Criteria criteria = new Criteria();
+				criteria.setAttribute("organization_id",
+						listGridRecord.getAttributeAsInt("organization_id"));
+				DSRequest dsRequest = new DSRequest();
+				dsRequest.setOperationId("searchOrgBusinessActivities");
+				dataSource.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						Record records[] = response.getData();
+						if (records != null && records.length > 0) {
+							for (Record record : records) {
+								orgActivityGrid.addData(record);
+							}
+						}
+					}
+				}, dsRequest);
+
+				final Integer dayID = listGridRecord
+						.getAttributeAsInt("day_offs");
+				if (dayID != null) {
+					DayOffsClientDS weekDaysClientDS = DayOffsClientDS
+							.getInstance();
+					weekDaysClientDS.fetchData(new Criteria(),
+							new DSCallback() {
+								@Override
+								public void execute(DSResponse response,
+										Object rawData, DSRequest request) {
+									Record records[] = response.getData();
+									if (records != null && records.length > 0) {
+
+										if (dayID == 0) {
+											orgDayOffsGrid.addData(records[0]);
+										} else {
+											int dayArray[] = Constants.dayArray;
+											for (int i = 1; i < dayArray.length; i++) {
+												if ((dayArray[i] & dayID) == dayArray[i]) {
+													orgDayOffsGrid
+															.addData(records[i]);
+												}
+											}
+										}
+									}
+								}
+							});
+				}
 			}
+
+			physicalAddress.setTownValue(listGridRecord
+					.getAttributeAsInt("town_id"));
+			physicalAddress.setStreetValue(listGridRecord
+					.getAttributeAsInt("street_id"));
+			physicalAddress.setStreetDistrictValue(listGridRecord
+					.getAttributeAsInt("town_district_id"));
+			physicalAddress.setOpCloseValue(listGridRecord
+					.getAttributeAsInt("hidden_by_request"));
+			physicalAddress.setOldAddressValue(listGridRecord
+					.getAttributeAsString("full_address"));
+			physicalAddress.setBlockValue(listGridRecord
+					.getAttributeAsString("block"));
+			physicalAddress.setAppartValue(listGridRecord
+					.getAttributeAsString("appt"));
+			physicalAddress.setAdressValue(listGridRecord
+					.getAttributeAsString("anumber"));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
