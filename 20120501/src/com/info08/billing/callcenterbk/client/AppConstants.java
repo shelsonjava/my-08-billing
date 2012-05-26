@@ -683,6 +683,7 @@ public interface AppConstants extends Constants {
 	String paraller();
 	String socialAddress();
 	String parrentOrgName();
+	String sameAddress();
 }
 
 
