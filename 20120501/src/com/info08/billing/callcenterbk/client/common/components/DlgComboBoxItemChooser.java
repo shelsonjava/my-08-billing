@@ -19,6 +19,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 public class DlgComboBoxItemChooser extends Window {
@@ -94,7 +95,11 @@ public class DlgComboBoxItemChooser extends Window {
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
-		hLayoutItem.setAlign(Alignment.RIGHT);
+		hLayoutItem.setAlign(Alignment.LEFT);
+
+		IButton saveEmptyItem = new IButton();
+		saveEmptyItem.setTitle(CallCenterBK.constants.chooseEmpty());
+		saveEmptyItem.setWidth(120);
 
 		IButton saveItem = new IButton();
 		saveItem.setTitle(CallCenterBK.constants.choose());
@@ -104,7 +109,10 @@ public class DlgComboBoxItemChooser extends Window {
 		cancItem.setTitle(CallCenterBK.constants.close());
 		cancItem.setWidth(100);
 
-		hLayoutItem.setMembers(saveItem, cancItem);
+		LayoutSpacer spacer = new LayoutSpacer();
+		spacer.setWidth100();
+
+		hLayoutItem.setMembers(saveEmptyItem, spacer, saveItem, cancItem);
 
 		hLayout.addMember(hLayoutItem);
 
@@ -127,7 +135,28 @@ public class DlgComboBoxItemChooser extends Window {
 				save(event);
 			}
 		});
+
+		saveEmptyItem.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				saveEmpty(event);
+			}
+		});
+
 		addItem(hLayout);
+	}
+
+	@SuppressWarnings("rawtypes")
+	public void saveEmpty(BrowserEvent browserEvent) {
+		try {
+			comboBoxItem.setSelectedRecord(null);
+			comboBoxItem.getHandlerManagerMy().fireEvent(
+					new MyComboBoxEvent(null));
+			destroy();
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
 	}
 
 	@SuppressWarnings("rawtypes")

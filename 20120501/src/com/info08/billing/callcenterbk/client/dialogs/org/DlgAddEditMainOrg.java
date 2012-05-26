@@ -83,7 +83,7 @@ public class DlgAddEditMainOrg extends Window {
 	private TextAreaItem orgInfoItem;
 	private ComboBoxItem orgLegalStatusItem;
 	private DateItem orgFoundedItem;
-	private SelectItem extraPriorityItem;
+	private SelectItem superPriorityItem;
 	private CheckboxItem importantRemark;
 	private SelectItem orgStatusItem;
 
@@ -100,6 +100,7 @@ public class DlgAddEditMainOrg extends Window {
 
 	private ListGrid bankOrgsGrid;
 	private ListGrid orgPartBankOrgsGrid;
+	private ToolStripButton copyAddress;
 
 	public DlgAddEditMainOrg(ListGridRecord listGridRecord, TreeGrid orgTreeGrid) {
 		try {
@@ -185,11 +186,11 @@ public class DlgAddEditMainOrg extends Window {
 			toolStrip.setWidth(1228);
 			toolStrip.setPadding(5);
 
-			ToolStripButton sameAddress = new ToolStripButton(
+			copyAddress = new ToolStripButton(
 					CallCenterBK.constants.sameAddress(), "copy.png");
-			sameAddress.setLayoutAlign(Alignment.LEFT);
-			sameAddress.setWidth(50);
-			toolStrip.addButton(sameAddress);
+			copyAddress.setLayoutAlign(Alignment.LEFT);
+			copyAddress.setWidth(50);
+			toolStrip.addButton(copyAddress);
 
 			hLayoutForAddresses.setMembers(physicalAddress, legalAddress);
 
@@ -325,16 +326,16 @@ public class DlgAddEditMainOrg extends Window {
 			orgFoundedItem.setName("found_date");
 			orgFoundedItem.setUseTextField(true);
 
-			extraPriorityItem = new SelectItem();
-			extraPriorityItem.setTitle(CallCenterBK.constants.extraPriority());
-			extraPriorityItem.setWidth(614);
-			extraPriorityItem.setName("extraPriorityItem");
-			extraPriorityItem.setDefaultToFirstOption(true);
-			extraPriorityItem.setValueMap(ClientMapUtil.getInstance()
+			superPriorityItem = new SelectItem();
+			superPriorityItem.setTitle(CallCenterBK.constants.extraPriority());
+			superPriorityItem.setWidth(614);
+			superPriorityItem.setName("super_priority");
+			superPriorityItem.setDefaultToFirstOption(true);
+			superPriorityItem.setValueMap(ClientMapUtil.getInstance()
 					.getOrgNoteCrits());
 			boolean hasPermission = CommonSingleton.getInstance()
 					.hasPermission("105550");
-			extraPriorityItem.setDisabled(!hasPermission);
+			superPriorityItem.setDisabled(!hasPermission);
 
 			importantRemark = new CheckboxItem();
 			importantRemark.setTitle(CallCenterBK.constants.noteCrit());
@@ -360,7 +361,7 @@ public class DlgAddEditMainOrg extends Window {
 					orgFoundedItem, orgSocialAddressItem, orgWebAddressItem,
 					orgMailItem, orgInfoItem);
 
-			dynamicFormMainInfo2.setFields(orgIndItem, extraPriorityItem);
+			dynamicFormMainInfo2.setFields(orgIndItem, superPriorityItem);
 
 			DataSource orgActDS = DataSource.get("OrgActDS");
 
@@ -515,15 +516,13 @@ public class DlgAddEditMainOrg extends Window {
 			bankOrgsGrid.setFetchOperation("searchPartnerBanks");
 			bankOrgsGrid.setWrapCells(true);
 			bankOrgsGrid.setFixedRecordHeights(false);
-			bankOrgsGrid
-					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-						@Override
-						public void onRecordDoubleClick(
-								RecordDoubleClickEvent event) {
-							orgPartBankOrgsGrid
-									.transferSelectedData(bankOrgsGrid);
-						}
-					});
+			bankOrgsGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
+				@Override
+				public void onRecordDoubleClick(
+						RecordDoubleClickEvent event) {
+					orgPartBankOrgsGrid.transferSelectedData(bankOrgsGrid);
+				}
+			});
 
 			ListGridField bank_organization_name = new ListGridField(
 					"organization_name", CallCenterBK.constants.partnerBank());
@@ -547,9 +546,8 @@ public class DlgAddEditMainOrg extends Window {
 					.setDuplicateDragMessage("ასეთი უკვე არჩეულია !");
 			orgPartBankOrgsGrid.setCanAcceptDroppedRecords(true);
 			orgPartBankOrgsGrid.setAlternateRecordStyles(true);
-			orgPartBankOrgsGrid.setAutoFetchData(false);
+			orgPartBankOrgsGrid.setAutoFetchData(true);
 			orgPartBankOrgsGrid.setDataSource(orgPartnetBanksClientDS);
-			orgPartBankOrgsGrid.setFetchOperation("searchOrgPartnerBanks");
 			orgPartBankOrgsGrid.setWrapCells(true);
 			orgPartBankOrgsGrid.setFixedRecordHeights(false);
 			orgPartBankOrgsGrid.setCanRemoveRecords(true);
@@ -560,6 +558,13 @@ public class DlgAddEditMainOrg extends Window {
 
 			hLayoutPartBanks.setMembers(bankOrgsGrid, orgPartBankOrgsGrid);
 			formsLayoutAddInfo.addMember(hLayoutPartBanks);
+
+			copyAddress.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					copyAddress();
+				}
+			});
 
 			fillFields();
 			addItem(hLayout);
@@ -632,40 +637,121 @@ public class DlgAddEditMainOrg extends Window {
 								}
 							});
 				}
+
+				physicalAddress.setTownValue(listGridRecord
+						.getAttributeAsInt("town_id"));
+				physicalAddress.setStreetValue(listGridRecord
+						.getAttributeAsInt("street_id"));
+				physicalAddress.setStreetDistrictValue(listGridRecord
+						.getAttributeAsInt("town_district_id"));
+				physicalAddress.setOpCloseValue(listGridRecord
+						.getAttributeAsInt("hidden_by_request"));
+				physicalAddress.setOldAddressValue(listGridRecord
+						.getAttributeAsString("full_address"));
+				physicalAddress.setBlockValue(listGridRecord
+						.getAttributeAsString("block"));
+				physicalAddress.setAppartValue(listGridRecord
+						.getAttributeAsString("appt"));
+				physicalAddress.setAdressValue(listGridRecord
+						.getAttributeAsString("anumber"));
+				physicalAddress.setStreetLocation(listGridRecord
+						.getAttributeAsString("street_location"));
+				physicalAddress.setStreetIndexes(listGridRecord
+						.getAttributeAsString("street_index_text"));
+
+				legalAddress.setTownValue(listGridRecord
+						.getAttributeAsInt("legal_addr_town_id"));
+				legalAddress.setStreetValue(listGridRecord
+						.getAttributeAsInt("legal_addr_street_id"));
+				legalAddress.setStreetDistrictValue(listGridRecord
+						.getAttributeAsInt("legal_addr_town_district_id"));
+				legalAddress.setOpCloseValue(listGridRecord
+						.getAttributeAsInt("legal_addr_hidden_by_request"));
+				legalAddress.setOldAddressValue(listGridRecord
+						.getAttributeAsString("legal_addr_full_address"));
+				legalAddress.setBlockValue(listGridRecord
+						.getAttributeAsString("legal_addr_block"));
+				legalAddress.setAppartValue(listGridRecord
+						.getAttributeAsString("legal_addr_appt"));
+				legalAddress.setAdressValue(listGridRecord
+						.getAttributeAsString("legal_addr_anumber"));
+				legalAddress.setStreetLocation(listGridRecord
+						.getAttributeAsString("legal_addr_street_location"));
+				legalAddress.setStreetIndexes(listGridRecord
+						.getAttributeAsString("legal_addr_street_index_text"));
+
+				DataSource orgDS = DataSource.get("OrgDS");
+				Criteria criteria1 = new Criteria();
+				criteria1.setAttribute("organization_id",
+						listGridRecord.getAttributeAsInt("organization_id"));
+				DSRequest dsRequest1 = new DSRequest();
+				dsRequest1.setOperationId("searchOrgPartnerBanks");
+				orgDS.fetchData(criteria1, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						Record records[] = response.getData();
+						if (records != null && records.length > 0) {
+							for (Record record : records) {
+								orgPartBankOrgsGrid.addData(record);
+							}
+						}
+					}
+				}, dsRequest1);
+
 			}
 
-			physicalAddress.setTownValue(listGridRecord
-					.getAttributeAsInt("town_id"));
-			physicalAddress.setStreetValue(listGridRecord
-					.getAttributeAsInt("street_id"));
-			physicalAddress.setStreetDistrictValue(listGridRecord
-					.getAttributeAsInt("town_district_id"));
-			physicalAddress.setOpCloseValue(listGridRecord
-					.getAttributeAsInt("hidden_by_request"));
-			physicalAddress.setOldAddressValue(listGridRecord
-					.getAttributeAsString("full_address"));
-			physicalAddress.setBlockValue(listGridRecord
-					.getAttributeAsString("block"));
-			physicalAddress.setAppartValue(listGridRecord
-					.getAttributeAsString("appt"));
-			physicalAddress.setAdressValue(listGridRecord
-					.getAttributeAsString("anumber"));
-			physicalAddress.setStreetLocation(listGridRecord
-					.getAttributeAsString("street_location"));
-			physicalAddress.setStreetIndexes(listGridRecord
-					.getAttributeAsString("street_index_text"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
 
-			physicalAddress.setTownValue(listGridRecord.getAttributeAsInt("legal_addr_town_id"));
-			physicalAddress.setStreetValue(listGridRecord.getAttributeAsInt("legal_addr_street_id"));
-			physicalAddress.setStreetDistrictValue(listGridRecord.getAttributeAsInt("legal_addr_town_district_id"));
-			physicalAddress.setOpCloseValue(listGridRecord.getAttributeAsInt("legal_addr_hidden_by_request"));
-			physicalAddress.setOldAddressValue(listGridRecord.getAttributeAsString("legal_addr_full_address"));
-			physicalAddress.setBlockValue(listGridRecord.getAttributeAsString("legal_addr_block"));
-			physicalAddress.setAppartValue(listGridRecord.getAttributeAsString("legal_addr_appt"));
-			physicalAddress.setAdressValue(listGridRecord.getAttributeAsString("legal_addr_anumber"));
-			physicalAddress.setStreetLocation(listGridRecord.getAttributeAsString("legal_addr_street_location"));
-			physicalAddress.setStreetIndexes(listGridRecord.getAttributeAsString("legal_addr_street_index_text"));
-			
+	private void copyAddress() {
+		try {
+			Integer town_id = physicalAddress.getTownValue();
+			Integer street_id = physicalAddress.getStreetValue();
+			Integer town_district_id = physicalAddress.getStreetDistrictValue();
+			Integer hidden_by_request = physicalAddress.getOpCloseValue();
+			String full_address = physicalAddress.getOldAddressValue();
+			String block = physicalAddress.getBlockValue();
+			String appt = physicalAddress.getAppartValue();
+			String anumber = physicalAddress.getAdressValue();
+			String street_location = physicalAddress.getStreetLocationValue();
+			String street_index_text = physicalAddress.getStreetIndexesValue();
+
+			if (town_id != null) {
+				legalAddress.setTownValue(town_id);
+			}
+			if (street_id != null) {
+				legalAddress.setStreetValue(street_id);
+			}
+			if (town_district_id != null) {
+				legalAddress.setStreetDistrictValue(town_district_id);
+			}
+			if (hidden_by_request != null) {
+				legalAddress.setOpCloseValue(hidden_by_request);
+			}
+			if (full_address != null && !full_address.trim().equals("")) {
+				legalAddress.setOldAddressValue(full_address);
+			}
+			if (block != null && !block.trim().equals("")) {
+				legalAddress.setBlockValue(block);
+			}
+			if (appt != null && !appt.trim().equals("")) {
+				legalAddress.setAppartValue(appt);
+			}
+			if (anumber != null && !anumber.trim().equals("")) {
+				legalAddress.setAdressValue(anumber);
+			}
+			if (street_location != null && !street_location.trim().equals("")) {
+				legalAddress.setStreetLocation(street_location);
+			}
+			if (street_index_text != null
+					&& !street_index_text.trim().equals("")) {
+				legalAddress.setStreetIndexes(street_index_text);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

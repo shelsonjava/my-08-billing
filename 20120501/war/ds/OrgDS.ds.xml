@@ -466,8 +466,8 @@
 			</selectClause> 
 			<tableClause>organization_partnet_banks t,organizations o, addresses a, streets str, towns tw</tableClause>	
 			<whereClause>
-					o.organization_id = t.organization_id and o.physical_address_id = a.addr_id and str.street_id = a.street_id and tw.town_id = a.town_id
-				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+					t.part_bank_org_id = o.organization_id and o.physical_address_id = a.addr_id and str.street_id = a.street_id and tw.town_id = a.town_id
+				    #if($criteria.organization_id) and t.organization_id = $criteria.organization_id #end
 					#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end				    
 					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
 					#if($criteria.full_address_not_hidden) and (tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) like '%'||$criteria.full_address_not_hidden||'%' #end					

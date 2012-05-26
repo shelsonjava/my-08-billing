@@ -253,7 +253,11 @@ public class MyComboBoxItem extends HLayout {
 	}
 
 	public void setSelectedRecord(Record selectedRecord) {
-		this.selectedRecord = selectedRecord;
+		if (selectedRecord == null) {
+			displayFormItem.clearValue();
+			this.selectedRecord = selectedRecord;
+			return;
+		}
 		String diplayValue = "";
 		int index = 0;
 		for (MyComboBoxRecord recordItem : myFields) {

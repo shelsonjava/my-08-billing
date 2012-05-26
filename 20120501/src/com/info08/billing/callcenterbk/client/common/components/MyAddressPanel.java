@@ -220,20 +220,24 @@ public class MyAddressPanel extends HLayout {
 		addrStreetIdxItem.setValue(streetIndexes);
 	}
 
-	public String getTownValue() {
-		return addrTownItem.getValueAsString();
+	public Integer getTownValue() {
+		String townStr = addrTownItem.getValueAsString();
+		return townStr == null ? null : new Integer(townStr);
 	}
 
-	public String getStreetValue() {
-		return addrStreetItem.getValueAsString();
+	public Integer getStreetValue() {
+		String streetStr = addrStreetItem.getValueAsString();
+		return streetStr == null ? null : new Integer(streetStr);
 	}
 
-	public String getStreetDistrictValue() {
-		return addrRegionItem.getValueAsString();
+	public Integer getStreetDistrictValue() {
+		String distrStr = addrRegionItem.getValueAsString();
+		return distrStr == null ? null : new Integer(distrStr);
 	}
 
-	public String getOpCloseValue() {
-		return adressOpCloseItem.getValueAsString();
+	public Integer getOpCloseValue() {
+		String opCloseStr = adressOpCloseItem.getValueAsString();
+		return opCloseStr == null ? null : new Integer(opCloseStr);
 	}
 
 	public String getOldAddressValue() {
@@ -250,6 +254,14 @@ public class MyAddressPanel extends HLayout {
 
 	public String getAppartValue() {
 		return appartItem.getValueAsString();
+	}
+
+	public String getStreetLocationValue() {
+		return addrStreetDescrItem.getValueAsString();
+	}
+
+	public String getStreetIndexesValue() {
+		return addrStreetIdxItem.getValueAsString();
 	}
 
 	public Integer getWidth() {

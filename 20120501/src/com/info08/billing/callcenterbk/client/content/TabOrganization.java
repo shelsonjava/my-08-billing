@@ -2,7 +2,6 @@ package com.info08.billing.callcenterbk.client.content;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditMainOrg;
-import com.info08.billing.callcenterbk.client.dialogs.org.DlgOrgStatusChange;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgSortOrderOrgs;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -70,9 +69,7 @@ public class TabOrganization extends Tab {
 	private ToolStripButton sortBtn;
 	private ToolStripButton addNewOrgBtn;
 	private ToolStripButton editBtn;
-	private ToolStripButton disableBtn;
-	private ToolStripButton activateBtn;
-	private ToolStripButton statusBtn;
+	private ToolStripButton deleteBtn;
 	private ToolStripButton supperOrgBtn;
 
 	private TreeGrid orgTreeGrid;
@@ -273,25 +270,13 @@ public class TabOrganization extends Tab {
 		editBtn.setWidth(50);
 		toolStrip.addButton(editBtn);
 
-		disableBtn = new ToolStripButton(CallCenterBK.constants.disable(),
+		deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
 				"deleteIcon.png");
-		disableBtn.setLayoutAlign(Alignment.LEFT);
-		disableBtn.setWidth(50);
-		toolStrip.addButton(disableBtn);
-
-		activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
-				"restoreIcon.gif");
-		activateBtn.setLayoutAlign(Alignment.LEFT);
-		activateBtn.setWidth(50);
-		toolStrip.addButton(activateBtn);
+		deleteBtn.setLayoutAlign(Alignment.LEFT);
+		deleteBtn.setWidth(50);
+		toolStrip.addButton(deleteBtn);
 
 		toolStrip.addSeparator();
-
-		statusBtn = new ToolStripButton(CallCenterBK.constants.state(),
-				"gnome_status.png");
-		statusBtn.setLayoutAlign(Alignment.LEFT);
-		statusBtn.setWidth(50);
-		toolStrip.addButton(statusBtn);
 
 		sortBtn = new ToolStripButton(CallCenterBK.constants.sort(), "sort.png");
 		sortBtn.setLayoutAlign(Alignment.LEFT);
@@ -314,28 +299,29 @@ public class TabOrganization extends Tab {
 				Integer status = countryRecord.getAttributeAsInt("status");
 				Integer super_priority = countryRecord
 						.getAttributeAsInt("super_priority");
-				Integer important_remark = countryRecord.getAttributeAsInt("important_remark");
+				Integer important_remark = countryRecord
+						.getAttributeAsInt("important_remark");
 
 				if (super_priority != null && super_priority < 0) {
 					return "color:red;";
 				} else if (status != null && status.equals(2)) {
-					if (important_remark != null && important_remark.intValue() == -1
-							&& colNum == 2) {
+					if (important_remark != null
+							&& important_remark.intValue() == -1 && colNum == 2) {
 						return "color:red;";
 					} else {
 						return "color:gray;";
 					}
 				} else if (status != null && status.equals(1)) {
-					if (important_remark != null && important_remark.intValue() == -1
-							&& colNum == 2) {
+					if (important_remark != null
+							&& important_remark.intValue() == -1 && colNum == 2) {
 						return "color:red;";
 					} else {
 						return "color:blue;";
 					}
 
 				} else if (status != null && status.equals(3)) {
-					if (important_remark != null && important_remark.intValue() == -1
-							&& colNum == 2) {
+					if (important_remark != null
+							&& important_remark.intValue() == -1 && colNum == 2) {
 						return "color:red;";
 					} else {
 						return "color:green;";
@@ -470,18 +456,13 @@ public class TabOrganization extends Tab {
 			}
 		});
 
-		disableBtn.addClickHandler(new ClickHandler() {
+		deleteBtn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				final ListGridRecord listGridRecord = orgTreeGrid
 						.getSelectedRecord();
 				if (listGridRecord == null) {
 					SC.say(CallCenterBK.constants.pleaseSelrecord());
-					return;
-				}
-				Integer deleted = listGridRecord.getAttributeAsInt("deleted");
-				if (!deleted.equals(0)) {
-					SC.say(CallCenterBK.constants.recordAlrDisabled());
 					return;
 				}
 				SC.ask(CallCenterBK.constants.askForDisable(),
@@ -489,62 +470,17 @@ public class TabOrganization extends Tab {
 							@Override
 							public void execute(Boolean value) {
 								if (value) {
-									changeDelStatus(listGridRecord, 1);
+									deleteOrganization(listGridRecord, 1);
 								}
 							}
 						});
 			}
 		});
-		activateBtn.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				final ListGridRecord listGridRecord = orgTreeGrid
-						.getSelectedRecord();
-				if (listGridRecord == null) {
-					SC.say(CallCenterBK.constants.pleaseSelrecord());
-					return;
-				}
-				Integer deleted = listGridRecord.getAttributeAsInt("deleted");
-				if (deleted.equals(0)) {
-					SC.say(CallCenterBK.constants.recordAlrEnabled());
-					return;
-				}
-				SC.ask(CallCenterBK.constants.askForEnable(),
-						new BooleanCallback() {
-							@Override
-							public void execute(Boolean value) {
-								if (value) {
-									changeDelStatus(listGridRecord, 0);
-								}
-							}
-						});
-			}
-		});
-
-		statusBtn.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				final ListGridRecord listGridRecord = orgTreeGrid
-						.getSelectedRecord();
-				if (listGridRecord == null) {
-					SC.say(CallCenterBK.constants.pleaseSelrecord());
-					return;
-				}
-				Integer deleted = listGridRecord.getAttributeAsInt("deleted");
-				if (deleted.equals(1)) {
-					SC.say(CallCenterBK.constants.plsRestRecBefStatChange());
-					return;
-				}
-				DlgOrgStatusChange dlgOrgStatusChange = new DlgOrgStatusChange(
-						listGridRecord, orgTreeGrid);
-				dlgOrgStatusChange.show();
-			}
-		});
-
 		addNewOrgBtn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(null, orgTreeGrid);
+				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(
+						null, orgTreeGrid);
 				dlgAddEditMainOrg.show();
 			}
 		});
@@ -558,7 +494,8 @@ public class TabOrganization extends Tab {
 							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
-				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(listGridRecord, orgTreeGrid);
+				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(
+						listGridRecord, orgTreeGrid);
 				dlgAddEditMainOrg.show();
 			}
 		});
@@ -732,13 +669,13 @@ public class TabOrganization extends Tab {
 		}
 	}
 
-	private void changeDelStatus(ListGridRecord listGridRecord, Integer deleted) {
+	private void deleteOrganization(ListGridRecord listGridRecord,
+			Integer deleted) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-			record.setAttribute("deleted", deleted);
 			record.setAttribute("organization_id",
 					listGridRecord.getAttributeAsInt("organization_id"));
 
