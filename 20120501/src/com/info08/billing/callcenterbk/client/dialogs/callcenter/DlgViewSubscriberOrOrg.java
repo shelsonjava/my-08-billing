@@ -80,13 +80,13 @@ public class DlgViewSubscriberOrOrg extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		DetailViewerField fullName = new DetailViewerField("fullName",
+		DetailViewerField full_name = new DetailViewerField("full_name",
 				CallCenterBK.constants.dasaxeleba());
 
-		DetailViewerField town_name = new DetailViewerField(
-				"town_name", CallCenterBK.constants.town());
+		DetailViewerField town_name = new DetailViewerField("town_name",
+				CallCenterBK.constants.town());
 
-		DetailViewerField streetName = new DetailViewerField("streetName",
+		DetailViewerField address = new DetailViewerField("address",
 				CallCenterBK.constants.street());
 
 		DetailViewerField phone = new DetailViewerField("phone",
@@ -94,7 +94,7 @@ public class DlgViewSubscriberOrOrg extends Window {
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(fullName, town_name, streetName, phone);
+		detailViewer.setFields(full_name, town_name, address, phone);
 
 		mainLayout.addMember(detailViewer);
 
@@ -205,18 +205,23 @@ public class DlgViewSubscriberOrOrg extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String fullName = listGridRecord.getAttributeAsString("fullName");
-			if (fullName != null && !fullName.trim().equals("")) {
-				sms_text.append(fullName).append(" ");
+			String full_name = listGridRecord.getAttributeAsString("full_name");
+			if (full_name != null && !full_name.trim().equals("")) {
+				sms_text.append(full_name).append(" ");
 			}
-			String streetName = listGridRecord
-					.getAttributeAsString("streetName");
-			if (streetName != null && !streetName.trim().equals("")) {
-				sms_text.append(streetName).append(" ");
+
+			Integer addresshide = listGridRecord
+					.getAttributeAsInt("address_hidden_by_request");
+			if ((addresshide == null || !addresshide.equals(1))) {
+				String address = listGridRecord.getAttributeAsString("address");
+				if (address != null && !address.trim().equals("")) {
+					sms_text.append(address).append(" ");
+				}
 			}
 
 			String pPhone = listGridRecord.getAttributeAsString("phone");
-			Integer hide = listGridRecord.getAttributeAsInt("hide");
+			Integer hide = listGridRecord
+					.getAttributeAsInt("phone_hidden_by_request");
 			if (pPhone != null && !pPhone.trim().equals("")
 					&& (hide == null || !hide.equals(1))) {
 				sms_text.append("032");
@@ -234,7 +239,7 @@ public class DlgViewSubscriberOrOrg extends Window {
 			recordParam.setAttribute("phone", phone);
 			recordParam.setAttribute("rec_user", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-			
+
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");
 			req.setAttribute("operationId", "LogSMS");
