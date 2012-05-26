@@ -243,6 +243,9 @@ public class TabTownDistrict extends Tab {
 
 	private void fillCityCombo() {
 		try {
+			
+			
+			
 			DataSource townsDS = DataSource.get("TownsDS");
 			if (townsDS != null) {
 				townsItem.setOptionOperationId("searchFromDB");
