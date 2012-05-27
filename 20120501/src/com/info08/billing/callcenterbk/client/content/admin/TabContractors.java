@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.content.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditContractor;
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgBlockPhoneList;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgBlackPhoneList;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetContractorsBilling;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgUpdateContrCurrRangePrice;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
@@ -527,7 +527,7 @@ public class TabContractors extends Tab {
 
 	private void showBlockPhoneList(ListGridRecord listGridRecord) {
 		try {
-			DlgBlockPhoneList blockPhoneList = new DlgBlockPhoneList(
+			DlgBlackPhoneList blockPhoneList = new DlgBlackPhoneList(
 					listGridRecord);
 			blockPhoneList.show();
 		} catch (Exception e) {

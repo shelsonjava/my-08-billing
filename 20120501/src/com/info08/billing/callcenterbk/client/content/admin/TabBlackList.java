@@ -1,7 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditBlockList;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditBlackList;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -17,8 +17,6 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -30,13 +28,12 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class TabBlockList extends Tab {
+public class TabBlackList extends Tab {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
-	private TextItem orgNameItem;
 	private TextItem phoneItem;
-	private TextItem noteItem;
+	private TextItem title_descrItem;
 
 	private IButton findButton;
 	private IButton clearButton;
@@ -44,19 +41,18 @@ public class TabBlockList extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
-	private ToolStripButton restoreBtn;
 	private ToolStripButton viewCallCntBtn;
 
 	private ListGrid blockListGrid;
-	private DataSource blockListDS;
+	private DataSource blackListDS;
 
-	public TabBlockList() {
+	public TabBlackList() {
 		try {
 
 			setTitle(CallCenterBK.constants.blockPhone());
 			setCanClose(true);
 
-			blockListDS = DataSource.get("BlockListDS");
+			blackListDS = DataSource.get("BlackListDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -70,22 +66,17 @@ public class TabBlockList extends Tab {
 			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			orgNameItem = new TextItem();
-			orgNameItem.setTitle(CallCenterBK.constants.orgNameFull());
-			orgNameItem.setWidth(250);
-			orgNameItem.setName("orgNameItem");
-
 			phoneItem = new TextItem();
 			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setWidth(250);
-			phoneItem.setName("phoneItem");
+			phoneItem.setName("phone");
 
-			noteItem = new TextItem();
-			noteItem.setTitle(CallCenterBK.constants.comment());
-			noteItem.setWidth(250);
-			noteItem.setName("noteItem");
+			title_descrItem = new TextItem();
+			title_descrItem.setTitle(CallCenterBK.constants.comment());
+			title_descrItem.setWidth(250);
+			title_descrItem.setName("title_descr");
 
-			searchForm.setFields(orgNameItem, phoneItem, noteItem);
+			searchForm.setFields(phoneItem, title_descrItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(830);
@@ -124,12 +115,6 @@ public class TabBlockList extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			restoreBtn = new ToolStripButton(CallCenterBK.constants.enable(),
-					"restoreIcon.gif");
-			restoreBtn.setLayoutAlign(Alignment.LEFT);
-			restoreBtn.setWidth(50);
-			toolStrip.addButton(restoreBtn);
-
 			toolStrip.addSeparator();
 
 			viewCallCntBtn = new ToolStripButton(
@@ -138,27 +123,12 @@ public class TabBlockList extends Tab {
 			viewCallCntBtn.setWidth(50);
 			toolStrip.addButton(viewCallCntBtn);
 
-			blockListGrid = new ListGrid() {
-				protected String getCellCSSText(ListGridRecord record,
-						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					if (countryRecord == null) {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-				};
-			};
+			blockListGrid = new ListGrid();
 
 			blockListGrid.setWidth100();
 			blockListGrid.setHeight100();
 			blockListGrid.setAlternateRecordStyles(true);
-			blockListGrid.setDataSource(blockListDS);
+			blockListGrid.setDataSource(blackListDS);
 			blockListGrid.setAutoFetchData(false);
 			blockListGrid.setShowFilterEditor(false);
 			blockListGrid.setCanEdit(false);
@@ -172,14 +142,10 @@ public class TabBlockList extends Tab {
 			blockListGrid.setFixedRecordHeights(false);
 			blockListGrid.setCanDragSelectText(true);
 
-			ListGridField orgName = new ListGridField("orgName",
-					CallCenterBK.constants.orgNameFull());
-			ListGridField orgDepName = new ListGridField("orgDepName",
-					CallCenterBK.constants.department(), 300);
-			ListGridField note = new ListGridField("note",
+			ListGridField note = new ListGridField("title_descr",
 					CallCenterBK.constants.comment(), 300);
 
-			blockListGrid.setFields(orgName, orgDepName, note);
+			blockListGrid.setFields(note);
 
 			mainLayout.addMember(blockListGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -189,28 +155,11 @@ public class TabBlockList extends Tab {
 				}
 			});
 
-			orgNameItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					if (event.getKeyName().equals("Enter")) {
-						search();
-					}
-				}
-			});
-
-			clearButton.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					orgNameItem.clearValue();
-				}
-			});
-
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditBlockList dlgAddEditBlockList = new DlgAddEditBlockList(
-							blockListGrid, null);
-					dlgAddEditBlockList.show();
+					new DlgAddEditBlackList(blockListGrid, null);
+
 				}
 			});
 
@@ -225,9 +174,7 @@ public class TabBlockList extends Tab {
 						return;
 					}
 
-					DlgAddEditBlockList dlgAddEditBlockList = new DlgAddEditBlockList(
-							blockListGrid, listGridRecord);
-					dlgAddEditBlockList.show();
+					new DlgAddEditBlackList(blockListGrid, listGridRecord);
 				}
 			});
 			deleteBtn.addClickHandler(new ClickHandler() {
@@ -239,44 +186,12 @@ public class TabBlockList extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrDisabled());
-						return;
-					}
 					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(listGridRecord, 1);
-									}
-								}
-							});
-				}
-			});
-			restoreBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = blockListGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrEnabled());
-						return;
-					}
-					SC.ask(CallCenterBK.constants.askForEnable(),
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(listGridRecord, 0);
+										delete(listGridRecord);
 									}
 								}
 							});
@@ -290,9 +205,8 @@ public class TabBlockList extends Tab {
 								RecordDoubleClickEvent event) {
 							ListGridRecord listGridRecord = blockListGrid
 									.getSelectedRecord();
-							DlgAddEditBlockList dlgAddEditBlockList = new DlgAddEditBlockList(
-									blockListGrid, listGridRecord);
-							dlgAddEditBlockList.show();
+							new DlgAddEditBlackList(blockListGrid,
+									listGridRecord);
 						}
 					});
 
@@ -335,8 +249,7 @@ public class TabBlockList extends Tab {
 					Record records[] = response.getData();
 					if (records != null && records.length > 0) {
 						Record record = records[0];
-						Integer call_cnt = record
-								.getAttributeAsInt("call_cnt");
+						Integer call_cnt = record.getAttributeAsInt("call_cnt");
 						if (call_cnt == null) {
 							call_cnt = 0;
 						}
@@ -355,28 +268,13 @@ public class TabBlockList extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			String org_name = orgNameItem.getValueAsString();
-			if (org_name != null && !org_name.trim().equals("")) {
-				String tmp = org_name.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("org_name" + i, item);
-					i++;
-				}
-			}
 
 			String phone = phoneItem.getValueAsString();
 			if (phone != null && !phone.equals("")) {
 				criteria.setAttribute("phone", new Integer(phone));
 			}
-
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchAllBlockList");
+			dsRequest.setAttribute("operationId", "searchAllBlackList");
 			blockListGrid.invalidateCache();
 			blockListGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -389,19 +287,18 @@ public class TabBlockList extends Tab {
 		}
 	}
 
-	private void changeStatus(ListGridRecord listGridRecord, Integer deleted) {
+	private void delete(ListGridRecord listGridRecord) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("id", listGridRecord.getAttributeAsInt("id"));
+			record.setAttribute("black_list_id", listGridRecord.getAttributeAsInt("black_list_id"));
 
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateBlockListStatus");
-			blockListGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "removeBlackList");
+			blockListGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
