@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
@@ -69,11 +70,12 @@ public class DlgAddEditMainOrg extends Window {
 	// main info fields.
 	private TextAreaItem orgNameItem;
 	private TextAreaItem orgNameEngItem;
-	private TextAreaItem orgNoteItem;
-	private TextItem orgDirectorItem;
+	private TextAreaItem orgRemarkItem;
+	private TextItem orgChiefItem;
 	private TextItem orgContactPersonItem;
 	private TextItem orgIdentCodeItem;
-	private TextItem orgNewIdentCodeItem;
+	private TextItem orgIdentCodeNewItem;
+
 	private TextItem orgWorkHoursItem;
 	private TextItem orgWebAddressItem;
 	private TextItem orgSocialAddressItem;
@@ -247,16 +249,16 @@ public class DlgAddEditMainOrg extends Window {
 			orgNameEngItem.setTitle(CallCenterBK.constants.orgNameEng());
 			orgNameEngItem.setHeight(62);
 
-			orgNoteItem = new TextAreaItem();
-			orgNoteItem.setName("remark");
-			orgNoteItem.setWidth(650);
-			orgNoteItem.setTitle(CallCenterBK.constants.comment());
-			orgNoteItem.setHeight(142);
+			orgRemarkItem = new TextAreaItem();
+			orgRemarkItem.setName("remark");
+			orgRemarkItem.setWidth(650);
+			orgRemarkItem.setTitle(CallCenterBK.constants.comment());
+			orgRemarkItem.setHeight(142);
 
-			orgDirectorItem = new TextItem();
-			orgDirectorItem.setName("chief");
-			orgDirectorItem.setWidth(284);
-			orgDirectorItem.setTitle(CallCenterBK.constants.director());
+			orgChiefItem = new TextItem();
+			orgChiefItem.setName("chief");
+			orgChiefItem.setWidth(284);
+			orgChiefItem.setTitle(CallCenterBK.constants.director());
 
 			orgContactPersonItem = new TextItem();
 			orgContactPersonItem.setName("contact_person");
@@ -268,11 +270,13 @@ public class DlgAddEditMainOrg extends Window {
 			orgIdentCodeItem.setName("ident_code");
 			orgIdentCodeItem.setWidth(284);
 			orgIdentCodeItem.setTitle(CallCenterBK.constants.identCode());
+			orgIdentCodeItem.setKeyPressFilter("[0-9]");
 
-			orgNewIdentCodeItem = new TextItem();
-			orgNewIdentCodeItem.setName("ident_code_new");
-			orgNewIdentCodeItem.setWidth(284);
-			orgNewIdentCodeItem.setTitle(CallCenterBK.constants.identCodeNew());
+			orgIdentCodeNewItem = new TextItem();
+			orgIdentCodeNewItem.setName("ident_code_new");
+			orgIdentCodeNewItem.setWidth(284);
+			orgIdentCodeNewItem.setTitle(CallCenterBK.constants.identCodeNew());
+			orgIdentCodeNewItem.setKeyPressFilter("[0-9]");
 
 			orgWorkHoursItem = new TextItem();
 			orgWorkHoursItem.setName("work_hours");
@@ -352,11 +356,10 @@ public class DlgAddEditMainOrg extends Window {
 			orgStatusItem.setDefaultToFirstOption(true);
 
 			dynamicFormMainInfo.setFields(orgNameItem, orgNameEngItem,
-					importantRemark, orgNoteItem);
+					importantRemark, orgRemarkItem);
 
-			dynamicFormMainInfo1.setFields(orgDirectorItem,
-					orgContactPersonItem, orgIdentCodeItem,
-					orgNewIdentCodeItem, orgWorkHoursItem,
+			dynamicFormMainInfo1.setFields(orgChiefItem, orgContactPersonItem,
+					orgIdentCodeItem, orgIdentCodeNewItem, orgWorkHoursItem,
 					orgWorkPersQuantItem, orgLegalStatusItem, orgStatusItem,
 					orgFoundedItem, orgSocialAddressItem, orgWebAddressItem,
 					orgMailItem, orgInfoItem);
@@ -516,13 +519,15 @@ public class DlgAddEditMainOrg extends Window {
 			bankOrgsGrid.setFetchOperation("searchPartnerBanks");
 			bankOrgsGrid.setWrapCells(true);
 			bankOrgsGrid.setFixedRecordHeights(false);
-			bankOrgsGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-				@Override
-				public void onRecordDoubleClick(
-						RecordDoubleClickEvent event) {
-					orgPartBankOrgsGrid.transferSelectedData(bankOrgsGrid);
-				}
-			});
+			bankOrgsGrid
+					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
+						@Override
+						public void onRecordDoubleClick(
+								RecordDoubleClickEvent event) {
+							orgPartBankOrgsGrid
+									.transferSelectedData(bankOrgsGrid);
+						}
+					});
 
 			ListGridField bank_organization_name = new ListGridField(
 					"organization_name", CallCenterBK.constants.partnerBank());
@@ -760,13 +765,143 @@ public class DlgAddEditMainOrg extends Window {
 
 	private void save() {
 		try {
-			com.smartgwt.client.rpc.RPCManager.startQueue();
-			Record record = new Record();
-			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name());
+			Integer parrent_organization_id = null;
+			Record parrentRecord = parrentOrgItem.getSelectedRecord();
+			if (parrentRecord != null) {
+				parrent_organization_id = parrentRecord
+						.getAttributeAsInt("organization_id");
+			}
+			if (orgNameItem.getValueAsString() == null
+					|| orgNameItem.getValueAsString().trim().equals("")) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzEnterOrgName());
+				topTabSet.selectTab(0);
+				dynamicFormMainInfo.focusInItem(orgNameItem);
+				return;
+			}
+			if (orgRemarkItem.getValueAsString() == null
+					|| orgRemarkItem.getValueAsString().trim().equals("")) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzEnterOrgRemark());
+				topTabSet.selectTab(0);
+				dynamicFormMainInfo.focusInItem(orgRemarkItem);
+				return;
+			}
+			if (orgChiefItem.getValueAsString() == null
+					|| orgChiefItem.getValueAsString().trim().equals("")) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzEnterOrgChief());
+				topTabSet.selectTab(0);
+				dynamicFormMainInfo1.focusInItem(orgChiefItem);
+				return;
+			}
 
-			record.setAttribute("organization_id",
+			String identCode = orgIdentCodeItem.getValueAsString();
+			String identCodeNew = orgIdentCodeNewItem.getValueAsString();
+			if ((identCode == null && identCodeNew == null)
+					|| (identCode != null && identCode.trim().equals("")
+							&& identCodeNew != null && identCodeNew.trim()
+							.equals(""))) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzEnterOrgIdentCode());
+				topTabSet.selectTab(0);
+				dynamicFormMainInfo1.focusInItem(orgIdentCodeItem);
+				return;
+			}
+
+			if (orgWorkHoursItem.getValueAsString() == null
+					|| orgWorkHoursItem.getValueAsString().trim().equals("")) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzEnterOrgWorkHours());
+				topTabSet.selectTab(0);
+				dynamicFormMainInfo1.focusInItem(orgWorkHoursItem);
+				return;
+			}
+
+			ListGridRecord orgActivityList[] = orgActivityGrid.getRecords();
+			if (orgActivityList == null || orgActivityList.length <= 0) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzChooseOneOrgActivity());
+				return;
+			}
+			ListGridRecord orgDayOffsList[] = orgDayOffsGrid.getRecords();
+			if (orgDayOffsList == null || orgDayOffsList.length <= 0) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzChooseOneOrgDayOff());
+				return;
+			}
+
+			String orgLegalForm = orgLegalStatusItem.getValueAsString();
+			if (orgLegalForm == null || orgLegalForm.trim().equals("")) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzChooseOrgLegalForm());
+				topTabSet.selectTab(0);
+				dynamicFormMainInfo1.focusInItem(orgLegalStatusItem);
+				return;
+			}
+
+			Integer town_id = physicalAddress.getTownValue();
+			if (town_id == null) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzChoosePhysicalAddrTown());
+				topTabSet.selectTab(1);
+				physicalAddress.getDynamicForm().focusInItem(
+						physicalAddress.getAddrTownItem());
+				return;
+			}
+			Integer street_id = physicalAddress.getStreetValue();
+			if (street_id == null) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzChoosePhysicalAddrStreet());
+				topTabSet.selectTab(1);
+				physicalAddress.getDynamicForm().focusInItem(
+						physicalAddress.getAddrStreetItem());
+				return;
+			}
+
+			Integer legal_town_id = legalAddress.getTownValue();
+			if (legal_town_id == null) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzChooseLegalAddrTown());
+				topTabSet.selectTab(1);
+				legalAddress.getDynamicForm().focusInItem(
+						legalAddress.getAddrTownItem());
+				return;
+			}
+			Integer legal_street_id = legalAddress.getStreetValue();
+			if (legal_street_id == null) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzChooseLegalAddrStreet());
+				topTabSet.selectTab(1);
+				legalAddress.getDynamicForm().focusInItem(
+						legalAddress.getAddrStreetItem());
+				return;
+			}
+			if (orgIndItem.getValueAsString() == null
+					|| orgIndItem.getValueAsString().trim().equals("")) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzEnterOrgIndex());
+				topTabSet.selectTab(1);
+				dynamicFormMainInfo2.focusInItem(orgIndItem);
+				return;
+			}
+			Map<String, Object> fromMaps = new LinkedHashMap<String, Object>();
+			fromMaps.put("loggedUserName", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name());
+			fromMaps.put("organization_id",
 					listGridRecord.getAttributeAsInt("organization_id"));
+			ClientUtils.fillMapFromForm(fromMaps, dynamicFormMainInfo,
+					dynamicFormMainInfo1, dynamicFormMainInfo2);
+
+			SC.say("PARR : " + fromMaps.toString());
+
+			boolean flag = true;
+			if (flag) {
+				return;
+			}
+
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+			Record record = new Record(fromMaps);
 
 			DSRequest req = new DSRequest();
 

@@ -269,6 +269,7 @@ public class MyComboBoxItem extends HLayout {
 			diplayValue += (index == 0 ? value : " -- " + value);
 			index++;
 		}
+		this.selectedRecord = selectedRecord;
 		displayFormItem.setValue(diplayValue);
 		currentValue = selectedRecord.getAttribute(myIdField);
 	}

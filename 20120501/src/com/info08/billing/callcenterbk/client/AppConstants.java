@@ -685,6 +685,19 @@ public interface AppConstants extends Constants {
 	String parrentOrgName();
 	String sameAddress();
 	String chooseEmpty();
+	String plzEnterOrgName();
+	String plzChooseOneOrgActivity();
+	String plzChooseOneOrgDayOff();
+	String plzEnterOrgRemark();
+	String plzEnterOrgChief();
+	String plzEnterOrgIdentCode();
+	String plzEnterOrgWorkHours();
+	String plzChooseOrgLegalForm();
+	String plzChoosePhysicalAddrTown();
+	String plzChoosePhysicalAddrStreet();
+	String plzChooseLegalAddrTown();
+	String plzChooseLegalAddrStreet();
+	String plzEnterOrgIndex();
 }
 
 
