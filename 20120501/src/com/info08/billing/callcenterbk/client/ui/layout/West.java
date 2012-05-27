@@ -10,6 +10,7 @@ import com.info08.billing.callcenterbk.client.ui.menu.SurveyStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.MiscStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.StatStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.TransportStackSelection;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -67,7 +68,7 @@ public class West extends VLayout {
 				return;
 			}
 			// Not Call Center User
-			if (!personelTypeId.equals(9L)) {
+			if (!personelTypeId.equals(Constants.OperatorDepartmentID)) {
 				correction = new CorrectionStackSelection(body);
 				menuStack.addSection(correction);
 
@@ -128,7 +129,7 @@ public class West extends VLayout {
 				break;
 			}
 			// Not Call Center User
-			if (!personelTypeId.equals(9L)) {
+			if (!personelTypeId.equals(Constants.OperatorDepartmentID)) {
 				control.setMenuPersmission();
 				correction.setMenuPersmission();
 				admin.setMenuPersmission();
@@ -139,7 +140,7 @@ public class West extends VLayout {
 				statistics.setMenuPersmission();
 			}
 			callCenter.setMenuPersmission();
-			if (personelTypeId.equals(9L)) {
+			if (personelTypeId.equals(Constants.OperatorDepartmentID)) {
 
 				ServerSession serverSession = CommonSingleton.getInstance()
 						.getServerSession();

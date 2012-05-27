@@ -7,6 +7,7 @@ import com.info08.billing.callcenterbk.client.content.admin.TabContractors;
 import com.info08.billing.callcenterbk.client.content.admin.TabLandlineIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabGSMIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabBillingComps;
+import com.info08.billing.callcenterbk.client.content.admin.TabOperatorBreaks;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -24,14 +25,21 @@ import com.smartgwt.client.widgets.tree.TreeNode;
 public class AdminStackSelection extends SectionStackSection {
 
 	private Body body;
-	public static final TreeNode[] menuData = new TreeNode[] { 
-			new MenuNode("100", "1", CallCenterBK.constants.users(), true, "person.png"),
-			new MenuNode("101", "1", CallCenterBK.constants.mobOpIndexes(), true, "mobile.png"),
-			new MenuNode("102", "1", CallCenterBK.constants.fixedOpIndexes(), true, "phone.png"),
-			new MenuNode("103", "1", CallCenterBK.constants.contractors(), true, "contracts.png"),
-			new MenuNode("104", "1", CallCenterBK.constants.blockPhone(), true, "telephone_delete.png"),
-			new MenuNode("105", "1", CallCenterBK.constants.billingComps(), true, "phone.png"),
-	};
+	public static final TreeNode[] menuData = new TreeNode[] {
+			new MenuNode("100", "1", CallCenterBK.constants.users(), true,
+					"person.png"),
+			new MenuNode("101", "1", CallCenterBK.constants.mobOpIndexes(),
+					true, "mobile.png"),
+			new MenuNode("102", "1", CallCenterBK.constants.fixedOpIndexes(),
+					true, "phone.png"),
+			new MenuNode("103", "1", CallCenterBK.constants.contractors(),
+					true, "contracts.png"),
+			new MenuNode("104", "1", CallCenterBK.constants.blockPhone(), true,
+					"telephone_delete.png"),
+			new MenuNode("105", "1", CallCenterBK.constants.billingComps(),
+					true, "phone.png"),
+			new MenuNode("106", "1", CallCenterBK.constants.schedule(), true,
+					"calendar.png") };
 
 	private TreeGrid menuTreeGrid;
 
@@ -50,7 +58,8 @@ public class AdminStackSelection extends SectionStackSection {
 		menuTree.setOpenProperty("isOpen");
 		menuTree.setData(menuData);
 
-		TreeGridField formattedField = new TreeGridField(CallCenterBK.constants.actionsList());
+		TreeGridField formattedField = new TreeGridField(
+				CallCenterBK.constants.actionsList());
 		formattedField.setCellFormatter(new CellFormatter() {
 			public String format(Object value, ListGridRecord record,
 					int rowNum, int colNum) {
@@ -99,7 +108,8 @@ public class AdminStackSelection extends SectionStackSection {
 			menuData[3].setAttribute("enabled", hasAdminPerm);
 			menuData[4].setAttribute("enabled", hasAdminPerm);
 			menuData[5].setAttribute("enabled", hasAdminPerm);
-			
+			menuData[6].setAttribute("enabled", hasAdminPerm);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -128,6 +138,9 @@ public class AdminStackSelection extends SectionStackSection {
 		} else if (menuId.equals("105")) {
 			TabBillingComps tabBillingComps = new TabBillingComps();
 			body.addTab(tabBillingComps);
+		} else if (menuId.equals("106")) {
+			TabOperatorBreaks tabOperatorBreaks = new TabOperatorBreaks();
+			body.addTab(tabOperatorBreaks);
 		}
 	}
 

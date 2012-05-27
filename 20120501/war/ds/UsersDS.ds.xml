@@ -84,10 +84,32 @@
 					from 
 						operator_breaks ob 
 					where 
-						to_char(ob.break_date,'dd/mm/yy')=to_char(sysdate,'dd/mm/yy') and ob.user_name = $criteria.user_name
+						to_char(ob.break_date,'dd/mm/yy')=to_char(sysdate,'dd/mm/yy') and ob.user_id = $criteria.user_id
             	 ]]>
 			</customSQL>
 		</operationBinding>
+		
+		<operationBinding operationId="getOperatorBreaksComboUserName"
+			operationType="fetch">
+			<selectClause>
+				u.user_id,
+				u.user_firstname,
+				u.user_lastname,
+				u.user_firstname || ' ' || u.user_lastname as fullUserName,
+				u.department_id,
+				u.user_name
+			</selectClause>
+			<tableClause>users u</tableClause>
+			<whereClause><![CDATA[
+				1 = 1 and u.department_id = 50004
+				#if($criteria.fullUserName) and u.user_firstname || ' ' || u.user_lastname like '%'||$criteria.fullUserName||'%' #end
+				#if($criteria.user_name) and u.user_name like '%'||$criteria.user_name||'%' #end
+				#if($criteria.user_id) and u.user_id = $criteria.user_id #end
+				]]>
+			</whereClause>
+			<orderClause>u.user_lastname desc</orderClause>
+		</operationBinding>
+		
 
 	</operationBindings>
 </DataSource>

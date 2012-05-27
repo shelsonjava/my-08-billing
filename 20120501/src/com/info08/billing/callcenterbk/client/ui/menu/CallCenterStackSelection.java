@@ -22,6 +22,7 @@ import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewSport;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewWeather;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.smartgwt.client.data.Criteria;
@@ -346,14 +347,14 @@ public class CallCenterStackSelection extends SectionStackSection {
 				return;
 			}
 			Long persTypeId = user.getDepartment_id();
-			if (persTypeId == null || !persTypeId.equals(9L)) {
+			if (persTypeId == null || !persTypeId.equals(Constants.OperatorDepartmentID)) {
 				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
-			String userName = user.getUser_name();
+			Long userId = user.getUser_id();
 			DataSource dataSource = DataSource.get("UsersDS");
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("user_name", userName);
+			criteria.setAttribute("user_id", userId);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("getOperatorBreak");
 			dataSource.fetchData(criteria, new DSCallback() {

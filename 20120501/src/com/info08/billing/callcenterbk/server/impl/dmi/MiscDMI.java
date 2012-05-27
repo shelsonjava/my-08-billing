@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -19,10 +20,12 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.server.common.ServerSingleton;
 import com.info08.billing.callcenterbk.shared.entity.Country;
+import com.info08.billing.callcenterbk.shared.entity.OperatorBreaks;
 import com.info08.billing.callcenterbk.shared.entity.Service;
+import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.info08.billing.callcenterbk.shared.entity.admin.CountryIndexes;
-import com.info08.billing.callcenterbk.shared.entity.admin.LandlineIndexes;
 import com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes;
+import com.info08.billing.callcenterbk.shared.entity.admin.LandlineIndexes;
 import com.info08.billing.callcenterbk.shared.entity.facts.FactStatus;
 import com.info08.billing.callcenterbk.shared.entity.facts.FactType;
 import com.info08.billing.callcenterbk.shared.entity.facts.Facts;
@@ -33,6 +36,7 @@ import com.isomorphic.datasource.DataSource;
 import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
 import com.isomorphic.sql.SQLDataSource;
+import com.isomorphic.util.DataTools;
 
 public class MiscDMI implements QueryConstants {
 
@@ -1218,4 +1222,190 @@ public class MiscDMI implements QueryConstants {
 			}
 		}
 	}
+
+	/**
+	 * Adding OperatorBreak
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public OperatorBreaks addOperatorBreak(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.addEventCategory.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Map<?, ?> map = dsRequest.getValues();
+			OperatorBreaks operatorBreaks = new OperatorBreaks();
+			DataTools.setProperties(map, operatorBreaks);
+
+			String loggedUserName = operatorBreaks.getLoggedUserName();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add OperatorBreak.");
+
+			oracleManager.persist(operatorBreaks);
+			oracleManager.flush();
+
+			operatorBreaks = oracleManager.find(OperatorBreaks.class,
+					operatorBreaks.getOperator_break_id());
+
+			operatorBreaks.setLoggedUserName(loggedUserName);
+			Users users = oracleManager.find(Users.class,
+					operatorBreaks.getUser_id());
+
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+			operatorBreaks.setUser_firstname(users.getUser_firstname());
+			operatorBreaks.setUser_lastname(users.getUser_lastname());
+			operatorBreaks.setUser_name(users.getUser_name());
+			operatorBreaks.setBreak_date_text(dateFormat.format(operatorBreaks
+					.getBreak_date()));
+
+			EMF.commitTransaction(transaction);
+			log += ". Inserting Finished SuccessFully. ";
+			logger.info(log);
+			return operatorBreaks;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Insert operatorBreaks Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	/**
+	 * Updating OperatorBreaks
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public OperatorBreaks updateOperatorBreak(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.updateOperatorBreak.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Map<?, ?> map = dsRequest.getValues();
+			Long operator_break_id = map.containsKey("operator_break_id") ? new Long(
+					map.get("operator_break_id").toString()) : null;
+
+			if (operator_break_id == null) {
+				throw new CallCenterException("მომხმარებელი ვერ მოიებნა!");
+			}
+
+			String loggedUserName = map.containsKey("loggedUserName") ? map
+					.get("loggedUserName").toString() : null;
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update EventCategory.");
+
+			OperatorBreaks operatorBreak = oracleManager.find(
+					OperatorBreaks.class, operator_break_id);
+
+			DataTools.setProperties(map, operatorBreak);
+
+			oracleManager.merge(operatorBreak);
+			oracleManager.flush();
+
+			operatorBreak = oracleManager.find(OperatorBreaks.class,
+					operator_break_id);
+
+			Users users = oracleManager.find(Users.class,
+					operatorBreak.getUser_id());
+
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+			operatorBreak.setUser_firstname(users.getUser_firstname());
+			operatorBreak.setUser_lastname(users.getUser_lastname());
+			operatorBreak.setUser_name(users.getUser_name());
+			operatorBreak.setBreak_date_text(dateFormat.format(operatorBreak
+					.getBreak_date()));
+
+			EMF.commitTransaction(transaction);
+			log += ". Updating Finished SuccessFully. ";
+			logger.info(log);
+			return operatorBreak;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Update operatorBreak Into Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	/**
+	 * Delete operatorBreaks
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public OperatorBreaks deleteOperatorBreak(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.OperatorBreaks.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long operator_break_id = new Long(dsRequest.getOldValues()
+					.get("operator_break_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing operatorBreaks.");
+
+			OperatorBreaks operatorBreaks = oracleManager.find(
+					OperatorBreaks.class, operator_break_id);
+			operatorBreaks.setLoggedUserName(loggedUserName);
+
+			oracleManager.remove(operatorBreaks);
+			oracleManager.flush();
+
+			EMF.commitTransaction(transaction);
+			log += ". Delete Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Delete OperatorBreaks : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
 }

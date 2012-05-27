@@ -8,6 +8,7 @@ public interface Constants {
 	public static final Integer defDiscTypeId = 2;
 	public static final Integer defCityTbilisiId = 51063;
 	public static final Integer defCountryGeorgiaId = 50185;
+	public static final Long OperatorDepartmentID = 50004L;
 	public static final int[] dayArray = { 0, 1, 2, 4, 8, 16, 32, 64 };
 	public static final String callStart = "start";
 	public static final int callTypeAbonent = 0;
@@ -41,7 +42,8 @@ public interface Constants {
 
 	// DESCRIPTION TYPES
 	/*
-	 * select 'public static final int DT_'||upper(replace(t.descr_type,' ',''))||' = '||t.descr_type_id||';' from DESCRIPTION_TYPES t
+	 * select 'public static final int DT_'||upper(replace(t.descr_type,'
+	 * ',''))||' = '||t.descr_type_id||';' from DESCRIPTION_TYPES t
 	 */
 	public static final int DT_CITYTYPE = 50000;
 	public static final int DT_PHONECONTRACTTYPES = 53000;

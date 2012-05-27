@@ -98,7 +98,7 @@ public class InitAppServlet extends HttpServlet {
 			}
 			Users user = users.get(0);
 			Long department_id = user.getDepartment_id();
-			if (department_id == null || !department_id.equals(9L)) {
+			if (department_id == null || !department_id.equals(Constants.OperatorDepartmentID)) {
 				out.println("This UserName Is Not Operator : " + userName);
 				return;
 			}

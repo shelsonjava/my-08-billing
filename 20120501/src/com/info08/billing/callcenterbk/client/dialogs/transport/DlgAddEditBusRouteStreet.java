@@ -182,7 +182,7 @@ public class DlgAddEditBusRouteStreet extends Window {
 			routeItem.setOptionCriteria(criteria);
 			routeItem.setAutoFetchData(false);
 
-			DataSource streetsDS = DataSource.get("StreetsNewDS");
+			DataSource streetsDS = DataSource.get("StreetsDS");
 			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetItem.setOptionDataSource(streetsDS);
 			streetItem.setValueField("street_id");

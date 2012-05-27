@@ -43,7 +43,7 @@
 				c.town_name as city_descr,
 				tt.name_descr as transpport_type
 			</selectClause> 
-			<tableClause>transp_stations t, transp_types tt, cities c</tableClause>
+			<tableClause>transp_stations t, transp_types tt, towns c</tableClause>
 			<whereClause><![CDATA[
 				t.transp_type_id = tt.transp_type_id and t.town_id = c.town_id 
 				#if($criteria.transp_type_id) and t.transp_type_id = $criteria.transp_type_id #end
