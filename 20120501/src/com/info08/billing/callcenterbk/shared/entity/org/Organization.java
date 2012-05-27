@@ -352,12 +352,12 @@ public class Organization implements Serializable {
 		this.staff_count = staff_count;
 	}
 
-	public Long getImportant() {
+	public Long getImportant_remark() {
 		return important_remark;
 	}
 
-	public void setImportant(Long important) {
-		this.important_remark = important;
+	public void setImportant_remark(Long important_remark) {
+		this.important_remark = important_remark;
 	}
 
 	public Long getPriority() {
