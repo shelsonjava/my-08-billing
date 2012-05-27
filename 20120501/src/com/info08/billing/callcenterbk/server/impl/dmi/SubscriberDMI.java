@@ -40,8 +40,8 @@ public class SubscriberDMI implements QueryConstants {
 		try {
 			String log = "Method:SubscriberDMI.saveOrUpdateSubscriber.";
 			Map<?, ?> values = dsRequest.getValues();
-			Integer subscriber_id = values.containsKey("subscriber_id") ? Integer
-					.parseInt(values.get("subscriber_id").toString()) : null;
+			Long subscriber_id = values.containsKey("subscriber_id") ? Long
+					.parseLong(values.get("subscriber_id").toString()) : null;
 
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
@@ -63,7 +63,7 @@ public class SubscriberDMI implements QueryConstants {
 
 			DataTools.setProperties(values, subscr);
 			Address addr = null;
-			Integer address_id = subscr.getAddr_id();
+			Long address_id = subscr.getAddr_id();
 
 			if (address_id != null)
 				addr = oracleManager.find(Address.class, address_id);
@@ -141,7 +141,7 @@ public class SubscriberDMI implements QueryConstants {
 					number = new PhoneNumber();
 				else
 					number = phoneNumbers.get(0);
-				Integer phone_id = number.getPhone_number_id();
+				Long phone_id = number.getPhone_number_id();
 				DataTools.setProperties(mpPhone, number);
 				number.setPhone_number_id(phone_id);
 				if (phone_id == null)
@@ -183,7 +183,7 @@ public class SubscriberDMI implements QueryConstants {
 		try {
 			String log = "Method:SubscriberDMI.removeSubscriber.";
 			Map<?, ?> mp = dsRequest.getOldValues();
-			Integer subscriber_id = Integer.parseInt(dsRequest.getOldValues()
+			Long subscriber_id = Long.parseLong(dsRequest.getOldValues()
 					.get("subscriber_id").toString());
 
 			String loggedUserName = mp.get("loggedUserName").toString();
@@ -205,7 +205,7 @@ public class SubscriberDMI implements QueryConstants {
 					.setParameter(1, subscriber_id).executeUpdate();
 			oracleManager.flush();
 
-			addressid = Integer.parseInt(addressid.toString());
+			addressid = Long.parseLong(addressid.toString());
 			oracleManager.createNativeQuery(Q_DELETE_SUBSCRIBER_ADDRESS)
 					.setParameter(1, addressid).executeUpdate();
 			oracleManager.flush();
