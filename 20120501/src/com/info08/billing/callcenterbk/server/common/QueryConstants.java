@@ -482,6 +482,13 @@ public interface QueryConstants {
 
 	public static final String Q_MYSQL_DELETE_BLOCK_PHONE = " delete from asteriskcdrdb.block where code like CONCAT('%', ?) ";
 	public static final String Q_MYSQL_INSERT_BLOCK_PHONE = " insert into asteriskcdrdb.block (code,proriti,len) values (?, ?, ?) ";
+	
+	
+	
+	
+	public static final String Q_SELECT_BLACK_LIST_PHONES = "select wm_concat(PHONE_NUMBER) black_list_phones from BLACK_LIST_PHONES tt where tt.black_list_id=?";
+	public static final String Q_DELETE_BLACK_LIST_PHONES = "delete from BLACK_LIST_PHONES tt where tt.black_list_id=?";
+	public static final String Q_DELETE_BLACK_LIST = "delete from BLACK_LIST tt where tt.black_list_id=?";
 
 	public static final String Q_CHECK_PHONE_MAIN_ORG = "select count(1) from ccare.main_services ms\n"
 			+ "       inner join ccare.abonents a on a.organization_id = ms.organization_id\n"
