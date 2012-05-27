@@ -1,0 +1,95 @@
+<DataSource ID="OperatorBreaksDS" serverType="sql"
+	tableName="operator_breaks" qualifyColumnNames="false" dropExtraFields="false">
+	<fields>
+		<field name="operator_break_id" type="integer" title="operator_break_id"
+			hidden="true" primaryKey="true" />
+		<field name="user_id" type="integer" title="user_id" hidden="true" />
+		<field name="user_firstname" type="text" title="user_firstname" />
+		<field name="user_lastname" type="text" title="user_lastname" />
+		<field name="user_name" type="text" title="User user_name" />
+		<field name="fullUserName" type="text" title="fullUserName"
+			hidden="true" />
+		<field name="loggedUserName" type="text" title="loggedUserName"
+			hidden="true" />
+		<field name="user_department_id" type="integer" title="user_department_id"
+			hidden="true" />
+		<field name="department_name" type="text" title="department_name" />
+		<field name="break_date" type="datetime" title="break_date" />
+		<field name="break_date_text" type="text" title="break_date_text" />
+		<field name="break_time" type="text" title="break_time" />
+		<field name="schedule_txt" type="text" title="schedule_txt"
+			hidden="true" />
+
+
+	</fields>
+
+	<serverObject lookupStyle="new"
+		className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI" />
+
+	<operationBindings>
+		<!-- Add Operator Break -->
+		<operationBinding operationId="addOperatorBreak"
+			operationType="add" serverMethod="addOperatorBreak">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI" />
+		</operationBinding>
+
+		<!-- Modify Operator Break -->
+		<operationBinding operationId="updateOperatorBreak"
+			operationType="update" serverMethod="updateOperatorBreak">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI" />
+		</operationBinding>
+
+		<!-- Delete Operator Break -->
+		<operationBinding operationId="deleteOperatorBreak"
+			operationType="remove" serverMethod="deleteOperatorBreak">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI" />
+		</operationBinding>
+
+		<operationBinding operationId="getOperatorBreaksAll"
+			operationType="fetch">
+			<selectClause>
+				o.operator_break_id,
+				o.user_id,
+				o.break_date,
+				to_char(o.break_date, 'dd.mm.yyyy') as break_date_text,
+				o.break_time,
+				u.user_id,
+				u.user_firstname,
+				u.user_lastname,
+				u.user_firstname || ' ' || u.user_lastname as fullUserName,
+				u.department_id,
+				u.user_name,
+				d.department_name
+			</selectClause>
+			<tableClause>operator_breaks o, users u, departments d</tableClause>
+			<whereClause><![CDATA[
+				o.user_id = u.user_id and u.department_id = d.department_id and d.department_id = 50004 
+				#if($criteria.user_name) and u.user_name like '%'||$criteria.user_name||'%' #end
+				#if($criteria.user_firstname) and u.user_firstname like '%'||$criteria.user_firstname||'%' #end
+				#if($criteria.user_lastname) and u.user_lastname like '%'||$criteria.user_lastname||'%' #end
+				#if($criteria.break_date) and trunc(o.break_date) = trunc($criteria.break_date) #end
+				]]>
+			</whereClause>
+			<orderClause>o.break_date desc</orderClause>
+		</operationBinding>
+
+		<!-- FETCH - For CallCenter -->
+		<operationBinding operationId="getOperatorBreak"
+			operationType="fetch">
+			<customSQL>
+            	 <![CDATA[
+					select 
+       					'თარიღი : '||to_char(ob.break_date,'dd-mm-yyyy')||', დრო : '||ob.break_time as schedule_txt
+					from 
+						operator_breaks ob 
+					where 
+						to_char(ob.break_date,'dd/mm/yy')=to_char(sysdate,'dd/mm/yy') and ob.user_name = $criteria.user_name
+            	 ]]>
+			</customSQL>
+		</operationBinding>
+
+	</operationBindings>
+</DataSource>
