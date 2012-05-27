@@ -9,7 +9,7 @@
 		<field name="black_list_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
 		<field name="title_descr"			type="text"			title="note"/>
 		<field name="status"				type="integer"		title="status"				hidden="true"/>
-		<field name="blockListPhones"		type="any"			title="blockListPhones" 	hidden="true"/>
+		<field name="blackListPhones"		type="any"			title="blockListPhones" 	hidden="true"/>
 	</fields>
 
 	<operationBindings>		
@@ -27,7 +27,7 @@
         </operationBinding>
         
         <!-- BlockList Status Update -->
-		<operationBinding operationType="remove" operationId="removeBlackList" serverMethod="updateBlockListStatus">
+		<operationBinding operationType="remove" operationId="removeBlackList" serverMethod="deleteBlackList">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BlackListManagerDMI"/>
         </operationBinding>
        
@@ -37,7 +37,7 @@
 					t.title_descr,
 					t.status
 					#if($criteria.with_phones)
-						,(select wm_concat(PHONE_NUMBER) BLACK_LIST_PHONES tt where tt.black_list_id=t.black_list_id ) blackListPhones
+						,(select wm_concat(PHONE_NUMBER) from BLACK_LIST_PHONES tt where tt.black_list_id=t.black_list_id ) blackListPhones
 					#end
 			</selectClause> 
 			<tableClause>ccare.black_list t</tableClause>
@@ -50,7 +50,20 @@
 					 #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.id</orderClause>
+			<orderClause>t.black_list_id</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="checkPhones" operationType="update">
+    		<customSQL>
+            	 <![CDATA[
+            	 	{call sp_check_black_list_phones($values.blockListPhones,$values.black_list_id)}            	 	
+            	 ]]>
+            </customSQL> 
+    	
+    		<selectClause>
+    			  	
+			</selectClause> 
     	</operationBinding>
 
     </operationBindings>	
