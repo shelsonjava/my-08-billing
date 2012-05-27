@@ -78,6 +78,7 @@
 		<field name="legal_addr_street_index_text"	type="text"  		title="legal_addr_street_index_text"	hidden="true"/>
 		<field name="orgActivities"					type="any"  		title="orgActivities"					hidden="true"/>
 		<field name="orgPartnerBanks"				type="any"  		title="orgPartnerBanks"					hidden="true"/>
+		<field name="partBankUpdated"				type="integer"  	title="partBankUpdated"					hidden="true"/>
 	</fields>
 	<operationBindings>
 	
