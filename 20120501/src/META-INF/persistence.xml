@@ -46,6 +46,8 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.event.Event</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.event.EventCategory</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.Organization</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationPartnerBank</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationToActivity</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.LegalStatus</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationActivity</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.BusinessSector</class>
