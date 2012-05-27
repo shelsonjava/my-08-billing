@@ -69,6 +69,8 @@
 		<class>com.info08.billing.callcenterbk.shared.items.Subscribers</class>
 		<class>com.info08.billing.callcenterbk.shared.items.Address</class>
 		<class>com.info08.billing.callcenterbk.shared.items.SubscribersToPhones</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.OperatorBreaks</class>
+
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
 			<property name="hibernate.connection.username" value="ccare" />
