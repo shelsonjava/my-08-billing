@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
@@ -222,4 +223,16 @@ public class ClientUtils {
 		return mp;
 	}
 
+	public static Record setRecordMap(Map<String, Object> mp, Record record) {
+		if (record == null) {
+			record = new Record(mp);
+			return record;
+		}
+		Set<?> keys = mp.keySet();
+		for (Object key : keys) {
+			String sKey = key.toString();
+			record.setAttribute(sKey, mp.get(key));
+		}
+		return record;
+	}
 }
