@@ -1,0 +1,57 @@
+<DataSource
+	ID="BlackListDS"
+	serverType="sql"
+	tableName="ccare.block_list"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="black_list_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
+		<field name="title_descr"			type="text"			title="note"/>
+		<field name="status"				type="integer"		title="status"				hidden="true"/>
+		<field name="blockListPhones"		type="any"			title="blockListPhones" 	hidden="true"/>
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BlackListManagerDMI"/>
+
+		<!-- Add BlockList -->
+		<operationBinding operationType="add" operationId="addBlackList" serverMethod="addEditBlackList">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BlackListManagerDMI"/>
+        </operationBinding>
+        
+		<!-- BlockList Update -->
+		<operationBinding operationType="update" operationId="updateBlackList" serverMethod="addEditBlackList">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BlackListManagerDMI"/>
+        </operationBinding>
+        
+        <!-- BlockList Status Update -->
+		<operationBinding operationType="remove" operationId="removeBlackList" serverMethod="updateBlockListStatus">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BlackListManagerDMI"/>
+        </operationBinding>
+       
+    	<operationBinding operationId="searchAllBlackList" operationType="fetch">
+    		<selectClause>   			
+    			  	t.black_list_id,
+					t.title_descr,
+					t.status
+					#if($criteria.with_phones)
+						,(select wm_concat(PHONE_NUMBER) BLACK_LIST_PHONES tt where tt.black_list_id=t.black_list_id ) blackListPhones
+					#end
+			</selectClause> 
+			<tableClause>ccare.black_list t</tableClause>
+			<whereClause><![CDATA[
+					 1=1
+					 #if($criteria.black_list_id) and t.black_list_id = $criteria.black_list_id #end
+					 #if($criteria.title_descr) and t.title_descr like '%'||($criteria.title_descr)||'%' #end
+					 #if($criteria.phone)
+					 	and t.id in (exists (select tt.black_list_id from ccare.block_list_phones tt where tt.PHONE_NUMBER = $criteria.phone) 				 	
+					 #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.id</orderClause>
+    	</operationBinding>
+
+    </operationBindings>	
+</DataSource>
