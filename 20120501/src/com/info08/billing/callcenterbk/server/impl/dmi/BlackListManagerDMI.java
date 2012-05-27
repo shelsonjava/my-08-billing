@@ -27,6 +27,7 @@ public class BlackListManagerDMI implements QueryConstants {
 	private Logger logger = Logger.getLogger(BlackListManagerDMI.class
 			.getName());
 
+	@SuppressWarnings("deprecation")
 	public BlackList addEditBlackList(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
