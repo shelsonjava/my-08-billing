@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.address;
 
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.SharedUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -77,11 +78,15 @@ public class DlgAddEditDistBetweenTowns extends Window {
 		townStartItem.setFilterLocally(false);
 		townStartItem.setAddUnknownValues(false);
 
-		DataSource townsDS = DataSource.get("TownsDS");
-		townStartItem.setOptionOperationId("searchCitiesFromDBForCombos1");
-		townStartItem.setOptionDataSource(townsDS);
-		townStartItem.setValueField("town_id");
-		townStartItem.setDisplayField("town_name");
+//		DataSource townsDS = DataSource.get("TownsDS");
+//		townStartItem.setOptionOperationId("searchCitiesFromDBForCombos1");
+//		townStartItem.setOptionDataSource(townsDS);
+//		townStartItem.setValueField("town_id");
+//		townStartItem.setDisplayField("town_name");
+		
+		ClientUtils.fillCombo(townStartItem, "TownsDS",
+				"searchCitiesFromDBForCombos1", "town_id", "town_name");
+
 
 		Criteria criteriaCity = new Criteria();
 		townStartItem.setOptionCriteria(criteriaCity);

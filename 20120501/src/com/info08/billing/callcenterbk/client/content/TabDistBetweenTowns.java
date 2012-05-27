@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.content;
 
 import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditDistBetweenTowns;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.SharedUtils;
 import com.smartgwt.client.data.Criteria;
@@ -81,15 +82,19 @@ public class TabDistBetweenTowns extends Tab {
 			townStartItem.setFilterLocally(false);
 			townStartItem.setAddUnknownValues(false);
 
-			DataSource townsDS = DataSource.get("TownsDS");
-			townStartItem.setOptionOperationId("searchCitiesFromDBForCombos1"); // searchCitiesFromDBForCombosAll
-			townStartItem.setOptionDataSource(townsDS);
-			townStartItem.setValueField("town_id");
-			townStartItem.setDisplayField("town_name");
-
-			Criteria criteriaTown = new Criteria();
-			townStartItem.setOptionCriteria(criteriaTown);
-			townStartItem.setAutoFetchData(false);
+			// DataSource townsDS = DataSource.get("TownsDS");
+			// townStartItem.setOptionOperationId("searchCitiesFromDBForCombos1");
+			// // searchCitiesFromDBForCombosAll
+			// townStartItem.setOptionDataSource(townsDS);
+			// townStartItem.setValueField("town_id");
+			// townStartItem.setDisplayField("town_name");
+			//
+			// Criteria criteriaTown = new Criteria();
+			// townStartItem.setOptionCriteria(criteriaTown);
+			// townStartItem.setAutoFetchData(false);
+			//
+			ClientUtils.fillCombo(townStartItem, "TownsDS",
+					"searchCitiesFromDBForCombos1", "town_id", "town_name");
 
 			townStartItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
@@ -324,8 +329,7 @@ public class TabDistBetweenTowns extends Tab {
 
 	private void search() {
 		try {
-			ListGridRecord town_id_start = townStartItem
-					.getSelectedRecord();
+			ListGridRecord town_id_start = townStartItem.getSelectedRecord();
 			ListGridRecord town_id_end = townEndItem.getSelectedRecord();
 			Criteria criteria = new Criteria();
 			if (town_id_start != null) {

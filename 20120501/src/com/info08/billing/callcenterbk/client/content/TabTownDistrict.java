@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.content;
 
 import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditTownDistrict;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -243,24 +244,25 @@ public class TabTownDistrict extends Tab {
 
 	private void fillCityCombo() {
 		try {
-			
-			
-			
-			DataSource townsDS = DataSource.get("TownsDS");
-			if (townsDS != null) {
-				townsItem.setOptionOperationId("searchFromDB");
-				townsItem.setOptionDataSource(townsDS);
-				townsItem.setValueField("town_id");
-				townsItem.setDisplayField("town_name");
-				townsItem.setAutoFetchData(true);
-				townsItem.fetchData(new DSCallback() {
-					@Override
-					public void execute(DSResponse response, Object rawData,
-							DSRequest request) {
-						townsItem.setValue(Constants.defCityTbilisiId);
-					}
-				});
-			}
+			ClientUtils.fillCombo(townsItem, "TownsDS",
+					"searchCitiesFromDBForCombos", "town_id", "town_name");
+			townsItem.setValue(Constants.defCityTbilisiId);
+
+			// DataSource townsDS = DataSource.get("TownsDS");
+			// if (townsDS != null) {
+			// townsItem.setOptionOperationId("searchFromDB");
+			// townsItem.setOptionDataSource(townsDS);
+			// townsItem.setValueField("town_id");
+			// townsItem.setDisplayField("town_name");
+			// townsItem.setAutoFetchData(true);
+			// townsItem.fetchData(new DSCallback() {
+			// @Override
+			// public void execute(DSResponse response, Object rawData,
+			// DSRequest request) {
+			// townsItem.setValue(Constants.defCityTbilisiId);
+			// }
+			// });
+			// }
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}

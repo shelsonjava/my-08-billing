@@ -59,6 +59,8 @@ public interface AppConstants extends Constants {
 	String chooseEntPlace();
 	String enterEntPosterGeo();
 	String manageCurrency();
+	String chooseUser();
+	String chooseBreakTime();
 	String country();
 	String indexRemarkGeo();
 	String indexRemarkEng();

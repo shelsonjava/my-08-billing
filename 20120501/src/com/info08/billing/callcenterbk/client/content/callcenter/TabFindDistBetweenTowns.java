@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewDistBetweenTowns;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -74,12 +75,15 @@ public class TabFindDistBetweenTowns extends Tab {
 		townFromItem.setAddUnknownValues(false);
 		townFromItem.setCompleteOnTab(true);
 
-		DataSource TownsDS = DataSource.get("TownsDS");
-		townFromItem.setOptionOperationId("searchFromDB");
-		townFromItem.setOptionDataSource(TownsDS);
-		townFromItem.setValueField("town_id");
-		townFromItem.setDisplayField("town_name");
-		townFromItem.setAutoFetchData(false);
+		ClientUtils.fillCombo(townFromItem, "TownsDS",
+				"searchCitiesFromDBForCombos", "town_id", "town_name");
+
+		// DataSource TownsDS = DataSource.get("TownsDS");
+		// townFromItem.setOptionOperationId("searchFromDB");
+		// townFromItem.setOptionDataSource(TownsDS);
+		// townFromItem.setValueField("town_id");
+		// townFromItem.setDisplayField("town_name");
+		// townFromItem.setAutoFetchData(false);
 
 		townFromItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
@@ -104,11 +108,13 @@ public class TabFindDistBetweenTowns extends Tab {
 		townToItem.setAddUnknownValues(false);
 		townToItem.setCompleteOnTab(true);
 
-		townToItem.setOptionOperationId("searchFromDB");
-		townToItem.setOptionDataSource(TownsDS);
-		townToItem.setValueField("town_id");
-		townToItem.setDisplayField("town_name");
-		townToItem.setAutoFetchData(false);
+		ClientUtils.fillCombo(townToItem, "TownsDS",
+				"searchCitiesFromDBForCombos", "town_id", "town_name");
+		// townToItem.setOptionOperationId("searchFromDB");
+		// townToItem.setOptionDataSource(TownsDS);
+		// townToItem.setValueField("town_id");
+		// townToItem.setDisplayField("town_name");
+		// townToItem.setAutoFetchData(false);
 
 		townToItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
@@ -168,18 +174,19 @@ public class TabFindDistBetweenTowns extends Tab {
 		town_end.setAlign(Alignment.LEFT);
 		town_end.setCanFilter(false);
 
-		ListGridField town_distance_type_descr = new ListGridField("town_distance_type_descr",
-				CallCenterBK.constants.type(), 140);
+		ListGridField town_distance_type_descr = new ListGridField(
+				"town_distance_type_descr", CallCenterBK.constants.type(), 140);
 		town_distance_type_descr.setAlign(Alignment.LEFT);
 		town_distance_type_descr.setCanFilter(false);
 
 		ListGridField dist_between_towns_value = new ListGridField(
-				"dist_between_towns_value", CallCenterBK.constants.distance(), 180);
+				"dist_between_towns_value", CallCenterBK.constants.distance(),
+				180);
 		dist_between_towns_value.setAlign(Alignment.LEFT);
 		dist_between_towns_value.setCanFilter(false);
 
-		ListGridField dist_between_towns_remark = new ListGridField("dist_between_towns_remark",
-				CallCenterBK.constants.comment());
+		ListGridField dist_between_towns_remark = new ListGridField(
+				"dist_between_towns_remark", CallCenterBK.constants.comment());
 		dist_between_towns_remark.setAlign(Alignment.LEFT);
 		dist_between_towns_remark.setCanFilter(true);
 
@@ -206,7 +213,8 @@ public class TabFindDistBetweenTowns extends Tab {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 				DlgViewDistBetweenTowns dlgViewTransport = new DlgViewDistBetweenTowns(
-						listGrid, distBetweenTowns, listGrid.getSelectedRecord());
+						listGrid, distBetweenTowns, listGrid
+								.getSelectedRecord());
 				dlgViewTransport.show();
 			}
 		});

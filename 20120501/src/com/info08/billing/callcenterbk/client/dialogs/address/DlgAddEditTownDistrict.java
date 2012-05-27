@@ -1,11 +1,11 @@
 package com.info08.billing.callcenterbk.client.dialogs.address;
 
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
-import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
@@ -110,31 +110,35 @@ public class DlgAddEditTownDistrict extends Window {
 
 	private void fillCityCombo() {
 		try {
-			DataSource townsDS = DataSource.get("TownsDS");
-			if (townsDS != null) {
-				townsItem.setOptionOperationId("searchFromDB");
-				townsItem.setOptionDataSource(townsDS);
-				townsItem.setValueField("town_id");
-				townsItem.setDisplayField("town_name");
-				townsItem.setAutoFetchData(true);
-				townsItem.fetchData(new DSCallback() {
-					@Override
-					public void execute(DSResponse response, Object rawData,
-							DSRequest request) {
-						if (editRecord != null) {
-							Integer town_id = editRecord
-									.getAttributeAsInt("town_id");
-							if (town_id != null) {
-								townsItem.setValue(town_id);
-							} else {
-								townsItem.setValue(Constants.defCityTbilisiId);
-							}
+			// DataSource townsDS = DataSource.get("TownsDS");
+			// if (townsDS != null) {
+			// townsItem.setOptionOperationId("searchFromDB");
+			// townsItem.setOptionDataSource(townsDS);
+			// townsItem.setValueField("town_id");
+			// townsItem.setDisplayField("town_name");
+			// townsItem.setAutoFetchData(true);
+
+			ClientUtils.fillCombo(townsItem, "TownsDS", "searchFromDB",
+					"town_id", "town_name");
+
+			townsItem.fetchData(new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					if (editRecord != null) {
+						Integer town_id = editRecord
+								.getAttributeAsInt("town_id");
+						if (town_id != null) {
+							townsItem.setValue(town_id);
 						} else {
 							townsItem.setValue(Constants.defCityTbilisiId);
 						}
+					} else {
+						townsItem.setValue(Constants.defCityTbilisiId);
 					}
-				});
-			}
+				}
+			});
+			// }
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}

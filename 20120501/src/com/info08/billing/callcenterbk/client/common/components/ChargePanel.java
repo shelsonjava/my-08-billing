@@ -46,12 +46,13 @@ public class ChargePanel extends HLayout {
 	private ToolStripButton surveyBtn;
 	private ToolStripButton chargeBtn;
 	private Integer service_id;
-	private Integer organization_id; 
+	private Integer organization_id;
 	private int chrgCounter = 0;
 
 	public ChargePanel(int width, boolean enableChargeButton,
-			boolean enableSurveyButton, Integer service_id, Integer organization_id,
-			final Integer surveyKindId, final String survey_descript) {
+			boolean enableSurveyButton, Integer service_id,
+			Integer organization_id, final Integer surveyKindId,
+			final String survey_descript) {
 
 		try {
 			this.service_id = service_id;
@@ -61,7 +62,8 @@ public class ChargePanel extends HLayout {
 
 			Long persTypeId = CommonSingleton.getInstance().getSessionPerson()
 					.getDepartment_id();
-			boolean isOperator = (persTypeId != null && persTypeId.equals(9L));
+			boolean isOperator = (persTypeId != null && persTypeId
+					.equals(Constants.OperatorDepartmentID));
 
 			int aWidth = (width - 33);
 			int cWidth = (aWidth - 314);
@@ -106,8 +108,8 @@ public class ChargePanel extends HLayout {
 
 			toolStrip.addSeparator();
 
-			surveyBtn = new ToolStripButton(
-					CallCenterBK.constants.survey(), "survey.png");
+			surveyBtn = new ToolStripButton(CallCenterBK.constants.survey(),
+					"survey.png");
 			surveyBtn.setLayoutAlign(Alignment.LEFT);
 			toolStrip.addButton(surveyBtn);
 
@@ -226,7 +228,8 @@ public class ChargePanel extends HLayout {
 	}
 
 	public ChargePanel(int width, boolean enableChargeButton,
-			boolean enableSurveyButton, Integer service_id, Integer organization_id) {
+			boolean enableSurveyButton, Integer service_id,
+			Integer organization_id) {
 		this(width, enableChargeButton, enableSurveyButton, service_id,
 				organization_id, null, null);
 	}

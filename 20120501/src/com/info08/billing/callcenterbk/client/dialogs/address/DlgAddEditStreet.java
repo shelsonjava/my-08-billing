@@ -157,9 +157,8 @@ public class DlgAddEditStreet extends Window {
 			saveStreetHistOrNotItem.setWidth("100%");
 			saveStreetHistOrNotItem.setName("saveStreetHistOrNotItem");
 
-			dynamicForm.setFields(townItem, streetNameItem,
-					streetLocationItem, streetOldNameItem,
-					saveStreetHistOrNotItem);
+			dynamicForm.setFields(townItem, streetNameItem, streetLocationItem,
+					streetOldNameItem, saveStreetHistOrNotItem);
 
 			// regions ...
 			DataSource cityRegionsDS = DataSource.get("TownDistrictDS");
@@ -178,12 +177,14 @@ public class DlgAddEditStreet extends Window {
 					"town_district_name", "რეგიონების სია");
 			townDistrictsGrid.setFields(town_district_name);
 
-			streetToTownDistrictsClientDS = StreetToTownDistrictsClientDS.getInstance();
+			streetToTownDistrictsClientDS = StreetToTownDistrictsClientDS
+					.getInstance();
 
 			streetToTownDistrictsGrid = new ListGrid();
 			streetToTownDistrictsGrid.setWidth(240);
 			streetToTownDistrictsGrid.setHeight(200);
-			streetToTownDistrictsGrid.setDataSource(streetToTownDistrictsClientDS);
+			streetToTownDistrictsGrid
+					.setDataSource(streetToTownDistrictsClientDS);
 			streetToTownDistrictsGrid.setCanAcceptDroppedRecords(true);
 			streetToTownDistrictsGrid.setCanRemoveRecords(true);
 			streetToTownDistrictsGrid.setAutoFetchData(true);
@@ -195,7 +196,8 @@ public class DlgAddEditStreet extends Window {
 			arrowImg.setLayoutAlign(Alignment.CENTER);
 			arrowImg.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					streetToTownDistrictsGrid.transferSelectedData(townDistrictsGrid);
+					streetToTownDistrictsGrid
+							.transferSelectedData(townDistrictsGrid);
 				}
 			});
 			townDistrictsGrid
@@ -686,7 +688,8 @@ public class DlgAddEditStreet extends Window {
 											.get(town_district_id);
 									ListGridRecord listGridRecord = new ListGridRecord();
 									listGridRecord.setAttribute(
-											"town_district_id", town_district_id);
+											"town_district_id",
+											town_district_id);
 									listGridRecord.setAttribute(
 											"town_district_name",
 											town_district_name);
@@ -699,11 +702,14 @@ public class DlgAddEditStreet extends Window {
 				}, dsRequest);
 			}
 
-			DataSource townsDS = DataSource.get("TownsDS");
-			townItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-			townItem.setOptionDataSource(townsDS);
-			townItem.setValueField("town_id");
-			townItem.setDisplayField("town_name");
+			// DataSource townsDS = DataSource.get("TownsDS");
+			// townItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
+			// townItem.setOptionDataSource(townsDS);
+			// townItem.setValueField("town_id");
+			// townItem.setDisplayField("town_name");
+
+			ClientUtils.fillCombo(townItem, "TownsDS",
+					"searchCitiesFromDBForCombosAll", "town_id", "town_name");
 
 			Criteria criteria1 = new Criteria();
 			townItem.setOptionCriteria(criteria1);
@@ -724,28 +730,33 @@ public class DlgAddEditStreet extends Window {
 			}
 			fillCityRegionsCombo(ptown_id);
 
-			//DataSource descrDS = DataSource.get("StreetNamesDS");
-//			streetLevelItem_1.setOptionOperationId("fetchStreetNamesForCB");
-//			streetLevelItem_1.setOptionDataSource(descrDS);
-//			streetLevelItem_1.setValueField("street_name_id");
-//			streetLevelItem_1.setDisplayField("street_name_descr");
-//			streetLevelItem_1.setOptionCriteria(criteria1);
-//			streetLevelItem_1.setAutoFetchData(false);
-			
+			// DataSource descrDS = DataSource.get("StreetNamesDS");
+			// streetLevelItem_1.setOptionOperationId("fetchStreetNamesForCB");
+			// streetLevelItem_1.setOptionDataSource(descrDS);
+			// streetLevelItem_1.setValueField("street_name_id");
+			// streetLevelItem_1.setDisplayField("street_name_descr");
+			// streetLevelItem_1.setOptionCriteria(criteria1);
+			// streetLevelItem_1.setAutoFetchData(false);
+
 			ClientUtils.fillCombo(streetLevelItem_1, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id", "street_name_descr");
-			
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
+
 			ClientUtils.fillCombo(streetLevelItem_2, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id", "street_name_descr");
-			
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
+
 			ClientUtils.fillCombo(streetLevelItem_3, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id", "street_name_descr");
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
 
 			ClientUtils.fillCombo(streetLevelItem_4, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id", "street_name_descr");
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
 
 			ClientUtils.fillCombo(streetLevelItem_5, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id", "street_name_descr");
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
 
 			// streetLevelItem_6.setOptionOperationId("fetchStreetDescrsForCB");
 			// streetLevelItem_6.setOptionDataSource(descrDS);
@@ -835,29 +846,34 @@ public class DlgAddEditStreet extends Window {
 				// }
 			}
 
-			//DataSource descrTypeDS = DataSource.get("StreetKindDS");
-//			streetLevelTypeItem_1
-//					.setOptionOperationId("searchStrKindsFromDBForCB");
-//			streetLevelTypeItem_1.setOptionDataSource(descrTypeDS);
-//			streetLevelTypeItem_1.setValueField("street_kind_Id");
-//			streetLevelTypeItem_1.setDisplayField("street_kind_name");
-//			streetLevelTypeItem_1.setOptionCriteria(criteria1);
-//			streetLevelTypeItem_1.setAutoFetchData(false);
-			
+			// DataSource descrTypeDS = DataSource.get("StreetKindDS");
+			// streetLevelTypeItem_1
+			// .setOptionOperationId("searchStrKindsFromDBForCB");
+			// streetLevelTypeItem_1.setOptionDataSource(descrTypeDS);
+			// streetLevelTypeItem_1.setValueField("street_kind_Id");
+			// streetLevelTypeItem_1.setDisplayField("street_kind_name");
+			// streetLevelTypeItem_1.setOptionCriteria(criteria1);
+			// streetLevelTypeItem_1.setAutoFetchData(false);
+
 			ClientUtils.fillCombo(streetLevelTypeItem_1, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id", "street_kind_name");
+					"searchStrKindsFromDBForCB", "street_kind_Id",
+					"street_kind_name");
 
 			ClientUtils.fillCombo(streetLevelTypeItem_2, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id", "street_kind_name");
+					"searchStrKindsFromDBForCB", "street_kind_Id",
+					"street_kind_name");
 
 			ClientUtils.fillCombo(streetLevelTypeItem_3, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id", "street_kind_name");
+					"searchStrKindsFromDBForCB", "street_kind_Id",
+					"street_kind_name");
 
 			ClientUtils.fillCombo(streetLevelTypeItem_4, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id", "street_kind_name");
-			
+					"searchStrKindsFromDBForCB", "street_kind_Id",
+					"street_kind_name");
+
 			ClientUtils.fillCombo(streetLevelTypeItem_5, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id", "street_kind_name");
+					"searchStrKindsFromDBForCB", "street_kind_Id",
+					"street_kind_name");
 
 			// streetLevelTypeItem_6
 			// .setOptionOperationId("searchStrTypesFromDBForCB");
@@ -901,27 +917,32 @@ public class DlgAddEditStreet extends Window {
 
 			DataSource descrsTypeDS = DataSource.get("StreetKindDS");
 
-			streetLevelTypeItem_1.setOptionOperationId("searchStrKindsFromDBForCB");
+			streetLevelTypeItem_1
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_1.setOptionDataSource(descrsTypeDS);
 			streetLevelTypeItem_1.setValueField("street_kind_id");
 			streetLevelTypeItem_1.setDisplayField("street_kind_name");
 
-			streetLevelTypeItem_2.setOptionOperationId("searchStrKindsFromDBForCB");
+			streetLevelTypeItem_2
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_2.setOptionDataSource(descrsTypeDS);
 			streetLevelTypeItem_2.setValueField("street_kind_id");
 			streetLevelTypeItem_2.setDisplayField("street_kind_name");
 
-			streetLevelTypeItem_3.setOptionOperationId("searchStrKindsFromDBForCB");
+			streetLevelTypeItem_3
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_3.setOptionDataSource(descrsTypeDS);
 			streetLevelTypeItem_3.setValueField("street_kind_id");
 			streetLevelTypeItem_3.setDisplayField("street_kind_name");
 
-			streetLevelTypeItem_4.setOptionOperationId("searchStrKindsFromDBForCB");
+			streetLevelTypeItem_4
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_4.setOptionDataSource(descrsTypeDS);
 			streetLevelTypeItem_4.setValueField("street_kind_id");
 			streetLevelTypeItem_4.setDisplayField("street_kind_name");
 
-			streetLevelTypeItem_5.setOptionOperationId("searchStrKindsFromDBForCB");
+			streetLevelTypeItem_5
+					.setOptionOperationId("searchStrKindsFromDBForCB");
 			streetLevelTypeItem_5.setOptionDataSource(descrsTypeDS);
 			streetLevelTypeItem_5.setValueField("street_kind_id");
 			streetLevelTypeItem_5.setDisplayField("street_kind_name");
@@ -1073,7 +1094,8 @@ public class DlgAddEditStreet extends Window {
 					bSaveStreetHistOrNotItem);
 
 			TreeMap<String, String> mapStreDistricts = new TreeMap<String, String>();
-			ListGridRecord cityRegions[] = streetToTownDistrictsGrid.getRecords();
+			ListGridRecord cityRegions[] = streetToTownDistrictsGrid
+					.getRecords();
 			if (cityRegions != null && cityRegions.length > 0) {
 				for (ListGridRecord listGridRecord : cityRegions) {
 					String town_district_id = listGridRecord

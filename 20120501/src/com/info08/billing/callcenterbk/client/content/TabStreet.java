@@ -4,6 +4,7 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditStreet;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -201,20 +202,21 @@ public class TabStreet extends Tab {
 			ListGridField street_name = new ListGridField("street_name",
 					"დასახელება", 250);
 
-			ListGridField street_old_name_descr = new ListGridField("street_old_name_descr",
+			ListGridField street_old_name_descr = new ListGridField(
+					"street_old_name_descr",
 					CallCenterBK.constants.oldStreetName(), 250);
 			street_old_name_descr.setAlign(Alignment.LEFT);
 
 			ListGridField street_location = new ListGridField(
 					"street_location", "ქუჩის აღწერა");
-			
+
 			ListGridField town_name = new ListGridField("town_name", "ქალაქი",
 					120);
 
 			town_name.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(street_name, street_old_name_descr, street_location,
-					town_name);
+			listGrid.setFields(street_name, street_old_name_descr,
+					street_location, town_name);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -281,7 +283,7 @@ public class TabStreet extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					
+
 					final Integer street_id = listGridRecord
 							.getAttributeAsInt("street_id");
 					if (street_id == null) {
@@ -300,7 +302,7 @@ public class TabStreet extends Tab {
 							});
 				}
 			});
-		
+
 			exportButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -309,8 +311,7 @@ public class TabStreet extends Tab {
 							.getEnum(ExportFormat.values(), "xls"));
 					dsRequestProperties
 							.setExportDisplay(ExportDisplay.DOWNLOAD);
-					dsRequestProperties
-							.setOperationId("fetchStreetsFromDB");
+					dsRequestProperties.setOperationId("fetchStreetsFromDB");
 					listGrid.exportData(dsRequestProperties);
 				}
 			});
@@ -341,12 +342,16 @@ public class TabStreet extends Tab {
 
 	private void fillFields() {
 		try {
-			DataSource townsDS = DataSource.get("TownsDS");
-			citiesItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-			citiesItem.setOptionDataSource(townsDS);
-			citiesItem.setValueField("town_id");
-			citiesItem.setDisplayField("town_name");
-			citiesItem.setAutoFetchData(true);
+			// DataSource townsDS = DataSource.get("TownsDS");
+			// citiesItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
+			// citiesItem.setOptionDataSource(townsDS);
+			// citiesItem.setValueField("town_id");
+			// citiesItem.setDisplayField("town_name");
+			// citiesItem.setAutoFetchData(true);
+			// citiesItem.setValue(Constants.defCityTbilisiId);
+
+			ClientUtils.fillCombo(citiesItem, "TownsDS",
+					"searchCitiesFromDBForCombosAll", "town_id", "town_name");
 			citiesItem.setValue(Constants.defCityTbilisiId);
 
 		} catch (Exception e) {

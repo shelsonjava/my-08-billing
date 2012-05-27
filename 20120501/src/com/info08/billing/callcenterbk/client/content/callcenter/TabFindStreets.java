@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewStreet;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -77,15 +78,19 @@ public class TabFindStreets extends Tab {
 		citiesItem.setFilterLocally(false);
 		citiesItem.setAddUnknownValues(false);
 
-		DataSource townsDS = DataSource.get("TownsDS");
-		citiesItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-		citiesItem.setOptionDataSource(townsDS);
-		citiesItem.setValueField("town_id");
-		citiesItem.setDisplayField("town_name");
-		Criteria criteria = new Criteria();
-		// criteria.setAttribute("country_id", Constants.defCountryGeorgiaId);
-		citiesItem.setOptionCriteria(criteria);
-		citiesItem.setAutoFetchData(false);
+//		DataSource townsDS = DataSource.get("TownsDS");
+//		citiesItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
+//		citiesItem.setOptionDataSource(townsDS);
+//		citiesItem.setValueField("town_id");
+//		citiesItem.setDisplayField("town_name");
+//		Criteria criteria = new Criteria();
+//		// criteria.setAttribute("country_id", Constants.defCountryGeorgiaId);
+//		citiesItem.setOptionCriteria(criteria);
+//		citiesItem.setAutoFetchData(false);
+		
+		ClientUtils.fillCombo(citiesItem, "TownsDS",
+				"searchCitiesFromDBForCombosAll", "town_id", "town_name");
+		
 
 		citiesItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
