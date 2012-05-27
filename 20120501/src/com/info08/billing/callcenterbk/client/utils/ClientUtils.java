@@ -213,10 +213,9 @@ public class ClientUtils {
 			Set<?> keys = vals.keySet();
 			for (Object key : keys) {
 				String sKey = key.toString();
-				if (dm.getField(sKey) != null)
+				if (dm.getField(sKey) != null) {
 					mp.put(sKey, vals.get(key));
-				else
-					System.out.println("");
+				}
 			}
 		}
 		mp.remove("_ref");
