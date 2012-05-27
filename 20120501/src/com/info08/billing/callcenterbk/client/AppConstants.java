@@ -699,6 +699,7 @@ public interface AppConstants extends Constants {
 	String plzChooseLegalAddrStreet();
 	String plzEnterOrgIndex();
 	String plzChooseValidOrgDayOffs();
+	String plzChooseValidOrgDayOffs1();
 }
 
 
