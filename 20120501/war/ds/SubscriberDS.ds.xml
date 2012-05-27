@@ -1,7 +1,7 @@
 <DataSource 
 	ID="SubscriberDS" 
 	serverType="sql"
-	tableName="ccare.subscribers" 
+	tableName="subscribers" 
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

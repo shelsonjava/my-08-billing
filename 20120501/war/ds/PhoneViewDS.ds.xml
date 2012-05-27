@@ -5,31 +5,31 @@
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="phone"								type="text"						title="phone" hidden="true"/>
-		<field name="owner_type"						type="integer"					title="owner_type" hidden="true"/>
-		<field name="owner_id"							type="integer"					title="owner_id" hidden="true"/>
-		<field name="owner_type_descr"					type="text"						title="owner_type_descr" hidden="true"/>
-		<field name="full_name"							type="text"						title="full_name" hidden="true"/>
-		<field name="addr_id"							type="integer"					title="addr_id" hidden="true"/>
-		<field name="address"							type="text"						title="address" hidden="true"/>
-		<field name="address_hidden_by_request"			type="integer"					title="address_hidden_by_request" hidden="true"/>
-		<field name="address_hidden_by_request_des"		type="text"						title="address_hidden_by_request_des" hidden="true"/>
-		<field name="phone_hidden_by_request"			type="integer"					title="phone_hidden_by_request" hidden="true"/>
-		<field name="phone_hidden_by_request_desc"		type="text"						title="phone_hidden_by_request_desc" hidden="true"/>
-		<field name="phone_contract_type"				type="integer"					title="phone_contract_type" hidden="true"/>
-		<field name="phone_contract_type_desc"			type="text"						title="phone_contract_type_desc" hidden="true"/>
-		<field name="phone_state_id"					type="integer"					title="phone_state_id" hidden="true"/>
-		<field name="phone_state_id_desc"				type="text"						title="phone_state_id_desc" hidden="true"/>
-		<field name="phone_type_id"						type="integer"					title="phone_type_id" hidden="true"/>
-		<field name="phone_type_id_desc"				type="text"						title="phone_type_id_desc" hidden="true"/>
-		<field name="is_parallel"						type="integer"					title="is_parallel" hidden="true"/>
-		<field name="is_parallel_descr"					type="text"						title="is_parallel_descr" hidden="true"/>
-		<field name="for_contact"						type="integer"					title="for_contact" hidden="true"/>
-		<field name="for_contact_desr"					type="text"						title="for_contact_desr" hidden="true"/>
-		<field name="super_priority"					type="integer"					title="super_priority" hidden="true"/>
-		<field name="important_remark"					type="integer"					title="important_remark" hidden="true"/>
-		<field name="status"							type="integer"					title="status" hidden="true"/>
-		<field name="town_name"							type="text"					title="status" hidden="true"/>
+		<field name="phone"								type="text"						title="phone"/>
+		<field name="owner_type"						type="integer"					title="owner_type"						hidden="true"/>
+		<field name="owner_id"							type="integer"					title="owner_id" 						hidden="true"/>
+		<field name="owner_type_descr"					type="text"						title="owner_type_descr" 				hidden="true"/>
+		<field name="full_name"							type="text"						title="full_name"/>
+		<field name="addr_id"							type="integer"					title="addr_id" 						hidden="true"/>
+		<field name="address"							type="text"						title="address"/>
+		<field name="address_hidden_by_request"			type="integer"					title="address_hidden_by_request"		hidden="true"/>
+		<field name="address_hidden_by_request_des"		type="text"						title="address_hidden_by_request_des"	hidden="true"/>
+		<field name="phone_hidden_by_request"			type="integer"					title="phone_hidden_by_request" 		hidden="true"/>
+		<field name="phone_hidden_by_request_desc"		type="text"						title="phone_hidden_by_request_desc"	hidden="true"/>
+		<field name="phone_contract_type"				type="integer"					title="phone_contract_type" 			hidden="true"/>
+		<field name="phone_contract_type_desc"			type="text"						title="phone_contract_type_desc"		hidden="true"/>
+		<field name="phone_state_id"					type="integer"					title="phone_state_id" 					hidden="true"/>
+		<field name="phone_state_id_desc"				type="text"						title="phone_state_id_desc" 			hidden="true"/>
+		<field name="phone_type_id"						type="integer"					title="phone_type_id" 					hidden="true"/>
+		<field name="phone_type_id_desc"				type="text"						title="phone_type_id_desc" 				hidden="true"/>
+		<field name="is_parallel"						type="integer"					title="is_parallel" 					hidden="true"/>
+		<field name="is_parallel_descr"					type="text"						title="is_parallel_descr" 				hidden="true"/>
+		<field name="for_contact"						type="integer"					title="for_contact" 					hidden="true"/>
+		<field name="for_contact_desr"					type="text"						title="for_contact_desr" 				hidden="true"/>
+		<field name="super_priority"					type="integer"					title="super_priority" 					hidden="true"/>
+		<field name="important_remark"					type="integer"					title="important_remark" 				hidden="true"/>
+		<field name="status"							type="integer"					title="status" 							hidden="true"/>
+		<field name="town_name"							type="text"						title="status"/>
 	</fields>
 	
 	<operationBindings>
