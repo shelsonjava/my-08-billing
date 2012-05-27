@@ -22,32 +22,32 @@ public class Subscribers implements Serializable {
 	@SequenceGenerator(name = "SEQ_SUBSCRIBER_ID_GENERATOR", sequenceName = "SEQ_SUBSCRIBER_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SUBSCRIBER_ID_GENERATOR")
 	@Column(name = "SUBSCRIBER_ID")
-	private Integer subscriber_id;
+	private Long subscriber_id;
 
 	@Basic
 	@Column(name = "ADDR_ID")
-	private Integer addr_id;
+	private Long addr_id;
 	
 	@Basic
 	@Column(name = "NAME_ID")
-	private Integer name_id;
+	private Long name_id;
 
 	@Transient
 	private String name;
 
 	@Basic
 	@Column(name = "FAMILY_NAME_ID")
-	private Integer family_name_id;
+	private Long family_name_id;
 
 	@Transient
 	private String lastname;
 	
 
-	public Integer getSubscriber_id() {
+	public Long getSubscriber_id() {
 		return subscriber_id;
 	}
 
-	public void setSubscriber_id(Integer subscriber_id) {
+	public void setSubscriber_id(Long subscriber_id) {
 		this.subscriber_id = subscriber_id;
 	}
 
@@ -67,27 +67,27 @@ public class Subscribers implements Serializable {
 		this.lastname = lastname;
 	}
 
-	public Integer getName_id() {
+	public Long getName_id() {
 		return name_id;
 	}
 
-	public void setName_id(Integer name_id) {
+	public void setName_id(Long name_id) {
 		this.name_id = name_id;
 	}
 
-	public Integer getFamily_name_id() {
+	public Long getFamily_name_id() {
 		return family_name_id;
 	}
 
-	public void setFamily_name_id(Integer family_name_id) {
+	public void setFamily_name_id(Long family_name_id) {
 		this.family_name_id = family_name_id;
 	}
 
-	public Integer getAddr_id() {
+	public Long getAddr_id() {
 		return addr_id;
 	}
 
-	public void setAddr_id(Integer addr_id) {
+	public void setAddr_id(Long addr_id) {
 		this.addr_id = addr_id;
 	}
 

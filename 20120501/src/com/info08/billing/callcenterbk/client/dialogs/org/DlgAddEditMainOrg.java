@@ -18,6 +18,7 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.Side;
@@ -81,7 +82,7 @@ public class DlgAddEditMainOrg extends Window {
 	private TextItem orgSocialAddressItem;
 	private TextItem orgMailItem;
 	private TextItem orgIndItem;
-	private TextItem orgWorkPersQuantItem;
+	private TextItem orgStaffCountItem;
 	private TextAreaItem orgInfoItem;
 	private ComboBoxItem orgLegalStatusItem;
 	private DateItem orgFoundedItem;
@@ -304,11 +305,12 @@ public class DlgAddEditMainOrg extends Window {
 			orgIndItem.setWidth(614);
 			orgIndItem.setTitle(CallCenterBK.constants.postIndex());
 
-			orgWorkPersQuantItem = new TextItem();
-			orgWorkPersQuantItem.setName("staff_count");
-			orgWorkPersQuantItem.setWidth(284);
-			orgWorkPersQuantItem.setTitle(CallCenterBK.constants
+			orgStaffCountItem = new TextItem();
+			orgStaffCountItem.setName("staff_count");
+			orgStaffCountItem.setWidth(284);
+			orgStaffCountItem.setTitle(CallCenterBK.constants
 					.workPersonCountity());
+			orgStaffCountItem.setKeyPressFilter("[0-9]");
 
 			orgInfoItem = new TextAreaItem();
 			orgInfoItem.setName("additional_info");
@@ -360,7 +362,7 @@ public class DlgAddEditMainOrg extends Window {
 
 			dynamicFormMainInfo1.setFields(orgChiefItem, orgContactPersonItem,
 					orgIdentCodeItem, orgIdentCodeNewItem, orgWorkHoursItem,
-					orgWorkPersQuantItem, orgLegalStatusItem, orgStatusItem,
+					orgStaffCountItem, orgLegalStatusItem, orgStatusItem,
 					orgFoundedItem, orgSocialAddressItem, orgWebAddressItem,
 					orgMailItem, orgInfoItem);
 
@@ -885,34 +887,169 @@ public class DlgAddEditMainOrg extends Window {
 				dynamicFormMainInfo2.focusInItem(orgIndItem);
 				return;
 			}
-			Map<String, Object> fromMaps = new LinkedHashMap<String, Object>();
-			fromMaps.put("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name());
-			fromMaps.put("organization_id",
-					listGridRecord.getAttributeAsInt("organization_id"));
-			ClientUtils.fillMapFromForm(fromMaps, dynamicFormMainInfo,
-					dynamicFormMainInfo1, dynamicFormMainInfo2);
 
-			SC.say("PARR : " + fromMaps.toString());
-
-			boolean flag = true;
-			if (flag) {
+			Integer days = 0;
+			boolean allDayOffsIsSel = false;
+			for (ListGridRecord listGridRecord : orgDayOffsList) {
+				Integer day_id = listGridRecord.getAttributeAsInt("day_id");
+				if (day_id.intValue() == 0) {
+					allDayOffsIsSel = true;
+				}
+				days += day_id;
+			}
+			if (allDayOffsIsSel && orgDayOffsList.length > 1) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzChooseValidOrgDayOffs());
+				topTabSet.selectTab(0);
 				return;
 			}
+			if (days == 127) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.plzChooseValidOrgDayOffs1());
+				topTabSet.selectTab(0);
+				return;
+			}
+			LinkedHashMap<String, String> orgActivities = new LinkedHashMap<String, String>();
+			for (ListGridRecord orgActivity : orgActivityList) {
+				orgActivities.put("org_activity_id", orgActivity
+						.getAttributeAsInt("org_activity_id").toString());
+			}
+			Boolean bImportant_remark = importantRemark.getValueAsBoolean();
+			Integer important_remark = null;
+			if (bImportant_remark != null && bImportant_remark) {
+				important_remark = -1;
+			} else {
+				important_remark = 0;
+			}
+			Map<String, Object> fromMaps = new LinkedHashMap<String, Object>();
+			fromMaps.put("priority", new Integer(0));
+			fromMaps.put("orgActivities", orgActivities);
+			fromMaps.put("loggedUserName", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name());
+			fromMaps.put("day_offs", days);
+			fromMaps.put("parrent_organization_id", parrent_organization_id);
+			if (listGridRecord != null) {
+				fromMaps.put("organization_id",
+						listGridRecord.getAttributeAsInt("organization_id"));
+				fromMaps.put("legal_address_id",
+						listGridRecord.getAttributeAsInt("legal_address_id"));
+				fromMaps.put("physical_address_id",
+						listGridRecord.getAttributeAsInt("physical_address_id"));
+			}
+			fromMaps.put("town_id", town_id);
+			fromMaps.put("street_id", street_id);
+			Integer town_district_id = physicalAddress.getStreetDistrictValue();
+			if (town_district_id != null) {
+				fromMaps.put("town_district_id", town_district_id);
+			}
+			Integer hidden_by_request = physicalAddress.getOpCloseValue();
+			if (hidden_by_request != null) {
+				fromMaps.put("hidden_by_request", hidden_by_request);
+			}
+			String full_address = physicalAddress.getOldAddressValue();
+			if (full_address != null && !full_address.trim().equals("")) {
+				fromMaps.put("full_address", full_address);
+			}
+
+			String block = physicalAddress.getBlockValue();
+			if (block != null && !block.trim().equals("")) {
+				fromMaps.put("block", block);
+			}
+
+			String appt = physicalAddress.getAppartValue();
+			if (appt != null && !appt.trim().equals("")) {
+				fromMaps.put("appt", appt);
+			}
+
+			String anumber = physicalAddress.getAdressValue();
+			if (anumber != null && !anumber.trim().equals("")) {
+				fromMaps.put("anumber", anumber);
+			}
+
+			Integer legal_addr_town_id = legalAddress.getTownValue();
+			if (legal_addr_town_id != null) {
+				fromMaps.put("legal_addr_town_id", legal_addr_town_id);
+			}
+
+			Integer legal_addr_street_id = legalAddress.getStreetValue();
+			if (legal_addr_street_id != null) {
+				fromMaps.put("legal_addr_street_id", legal_addr_street_id);
+			}
+
+			Integer legal_addr_town_district_id = legalAddress
+					.getStreetDistrictValue();
+			if (legal_addr_town_district_id != null) {
+				fromMaps.put("legal_addr_town_district_id",
+						legal_addr_town_district_id);
+			}
+			Integer legal_addr_hidden_by_request = legalAddress
+					.getOpCloseValue();
+			if (legal_addr_hidden_by_request != null) {
+				fromMaps.put("legal_addr_hidden_by_request",
+						legal_addr_hidden_by_request);
+			}
+
+			String legal_addr_full_address = legalAddress.getOldAddressValue();
+			if (legal_addr_full_address != null
+					&& !legal_addr_full_address.trim().equals("")) {
+				fromMaps.put("legal_addr_full_address", legal_addr_full_address);
+			}
+
+			String legal_addr_block = legalAddress.getBlockValue();
+			if (legal_addr_block != null && !legal_addr_block.trim().equals("")) {
+				fromMaps.put("legal_addr_block", legal_addr_block);
+			}
+
+			String legal_addr_appt = legalAddress.getAppartValue();
+			if (legal_addr_appt != null && !legal_addr_appt.trim().equals("")) {
+				fromMaps.put("legal_addr_appt", legal_addr_appt);
+			}
+
+			String legal_addr_anumber = legalAddress.getAdressValue();
+			if (legal_addr_anumber != null
+					&& !legal_addr_anumber.trim().equals("")) {
+				fromMaps.put("legal_addr_anumber", legal_addr_anumber);
+			}
+
+			RecordList partBankRecordList = orgPartBankOrgsGrid
+					.getDataAsRecordList();
+			if (!partBankRecordList.isEmpty()) {
+				LinkedHashMap<String, String> orgPartnerBanks = new LinkedHashMap<String, String>();
+				for (int i = 0; i < partBankRecordList.getLength(); i++) {
+					Record record = partBankRecordList.get(i);
+					orgPartnerBanks.put("organization_id", record
+							.getAttributeAsInt("organization_id").toString());
+				}
+				fromMaps.put("orgPartnerBanks", orgPartnerBanks);
+			}
+			ClientUtils.fillMapFromForm(fromMaps, dynamicFormMainInfo,
+					dynamicFormMainInfo1, dynamicFormMainInfo2);
+			fromMaps.put("important_remark", important_remark);
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record(fromMaps);
-
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateMainOrgStatus");
-			orgTreeGrid.updateData(record, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-					destroy();
-				}
-			}, req);
+			if (listGridRecord == null) {
+				req.setAttribute("operationId", "addOrganization");
+				orgTreeGrid.addData(record, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						destroy();
+					}
+				}, req);
+			} else {
+				req.setAttribute("operationId", "updateOrganization");
+				orgTreeGrid.updateData(record, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						destroy();
+					}
+				}, req);
+			}
+
 			com.smartgwt.client.rpc.RPCManager.sendQueue();
 		} catch (Exception e) {
 			e.printStackTrace();

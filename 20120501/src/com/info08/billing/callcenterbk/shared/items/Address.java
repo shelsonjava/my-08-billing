@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ADDRESSES", schema = "ccare")
+@Table(name = "ADDRESSES")
 public class Address implements Serializable {
 
 	private static final long serialVersionUID = 8914876851562021816L;
@@ -21,22 +21,22 @@ public class Address implements Serializable {
 	@SequenceGenerator(name = "SEQ_ADDRESS_ID_GENERATOR", sequenceName = "SEQ_ADDRESS_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ADDRESS_ID_GENERATOR")
 	@Column(name = "ADDR_ID")
-	private Integer addr_id;
+	private Long addr_id;
 	@Basic
 	@Column(name = "TOWN_ID")
-	private Integer town_id;
+	private Long town_id;
 	@Basic
 	@Column(name = "STREET_ID")
-	private Integer street_id;
+	private Long street_id;
 	@Basic
 	@Column(name = "FULL_ADDRESS")
 	private String full_address;
 	@Basic
 	@Column(name = "HIDDEN_BY_REQUEST")
-	private Integer hidden_by_request;
+	private Long hidden_by_request;
 	@Basic
 	@Column(name = "TOWN_DISTRICT_ID")
-	private Integer town_district_id;
+	private Long town_district_id;
 	@Basic
 	@Column(name = "BLOCK")
 	private String block;
@@ -49,35 +49,32 @@ public class Address implements Serializable {
 	@Basic
 	@Column(name = "ANUMBER")
 	private String anumber;
-	@Basic
-	@Column(name = "ADRESS_TYPE")
-	private Integer adress_type;
 
 	public Address() {
 
 	}
 
-	public Integer getAddr_id() {
+	public Long getAddr_id() {
 		return addr_id;
 	}
 
-	public void setAddr_id(Integer addr_id) {
+	public void setAddr_id(Long addr_id) {
 		this.addr_id = addr_id;
 	}
 
-	public Integer getTown_id() {
+	public Long getTown_id() {
 		return town_id;
 	}
 
-	public void setTown_id(Integer town_id) {
+	public void setTown_id(Long town_id) {
 		this.town_id = town_id;
 	}
 
-	public Integer getStreet_id() {
+	public Long getStreet_id() {
 		return street_id;
 	}
 
-	public void setStreet_id(Integer street_id) {
+	public void setStreet_id(Long street_id) {
 		this.street_id = street_id;
 	}
 
@@ -89,19 +86,19 @@ public class Address implements Serializable {
 		this.full_address = full_address;
 	}
 
-	public Integer getHidden_by_request() {
+	public Long getHidden_by_request() {
 		return hidden_by_request;
 	}
 
-	public void setHidden_by_request(Integer hidden_by_request) {
+	public void setHidden_by_request(Long hidden_by_request) {
 		this.hidden_by_request = hidden_by_request;
 	}
 
-	public Integer getTown_district_id() {
+	public Long getTown_district_id() {
 		return town_district_id;
 	}
 
-	public void setTown_district_id(Integer town_district_id) {
+	public void setTown_district_id(Long town_district_id) {
 		this.town_district_id = town_district_id;
 	}
 
@@ -136,13 +133,4 @@ public class Address implements Serializable {
 	public void setAnumber(String anumber) {
 		this.anumber = anumber;
 	}
-
-	public Integer getAdress_type() {
-		return adress_type;
-	}
-
-	public void setAdress_type(Integer adress_type) {
-		this.adress_type = adress_type;
-	}
-
 }

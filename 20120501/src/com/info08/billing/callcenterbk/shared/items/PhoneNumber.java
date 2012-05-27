@@ -27,7 +27,7 @@ public class PhoneNumber implements Serializable {
 	@SequenceGenerator(name = "SEQ_PHONE_NUMBERS_GENERATOR", sequenceName = "SEQ_PHONE_NUMBERS")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PHONE_NUMBERS_GENERATOR")
 	@Column(name = "PHONE_NUMBER_ID")
-	private Integer phone_number_id;
+	private Long phone_number_id;
 
 	@Basic
 	@Column(name = "PHONE")
@@ -35,30 +35,30 @@ public class PhoneNumber implements Serializable {
 
 	@Basic
 	@Column(name = "PHONE_TYPE_ID")
-	private Integer phone_type_id;
+	private Long phone_type_id;
 
 	@Transient
 	private String phone_type;
 
 	@Basic
 	@Column(name = "PHONE_STATE_ID")
-	private Integer phone_state_id;
+	private Long phone_state_id;
 	
 	@Transient
 	private String phone_state;
 
 	@Basic
 	@Column(name = "IS_PARALLEL")
-	private Integer is_parallel;
+	private Long is_parallel;
 
 	@Transient
 	private String is_parallel_descr;
 
-	public Integer getPhone_number_id() {
+	public Long getPhone_number_id() {
 		return phone_number_id;
 	}
 
-	public void setPhone_number_id(Integer phone_number_id) {
+	public void setPhone_number_id(Long phone_number_id) {
 		this.phone_number_id = phone_number_id;
 	}
 
@@ -70,19 +70,19 @@ public class PhoneNumber implements Serializable {
 		this.phone = phone;
 	}
 
-	public Integer getPhone_state_id() {
+	public Long getPhone_state_id() {
 		return phone_state_id;
 	}
 
-	public void setPhone_state_id(Integer phone_state_id) {
+	public void setPhone_state_id(Long phone_state_id) {
 		this.phone_state_id = phone_state_id;
 	}
 
-	public Integer getPhone_type_id() {
+	public Long getPhone_type_id() {
 		return phone_type_id;
 	}
 
-	public void setPhone_type_id(Integer phone_type_id) {
+	public void setPhone_type_id(Long phone_type_id) {
 		this.phone_type_id = phone_type_id;
 	}
 
@@ -110,11 +110,11 @@ public class PhoneNumber implements Serializable {
 		this.is_parallel_descr = is_parallel_descr;
 	}
 
-	public Integer getIs_parallel() {
+	public Long getIs_parallel() {
 		return is_parallel;
 	}
 
-	public void setIs_parallel(Integer is_parallel) {
+	public void setIs_parallel(Long is_parallel) {
 		this.is_parallel = is_parallel;
 	}
 
