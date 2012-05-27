@@ -184,7 +184,7 @@ public class BlackListManagerDMI implements QueryConstants {
 					Q_MYSQL_DELETE_BLOCK_PHONE, false);
 			if (insertedPhones != null && insertedPhones.length > 0) {
 
-				ArrayList<String> list = new ArrayList<>();
+				ArrayList<String> list = new ArrayList<String>();
 				for (String str : insertedPhones) {
 					list.add(str);
 					list.add("32" + str);
