@@ -15,11 +15,11 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgBlockPhoneList extends Window {
+public class DlgBlackPhoneList extends Window {
 
 	private VLayout hLayout;
 
-	public DlgBlockPhoneList(ListGridRecord listGridRecord) {
+	public DlgBlackPhoneList(ListGridRecord listGridRecord) {
 		try {
 
 			setTitle(CallCenterBK.constants.blockPhoneList());

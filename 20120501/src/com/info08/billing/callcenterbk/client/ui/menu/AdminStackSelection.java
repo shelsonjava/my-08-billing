@@ -2,7 +2,7 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.admin.TabAdmin;
-import com.info08.billing.callcenterbk.client.content.admin.TabBlockList;
+import com.info08.billing.callcenterbk.client.content.admin.TabBlackList;
 import com.info08.billing.callcenterbk.client.content.admin.TabContractors;
 import com.info08.billing.callcenterbk.client.content.admin.TabLandlineIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabGSMIndexes;
@@ -133,7 +133,7 @@ public class AdminStackSelection extends SectionStackSection {
 			TabContractors tabContractors = new TabContractors();
 			body.addTab(tabContractors);
 		} else if (menuId.equals("104")) {
-			TabBlockList tabBlockList = new TabBlockList();
+			TabBlackList tabBlockList = new TabBlackList();
 			body.addTab(tabBlockList);
 		} else if (menuId.equals("105")) {
 			TabBillingComps tabBillingComps = new TabBillingComps();

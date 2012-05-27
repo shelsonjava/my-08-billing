@@ -1,131 +1,110 @@
 package com.info08.billing.callcenterbk.server.impl.dmi;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 
-import org.apache.commons.collections.map.LinkedMap;
 import org.apache.log4j.Logger;
+import org.hibernate.classic.Session;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
+import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.black.BlackList;
-import com.info08.billing.callcenterbk.shared.entity.black.BlockListPhone;
-import com.info08.billing.callcenterbk.shared.entity.main.MainDetail;
-import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
 import com.isomorphic.sql.SQLDataSource;
+import com.isomorphic.util.DataTools;
 
 public class BlackListManagerDMI implements QueryConstants {
 
 	private Logger logger = Logger.getLogger(BlackListManagerDMI.class
 			.getName());
 
-	/**
-	 * Adding New BlockList
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public BlackList addBlockList(DSRequest dsRequest) throws Exception {
+	public BlackList addEditBlackList(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addBlockList.";
-			BlackList blockList = new BlackList();
-			Object oMainId = dsRequest.getFieldValue("organization_id");
-			Long organization_id = (oMainId == null) ? null : Long
-					.parseLong(oMainId.toString());
-			blockList.setOrganization_id(organization_id);
+			String log = "Method:BlackListManagerDMI.addEditBlackList.";
+			Map<?, ?> values = dsRequest.getValues();
 
-			Object oBlockType = dsRequest.getFieldValue("block_type");
-			Long block_type = (oBlockType == null) ? null : Long
-					.parseLong(oBlockType.toString());
-			blockList.setBlack_list_id(block_type);
-
-			Object oStatus = dsRequest.getFieldValue("status");
-			Long status = (oStatus == null) ? null : Long.parseLong(oStatus
-					.toString());
-			blockList.setStatus(status);
-
-			blockList.setDeleted(0L);
-
-			Object oNote = dsRequest.getFieldValue("note");
-			String note = (oNote == null) ? null : oNote.toString();
-			blockList.setTitle_descr(note);
-
-			Object oMainDetailId = dsRequest.getFieldValue("main_detail_id");
-			Long main_detail_id = (oMainDetailId == null) ? null : Long
-					.parseLong(oMainDetailId.toString());
-			blockList.setMain_detail_id(main_detail_id);
-
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			blockList.setRec_date(recDate);
-			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
-					.toString();
-			blockList.setRec_user(loggedUserName);
+			Object oPhones = values.get("blackListPhones");
+			String phones = oPhones.toString();
+			Long black_list_id = values.containsKey("black_list_id") ? Long
+					.parseLong(values.get("black_list_id").toString()) : null;
 
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			oracleManager.persist(blockList);
+			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
+					.toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, log);
+
+			BlackList blackList = null;
+
+			if (black_list_id != null)
+				blackList = oracleManager.find(BlackList.class, black_list_id);
+			if (blackList == null && black_list_id != null)
+				throw new Exception("ვერ ვიპოვე შავი სია შესაცვლელად(ID="
+						+ black_list_id + ")");
+			if (blackList == null)
+				blackList = new BlackList();
+
+			DataTools.setProperties(values, blackList);
+			if (black_list_id == null) {
+				oracleManager.persist(blackList);
+				black_list_id = blackList.getBlack_list_id();
+			} else
+				oracleManager.persist(blackList);
 			oracleManager.flush();
+			Object obj1 = oracleManager.getDelegate();
+			Connection con = (Connection) ((Session) obj1).connection();
 
-			Object oMap1 = dsRequest.getFieldValue("blockListPhones");
-			if (oMap1 != null) {
-				LinkedMap contractorAdvPhones = (LinkedMap) oMap1;
-				if (!contractorAdvPhones.isEmpty()) {
-					Set keys1 = contractorAdvPhones.keySet();
-					oracleManager
-							.createNativeQuery(
-									QueryConstants.Q_DELETE_BLOCKLIST_PHONES)
-							.setParameter(1, blockList.getId()).executeUpdate();
+			CallableStatement cs = con
+					.prepareCall("{? = call persist_black_list_phones(?, ?)}");
+			cs.registerOutParameter(1, java.sql.Types.CHAR);
+			cs.setString(2, phones);
+			cs.setLong(3, black_list_id);
 
-					oracleManager.flush();
-					for (Object okey1 : keys1) {
-						String phone = okey1.toString();
+			cs.executeUpdate();
+			String delim_phones = cs.getString(1);
+			System.out.println(delim_phones);
 
-						BlockListPhone item = new BlockListPhone();
-						item.setBlock_list_id(blockList.getId());
-						item.setPhone(phone);
-						oracleManager.persist(item);
-					}
+			String[] oper_numb = delim_phones.split("&");
+			String deleteStr = null;
+			String insertStr = null;
+			if (oper_numb.length > 0) {
+
+				oper_numb[0] = oper_numb[0].trim();
+
+				if (oper_numb[0].length() > 0)
+					deleteStr = oper_numb[0];
+
+				if (oper_numb.length > 1) {
+					oper_numb[1] = oper_numb[1].trim();
+					if (oper_numb[1].length() > 0)
+						deleteStr = oper_numb[1];
+
 				}
+
 			}
 
-			blockList = oracleManager.find(BlackList.class, blockList.getId());
-			blockList.setLoggedUserName(loggedUserName);
-			if (organization_id != null) {
-				Organization mainOrg = oracleManager.find(Organization.class,
-						organization_id);
-				if (mainOrg != null) {
-					blockList.setOrgName(mainOrg.getOrganization_name());
-				}
-			}
-			if (main_detail_id != null) {
-				MainDetail mainDetail = oracleManager.find(MainDetail.class,
-						main_detail_id);
-				if (mainDetail != null) {
-					blockList.setOrgDepName(mainDetail.getMain_detail_geo());
-				}
-			}
-
-			makeBlockList(blockList, oracleManager);
+			operateWithMysql(deleteStr == null ? null : deleteStr.split(","),
+					insertStr == null ? null : insertStr.split(","));
+			// makeBlockList(blockList, oracleManager);
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
-			logger.info(log);
-			return blockList;
+
+			return blackList;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -141,168 +120,49 @@ public class BlackListManagerDMI implements QueryConstants {
 		}
 	}
 
-	/**
-	 * Updating BlockList
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public BlackList updateBlockList(Map record) throws Exception {
+	public BlackList deleteBlackList(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateBlockList.";
-			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
+			String log = "Method:BlackListManagerDMI.deleteBlackList.";
+			Map<?, ?> values = dsRequest.getOldValues();
 
-			Long id = new Long(record.get("id").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
-			Timestamp updDate = new Timestamp(System.currentTimeMillis());
-			Long organization_id = new Long(record.get("organization_id")
+			Long black_list_id = Long.parseLong(values.get("black_list_id")
 					.toString());
-			Long main_detail_id = new Long(
-					record.get("main_detail_id") == null ? "0" : record.get(
-							"main_detail_id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			Long block_type = new Long(record.get("block_type").toString());
-			String note = record.get("note") == null ? null : record
-					.get("note").toString();
-			Long status = new Long(record.get("status").toString());
 
-			BlackList blockList = oracleManager.find(BlackList.class, id);
-			blockList.setMain_detail_id(main_detail_id);
-			blockList.setOrganization_id(organization_id);
-			blockList.setDeleted(deleted);
-			blockList.setBlack_list_id(block_type);
-			blockList.setTitle_descr(note);
-			blockList.setStatus(status);
-			blockList.setUpd_user(loggedUserName);
-			blockList.setUpd_date(updDate);
-
-			oracleManager.merge(blockList);
-			oracleManager.flush();
-
-			Object oMap1 = record.get("blockListPhones");
-			if (oMap1 != null) {
-				LinkedMap contractorAdvPhones = (LinkedMap) oMap1;
-				if (!contractorAdvPhones.isEmpty()) {
-					Set keys1 = contractorAdvPhones.keySet();
-					oracleManager
-							.createNativeQuery(
-									QueryConstants.Q_DELETE_BLOCKLIST_PHONES)
-							.setParameter(1, blockList.getId()).executeUpdate();
-
-					oracleManager.flush();
-					for (Object okey1 : keys1) {
-						String phone = okey1.toString();
-
-						BlockListPhone item = new BlockListPhone();
-						item.setBlock_list_id(blockList.getId());
-						item.setPhone(phone);
-						oracleManager.persist(item);
-					}
-				}
-			}
-
-			blockList = oracleManager.find(BlackList.class, blockList.getId());
-			blockList.setLoggedUserName(loggedUserName);
-			if (organization_id != null) {
-				Organization mainOrg = oracleManager.find(Organization.class,
-						organization_id);
-				if (mainOrg != null) {
-					blockList.setOrgName(mainOrg.getOrganization_name());
-				}
-			}
-			if (main_detail_id != null) {
-				MainDetail mainDetail = oracleManager.find(MainDetail.class,
-						main_detail_id);
-				if (mainDetail != null) {
-					blockList.setOrgDepName(mainDetail.getMain_detail_geo());
-				}
-			}
-			makeBlockList(blockList, oracleManager);
-			EMF.commitTransaction(transaction);
-			log += ". Updating Finished SuccessFully. ";
-			logger.info(log);
-			return blockList;
-		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error("Error While Update BlockList Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	/**
-	 * Updating BlockList Status
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public BlackList updateBlockListStatus(Map record) throws Exception {
-		EntityManager oracleManager = null;
-		Object transaction = null;
-		try {
-			String log = "Method:CommonDMI.updateBlockListStatus.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long id = new Long(record.get("id").toString());
-			Long deleted = new Long(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
-			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			String loggedUserName = values.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			BlackList blockList = oracleManager.find(BlackList.class, id);
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, log);
 
-			blockList.setDeleted(deleted);
-			blockList.setUpd_user(loggedUserName);
-			blockList.setUpd_date(updDate);
+			String old_phones = oracleManager
+					.createNativeQuery(Q_SELECT_BLACK_LIST_PHONES)
+					.setParameter(1, black_list_id).getSingleResult()
+					.toString();
 
-			oracleManager.merge(blockList);
-			oracleManager.flush();
+			oracleManager.createNativeQuery(Q_DELETE_BLACK_LIST_PHONES)
+					.setParameter(1, black_list_id).executeUpdate();
 
-			blockList = oracleManager.find(BlackList.class, id);
-			blockList.setLoggedUserName(loggedUserName);
-			Long organization_id = blockList.getOrganization_id();
-			if (organization_id != null) {
-				Organization mainOrg = oracleManager.find(Organization.class,
-						organization_id);
-				if (mainOrg != null) {
-					blockList.setOrgName(mainOrg.getOrganization_name());
-				}
-			}
-			Long main_detail_id = blockList.getMain_detail_id();
-			if (main_detail_id != null) {
-				MainDetail mainDetail = oracleManager.find(MainDetail.class,
-						main_detail_id);
-				if (mainDetail != null) {
-					blockList.setOrgDepName(mainDetail.getMain_detail_geo());
-				}
-			}
-			makeBlockList(blockList, oracleManager);
+			oracleManager.createNativeQuery(Q_DELETE_BLACK_LIST)
+					.setParameter(1, black_list_id).executeUpdate();
+
+			operateWithMysql(old_phones == null ? null : old_phones.split(","),
+					null);
+
 			EMF.commitTransaction(transaction);
-			log += ". Status Updating Finished SuccessFully. ";
-			logger.info(log);
-			return blockList;
+			log += ". Inserting Finished SuccessFully. ";
+
+			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While Update Status for BlockList Into Database : ",
-					e);
+			logger.error("Error While Insert BlockList Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -312,179 +172,72 @@ public class BlackListManagerDMI implements QueryConstants {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void makeBlockList(BlackList blockList, EntityManager oracleManager)
-			throws CallCenterException {
+	private void operateWithMysql(String[] deletedPhones,
+			String[] insertedPhones) throws Exception {
+		SQLDataSource mySqlDS = (SQLDataSource) DataSourceManager
+				.get("MySQLSubsDS");
+		Connection mySQLConnection = null;
 		try {
-			logger.info("++++++++++++++++++++++++++++++++++++");
-			if (blockList == null) {
-				return;
-			}
-			logger.info("111111111111111111111111111111111111");
-			Long blockType = blockList.getBlack_list_id();
-			if (blockType == null) {
-				return;
-			}
-			logger.info("blockType = " + blockType);
-			Long organization_id = blockList.getOrganization_id();
-			if (organization_id == null) {
-				return;
-			}
-			logger.info("organization_id = " + organization_id);
-			Long main_detail_id = blockList.getMain_detail_id();
-			logger.info("main_detail_id = " + main_detail_id);
+			mySQLConnection = mySqlDS.getConnection();
+			mySQLConnection.setAutoCommit(false);
+			executeStetment(deletedPhones, mySQLConnection,
+					Q_MYSQL_DELETE_BLOCK_PHONE, false);
+			if (insertedPhones != null && insertedPhones.length > 0) {
 
-			List resultList = null;
-			if (blockType.equals(4L)) {
-				oracleManager.flush();
-				resultList = oracleManager
-						.createNativeQuery(
-								QueryConstants.Q_GET_BLOCK_LIST_PHONES)
-						.setParameter(1, blockList.getId()).getResultList();
-			} else {
-				if (main_detail_id != null && main_detail_id.longValue() > 0) {
-					resultList = oracleManager
-							.createNativeQuery(
-									QueryConstants.Q_GET_MAIN_DET_PHONES_HIERARCHY)
-							.setParameter(1, main_detail_id).getResultList();
-				} else {
-					resultList = oracleManager
-							.createNativeQuery(
-									QueryConstants.Q_GET_PHONE_LIST_BY_ORGANIZATION_ID)
-							.setParameter(1, organization_id).getResultList();
+				ArrayList<String> list = new ArrayList<>();
+				for (String str : insertedPhones) {
+					list.add(str);
+					list.add("32" + str);
 				}
+				executeStetment(list.toArray(new String[] {}), mySQLConnection,
+						Q_MYSQL_INSERT_BLOCK_PHONE, true);
 			}
-
-			if (resultList == null || resultList.isEmpty()) {
-				return;
-			}
-
-			logger.info("resultList.size() = " + resultList.size());
-
-			SQLDataSource mySqlDS = (SQLDataSource) DataSourceManager
-					.get("MySQLSubsDS");
-			Connection mySQLConnection = mySqlDS.getConnection();
-			PreparedStatement statement = mySQLConnection
-					.prepareStatement(QueryConstants.Q_MYSQL_DELETE_BLOCK_PHONE);
-
-			TreeSet<String> contractPhons = new TreeSet<String>();
-			for (Object object : resultList) {
-				String phone = object.toString();
-				contractPhons.add(phone);
-				statement.setString(1, phone);
-				statement.executeUpdate();
-			}
-
-			Long deleted = blockList.getDeleted();
-			logger.info("blockList.getDeleted() = " + deleted);
-			if (deleted != null && deleted.equals(1L)) {
-				return;
-			}
-
-			Long status = blockList.getStatus();
-			logger.info("blockList.getStatus() = " + status);
-			if (status == null || status.equals(0L)) {
-				return;
-			}
-
-			List list = null;
-
-			if (blockType.equals(4L)) {
-				oracleManager.flush();
-				list = oracleManager
-						.createNativeQuery(
-								QueryConstants.Q_GET_BLOCK_LIST_PHONES)
-						.setParameter(1, blockList.getId()).getResultList();
-			} else {
-				if (main_detail_id != null && main_detail_id.longValue() > 0) {
-					switch (blockType.intValue()) {
-					case 1: // 1 - All Phones From Organization's Department
-							// will
-							// block
-						oracleManager.flush();
-						list = oracleManager
-								.createNativeQuery(
-										QueryConstants.Q_GET_MAIN_DET_PHONES_HIERARCHY)
-								.setParameter(1, main_detail_id)
-								.getResultList();
-
-						break;
-					case 2: // 2 - Block Only Listed Phones From This Department
-						oracleManager.flush();
-						list = oracleManager
-								.createNativeQuery(
-										QueryConstants.Q_GET_MAIN_DET_PHONES_HIERARCHY_BLOCK_LIST)
-								.setParameter(1, main_detail_id)
-								.setParameter(2, blockList.getId())
-								.getResultList();
-					case 3: // 3 - All Phones From Organization's Department
-							// will be
-							// blocked except this list
-						oracleManager.flush();
-						list = oracleManager
-								.createNativeQuery(
-										QueryConstants.Q_GET_MAIN_DET_PHONES_HIERARCHY_EXCEPT_BLOCK_LIST)
-								.setParameter(1, main_detail_id)
-								.setParameter(2, blockList.getId())
-								.getResultList();
-					default:
-						break;
-					}
-				} else {
-					switch (blockType.intValue()) {
-					case 1: // Block Whole Organization
-						oracleManager.flush();
-						list = oracleManager
-								.createNativeQuery(
-										QueryConstants.Q_GET_MAIN_ORGS_PHONES_HIERARCHY)
-								.setParameter(1, organization_id)
-								.getResultList();
-						break;
-					case 2: // 2 - Block Only Listed Phones From This
-							// Organization
-						oracleManager.flush();
-						list = oracleManager
-								.createNativeQuery(
-										QueryConstants.Q_GET_MAIN_ORGS_PHONES_HIERARCHY_BLOCK_LIST)
-								.setParameter(1, organization_id)
-								.setParameter(2, blockList.getId())
-								.getResultList();
-					case 3: // 3 - Block Whole Organizations Phones Except This
-							// List
-						oracleManager.flush();
-						list = oracleManager
-								.createNativeQuery(
-										QueryConstants.Q_GET_MAIN_ORGS_PHONES_HIERARCHY_EXCEPT_BLOCK_LIST)
-								.setParameter(1, organization_id)
-								.setParameter(2, blockList.getId())
-								.getResultList();
-					default:
-						break;
-					}
-				}
-			}
-			if (list == null || list.isEmpty()) {
-				return;
-			}
-			PreparedStatement statement1 = mySQLConnection
-					.prepareStatement(QueryConstants.Q_MYSQL_INSERT_BLOCK_PHONE);
-
-			for (Object oPhone : resultList) {
-				String phone = oPhone.toString();
-				statement1.setString(1, phone);
-				statement1.setInt(2, phone.length());
-				statement1.setInt(3, phone.length());
-				statement1.executeUpdate();
-			}
+			mySQLConnection.commit();
 		} catch (Exception e) {
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
+			try {
+				mySQLConnection.rollback();
+			} catch (Exception e2) {
+				// TODO: handle exception
 			}
-			logger.error(
-					"Error While Add Or Remove Contractor Phones Into MySQL Database : ",
-					e);
-			throw new CallCenterException("შეცდომა მონაცემების ცვლილებისას : "
-					+ e.toString());
+			throw e;
+		} finally {
+			try {
+				mySQLConnection.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
 		}
 	}
+
+	protected void executeStetment(String[] phones, Connection mySQLConnection,
+			String param, boolean insert) throws Exception {
+		PreparedStatement stmt = null;
+		if (phones != null && phones.length > 0) {
+			try {
+				stmt = mySQLConnection.prepareStatement(param);
+
+				for (String str : phones) {
+					if (str.length() < 7)
+						continue;
+					stmt.setString(1, str);
+					if (insert) {
+						stmt.setInt(2, str.length());
+						stmt.setInt(3, str.length());
+					}
+					stmt.addBatch();
+				}
+				stmt.executeBatch();
+
+			} catch (Exception e) {
+				throw e;
+			} finally {
+				try {
+					stmt.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			}
+		}
+	}
+
 }

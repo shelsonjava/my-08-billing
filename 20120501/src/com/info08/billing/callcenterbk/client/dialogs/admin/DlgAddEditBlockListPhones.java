@@ -3,6 +3,11 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 import java.util.TreeSet;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.smartgwt.client.data.DSCallback;
+import com.smartgwt.client.data.DSRequest;
+import com.smartgwt.client.data.DSResponse;
+import com.smartgwt.client.data.DataSource;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
@@ -25,10 +30,15 @@ public class DlgAddEditBlockListPhones extends Window {
 	private TextAreaItem phonesItem;
 
 	private ListGrid listGrid = null;
+	private Long blackListId;
+	private DataSource ds;
 
-	public DlgAddEditBlockListPhones(ListGrid listGrid) {
+	public DlgAddEditBlockListPhones(ListGrid listGrid, Long blackListId,
+			DataSource ds) {
 		try {
 			this.listGrid = listGrid;
+			this.blackListId = blackListId;
+			this.ds = ds;
 			setTitle(CallCenterBK.constants.addBlockListPhones());
 
 			setHeight(400);
@@ -145,16 +155,39 @@ public class DlgAddEditBlockListPhones extends Window {
 				}
 				phones.add(phoneItem);
 			}
-
+			String phoneList = "";
 			for (String phone : phones) {
-				ListGridRecord dateRec = new ListGridRecord();
-				dateRec.setAttribute("phone", phone);
-				listGrid.addData(dateRec);
+				if (phoneList.length() > 0)
+					phoneList += ",";
+				phoneList += phone;
 			}
-			destroy();
+			checkNumbers(phoneList, phones);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
+	}
+
+	private void checkNumbers(String phoneList, final TreeSet<String> phones)
+			throws Exception {
+		DSRequest req = new DSRequest();
+		Record cr = new Record();
+		cr.setAttribute("blockListPhones", phoneList);
+		cr.setAttribute("black_list_id", blackListId == null ? -1 : blackListId);
+		req.setAttribute("operationId", "checkPhones");
+
+		ds.updateData(cr, new DSCallback() {
+			@Override
+			public void execute(DSResponse response, Object rawData,
+					DSRequest request) {
+				for (String phone : phones) {
+					ListGridRecord dateRec = new ListGridRecord();
+					dateRec.setAttribute("phone", phone);
+					listGrid.addData(dateRec);
+				}
+				destroy();
+			}
+		}, req);
 	}
 }
