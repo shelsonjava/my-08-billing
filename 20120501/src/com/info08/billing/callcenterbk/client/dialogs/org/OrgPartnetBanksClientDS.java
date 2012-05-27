@@ -23,5 +23,5 @@ public class OrgPartnetBanksClientDS extends DataSource {
 
 		setFields(organization_id, organization_name, full_address_not_hidden);
 		setClientOnly(true);		
-	}
+	}	
 }

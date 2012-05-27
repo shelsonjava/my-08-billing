@@ -357,14 +357,6 @@ public class OrganizationDMI {
 			} else {
 				oracleManager.persist(legalAddress);
 			}
-			boolean isPersist = (organization_id == null);
-			if (organization_id == null) {
-				oracleManager.persist(organization);
-			} else {
-				oracleManager.merge(organization);
-			}
-			organization.setLegal_address_id(legalAddress.getAddr_id());
-			organization_id = organization.getOrganization_id();
 
 			Address physicalAddress = null;
 			if (physical_address_id != null) {
@@ -408,6 +400,18 @@ public class OrganizationDMI {
 			} else {
 				oracleManager.persist(physicalAddress);
 			}
+
+			organization.setLegal_address_id(legalAddress.getAddr_id());
+			organization.setPhysical_address_id(physicalAddress.getAddr_id());
+
+			boolean isPersist = (organization_id == null);
+			if (organization_id == null) {
+				oracleManager.persist(organization);
+			} else {
+				oracleManager.merge(organization);
+			}
+
+			organization_id = organization.getOrganization_id();
 
 			if (!isPersist) {
 				oracleManager.createNativeQuery(Q_DELETE_ORG_ACTIVITIES)

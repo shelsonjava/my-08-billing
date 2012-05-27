@@ -18,7 +18,6 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
-import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.Side;
@@ -558,7 +557,7 @@ public class DlgAddEditMainOrg extends Window {
 			orgPartBankOrgsGrid.setWrapCells(true);
 			orgPartBankOrgsGrid.setFixedRecordHeights(false);
 			orgPartBankOrgsGrid.setCanRemoveRecords(true);
-
+			
 			HLayout hLayoutPartBanks = new HLayout();
 			hLayoutPartBanks.setWidth100();
 			hLayoutPartBanks.setMembersMargin(5);
@@ -911,8 +910,9 @@ public class DlgAddEditMainOrg extends Window {
 			}
 			LinkedHashMap<String, String> orgActivities = new LinkedHashMap<String, String>();
 			for (ListGridRecord orgActivity : orgActivityList) {
-				orgActivities.put("org_activity_id", orgActivity
-						.getAttributeAsInt("org_activity_id").toString());
+				String orgActStr = orgActivity.getAttributeAsInt(
+						"org_activity_id").toString();
+				orgActivities.put("org_activity_id_" + orgActStr, orgActStr);
 			}
 			Boolean bImportant_remark = importantRemark.getValueAsBoolean();
 			Integer important_remark = null;
@@ -1011,14 +1011,14 @@ public class DlgAddEditMainOrg extends Window {
 				fromMaps.put("legal_addr_anumber", legal_addr_anumber);
 			}
 
-			RecordList partBankRecordList = orgPartBankOrgsGrid
-					.getDataAsRecordList();
-			if (!partBankRecordList.isEmpty()) {
+			ListGridRecord partBankRecordList[] = orgPartBankOrgsGrid
+					.getRecords();
+			if (partBankRecordList != null && partBankRecordList.length > 0) {
 				LinkedHashMap<String, String> orgPartnerBanks = new LinkedHashMap<String, String>();
-				for (int i = 0; i < partBankRecordList.getLength(); i++) {
-					Record record = partBankRecordList.get(i);
-					orgPartnerBanks.put("organization_id", record
-							.getAttributeAsInt("organization_id").toString());
+				for (ListGridRecord rec : partBankRecordList) {
+					String orgId = rec.getAttributeAsInt("organization_id")
+							.toString();
+					orgPartnerBanks.put("organization_id_" + orgId, orgId);
 				}
 				fromMaps.put("orgPartnerBanks", orgPartnerBanks);
 			}
