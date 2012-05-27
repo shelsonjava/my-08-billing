@@ -108,17 +108,28 @@
 					
 					#if($criteria.name_param) AND name like '%%'||($criteria.name_param)||'%' #end
 					#if($criteria.family_name_param) AND family_name like '%%'||($criteria.family_name_param)||'%' #end
-					#if($criteria.street_name_param) AND exists (
-							select 1 from (SELECT TRIM(SUBSTR(txt,
-		                                    INSTR(txt, ' ' , 1, level) + 1,
-		                                    INSTR(txt, ' ' , 1, level + 1) -
-		                                    INSTR(txt, ' ' , 1, level) - 1)) AS dem
-							                   FROM (SELECT ' '  ||
-							                                trim($criteria.street_name_param) || ' '  AS txt
-							                           FROM dual)
-							                 CONNECT BY level <=
-							                            LENGTH(txt) - LENGTH(REPLACE(txt, ' ' , '')) - 1)
-							where address like '%'||dem||'%')
+					#if($criteria.street_name_param) AND not exists (
+													select count(1)
+						          from (SELECT TRIM(SUBSTR(txt,
+						                                   INSTR(txt, ' ', 1, level) + 1,
+						                                   INSTR(txt, ' ', 1, level + 1) -
+						                                   INSTR(txt, ' ', 1, level) - 1)) AS dem
+						                  FROM (SELECT ' ' || trim($criteria.street_name_param) || ' ' AS txt
+						                          FROM dual)
+						                CONNECT BY level <=
+						                           LENGTH(txt) - LENGTH(REPLACE(txt, ' ', '')) - 1)
+						        minus
+						        select count(1)
+						        
+						          from (SELECT TRIM(SUBSTR(txt,
+						                                   INSTR(txt, ' ', 1, level) + 1,
+						                                   INSTR(txt, ' ', 1, level + 1) -
+						                                   INSTR(txt, ' ', 1, level) - 1)) AS dem
+						                  FROM (SELECT ' ' || trim($criteria.street_name_param) || ' ' AS txt
+						                          FROM dual)
+						                CONNECT BY level <=
+						                           LENGTH(txt) - LENGTH(REPLACE(txt, ' ', '')) - 1)
+						         where t.address like '%' || dem || '%')
 					 #end
 					
 					#if($criteria.phone||$criteria.is_parallel
