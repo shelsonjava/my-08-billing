@@ -76,9 +76,19 @@
 		<field name="legal_addr_anumber"			type="text"  		title="legal_addr_anumber"				hidden="true"/>
 		<field name="legal_addr_street_location"	type="text"  		title="legal_addr_street_location"		hidden="true"/>
 		<field name="legal_addr_street_index_text"	type="text"  		title="legal_addr_street_index_text"	hidden="true"/>
-		
+		<field name="orgActivities"					type="any"  		title="orgActivities"					hidden="true"/>
+		<field name="orgPartnerBanks"				type="any"  		title="orgPartnerBanks"					hidden="true"/>
 	</fields>
 	<operationBindings>
+	
+	
+		<!-- Add New Organization -->
+		<operationBinding operationType="add" operationId="addOrganization" serverMethod="addOrUpdateOrganization">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+        <operationBinding operationType="update" operationId="updateOrganization" serverMethod="addOrUpdateOrganization">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
 	
 		 <!-- Sort Order Update For Orgs -->
 		<operationBinding operationType="update" operationId="updateMainServiceOrders" serverMethod="updateMainServiceOrders">
@@ -464,7 +474,7 @@
     			o.remark,
     			(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden
 			</selectClause> 
-			<tableClause>organization_partnet_banks t,organizations o, addresses a, streets str, towns tw</tableClause>	
+			<tableClause>organization_partner_banks t,organizations o, addresses a, streets str, towns tw</tableClause>	
 			<whereClause>
 					t.part_bank_org_id = o.organization_id and o.physical_address_id = a.addr_id and str.street_id = a.street_id and tw.town_id = a.town_id
 				    #if($criteria.organization_id) and t.organization_id = $criteria.organization_id #end
