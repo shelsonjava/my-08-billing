@@ -357,7 +357,7 @@ public class OrganizationDMI {
 			} else {
 				oracleManager.persist(legalAddress);
 			}
-
+			boolean isPersist = (organization_id == null);
 			if (organization_id == null) {
 				oracleManager.persist(organization);
 			} else {
@@ -409,8 +409,10 @@ public class OrganizationDMI {
 				oracleManager.persist(physicalAddress);
 			}
 
-			oracleManager.createNativeQuery(Q_DELETE_ORG_ACTIVITIES)
-					.setParameter(1, organization_id).executeUpdate();
+			if (!isPersist) {
+				oracleManager.createNativeQuery(Q_DELETE_ORG_ACTIVITIES)
+						.setParameter(1, organization_id).executeUpdate();
+			}
 
 			Map<?, ?> orgActivities = (Map<?, ?>) values.get("orgActivities");
 			Set<?> orgActKeys = orgActivities.keySet();
@@ -423,8 +425,10 @@ public class OrganizationDMI {
 				oracleManager.persist(organizationToActivity);
 			}
 
-			oracleManager.createNativeQuery(Q_DELETE_ORG_PART_BANKS)
-					.setParameter(1, organization_id).executeUpdate();
+			if (!isPersist) {
+				oracleManager.createNativeQuery(Q_DELETE_ORG_PART_BANKS)
+						.setParameter(1, organization_id).executeUpdate();
+			}
 
 			Map<?, ?> orgPartnerBanks = (Map<?, ?>) values
 					.get("orgPartnerBanks");
