@@ -708,4 +708,5 @@ public interface AppConstants extends Constants {
 	String priority();
 	String orgAddressShort();
 	String abonentAddressShort();
+	String manageOrgDepartments();
 }
