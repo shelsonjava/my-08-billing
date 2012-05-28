@@ -166,7 +166,7 @@
 						o.important_remark,
 						tw.town_id,
 						o.priority,
-             			0.super_priority,
+             			o.super_priority,
              			a.town_district_id,
              		    decode(a.hidden_by_request,1,'მისამართი დაფარულია',(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address)) as full_address,
 		                getTbilisiOrder(tw.town_id) as cust_order,

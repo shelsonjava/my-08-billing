@@ -71,6 +71,7 @@ public class TabOrganization extends Tab {
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
 	private ToolStripButton supperOrgBtn;
+	private ToolStripButton orgDepartmentsBtn;
 
 	private TreeGrid orgTreeGrid;
 	private VLayout mainLayout;
@@ -288,6 +289,15 @@ public class TabOrganization extends Tab {
 		supperOrgBtn.setLayoutAlign(Alignment.LEFT);
 		supperOrgBtn.setWidth(50);
 		toolStrip.addButton(supperOrgBtn);
+
+		toolStrip.addSeparator();
+
+		orgDepartmentsBtn = new ToolStripButton(
+				CallCenterBK.constants.departments(),
+				"orgtypes/associations.png");
+		orgDepartmentsBtn.setLayoutAlign(Alignment.LEFT);
+		orgDepartmentsBtn.setWidth(50);
+		toolStrip.addButton(orgDepartmentsBtn);
 
 		orgTreeGrid = new TreeGrid() {
 			protected String getCellCSSText(ListGridRecord record, int rowNum,

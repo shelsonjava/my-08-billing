@@ -302,7 +302,7 @@ public class OrganizationDMI {
 	 * @return
 	 * @throws Exception
 	 */
-	public Organization addOrUpdateOrganization(DSRequest dsRequest)
+	public Map<?, ?> addOrUpdateOrganization(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -449,16 +449,17 @@ public class OrganizationDMI {
 			EMF.commitTransaction(transaction);
 			log += ". Save Or Update Finished SuccessFully. ";
 			logger.info(log);
-			return organization;
+			values = DMIUtils.findRecordById("OrgDS",
+					"customOrgSearchForCallCenterNew", organization_id,
+					"organization_id");
+			return values;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While adding New organization Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
+			logger.error("Error While adding New organization Into Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : " + e.toString());
 		} finally {
 			if (oracleManager != null) {
 				EMF.returnEntityManager(oracleManager);

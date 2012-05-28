@@ -1,0 +1,158 @@
+<DataSource 
+	ID="OrgDepartmentDS" 
+	serverType="sql"
+	tableName="organization_department" 
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="org_department_id" 				type="integer" 		title="org_department_id" 					hidden="true" 	primaryKey="true" />
+		<field name="parrent_department_id"				type="integer" 		title="parrent_department_id"				hidden="true" 	foreignKey="OrgDepartmentDS.org_department_id"  detail="true"/>
+		<field name="parrent_department_id1"			type="integer" 		title="parrent_department_id1"				hidden="true"/>
+		<field name="organization_id" 					type="integer" 		title="organization_id" 					hidden="true" />
+		<field name="inner_order" 						type="integer" 		title="inner_order" 						hidden="true" />
+		<field name="legal_address_id" 					type="integer" 		title="legal_address_id" 					hidden="true" />
+		<field name="physical_address_id" 				type="integer" 		title="physical_address_id" 				hidden="true" />
+		<field name="department" 						type="text" 		title="department" />		
+		<field name="remark" 							type="text" 		title="remark" />
+		<field name="tree_parrent"						type="text"  		title="tree_org_parrent"					hidden="true"/>
+		<field name="tree_child"						type="text"  		title="tree_org_child"						hidden="true"/>
+		<field name="street_id" 						type="integer" 		title="street_id" 							hidden="true" />
+		<field name="real_address_descr"				type="text"  		title="real_address_descr"					hidden="true"/>
+		<field name="town_name"							type="text"  		title="town_name"							hidden="true"/>
+		<field name="town_district"						type="text"  		title="town_district"						hidden="true"/>
+		<field name="street_location"					type="text"  		title="street_location"						hidden="true"/>
+		<field name="street_index_text"					type="text"  		title="street_index_text"					hidden="true"/>
+		<field name="town_id" 							type="integer" 		title="town_id" 							hidden="true" />
+		<field name="town_district_id" 					type="integer" 		title="town_district_id" 					hidden="true" />
+		<field name="legal_addr_town_id" 				type="integer" 		title="legal_addr_town_id" 					hidden="true" />
+		<field name="legal_addr_street_id" 				type="integer" 		title="legal_addr_street_id" 				hidden="true" />
+		<field name="legal_addr_town_district_id" 		type="integer" 		title="legal_addr_town_district_id" 		hidden="true" />
+		<field name="legal_addr_hidden_by_request"		type="integer" 		title="legal_addr_hidden_by_request" 		hidden="true" />
+		<field name="hidden_by_request" 				type="integer" 		title="hidden_by_request"					hidden="true" />
+		<field name="full_address"						type="text"  		title="full_address"						hidden="true"/>
+		<field name="street_name"						type="text"  		title="street_name"							hidden="true"/>
+		<field name="full_address"						type="text"  		title="full_address"						hidden="true"/>
+		<field name="block"								type="text"  		title="block"								hidden="true"/>
+		<field name="appt"								type="text"  		title="appt"								hidden="true"/>
+		<field name="descr"								type="text"  		title="descr"								hidden="true"/>
+		<field name="anumber"							type="text"  		title="anumber"								hidden="true"/>
+		<field name="full_address_not_hidden"			type="text"  		title="full_address_not_hidden"				hidden="true"/>
+		<field name="legal_addr_full_address"			type="text"  		title="legal_addr_full_address"				hidden="true"/>
+		<field name="legal_addr_block"					type="text"  		title="legal_addr_block"					hidden="true"/>
+		<field name="legal_addr_appt"					type="text"  		title="legal_addr_appt"						hidden="true"/>
+		<field name="legal_addr_anumber"				type="text"  		title="legal_addr_anumber"					hidden="true"/>
+		<field name="legal_addr_street_location"		type="text"  		title="legal_addr_street_location"			hidden="true"/>
+		<field name="legal_addr_street_index_text"		type="text"  		title="legal_addr_street_index_text"		hidden="true"/>
+		
+	</fields>
+
+	<operationBindings>
+	
+		<!-- FETCH -->
+		<operationBinding operationId="orgDepartSearch" operationType="fetch">			
+			<selectClause>distinct 
+						o.org_department_id,
+						o.parrent_department_id,
+						o.parrent_department_id as parrent_organization_id1,
+						o.organization_id,
+						o.inner_order,
+						o.legal_address_id,
+						o.physical_address_id,
+						o.department,
+						o.remark
+						a.street_id,
+						decode(a.hidden_by_request,1,'მისამართი დაფარულია',tw.town_name || ', ' ||getDistrict(str.street_id)||', '||str.street_name||' '||a.full_address) as real_address_descr,
+						tw.town_name,
+						getDistrict(str.street_id) as town_district,
+						str.street_location,
+						getindex(str.street_id) as street_index_text,
+						tw.town_id,
+             			a.town_district_id,
+             		    decode(a.hidden_by_request,1,'მისამართი დაფარულია',(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address)) as full_address,
+		                str.street_name,
+		                a.hidden_by_request,
+		                decode(o.parrent_department_id,null,null,'home') as tree_parrent,
+		                decode((select min(1) from organization_department ms1 where ms1.parrent_department_id = o.org_department_id),null,null,'associations') as tree_child,
+		                a.full_address,
+						a.block,
+						a.appt,
+						a.descr,
+						a.anumber,
+						(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden,
+						tw1.town_id as legal_addr_town_id,
+						a1.street_id as legal_addr_street_id,
+						a1.town_district_id as legal_addr_town_district_id,
+						a1.hidden_by_request as legal_addr_hidden_by_request,
+						a1.full_address as legal_addr_full_address,
+						a1.block as legal_addr_block,
+						a1.appt as legal_addr_appt,
+						a1.anumber as legal_addr_anumber,
+						str1.street_location as legal_addr_street_location,
+						getindex(str1.street_id) as legal_addr_street_index_text
+			</selectClause>
+			<tableClause>organization_department o, addresses a, streets str, towns tw, addresses a1, streets str1, towns tw1</tableClause>
+			<whereClause>
+				 <![CDATA[
+						 o.physical_address_id = a.addr_id(+) and a.street_id = str.street_id(+) and a.town_id = tw.town_id(+) and 
+						 o.legal_address_id = a1.addr_id(+) and a1.street_id = str1.street_id(+) and a1.town_id = tw1.town_id(+)
+						 #if($criteria.parrent_organization_id) and o.parrent_organization_id = $criteria.parrent_organization_id #end
+						 #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+						 #if($criteria.pp_organization_id) and o.organization_id = $criteria.pp_organization_id #end
+						 #if($criteria.organization_name1) and o.organization_name like '%'||($criteria.organization_name1)||'%' #end
+						 #if($criteria.organization_name2) and o.organization_name like '%'||($criteria.organization_name2)||'%' #end
+						 #if($criteria.organization_name3) and o.organization_name like '%'||($criteria.organization_name3)||'%' #end
+						 #if($criteria.organization_name4) and o.organization_name like '%'||($criteria.organization_name4)||'%' #end
+						 #if($criteria.organization_name5) and o.organization_name like '%'||($criteria.organization_name5)||'%' #end
+						 #if($criteria.organization_name6) and o.organization_name like '%'||($criteria.organization_name6)||'%' #end
+						 #if($criteria.organization_name7) and o.organization_name like '%'||($criteria.organization_name7)||'%' #end
+						 #if($criteria.organization_name8) and o.organization_name like '%'||($criteria.organization_name8)||'%' #end
+						 #if($criteria.organization_name9) and o.organization_name like '%'||($criteria.organization_name9)||'%' #end								 
+						 #if($criteria.remark1) and o.remark like '%'||($criteria.remark1)||'%' #end
+						 #if($criteria.remark2) and o.remark like '%'||($criteria.remark2)||'%' #end
+						 #if($criteria.remark3) and o.remark like '%'||($criteria.remark3)||'%' #end
+						 #if($criteria.remark4) and o.remark like '%'||($criteria.remark4)||'%' #end
+						 #if($criteria.remark5) and o.remark like '%'||($criteria.remark5)||'%' #end
+						 #if($criteria.remark6) and o.remark like '%'||($criteria.remark6)||'%' #end
+						 #if($criteria.remark7) and o.remark like '%'||($criteria.remark7)||'%' #end
+						 #if($criteria.remark8) and o.remark like '%'||($criteria.remark8)||'%' #end
+						 #if($criteria.remark9) and o.remark like '%'||($criteria.remark9)||'%' #end
+						 #if($criteria.remark10) and o.remark like '%'||($criteria.remark)||'%' #end
+						 #if($criteria.real_address1) and str.street_name like '%'||($criteria.real_address1)||'%' #end
+						 #if($criteria.real_address2) and str.street_name like '%'||($criteria.real_address2)||'%' #end
+						 #if($criteria.real_address3) and str.street_name like '%'||($criteria.real_address3)||'%' #end
+						 #if($criteria.real_address4) and str.street_name like '%'||($criteria.real_address4)||'%' #end
+						 #if($criteria.real_address5) and str.street_name like '%'||($criteria.real_address5)||'%' #end
+						 #if($criteria.organization_name_eng) and o.organization_name_eng like ($criteria.organization_name_eng)||'%' #end
+						 #if($criteria.legaladdress) and o.legaladdress like '%'||($criteria.legaladdress)||'%' #end
+						 #if($criteria.legaladdress1) and o.legaladdress like '%'||($criteria.legaladdress1)||'%' #end
+						 #if($criteria.legaladdress2) and o.legaladdress like '%'||($criteria.legaladdress2)||'%' #end
+						 #if($criteria.legaladdress3) and o.legaladdress like '%'||($criteria.legaladdress3)||'%' #end
+						 #if($criteria.legaladdress4) and o.legaladdress like '%'||($criteria.legaladdress4)||'%' #end
+						 #if($criteria.legaladdress5) and mo1.legaladdress like '%'||($criteria.legaladdress5)||'%' #end
+						 #if($criteria.remark) and mo1.remark like '%'||($criteria.remark)||'%' #end
+						 #if($criteria.director1) and mo1.director like '%'||($criteria.director1)||'%' #end
+						 #if($criteria.director2) and o.director like '%'||($criteria.director2)||'%' #end
+						 #if($criteria.director3) and o.director like '%'||($criteria.director3)||'%' #end
+						 #if($criteria.dayoffs1) and o.dayoffs like '%'||($criteria.dayoffs1)||'%' #end
+						 #if($criteria.dayoffs2) and o.dayoffs like '%'||($criteria.dayoffs2)||'%' #end
+						 #if($criteria.dayoffs3) and o.dayoffs like '%'||($criteria.dayoffs3)||'%' #end
+						 #if($criteria.address_suffix_geo) and ma.address_suffix_geo like '%'||($criteria.address_suffix_geo)||'%' #end						 
+						 #if($criteria.workinghours) and o.workinghours like '%'||($criteria.workinghours)||'%' #end
+						 #if($criteria.webaddress) and o.webaddress like '%'||($criteria.webaddress)||'%' #end
+						 #if($criteria.mail) and o.mail like '%'||($criteria.mail)||'%' #end
+						 #if($criteria.legal_statuse_id) and o.legal_statuse_id = $criteria.legal_statuse_id #end
+						 #if($criteria.identcode) and o.identcode = $criteria.identcode #end
+						 #if($criteria.ind) and o.ind = $criteria.ind #end						 
+						 #if($criteria.street_id) and ma.street_id = $criteria.street_id #end
+						 #if($criteria.city_id) and ma.city_id = $criteria.city_id #end
+						 #if($criteria.ident_code) and (o.identcode = $criteria.ident_code or o.new_identcode = $criteria.ident_code )  #end
+						 #if($criteria.city_region_id) 
+						 	and exists (select * from ccare.street_district tt where tt.street_id = str.street_id and  tt.city_region_id = $criteria.city_region_id)  
+						 #end
+				 ]]>
+			</whereClause>
+			<orderClause>o.</orderClause>
+		</operationBinding>
+        
+	</operationBindings>
+</DataSource>

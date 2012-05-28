@@ -44,6 +44,8 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
+import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
+import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.tree.TreeGrid;
@@ -89,17 +91,15 @@ public class DlgAddEditMainOrg extends Window {
 	private CheckboxItem importantRemark;
 	private SelectItem orgStatusItem;
 
-	// address fields.
+	private IButton saveItem;
+	private int selectedTabIndex = 0;
 
 	private TreeGrid orgTreeGrid;
 	private ListGridRecord listGridRecord;
-
 	private ListGrid dayOffsGrid;
 	private ListGrid orgDayOffsGrid;
-
 	private ListGrid activityGrid;
 	private ListGrid orgActivityGrid;
-
 	private ListGrid bankOrgsGrid;
 	private ListGrid orgPartBankOrgsGrid;
 	private ToolStripButton copyAddress;
@@ -435,7 +435,7 @@ public class DlgAddEditMainOrg extends Window {
 			hLayoutItem.setWidth100();
 			hLayoutItem.setAlign(Alignment.RIGHT);
 
-			IButton saveItem = new IButton();
+			saveItem = new IButton();
 			saveItem.setTitle(CallCenterBK.constants.save());
 			saveItem.setWidth(100);
 
@@ -501,7 +501,11 @@ public class DlgAddEditMainOrg extends Window {
 			saveItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					save();
+					if (selectedTabIndex == 0) {
+						topTabSet.selectTab(1);
+					} else {
+						save();
+					}
 				}
 			});
 
@@ -557,7 +561,7 @@ public class DlgAddEditMainOrg extends Window {
 			orgPartBankOrgsGrid.setWrapCells(true);
 			orgPartBankOrgsGrid.setFixedRecordHeights(false);
 			orgPartBankOrgsGrid.setCanRemoveRecords(true);
-			
+
 			HLayout hLayoutPartBanks = new HLayout();
 			hLayoutPartBanks.setWidth100();
 			hLayoutPartBanks.setMembersMargin(5);
@@ -569,6 +573,18 @@ public class DlgAddEditMainOrg extends Window {
 				@Override
 				public void onClick(ClickEvent event) {
 					copyAddress();
+				}
+			});
+
+			topTabSet.addTabSelectedHandler(new TabSelectedHandler() {
+				@Override
+				public void onTabSelected(TabSelectedEvent event) {
+					selectedTabIndex = event.getTabNum();
+					if (selectedTabIndex == 0) {
+						saveItem.setTitle(CallCenterBK.constants.next());
+					} else {
+						saveItem.setTitle(CallCenterBK.constants.save());
+					}
 				}
 			});
 
