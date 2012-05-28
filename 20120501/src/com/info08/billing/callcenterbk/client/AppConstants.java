@@ -706,4 +706,6 @@ public interface AppConstants extends Constants {
 	String orgIdentCodeIsInvalid();
 	String importedNumbers();
 	String priority();
+	String orgAddressShort();
+	String abonentAddressShort();
 }
