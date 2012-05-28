@@ -164,7 +164,7 @@ public class DlgViewTransport extends Window {
 		listGridInner.setHeight100();
 		listGridInner.setAlternateRecordStyles(true);
 		listGridInner.setCriteria(criteria);
-		listGridInner.setDataSource(dataSource);
+		listGridInner.setDataSource(DataSource.get("TranspScheduleDS"));
 		listGridInner.setAutoFetchData(true);
 		listGridInner.setShowFilterEditor(false);
 		listGridInner.setCanEdit(false);
@@ -175,22 +175,22 @@ public class DlgViewTransport extends Window {
 		listGridInner.setShowFilterEditor(true);
 		listGridInner.setFilterOnKeypress(true);
 
-		ListGridField outCity = new ListGridField("outCity",
+		ListGridField outCity = new ListGridField("depart_city",
 				CallCenterBK.constants.town());
 		outCity.setAlign(Alignment.LEFT);
 		outCity.setCanFilter(true);
 
-		ListGridField outPlace = new ListGridField("outPlace",
+		ListGridField outPlace = new ListGridField("arrival_city",
 				CallCenterBK.constants.outPlace());
 		outPlace.setAlign(Alignment.LEFT);
 		outPlace.setCanFilter(true);
 
-		ListGridField in_timeF = new ListGridField("c_in_time",
+		ListGridField in_timeF = new ListGridField("formated_arrival_time",
 				CallCenterBK.constants.inTime());
 		in_timeF.setAlign(Alignment.LEFT);
 		in_timeF.setCanFilter(false);
 
-		ListGridField out_timeF = new ListGridField("c_out_time",
+		ListGridField out_timeF = new ListGridField("formated_depart_time",
 				CallCenterBK.constants.outTime());
 		out_timeF.setAlign(Alignment.LEFT);
 		out_timeF.setCanFilter(false);

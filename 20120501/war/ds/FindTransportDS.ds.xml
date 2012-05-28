@@ -37,73 +37,70 @@
     	<operationBinding operationId="findAllTransportsCC" operationType="fetch">
     		<selectClause>   			
     			  	   distinct 
-				       t.transport_id,
+				       t.transp_schedule_id as transport_id,
 				       t.days,
 				       getdaysdescription(t.days) as days_descr,
-				       t.in_time,
-				       t.note_crit,
-				       t.note_eng,
-				       t.note_geo,
-				       t.out_time,
-				       t.transport_no,
-				       t.transport_price_eng,
-				       t.transport_price_geo,
-				       t.trip_criteria,
+				       t.arrival_time as in_time,
+				       t.important as note_crit,
+				       t.remark as note_eng,
+				       t.remark as note_geo,
+				       t.depart_time as out_time,
+				       t.price_descr as transport_price_geo,
+				       t.transp_model_descr as trip_criteria,
 				       tt.name_descr,
-				       oc.town_name||' '||o.transport_place_geo as transport_place_geo_out,
-				       ic.town_name||' '||i.transport_place_geo as transport_place_geo_in,
-				       tc.transport_company_geo,
-					   tp.transport_plane_geo,
+				       oc.town_name||' '||o.name_descr as transport_place_geo_out,
+				       ic.town_name||' '||i.name_descr as transport_place_geo_in,
+				       tc.name_descr as transport_company_geo,
+					   tp.name_descr as transport_plane_geo,
 				       oc.town_name as otown_name,
 				       ic.town_name as itown_name,
-				       o.transport_place_geo as ostation,
-				       i.transport_place_geo as istation,
-				       to_char((t.in_time+ic.normal_gmt/24),'HH24:mi') cmt1,
-				       to_char((t.in_time+      decode(icc.season_id,0,ic.normal_gmt/24,ic.winter_gmt/24)      ),'HH24:mi') cmt,
-				       to_char(t.out_time,'HH24:MI') c_out_time,
-				       to_char(t.in_time ,'HH24:MI') c_in_time,
+				       o.name_descr as ostation,
+				       i.name_descr as istation,
+				       to_char((t.arrival_time+ic.normal_gmt/24),'HH24:mi') cmt1,
+				       to_char((t.arrival_time+decode(icc.season,0,ic.normal_gmt/24,ic.winter_gmt/24)),'HH24:mi') cmt,
+				       to_char(t.depart_time,'HH24:MI') c_out_time,
+				       to_char(t.arrival_time ,'HH24:MI') c_in_time,
 				       '!!!!!' as alarm
 			</selectClause> 
 			<tableClause>
 				<![CDATA[
-					     ccare.transports t 
-						 inner join ccare.transport_types tt on t.transport_type_id = tt.transport_type_id
-						 left join  ccare.transport_companies tc on t.transport_company_id = tc.transport_company_id
- 						 left join  ccare.transport_plane tp on t.transport_plane_id = tp.transport_plane_id
-						 left join  ccare.transport_details d on t.transport_id = d.transport_id and d.deleted = 0
+					     ccare.transp_schedules t 
+						 inner join ccare.transp_types tt on t.transp_type_id = tt.transp_type_id
+						 left join  ccare.transp_companies tc on t.transp_comp_id = tc.transp_comp_id
+ 						 left join  ccare.transp_resource tp on t.transp_res_id = tp.transp_res_id
+						 left join  ccare.transp_items d on t.transp_schedule_id = d.transp_schedule_id 
 						 
 						 #if( ($criteria.o_town_id && $criteria.i_town_id) || ($criteria.o_country_id && $criteria.i_country_id) )
-						  	left join  ccare.transport_details d1 on t.transport_id = d1.transport_id and d1.deleted = 0 and d1.transport_detail_order >= d.transport_detail_order 
+						  	left join  ccare.transp_items d1 on t.transp_schedule_id = d1.transp_schedule_id and d1.item_order >= d.item_order 
 						 #end
 						  
-						 inner join  ccare.transport_places o on o.transport_place_id = t.out_transport_place_id and o.deleted = 0
-						 inner join  ccare.transport_places i on i.transport_place_id = t.in_transport_place_id and i.deleted = 0
-						 left join  ccare.cities oc on oc.town_id = o.town_id
-						 left join  ccare.cities ic on ic.town_id = i.town_id
+						 inner join  ccare.transp_stations o on o.transp_stat_id = t.depart_transp_stat_id
+						 inner join  ccare.transp_stations i on i.transp_stat_id = t.arrival_transp_stat_id
+						 left join  ccare.towns oc on oc.town_id = o.town_id
+						 left join  ccare.towns ic on ic.town_id = i.town_id
 						 left join  ccare.countries icc on icc.country_id = ic.country_id
-						 left join  ccare.transport_places dp on dp.transport_place_id = d.transport_place_id
-						 left join  ccare.cities dpc on dpc.town_id = dp.town_id
+						 left join  ccare.transp_stations dp on dp.transp_stat_id = d.transp_station_id
+						 left join  ccare.towns dpc on dpc.town_id = dp.town_id
 						 
 						 #if( ($criteria.o_town_id && $criteria.i_town_id) || ($criteria.o_country_id && $criteria.i_country_id) )
-							 left join  ccare.transport_places dp1 on dp1.transport_place_id = d1.transport_place_id
-							 left join  ccare.cities dpc1 on dpc1.town_id = dp1.town_id
+							 left join  ccare.transp_stations dp1 on dp1.transp_stat_id = d1.transp_station_id
+							 left join  ccare.towns dpc1 on dpc1.town_id = dp1.town_id
 						  #end
 				]]>  
 			</tableClause>
 			<whereClause><![CDATA[
-					   t.deleted = 0
-				       #if($criteria.transport_type_id) and tt.transport_type_id = $criteria.transport_type_id #end
+					   1 = 1
+				       #if($criteria.transp_type_id) and tt.transp_type_id = $criteria.transp_type_id #end
 				       #if($criteria.c_days)  and (bitand(t.days, $criteria.c_days) = $criteria.c_days OR t.days = 0) #end
-				       #if($criteria.trip_criteria_param) and t.trip_criteria like '%'||($criteria.trip_criteria_param)||'%' #end
-					   #if($criteria.trip_criteria) and t.trip_criteria like '%'||($criteria.trip_criteria)||'%' #end
-					   #if($criteria.note_geo) and t.note_geo like '%'||($criteria.note_geo)||'%' #end
+				       #if($criteria.transp_model_descr_param) and t.transp_model_descr like '%'||($criteria.transp_model_descr_param)||'%' #end
+					   #if($criteria.transp_model_descr) and t.transp_model_descr like '%'||($criteria.transp_model_descr)||'%' #end
+					   #if($criteria.remark) and t.remark like '%'||($criteria.remark)||'%' #end
 					   #if($criteria.otown_name) and oc.town_name like '%'||($criteria.otown_name)||'%' #end
 					   #if($criteria.itown_name) and ic.town_name like '%'||($criteria.itown_name)||'%' #end
-					   #if($criteria.ostation) and o.transport_place_geo like '%'||($criteria.ostation)||'%' #end
-					   #if($criteria.istation) and i.transport_place_geo  like '%'||($criteria.istation)||'%' #end
-					   #if($criteria.transport_no) and t.transport_no like '%'||($criteria.transport_no)||'%' #end
-					   #if($criteria.transport_company_geo) and tc.transport_company_geo like '%'||($criteria.transport_company_geo)||'%' #end
-					   #if($criteria.transport_plane_geo) and tp.transport_plane_geo like '%'||($criteria.transport_plane_geo)||'%' #end
+					   #if($criteria.ostation) and o.name_descr like '%'||($criteria.ostation)||'%' #end
+					   #if($criteria.istation) and i.name_descr  like '%'||($criteria.istation)||'%' #end
+					   #if($criteria.transport_company_geo) and tc.name_descr like '%'||($criteria.transport_company_geo)||'%' #end
+					   #if($criteria.transport_plane_geo) and tp.name_descr like '%'||($criteria.transport_plane_geo)||'%' #end
 					   #if($criteria.days_descr) and getdaysdescription(t.days) like '%'||($criteria.days_descr)||'%' #end
 				       
 				       
@@ -135,7 +132,7 @@
 				       
 				]]>  
 			</whereClause> 
-			<orderClause>oc.town_name, ic.town_name, t.out_time</orderClause>
+			<orderClause>oc.town_name, ic.town_name, t.depart_time</orderClause>
     	</operationBinding>
     	
     	

@@ -156,7 +156,7 @@
     			c.town_id, 
     			c.town_name
 			</selectClause> 
-			<tableClause>cities c</tableClause>
+			<tableClause>towns c</tableClause>
 			<whereClause><![CDATA[ 
 				($defaultWhereClause) 
 				#if($criteria.transport_type_id) 

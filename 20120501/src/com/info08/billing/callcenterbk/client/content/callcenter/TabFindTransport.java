@@ -477,7 +477,7 @@ public class TabFindTransport extends Tab {
 		listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-				DataSource dataSourceTr = DataSource.get("TransportDS");
+				DataSource dataSourceTr = DataSource.get("FindTransportDS");
 				String transportTypeId = transportTypeItem.getValueAsString();
 				DlgViewTransport dlgViewTransport = new DlgViewTransport(
 						listGrid, dataSourceTr, listGrid.getSelectedRecord(),
