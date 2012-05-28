@@ -1,0 +1,75 @@
+<DataSource
+	ID="StaffDS"
+	serverType="sql"
+	tableName="staff"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="staff_id"					type="integer"		title="staff_id"			hidden="true" primaryKey="true" />
+		<field name="doc_num"					type="text"			title="doc_num"/>
+		<field name="last_name"					type="text"			title="last_name"/>
+		<field name="first_name"				type="text"			title="first_name"/>
+		<field name="gender_id"					type="integer"		title="gender_id" 			hidden="true"/>
+		<field name="nationality_id"			type="integer"		title="nationality_id" 		hidden="true"/>
+		<field name="dob"						type="datetime"		title="dob" 				hidden="true"/>
+		<field name="dob_descr"					type="text"			title="dob_descr"/>
+		<field name="remark"					type="datetime"		title="remark" 				hidden="true"/>
+		<field name="family_status_id"			type="datetime"		title="family_status_id" 	hidden="true"/>
+		<field name="start_date"				type="datetime"		title="start_date" 			hidden="true"/>
+		<field name="department_id"				type="datetime"		title="department_id" 		hidden="true"/>
+		<field name="gender_descr"				type="datetime"		title="gender_descr" 		hidden="true"/>
+		<field name="nationality_descr"			type="datetime"		title="nationality_descr" 	hidden="true"/>
+		<field name="family_status_descr"		type="datetime"		title="family_status_descr" hidden="true"/>
+		<field name="department_name"			type="datetime"		title="department_name" 	hidden="true"/>
+		<field name="start_date_descr"			type="datetime"		title="start_date_descr" 	hidden="true"/>
+		<field name="loggedUserName"			type="text"			title="Logged UserName" 	hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.StaffDMI"/>
+
+		<!-- Add Staff -->	
+		<operationBinding operationType="add" operationId="addStaff" serverMethod="addStaff">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.StaffDMI"/>
+        </operationBinding>
+        
+		<!-- Update Staff -->
+		<operationBinding operationType="update" operationId="updateStaff" serverMethod="updateStaff">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.StaffDMI"/>
+        </operationBinding>
+        
+        <!-- Delete Staff -->
+		<operationBinding operationType="remove" operationId="removeStaff" serverMethod="removeStaff">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.StaffDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="getAllStaff" operationType="fetch">
+    		<selectClause>   			
+    		   s.staff_id
+		      ,s.doc_num
+		      ,s.last_name
+		      ,s.first_name
+		      ,s.gender_id
+		      ,s.nationality_id
+		      ,s.dob
+		      ,to_char(s.dob, 'dd.mm.yyyy') as dob_descr
+		      ,s.remark
+		      ,s.family_status_id
+		      ,s.start_date
+		      ,s.department_id
+		      ,getdescription(s.gender_id) as gender_descr
+		      ,getdescription(s.nationality_id) as nationality_descr
+		      ,getdescription(s.family_status_id) as family_status_descr
+		      ,d.department_name
+		      ,to_char(s.start_date, 'dd.mm.yyyy') as start_date_descr
+			</selectClause> 
+			<tableClause>staff s, departments d</tableClause>
+			<whereClause><![CDATA[
+				s.department_id = d.department_id
+				]]>  
+			</whereClause> 
+			<orderClause>s.last_name</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>
