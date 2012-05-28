@@ -1,0 +1,13 @@
+<DataSource 
+	ID="PartniorNumbersPriorityDS" 
+	serverType="sql"
+	tableName="PARTNIOR_TABLE_PRIORITY" 
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="priority_id" 			type="integer"	title="ABonent ID"			hidden="true"	primaryKey="true" />
+		<field name="priority_name" 		type="text" 	title="First Name"/>
+		<field name="need_subscriber"		type="boolean"	title="Phone State ID"		hidden="true"/>
+		<field name="need_organisation"		type="boolean"	title="Phone State ID"		hidden="true"/>
+	</fields>
+</DataSource>

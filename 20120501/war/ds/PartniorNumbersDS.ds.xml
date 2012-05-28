@@ -18,8 +18,8 @@
 		<field name="subscriber_address   			type="text"  			title="subscriber_address"/>
 		<field name="organization_name   			type="text"  			title="organization_name"/>
 		<field name="organization_address   		type="text"  			title="organization_address"/>
-		<field name="need_subscriber   				type="integer"  		title="need_subscriber"/>
-		<field name="need_organisation   			type="integer"  		title="need_organisation"/>
+		<field name="need_subscriber   				type="boolean"  		title="need_subscriber"/>
+		<field name="need_organisation   			type="boolean"  		title="need_organisation"/>
 	</fields>
 	<operationBinding operationId="customSearch"
 			operationType="fetch">			
