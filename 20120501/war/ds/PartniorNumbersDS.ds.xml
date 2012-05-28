@@ -1,0 +1,58 @@
+<DataSource 
+	ID="PartniorNumbersDS" 
+	serverType="sql"
+	tableName="PARTNIOR_TABLE" 
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="phone_number   				type="integer"  		title="phone_number"/>
+		<field name="subscriber_name   				type="text"  			title="subscriber_name"/>
+		<field name="address   						type="text"  			title="address"/>
+		<field name="subscriber_type   				type="text"  			title="subscriber_type"/>
+		<field name="phone_number_id   				type="integer"  		title="phone_number_id"/>
+		<field name="subscriber_id   				type="integer"  		title="subscriber_id"/>
+		<field name="org_department_ids   			type="text"  			title="org_department_ids"/>
+		<field name="org_department_count   		type="integer"  		title="org_department_count"/>
+		<field name="priority   					type="integer"  		title="priority"/>
+		<field name="subscriber_name_local   		type="text"  			title="subscriber_name_local"/>
+		<field name="subscriber_address   			type="text"  			title="subscriber_address"/>
+		<field name="organization_name   			type="text"  			title="organization_name"/>
+		<field name="organization_address   		type="text"  			title="organization_address"/>
+		<field name="need_subscriber   				type="integer"  		title="need_subscriber"/>
+		<field name="need_organisation   			type="integer"  		title="need_organisation"/>
+	</fields>
+	<operationBinding operationId="customSearch"
+			operationType="fetch">			
+			<selectClause>
+				t.phone_number, 
+				t.subscriber_name, 
+				trim(t.address||' '||additional_address) address, 
+				t.additional_address, 
+				t.subscriber_type, 
+				t.phone_number_id, 
+				t.subscriber_id, 
+				t.org_department_ids, 
+				t.org_department_count, 
+				t.priority, 
+				t.subscriber_name_local, 
+				t.subscriber_address, 
+				t.organization_name, 
+				t.organization_address,
+				#if($criteria.phone) p.need_subscriber 		#else 0 #end need_subscriber,
+				#if($criteria.phone) p.need_organisation 	#else 0 #end need_organisation,
+			</selectClause>
+			<tableClause>
+			  	   v_full_subscriber t
+			  	   #if($criteria.phone),PARTNIOR_TABLE_PRIORITY p #end
+       		</tableClause>
+			<whereClause><![CDATA[ 
+				1=1
+				#if($criteria.phone)
+					and p.priority_id=t.priority and t.phone_number=$criteria.phone
+				#else
+					and t.priority= #if($criteria.priority) $criteria.priority #else 0 #end
+				#end
+			]]>
+			</whereClause>			
+		</operationBinding>
+</DataSource>
