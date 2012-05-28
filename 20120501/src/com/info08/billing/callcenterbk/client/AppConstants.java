@@ -703,4 +703,5 @@ public interface AppConstants extends Constants {
 	String plzChooseValidOrgDayOffs();
 	String plzChooseValidOrgDayOffs1();
 	String next();
+	String orgIdentCodeIsInvalid();
 }
