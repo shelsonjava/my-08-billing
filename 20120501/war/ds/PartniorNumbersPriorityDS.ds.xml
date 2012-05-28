@@ -7,7 +7,7 @@
 	<fields>
 		<field name="priority_id" 			type="integer"	title="ABonent ID"			hidden="true"	primaryKey="true" />
 		<field name="priority_name" 		type="text" 	title="First Name"/>
-		<field name="need_subscriber"		type="boolean"	title="Phone State ID"		hidden="true"/>
-		<field name="need_organisation"		type="boolean"	title="Phone State ID"		hidden="true"/>
+		<field name="need_subscriber"		type="integer"	title="Phone State ID"		hidden="true"/>
+		<field name="need_organisation"		type="integer"	title="Phone State ID"		hidden="true"/>
 	</fields>
 </DataSource>

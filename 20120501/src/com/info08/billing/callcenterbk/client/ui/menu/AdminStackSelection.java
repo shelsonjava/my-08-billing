@@ -8,6 +8,7 @@ import com.info08.billing.callcenterbk.client.content.admin.TabLandlineIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabGSMIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabBillingComps;
 import com.info08.billing.callcenterbk.client.content.admin.TabOperatorBreaks;
+import com.info08.billing.callcenterbk.client.content.admin.TabPartniorNumbersList;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -39,7 +40,9 @@ public class AdminStackSelection extends SectionStackSection {
 			new MenuNode("105", "1", CallCenterBK.constants.billingComps(),
 					true, "phone.png"),
 			new MenuNode("106", "1", CallCenterBK.constants.schedule(), true,
-					"calendar.png") };
+					"calendar.png"),
+			new MenuNode("107", "1", CallCenterBK.constants.importedNumbers(),
+					true, "calendar.png") };
 
 	private TreeGrid menuTreeGrid;
 
@@ -102,13 +105,9 @@ public class AdminStackSelection extends SectionStackSection {
 		try {
 			boolean hasAdminPerm = CommonSingleton.getInstance().hasPermission(
 					"107000");
-			menuData[0].setAttribute("enabled", hasAdminPerm);
-			menuData[1].setAttribute("enabled", hasAdminPerm);
-			menuData[2].setAttribute("enabled", hasAdminPerm);
-			menuData[3].setAttribute("enabled", hasAdminPerm);
-			menuData[4].setAttribute("enabled", hasAdminPerm);
-			menuData[5].setAttribute("enabled", hasAdminPerm);
-			menuData[6].setAttribute("enabled", hasAdminPerm);
+			for (TreeNode tn : menuData) {
+				tn.setAttribute("enabled", hasAdminPerm);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -141,7 +140,11 @@ public class AdminStackSelection extends SectionStackSection {
 		} else if (menuId.equals("106")) {
 			TabOperatorBreaks tabOperatorBreaks = new TabOperatorBreaks();
 			body.addTab(tabOperatorBreaks);
+		} else if (menuId.equals("107")) {
+			TabPartniorNumbersList tabOperatorBreaks = new TabPartniorNumbersList();
+			body.addTab(tabOperatorBreaks);
 		}
+
 	}
 
 	public static class MenuNode extends TreeNode {
