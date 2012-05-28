@@ -44,6 +44,13 @@ public class PublicTranspDirection implements Serializable {
 	@Column(name = "SERVICE_ID")
 	private Long service_id;
 
+	@Basic
+	@Column(name = "REMARK_TYPE")
+	private Long remark_type;
+
+	@Transient
+	private String remark_type_descr;
+
 	@Transient
 	private String cycle_descr;
 
@@ -96,7 +103,6 @@ public class PublicTranspDirection implements Serializable {
 		this.service_id = service_id;
 	}
 
-
 	public String getService_descr() {
 		return service_descr;
 	}
@@ -120,4 +126,21 @@ public class PublicTranspDirection implements Serializable {
 	public void setCycle_descr(String cycle_descr) {
 		this.cycle_descr = cycle_descr;
 	}
+
+	public Long getRemark_type() {
+		return remark_type;
+	}
+
+	public void setRemark_type(Long remark_type) {
+		this.remark_type = remark_type;
+	}
+
+	public String getRemark_type_descr() {
+		return remark_type_descr;
+	}
+
+	public void setRemark_type_descr(String remark_type_descr) {
+		this.remark_type_descr = remark_type_descr;
+	}
+
 }

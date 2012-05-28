@@ -18,6 +18,10 @@
 		<field name="end_place"			type="text"			title="end_place"/>
 		<field name="end_place_id"		type="integer"		title="end_place_id" 				hidden="true"/>
 		<field name="direction"			type="integer"		title="direction" 					hidden="true"/>
+		<field name="remark_type"		type="integer"		title="remark_type" 				hidden="true"/>
+		<field name="remark_type_descr"	type="text"			title="remark_type_descr" 			hidden="true"/>
+		
+		
 	</fields>
 
 	<operationBindings>		
@@ -47,7 +51,9 @@
 				decode(t.cycled_id,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as cycle_descr,
 				tt.NAME_DESCR as service_descr,
 				t.cycled_id,	
-				t.service_id
+				t.service_id,
+				t.remark_type,
+				getdescription(t.remark_type) as remark_type_descr
 			</selectClause> 
 			<tableClause>PUBLIC_TRANSP_DIR t, transp_types tt</tableClause>
 			<whereClause><![CDATA[
@@ -81,7 +87,7 @@
     		<selectClause>
     			   tt.NAME_DESCR as service_descr,
     			   t.transportid as pt_id,
-			       t.transportno as dir_num,
+			       t.transportnodescr as dir_num,
 			       getminbusstop(t.transportid) start_place,
 			       getminbusstop_id(t.transportid) start_place_id,
 			       getmaxbusstop(t.transportid) end_place,
@@ -138,8 +144,8 @@
 				#end					
 				]]>  
 			</whereClause> 
-			<groupClause>tt.NAME_DESCR, t.transportid, t.transportno, t.CYCLED_ID</groupClause>
-			<orderClause>t.transportno</orderClause>
+			<groupClause>tt.NAME_DESCR, t.transportid, t.transportnodescr,  t.CYCLED_ID</groupClause>
+			<orderClause>t.transportNoDescr</orderClause>
     	</operationBinding>
     	
     </operationBindings>	

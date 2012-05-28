@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -16,6 +17,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -31,6 +33,7 @@ public class DlgAddEditBusRoute extends Window {
 	private TextItem routeOldNMItem;
 	private ComboBoxItem roundTypeItem;
 	private ComboBoxItem transpTypeItem;
+	private SelectItem remarkTypeItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
@@ -42,7 +45,7 @@ public class DlgAddEditBusRoute extends Window {
 		setTitle(pRecord == null ? "ქალაქის მიკრო/ავტ. დამატება"
 				: "ქალაქის მიკრო/ავტ. მოდიფიცირება");
 
-		setHeight(190);
+		setHeight(220);
 		setWidth(520);
 		setShowMinimizeButton(false);
 		setIsModal(true);
@@ -89,8 +92,16 @@ public class DlgAddEditBusRoute extends Window {
 		transpTypeItem.setValueMap(ClientMapUtil.getInstance()
 				.getTranspTypeCustom());
 
+		remarkTypeItem = new SelectItem();
+		remarkTypeItem.setTitle("კომენტარი");
+		remarkTypeItem.setWidth(300);
+		remarkTypeItem.setName("remark_type");
+
+		ClientUtils.fillDescriptionCombo(remarkTypeItem, 63000);
+		remarkTypeItem.setValue(63100);
+
 		dynamicForm.setFields(routeNMItem, routeOldNMItem, roundTypeItem,
-				transpTypeItem);
+				transpTypeItem, remarkTypeItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -168,18 +179,25 @@ public class DlgAddEditBusRoute extends Window {
 				return;
 			}
 
+			String remark_type = remarkTypeItem.getValueAsString();
+			if (remark_type == null || remark_type.trim().equalsIgnoreCase("")) {
+				SC.say("აირჩიეთ კომენტარი !");
+				return;
+			}
+
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("dir_num", dir_num);
-			record.setAttribute("dir_old_num", dir_old_num);
-			record.setAttribute("deleted", 0);
+			record.setAttribute("dir_num", dir_num.trim());
+			record.setAttribute("dir_old_num",
+					dir_old_num != null ? dir_old_num.trim() : null);
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("cycled_id", new Integer(cycled_id));
 			record.setAttribute("service_id", new Integer(service_id));
+			record.setAttribute("remark_type", new Integer(remark_type));
 
 			if (editRecord != null) {
 				record.setAttribute("pt_id",

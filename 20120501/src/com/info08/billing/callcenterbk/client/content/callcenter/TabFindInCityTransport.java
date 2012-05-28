@@ -121,7 +121,7 @@ public class TabFindInCityTransport extends Tab {
 			};
 		};
 
-		listGrid.setWidth(900);
+		listGrid.setWidth(950);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
 		listGrid.setDataSource(pubTranspDirDS);
@@ -135,10 +135,10 @@ public class TabFindInCityTransport extends Tab {
 		listGrid.setCanDragSelectText(true);
 
 		ListGridField dir_num = new ListGridField("dir_num",
-				CallCenterBK.constants.routeNumber(), 70);
+				CallCenterBK.constants.routeNumber(), 100);
 
 		ListGridField service_descr = new ListGridField("service_descr",
-				CallCenterBK.constants.transportType(), 120);
+				CallCenterBK.constants.transportType(), 250);
 
 		ListGridField start_place = new ListGridField("start_place",
 				CallCenterBK.constants.stationFrom(), 280);

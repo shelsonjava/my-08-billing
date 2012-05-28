@@ -21,17 +21,13 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
-import com.smartgwt.client.widgets.viewer.DetailViewer;
 
 public class TabTransportCityPublTransport extends Tab {
 
@@ -163,7 +159,7 @@ public class TabTransportCityPublTransport extends Tab {
 			};
 
 			listGrid.setWidth(880);
-			listGrid.setHeight(300);
+			listGrid.setHeight(500);
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(datasource);
 			listGrid.setAutoFetchData(false);
@@ -185,14 +181,16 @@ public class TabTransportCityPublTransport extends Tab {
 			ListGridField dir_num = new ListGridField("dir_num", "მარშ. N", 80);
 			ListGridField dir_old_num = new ListGridField("dir_old_num",
 					"ძვ.მარშ. N", 80);
+			ListGridField remark_type_descr = new ListGridField("remark_type_descr",
+					"კომენტარი", 80);
 			ListGridField cycle_descr = new ListGridField("cycle_descr",
 					"წრიული/ჩვ.", 120);
 			ListGridField service_descr = new ListGridField("service_descr",
-					"სახეობა", 150);
+					"სახეობა");
 
 			cycle_descr.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(dir_num, dir_old_num, cycle_descr, service_descr);
+			listGrid.setFields(dir_num, dir_old_num, remark_type_descr, cycle_descr, service_descr);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -266,53 +264,7 @@ public class TabTransportCityPublTransport extends Tab {
 							});
 				}
 			});
-			// restoreBtn.addClickHandler(new ClickHandler() {
-			// @Override
-			// public void onClick(ClickEvent event) {
-			// ListGridRecord listGridRecord = listGrid
-			// .getSelectedRecord();
-			// if (listGridRecord == null) {
-			// SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
-			// return;
-			// }
-			// Integer deleted = listGridRecord
-			// .getAttributeAsInt("deleted");
-			// if (deleted.equals(0)) {
-			// SC.say("ჩანაწერი უკვე აღდგენილია !");
-			// return;
-			// }
-			// final Integer id = listGridRecord
-			// .getAttributeAsInt("pt_id");
-			// if (id == null) {
-			// SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
-			// return;
-			// }
-			//
-			// SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის აღდგენა ?",
-			// new BooleanCallback() {
-			// @Override
-			// public void execute(Boolean value) {
-			// if (value) {
-			// changeStatus(id, 0);
-			// }
-			// }
-			// });
-			// }
-			// });
-
-			TabSet tabSet = new TabSet();
-			tabSet.setWidth(880);
-			Tab tabDetViewer = new Tab("დათვალიერება");
-			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(datasource);
-			detailViewer.setWidth(860);
-			tabDetViewer.setPane(detailViewer);
-
-			listGrid.addRecordClickHandler(new RecordClickHandler() {
-				public void onRecordClick(RecordClickEvent event) {
-					detailViewer.viewSelectedData(listGrid);
-				}
-			});
+			
 			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 				@Override
 				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
@@ -328,8 +280,7 @@ public class TabTransportCityPublTransport extends Tab {
 				}
 			});
 
-			tabSet.setTabs(tabDetViewer);
-			mainLayout.addMember(tabSet);
+			
 			setPane(mainLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -373,7 +324,6 @@ public class TabTransportCityPublTransport extends Tab {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
 			record.setAttribute("pt_id", id);
 			String loggedUserName = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
@@ -382,7 +332,7 @@ public class TabTransportCityPublTransport extends Tab {
 
 			req.setAttribute("operationId",
 					"updatePublicTransportDirectionsStatus");
-			listGrid.updateData(record, new DSCallback() {
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
