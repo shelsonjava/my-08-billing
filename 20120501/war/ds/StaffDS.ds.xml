@@ -13,15 +13,15 @@
 		<field name="nationality_id"			type="integer"		title="nationality_id" 		hidden="true"/>
 		<field name="dob"						type="datetime"		title="dob" 				hidden="true"/>
 		<field name="dob_descr"					type="text"			title="dob_descr"/>
-		<field name="remark"					type="datetime"		title="remark" 				hidden="true"/>
-		<field name="family_status_id"			type="datetime"		title="family_status_id" 	hidden="true"/>
+		<field name="remark"					type="text"			title="remark" />
+		<field name="family_status_id"			type="integer"		title="family_status_id" 	hidden="true"/>
 		<field name="start_date"				type="datetime"		title="start_date" 			hidden="true"/>
-		<field name="department_id"				type="datetime"		title="department_id" 		hidden="true"/>
-		<field name="gender_descr"				type="datetime"		title="gender_descr" 		hidden="true"/>
-		<field name="nationality_descr"			type="datetime"		title="nationality_descr" 	hidden="true"/>
-		<field name="family_status_descr"		type="datetime"		title="family_status_descr" hidden="true"/>
-		<field name="department_name"			type="datetime"		title="department_name" 	hidden="true"/>
-		<field name="start_date_descr"			type="datetime"		title="start_date_descr" 	hidden="true"/>
+		<field name="department_id"				type="integer"		title="department_id" 		hidden="true"/>
+		<field name="gender_descr"				type="text"			title="gender_descr" />
+		<field name="nationality_descr"			type="text"			title="nationality_descr" />
+		<field name="family_status_descr"		type="text"			title="family_status_descr" />
+		<field name="department_name"			type="text"			title="department_name" />
+		<field name="start_date_descr"			type="text"			title="start_date_descr" />
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 	hidden="true" />
 	</fields>
 

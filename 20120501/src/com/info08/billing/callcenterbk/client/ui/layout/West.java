@@ -6,6 +6,7 @@ import com.info08.billing.callcenterbk.client.ui.menu.AdminStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.CallCenterStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.ControlStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.CorrectionStackSelection;
+import com.info08.billing.callcenterbk.client.ui.menu.HrStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.SurveyStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.MiscStackSelection;
 import com.info08.billing.callcenterbk.client.ui.menu.StatStackSelection;
@@ -35,6 +36,7 @@ public class West extends VLayout {
 	private static TransportStackSelection transport;
 	private static MiscStackSelection various;
 	private static AdminStackSelection admin;
+	private static HrStackSelection hr;
 	private static CallCenterStackSelection callCenter;
 	private static StatStackSelection statistics;
 
@@ -89,10 +91,13 @@ public class West extends VLayout {
 
 				admin = new AdminStackSelection(body);
 				menuStack.addSection(admin);
-				
+
+				hr = new HrStackSelection(body);
+				menuStack.addSection(hr);
+
 				statistics = new StatStackSelection(body);
 				menuStack.addSection(statistics);
-				
+
 			}
 			switch (personelTypeId.intValue()) {
 			case 2: // Admin
@@ -133,6 +138,7 @@ public class West extends VLayout {
 				control.setMenuPersmission();
 				correction.setMenuPersmission();
 				admin.setMenuPersmission();
+				hr.setMenuPersmission();
 				address.setMenuPersmission();
 				transport.setMenuPersmission();
 				various.setMenuPersmission();
@@ -147,9 +153,9 @@ public class West extends VLayout {
 				if (serverSession == null || !serverSession.isWebSession()) {
 
 					// application loaded
-					
+
 					DataSource dataSource = DataSource.get("LockDS");
-					
+
 					com.smartgwt.client.rpc.RPCManager.startQueue();
 					Record record = new Record();
 					String sid = serverSession.getSessionId();
@@ -163,8 +169,7 @@ public class West extends VLayout {
 						}
 					}, dsRequest);
 					com.smartgwt.client.rpc.RPCManager.sendQueue();
-					
-					
+
 					String specTextMessage = serverSession
 							.getSpecialAlertMessage();
 					if (specTextMessage != null
