@@ -1,11 +1,17 @@
 package com.info08.billing.callcenterbk.client.content;
 
+import java.util.Date;
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditMainOrg;
+import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddManageOrgDepartments;
+import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditOrganization;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgSortOrderOrgs;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
-import com.smartgwt.client.data.Criterion;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -56,7 +62,7 @@ public class TabOrganization extends Tab {
 	private DateItem orgFoundedEndItem;
 
 	// address fields.
-	private ComboBoxItem citiesItem;
+	private ComboBoxItem townItem;
 	private TextItem streetItem;
 	private ComboBoxItem regionItem;
 	private TextItem adressItem;
@@ -171,74 +177,31 @@ public class TabOrganization extends Tab {
 		adressItem.setName("adressItem");
 		adressItem.setWidth(245);
 
-		citiesItem = new ComboBoxItem();
-		citiesItem.setTitle(CallCenterBK.constants.town());
-		citiesItem.setName("citiesItem");
-		citiesItem.setWidth(245);
-		citiesItem.setFetchMissingValues(true);
-		citiesItem.setFilterLocally(false);
-		citiesItem.setAddUnknownValues(false);
-
-		DataSource cityDS = DataSource.get("CityDS");
-		citiesItem.setOptionOperationId("searchCitiesFromDBForCombos");
-		citiesItem.setOptionDataSource(cityDS);
-		citiesItem.setValueField("city_id");
-		citiesItem.setDisplayField("city_name_geo");
-
-		citiesItem.setOptionCriteria(new Criteria());
-		citiesItem.setAutoFetchData(false);
-
-		citiesItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = citiesItem.getOptionCriteria();
-				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_id");
-					if (oldAttr != null) {
-						Object nullO = null;
-						criteria.setAttribute("city_id", nullO);
-					}
-				}
-			}
-		});
+		townItem = new ComboBoxItem();
+		townItem.setTitle(CallCenterBK.constants.town());
+		townItem.setName("town_id");
+		townItem.setWidth(245);
+		ClientUtils.fillCombo(townItem, "TownsDS",
+				"searchCitiesFromDBForCombos", "town_id", "town_name");
 
 		regionItem = new ComboBoxItem();
 		regionItem.setTitle(CallCenterBK.constants.cityRegion());
-		regionItem.setName("city_region_name_geo");
+		regionItem.setName("town_district_id");
 		regionItem.setWidth(245);
-		regionItem.setFetchMissingValues(true);
-		regionItem.setFilterLocally(false);
-		regionItem.setAddUnknownValues(false);
 
-		DataSource streetsDS = DataSource.get("CityRegionDS");
-		regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
-		regionItem.setOptionDataSource(streetsDS);
-		regionItem.setValueField("city_region_id");
-		regionItem.setDisplayField("city_region_name_geo");
+		Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
+		aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
+		aditionalCriteria.put("need_indexes", 1);
 
-		Criteria criteria = new Criterion();
-		regionItem.setOptionCriteria(criteria);
-		regionItem.setAutoFetchData(false);
-
-		regionItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = regionItem.getOptionCriteria();
-				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_region_id");
-					if (oldAttr != null) {
-						Object nullO = null;
-						criteria.setAttribute("city_region_id", nullO);
-					}
-				}
-			}
-		});
+		ClientUtils.fillCombo(regionItem, "TownDistrictDS",
+				"searchCityRegsFromDBForCombos", "town_district_id",
+				"town_district_name", aditionalCriteria);
 
 		searchForm.setFields(orgNameGeoItem, orgCommentItem, orgDepartmentItem,
-				orgDirectorItem, streetItem, adressItem, regionItem,
-				citiesItem, orgWorkingHoursItem, orgDayOffsItem,
-				orgIdentCodeItem, orgLegalAddressItem, orgWebAddressItem,
-				orgEmailItem, orgFoundedStartItem, orgFoundedEndItem);
+				orgDirectorItem, streetItem, adressItem, regionItem, townItem,
+				orgWorkingHoursItem, orgDayOffsItem, orgIdentCodeItem,
+				orgLegalAddressItem, orgWebAddressItem, orgEmailItem,
+				orgFoundedStartItem, orgFoundedEndItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(980);
@@ -401,7 +364,7 @@ public class TabOrganization extends Tab {
 				streetItem.clearValue();
 				adressItem.clearValue();
 				regionItem.clearValue();
-				citiesItem.clearValue();
+				townItem.clearValue();
 				orgWorkingHoursItem.clearValue();
 				orgDayOffsItem.clearValue();
 				orgIdentCodeItem.clearValue();
@@ -489,7 +452,7 @@ public class TabOrganization extends Tab {
 		addNewOrgBtn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(
+				DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
 						null, orgTreeGrid);
 				dlgAddEditMainOrg.show();
 			}
@@ -504,9 +467,24 @@ public class TabOrganization extends Tab {
 							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
-				DlgAddEditMainOrg dlgAddEditMainOrg = new DlgAddEditMainOrg(
+				DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
 						listGridRecord, orgTreeGrid);
 				dlgAddEditMainOrg.show();
+			}
+		});
+
+		orgDepartmentsBtn.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				ListGridRecord listGridRecord = orgTreeGrid.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.pleaseSelrecord());
+					return;
+				}
+				DlgAddManageOrgDepartments addEditOrgDepartments = new DlgAddManageOrgDepartments(
+						listGridRecord, orgTreeGrid);
+				addEditOrgDepartments.show();
 			}
 		});
 
@@ -746,7 +724,7 @@ public class TabOrganization extends Tab {
 					if (item.equals("")) {
 						continue;
 					}
-					criteria.setAttribute("director" + i, item);
+					criteria.setAttribute("chief" + i, item);
 					i++;
 				}
 			}
@@ -760,23 +738,22 @@ public class TabOrganization extends Tab {
 					if (item.equals("")) {
 						continue;
 					}
-					criteria.setAttribute("real_address" + i, item);
+					criteria.setAttribute("real_address_descr" + i, item);
 					i++;
 				}
 			}
-			String address_suffix_geo = adressItem.getValueAsString();
-			if (address_suffix_geo != null
-					&& !address_suffix_geo.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("address_suffix_geo", address_suffix_geo);
+			String full_address = adressItem.getValueAsString();
+			if (full_address != null
+					&& !full_address.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("full_address", full_address);
 			}
-			String city = citiesItem.getValueAsString();
-			if (city != null && !city.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("city_id", new Integer(city));
+			String town_id = townItem.getValueAsString();
+			if (town_id != null && !town_id.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("town_id", new Integer(town_id));
 			}
-			String workinghours = orgWorkingHoursItem.getValueAsString();
-			if (workinghours != null
-					&& !workinghours.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("workinghours", workinghours);
+			String work_hours = orgWorkingHoursItem.getValueAsString();
+			if (work_hours != null && !work_hours.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("work_hours", work_hours);
 			}
 			String dayoffs = orgDayOffsItem.getValueAsString();
 			if (dayoffs != null && !dayoffs.trim().equals("")) {
@@ -788,7 +765,7 @@ public class TabOrganization extends Tab {
 					if (item.equals("")) {
 						continue;
 					}
-					criteria.setAttribute("dayoffs" + i, item);
+					criteria.setAttribute("day_offs" + i, item);
 					i++;
 				}
 			}
@@ -803,31 +780,40 @@ public class TabOrganization extends Tab {
 				criteria.setAttribute("legaladdress", legaladdress);
 			}
 
-			String webaddress = orgWebAddressItem.getValueAsString();
-			if (webaddress != null && !webaddress.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("webaddress", webaddress);
+			String web_address = orgWebAddressItem.getValueAsString();
+			if (web_address != null && !web_address.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("web_address", web_address);
 			}
 
-			String mail = orgEmailItem.getValueAsString();
-			if (mail != null && !mail.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("mail", mail);
+			String email_address = orgEmailItem.getValueAsString();
+			if (email_address != null
+					&& !email_address.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("email_address", email_address);
 			}
 
-			String city_region_id = regionItem.getValueAsString();
-			if (city_region_id != null && !city_region_id.trim().equals("")) {
-				criteria.setAttribute("city_region_id", new Integer(
-						city_region_id));
+			String town_district_id = regionItem.getValueAsString();
+			if (town_district_id != null && !town_district_id.trim().equals("")) {
+				criteria.setAttribute("town_district_id", new Integer(
+						town_district_id));
+			}
+			Date org_found_date_start = orgFoundedStartItem.getValueAsDate();
+			Date org_found_date_end = orgFoundedEndItem.getValueAsDate();
+			if (org_found_date_start != null && org_found_date_end != null) {
+				criteria.setAttribute("org_found_date_start",
+						org_found_date_start);
+				criteria.setAttribute("org_found_date_end", org_found_date_end);
 			}
 
 			if ((org_name == null || org_name.trim().equals(""))
 					&& (note == null || note.trim().equals(""))
 					&& (director == null || director.trim().equals(""))
-					&& (workinghours == null || workinghours.trim().equals(""))
+					&& (work_hours == null || work_hours.trim().equals(""))
 					&& (dayoffs == null || dayoffs.trim().equals(""))
 					&& (ident_code == null || ident_code.trim().equals(""))
 					&& (legaladdress == null || legaladdress.trim().equals(""))
-					&& (webaddress == null || webaddress.trim().equals(""))
-					&& (mail == null || mail.trim().equals(""))
+					&& (web_address == null || web_address.trim().equals(""))
+					&& (email_address == null || email_address.trim()
+							.equals(""))
 					&& (street == null || street.trim().equals(""))) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.findOrgEnterAnyParam());

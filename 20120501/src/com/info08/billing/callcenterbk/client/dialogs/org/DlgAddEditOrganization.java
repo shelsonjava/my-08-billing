@@ -50,7 +50,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 
-public class DlgAddEditMainOrg extends Window {
+public class DlgAddEditOrganization extends Window {
 
 	// main layout
 	private VLayout hLayout;
@@ -104,7 +104,7 @@ public class DlgAddEditMainOrg extends Window {
 	private ListGrid orgPartBankOrgsGrid;
 	private ToolStripButton copyAddress;
 
-	public DlgAddEditMainOrg(ListGridRecord listGridRecord, TreeGrid orgTreeGrid) {
+	public DlgAddEditOrganization(ListGridRecord listGridRecord, TreeGrid orgTreeGrid) {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
 			this.listGridRecord = listGridRecord;
@@ -303,6 +303,7 @@ public class DlgAddEditMainOrg extends Window {
 			orgIndItem.setName("organization_index");
 			orgIndItem.setWidth(614);
 			orgIndItem.setTitle(CallCenterBK.constants.postIndex());
+			orgIndItem.setKeyPressFilter("[0-9]");
 
 			orgStaffCountItem = new TextItem();
 			orgStaffCountItem.setName("staff_count");
@@ -823,6 +824,24 @@ public class DlgAddEditMainOrg extends Window {
 						CallCenterBK.constants.plzEnterOrgIdentCode());
 				topTabSet.selectTab(0);
 				dynamicFormMainInfo1.focusInItem(orgIdentCodeItem);
+				return;
+			}
+
+			if (identCode != null && identCode.trim().length() != 9
+					&& identCode.trim().length() != 11) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.orgIdentCodeIsInvalid());
+				topTabSet.selectTab(0);
+				dynamicFormMainInfo1.focusInItem(orgIdentCodeItem);
+				return;
+			}
+
+			if (identCodeNew != null && identCodeNew.trim().length() != 9
+					&& identCodeNew.trim().length() != 11) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.orgIdentCodeIsInvalid());
+				topTabSet.selectTab(0);
+				dynamicFormMainInfo1.focusInItem(orgIdentCodeNewItem);
 				return;
 			}
 

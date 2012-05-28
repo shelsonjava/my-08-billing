@@ -5,10 +5,10 @@
 	qualifyColumnNames="false">
 	<fields>				
 	    <field name="town_district_id" 		type="integer"	title="town_district_id"		hidden="true" primaryKey="true" />
-		<field name="town_id" 				type="integer"	title="town_id" 			hidden="true" />
+		<field name="town_id" 				type="integer"	title="town_id" 				hidden="true" />
 		<field name="town_district_name"	type="text" 	title="town_district_name"/>
-		<field name="town_district_type_id"	type="integer"	title="town_district_type_id" hidden="true"/>
-		<field name="loggedUserName"		type="text"		title="Logged UserName"		hidden="true" />
+		<field name="town_district_type_id"	type="integer"	title="town_district_type_id" 	hidden="true"/>
+		<field name="loggedUserName"		type="text"		title="Logged UserName"			hidden="true" />
 	</fields>
 
 	<operationBindings>
@@ -56,7 +56,8 @@
 		
 		<!-- Search From DB -->
         <operationBinding operationId="searchCityRegsFromDBForCombos" operationType="fetch">
-    		<selectClause>   			
+    		<selectClause>   		
+    			t.town_id,	
     			t.town_district_id,
     			t.town_district_name
 			</selectClause> 

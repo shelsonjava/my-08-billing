@@ -8,6 +8,7 @@ import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.client.utils.FormItemDescr;
 import com.info08.billing.callcenterbk.shared.common.Constants;
+import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
@@ -79,9 +80,12 @@ public class MyAddressPanel extends HLayout {
 		addrRegionItem.setName(addressName + "_town_district_id");
 		addrRegionItem.setWidth(200);
 
+		Map<String, Integer> aditionalCriteria1 = new TreeMap<String, Integer>();
+		aditionalCriteria1.put("town_id", Constants.defCityTbilisiId);
+
 		ClientUtils.fillCombo(addrRegionItem, "TownDistrictDS",
 				"searchCityRegsFromDBForCombos", "town_district_id",
-				"town_district_name", aditionalCriteria);
+				"town_district_name", aditionalCriteria1);
 
 		addrStreetDescrItem = new TextAreaItem();
 		addrStreetDescrItem.setTitle(CallCenterBK.constants.streetDescr());
@@ -155,6 +159,11 @@ public class MyAddressPanel extends HLayout {
 			return;
 		}
 		addrTownItem.setValue(townValue);
+		Criteria criteria = addrRegionItem.getOptionCriteria();
+		if (criteria == null) {
+			criteria = new Criteria();
+		}
+		criteria.setAttribute("town_id", townValue);
 	}
 
 	public void setStreetValue(Integer streetValue) {
@@ -162,6 +171,13 @@ public class MyAddressPanel extends HLayout {
 			return;
 		}
 		addrStreetItem.setValue(streetValue);
+
+		Criteria criteria = addrRegionItem.getOptionCriteria();
+		if (criteria == null) {
+			criteria = new Criteria();
+		}
+		criteria.setAttribute("street_id", streetValue);
+		addrRegionItem.setOptionCriteria(criteria);
 	}
 
 	public void setStreetDistrictValue(Integer streetDistrictValue) {

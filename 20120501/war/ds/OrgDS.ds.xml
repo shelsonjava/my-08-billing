@@ -192,7 +192,7 @@
 						a1.street_id as legal_addr_street_id,
 						a1.town_district_id as legal_addr_town_district_id,
 						a1.hidden_by_request as legal_addr_hidden_by_request,
-						a1.full_address as legal_addr_full_address,
+						o.old_legal_address as legal_addr_full_address,
 						a1.block as legal_addr_block,
 						a1.appt as legal_addr_appt,
 						a1.anumber as legal_addr_anumber,
@@ -226,38 +226,37 @@
 						 #if($criteria.remark8) and o.remark like '%'||($criteria.remark8)||'%' #end
 						 #if($criteria.remark9) and o.remark like '%'||($criteria.remark9)||'%' #end
 						 #if($criteria.remark10) and o.remark like '%'||($criteria.remark)||'%' #end
-						 #if($criteria.real_address1) and str.street_name like '%'||($criteria.real_address1)||'%' #end
-						 #if($criteria.real_address2) and str.street_name like '%'||($criteria.real_address2)||'%' #end
-						 #if($criteria.real_address3) and str.street_name like '%'||($criteria.real_address3)||'%' #end
-						 #if($criteria.real_address4) and str.street_name like '%'||($criteria.real_address4)||'%' #end
-						 #if($criteria.real_address5) and str.street_name like '%'||($criteria.real_address5)||'%' #end
-						 #if($criteria.organization_name_eng) and o.organization_name_eng like ($criteria.organization_name_eng)||'%' #end
+						 #if($criteria.real_address_descr1) and str.street_name like '%'||($criteria.real_address_descr1)||'%' #end
+						 #if($criteria.real_address_descr2) and str.street_name like '%'||($criteria.real_address_descr2)||'%' #end
+						 #if($criteria.real_address_descr3) and str.street_name like '%'||($criteria.real_address_descr3)||'%' #end
+						 #if($criteria.real_address_descr4) and str.street_name like '%'||($criteria.real_address_descr4)||'%' #end
+						 #if($criteria.real_address_descr5) and str.street_name like '%'||($criteria.real_address_descr5)||'%' #end
 						 #if($criteria.legaladdress) and o.legaladdress like '%'||($criteria.legaladdress)||'%' #end
 						 #if($criteria.legaladdress1) and o.legaladdress like '%'||($criteria.legaladdress1)||'%' #end
 						 #if($criteria.legaladdress2) and o.legaladdress like '%'||($criteria.legaladdress2)||'%' #end
 						 #if($criteria.legaladdress3) and o.legaladdress like '%'||($criteria.legaladdress3)||'%' #end
 						 #if($criteria.legaladdress4) and o.legaladdress like '%'||($criteria.legaladdress4)||'%' #end
 						 #if($criteria.legaladdress5) and mo1.legaladdress like '%'||($criteria.legaladdress5)||'%' #end
-						 #if($criteria.remark) and mo1.remark like '%'||($criteria.remark)||'%' #end
-						 #if($criteria.director1) and mo1.director like '%'||($criteria.director1)||'%' #end
-						 #if($criteria.director2) and o.director like '%'||($criteria.director2)||'%' #end
-						 #if($criteria.director3) and o.director like '%'||($criteria.director3)||'%' #end
-						 #if($criteria.dayoffs1) and o.dayoffs like '%'||($criteria.dayoffs1)||'%' #end
-						 #if($criteria.dayoffs2) and o.dayoffs like '%'||($criteria.dayoffs2)||'%' #end
-						 #if($criteria.dayoffs3) and o.dayoffs like '%'||($criteria.dayoffs3)||'%' #end
-						 #if($criteria.address_suffix_geo) and ma.address_suffix_geo like '%'||($criteria.address_suffix_geo)||'%' #end						 
-						 #if($criteria.workinghours) and o.workinghours like '%'||($criteria.workinghours)||'%' #end
-						 #if($criteria.webaddress) and o.webaddress like '%'||($criteria.webaddress)||'%' #end
-						 #if($criteria.mail) and o.mail like '%'||($criteria.mail)||'%' #end
+						 #if($criteria.chief1) and o.chief like '%'||($criteria.chief1)||'%' #end
+						 #if($criteria.chief2) and o.chief like '%'||($criteria.chief2)||'%' #end
+						 #if($criteria.chief3) and o.chief like '%'||($criteria.chief3)||'%' #end
+						 #if($criteria.day_offs1) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs1)||'%' #end
+						 #if($criteria.day_offs2) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs2)||'%' #end
+						 #if($criteria.day_offs3) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs3)||'%' #end
+						 #if($criteria.day_offs4) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs4)||'%' #end
+						 #if($criteria.day_offs5) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs5)||'%' #end
+						 #if($criteria.day_offs6) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs6)||'%' #end
+						 #if($criteria.full_address) and a.full_address||' '||a.block||' '||a.appt||' '||a.descr||' '||a.anumber like '%'||($criteria.full_address)||'%' #end						 
+						 #if($criteria.work_hours) and o.work_hours like '%'||($criteria.work_hours)||'%' #end
+						 #if($criteria.web_address) and o.web_address like '%'||($criteria.web_address)||'%' #end
+						 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
 						 #if($criteria.legal_statuse_id) and o.legal_statuse_id = $criteria.legal_statuse_id #end
-						 #if($criteria.identcode) and o.identcode = $criteria.identcode #end
-						 #if($criteria.ind) and o.ind = $criteria.ind #end						 
+						 #if($criteria.ind) and o.ind = $criteria.ind #end
 						 #if($criteria.street_id) and ma.street_id = $criteria.street_id #end
-						 #if($criteria.city_id) and ma.city_id = $criteria.city_id #end
-						 #if($criteria.ident_code) and (o.identcode = $criteria.ident_code or o.new_identcode = $criteria.ident_code )  #end
-						 #if($criteria.city_region_id) 
-						 	and exists (select * from ccare.street_district tt where tt.street_id = str.street_id and  tt.city_region_id = $criteria.city_region_id)  
-						 #end
+						 #if($criteria.town_id) and a.town_id = $criteria.town_id #end
+						 #if($criteria.ident_code) and (o.ident_code = $criteria.ident_code or o.ident_code_new = $criteria.ident_code) #end
+						 #if($criteria.town_district_id) and a.town_district_id = $criteria.town_district_id #end
+						 #if($criteria.org_found_date_start) and trunc(o.found_date)>= trunc($criteria.org_found_date_start) and  trunc(o.found_date)<= trunc($criteria.org_found_date_end) #end
 				 ]]>
 			</whereClause>
 			<orderClause>getTbilisiOrder(tw.town_id), o.super_priority,o.parrent_organization_id, o.priority</orderClause>
