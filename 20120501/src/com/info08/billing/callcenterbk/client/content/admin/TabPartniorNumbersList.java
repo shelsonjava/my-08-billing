@@ -19,8 +19,6 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -159,15 +157,15 @@ public class TabPartniorNumbersList extends Tab {
 				}
 			});
 
-			partniorPriority.addChangedHandler(new ChangedHandler() {
-
-				@Override
-				public void onChanged(ChangedEvent event) {
-					Record record = partniorPriority.getSelectedRecord();
-//					hideByRecord(record);
-
-				}
-			});
+//			partniorPriority.addChangedHandler(new ChangedHandler() {
+//
+//				@Override
+//				public void onChanged(ChangedEvent event) {
+//					Record record = partniorPriority.getSelectedRecord();
+////					hideByRecord(record);
+//
+//				}
+//			});
 
 			importedListGrid
 					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
