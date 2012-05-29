@@ -73,6 +73,8 @@
 		<class>com.info08.billing.callcenterbk.shared.items.SubscribersToPhones</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.OperatorBreaks</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.Staff</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffEducation</class>
+		
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
