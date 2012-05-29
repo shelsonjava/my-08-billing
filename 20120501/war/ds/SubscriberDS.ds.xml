@@ -29,6 +29,7 @@
 		<field name="address" 						type="text"		title="address"				hidden="true"/>
 		<field name="loggedUserName" 				type="text"		title="address"				hidden="true"/>
 		<field name="town_name" 					type="text"		title="address"				hidden="true"/>
+		<field name="concat_address" 				type="text"		title="address"/>
 				
 	</fields>
 	
@@ -63,7 +64,7 @@
 			       phones,
 			       subscriber_id,
 			       #if($criteria.for_call_center) 
-			       	shown_phones,
+			       	nvl(shown_phones,map_char_codes_geo('dafarulia')) shown_phones,
 			       #else
 				       addr_id,
 				       street_name,
@@ -81,7 +82,14 @@
 				       descr,
 				       street_to_town_district_id,
 				    #end
- 					   town_name
+ 					   
+ 					#if($criteria.for_call_center)
+ 						decode(hidden_by_request,1,map_char_codes_geo('dafaruli'),town_name) town_name,
+ 					    decode(hidden_by_request,1,map_char_codes_geo('dafaruli'),concat_address) concat_address
+ 					#else
+ 						town_name,
+ 						concat_address
+ 					#end
 			</selectClause>
 			<tableClause>
 			  	   v_full_subscriber              t

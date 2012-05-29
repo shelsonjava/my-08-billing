@@ -30,13 +30,16 @@
 		<field name="important_remark"					type="integer"					title="important_remark" 				hidden="true"/>
 		<field name="status"							type="integer"					title="status" 							hidden="true"/>
 		<field name="town_name"							type="text"						title="status"/>
+		<field name="phone_shown"						type="text"						title="phone_shown"/>
+		<field name="concat_address" 					type="text"						title="address"/>
 	</fields>
 	
 	<operationBindings>
 		<operationBinding operationId="customSearch"
 			operationType="fetch">			
 			<selectClause>
-				phone, 
+				phone,
+				phone_shown,
 				owner_type, 
 				owner_id, 
 				owner_type_descr, 
@@ -60,7 +63,8 @@
 				is_parallel, 
 				is_parallel_descr, 
 				for_contact, 
-				for_contact_desr
+				for_contact_desr,
+				concat_address
 			</selectClause>
 			<tableClause>
 			  	   v_full_phone              t

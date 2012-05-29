@@ -5,7 +5,7 @@
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="phone_number"   				type="integer"  		title="phone_number" primaryKey="true"/>
+		<field name="phone_number"   				type="integer"  		title="phone_number" 				primaryKey="true"/>
 		<field name="subscriber_name"   			type="text"  			title="subscriber_name"/>
 		<field name="address"   					type="text"  			title="address"/>
 		<field name="subscriber_type"   			type="text"  			title="subscriber_type"/>
@@ -20,6 +20,9 @@
 		<field name="organization_address"   		type="text"  			title="organization_address"/>
 		<field name="need_subscriber"  				type="integer"  		title="need_subscriber"/>
 		<field name="need_organisation"   			type="integer"  		title="need_organisation"/>
+		<field name="has_organisation"   			type="boolean"   		title="need_organisation" 					sqlStorageStrategy="integer"/>
+		<field name="has_subscriber"	   			type="boolean"   		title="need_organisation" 					sqlStorageStrategy="integer"/>
+		
 	</fields>
 	<operationBindings>
 		<operationBinding operationId="customSearch"
@@ -35,13 +38,18 @@
 				t.org_department_ids,
 				t.org_department_count,
 				t.priority,
-				t.subscriber_name_local,
-				t.subscriber_address,
-				decode(nvl(org_department_count,0),0,'',1,t.organization_name,t.org_department_count)  organization_name,
-				t.organization_address,
+				#if($criteria.need_subscriber)
+					t.subscriber_name_local,
+					t.subscriber_address,
+				#end
+				#if($criteria.need_organisation)
+					decode(nvl(org_department_count,0),0,'',1,t.organization_name,t.org_department_count)  organization_name,
+					t.organization_address,
+				#end
 				#if($criteria.phone) p.need_subscriber #else 0 #end need_subscriber,
-				#if($criteria.phone) p.need_organisation #else 0 #end need_organisation
-				
+				#if($criteria.phone) p.need_organisation #else 0 #end need_organisation,
+				decode(nvl(t.subscriber_id,-1),-1,0,1) has_subscriber,
+				decode(nvl(t.org_department_count,-1),-1,null,0,0,1) has_organisation
 			</selectClause>
 			<tableClause>
 				PARTNIOR_TABLE t
