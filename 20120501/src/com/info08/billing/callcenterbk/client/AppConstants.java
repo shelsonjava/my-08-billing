@@ -710,4 +710,6 @@ public interface AppConstants extends Constants {
 	String abonentAddressShort();
 	String manageOrgDepartments();
 	String addNewOrgDepartment();
+	String orgAddressLong();
+	String abonentAddressLong();
 }
