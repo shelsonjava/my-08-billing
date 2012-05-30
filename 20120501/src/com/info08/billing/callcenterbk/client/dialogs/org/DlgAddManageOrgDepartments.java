@@ -18,6 +18,7 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -36,7 +37,7 @@ public class DlgAddManageOrgDepartments extends Window {
 	private TextItem orgDepNameItem;
 	private TextItem orgDepAddrItem;
 
-	private TreeGrid orgDepTreeGrid;
+	private ListGrid orgDepTreeGrid;
 	private DataSource orgDepDataSource;
 
 	protected ListGridRecord listGridRecord;
@@ -142,15 +143,28 @@ public class DlgAddManageOrgDepartments extends Window {
 
 			orgDepDataSource = DataSource.get("OrgDepartmentDS");
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("organization_id",
+			criteria.setAttribute("p_organization_id",
 					listGridRecord.getAttributeAsInt("organization_id"));
 
-			orgDepTreeGrid = new TreeGrid();
+			orgDepTreeGrid = new ListGrid() {
+				protected String getCellCSSText(ListGridRecord record,
+						int rowNum, int colNum) {
+					ListGridRecord countryRecord = (ListGridRecord) record;
+					if (countryRecord == null) {
+						return super.getCellCSSText(record, rowNum, colNum);
+					}
+					Integer isBold = countryRecord.getAttributeAsInt("isBold");
+					if (isBold != null && isBold.equals(1)) {
+						return "font-weight: bold;";
+					} else {
+						return super.getCellCSSText(record, rowNum, colNum);
+					}
+				};
+			};
 			orgDepTreeGrid.setLeft(50);
 			orgDepTreeGrid.setTop(50);
 			orgDepTreeGrid.setWidth100();
 			orgDepTreeGrid.setHeight100();
-			orgDepTreeGrid.setShowConnectors(true);
 			orgDepTreeGrid.setFetchOperation("orgDepartSearch");
 			orgDepTreeGrid.setCriteria(criteria);
 			orgDepTreeGrid.setDataSource(orgDepDataSource);
@@ -243,13 +257,13 @@ public class DlgAddManageOrgDepartments extends Window {
 
 	private void searchDepartment() {
 		try {
-			Integer organization_id = listGridRecord
+			Integer p_organization_id = listGridRecord
 					.getAttributeAsInt("organization_id");
 			String departament = orgDepNameItem.getValueAsString();
 			String real_address_descr = orgDepAddrItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("organization_id", organization_id);
+			criteria.setAttribute("p_organization_id", p_organization_id);
 
 			if (departament != null && !departament.trim().equals("")) {
 				String tmp = departament.trim();
@@ -260,14 +274,11 @@ public class DlgAddManageOrgDepartments extends Window {
 					if (item.equals("")) {
 						continue;
 					}
-					criteria.setAttribute("departament" + i, item);
+					criteria.setAttribute("department" + i, item);
 					i++;
 				}
 			}
-
-			criteria.setAttribute("departament", departament);
 			criteria.setAttribute("real_address_descr", real_address_descr);
-
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "orgDepartSearch");
 			orgDepTreeGrid.invalidateCache();
