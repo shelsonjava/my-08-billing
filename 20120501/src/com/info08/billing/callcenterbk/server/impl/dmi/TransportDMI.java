@@ -977,9 +977,8 @@ public class TransportDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
 	public PublicTranspDirectionStreet updatePublicTransportDirectionsStreetStatus(
-			Map record) throws Exception {
+			DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -987,13 +986,17 @@ public class TransportDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long route_street_id = new Long(record.get("pt_id").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			Long pts_id = new Long(dsRequest.getOldValues().get("pts_id")
+					.toString());
+
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+
 			RCNGenerator.getInstance().initRcn(oracleManager,
 					new Timestamp(System.currentTimeMillis()), loggedUserName,
 					"Remove Public Transport Direction Street");
 			PublicTranspDirectionStreet busRouteStreet = oracleManager.find(
-					PublicTranspDirectionStreet.class, route_street_id);
+					PublicTranspDirectionStreet.class, pts_id);
 
 			oracleManager.remove(busRouteStreet);
 			oracleManager.flush();

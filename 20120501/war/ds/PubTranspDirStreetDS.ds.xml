@@ -35,7 +35,7 @@
 		</operationBinding>
 
 		<!-- BusRouteStreet Status Update -->
-		<operationBinding operationType="update"
+		<operationBinding operationType="remove"
 			operationId="updatePublicTransportDirectionsStreetStatus"
 			serverMethod="updatePublicTransportDirectionsStreetStatus">
 			<serverObject lookupStyle="new"

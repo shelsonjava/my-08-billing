@@ -1,7 +1,8 @@
 package com.info08.billing.callcenterbk.client.content.hr;
 
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditUserNew;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditStaff;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -18,6 +19,7 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -43,6 +45,7 @@ public class TabHRStaff extends Tab {
 	private TextItem lastNameItem;
 	private TextItem docNumberItem;
 	private TextItem remarkItem;
+	private ComboBoxItem departmentItem;
 	private IButton findButton;
 	private IButton clearButton;
 	private ToolStripButton addPersonBtn;
@@ -68,31 +71,41 @@ public class TabHRStaff extends Tab {
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth(835);
-			//searchForm.setTitleWidth(150);
-			searchForm.setNumCols(8);
+			// searchForm.setTitleWidth(150);
+			searchForm.setNumCols(6);
 			mainLayout.addMember(searchForm);
 
 			firstNameItem = new TextItem();
 			firstNameItem.setTitle("სახელი");
 			firstNameItem.setWidth(150);
-			firstNameItem.setName("firstNameItem");
+			firstNameItem.setName("first_name");
 
 			lastNameItem = new TextItem();
 			lastNameItem.setTitle("გვარი");
 			lastNameItem.setWidth(150);
-			lastNameItem.setName("lastNameItem");
+			lastNameItem.setName("last_name");
 
 			docNumberItem = new TextItem();
-			docNumberItem.setTitle("პირადობის ნომერი");
+			docNumberItem.setTitle("პირადობა");
 			docNumberItem.setWidth(150);
-			docNumberItem.setName("docNumberItem");
+			docNumberItem.setName("doc_num");
 
 			remarkItem = new TextItem();
 			remarkItem.setTitle("კომენტარი");
 			remarkItem.setWidth(150);
-			remarkItem.setName("remarkItem");
-			
-			searchForm.setFields(firstNameItem, lastNameItem, docNumberItem, remarkItem);
+			remarkItem.setName("remark");
+
+			departmentItem = new ComboBoxItem();
+			departmentItem.setTitle("განყოფილება");
+			departmentItem.setName("department_id");
+			departmentItem.setWidth(150);
+			departmentItem.setFetchMissingValues(false);
+
+			ClientUtils.fillCombo(departmentItem, "StaffDS",
+					"getAllDepartments", "department_id", "department_name");
+
+			searchForm.setFields(firstNameItem, lastNameItem, departmentItem,
+					docNumberItem, remarkItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(835);
@@ -151,7 +164,7 @@ public class TabHRStaff extends Tab {
 			};
 
 			listGrid.setWidth(835);
-			//listGrid.setHeight(280);
+			// listGrid.setHeight(280);
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(dataSource);
 			listGrid.setAutoFetchData(false);
@@ -231,14 +244,11 @@ public class TabHRStaff extends Tab {
 			addPersonBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditUserNew addEditUserNew = new DlgAddEditUserNew(
+					DlgAddEditStaff dlgAddEditStaff = new DlgAddEditStaff(
 							dataSource, null);
-					addEditUserNew.show();
+					dlgAddEditStaff.show();
 				}
 			});
-
-			final Long loggedPersonnelId = CommonSingleton.getInstance()
-					.getSessionPerson().getUser_id();
 
 			editPersonBtn.addClickHandler(new ClickHandler() {
 				@Override
@@ -249,17 +259,10 @@ public class TabHRStaff extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer user_id = listGridRecord
-							.getAttributeAsInt("user_id");
-					if (!loggedPersonnelId.equals(new Long(user_id))
-							&& user_id.intValue() == 215) {
-						SC.say("მოდიფიკაცია შეუძლებელია. ეს სისტემური მომხმარებელია !");
-						return;
-					}
 
-					DlgAddEditUserNew addEditUserNew = new DlgAddEditUserNew(
+					DlgAddEditStaff dlgAddEditStaff = new DlgAddEditStaff(
 							dataSource, listGridRecord);
-					addEditUserNew.show();
+					dlgAddEditStaff.show();
 				}
 			});
 			deletePersonBtn.addClickHandler(new ClickHandler() {
@@ -271,23 +274,19 @@ public class TabHRStaff extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					final Integer user_id = listGridRecord
-							.getAttributeAsInt("user_id");
-					if (user_id == null) {
+					final Integer staff_id = listGridRecord
+							.getAttributeAsInt("staff_id");
+					if (staff_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
-					if (!loggedPersonnelId.equals(new Long(user_id))
-							&& user_id.intValue() == 215) {
-						SC.say("მოდიფიკაცია შეუძლებელია. ეს სისტემური მომხმარებელია !");
-						return;
-					}
-					SC.ask("დარწმუნებული ხართ რომ გნებავთ მომხმარებლის გაუქმება ?",
+
+					SC.ask("დარწმუნებული ხართ რომ გნებავთ თანამშრომლის გაუქმება ?",
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										deleteUser(user_id);
+										deleteStaff(staff_id);
 									}
 								}
 							});
@@ -351,21 +350,16 @@ public class TabHRStaff extends Tab {
 				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
+
 					if (listGridRecord == null) {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer user_id = listGridRecord
-							.getAttributeAsInt("user_id");
-					if (!loggedPersonnelId.equals(new Long(user_id))
-							&& user_id.intValue() == 215) {
-						SC.say("მოდიფიკაცია შეუძლებელია. ეს სისტემური მომხმარებელია !");
-						return;
-					}
 
-					DlgAddEditUserNew addEditUserNew = new DlgAddEditUserNew(
+					DlgAddEditStaff dlgAddEditStaff = new DlgAddEditStaff(
 							dataSource, listGridRecord);
-					addEditUserNew.show();
+					dlgAddEditStaff.show();
+
 				}
 			});
 
@@ -378,17 +372,16 @@ public class TabHRStaff extends Tab {
 		}
 	}
 
-	private void deleteUser(Integer user_id) {
+	private void deleteStaff(Integer staff_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("user_id", user_id);
+			record.setAttribute("staff_id", staff_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-			record.setAttribute("aaaaaa", "bbbbbbbbbbbbbbbb");
 
 			DSRequest req = new DSRequest();
-			req.setAttribute("operationId", "deleteUser");
+			req.setAttribute("operationId", "removeStaff");
 
 			listGrid.removeData(record, new DSCallback() {
 				@Override

@@ -5,7 +5,7 @@
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="staff_id"					type="integer"		title="staff_id"			hidden="true" primaryKey="true" />
+		<field name="staff_id"					type="integer"		title="staff_id"			primaryKey="true" />
 		<field name="doc_num"					type="text"			title="doc_num"/>
 		<field name="last_name"					type="text"			title="last_name"/>
 		<field name="first_name"				type="text"			title="first_name"/>
@@ -30,12 +30,12 @@
 		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.StaffDMI"/>
 
 		<!-- Add Staff -->	
-		<operationBinding operationType="add" operationId="addStaff" serverMethod="addStaff">
+		<operationBinding operationType="add" operationId="addOrUpdate" serverMethod="addOrUpdate">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.StaffDMI"/>
         </operationBinding>
         
 		<!-- Update Staff -->
-		<operationBinding operationType="update" operationId="updateStaff" serverMethod="updateStaff">
+		<operationBinding operationType="update" operationId="addOrUpdate" serverMethod="addOrUpdate">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.StaffDMI"/>
         </operationBinding>
         
@@ -53,7 +53,7 @@
 		      ,s.gender_id
 		      ,s.nationality_id
 		      ,s.dob
-		      ,to_char(s.dob, 'dd.mm.yyyy') as dob_descr
+		      ,to_char(s.dob, 'mm/dd/yyyy') as dob_descr
 		      ,s.remark
 		      ,s.family_status_id
 		      ,s.start_date
@@ -62,14 +62,34 @@
 		      ,getdescription(s.nationality_id) as nationality_descr
 		      ,getdescription(s.family_status_id) as family_status_descr
 		      ,d.department_name
-		      ,to_char(s.start_date, 'dd.mm.yyyy') as start_date_descr
+		      ,to_char(s.start_date, 'mm/dd/yyyy') as start_date_descr
 			</selectClause> 
 			<tableClause>staff s, departments d</tableClause>
 			<whereClause><![CDATA[
 				s.department_id = d.department_id
+				#if($criteria.staff_id) and s.staff_id = $criteria.staff_id #end
+				#if($criteria.department_id) and d.department_id = $criteria.department_id #end
+				#if($criteria.last_name) and s.last_name like '%' || $criteria.last_name || '%' #end
+				#if($criteria.first_name) and s.first_name like '%' || $criteria.first_name || '%' #end
+				#if($criteria.remark) and s.remark like '%' || $criteria.remark || '%' #end
+				#if($criteria.doc_num) and s.doc_num = $criteria.doc_num #end
 				]]>  
 			</whereClause> 
 			<orderClause>s.last_name</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="getAllDepartments" operationType="fetch">
+    		<selectClause>   			
+    		   d.department_id
+		      ,d.department_name
+			</selectClause> 
+			<tableClause>departments d</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.department_id) and d.department_id = $criteria.department_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>d.department_name</orderClause>
     	</operationBinding>
     </operationBindings>	
 </DataSource>

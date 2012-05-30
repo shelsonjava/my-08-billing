@@ -180,22 +180,7 @@ public class TabTransportCityBusStreet extends Tab {
 
 			toolStrip.addSeparator();
 
-			listGrid = new ListGrid() {
-				protected String getCellCSSText(ListGridRecord record,
-						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					if (countryRecord == null) {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-				};
-			};
+			listGrid = new ListGrid();
 
 			listGrid.setWidth(910);
 			listGrid.setHeight(330);
@@ -280,15 +265,9 @@ public class TabTransportCityBusStreet extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
-					final Integer route_street_id = listGridRecord
-							.getAttributeAsInt("route_street_id");
-					if (route_street_id == null) {
+					final Integer pts_id = listGridRecord
+							.getAttributeAsInt("pts_id");
+					if (pts_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -298,7 +277,7 @@ public class TabTransportCityBusStreet extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(route_street_id, 1);
+										delete(pts_id);
 									}
 								}
 							});
@@ -441,19 +420,18 @@ public class TabTransportCityBusStreet extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer route_street_id, Integer deleted) {
+	private void delete(Integer pts_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("route_street_id", route_street_id);
+			record.setAttribute("pts_id", pts_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId",
 					"updatePublicTransportDirectionsStreetStatus");
-			listGrid.updateData(record, new DSCallback() {
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

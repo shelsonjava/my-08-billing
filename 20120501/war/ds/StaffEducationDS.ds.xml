@@ -1,0 +1,59 @@
+<DataSource
+	ID="StaffEducationDS"
+	serverType="sql"
+	tableName="staff_education"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="staff_education_id"	type="integer"	title="staff_education_id"	primaryKey="true" />
+		<field name="staff_id"				type="integer"	title="staff_id"/>
+		<field name="college_name"			type="text"		title="college_name"/>
+		<field name="faculty_name"			type="text"		title="faculty_name"/>
+		<field name="degree_descr_id"		type="integer"	title="degree_descr_id" 	hidden="true"/>
+		<field name="degree_descr"			type="text"		title="degree_descr" 		hidden="true"/>
+		<field name="start_year"			type="integer"	title="start_year" 			hidden="true"/>
+		<field name="end_year"				type="integer"	title="end_year"/>
+		<field name="se_years"				type="text"		title="se_years" />
+		<field name="loggedUserName"		type="text"		title="Logged UserName" 	hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.StaffDMI"/>
+
+		<operationBinding operationId="getAllStaffEducations" operationType="fetch">
+    		<selectClause>   			
+    		   se.staff_education_id
+		      ,se.staff_id
+		      ,se.college_name
+		      ,se.faculty_name
+		      ,se.degree_descr_id
+		      ,getdescription(se.degree_descr_id) as degree_descr
+		      ,se.start_year
+		      ,se.end_year
+		      ,se.start_year || ' - ' || se.end_year as se_years
+			</selectClause> 
+			<tableClause>staff_education se</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.staff_id) and se.staff_id = $criteria.staff_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>se.start_year</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="getAllDepartments" operationType="fetch">
+    		<selectClause>   			
+    		   d.department_id
+		      ,d.department_name
+			</selectClause> 
+			<tableClause>departments d</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.department_id) and d.department_id = $criteria.department_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>d.department_name</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>
