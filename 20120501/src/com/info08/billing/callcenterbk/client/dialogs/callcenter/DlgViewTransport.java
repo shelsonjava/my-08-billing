@@ -156,7 +156,7 @@ public class DlgViewTransport extends Window {
 		mainLayout.addMember(detailViewer);
 
 		Criteria criteria = new Criteria();
-		criteria.setAttribute("transport_id",
+		criteria.setAttribute("transp_schedule_id",
 				listGridRecord.getAttributeAsInt("transport_id"));
 
 		listGridInner = new ListGrid();

@@ -950,7 +950,7 @@ public interface QueryConstants {
 			+ "        tc.name_descr as transport_company,\n"
 			+ "        tr.name_descr as transport_resource\n"
 			+ "\n"
-			+ "from transp_schedules t, transp_types tt,transp_stations dep_st, cities dep_c,transp_stations arr_st, cities arr_c, transp_companies tc, transp_resource tr\n"
+			+ "from transp_schedules t, transp_types tt,transp_stations dep_st, towns dep_c,transp_stations arr_st, towns arr_c, transp_companies tc, transp_resource tr\n"
 			+ "where\n"
 			+ "          t.transp_type_id = tt.transp_type_id and\n"
 			+ "          t.depart_transp_stat_id = dep_st.transp_stat_id and dep_st.town_id = dep_c.town_id and\n"
