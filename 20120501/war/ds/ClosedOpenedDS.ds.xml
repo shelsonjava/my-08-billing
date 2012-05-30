@@ -5,23 +5,27 @@
 	qualifyColumnNames="false">
 
 	<fields>
-		<field name="id"			 			type="integer"		title="description_id"			hidden="true" primaryKey="true" />
-		<field name="name" 						type="text" 		title="description"/>
+		<field name="id"			 			type="integer"		title="id"			hidden="true" primaryKey="true" />
+		<field name="name" 						type="text" 		title="name"/>
 	</fields>
-
 	<operationBindings>
 		<!-- FETCH -->
-		
 		<operationBinding operationId="searchClosedOpened" operationType="fetch">
 			<selectClause>				
-      			t.id,
-      			t.name
+      			t.id as id,
+      			decode(t.ttype,
+      				0,
+      				decode(t.id, 1, map_char_codes_geo('dafaruli'),map_char_codes_geo('Ria')),
+      				1,
+      				decode(t.id, 1, map_char_codes_geo('ara'),map_char_codes_geo('diax'))
+      			)  as name
 			</selectClause>
-			<tableClause>				
-				(select 0 as id, map_char_codes_geo('Ria') as name from dual
-					union all
-					select 1 as id, map_char_codes_geo('dafaruli') as name from dual) t
+			<tableClause><![CDATA[(select rownum-1 as id,#if($criteria.ttype) $criteria.ttype #else 0 #end as ttype from dual
+							connect by level < 3
+						  )	t
+				]]>
 			</tableClause>
 		</operationBinding>		
+		
 	</operationBindings>
 </DataSource>

@@ -3,9 +3,11 @@ package com.info08.billing.callcenterbk.client.dialogs.transport;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -31,8 +33,6 @@ import com.smartgwt.client.widgets.form.fields.StaticTextItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.TimeItem;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -128,197 +128,40 @@ public class DlgAddEditTranspSchedule extends Window {
 				break;
 			}
 
-			Criteria criteria = new Criteria();
+			Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
+			aditionalCriteria.put("transp_type_id", transp_type_id);
 
 			depTranspStationItem = new ComboBoxItem();
 			depTranspStationItem.setTitle("გასვლის პუნქტი");
 			depTranspStationItem.setWidth(250);
-			depTranspStationItem.setName("depTranspStationItem");
-			depTranspStationItem.setFetchMissingValues(true);
-			depTranspStationItem.setFilterLocally(false);
-			depTranspStationItem.setAddUnknownValues(false);
-
-			DataSource transpStatDS = DataSource.get("TranspStatDS");
-			switch (transp_type_id) {
-			case 1000005:
-				depTranspStationItem
-						.setOptionOperationId("searchAllTransportPlacesForCBAv");
-				break;
-			case 1000003:
-				depTranspStationItem
-						.setOptionOperationId("searchAllTransportPlacesForCBRk");
-				break;
-			case 1000004:
-				depTranspStationItem
-						.setOptionOperationId("searchAllTransportPlacesForCBAvt");
-				break;
-			default:
-				break;
-			}
-
-			depTranspStationItem.setOptionDataSource(transpStatDS);
-			depTranspStationItem.setValueField("transp_stat_id");
-			depTranspStationItem.setDisplayField("name_descr");
-
-			depTranspStationItem.setOptionCriteria(criteria);
-			depTranspStationItem.setAutoFetchData(false);
-
-			depTranspStationItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = depTranspStationItem
-							.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("transp_stat_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("transp_stat_id", nullO);
-						}
-					}
-				}
-			});
+			depTranspStationItem.setName("transp_stat_id");
+			ClientUtils.fillCombo(depTranspStationItem, "TranspStatDS",
+					"searchAllTransportPlacesForCB", "transp_stat_id",
+					"name_descr", aditionalCriteria);
 
 			arrivalTranspStationItem = new ComboBoxItem();
 			arrivalTranspStationItem.setTitle("ჩასვლის პუნქტი");
 			arrivalTranspStationItem.setWidth(250);
-			arrivalTranspStationItem.setName("arrivalTranspStationItem");
-			arrivalTranspStationItem.setFetchMissingValues(true);
-			arrivalTranspStationItem.setFilterLocally(false);
-			arrivalTranspStationItem.setAddUnknownValues(false);
-
-			DataSource transpStatDS1 = DataSource.get("TranspStatDS");
-			switch (transp_type_id) {
-			case 1000005:
-				arrivalTranspStationItem
-						.setOptionOperationId("searchAllTransportPlacesForCBAv");
-				break;
-			case 1000003:
-				arrivalTranspStationItem
-						.setOptionOperationId("searchAllTransportPlacesForCBRk");
-				break;
-			case 1000004:
-				arrivalTranspStationItem
-						.setOptionOperationId("searchAllTransportPlacesForCBAvt");
-				break;
-			default:
-				break;
-			}
-			arrivalTranspStationItem.setOptionDataSource(transpStatDS1);
-			arrivalTranspStationItem.setValueField("transp_stat_id");
-			arrivalTranspStationItem.setDisplayField("name_descr");
-
-			arrivalTranspStationItem.setOptionCriteria(criteria);
-			arrivalTranspStationItem.setAutoFetchData(false);
-
-			arrivalTranspStationItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = arrivalTranspStationItem
-							.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("transp_stat_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("transp_stat_id", nullO);
-						}
-					}
-				}
-			});
+			arrivalTranspStationItem.setName("transp_stat_id");
+			ClientUtils.fillCombo(arrivalTranspStationItem, "TranspStatDS",
+					"searchAllTransportPlacesForCB", "transp_stat_id",
+					"name_descr", aditionalCriteria);
 
 			transpResourceItem = new ComboBoxItem();
 			transpResourceItem.setTitle("სატრასპ. საშუალება");
 			transpResourceItem.setWidth(250);
-			transpResourceItem.setName("transpResourceItem");
-			transpResourceItem.setFetchMissingValues(true);
-			transpResourceItem.setFilterLocally(false);
-			transpResourceItem.setAddUnknownValues(false);
-
-			DataSource transpResDS = DataSource.get("TranspResDS");
-			switch (transp_type_id) {
-			case 1000005:
-				transpResourceItem
-						.setOptionOperationId("searchAllTranspPlanesForCombosAv");
-				break;
-			case 1000003:
-				transpResourceItem
-						.setOptionOperationId("searchAllTranspPlanesForCombosRail");
-				break;
-			case 1000004:
-				transpResourceItem
-						.setOptionOperationId("searchAllTranspPlanesForCombosAvt");
-				break;
-			default:
-				break;
-			}
-			transpResourceItem.setOptionDataSource(transpResDS);
-			transpResourceItem.setValueField("transp_res_id");
-			transpResourceItem.setDisplayField("name_descr");
-
-			transpResourceItem.setOptionCriteria(criteria);
-			transpResourceItem.setAutoFetchData(false);
-
-			transpResourceItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = transpResourceItem.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("transp_res_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("transp_res_id", nullO);
-						}
-					}
-				}
-			});
+			transpResourceItem.setName("transp_res_id");
+			ClientUtils.fillCombo(transpResourceItem, "TranspResDS",
+					"searchAllTranspPlanesForCombos", "transp_res_id",
+					"name_descr", aditionalCriteria);
 
 			transpCompItem = new ComboBoxItem();
 			transpCompItem.setTitle("სატრასპ. კომპანია");
 			transpCompItem.setWidth(250);
-			transpCompItem.setName("transpCompItem");
-			transpCompItem.setFetchMissingValues(true);
-			transpCompItem.setFilterLocally(false);
-			transpCompItem.setAddUnknownValues(false);
-
-			DataSource transpCompDS = DataSource.get("TranspCompDS");
-			switch (transp_type_id) {
-			case 1000005:
-				transpCompItem
-						.setOptionOperationId("searchAllTransportCompsForCBAv");
-				break;
-			case 1000003:
-				transpCompItem
-						.setOptionOperationId("searchAllTransportCompsForCBRail");
-				break;
-			case 1000004:
-				transpCompItem
-						.setOptionOperationId("searchAllTransportCompsForCBAvt");
-				break;
-			default:
-				break;
-			}
-			transpCompItem.setOptionDataSource(transpCompDS);
-			transpCompItem.setValueField("transp_comp_id");
-			transpCompItem.setDisplayField("name_descr");
-
-			transpCompItem.setOptionCriteria(criteria);
-			transpCompItem.setAutoFetchData(false);
-
-			transpCompItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = transpCompItem.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("transp_comp_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("transp_comp_id", nullO);
-						}
-					}
-				}
-			});
+			transpCompItem.setName("transp_comp_id");
+			ClientUtils.fillCombo(transpCompItem, "TranspCompDS",
+					"searchAllTransportCompanies", "transp_comp_id",
+					"name_descr", aditionalCriteria);
 
 			remarkItem = new TextAreaItem();
 			remarkItem.setTitle("შენიშვნა");
@@ -448,15 +291,19 @@ public class DlgAddEditTranspSchedule extends Window {
 			final DateTimeFormat dateFormatter = DateTimeFormat
 					.getFormat("HH:mm");
 
-			transpItemsGrid.setWidth100();			
+			transpItemsGrid.setWidth100();
 			transpItemsGrid.setHeight(200);
 			transpItemsGrid.setDataSource(transpDetailsClientDS);
 			transpItemsGrid.setAutoFetchData(true);
 
-			ListGridField depart_station = new ListGridField("depart_station", "გავლის პუნქტი", 330);
-			ListGridField departure_time = new ListGridField("departure_time","გასვლის დრო", 130);
-			ListGridField arrival_time = new ListGridField("arrival_time", "ჩასვლის დრო",130);
-			ListGridField item_order = new ListGridField("item_order", "თანმიმდევრობა", 130);
+			ListGridField depart_station = new ListGridField("depart_station",
+					"გავლის პუნქტი", 330);
+			ListGridField departure_time = new ListGridField("departure_time",
+					"გასვლის დრო", 130);
+			ListGridField arrival_time = new ListGridField("arrival_time",
+					"ჩასვლის დრო", 130);
+			ListGridField item_order = new ListGridField("item_order",
+					"თანმიმდევრობა", 130);
 
 			departure_time.setAlign(Alignment.CENTER);
 			arrival_time.setAlign(Alignment.CENTER);
@@ -495,7 +342,8 @@ public class DlgAddEditTranspSchedule extends Window {
 				}
 			});
 
-			transpItemsGrid.setFields(depart_station, departure_time, arrival_time, item_order);
+			transpItemsGrid.setFields(depart_station, departure_time,
+					arrival_time, item_order);
 
 			transpItemsGrid
 					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
@@ -626,32 +474,38 @@ public class DlgAddEditTranspSchedule extends Window {
 				return;
 			}
 
-			Integer transp_res_id = editRecord.getAttributeAsInt("transp_res_id");
+			Integer transp_res_id = editRecord
+					.getAttributeAsInt("transp_res_id");
 			if (transp_res_id != null) {
 				transpResourceItem.setValue(transp_res_id);
 			}
 
-			Integer transp_comp_id = editRecord.getAttributeAsInt("transp_comp_id");
+			Integer transp_comp_id = editRecord
+					.getAttributeAsInt("transp_comp_id");
 			if (transp_comp_id != null) {
 				transpCompItem.setValue(transp_comp_id);
 			}
 
-			String transp_model_descr = editRecord.getAttributeAsString("transp_model_descr");
+			String transp_model_descr = editRecord
+					.getAttributeAsString("transp_model_descr");
 			if (transp_model_descr != null) {
 				transpModelDescrItem.setValue(transp_model_descr);
 			}
 
-			Integer depart_transp_stat_id = editRecord.getAttributeAsInt("depart_transp_stat_id");
+			Integer depart_transp_stat_id = editRecord
+					.getAttributeAsInt("depart_transp_stat_id");
 			if (depart_transp_stat_id != null) {
 				depTranspStationItem.setValue(depart_transp_stat_id);
 			}
 
-			Integer arrival_transp_stat_id = editRecord.getAttributeAsInt("arrival_transp_stat_id");
+			Integer arrival_transp_stat_id = editRecord
+					.getAttributeAsInt("arrival_transp_stat_id");
 			if (arrival_transp_stat_id != null) {
 				arrivalTranspStationItem.setValue(arrival_transp_stat_id);
 			}
 
-			final DateTimeFormat dateFormatter = DateTimeFormat.getFormat("HH:mm");
+			final DateTimeFormat dateFormatter = DateTimeFormat
+					.getFormat("HH:mm");
 
 			Date depart_time = editRecord.getAttributeAsDate("depart_time");
 			if (depart_time != null) {
@@ -710,7 +564,8 @@ public class DlgAddEditTranspSchedule extends Window {
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "searchTransportDetails");
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("transp_schedule_id",editRecord.getAttributeAsInt("transp_schedule_id"));
+			criteria.setAttribute("transp_schedule_id",
+					editRecord.getAttributeAsInt("transp_schedule_id"));
 			transportDetailsDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
@@ -740,8 +595,10 @@ public class DlgAddEditTranspSchedule extends Window {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void save() {
 		try {
-			String depart_transp_stat_id_str = depTranspStationItem.getValueAsString();
-			if (depart_transp_stat_id_str == null || depart_transp_stat_id_str.trim().equals("")) {
+			String depart_transp_stat_id_str = depTranspStationItem
+					.getValueAsString();
+			if (depart_transp_stat_id_str == null
+					|| depart_transp_stat_id_str.trim().equals("")) {
 				SC.say("გთხოვთ აირჩიოთ გასვლის პუნქტი !");
 				return;
 			}
@@ -753,8 +610,10 @@ public class DlgAddEditTranspSchedule extends Window {
 				return;
 			}
 
-			String arrival_transp_stat_id_str = arrivalTranspStationItem.getValueAsString();
-			if (arrival_transp_stat_id_str == null || arrival_transp_stat_id_str.trim().equals("")) {
+			String arrival_transp_stat_id_str = arrivalTranspStationItem
+					.getValueAsString();
+			if (arrival_transp_stat_id_str == null
+					|| arrival_transp_stat_id_str.trim().equals("")) {
 				SC.say("გთხოვთ აირჩიოთ ჩასვლის პუნქტი !");
 				return;
 			}
@@ -797,7 +656,8 @@ public class DlgAddEditTranspSchedule extends Window {
 			String remark = remarkItem.getValueAsString();
 
 			String transp_comp_id_str = transpCompItem.getValueAsString();
-			if (transp_comp_id_str == null || transp_comp_id_str.trim().equals("")) {
+			if (transp_comp_id_str == null
+					|| transp_comp_id_str.trim().equals("")) {
 				SC.say("გთხოვთ აირჩიოთ სატრანსპორტო კომპანია !");
 				return;
 			}
@@ -810,7 +670,8 @@ public class DlgAddEditTranspSchedule extends Window {
 			}
 
 			String transp_res_id_str = transpResourceItem.getValueAsString();
-			if (transp_res_id_str == null || transp_res_id_str.trim().equals("")) {
+			if (transp_res_id_str == null
+					|| transp_res_id_str.trim().equals("")) {
 				SC.say("გთხოვთ აირჩიოთ სატრანსპორტო საშუალება !");
 				return;
 			}
@@ -831,10 +692,23 @@ public class DlgAddEditTranspSchedule extends Window {
 			}
 
 			// check all transport type : t.transport_type_id
-			Integer out_tranp = depTranspStationItem.getSelectedRecord().getAttributeAsInt("transp_type_id");
-			Integer in_tranp = arrivalTranspStationItem.getSelectedRecord().getAttributeAsInt("transp_type_id");
-			Integer transp_pln = transpResourceItem.getSelectedRecord().getAttributeAsInt("transp_type_id");
+			Integer out_tranp = null;
+			if (depTranspStationItem.getSelectedRecord() != null) {
+				out_tranp = depTranspStationItem.getSelectedRecord()
+						.getAttributeAsInt("transp_type_id");
+			}
 
+			Integer in_tranp = null;
+			if (arrivalTranspStationItem.getSelectedRecord() != null) {
+				in_tranp = arrivalTranspStationItem.getSelectedRecord()
+						.getAttributeAsInt("transp_type_id");
+			}
+
+			Integer transp_pln = null;
+			if (transpResourceItem.getSelectedRecord() != null) {
+				transp_pln = transpResourceItem.getSelectedRecord()
+						.getAttributeAsInt("transp_type_id");
+			}
 			if (!transp_type_id.equals(out_tranp)
 					|| !transp_type_id.equals(in_tranp)
 					|| !transp_type_id.equals(transp_pln)) {
@@ -861,7 +735,8 @@ public class DlgAddEditTranspSchedule extends Window {
 			}
 
 			Map records = new LinkedHashMap();
-			RecordList trasnport_details = transpItemsGrid.getDataAsRecordList();
+			RecordList trasnport_details = transpItemsGrid
+					.getDataAsRecordList();
 
 			if (trasnport_details != null && trasnport_details.getLength() > 0) {
 				int length = trasnport_details.getLength();
@@ -869,34 +744,48 @@ public class DlgAddEditTranspSchedule extends Window {
 					Record tranpDetailRecord = trasnport_details.get(i);
 					Map transportDetailsMap = new LinkedHashMap();
 
-					Integer transp_item_id = tranpDetailRecord.getAttributeAsInt("transp_item_id");
-					Integer transp_station_id = tranpDetailRecord.getAttributeAsInt("transp_station_id");
-					Integer item_order = tranpDetailRecord.getAttributeAsInt("item_order");
-					Date it_arrival_time = tranpDetailRecord.getAttributeAsDate("arrival_time");
-					Date it_departure_time = tranpDetailRecord.getAttributeAsDate("departure_time");
+					Integer transp_item_id = tranpDetailRecord
+							.getAttributeAsInt("transp_item_id");
+					Integer transp_station_id = tranpDetailRecord
+							.getAttributeAsInt("transp_station_id");
+					Integer item_order = tranpDetailRecord
+							.getAttributeAsInt("item_order");
+					Date it_arrival_time = tranpDetailRecord
+							.getAttributeAsDate("arrival_time");
+					Date it_departure_time = tranpDetailRecord
+							.getAttributeAsDate("departure_time");
 
-					transportDetailsMap.put("transp_item_id",transp_item_id);
-					transportDetailsMap.put("transp_station_id",transp_station_id);					
-					transportDetailsMap.put("arrival_time", ((it_arrival_time == null) ? null : (it_arrival_time.getTime() + "")));
-					transportDetailsMap.put("departure_time",((it_departure_time == null) ? null : (it_departure_time.getTime() + "")));
-					transportDetailsMap.put("item_order",item_order);
+					transportDetailsMap.put("transp_item_id", transp_item_id);
+					transportDetailsMap.put("transp_station_id",
+							transp_station_id);
+					transportDetailsMap.put("arrival_time",
+							((it_arrival_time == null) ? null
+									: (it_arrival_time.getTime() + "")));
+					transportDetailsMap.put("departure_time",
+							((it_departure_time == null) ? null
+									: (it_departure_time.getTime() + "")));
+					transportDetailsMap.put("item_order", item_order);
 
-					records.put(transp_station_id.toString(), transportDetailsMap);
+					records.put(transp_station_id.toString(),
+							transportDetailsMap);
 				}
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			String loggedUser = CommonSingleton.getInstance().getSessionPerson().getUser_name();
+			String loggedUser = CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			
+
 			if (editRecord != null) {
-				record.setAttribute("transp_schedule_id", editRecord.getAttributeAsInt("transp_schedule_id"));
+				record.setAttribute("transp_schedule_id",
+						editRecord.getAttributeAsInt("transp_schedule_id"));
 			}
 			record.setAttribute("transp_type_id", transp_type_id);
 			record.setAttribute("depart_transp_stat_id", depart_transp_stat_id);
-			record.setAttribute("arrival_transp_stat_id", arrival_transp_stat_id);
-			record.setAttribute("depart_time", depart_time);			
+			record.setAttribute("arrival_transp_stat_id",
+					arrival_transp_stat_id);
+			record.setAttribute("depart_time", depart_time);
 			record.setAttribute("arrival_time", arrival_time);
 			record.setAttribute("remark", remark);
 			record.setAttribute("price_descr", price_descr);

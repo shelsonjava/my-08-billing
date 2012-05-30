@@ -334,11 +334,10 @@ public class OrganizationDMI {
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
 					loggedUserName, log);
 
-			Long legal_address_id = values.containsKey("legal_address_id") ? new Long(
+			Long legal_address_id = values.get("legal_address_id") != null ? new Long(
 					values.get("legal_address_id").toString()) : null;
-			Long physical_address_id = values
-					.containsKey("physical_address_id") ? new Long(values.get(
-					"physical_address_id").toString()) : null;
+			Long physical_address_id = values.get("physical_address_id") != null ? new Long(
+					values.get("physical_address_id").toString()) : null;
 
 			Address legalAddress = null;
 			if (legal_address_id != null) {
@@ -436,14 +435,16 @@ public class OrganizationDMI {
 
 			Map<?, ?> orgPartnerBanks = (Map<?, ?>) values
 					.get("orgPartnerBanks");
-			Set<?> orgPartnerBankKeys = orgPartnerBanks.keySet();
-			for (Object partBankKey : orgPartnerBankKeys) {
-				Object value = orgPartnerBanks.get(partBankKey);
-				OrganizationPartnerBank organizationPartnerBank = new OrganizationPartnerBank();
-				organizationPartnerBank.setOrganization_id(organization_id);
-				organizationPartnerBank.setPart_bank_org_id(new Long(value
-						.toString()));
-				oracleManager.persist(organizationPartnerBank);
+			if (orgPartnerBanks != null) {
+				Set<?> orgPartnerBankKeys = orgPartnerBanks.keySet();
+				for (Object partBankKey : orgPartnerBankKeys) {
+					Object value = orgPartnerBanks.get(partBankKey);
+					OrganizationPartnerBank organizationPartnerBank = new OrganizationPartnerBank();
+					organizationPartnerBank.setOrganization_id(organization_id);
+					organizationPartnerBank.setPart_bank_org_id(new Long(value
+							.toString()));
+					oracleManager.persist(organizationPartnerBank);
+				}
 			}
 
 			EMF.commitTransaction(transaction);
@@ -458,8 +459,10 @@ public class OrganizationDMI {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While adding New organization Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : " + e.toString());
+			logger.error(
+					"Error While adding New organization Into Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
 		} finally {
 			if (oracleManager != null) {
 				EMF.returnEntityManager(oracleManager);

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddManageOrgDepartments;
+import com.info08.billing.callcenterbk.client.dialogs.org.DlgManageOrgDepartments;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditOrganization;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgSortOrderOrgs;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -482,7 +482,7 @@ public class TabOrganization extends Tab {
 							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
-				DlgAddManageOrgDepartments addEditOrgDepartments = new DlgAddManageOrgDepartments(
+				DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
 						listGridRecord, orgTreeGrid);
 				addEditOrgDepartments.show();
 			}

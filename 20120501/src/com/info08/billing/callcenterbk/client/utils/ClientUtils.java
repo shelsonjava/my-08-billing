@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.utils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -20,6 +21,7 @@ import com.smartgwt.client.widgets.form.fields.events.KeyDownEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyDownHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public class ClientUtils {
@@ -189,8 +191,11 @@ public class ClientUtils {
 		formItem.setOptionCriteria(criteria);
 	}
 
-	private static void addEditionalCriteria(Map<?, ?> aditionalCriteria,
+	private static Criteria addEditionalCriteria(Map<?, ?> aditionalCriteria,
 			Criteria criteria) {
+		if (criteria == null) {
+			criteria = new Criteria();
+		}
 		if (aditionalCriteria != null) {
 			Set<?> keys = aditionalCriteria.keySet();
 			for (Object key : keys) {
@@ -201,8 +206,8 @@ public class ClientUtils {
 				}
 			}
 		}
-
 		criteria.setAttribute("_UUUUUUUIDUUU", HTMLPanel.createUniqueId());
+		return criteria;
 	}
 
 	public static Map<String, Object> fillMapFromForm(Map<String, Object> mp,
@@ -234,5 +239,48 @@ public class ClientUtils {
 			record.setAttribute(sKey, mp.get(key));
 		}
 		return record;
+	}
+
+	public static ListGridField createDescrFilterField(String gridFieldName,
+			String fieldTitle, int with, int descrTypeId, boolean isCombo) {
+		Map<String, Integer> pCriteria = new LinkedHashMap<String, Integer>();
+		pCriteria.put("description_type_id", descrTypeId);
+		return createFilterField(gridFieldName, fieldTitle, with,
+				"DescriptionsDS", "searchDescriptions", pCriteria,
+				"description_id", "description", isCombo);
+	}
+
+	public static ListGridField createCommonCloseFilterField(
+			String gridFieldName, String fieldTitle, int with, int ttype,
+			boolean isCombo) {
+		Map<String, Integer> pCriteria = new LinkedHashMap<String, Integer>();
+		pCriteria.put("ttype", ttype);
+		return createFilterField(gridFieldName, fieldTitle, with,
+				"ClosedOpenedDS", "searchClosedOpened", pCriteria, "id",
+				"name", isCombo);
+	}
+
+	public static ListGridField createCommonCloseFilterField(
+			String gridFieldName, String fieldTitle, int with, boolean isCombo) {
+		return createCommonCloseFilterField(gridFieldName, fieldTitle, with, 0,
+				isCombo);
+	}
+
+	public static ListGridField createFilterField(String gridFieldName,
+			String fieldTitle, int with, String dsName, String dsOpName,
+			Map<?, ?> pCriteria, String idFieldName, String displayFieldName,
+			boolean isCombo) {
+		ListGridField field = new ListGridField(gridFieldName, fieldTitle, with);
+		field.setOptionDataSource(DataSource.get(dsName));
+		field.setOptionOperationId(dsOpName);
+		field.setOptionCriteria(addEditionalCriteria(pCriteria, null));
+		field.setValueField(idFieldName);
+		field.setDisplayField(displayFieldName);
+		field.setEditorType(isCombo ? new ComboBoxItem() : new SelectItem());
+		field.setFilterEditorType(isCombo ? new ComboBoxItem()
+				: new SelectItem());
+		field.setAutoFetchDisplayMap(true);
+		field.setCanFilter(true);
+		return field;
 	}
 }

@@ -1,23 +1,64 @@
 <DataSource 
 	ID="OrgDepPhoneDS"
     serverType="sql"
-    tableName="ccare.abonents"      
+    tableName="organization_depart_to_phones"      
     qualifyColumnNames="false"
-    dropExtraFields = "false">
-    
-	<fields>
-		<field name="abonent_id"				type="integer"		title="ID"						hidden="true" 	primaryKey="true" />
-		<field name="dep_phone"					type="text"  		title="dep_phone"/>
-		<field name="contact_phones"			type="integer"  	title="contact_phones"			hidden="true"/>
-		<field name="phone_state"				type="text"  		title="phone_state"/>
+    dropExtraFields = "false">    
+   <fields>
+		<field name="org_dep_to_ph_id"			type="integer"		title="org_dep_to_ph_id"		hidden="true" 	primaryKey="true" />
+		<field name="org_department_id"			type="integer"  	title="org_department_id"		hidden="true"/>
+		<field name="phone_number_id"			type="integer"  	title="phone_number_id"			hidden="true"/>
+		<field name="hidden_by_request"			type="integer"  	title="hidden_by_request"		hidden="true"/>
+		<field name="phone_contract_type"		type="integer"  	title="phone_contract_type"		hidden="true"/>
+		<field name="for_contact"				type="integer"  	title="for_contact"				hidden="true"/>
+		<field name="phone_state_id"			type="integer"  	title="phone_state_id"			hidden="true"/>
+		<field name="phone_type_id"				type="integer"  	title="phone_type_id"			hidden="true"/>
+		<field name="is_parallel"				type="integer"  	title="is_parallel"				hidden="true"/>
+		<field name="phone"						type="text"  		title="phone"/>
+		<field name="hidden_by_request_descr"	type="text"  		title="hidden_by_request_descr"/>
+		<field name="phone_contract_type_descr"	type="text"  		title="phone_contract_type_descr"/>
+		<field name="for_contact_descr"			type="text"  		title="for_contact_descr"/>
+		<field name="phone_state_descr"			type="text"  		title="phone_state_descr"/>
+		<field name="phone_type_descr"			type="text"  		title="phone_type_descr"/>
+		<field name="is_parallel_descr"			type="text"  		title="is_parallel_descr"/>
 	</fields>
 	
 	<operationBindings>
-		
-		
-		
+	
+	
 		<!-- FETCH -->
-        <operationBinding operationId="searchOrgDepPhones" operationType="fetch">
+		<operationBinding operationId="searchOrgDepPhones" operationType="fetch">			
+			<selectClause>
+				  t.org_dep_to_ph_id, 
+				  t.org_department_id, 
+				  t.phone_number_id, 
+				  t.hidden_by_request, 
+				  t.phone_contract_type, 
+				  t.for_contact,
+				  p.phone,
+				  p.phone_state_id,
+				  p.phone_type_id,
+				  p.is_parallel,
+				  decode(hidden_by_request,1,'დაფარული','ღია') as hidden_by_request_descr,
+				  getdescription(t.phone_contract_type) as phone_contract_type_descr,
+				  decode(t.for_contact,1,'დიახ','არა') as for_contact_descr,
+				  getdescription(p.phone_state_id) as phone_state_descr,
+				  getdescription(p.phone_type_id) as phone_type_descr,
+				  decode(p.is_parallel,1,'დიახ','არა') as is_parallel_descr
+			</selectClause>
+			<tableClause>organization_depart_to_phones t, phone_numbers p</tableClause>
+			<whereClause>
+				 <![CDATA[				 	 
+					 t.phone_number_id = p.phone_number_id					 
+					 #if($criteria.org_department_id) and t.org_department_id = $criteria.org_department_id #else and 1=0 #end
+					 #if($criteria.phone) and p.phone like '%'||$criteria.phone||'%' #end
+				 ]]>
+			</whereClause>
+			<orderClause>t.for_contact desc</orderClause>
+		</operationBinding>
+
+		<!-- FETCH -->
+        <operationBinding operationId="searchOrgDepPhones111" operationType="fetch">
             <customSQL>
             	 <![CDATA[
             	 	select * from (select ab.abonent_id,decode(ps.phone_state_id,6,'მხს.',decode(ab.abonent_hide,1,'დაფ.',p.phone)) as dep_phone,
