@@ -102,45 +102,45 @@
 				#if($criteria.transportno) and (t.transportno = $criteria.transportno) #end
 				
 				#if($criteria.start_place_id1) 
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id1||'%')			 
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.start_place_id1||'%')			 
 				#end
 				#if($criteria.start_place_id2) 
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id2||'%')
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.start_place_id2||'%')
 				#end
 				#if($criteria.start_place_id3) 
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id3||'%')			 
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.start_place_id3||'%')			 
 				#end
 				#if($criteria.start_place_id4) 
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id4||'%')			 
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.start_place_id4||'%')			 
 				#end
 				#if($criteria.start_place_id5) 
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.start_place_id5||'%')
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.start_place_id5||'%')
 				#end
 				
 				#if($criteria.end_place_id1)
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id1||'%')			 	
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.end_place_id1||'%')			 	
 				#end
 				#if($criteria.end_place_id2)
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id2||'%')
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.end_place_id2||'%')
 				#end
 				#if($criteria.end_place_id3)
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id3||'%')				 	
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.end_place_id3||'%')				 	
 				#end
 				#if($criteria.end_place_id4)
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id4||'%')				 	
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.end_place_id4||'%')				 	
 				#end
 				#if($criteria.end_place_id5)
-					and t.transportid in (select tt.route_id from ccare.bus_route_streets tt , ccare.streets str
-						where tt.street_id = str.street_id and trim(str.street_name ||' '||tt.notes) like '%'||$criteria.end_place_id5||'%')				 	
+					and t.transportid in (select tt1.pts_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+						where tt1.street_id = str.street_id and trim(str.street_name ||' '||tt1.remarks) like '%'||$criteria.end_place_id5||'%')				 	
 				#end					
 				]]>  
 			</whereClause> 
