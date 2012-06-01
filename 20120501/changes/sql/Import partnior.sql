@@ -1,3 +1,7 @@
+ALTER TRIGGER tr_partnior_table_hist DISABLE;
+
+ALTER TABLE partnior_table DISABLE CONSTRAINT pk_partnior_table; 
+
 insert into partnior_table
   (phone_number, subscriber_name, address, additional_address, subscriber_type)
 select 
@@ -64,3 +68,6 @@ update PARTNIOR_TABLE t
          where t.org_department_ids = od.org_department_id)
  where t.org_department_ids is not null
    and t.org_department_count = 1;
+ALTER TRIGGER tr_partnior_table_hist ENABLE;
+
+ALTER TABLE partnior_table ENABLE CONSTRAINT pk_partnior_table; 
