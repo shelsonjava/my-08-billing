@@ -185,11 +185,11 @@ public class TabFindByNumber extends Tab {
 				CallCenterBK.constants.town(), 100);
 		town_name.setAlign(Alignment.LEFT);
 
-		ListGridField address = new ListGridField("address",
+		ListGridField address = new ListGridField("concat_address",
 				CallCenterBK.constants.street(), 350);
 		address.setAlign(Alignment.LEFT);
 
-		ListGridField phone = new ListGridField("phone",
+		ListGridField phone = new ListGridField("phone_shown",
 				CallCenterBK.constants.phone(), 80);
 
 		ListGridField phone_status = new ListGridField("phone_status",

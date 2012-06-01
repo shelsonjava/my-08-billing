@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.info08.billing.callcenterbk.client.content.TabSubscriber;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.client.utils.FormItemDescr;
+import com.info08.billing.callcenterbk.client.utils.ISaveResult;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -31,6 +31,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.HeaderItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -52,7 +53,7 @@ public class DlgAddEditSubscriber extends Window {
 	private ComboBoxItem citiesItem;
 	private ComboBoxItem streetItem;
 	private ComboBoxItem regionItem;
-	private ComboBoxItem adressOpCloseItem;
+	private SelectItem adressOpCloseItem;
 	private TextItem adressItem;
 	private TextItem blockItem;
 	private TextItem appartItem;
@@ -63,9 +64,17 @@ public class DlgAddEditSubscriber extends Window {
 
 	private Integer subscriber_id;
 
-	public DlgAddEditSubscriber(final ListGridRecord abonentRecord,
-			DataSource subscriberDS, final TabSubscriber tabAbonent,
-			ListGrid abonentsGrid) {
+	private ISaveResult saveManager;
+
+	public DlgAddEditSubscriber(final Record abonentRecord,
+			ListGrid abonentsGrid, final Integer phoneNumber,
+			ISaveResult saveManager) {
+		this(abonentRecord, abonentsGrid, phoneNumber);
+		this.saveManager = saveManager;
+	}
+
+	public DlgAddEditSubscriber(final Record abonentRecord,
+			ListGrid abonentsGrid, final Integer phoneNumber) {
 		try {
 			this.abonentsGrid = abonentsGrid;
 			setWidth(760);
@@ -247,7 +256,7 @@ public class DlgAddEditSubscriber extends Window {
 			formAddressParams.setNumCols(6);
 			formAddressParams.setTitleOrientation(TitleOrientation.TOP);
 
-			adressOpCloseItem = new ComboBoxItem();
+			adressOpCloseItem = new SelectItem();
 			adressOpCloseItem.setValueMap(ClientMapUtil.getInstance()
 					.getAddrMapOpClose());
 			adressOpCloseItem.setDefaultToFirstOption(true);
@@ -255,6 +264,8 @@ public class DlgAddEditSubscriber extends Window {
 			adressOpCloseItem.setName("hidden_by_request");
 			adressOpCloseItem.setWidth(170);
 			adressOpCloseItem.setFetchMissingValues(false);
+			ClientUtils.fillCombo(adressOpCloseItem, "ClosedOpenedDS",
+					"searchClosedOpened", "id", "name");
 
 			adressItem = new TextItem();
 			adressItem.setTitle("სახლი");
@@ -324,9 +335,8 @@ public class DlgAddEditSubscriber extends Window {
 			addPhone.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditAbPhone addEditAbPhone = new DlgAddEditAbPhone(
-							null, listGridPhones, subscriber_id);
-					addEditAbPhone.show();
+					new DlgAddEditAbPhone(null, listGridPhones, subscriber_id,
+							null).show();
 				}
 			});
 
@@ -343,9 +353,8 @@ public class DlgAddEditSubscriber extends Window {
 						SC.say("მონიშნეთ ჩანაწერი ცხრილში!");
 						return;
 					}
-					DlgAddEditAbPhone addEditAbPhone = new DlgAddEditAbPhone(
-							listGridRecord, listGridPhones, subscriber_id);
-					addEditAbPhone.show();
+					new DlgAddEditAbPhone(listGridRecord, listGridPhones,
+							subscriber_id, null).show();
 				}
 			});
 
@@ -394,18 +403,22 @@ public class DlgAddEditSubscriber extends Window {
 			saveItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					saveAbonentsData(abonentRecord, tabAbonent);
+					saveAbonentsData(abonentRecord);
 				}
 			});
 			fillCombos(abonentRecord);
+			if (phoneNumber != null) {
+				show();
+				new DlgAddEditAbPhone(null, listGridPhones, subscriber_id,
+						phoneNumber).show();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
 
-	public void fillFields(ListGridRecord abonentRecord,
-			Integer defCityTbilisiId) {
+	public void fillFields(Record abonentRecord, Integer defCityTbilisiId) {
 		try {
 			if (abonentRecord == null) {
 				citiesItem.setValue(defCityTbilisiId);
@@ -442,7 +455,7 @@ public class DlgAddEditSubscriber extends Window {
 		}
 	}
 
-	public void fillCombos(final ListGridRecord abonentRecord) {
+	public void fillCombos(final Record abonentRecord) {
 		try {
 
 			fillFields(abonentRecord, Constants.defCityTbilisiId);
@@ -453,8 +466,7 @@ public class DlgAddEditSubscriber extends Window {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void saveAbonentsData(ListGridRecord abonentRecord,
-			final TabSubscriber tabAbonent) {
+	private void saveAbonentsData(Record abonentRecord) {
 		try {
 			ListGridRecord nameRecord = firstNameItem.getSelectedRecord();
 			if (nameRecord == null
@@ -510,27 +522,35 @@ public class DlgAddEditSubscriber extends Window {
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
+			DataSource ds = abonentsGrid == null ? DataSource
+					.get("SubscriberDS") : null;
+			DSCallback cb = new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					if (saveManager != null || response.getData() != null
+							&& response.getData().length > 0)
+						saveManager.saved(response.getData()[0],
+								DlgAddEditSubscriber.class);
+					destroy();
+				}
+			};
+
 			// add
 			if (abonentRecord == null) {
 				req.setAttribute("operationId", "addSubscriber");
-				abonentsGrid.addData(record, new DSCallback() {
-					@Override
-					public void execute(DSResponse response, Object rawData,
-							DSRequest request) {
-						destroy();
-					}
-				}, req);
+				if (abonentsGrid == null)
+					ds.addData(record, cb, req);
+				else
+					abonentsGrid.addData(record, cb, req);
 			}
 			// edit
 			else {
 				req.setAttribute("operationId", "updateSubscriber");
-				abonentsGrid.updateData(record, new DSCallback() {
-					@Override
-					public void execute(DSResponse response, Object rawData,
-							DSRequest request) {
-						destroy();
-					}
-				}, req);
+				if (abonentsGrid == null)
+					ds.updateData(record, cb, req);
+				else
+					abonentsGrid.updateData(record, cb, req);
 			}
 			com.smartgwt.client.rpc.RPCManager.sendQueue();
 		} catch (Exception e) {

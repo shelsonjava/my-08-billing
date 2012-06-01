@@ -43,8 +43,8 @@ public class DlgAddEditAbPhone extends Window {
 	private ListGrid listGridPhones;
 	private Integer subscriber_id;
 
-	public DlgAddEditAbPhone(final ListGridRecord listGridRecord,
-			ListGrid listGridPhones, Integer subscriber_id) {
+	public DlgAddEditAbPhone(final Record listGridRecord,
+			ListGrid listGridPhones, Integer subscriber_id, Integer phone_number) {
 		this.listGridPhones = listGridPhones;
 		this.subscriber_id = subscriber_id;
 		setWidth(750);
@@ -78,17 +78,18 @@ public class DlgAddEditAbPhone extends Window {
 		phoneItem.setWidth(170);
 
 		isHideItem = new SelectItem();
-		isHideItem.setValueMap(ClientMapUtil.getInstance().getMapOpClose());
 		isHideItem.setDefaultToFirstOption(true);
-		isHideItem.setTitle(CallCenterBK.constants.paraller());
+		isHideItem.setTitle(CallCenterBK.constants.openClose());
 		isHideItem.setName("hidden_by_request");
 		isHideItem.setWidth(112);
 		isHideItem.setFetchMissingValues(false);
+		ClientUtils.fillCombo(isHideItem, "ClosedOpenedDS",
+				"searchClosedOpened", "id", "name");
 
 		isParallelItem = new SelectItem();
 		isParallelItem.setValueMap(ClientMapUtil.getInstance().getMapParall());
 		isParallelItem.setDefaultToFirstOption(true);
-		isParallelItem.setTitle(CallCenterBK.constants.openClose());
+		isParallelItem.setTitle(CallCenterBK.constants.paraller());
 		isParallelItem.setName("is_parallel");
 		isParallelItem.setWidth(120);
 		isParallelItem.setFetchMissingValues(false);
@@ -152,9 +153,11 @@ public class DlgAddEditAbPhone extends Window {
 				addRecord(listGridRecord);
 			}
 		});
+		if(phone_number!=null)
+			phoneItem.setValue(phone_number);
 	}
 
-	private void addRecord(ListGridRecord listGridRecord) {
+	private void addRecord(Record listGridRecord) {
 		try {
 			String oPhone = phoneItem.getValueAsString();
 			if (oPhone == null || oPhone.trim().equals("")) {
@@ -266,11 +269,10 @@ public class DlgAddEditAbPhone extends Window {
 		}
 	}
 
-	private void doSave(final ListGridRecord listGridRecord,
-			final Integer phone, final Integer iOpClose,
-			final Integer iParalelUsual, final Integer iPhoneStatus,
-			final Integer iPhoneState, final Integer iPhoneType,
-			final boolean isAdd1) {
+	private void doSave(final Record listGridRecord, final Integer phone,
+			final Integer iOpClose, final Integer iParalelUsual,
+			final Integer iPhoneStatus, final Integer iPhoneState,
+			final Integer iPhoneType, final boolean isAdd1) {
 		try {
 			boolean check = true;
 			if (!isAdd1) {
@@ -339,7 +341,7 @@ public class DlgAddEditAbPhone extends Window {
 		}
 	}
 
-	private void fillRecord(ListGridRecord listGridRecord, Integer phone,
+	private void fillRecord(Record listGridRecord, Integer phone,
 			Integer iOpClose, Integer iParalelUsual, Integer iPhoneStatus,
 			Integer iPhoneState, Integer iPhoneType) throws CallCenterException {
 		try {

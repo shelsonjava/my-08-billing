@@ -1,10 +1,13 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewSubscriber;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
-import com.smartgwt.client.data.Criterion;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -18,8 +21,6 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -92,37 +93,15 @@ public class TabFindSubscriber extends Tab {
 		streetItem.setTitle(CallCenterBK.constants.street());
 		streetItem.setName("street_name_geo");
 		streetItem.setWidth(250);
+		Map<String, Object> aditionalCriteria = new TreeMap<String, Object>();
 
 		citiesItem = new ComboBoxItem();
 		citiesItem.setTitle(CallCenterBK.constants.town());
 		citiesItem.setName("city_name_geo");
 		citiesItem.setWidth(250);
-		citiesItem.setFetchMissingValues(true);
-		citiesItem.setFilterLocally(false);
-		citiesItem.setAddUnknownValues(false);
-
-		DataSource cityDS = DataSource.get("CityDS");
-		citiesItem.setOptionOperationId("searchCitiesFromDBForCombos");
-		citiesItem.setOptionDataSource(cityDS);
-		citiesItem.setValueField("town_id");
-		citiesItem.setDisplayField("city_name_geo");
-
-		citiesItem.setOptionCriteria(new Criteria());
-		citiesItem.setAutoFetchData(false);
-
-		citiesItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = citiesItem.getOptionCriteria();
-				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("town_id");
-					if (oldAttr != null) {
-						Object nullO = null;
-						criteria.setAttribute("town_id", nullO);
-					}
-				}
-			}
-		});
+		ClientUtils.fillCombo(citiesItem, "TownsDS",
+				"searchCitiesFromDBForCombos", "town_id", "town_name",
+				aditionalCriteria);
 
 		regionItem = new ComboBoxItem();
 		regionItem.setTitle(CallCenterBK.constants.cityRegion());
@@ -132,32 +111,18 @@ public class TabFindSubscriber extends Tab {
 		regionItem.setFilterLocally(false);
 		regionItem.setAddUnknownValues(false);
 
-		DataSource streetsDS = DataSource.get("CityRegionDS");
-		regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
-		regionItem.setOptionDataSource(streetsDS);
-		regionItem.setValueField("city_region_id");
-		regionItem.setDisplayField("city_region_name_geo");
+		aditionalCriteria.put("town_id", Constants.defCityTbilisiId.toString());
 
-		Criteria criteria = new Criterion();
-		regionItem.setOptionCriteria(criteria);
-		regionItem.setAutoFetchData(false);
+		ClientUtils.fillCombo(regionItem, "TownDistrictDS",
+				"searchCityRegsFromDBForCombos", "town_district_id",
+				"town_district_name", aditionalCriteria);
 
-		regionItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = regionItem.getOptionCriteria();
-				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("city_region_id");
-					if (oldAttr != null) {
-						Object nullO = null;
-						criteria.setAttribute("city_region_id", nullO);
-					}
-				}
-			}
-		});
+		
 
 		searchForm.setFields(family_nameItem, nameItem, phoneItem, streetItem,
 				citiesItem, regionItem);
+		
+		ClientUtils.makeDependancy(citiesItem, "town_id", regionItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(750);
@@ -203,11 +168,11 @@ public class TabFindSubscriber extends Tab {
 				CallCenterBK.constants.town(), 140);
 		city.setCanFilter(false);
 
-		ListGridField address = new ListGridField("address",
+		ListGridField address = new ListGridField("concat_address",
 				CallCenterBK.constants.address());
 		address.setCanFilter(true);
 
-		ListGridField phone = new ListGridField("phones",
+		ListGridField phone = new ListGridField("shown_phones",
 				CallCenterBK.constants.phones(), 100);
 		phone.setCanFilter(true);
 
@@ -239,17 +204,17 @@ public class TabFindSubscriber extends Tab {
 			}
 		});
 
-		citiesItem.addChangedHandler(new ChangedHandler() {
-			@Override
-			public void onChanged(ChangedEvent event) {
-				String value = citiesItem.getValueAsString();
-				if (value == null) {
-					return;
-				}
-				regionItem.clearValue();
-				fillCityRegionCombo(new Integer(value));
-			}
-		});
+//		citiesItem.addChangedHandler(new ChangedHandler() {
+//			@Override
+//			public void onChanged(ChangedEvent event) {
+//				String value = citiesItem.getValueAsString();
+//				if (value == null) {
+//					return;
+//				}
+//				regionItem.clearValue();
+//				fillCityRegionCombo(new Integer(value));
+//			}
+//		});
 
 		nameItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
@@ -276,8 +241,8 @@ public class TabFindSubscriber extends Tab {
 		listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-				DlgViewSubscriber dlgViewAbonent = new DlgViewSubscriber(listGrid,
-						datasource, listGrid.getSelectedRecord());
+				DlgViewSubscriber dlgViewAbonent = new DlgViewSubscriber(
+						listGrid, datasource, listGrid.getSelectedRecord());
 				dlgViewAbonent.show();
 			}
 		});
@@ -285,28 +250,7 @@ public class TabFindSubscriber extends Tab {
 		setPane(mainLayout);
 	}
 
-	private void fillCityRegionCombo(Integer town_id) {
-		try {
-			if (town_id == null) {
-				town_id = Constants.defCityTbilisiId;
-			}
-
-			DataSource streetsDS = DataSource.get("CityRegionDS");
-			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
-			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("city_region_id");
-			regionItem.setDisplayField("city_region_name_geo");
-
-			Criteria criteria = new Criterion();
-			criteria.setAttribute("town_id", town_id);
-			regionItem.setOptionCriteria(criteria);
-			regionItem.setAutoFetchData(false);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			SC.say(e.toString());
-		}
-	}
+	
 
 	private void search() {
 		try {

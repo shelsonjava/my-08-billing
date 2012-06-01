@@ -1,10 +1,11 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
-import java.util.Map;
-
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditBlackList;
+import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddEditSubscriber;
+import com.info08.billing.callcenterbk.client.exception.CallCenterException;
+import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.client.utils.ISaveResult;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -12,24 +13,29 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ListGridFieldType;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.DoubleClickEvent;
+import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.StaticTextItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class TabPartniorNumbersList extends Tab {
+public class TabPartniorNumbersList extends Tab implements ISaveResult {
 
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
@@ -43,10 +49,17 @@ public class TabPartniorNumbersList extends Tab {
 	private ListGrid importedListGrid;
 	private DataSource partniorNumbersDS;
 
-	private ListGridField subscriber_name_local;
-	private ListGridField subscriber_address;
-	private ListGridField organization_name;
-	private ListGridField organization_address;
+	private ListGridField has_subscriber;
+
+	private ListGridField has_organisation;
+	private ListGridField org_department_count;
+
+	private ListGrid lgPhones;
+
+	private ToolStripButton addPersonBtn;
+	private ToolStripButton editPersonBtn;
+	private ToolStripButton deletePersonBtn;
+	private ToolStripButton approveNmber;
 
 	public TabPartniorNumbersList() {
 		try {
@@ -65,7 +78,7 @@ public class TabPartniorNumbersList extends Tab {
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth(830);
 			searchForm.setTitleWidth(250);
-			searchForm.setNumCols(2);
+			// searchForm.setNumCols(4);
 			mainLayout.addMember(searchForm);
 
 			phoneItem = new TextItem();
@@ -77,13 +90,17 @@ public class TabPartniorNumbersList extends Tab {
 			partniorPriority.setTitle(CallCenterBK.constants.priority());
 			partniorPriority.setWidth(400);
 			partniorPriority.setName("title_descr");
+			// partniorPriority.setColSpan(2);
 
 			ClientUtils.fillCombo(partniorPriority,
 					"PartniorNumbersPriorityDS", "searchCitiesFromDBForCombos",
 					"priority_id", "priority_name");
 			partniorPriority.setValue(0);
 
-			searchForm.setFields(partniorPriority, phoneItem);
+			StaticTextItem itemCount = new StaticTextItem("itemCount",
+					CallCenterBK.constants.count());
+			itemCount.setValue(0);
+			searchForm.setFields(partniorPriority, phoneItem, itemCount);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(830);
@@ -102,14 +119,13 @@ public class TabPartniorNumbersList extends Tab {
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setWidth100();
 			toolStrip.setPadding(5);
-			mainLayout.addMember(toolStrip);
 
 			toolStrip.addSeparator();
 
 			importedListGrid = new ListGrid();
 
 			importedListGrid.setWidth100();
-			importedListGrid.setHeight100();
+			importedListGrid.setHeight("60%");
 			importedListGrid.setAlternateRecordStyles(true);
 			importedListGrid.setDataSource(partniorNumbersDS);
 			importedListGrid.setAutoFetchData(false);
@@ -126,30 +142,123 @@ public class TabPartniorNumbersList extends Tab {
 			importedListGrid.setCanDragSelectText(true);
 
 			ListGridField phone = new ListGridField("phone_number",
-					CallCenterBK.constants.phone(), 50);
+					CallCenterBK.constants.phone(), 70);
+			phone.setAlign(Alignment.CENTER);
 
 			ListGridField subscriber_name = new ListGridField(
-					"subscriber_name", CallCenterBK.constants.name(), 100);
+					"subscriber_name", CallCenterBK.constants.name(), 350);
+
 			ListGridField address = new ListGridField("address",
-					CallCenterBK.constants.address(), 250);
+					CallCenterBK.constants.address(), 450);
 
-			subscriber_name_local = new ListGridField("subscriber_name_local",
-					CallCenterBK.constants.abonent(), 100);
+			has_subscriber = new ListGridField("has_subscriber",
+					CallCenterBK.constants.abonent(), 50);
+			has_subscriber.setType(ListGridFieldType.BOOLEAN);
 
-			subscriber_address = new ListGridField("subscriber_address",
-					CallCenterBK.constants.abonentAddressShort(), 250);
+			has_organisation = new ListGridField("has_organisation",
+					CallCenterBK.constants.organization(), 50);
+			has_organisation.setType(ListGridFieldType.BOOLEAN);
 
-			organization_name = new ListGridField("organization_name",
-					CallCenterBK.constants.organization(), 250);
+			org_department_count = new ListGridField("org_department_count",
+					CallCenterBK.constants.count(), 50);
+			org_department_count.setType(ListGridFieldType.INTEGER);
 
-			organization_address = new ListGridField("organization_address",
-					CallCenterBK.constants.orgAddressShort(), 250);
+			importedListGrid.setFields(phone, subscriber_name, address,
+					has_subscriber, has_organisation, org_department_count);
 
-			importedListGrid.setFields(phone, subscriber_name,
-					organization_name, subscriber_name_local, address,
-					organization_address, subscriber_address);
-			hideColumns(false, false);
 			mainLayout.addMember(importedListGrid);
+
+			lgPhones = new ListGrid();
+			lgPhones.setWidth100();
+			lgPhones.setHeight100();
+			lgPhones.setAlternateRecordStyles(true);
+			lgPhones.setDataSource(DataSource.get("PhoneViewDS"));
+			lgPhones.setAutoFetchData(false);
+			lgPhones.setShowFilterEditor(false);
+			lgPhones.setCanEdit(false);
+			lgPhones.setCanRemoveRecords(false);
+			lgPhones.setFetchOperation("customSearch");
+			lgPhones.setCanSort(false);
+			// lgPhones.setCanResizeFields(false);
+			lgPhones.setWrapCells(true);
+			lgPhones.setFixedRecordHeights(false);
+			lgPhones.setCanDragSelectText(true);
+			lgPhones.setShowRowNumbers(true);
+
+			ListGridField full_name = new ListGridField("full_name_reverse",
+					CallCenterBK.constants.dasaxeleba(), 350);
+			full_name.setAlign(Alignment.LEFT);
+
+			ListGridField owner_type = new ListGridField("owner_type_descr",
+					CallCenterBK.constants.type(), 70);
+			owner_type.setAlign(Alignment.CENTER);
+
+			ListGridField concat_address = new ListGridField("real_address",
+					CallCenterBK.constants.street(), 450);
+			address.setAlign(Alignment.LEFT);
+
+			ListGridField done = new ListGridField("proceeded", "D", 50);
+			done.setType(ListGridFieldType.BOOLEAN);
+
+			lgPhones.setFields(owner_type, full_name, concat_address, done);
+
+			ClickHandler ch = new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					if (addPersonBtn.equals(event.getSource()))
+						manageSubscriber(null);
+					else if (editPersonBtn.equals(event.getSource()))
+						editRecord();
+					if (approveNmber.equals(event.getSource()))
+						removeRecord();
+
+				}
+			};
+
+			addPersonBtn = new ToolStripButton("აბონენტის  დამატება",
+					"person_add.png");
+			addPersonBtn.setLayoutAlign(Alignment.LEFT);
+			addPersonBtn.setWidth(50);
+			addPersonBtn.addClickHandler(ch);
+			toolStrip.addButton(addPersonBtn);
+
+			editPersonBtn = new ToolStripButton("შეცვლა", "person_edit.png");
+			editPersonBtn.addClickHandler(ch);
+			editPersonBtn.setLayoutAlign(Alignment.LEFT);
+			editPersonBtn.setWidth(50);
+			toolStrip.addButton(editPersonBtn);
+
+			deletePersonBtn = new ToolStripButton("წაშლა", "person_delete.png");
+			deletePersonBtn.addClickHandler(ch);
+			deletePersonBtn.setLayoutAlign(Alignment.LEFT);
+			deletePersonBtn.setWidth(50);
+			toolStrip.addButton(deletePersonBtn);
+
+			approveNmber = new ToolStripButton("დადასტურება",
+					"[SKIN]/actions/approve.png");
+			approveNmber.addClickHandler(ch);
+			approveNmber.setLayoutAlign(Alignment.LEFT);
+			approveNmber.setWidth(50);
+			toolStrip.addButton(approveNmber);
+
+			mainLayout.addMember(toolStrip);
+			mainLayout.addMember(lgPhones);
+
+			importedListGrid.addRecordClickHandler(new RecordClickHandler() {
+				public void onRecordClick(RecordClickEvent recordClickEvent) {
+					searchPhones();
+				}
+			});
+			lgPhones.addDoubleClickHandler(new DoubleClickHandler() {
+
+				@Override
+				public void onDoubleClick(DoubleClickEvent event) {
+					editRecord();
+
+				}
+			});
+
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -157,54 +266,95 @@ public class TabPartniorNumbersList extends Tab {
 				}
 			});
 
-//			partniorPriority.addChangedHandler(new ChangedHandler() {
-//
-//				@Override
-//				public void onChanged(ChangedEvent event) {
-//					Record record = partniorPriority.getSelectedRecord();
-////					hideByRecord(record);
-//
-//				}
-//			});
-
-			importedListGrid
-					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-						@Override
-						public void onRecordDoubleClick(
-								RecordDoubleClickEvent event) {
-							ListGridRecord listGridRecord = importedListGrid
-									.getSelectedRecord();
-							new DlgAddEditBlackList(importedListGrid,
-									listGridRecord);
-						}
-					});
-
 			setPane(mainLayout);
 		} catch (Exception e) {
+			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
 
-	protected void hideColumns(Boolean need_subscriber,
-			Boolean need_organisation) {
-		if (need_subscriber) {
-			importedListGrid.showField("subscriber_name_local");
-			importedListGrid.showField("subscriber_address");
-		} else {
-			importedListGrid.hideField("subscriber_name_local");
-			importedListGrid.hideField("subscriber_address");
+	protected void removeRecord() {
+		Record rec = importedListGrid.getSelectedRecord();
+		final Record newReq = new Record();
+		newReq.setAttribute("phone_number", rec.getAttribute("phone_number"));
+
+		try {
+			newReq.setAttribute("loggedUserName", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name());
+		} catch (CallCenterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if (need_organisation) {
-			importedListGrid.showField("organization_name");
-			importedListGrid.showField("organization_address");
-		} else {
-			importedListGrid.hideField("organization_name");
-			importedListGrid.hideField("organization_address");
+		
+		SC.ask("დარწმუნებული ხართ რომ გინდათ დაადასტუროთ ცვლილებები?", new BooleanCallback() {
+			
+			@Override
+			public void execute(Boolean value) {
+				if(value){
+					DSRequest dsRequest = new DSRequest();
+					dsRequest.setAttribute("operationId", "deletePartniorNumbers");
+					importedListGrid.removeData(newReq, new DSCallback() {
+
+						@Override
+						public void execute(DSResponse response, Object rawData,
+								DSRequest request) {
+
+							searchPhones();
+
+						}
+					}, dsRequest);
+				}
+				
+			}
+		});
+	}
+
+	protected void searchPhones() {
+		Record rec = importedListGrid.getSelectedRecord();
+		Criteria criteria = new Criteria();
+		criteria.setAttribute("phone", rec.getAttribute("phone_number"));
+		criteria.setAttribute("reall_address", "1");
+		criteria.setAttribute("subscriber_proceeded",
+				rec.getAttribute("subscriber_proceeded"));
+		criteria.setAttribute("organization_proceeded",
+				rec.getAttribute("organization_proceeded"));
+		lgPhones.fetchData(criteria);
+
+	}
+
+	protected void manageDepartment() {
+		// TODO Auto-generated method stub
+
+	}
+
+	protected void manageSubscriber(Integer subscriber_id) {
+		Record rec = importedListGrid.getSelectedRecord();
+		Integer phone_number = rec.getAttributeAsInt("phone_number");
+
+		boolean add = subscriber_id == null;
+		if (add) {
+			new DlgAddEditSubscriber(null, null, phone_number, this);
+			return;
 		}
-		// subscriber_name_local.setHidden(!need_subscriber);
-		// subscriber_address.setHidden(!need_subscriber);
-		// organization_name.setHidden(!need_organisation);
-		// organization_address.setHidden(!need_organisation);
+		if (subscriber_id != null) {
+			DataSource subscriberDS = DataSource.get("SubscriberDS");
+			DSRequest req = new DSRequest();
+			req.setOperationId("customSearch");
+			Criteria cr = new Criteria();
+			cr.setAttribute("subscriber_id", subscriber_id);
+			subscriberDS.fetchData(cr, new DSCallback() {
+
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record[] records = response.getData();
+					if (records != null && records.length == 1)
+						new DlgAddEditSubscriber(records[0], null, null,
+								TabPartniorNumbersList.this).show();
+
+				}
+			}, req);
+		}
 	}
 
 	private void search() {
@@ -212,18 +362,15 @@ public class TabPartniorNumbersList extends Tab {
 			Criteria criteria = new Criteria();
 
 			final String phone = phoneItem.getValueAsString();
-			Boolean searchByPhoneTmp = false;
 			if (phone != null && !phone.equals("")) {
 				criteria.setAttribute("phone", new Integer(phone));
-				searchByPhoneTmp = true;
 			}
 
-			final Boolean searchByPhone = searchByPhoneTmp;
 			String priority = partniorPriority.getValueAsString();
 			if (priority != null && !priority.equals("")) {
 				criteria.setAttribute("priority", new Integer(priority));
 			}
-			hideByRecord(partniorPriority.getSelectedRecord());
+
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "customSearch");
 			importedListGrid.invalidateCache();
@@ -231,16 +378,11 @@ public class TabPartniorNumbersList extends Tab {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
-					if (searchByPhone) {
-						Record[] records = response.getData();
-						if (records == null || records.length == 0
-								|| records.length > 1 || !searchByPhone) {
-//							hideByRecord(partniorPriority.getSelectedRecord());
-						} else if(searchByPhone){
-							
-						}
-//							hideByRecord(records[0]);
-					}
+					if (response != null)
+						searchForm.getField("itemCount").setValue(
+								response.getTotalRows());
+					else
+						searchForm.getField("itemCount").setValue(-1);
 				}
 			}, dsRequest);
 		} catch (Exception e) {
@@ -248,16 +390,49 @@ public class TabPartniorNumbersList extends Tab {
 		}
 	}
 
-	protected void hideByRecord(Record record) {
-		Map<?, ?> map = record.toMap();
-		System.out.println(map);
-		Integer nNeed_subscriber = record.getAttributeAsInt("need_subscriber");
-		Integer nNneed_organisation = record
-				.getAttributeAsInt("need_organisation");
+	@Override
+	public void saved(Record record, Class<?> clazz) {
+		Record rec = importedListGrid.getSelectedRecord();
+		Record newReq = new Record();
+		newReq.setAttribute("phone_number", rec.getAttribute("phone_number"));
+		if (clazz.equals(DlgAddEditSubscriber.class)) {
+			{
+				newReq.setAttribute("subscriber_proceeded",
+						record.getAttribute("subscriber_id"));
+				try {
+					newReq.setAttribute("loggedUserName", CommonSingleton
+							.getInstance().getSessionPerson().getUser_name());
+				} catch (CallCenterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println(rec.toMap());
+				DSRequest dsRequest = new DSRequest();
+				dsRequest.setAttribute("operationId", "updatePartniorNumbers");
+				importedListGrid.updateData(newReq, new DSCallback() {
 
-		nNeed_subscriber = nNeed_subscriber == null ? 0 : nNeed_subscriber;
-		nNneed_organisation = nNneed_organisation == null ? 0
-				: nNneed_organisation;
-		hideColumns(nNeed_subscriber.equals(1), nNneed_organisation.equals(1));
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						importedListGrid.selectRecord(response.getData()[0]);
+						searchPhones();
+
+					}
+				}, dsRequest);
+			}
+
+		}
 	}
+
+	protected void editRecord() {
+		Record rec = lgPhones.getSelectedRecord();
+		String owner_type = rec.getAttribute("owner_type");
+		String owner_id = rec.getAttribute("owner_id");
+		if (owner_type.equals("0")) {
+			manageSubscriber(owner_id == null ? null : new Integer(owner_id));
+		} else {
+
+		}
+	}
+
 }
