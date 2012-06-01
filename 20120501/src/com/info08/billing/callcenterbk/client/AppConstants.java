@@ -716,4 +716,6 @@ public interface AppConstants extends Constants {
 	String editOrgDepartment();
 	String addOrgDepartmentPhone();
 	String editOrgDepartmentPhone();
+	String streetStart();
+	String streetEnd();
 }
