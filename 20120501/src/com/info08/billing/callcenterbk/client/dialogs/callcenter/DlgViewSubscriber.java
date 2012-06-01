@@ -89,9 +89,9 @@ public class DlgViewSubscriber extends Window {
 				CallCenterBK.constants.lastName());
 		DetailViewerField city = new DetailViewerField("town_name",
 				CallCenterBK.constants.town());
-		DetailViewerField address = new DetailViewerField("address",
+		DetailViewerField address = new DetailViewerField("concat_address",
 				CallCenterBK.constants.address());
-		DetailViewerField phone = new DetailViewerField("phones",
+		DetailViewerField phone = new DetailViewerField("shown_phones",
 				CallCenterBK.constants.phone());
 
 		detailViewer.viewSelectedData(listGrid);

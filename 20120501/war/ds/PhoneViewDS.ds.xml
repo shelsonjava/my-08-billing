@@ -32,6 +32,10 @@
 		<field name="town_name"							type="text"						title="status"/>
 		<field name="phone_shown"						type="text"						title="phone_shown"/>
 		<field name="concat_address" 					type="text"						title="address"/>
+		<field name="real_address" 						type="text"						title="address"/>
+		<field name="real_town" 						type="text"						title="address"/>
+		<field name="full_name_reverse" 				type="text"						title="address"/>
+		<field name="proceeded" 						type="boolean"   				title="need_organisation" 					sqlStorageStrategy="integer"/>
 	</fields>
 	
 	<operationBindings>
@@ -65,6 +69,15 @@
 				for_contact, 
 				for_contact_desr,
 				concat_address
+				#if($criteria.reall_address)
+					,real_town||' - '||real_address real_address,
+					full_name_reverse,
+					decode(owner_type,0,
+						decode(#if($criteria.subscriber_proceeded)$criteria.subscriber_proceeded #else -1 #end,owner_id,1,0), 
+						is_In_string(to_char(owner_id),#if($criteria.organization_proceeded)$criteria.organization_proceeded #else '' #end)
+					) proceeded
+					
+				#end	
 			</selectClause>
 			<tableClause>
 			  	   v_full_phone              t

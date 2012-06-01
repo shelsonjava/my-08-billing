@@ -22,12 +22,23 @@
 		<field name="need_organisation"   			type="integer"  		title="need_organisation"/>
 		<field name="has_organisation"   			type="boolean"   		title="need_organisation" 					sqlStorageStrategy="integer"/>
 		<field name="has_subscriber"	   			type="boolean"   		title="need_organisation" 					sqlStorageStrategy="integer"/>
+		<field name="subscriber_proceeded"  		type="integer"  		title="need_subscriber"/>
+		<field name="organization_proceeded"   		type="text"  			title="need_organisation"/>
+		<field name="loggedUserName" 				type="text"				title="address"/>
 		
 	</fields>
 	<operationBindings>
+	
+		<operationBinding operationType="update" operationId="updatePartniorNumbers" serverMethod="updatePartniorNumbers">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+		<operationBinding operationType="remove" operationId="deletePartniorNumbers" serverMethod="deletePartniorNumbers">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+        </operationBinding>
+	
 		<operationBinding operationId="customSearch"
 			operationType="fetch">
-			<selectClause>
+			<selectClause><![CDATA[ 
 				t.phone_number,
 				t.subscriber_name,
 				trim(t.address||' '||additional_address) address,
@@ -39,17 +50,23 @@
 				t.org_department_count,
 				t.priority,
 				#if($criteria.need_subscriber)
-					t.subscriber_name_local,
-					t.subscriber_address,
+					/*t.subscriber_name_local 
+					t.subscriber_address,*/
+					decode(t.subscriber_id,null,null,t.subscriber_name_local||chr(13)||t.subscriber_address) subscriber_name_local,
 				#end
 				#if($criteria.need_organisation)
-					decode(nvl(org_department_count,0),0,'',1,t.organization_name,t.org_department_count)  organization_name,
+					/*decode(nvl(org_department_count,0),0,'',1,t.organization_name,t.org_department_count)  organization_name,
 					t.organization_address,
+					*/
+					decode(nvl(org_department_count,0),0,'',1,t.organization_name||chr(13)||t.organization_address,t.org_department_count)  organization_name,
 				#end
 				#if($criteria.phone) p.need_subscriber #else 0 #end need_subscriber,
 				#if($criteria.phone) p.need_organisation #else 0 #end need_organisation,
 				decode(nvl(t.subscriber_id,-1),-1,0,1) has_subscriber,
-				decode(nvl(t.org_department_count,-1),-1,null,0,0,1) has_organisation
+				decode(nvl(t.org_department_count,-1),-1,null,0,0,1) has_organisation,
+				organization_proceeded,
+				subscriber_proceeded
+				]]>
 			</selectClause>
 			<tableClause>
 				PARTNIOR_TABLE t
@@ -57,11 +74,15 @@
 			</tableClause>
 			<whereClause><![CDATA[ 
 				1=1
-				#if($criteria.phone)
-					and p.priority_id=t.priority and t.phone_number=$criteria.phone
+				#if($criteria.phone_number) and t.phone_number=$criteria.phone_number 
 				#else
-					and t.priority= #if($criteria.priority) $criteria.priority #else 0 #end
+					#if($criteria.phone)
+						and p.priority_id=t.priority and t.phone_number=$criteria.phone
+					#else
+						and t.priority= #if($criteria.priority) $criteria.priority #else 0 #end
+					#end
 				#end
+			
 			]]>
 			</whereClause>
 			<orderClause>t.priority, t.phone_number, t.org_department_count</orderClause>

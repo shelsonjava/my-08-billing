@@ -1408,4 +1408,111 @@ public class MiscDMI implements QueryConstants {
 		}
 	}
 
+	public Map<?, ?> updatePartniorNumbers(DSRequest req) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:MiscDMI.updatePartniorNumbers.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+			Map<?, ?> map = req.getValues();
+			Long phone_number = new Long(map.get("phone_number").toString());
+			Object sSubscriber_proceeded = map.get("subscriber_proceeded");
+			// Object organization_proceeded =
+			// map.get("organization_proceeded");
+
+			String loggedUserName = map.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, log);
+
+			if (sSubscriber_proceeded != null) {
+				Long subscriber_proceeded = new Long(
+						sSubscriber_proceeded.toString());
+				oracleManager
+						.createNativeQuery(
+								"update PARTNIOR_TABLE set subscriber_proceeded=? where phone_number=?")
+						.setParameter(1, subscriber_proceeded)
+						.setParameter(2, phone_number).executeUpdate();
+			}
+
+			// if (organization_proceeded != null) {
+			// oracleManager
+			// .createNativeQuery(
+			// "update PARTNIOR_TABLE set subscriber_proceeded=? where phone_number=?")
+			// .setParameter(1, subscriber_proceeded)
+			// .setParameter(2, phone_number).executeUpdate();
+			// }
+
+			EMF.commitTransaction(transaction);
+			log += ". updatePartniorNumbers Finished SuccessFully. ";
+			logger.info(log);
+			map = DMIUtils.findRecordById("PartniorNumbersDS", "customSearch",
+					phone_number, "phone_number");
+			return map;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Delete OperatorBreaks : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+
+	}
+
+	public Map<?, ?> deletePartniorNumbers(DSRequest req) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:MiscDMI.deletePartniorNumbers.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+			Map<?, ?> map = req.getOldValues();
+			Long phone_number = new Long(map.get("phone_number").toString());
+
+			String loggedUserName = map.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, log);
+
+			oracleManager
+					.createNativeQuery(
+							"delete from PARTNIOR_TABLE where phone_number=?")
+					.setParameter(1, phone_number).executeUpdate();
+
+			// if (organization_proceeded != null) {
+			// oracleManager
+			// .createNativeQuery(
+			// "update PARTNIOR_TABLE set subscriber_proceeded=? where phone_number=?")
+			// .setParameter(1, subscriber_proceeded)
+			// .setParameter(2, phone_number).executeUpdate();
+			// }
+
+			EMF.commitTransaction(transaction);
+			log += ". updatePartniorNumbers Finished SuccessFully. ";
+			logger.info(log);
+
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Delete OperatorBreaks : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+
+	}
+
 }
