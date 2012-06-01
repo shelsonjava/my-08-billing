@@ -194,11 +194,11 @@ public class TabSubscriber extends Tab {
 			appartItem.setWidth(200);
 
 			adressOpCloseItem = new SelectItem();
-			adressOpCloseItem.setValueMap(ClientMapUtil.getInstance()
-					.getAddrMapOpClose());
 			adressOpCloseItem.setTitle(CallCenterBK.constants.openClose());
 			adressOpCloseItem.setName("hidden_by_request");
 			adressOpCloseItem.setWidth(200);
+			ClientUtils.fillCombo(adressOpCloseItem, "ClosedOpenedDS",
+					"searchClosedOpened", "id", "name");
 
 			addrAddInfoItem = new TextAreaItem();
 			addrAddInfoItem.setTitle(CallCenterBK.constants.infoShort());
@@ -233,12 +233,12 @@ public class TabSubscriber extends Tab {
 			hl.setMembersMargin(10);
 
 			phoneIsHideItem = new SelectItem();
-			phoneIsHideItem.setValueMap(ClientMapUtil.getInstance()
-					.getMapOpClose());
 			phoneIsHideItem.setDefaultToFirstOption(true);
 			phoneIsHideItem.setTitle(CallCenterBK.constants.openClose());
 			phoneIsHideItem.setName("ph_hidden_by_request");
 			phoneIsHideItem.setWidth(200);
+			ClientUtils.fillCombo(phoneIsHideItem, "ClosedOpenedDS",
+					"searchClosedOpened", "id", "name");
 
 			isParallelItem = new SelectItem();
 
@@ -566,9 +566,12 @@ public class TabSubscriber extends Tab {
 		searchFormMain.clearValues();
 		searchFormAddress.clearValues();
 		searchFormPhone.clearValues();
+
 		citiesItem.setValue(Constants.defCityTbilisiId);
 		ClientUtils.setDefauldCriterias(streetItem, aditionalCriteria);
 		ClientUtils.setDefauldCriterias(regionItem, aditionalCriteria);
+		phoneIsHideItem.clearValue();
+
 	}
 
 	private void addEditAbonent(boolean isEdit) {
@@ -580,9 +583,7 @@ public class TabSubscriber extends Tab {
 			SC.say("მონიშნეთ ჩანაწერი ცხრილში");
 			return;
 		}
-		DlgAddEditSubscriber dlgAddEditAbonent = new DlgAddEditSubscriber(
-				listGridRecord, subscriberDS, this, abonentsGrid);
-		dlgAddEditAbonent.show();
+		new DlgAddEditSubscriber(listGridRecord, abonentsGrid, null).show();
 	}
 
 	private void changeAbonentStatus(ListGridRecord listGridRecord,
