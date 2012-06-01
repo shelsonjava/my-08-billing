@@ -714,4 +714,6 @@ public interface AppConstants extends Constants {
 	String abonentAddressLong();
 	String addOrgDepartment();
 	String editOrgDepartment();
+	String addOrgDepartmentPhone();
+	String editOrgDepartmentPhone();
 }
