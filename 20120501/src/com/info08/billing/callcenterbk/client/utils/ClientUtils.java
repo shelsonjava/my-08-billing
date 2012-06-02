@@ -297,8 +297,9 @@ public class ClientUtils {
 			return false;
 		for (String string : compare) {
 			if (string == null || string.trim().length() == 0)
-				if (source.trim().equals(string.trim()))
-					return true;
+				continue;
+			if (source.trim().equals(string.trim()))
+				return true;
 		}
 		return false;
 	}
@@ -314,7 +315,7 @@ public class ClientUtils {
 
 	public static boolean contansString(String source, String compare,
 			String redex) {
-		if (compare != null && compare.trim().length() == 0)
+		if (compare == null || compare.trim().length() == 0)
 			return false;
 		ArrayList<String> contains = concatSplitString(compare, redex);
 		for (String str : contains) {
