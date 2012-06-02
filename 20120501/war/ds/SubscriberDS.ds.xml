@@ -141,7 +141,6 @@
 							#foreach($str in $criteria.street_name_param.split(" "))
 								and t.concat_address like '%'||'$str'||'%'
 							#end
-											
 					#end
 					
 					
