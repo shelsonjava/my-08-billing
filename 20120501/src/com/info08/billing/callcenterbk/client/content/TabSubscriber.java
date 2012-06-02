@@ -340,19 +340,7 @@ public class TabSubscriber extends Tab {
 			addr_block.setAlign(Alignment.CENTER);
 			addr_appt.setAlign(Alignment.CENTER);
 
-			abonentsGrid = new ListGrid() {
-				protected String getCellCSSText(ListGridRecord record,
-						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-				};
-			};
+			abonentsGrid = new ListGrid();
 			abonentsGrid.setWidth100();
 			abonentsGrid.setHeight100();
 			abonentsGrid.setAlternateRecordStyles(true);
