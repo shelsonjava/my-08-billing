@@ -283,4 +283,48 @@ public class ClientUtils {
 		field.setCanFilter(true);
 		return field;
 	}
+
+	public static boolean contansStringOne(String source, String redex,
+			String... compare) {
+		for (String string : compare) {
+			if (contansString(source, string, redex))
+				return true;
+		}
+		return false;
+	}
+
+	public static boolean contansString(String source, String compare,
+			String redex) {
+		if (compare != null && compare.trim().length() == 0)
+			return false;
+		ArrayList<String> contains = concatSplitString(compare, redex);
+		for (String str : contains) {
+			if (!source.contains(str.trim()))
+				return false;
+		}
+		return true;
+	}
+
+	public static ArrayList<String> concatSplitString(String source,
+			String redex) {
+		return concatSplitString(source, null, redex);
+	}
+
+	public static ArrayList<String> concatSplitString(String source,
+			ArrayList<String> contains, String redex) {
+		if (contains == null)
+			contains = new ArrayList<String>();
+		if (source == null || source.trim().length() == 0)
+			return contains;
+		source = source.trim();
+		String[] splited = source.split(redex);
+		for (String string : splited) {
+			if (string == null || string.length() == 0)
+				continue;
+			if (!contains.contains(string))
+				contains.add(string);
+		}
+
+		return contains;
+	}
 }
