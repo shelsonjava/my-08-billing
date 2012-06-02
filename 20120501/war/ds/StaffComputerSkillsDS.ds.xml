@@ -1,0 +1,35 @@
+<DataSource
+	ID="StaffComputerSkillsDS"
+	serverType="sql"
+	tableName="staff_computer_skills"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="staff_comp_skill_id"	type="integer"	title="staff_comp_skill_id"	primaryKey="true" />
+		<field name="staff_id"				type="integer"	title="staff_id"/>
+		<field name="software"				type="text"		title="software"/>
+		<field name="training_course"		type="text"		title="training_course"/>
+		<field name="remark"				type="text"		title="remark" />
+		<field name="loggedUserName"		type="text"		title="Logged UserName" 	hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<operationBinding operationId="getAllStaffComputerSkills" operationType="fetch">
+    		<selectClause>   			
+    		   sk.staff_comp_skill_id
+    		  ,sk.staff_id
+    		  ,sk.software
+    		  ,sk.training_course
+    		  ,sk.remark
+			</selectClause> 
+			<tableClause>staff_computer_skills sk</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.staff_id) and sk.staff_id = $criteria.staff_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>sk.software</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

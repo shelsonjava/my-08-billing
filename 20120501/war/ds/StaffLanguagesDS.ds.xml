@@ -1,0 +1,39 @@
+<DataSource
+	ID="StaffLanguagesDS"
+	serverType="sql"
+	tableName="staff_languages"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="staff_language_id"			type="integer"	title="staff_language_id"	primaryKey="true" />
+		<field name="staff_id"					type="integer"	title="staff_id"/>
+		<field name="language_descr_id"			type="integer"	title="language_descr_id"/>
+		<field name="language_descr"			type="text"		title="language_descr"/>
+		<field name="language_level_descr_id"	type="integer"	title="language_level_descr_id"/>
+		<field name="language_level_descr"		type="text"		title="language_level_descr"/>
+		<field name="certificate_descr"			type="text"		title="certificate_descr"/>
+		<field name="loggedUserName"			type="text"		title="Logged UserName" 	hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<operationBinding operationId="getAllStaffLanguages" operationType="fetch">
+    		<selectClause>   			
+    		   t.staff_language_id
+		      ,t.staff_id
+		      ,t.language_descr_id
+		      ,getdescription(t.language_descr_id) as language_descr
+		      ,t.language_level_descr_id
+		      ,getdescription(t.language_level_descr_id) as language_level_descr
+		      ,t.certificate_descr
+			</selectClause> 
+			<tableClause>staff_languages t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.staff_id) and t.staff_id = $criteria.staff_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.language_descr_id</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>
