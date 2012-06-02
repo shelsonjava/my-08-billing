@@ -4,6 +4,7 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.data.Criteria;
@@ -105,8 +106,8 @@ public class DlgViewInCityTransport extends Window {
 		DetailViewerField service_descr = new DetailViewerField(
 				"service_descr", CallCenterBK.constants.transportType());
 
-		DetailViewerField itown_name = new DetailViewerField(
-				"itown_name", CallCenterBK.constants.stationTo());
+		DetailViewerField itown_name = new DetailViewerField("itown_name",
+				CallCenterBK.constants.stationTo());
 		itown_name.setCellStyle("fontGreenWithBorder");
 
 		DetailViewerField start_place = new DetailViewerField("start_place",
@@ -148,11 +149,8 @@ public class DlgViewInCityTransport extends Window {
 					return super.getCellCSSText(record, rowNum, colNum);
 				}
 
-				if (fromStreetId != null && !fromStreetId.trim().equals("")
-						&& street_name.contains(fromStreetId)) {
-					return "color:red;";
-				} else if (toStreetId != null && !toStreetId.trim().equals("")
-						&& street_name.contains(toStreetId)) {
+				if (ClientUtils.contansStringOneOf(street_name, " ",
+						fromStreetId, toStreetId)) {
 					return "color:red;";
 				} else {
 					return super.getCellCSSText(record, rowNum, colNum);
