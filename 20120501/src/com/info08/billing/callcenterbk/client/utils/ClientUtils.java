@@ -291,6 +291,18 @@ public class ClientUtils {
 		return field;
 	}
 
+	public static boolean containsOneOfString(String source, String... compare) {
+		if (source == null || compare == null || source.trim().length() == 0
+				|| compare.length == 0)
+			return false;
+		for (String string : compare) {
+			if (string == null || string.trim().length() == 0)
+				if (source.trim().equals(string.trim()))
+					return true;
+		}
+		return false;
+	}
+
 	public static boolean contansStringOne(String source, String redex,
 			String... compare) {
 		for (String string : compare) {
