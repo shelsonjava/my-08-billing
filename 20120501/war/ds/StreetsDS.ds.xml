@@ -39,6 +39,8 @@
 		<field name="street_old_name_descr"		type="text"		title="street_old_name_descr"/>
 		<field name="street_index"				type="text"		title="street_index"		/>
 		<field name="street_to_town_district"	type="text"		title="street_to_town_district"/>
+		<field name="hide_for_call_center"		type="integer"	title="hide_for_call_center"/>
+		<field name="hide_for_correction"		type="integer"	title="hide_for_correction"/>
 		
 	</fields>
 	
@@ -97,8 +99,9 @@
 				t.visible_options,
 				sr.town_district_name,
 				c.town_name,
-				getSreetOldNames(t.street_id) as street_old_name_descr
-								
+				getSreetOldNames(t.street_id) as street_old_name_descr,
+				t.hide_for_call_center,
+				t.hide_for_correction								
 			</selectClause> 
 			<tableClause>ccare.streets t,ccare.towns c,street_to_town_districts sd,town_district sr</tableClause>
 			<whereClause><![CDATA[ 
@@ -120,6 +123,8 @@
     			t.town_id,
     			t.street_location,
 				t.street_name,
+				t.hide_for_call_center,
+				t.hide_for_correction,
 				(select min(town_district_id)
 			          from street_to_town_districts sd
 			         where sd.street_id = t.street_id) town_district_id
@@ -129,7 +134,7 @@
 			</selectClause> 
 			<tableClause>ccare.streets t</tableClause>
 			<whereClause><![CDATA[ 
-				1=1 
+				1=1 and t.hide_for_correction = 0
 				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
 				#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
 				#if($criteria.street_name) AND t.street_name like ($criteria.street_name)||'%' #end
@@ -145,7 +150,7 @@
 			</selectClause> 
 			<tableClause>ccare.streets t</tableClause>
 			<whereClause><![CDATA[ 
-				($defaultWhereClause) AND t.deleted = 0
+				($defaultWhereClause)  and t.hide_for_correction = 0
 				]]>  
 			</whereClause>
 			<orderClause>t.street_name</orderClause> 
@@ -158,7 +163,7 @@
 			</selectClause> 
 			<tableClause>streets t</tableClause>
 			<whereClause><![CDATA[ 
-				($defaultWhereClause)
+				($defaultWhereClause) and t.hide_for_correction = 0
 				]]>  
 			</whereClause>
 			<orderClause>t.street_name</orderClause> 
@@ -176,11 +181,13 @@
 			       t.street_old_name_descr,
 			       t.street_index,
 			       t.street_to_town_district,
+			       t.hide_for_call_center,
+			       t.hide_for_correction,
 			       c.town_name		
 			</selectClause> 
 			<tableClause>streets_v t, towns c </tableClause>
 			<whereClause><![CDATA[ 
-				 c.town_id = t.town_id
+				 c.town_id = t.town_id and t.hide_for_call_center = 0
 				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
 				 #if($criteria.street_index) AND t.street_index like '%' || ($criteria.street_index)||'%' #end
 				 #if($criteria.street_name1) 
@@ -201,7 +208,7 @@
 				 #if($criteria.street_index) AND t.street_index like '%'||($criteria.street_index)||'%' #end
 				]]>  
 			</whereClause>
-			<groupClause>c.town_name, t.street_id, t.street_name, t.street_location, t.town_id, t.street_old_name_descr</groupClause>
+			<groupClause>c.town_name, t.street_id, t.street_name, t.street_location, t.town_id, t.street_old_name_descr, t.hide_for_call_center,t.hide_for_correction</groupClause>
 			<orderClause>t.town_id, t.street_name</orderClause> 
     	</operationBinding>
     	
