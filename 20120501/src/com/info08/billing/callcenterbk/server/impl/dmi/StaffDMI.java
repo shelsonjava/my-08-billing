@@ -15,6 +15,7 @@ import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.Staff;
 import com.info08.billing.callcenterbk.shared.entity.StaffComputerSkill;
 import com.info08.billing.callcenterbk.shared.entity.StaffEducation;
+import com.info08.billing.callcenterbk.shared.entity.StaffLanguages;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 import com.isomorphic.util.DataTools;
@@ -105,6 +106,41 @@ public class StaffDMI implements QueryConstants {
 							computerSkill.setRemark(item.get("remark"));
 
 							oracleManager.persist(computerSkill);
+
+						}
+					}
+				}
+			}
+
+			/************************************************************************************/
+
+			/************************************************************************************/
+
+			Map<String, Map<String, String>> staffLanguages = new TreeMap<String, Map<String, String>>();
+			staffLanguages = (Map<String, Map<String, String>>) values
+					.get("preStaffLanguages");
+
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_LANGUAGES)
+					.setParameter(1, staff_id).executeUpdate();
+
+			if (staffLanguages != null) {
+				Set<String> keys = staffLanguages.keySet();
+				if (keys != null) {
+					for (String key : keys) {
+						Map<String, String> item = staffLanguages.get(key);
+						if (item != null) {
+							StaffLanguages staffLanguage = new StaffLanguages();
+							staffLanguage.setStaff_id(staff_id);
+							staffLanguage.setLoggedUserName(loggedUserName);
+							staffLanguage.setLanguage_descr_id(new Long(item
+									.get("language_descr_id")));
+							staffLanguage.setLanguage_level_descr_id(new Long(
+									item.get("language_level_descr_id")));
+							staffLanguage.setCertificate_descr(item
+									.get("certificate_descr"));
+
+							oracleManager.persist(staffLanguage);
 
 						}
 					}

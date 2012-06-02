@@ -1,0 +1,35 @@
+<DataSource
+	ID="StaffPhonesDS"
+	serverType="sql"
+	tableName="staff_phones"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="staff_phone_id"		type="integer"	title="staff_phone_id"			primaryKey="true" />
+		<field name="staff_id"				type="integer"	title="staff_id"/>
+		<field name="staff_phone_type_id"	type="integer"	title="staff_phone_type_id"/>
+		<field name="staff_phone_type"		type="text"		title="staff_phone_type"/>
+		<field name="staff_phone"			type="text"		title="staff_phone"/>
+		<field name="loggedUserName"		type="text"		title="Logged UserName" 		hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<operationBinding operationId="getAllStaffPhones" operationType="fetch">
+    		<selectClause>   			
+    		   t.staff_phone_id
+		      ,t.staff_id
+		      ,t.staff_phone_type_id
+		      ,getdescription(t.staff_phone_type_id) as staff_phone_type
+		      ,t.staff_phone
+			</selectClause> 
+			<tableClause>staff_phones t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.staff_id) and t.staff_id = $criteria.staff_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.staff_phone_type_id</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>
