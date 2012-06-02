@@ -25,6 +25,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
+import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
@@ -43,6 +44,7 @@ public class DlgAddEditStreet extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
+	private DynamicForm dynamicFormForHide;
 	private DynamicForm dynamicForm1;
 
 	private ComboBoxItem townItem;
@@ -78,6 +80,8 @@ public class DlgAddEditStreet extends Window {
 	// private ComboBoxItem streetLevelTypeItem_9;
 	// private ComboBoxItem streetLevelTypeItem_10;
 	private CheckboxItem saveStreetHistOrNotItem;
+	private CheckboxItem hideForCorrectionItem;
+	private CheckboxItem hideForCallCenterItem;
 
 	public DlgAddEditStreet(final ListGrid listGrid,
 			final ListGridRecord pRecord) {
@@ -87,7 +91,7 @@ public class DlgAddEditStreet extends Window {
 			setTitle(pRecord == null ? "ახალი ქუჩის დამატება"
 					: "ქუჩის მოდიფიცირება");
 
-			setHeight(630);
+			setHeight(690);
 			setWidth(550);
 			setShowMinimizeButton(false);
 			setIsModal(true);
@@ -109,6 +113,18 @@ public class DlgAddEditStreet extends Window {
 			dynamicForm.setTitleWidth(100);
 			dynamicForm.setNumCols(2);
 			hLayout.addMember(dynamicForm);
+
+			HLayout layout1 = new HLayout();
+
+			HLayout layout2 = new HLayout();
+
+			dynamicFormForHide = new DynamicForm();
+			dynamicFormForHide.setWidth(300);
+			dynamicFormForHide.setTitleWidth(100);
+			dynamicFormForHide.setNumCols(4);
+
+			// dynamicFormForHide.setLayoutAlign(Alignment.RIGHT);
+			// dynamicFormForHide.setAlign(Alignment.LEFT);
 
 			townItem = new ComboBoxItem();
 			townItem.setTitle("ქალაქი");
@@ -157,8 +173,36 @@ public class DlgAddEditStreet extends Window {
 			saveStreetHistOrNotItem.setWidth("100%");
 			saveStreetHistOrNotItem.setName("saveStreetHistOrNotItem");
 
+			SpacerItem item = new SpacerItem();
+			item.setHeight(10);
+
+			hideForCorrectionItem = new CheckboxItem();
+			hideForCorrectionItem.setTitle("დამალულია კორექციისთვის");
+			// hideForCorrectionItem.setWidth("50%");
+			hideForCorrectionItem.setName("hideForCorrectionItem");
+
+			hideForCallCenterItem = new CheckboxItem();
+			hideForCallCenterItem.setTitle("დამალულია ქოლცენტრისთვის");
+			// hideForCallCenterItem.setWidth("50%");
+			hideForCallCenterItem.setName("hideForCallCenterItem");
+
 			dynamicForm.setFields(townItem, streetNameItem, streetLocationItem,
-					streetOldNameItem, saveStreetHistOrNotItem);
+					streetOldNameItem, saveStreetHistOrNotItem, item);
+
+			dynamicFormForHide.setFields(hideForCorrectionItem,
+					hideForCallCenterItem);
+
+			layout2.setWidth(92);
+			layout1.addMember(layout2);
+			layout1.addMember(dynamicFormForHide);
+
+			VLayout border = new VLayout();
+			border.setHeight(1);
+			border.setBorder("1px #CCC solid");
+
+			hLayout.addMember(border);
+
+			hLayout.addMember(layout1);
 
 			// regions ...
 			DataSource cityRegionsDS = DataSource.get("TownDistrictDS");
@@ -663,6 +707,22 @@ public class DlgAddEditStreet extends Window {
 				streetOldNameItem.setValue(editRecord
 						.getAttributeAsString("street_old_name_descr"));
 
+				if (editRecord.getAttributeAsString("hide_for_call_center")
+						.equals("1")) {
+					// TODO
+					hideForCallCenterItem.setValue(true);
+				} else {
+					hideForCallCenterItem.setValue(false);
+				}
+
+				if (editRecord.getAttributeAsString("hide_for_correction")
+						.equals("1")) {
+					// TODO
+					hideForCorrectionItem.setValue(true);
+				} else {
+					hideForCorrectionItem.setValue(false);
+				}
+
 				DataSource streetsDS = DataSource.get("StreetsDS");
 
 				Criteria criteria = new Criteria();
@@ -1090,8 +1150,18 @@ public class DlgAddEditStreet extends Window {
 
 			boolean bSaveStreetHistOrNotItem = saveStreetHistOrNotItem
 					.getValueAsBoolean();
+
+			boolean bhideForCallCenterItem = hideForCallCenterItem
+					.getValueAsBoolean();
+			boolean bhideForCorrectionItem = hideForCorrectionItem
+					.getValueAsBoolean();
 			record.setAttribute("saveStreetHistOrNotItem",
 					bSaveStreetHistOrNotItem);
+			record.setAttribute("hide_for_call_center",
+					bhideForCallCenterItem == true ? "1" : "0");
+
+			record.setAttribute("hide_for_correction",
+					bhideForCorrectionItem == true ? "1" : "0");
 
 			TreeMap<String, String> mapStreDistricts = new TreeMap<String, String>();
 			ListGridRecord cityRegions[] = streetToTownDistrictsGrid
