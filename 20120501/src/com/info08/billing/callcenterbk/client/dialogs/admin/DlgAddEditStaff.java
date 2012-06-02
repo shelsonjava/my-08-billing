@@ -63,8 +63,7 @@ public class DlgAddEditStaff extends Window {
 
 	// forms
 	// org. main info
-	private DynamicForm dynamicFormStaffMainInfo;
-	private DynamicForm dynamicFormMainInfo1;
+	private DynamicForm dynamicFormStaffLeftMainInfo;
 	private DynamicForm dynamicFormMainInfo2;
 
 	// org. address
@@ -126,9 +125,13 @@ public class DlgAddEditStaff extends Window {
 
 	private StaffComputerSkillsClientDS staffComputerSkillsClientDS;
 	private ListGrid staffComputerSkillsGrid;
-	private RecordList presaveStaffComputerSkillsGrid = new RecordList();
 	private ToolStripButton addStaffComputerSkillsBtn;
 	private ToolStripButton editStaffComputerSkillsBtn;
+
+	private StaffLanguagesClientDS staffLanguagesClientDS;
+	private ListGrid staffLanguagesGrid;
+	private ToolStripButton addStaffLanguagesBtn;
+	private ToolStripButton editStaffLanguagesBtn;
 
 	public DlgAddEditStaff(DataSource dataSource, ListGridRecord listGridRecord) {
 		this.dataSource = dataSource;
@@ -158,21 +161,15 @@ public class DlgAddEditStaff extends Window {
 
 		// TODO
 
-		dynamicFormStaffMainInfo = new DynamicForm();
-		dynamicFormStaffMainInfo.setAutoFocus(true);
-		dynamicFormStaffMainInfo.setWidth100();
-		dynamicFormStaffMainInfo.setNumCols(2);
-		dynamicFormStaffMainInfo.setTitleWidth(150);
-		dynamicFormStaffMainInfo.setTitleOrientation(TitleOrientation.TOP);
-		dynamicFormStaffMainInfo.setColWidths("50%", "50%");
-		dynamicFormStaffMainInfo.setLayoutAlign(Alignment.CENTER);
-		dynamicFormStaffMainInfo.setAlign(Alignment.CENTER);
-
-		dynamicFormMainInfo1 = new DynamicForm();
-		dynamicFormMainInfo1.setAutoFocus(false);
-		dynamicFormMainInfo1.setWidth100();
-		dynamicFormMainInfo1.setNumCols(2);
-		dynamicFormMainInfo1.setTitleOrientation(TitleOrientation.TOP);
+		dynamicFormStaffLeftMainInfo = new DynamicForm();
+		dynamicFormStaffLeftMainInfo.setAutoFocus(true);
+		dynamicFormStaffLeftMainInfo.setWidth100();
+		dynamicFormStaffLeftMainInfo.setNumCols(2);
+		dynamicFormStaffLeftMainInfo.setTitleWidth(150);
+		dynamicFormStaffLeftMainInfo.setTitleOrientation(TitleOrientation.TOP);
+		dynamicFormStaffLeftMainInfo.setColWidths("50%", "50%");
+		dynamicFormStaffLeftMainInfo.setLayoutAlign(Alignment.CENTER);
+		dynamicFormStaffLeftMainInfo.setAlign(Alignment.CENTER);
 
 		dynamicFormMainInfo2 = new DynamicForm();
 		dynamicFormMainInfo2.setAutoFocus(false);
@@ -187,15 +184,6 @@ public class DlgAddEditStaff extends Window {
 		VLayout leftLayOut = new VLayout();
 		leftLayOut.setWidth(650);
 		leftLayOut.setHeight100();
-
-		VLayout rigthLayOut = new VLayout();
-		rigthLayOut.setHeight100();
-		rigthLayOut.addMember(dynamicFormMainInfo1);
-
-		formsLayout.setMembers(leftLayOut, rigthLayOut);
-		Tab tabMainInfo = new Tab(CallCenterBK.constants.maininfo());
-		tabMainInfo.setPane(formsLayout);
-		topTabSet.addTab(tabMainInfo);
 
 		VLayout formsLayoutAddInfo = new VLayout();
 		formsLayoutAddInfo.setWidth100();
@@ -230,12 +218,6 @@ public class DlgAddEditStaff extends Window {
 		// formsLayoutAddInfo.addMember(toolStrip);
 		// formsLayoutAddInfo.addMember(hLayoutForAddresses);
 		// formsLayoutAddInfo.addMember(dynamicFormMainInfo2);
-
-		Tab tabAddInfo = new Tab(CallCenterBK.constants.addInfo());
-		tabAddInfo.setPane(formsLayoutAddInfo);
-		topTabSet.addTab(tabAddInfo);
-
-		hLayout.addMember(topTabSet);
 
 		ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>();
 		MyComboBoxRecord organization_name = new MyComboBoxRecord(
@@ -508,6 +490,105 @@ public class DlgAddEditStaff extends Window {
 		/***********************************************************************************/
 		/***********************************************************************************/
 
+		/***********************************************************************************/
+		/******************************* Staff Languages ***********************************/
+		/***********************************************************************************/
+
+		staffLanguagesClientDS = StaffLanguagesClientDS.getInstance();
+
+		staffLanguagesGrid = new ListGrid();
+		staffLanguagesGrid.setWidth100();
+		staffLanguagesGrid.setHeight(155);
+		staffLanguagesGrid.setDataSource(staffLanguagesClientDS);
+		staffLanguagesGrid.setCanReorderRecords(true);
+		staffLanguagesGrid.setCanRemoveRecords(true);
+		staffLanguagesGrid.setAutoFetchData(true);
+		staffLanguagesGrid.setWrapCells(true);
+		staffLanguagesGrid.setFixedRecordHeights(false);
+
+		ListGridField language_descr = new ListGridField("language_descr",
+				"ენა", 200);
+		ListGridField language_level_descr = new ListGridField(
+				"language_level_descr", "ცოდნის დონე", 200);
+		ListGridField certificate_descr = new ListGridField(
+				"certificate_descr", "სერტიფიკატი");
+
+		staffLanguagesGrid.setFields(language_descr, language_level_descr,
+				certificate_descr);
+
+		ToolStrip toolLanguages = new ToolStrip();
+		toolLanguages.setWidth100();
+		toolLanguages.setPadding(5);
+
+		// TODO
+
+		Label toolLanguagesLabel = new Label("ენები");
+		toolLanguagesLabel.setStyleName("staffGridTitle");
+		toolLanguages.addMember(toolLanguagesLabel);
+
+		addStaffLanguagesBtn = new ToolStripButton(
+				CallCenterBK.constants.add(), "addIcon.png");
+		addStaffLanguagesBtn.setLayoutAlign(Alignment.LEFT);
+		addStaffLanguagesBtn.setWidth(50);
+		toolLanguages.addButton(addStaffLanguagesBtn);
+
+		addStaffLanguagesBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				DlgAddEditStaffComputerSkills addEditStaffComputerSkills = new DlgAddEditStaffComputerSkills(
+						staffLanguagesGrid, null);
+				addEditStaffComputerSkills.show();
+			}
+		});
+
+		editStaffLanguagesBtn = new ToolStripButton(
+				CallCenterBK.constants.modify(), "editIcon.png");
+		editStaffLanguagesBtn.setLayoutAlign(Alignment.LEFT);
+		editStaffLanguagesBtn.setWidth(50);
+		toolLanguages.addButton(editStaffLanguagesBtn);
+
+		editStaffLanguagesBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				ListGridRecord listGridRecord = staffLanguagesGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffComputerSkills addEditStaffComputerSkills = new DlgAddEditStaffComputerSkills(
+						staffLanguagesGrid, listGridRecord);
+				addEditStaffComputerSkills.show();
+
+			}
+		});
+
+		staffLanguagesGrid.addDoubleClickHandler(new DoubleClickHandler() {
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				ListGridRecord listGridRecord = staffLanguagesGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffComputerSkills addEditStaffComputerSkills = new DlgAddEditStaffComputerSkills(
+						staffLanguagesGrid, listGridRecord);
+				addEditStaffComputerSkills.show();
+
+			}
+		});
+
+		/***********************************************************************************/
+		/***********************************************************************************/
+		/***********************************************************************************/
+
 		SpacerItem spacerItem = new SpacerItem();
 		spacerItem.setHeight(10);
 		spacerItem.setColSpan(2);
@@ -515,9 +596,24 @@ public class DlgAddEditStaff extends Window {
 		// dynamicFormMainInfo.setGroupTitle("");
 		// dynamicFormMainInfo.setIsGroup(true);
 
+		VLayout rigthLayOut = new VLayout();
+		rigthLayOut.setHeight100();
+		rigthLayOut.addMembers(toolLanguages, staffLanguagesGrid);
+
+		formsLayout.setMembers(leftLayOut, rigthLayOut);
+		Tab tabMainInfo = new Tab(CallCenterBK.constants.maininfo());
+		tabMainInfo.setPane(formsLayout);
+		topTabSet.addTab(tabMainInfo);
+
+		Tab tabAddInfo = new Tab(CallCenterBK.constants.addInfo());
+		tabAddInfo.setPane(formsLayoutAddInfo);
+		topTabSet.addTab(tabAddInfo);
+
+		hLayout.addMember(topTabSet);
+
 		VLayout vLayoutSpace = new VLayout();
 		vLayoutSpace.setHeight(10);
-		leftLayOut.setMembers(dynamicFormStaffMainInfo, toolStripEducation,
+		leftLayOut.setMembers(dynamicFormStaffLeftMainInfo, toolStripEducation,
 				staffEducationGrid, vLayoutSpace, toolComputerSkills,
 				staffComputerSkillsGrid); // TODO
 
@@ -619,19 +715,13 @@ public class DlgAddEditStaff extends Window {
 		orgStatusItem.setValueMap(ClientMapUtil.getInstance().getOrgStatuses());
 		orgStatusItem.setDefaultToFirstOption(true);
 
-//		 dynamicFormMainInfo.setFields(orgNameItem, orgNameEngItem,
-//		 importantRemark, orgRemarkItem);
+		// dynamicFormMainInfo.setFields(orgNameItem, orgNameEngItem,
+		// importantRemark, orgRemarkItem);
 
-		dynamicFormStaffMainInfo.setFields(firstNameItem, lastNameItem,
+		dynamicFormStaffLeftMainInfo.setFields(firstNameItem, lastNameItem,
 				departmentItem, docNumberItem, genderItem, nationalityItem,
 				familyStatusItem, dobItem, startDateItem, remarkItem,
 				spacerItem); // TODO
-
-		dynamicFormMainInfo1.setFields(orgChiefItem, orgContactPersonItem,
-				orgIdentCodeItem, orgIdentCodeNewItem, orgWorkHoursItem,
-				orgStaffCountItem, orgLegalStatusItem, orgStatusItem, dobItem,
-				orgSocialAddressItem, orgWebAddressItem, orgMailItem,
-				orgInfoItem);
 
 		dynamicFormMainInfo2.setFields(orgIndItem, superPriorityItem);
 
@@ -755,7 +845,7 @@ public class DlgAddEditStaff extends Window {
 		gridsLayout1.setMargin(2);
 
 		gridsLayout1.setMembers(dayOffsGrid, arrowImg1, orgDayOffsGrid);
-		rigthLayOut.addMember(gridsLayout1);
+		// rigthLayOut.addMember(gridsLayout1);
 
 		cancItem.addClickHandler(new ClickHandler() {
 			@Override
@@ -927,6 +1017,30 @@ public class DlgAddEditStaff extends Window {
 							}
 						}
 					}, dsRequestCompSkills);
+
+			DataSource staffLanguagesDS = DataSource.get("StaffLanguagesDS");
+
+			Criteria criteriaLanguages = new Criteria();
+			criteriaLanguages.setAttribute("staff_id",
+					listGridRecord.getAttributeAsInt("staff_id"));
+
+			DSRequest dsRequestLanguages = new DSRequest();
+			dsRequestLanguages.setAttribute("operationId",
+					"getAllStaffLanguages");
+
+			staffLanguagesDS.fetchData(criteriaLanguages, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record records[] = response.getData();
+					if (records == null || records.length <= 0) {
+						return;
+					}
+					for (Record record : records) {
+						staffLanguagesGrid.addData(record);
+					}
+				}
+			}, dsRequestLanguages);
 
 		} catch (Exception e) {
 			SC.say(e.toString());
