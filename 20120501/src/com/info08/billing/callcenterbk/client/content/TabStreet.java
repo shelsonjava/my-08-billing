@@ -24,8 +24,6 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.KeyDownEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyDownHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -87,11 +85,28 @@ public class TabStreet extends Tab {
 			streetNameItem.setTitle("ქუჩის დასახელება");
 			streetNameItem.setWidth(300);
 			streetNameItem.setName("street_name");
+			streetNameItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			});
 
 			streetLocationItem = new TextItem();
 			streetLocationItem.setTitle("ქუჩის აღწერა");
 			streetLocationItem.setWidth(300);
 			streetLocationItem.setName("street_location");
+
+			streetLocationItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			});
 
 			recordTypeItem = new ComboBoxItem();
 			recordTypeItem.setTitle("ჩანაწერის ტიპი");
@@ -99,6 +114,16 @@ public class TabStreet extends Tab {
 			recordTypeItem.setName("record_type");
 			recordTypeItem.setValueMap(ClientMapUtil.getInstance()
 					.getStreetRecTypes());
+
+			recordTypeItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+
+				}
+			});
 
 			citiesItem = new ComboBoxItem();
 			citiesItem.setTitle("ქალაქი");
@@ -118,6 +143,9 @@ public class TabStreet extends Tab {
 							Object nullO = null;
 							criteria.setAttribute("town_id", nullO);
 						}
+					}
+					if (event.getKeyName().equals("Enter")) {
+						search();
 					}
 				}
 			});
@@ -223,23 +251,6 @@ public class TabStreet extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					search();
-				}
-			});
-
-			streetNameItem.addKeyDownHandler(new KeyDownHandler() {
-				@Override
-				public void onKeyDown(KeyDownEvent event) {
-					if (event.getKeyName().equals("Enter")) {
-						search();
-					}
-				}
-			});
-			streetLocationItem.addKeyDownHandler(new KeyDownHandler() {
-				@Override
-				public void onKeyDown(KeyDownEvent event) {
-					if (event.getKeyName().equals("Enter")) {
-						search();
-					}
 				}
 			});
 
