@@ -576,7 +576,7 @@ public class OrganizationDMI {
 			log += ". Save Or Update Finished SuccessFully. ";
 			logger.info(log);
 			values = DMIUtils.findRecordById("OrgDS",
-					"customOrgSearchForCallCenterNew", organization_id,
+					"customOrgSearchForCallCenterNew", 1L,
 					"organization_id");
 			return values;
 		} catch (Exception e) {
