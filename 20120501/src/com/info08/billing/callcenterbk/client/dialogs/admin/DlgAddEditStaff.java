@@ -133,6 +133,11 @@ public class DlgAddEditStaff extends Window {
 	private ToolStripButton addStaffLanguagesBtn;
 	private ToolStripButton editStaffLanguagesBtn;
 
+	private StaffPhonesClientDS staffPhonesClientDS;
+	private ListGrid staffPhonesGrid;
+	private ToolStripButton addStaffPhonesBtn;
+	private ToolStripButton editStaffPhonesBtn;
+
 	public DlgAddEditStaff(DataSource dataSource, ListGridRecord listGridRecord) {
 		this.dataSource = dataSource;
 		this.listGridRecord = listGridRecord;
@@ -158,8 +163,6 @@ public class DlgAddEditStaff extends Window {
 		topTabSet.setTabBarPosition(Side.TOP);
 		topTabSet.setWidth100();
 		topTabSet.setHeight100();
-
-		// TODO
 
 		dynamicFormStaffLeftMainInfo = new DynamicForm();
 		dynamicFormStaffLeftMainInfo.setAutoFocus(true);
@@ -327,8 +330,6 @@ public class DlgAddEditStaff extends Window {
 		toolStripEducation.setWidth100();
 		toolStripEducation.setPadding(5);
 
-		// TODO
-
 		Label label = new Label("განათლება");
 		label.setStyleName("staffGridTitle");
 		toolStripEducation.addMember(label);
@@ -343,7 +344,6 @@ public class DlgAddEditStaff extends Window {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
 				DlgAddEditStaffEducation dlgAddEditStaffEducation = new DlgAddEditStaffEducation(
 						staffEducationGrid, null);
 				dlgAddEditStaffEducation.show();
@@ -421,8 +421,6 @@ public class DlgAddEditStaff extends Window {
 		toolComputerSkills.setWidth100();
 		toolComputerSkills.setPadding(5);
 
-		// TODO
-
 		Label toolComputerSkillsLabel = new Label("კომპ. ცოდნა");
 		toolComputerSkillsLabel.setStyleName("staffGridTitle");
 		toolComputerSkills.addMember(toolComputerSkillsLabel);
@@ -498,7 +496,7 @@ public class DlgAddEditStaff extends Window {
 
 		staffLanguagesGrid = new ListGrid();
 		staffLanguagesGrid.setWidth100();
-		staffLanguagesGrid.setHeight(155);
+		staffLanguagesGrid.setHeight(120);
 		staffLanguagesGrid.setDataSource(staffLanguagesClientDS);
 		staffLanguagesGrid.setCanReorderRecords(true);
 		staffLanguagesGrid.setCanRemoveRecords(true);
@@ -507,9 +505,9 @@ public class DlgAddEditStaff extends Window {
 		staffLanguagesGrid.setFixedRecordHeights(false);
 
 		ListGridField language_descr = new ListGridField("language_descr",
-				"ენა", 200);
+				"ენა", 150);
 		ListGridField language_level_descr = new ListGridField(
-				"language_level_descr", "ცოდნის დონე", 200);
+				"language_level_descr", "ცოდნის დონე", 150);
 		ListGridField certificate_descr = new ListGridField(
 				"certificate_descr", "სერტიფიკატი");
 
@@ -537,9 +535,9 @@ public class DlgAddEditStaff extends Window {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				DlgAddEditStaffComputerSkills addEditStaffComputerSkills = new DlgAddEditStaffComputerSkills(
+				DlgAddEditStaffLanguages dlgAddEditStaffLanguages = new DlgAddEditStaffLanguages(
 						staffLanguagesGrid, null);
-				addEditStaffComputerSkills.show();
+				dlgAddEditStaffLanguages.show();
 			}
 		});
 
@@ -560,9 +558,9 @@ public class DlgAddEditStaff extends Window {
 					return;
 				}
 
-				DlgAddEditStaffComputerSkills addEditStaffComputerSkills = new DlgAddEditStaffComputerSkills(
+				DlgAddEditStaffLanguages dlgAddEditStaffLanguages = new DlgAddEditStaffLanguages(
 						staffLanguagesGrid, listGridRecord);
-				addEditStaffComputerSkills.show();
+				dlgAddEditStaffLanguages.show();
 
 			}
 		});
@@ -578,9 +576,104 @@ public class DlgAddEditStaff extends Window {
 					return;
 				}
 
-				DlgAddEditStaffComputerSkills addEditStaffComputerSkills = new DlgAddEditStaffComputerSkills(
+				DlgAddEditStaffLanguages dlgAddEditStaffLanguages = new DlgAddEditStaffLanguages(
 						staffLanguagesGrid, listGridRecord);
-				addEditStaffComputerSkills.show();
+				dlgAddEditStaffLanguages.show();
+
+			}
+		});
+
+		/***********************************************************************************/
+		/***********************************************************************************/
+		/***********************************************************************************/
+
+		/***********************************************************************************/
+		/******************************* Staff Phones **************************************/
+		/***********************************************************************************/
+
+		staffPhonesClientDS = StaffPhonesClientDS.getInstance();
+
+		staffPhonesGrid = new ListGrid();
+		staffPhonesGrid.setWidth100();
+		staffPhonesGrid.setHeight(100);
+		staffPhonesGrid.setDataSource(staffPhonesClientDS);
+		staffPhonesGrid.setCanReorderRecords(true);
+		staffPhonesGrid.setCanRemoveRecords(true);
+		staffPhonesGrid.setAutoFetchData(true);
+		staffPhonesGrid.setWrapCells(true);
+		staffPhonesGrid.setFixedRecordHeights(false);
+
+		ListGridField staff_phone_type = new ListGridField("staff_phone_type",
+				"ტელეფონის ტიპი", 200);
+		ListGridField staff_phone = new ListGridField("staff_phone", "ნომერი");
+
+		staffPhonesGrid.setFields(staff_phone_type, staff_phone);
+
+		ToolStrip toolPhones = new ToolStrip();
+		toolPhones.setWidth100();
+		toolPhones.setPadding(5);
+
+		// TODO
+
+		Label toolPhonesLabel = new Label("ტელეფონი");
+		toolPhonesLabel.setStyleName("staffGridTitle");
+		toolPhones.addMember(toolPhonesLabel);
+
+		addStaffPhonesBtn = new ToolStripButton(CallCenterBK.constants.add(),
+				"addIcon.png");
+		addStaffPhonesBtn.setLayoutAlign(Alignment.LEFT);
+		addStaffPhonesBtn.setWidth(50);
+		toolPhones.addButton(addStaffPhonesBtn);
+
+		addStaffPhonesBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				DlgAddEditStaffPhones dlgAddEditStaffPhones = new DlgAddEditStaffPhones(
+						staffLanguagesGrid, null);
+				dlgAddEditStaffPhones.show();
+			}
+		});
+
+		editStaffPhonesBtn = new ToolStripButton(
+				CallCenterBK.constants.modify(), "editIcon.png");
+		editStaffPhonesBtn.setLayoutAlign(Alignment.LEFT);
+		editStaffPhonesBtn.setWidth(50);
+		toolPhones.addButton(editStaffPhonesBtn);
+
+		editStaffPhonesBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				ListGridRecord listGridRecord = staffPhonesGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffPhones dlgAddEditStaffPhones = new DlgAddEditStaffPhones(
+						staffLanguagesGrid, listGridRecord);
+				dlgAddEditStaffPhones.show();
+
+			}
+		});
+
+		staffPhonesGrid.addDoubleClickHandler(new DoubleClickHandler() {
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				ListGridRecord listGridRecord = staffPhonesGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffPhones dlgAddEditStaffPhones = new DlgAddEditStaffPhones(
+						staffLanguagesGrid, listGridRecord);
+				dlgAddEditStaffPhones.show();
 
 			}
 		});
@@ -596,9 +689,13 @@ public class DlgAddEditStaff extends Window {
 		// dynamicFormMainInfo.setGroupTitle("");
 		// dynamicFormMainInfo.setIsGroup(true);
 
+		VLayout vLayoutSpaceRight = new VLayout();
+		vLayoutSpaceRight.setHeight(10);
+
 		VLayout rigthLayOut = new VLayout();
 		rigthLayOut.setHeight100();
-		rigthLayOut.addMembers(toolLanguages, staffLanguagesGrid);
+		rigthLayOut.addMembers(toolLanguages, staffLanguagesGrid,
+				vLayoutSpaceRight, toolPhones, staffPhonesGrid);
 
 		formsLayout.setMembers(leftLayOut, rigthLayOut);
 		Tab tabMainInfo = new Tab(CallCenterBK.constants.maininfo());
@@ -1042,6 +1139,29 @@ public class DlgAddEditStaff extends Window {
 				}
 			}, dsRequestLanguages);
 
+			DataSource staffPhonesDS = DataSource.get("StaffPhonesDS");
+
+			Criteria criteriaPhones = new Criteria();
+			criteriaPhones.setAttribute("staff_id",
+					listGridRecord.getAttributeAsInt("staff_id"));
+
+			DSRequest dsRequestPhones = new DSRequest();
+			dsRequestPhones.setAttribute("operationId", "getAllStaffPhones");
+
+			staffPhonesDS.fetchData(criteriaPhones, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record records[] = response.getData();
+					if (records == null || records.length <= 0) {
+						return;
+					}
+					for (Record record : records) {
+						staffPhonesGrid.addData(record);
+					}
+				}
+			}, dsRequestPhones);
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -1122,6 +1242,28 @@ public class DlgAddEditStaff extends Window {
 				}
 			}
 
+			Map<String, Map<String, String>> preStaffLanguages = new TreeMap<String, Map<String, String>>();
+
+			if (staffLanguagesGrid.getDataAsRecordList() != null) {
+				for (int i = 0; i < staffLanguagesGrid.getDataAsRecordList()
+						.getLength(); i++) {
+					Record element = staffLanguagesGrid.getDataAsRecordList()
+							.get(i);
+					if (element != null) {
+						Map<String, String> item = new TreeMap<String, String>();
+						item.put("language_descr_id",
+								element.getAttribute("language_descr_id"));
+						item.put("language_level_descr_id",
+								element.getAttribute("language_level_descr_id"));
+						item.put("certificate_descr",
+								element.getAttribute("certificate_descr"));
+						preStaffLanguages.put(element
+								.getAttributeAsString("staff_language_id"),
+								item);
+					}
+				}
+			}
+
 			if (listGridRecord != null) {
 				record.setAttribute("staff_id",
 						listGridRecord.getAttributeAsInt("staff_id"));
@@ -1145,6 +1287,8 @@ public class DlgAddEditStaff extends Window {
 					.getSessionPerson().getUser_name());
 			record.setAttribute("preStaffEducation", preStaffEducation);
 			record.setAttribute("preStaffCompSkills", preStaffCompSkills);
+			record.setAttribute("preStaffLanguages", preStaffLanguages);
+
 			DSRequest req = new DSRequest();
 			if (listGridRecord == null) {
 				req.setAttribute("operationId", "addOrUpdate");
