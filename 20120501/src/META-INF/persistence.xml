@@ -74,6 +74,9 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.OperatorBreaks</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.Staff</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.StaffEducation</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffComputerSkill</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffLanguages</class>
+		
 		
 
 		<properties>
