@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewSubscriberOrOrg;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -110,47 +111,55 @@ public class TabFindByNumber extends Tab {
 					return super.getCellCSSText(record, rowNum, colNum);
 				}
 				Integer owner_type = gridRecord.getAttributeAsInt("owner_type");
-				if (owner_type == null || owner_type.equals(1)) {
+				if (owner_type == null || owner_type.equals(0)) {
 					return super.getCellCSSText(record, rowNum, colNum);
 				}
 
-				Integer contact_phones = gridRecord.getAttributeAsInt("for_contact");
-				
+				Integer contact_phones = gridRecord
+						.getAttributeAsInt("for_contact");
+
 				Integer status = gridRecord.getAttributeAsInt("status");
 				Integer super_priority = gridRecord
+						.getAttributeAsInt("super_priority");
+				Integer important_remark = gridRecord
 						.getAttributeAsInt("important_remark");
-				Integer important_remark = gridRecord.getAttributeAsInt("important_remark");
+				String columnName = listGrid.getFieldName(colNum);
 
+				boolean isphoneColumns = ClientUtils.containsOneOfString(
+						columnName, "phone_shown", "phone_contract_type_desc");
 				if (super_priority != null && super_priority < 0
-						&& (colNum != 4 && colNum != 5)) {
+						&& (!isphoneColumns)) {
 					return "color:red;";
 				} else if (status != null && status.equals(2)
-						&& (colNum != 4 && colNum != 5)) {
-					if (important_remark != null && important_remark.intValue() == -1
-							&& (colNum != 4 && colNum != 5)) {
+						&& (!isphoneColumns)) {
+					if (important_remark != null
+							&& important_remark.intValue() == -1
+							&& (!isphoneColumns)) {
 						return "color:red;";
 					} else {
 						return "color:gray;";
 					}
 				} else if (status != null && status.equals(1)
-						&& (colNum != 4 && colNum != 5)) {
-					if (important_remark != null && important_remark.intValue() == -1
-							&& (colNum != 4 && colNum != 5)) {
+						&& (!isphoneColumns)) {
+					if (important_remark != null
+							&& important_remark.intValue() == -1
+							&& (!isphoneColumns)) {
 						return "color:red;";
 					} else {
 						return "color:blue;";
 					}
 
 				} else if (status != null && status.equals(3)
-						&& (colNum != 4 && colNum != 5)) {
-					if (important_remark != null && important_remark.intValue() == -1
-							&& (colNum != 4 && colNum != 5)) {
+						&& (!isphoneColumns)) {
+					if (important_remark != null
+							&& important_remark.intValue() == -1
+							&& (!isphoneColumns)) {
 						return "color:red;";
 					} else {
 						return "color:green;";
 					}
 				} else if (contact_phones == null || contact_phones.equals(1)
-						&& (colNum == 4 || colNum == 5)) {
+						&& (isphoneColumns)) {
 					return "color: red;";
 				} else {
 					return super.getCellCSSText(record, rowNum, colNum);
@@ -192,11 +201,12 @@ public class TabFindByNumber extends Tab {
 		ListGridField phone = new ListGridField("phone_shown",
 				CallCenterBK.constants.phone(), 80);
 
-		ListGridField phone_status = new ListGridField("phone_status",
+		ListGridField phone_contract_type_desc = new ListGridField(
+				"phone_contract_type_desc",
 				CallCenterBK.constants.phoneStatus(), 100);
 
-		listGrid.setFields(full_name, owner_type, town_name, address,
-				phone, phone_status);
+		listGrid.setFields(full_name, owner_type, town_name, address, phone,
+				phone_contract_type_desc);
 
 		mainLayout.addMember(listGrid);
 
@@ -248,8 +258,7 @@ public class TabFindByNumber extends Tab {
 				return;
 			}
 			Integer owner_type = record.getAttributeAsInt("owner_type");
-			if (owner_type == null
-					|| !owner_type.equals(1)) {
+			if (owner_type == null || !owner_type.equals(1)) {
 				SC.say(CallCenterBK.constants.selRecordIsNotOrg());
 				return;
 			}
@@ -353,8 +362,7 @@ public class TabFindByNumber extends Tab {
 			}
 			criteria.setAttribute("phone", phone);
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId",
-					"customSearch");
+			dsRequest.setAttribute("operationId", "customSearch");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override

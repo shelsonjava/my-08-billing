@@ -93,14 +93,14 @@ public class TabFindInCityTransport extends Tab {
 		streetToItem.setTitle(CallCenterBK.constants.streetEnd());
 		streetToItem.setName("streetToItem");
 		streetToItem.setWidth(250);
-		
+
 		remarkItem = new TextItem();
 		remarkItem.setTitle(CallCenterBK.constants.remark());
 		remarkItem.setName("remarkItem");
 		remarkItem.setWidth(250);
 
-		searchForm.setFields(transportTypeItem, routeNumItem, remarkItem, streetFromItem,
-				streetToItem );
+		searchForm.setFields(transportTypeItem, routeNumItem, remarkItem,
+				streetFromItem, streetToItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(500);
@@ -180,10 +180,8 @@ public class TabFindInCityTransport extends Tab {
 		listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-				DlgViewInCityTransport dlgViewTransport = new DlgViewInCityTransport(
-						pubTranspDirDS, listGrid.getSelectedRecord(), fromStreetId,
-						toStreetId);
-				dlgViewTransport.show();
+				new DlgViewInCityTransport(pubTranspDirDS, listGrid
+						.getSelectedRecord(), fromStreetId, toStreetId).show();
 			}
 		});
 		routeNumItem.addKeyPressHandler(new KeyPressHandler() {
@@ -234,9 +232,9 @@ public class TabFindInCityTransport extends Tab {
 			if (transportno != null && !transportno.trim().equals("")) {
 				criteria.setAttribute("transportno", transportno.trim());
 			}
-			
+
 			criteria.setAttribute("remark", remarkItem.getValueAsString());
-			
+
 			String start_place_id = streetFromItem.getValueAsString();
 			if (start_place_id != null && !start_place_id.trim().equals("")) {
 				fromStreetId = start_place_id;
@@ -245,7 +243,8 @@ public class TabFindInCityTransport extends Tab {
 			String end_place_id = streetToItem.getValueAsString();
 			if (end_place_id != null && !end_place_id.trim().equals("")) {
 				toStreetId = end_place_id;
-				criteria.setAttribute("end_place_id", end_place_id);
+				criteria.setAttribute(fromStreetId == null ? "start_place_id"
+						: "end_place_id", end_place_id);
 			}
 
 			DSRequest dsRequest = new DSRequest();
