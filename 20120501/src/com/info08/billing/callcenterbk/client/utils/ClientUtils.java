@@ -110,6 +110,13 @@ public class ClientUtils {
 				"description_id", "description", aditionalCriteria);
 	}
 
+	public static void fillCommonCombo(final FormItem formItem, int ttype) {
+		Map<String, Integer> pCriteria = new LinkedHashMap<String, Integer>();
+		pCriteria.put("ttype", ttype);
+		fillCombo(formItem, "ClosedOpenedDS", "searchClosedOpened", "id",
+				"name");
+	}
+
 	public static void fillCombo(final FormItem formItem, String sDataSource,
 			String sFetchOperation, String valueField, String nameField) {
 		fillCombo(formItem, sDataSource, sFetchOperation, valueField,
