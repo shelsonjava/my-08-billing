@@ -446,14 +446,13 @@ public class DlgManageOrgDepartments extends Window {
 
 	private void searchDepartment() {
 		try {
-			Integer p_organization_id = orgListGridRecord
-					.getAttributeAsInt("organization_id");
+			Integer organization_id = orgListGridRecord.getAttributeAsInt("organization_id");
 			String departament = orgDepNameItem.getValueAsString();
 			String real_address_descr = orgDepAddrItem.getValueAsString();
 			String phone = orgDepPhoneItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("p_organization_id", p_organization_id);
+			criteria.setAttribute("organization_id", organization_id);
 
 			if (departament != null && !departament.trim().equals("")) {
 				String tmp = departament.trim();

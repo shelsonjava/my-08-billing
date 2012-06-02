@@ -185,7 +185,7 @@ public class DlgAddEditOrgDepartments extends Window {
 			orgDepPhonesListGrid.setWidth100();
 			orgDepPhonesListGrid.setHeight100();
 			orgDepPhonesListGrid.setDataSource(phoneDS);
-			orgDepPhonesListGrid.setAutoFetchData(false);
+			orgDepPhonesListGrid.setAutoFetchData(true);
 			orgDepPhonesListGrid.setCanEdit(false);
 			orgDepPhonesListGrid.setCanRemoveRecords(false);
 			orgDepPhonesListGrid.setCanSort(false);
