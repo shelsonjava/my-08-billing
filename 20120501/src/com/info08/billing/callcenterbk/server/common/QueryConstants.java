@@ -482,10 +482,7 @@ public interface QueryConstants {
 
 	public static final String Q_MYSQL_DELETE_BLOCK_PHONE = " delete from asteriskcdrdb.block where code like CONCAT('%', ?) ";
 	public static final String Q_MYSQL_INSERT_BLOCK_PHONE = " insert into asteriskcdrdb.block (code,proriti,len) values (?, ?, ?) ";
-	
-	
-	
-	
+
 	public static final String Q_SELECT_BLACK_LIST_PHONES = "select wm_concat(PHONE_NUMBER) black_list_phones from BLACK_LIST_PHONES tt where tt.black_list_id=?";
 	public static final String Q_DELETE_BLACK_LIST_PHONES = "delete from BLACK_LIST_PHONES tt where tt.black_list_id=?";
 	public static final String Q_DELETE_BLACK_LIST = "delete from BLACK_LIST tt where tt.black_list_id=?";
@@ -1039,6 +1036,17 @@ public interface QueryConstants {
 			+ "select count(t5.street_id) as cnt, 'მისამართები' as n\n"
 			+ "  from addresses t5\n" + " where street_id = ?";
 
+	public static final String Q_CHECK_STREET_HIDE_FK = "select count(t3.street_id) as cnt, 'ქუჩების ინდექსები' as n\n"
+			+ "  from street_indexes t3\n"
+			+ " where t3.street_id = ?\n"
+			+ "union all\n"
+			+ "select count(t4.street_id) as cnt, 'ტრანსპორტები' as n\n"
+			+ "  from public_transp_dir_street t4\n"
+			+ " where street_id = ?\n"
+			+ "union all\n"
+			+ "select count(t5.street_id) as cnt, 'მისამართები' as n\n"
+			+ "  from addresses t5\n" + " where street_id = ?";
+
 	public static final String Q_GET_ALL_USERS = "select * from (\n"
 			+ "select t.user_id,\n"
 			+ "       t.user_firstname,\n"
@@ -1358,4 +1366,34 @@ public interface QueryConstants {
 			+ "   and ms.organization_id = ?\n"
 			+ " order by ms.priority";
 	public static final String Q_DELETE_TRANSPORT_ITEMS = "delete from transp_items t where t.transp_schedule_id = ? ";
+
+	public static final String Q_GET_STAFF_EDUCATION_ACTIONS = "select *\n"
+			+ "  from (select u.column_value as id, 'delete' as command\n"
+			+ "          from (select to_char(t.staff_education_id) as column_value\n"
+			+ "                  from ccare.staff_education t\n"
+			+ "                 where t.staff_id = ? \n"
+			+ "                minus\n"
+			+ "                select column_value\n"
+			+ "                  from table(split_table(?, ','))) u\n"
+			+ "        union all\n"
+			+ "        select p.column_value as id, 'insert' as command\n"
+			+ "          from (select column_value\n"
+			+ "                  from table(split_table(?, ','))\n"
+			+ "                minus\n"
+			+ "                select to_char(t.staff_education_id) as column_value\n"
+			+ "                  from ccare.staff_education t\n"
+			+ "                 where t.staff_id = ?) p\n"
+			+ "        union all\n"
+			+ "        select to_char(t.staff_education_id) as id, 'update' as command\n"
+			+ "          from ccare.staff_education t\n"
+			+ "         where t.staff_id = ?\n"
+			+ "           and exists\n"
+			+ "         (select column_value\n"
+			+ "                  from table(split_table(?, ','))\n"
+			+ "                 where column_value = t.staff_education_id)) y\n"
+			+ " where y.id is not null  order by y.command";
+
+	public static final String Q_DELETE_STAFF_EDUCATION = "delete from ccare.staff_education t \n "
+			+ "where t.staff_id = ?";
+
 }

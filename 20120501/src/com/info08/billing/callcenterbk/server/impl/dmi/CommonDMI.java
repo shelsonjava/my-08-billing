@@ -61,6 +61,7 @@ public class CommonDMI implements QueryConstants {
 	private static TreeMap<Long, TreeMap<Long, TownDistrict>> townDistrictByTownId = new TreeMap<Long, TreeMap<Long, TownDistrict>>();
 
 	String errorText = "ნაპოვნია %s %s, გთხოვთ ჯერ წაშალოთ ქვეყნის %s, წინააღმდეგ შემთხვევაში %s წაშლა შეუძლებელია!";
+	String hideText = "ნაპოვნია %s %s, გთხოვთ ჯერ შეცვალოთ  %s, წინააღმდეგ შემთხვევაში %s დამალვა შეუძლებელია!";
 
 	public static Street getStreetEnt(Long steetEntId) {
 		return streetEnts.get(steetEntId);
@@ -318,6 +319,13 @@ public class CommonDMI implements QueryConstants {
 			String streetName = buildStreetName(street, oracleManager);
 			street.setStreet_name(streetName);
 			street.setRecord_type(1L);
+
+			// record.setAttribute("hideForCallCenterItem",
+			// bhideForCallCenterItem);
+			// record.setAttribute("hideForCorrectionItem",
+			// bhideForCorrectionItem);
+
+			// if ()
 
 			oracleManager.persist(street);
 
@@ -709,6 +717,40 @@ public class CommonDMI implements QueryConstants {
 			Boolean bSaveStreetHistOrNotItem = (saveStreetHistOrNotItem == null) ? null
 					: (Boolean) saveStreetHistOrNotItem;
 
+			Long hideForCallCenterItem = new Long(record.get(
+					"hide_for_call_center").toString());
+			// Boolean bhideForCallCenterItem = (hideForCallCenterItem == null)
+			// ? null
+			// : (Boolean) hideForCallCenterItem;
+
+			Long hideForCorrectionItem = new Long(record.get(
+					"hide_for_correction").toString());
+
+			List result = oracleManager
+					.createNativeQuery(QueryConstants.Q_CHECK_STREET_HIDE_FK)
+					.setParameter(1, street_id).setParameter(2, street_id)
+					.setParameter(3, street_id).getResultList();
+
+			if (result != null && !result.isEmpty()) {
+				for (Object row : result) {
+					Object cols[] = (Object[]) row;
+					Long cnt = new Long(cols[0] == null ? "-1"
+							: cols[0].toString());
+					String type = cols[1] == null ? "" : cols[1].toString();
+					if (cnt != null && cnt.intValue() > 0) {
+						throw new CallCenterException(
+								"შეცდომა ქუჩის დამალვის დროს : "
+										+ String.format(hideText, "ქუჩის",
+												type, type, "ქუჩის"));
+					}
+
+				}
+			}
+
+			// Boolean bhideForCorrectionItem = (hideForCorrectionItem == null)
+			// ? null
+			// : (Boolean) hideForCorrectionItem;
+
 			Street streetEntForGen = oracleManager
 					.find(Street.class, street_id);
 
@@ -721,6 +763,9 @@ public class CommonDMI implements QueryConstants {
 						.getStreet_name());
 				oracleManager.persist(streetsOldEnt);
 			}
+
+			streetEntForGen.setHide_for_call_center(hideForCallCenterItem);
+			streetEntForGen.setHide_for_correction(hideForCorrectionItem);
 
 			streetEntForGen.setDescr_id_level_1(descr_id_level_1);
 			streetEntForGen.setDescr_id_level_2(descr_id_level_2);
