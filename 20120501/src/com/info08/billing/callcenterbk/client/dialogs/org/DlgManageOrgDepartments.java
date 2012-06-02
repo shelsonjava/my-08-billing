@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -49,7 +50,7 @@ public class DlgManageOrgDepartments extends Window {
 	private ListGrid orgDepPhonesListGrid;
 	private DataSource orgDepDataSource;
 
-	protected ListGridRecord listGridRecord;
+	protected ListGridRecord orgListGridRecord;
 	protected TreeGrid orgTreeGrid;
 
 	private ToolStripButton sortBtn;
@@ -61,7 +62,7 @@ public class DlgManageOrgDepartments extends Window {
 			TreeGrid orgTreeGrid) {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
-			this.listGridRecord = listGridRecord;
+			this.orgListGridRecord = listGridRecord;
 			setTitle(CallCenterBK.constants.manageOrgDepartments());
 
 			setHeight(760);
@@ -168,7 +169,7 @@ public class DlgManageOrgDepartments extends Window {
 
 			orgDepDataSource = DataSource.get("OrgDepartmentDS");
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("p_organization_id",
+			criteria.setAttribute("organization_id",
 					listGridRecord.getAttributeAsInt("organization_id"));
 
 			orgDepListGrid = new ListGrid() {
@@ -236,9 +237,9 @@ public class DlgManageOrgDepartments extends Window {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer contact_phones = countryRecord
-							.getAttributeAsInt("contact_phones");
-					if (contact_phones != null && contact_phones.equals(1)) {
+					Integer for_contact = countryRecord
+							.getAttributeAsInt("for_contact");
+					if (for_contact != null && for_contact.equals(1)) {
 						return "color:red;";
 					} else {
 						return super.getCellCSSText(record, rowNum, colNum);
@@ -276,10 +277,12 @@ public class DlgManageOrgDepartments extends Window {
 							false);
 			phone_state_descr.setAlign(Alignment.CENTER);
 
-			ListGridField hidden_by_request_descr = ClientUtils
-					.createCommonCloseFilterField("hidden_by_request",
-							CallCenterBK.constants.openClose(), 150, false);
+			ListGridField hidden_by_request_descr = new ListGridField(
+					"hidden_by_request", CallCenterBK.constants.openClose(),
+					150);
 			hidden_by_request_descr.setAlign(Alignment.CENTER);
+			hidden_by_request_descr.setValueMap(ClientMapUtil.getInstance()
+					.getMapOpClose());
 
 			ListGridField phone_contract_type_descr = ClientUtils
 					.createDescrFilterField("phone_contract_type",
@@ -287,21 +290,22 @@ public class DlgManageOrgDepartments extends Window {
 							false);
 			phone_contract_type_descr.setAlign(Alignment.CENTER);
 
-			ListGridField for_contact_descr = ClientUtils
-					.createCommonCloseFilterField("for_contact",
-							CallCenterBK.constants.contactPhone(), 150, 1,
-							false);
+			ListGridField for_contact_descr = new ListGridField("for_contact",
+					CallCenterBK.constants.contactPhone(), 150);
 			for_contact_descr.setAlign(Alignment.CENTER);
+			for_contact_descr.setValueMap(ClientMapUtil.getInstance()
+					.getYesAndNo());
 
 			ListGridField phone_type_descr = ClientUtils
 					.createDescrFilterField("phone_type_id",
 							CallCenterBK.constants.type(), 150, 54000, false);
 			phone_type_descr.setAlign(Alignment.CENTER);
 
-			ListGridField is_parallel_descr = ClientUtils
-					.createCommonCloseFilterField("is_parallel",
-							CallCenterBK.constants.paraller(), 150, 1, false);
+			ListGridField is_parallel_descr = new ListGridField("is_parallel",
+					CallCenterBK.constants.paraller(), 150);
 			is_parallel_descr.setAlign(Alignment.CENTER);
+			is_parallel_descr.setValueMap(ClientMapUtil.getInstance()
+					.getMapParall());
 
 			orgDepPhonesListGrid.setFields(phone, phone_state_descr,
 					hidden_by_request_descr, phone_contract_type_descr,
@@ -394,6 +398,44 @@ public class DlgManageOrgDepartments extends Window {
 									}, dsRequest);
 						}
 					});
+
+			addNewOrgBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					Integer organization_id = orgListGridRecord
+							.getAttributeAsInt("organization_id");
+					DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
+							organization_id, null, null, orgDepListGrid);
+					dlgAddEditOrgDepartments.show();
+				}
+			});
+
+			editBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					ListGridRecord depListGridRecord = orgDepListGrid
+							.getSelectedRecord();
+					if (depListGridRecord == null) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+					Integer organization_id = orgListGridRecord
+							.getAttributeAsInt("organization_id");
+
+					DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
+							organization_id, depListGridRecord,
+							orgDepPhonesListGrid.getRecords(), orgDepListGrid);
+					dlgAddEditOrgDepartments.show();
+				}
+			});
+			cancItem.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					destroy();
+				}
+			});
+
 			fillFields();
 			addItem(hLayout);
 		} catch (Exception e) {
@@ -404,10 +446,11 @@ public class DlgManageOrgDepartments extends Window {
 
 	private void searchDepartment() {
 		try {
-			Integer p_organization_id = listGridRecord
+			Integer p_organization_id = orgListGridRecord
 					.getAttributeAsInt("organization_id");
 			String departament = orgDepNameItem.getValueAsString();
 			String real_address_descr = orgDepAddrItem.getValueAsString();
+			String phone = orgDepPhoneItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("p_organization_id", p_organization_id);
@@ -426,6 +469,16 @@ public class DlgManageOrgDepartments extends Window {
 				}
 			}
 			criteria.setAttribute("real_address_descr", real_address_descr);
+
+			if (phone != null && !phone.trim().equals("")) {
+				criteria.setAttribute("phone", phone);
+			}
+
+			Boolean for_contact = orgDepPhoneContItem.getValueAsBoolean();
+			if (for_contact != null && for_contact.booleanValue()) {
+				criteria.setAttribute("for_contact", new Integer(1));
+			}
+
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "orgDepartSearch");
 			orgDepListGrid.invalidateCache();
@@ -443,7 +496,7 @@ public class DlgManageOrgDepartments extends Window {
 
 	private void fillFields() {
 		try {
-			if (listGridRecord != null) {
+			if (orgListGridRecord != null) {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

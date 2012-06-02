@@ -13,6 +13,7 @@
 		<field name="legal_address_id" 					type="integer" 		title="legal_address_id" 					hidden="true" />
 		<field name="physical_address_id" 				type="integer" 		title="physical_address_id" 				hidden="true" />
 		<field name="department" 						type="text" 		title="department" />		
+		<field name="department_original" 				type="text" 		title="department_original" />
 		<field name="remark" 							type="text" 		title="remark" />
 		<field name="tree_parrent"						type="text"  		title="tree_org_parrent"					hidden="true"/>
 		<field name="tree_child"						type="text"  		title="tree_org_child"						hidden="true"/>
@@ -44,76 +45,72 @@
 		<field name="legal_addr_street_location"		type="text"  		title="legal_addr_street_location"			hidden="true"/>
 		<field name="legal_addr_street_index_text"		type="text"  		title="legal_addr_street_index_text"		hidden="true"/>
 		<field name="isBold" 							type="integer" 		title="isBold" 								hidden="true" />
+		<field name="phones" 							type="any" 			title="phones" 								hidden="true" />
 		
 	</fields>
 
 	<operationBindings>
+		
+		<!-- Add New Organization -->
+		<operationBinding operationType="add" operationId="addOrganizationDepartment" serverMethod="addOrUpdateOrganizationDepartment">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+        <operationBinding operationType="update" operationId="updateOrganizationDepartment" serverMethod="addOrUpdateOrganizationDepartment">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+		
 	
 		<!-- FETCH -->
-		<operationBinding operationId="orgDepartSearch1" operationType="fetch">			
-			<selectClause>distinct 
-						o.org_department_id,
-						o.parrent_department_id,
-						o.parrent_department_id as parrent_organization_id1,
-						o.organization_id,
-						o.inner_order,
-						o.legal_address_id,
-						o.physical_address_id,
-						o.department,
-						o.remark,
-						a.street_id,
-						decode(a.hidden_by_request,1,'მისამართი დაფარულია',tw.town_name || ', ' ||getDistrict(str.street_id)||', '||str.street_name||' '||a.full_address) as real_address_descr,
-						tw.town_name,
-						getDistrict(str.street_id) as town_district,
-						str.street_location,
-						getindex(str.street_id) as street_index_text,
-						tw.town_id,
-             			a.town_district_id,
-             		    decode(a.hidden_by_request,1,'მისამართი დაფარულია',(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address)) as full_address,
-		                str.street_name,
-		                a.hidden_by_request,
-		                decode(o.parrent_department_id,null,null,'home') as tree_parrent,
-		                decode((select min(1) from organization_department ms1 where ms1.parrent_department_id = o.org_department_id),null,null,'associations') as tree_child,
-		                a.full_address,
-						a.block,
-						a.appt,
-						a.descr,
-						a.anumber,
-						(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden,
-						tw1.town_id as legal_addr_town_id,
-						a1.street_id as legal_addr_street_id,
-						a1.town_district_id as legal_addr_town_district_id,
-						a1.hidden_by_request as legal_addr_hidden_by_request,
-						a1.full_address as legal_addr_full_address,
-						a1.block as legal_addr_block,
-						a1.appt as legal_addr_appt,
-						a1.anumber as legal_addr_anumber,
-						str1.street_location as legal_addr_street_location,
-						getindex(str1.street_id) as legal_addr_street_index_text
+		<operationBinding operationId="customOrgDepSearchByOrgId" operationType="fetch">			
+			<selectClause>
+					  t1.department, 
+					  t1.legal_address_id,
+					  t1.physical_address_id,
+					  t1.parrent_department_id,
+					  t1.org_department_id,
+					  t1.organization_id,
+					  t1.remark,
+					  pa.street_id,
+					  decode(pa.hidden_by_request,1,'მისამართი დაფარულია',pa.town_name || ', ' ||pa.town_district_name||', '||pa.street_name||' '||pa.full_address) as real_address_descr,
+					  pa.town_name,
+					  pa.town_district_name as town_district,
+					  pa.street_location,
+					  getindex(pa.street_id) as street_index_text,
+					  pa.town_id,
+					  pa.town_district_id,
+					  decode(pa.hidden_by_request,1,'მისამართი დაფარულია',(pa.town_name||' / '|| pa.town_district_name||' / '||pa.street_name||' '||pa.full_address)) as full_address,
+					  pa.street_name,
+					  pa.hidden_by_request,
+					  decode(t1.parrent_department_id,null,null,'home') as tree_parrent,
+					  decode((select min(1) from organization_department ms1 where ms1.parrent_department_id = t1.org_department_id),null,null,'associations') as tree_child,
+					  pa.full_address as old_address,
+					  pa.block,
+					  pa.appt,
+					  pa.descr,
+					  pa.anumber,
+					  (pa.town_name||' / '|| pa.town_district_name||' / '||pa.street_name||' '||pa.full_address) as full_address_not_hidden,
+					  la.town_id as legal_addr_town_id,
+					  la.street_id as legal_addr_street_id,
+					  la.town_district_id as legal_addr_town_district_id,
+					  la.hidden_by_request as legal_addr_hidden_by_request,
+					  la.full_address as legal_addr_full_address,
+					  la.block as legal_addr_block,
+					  la.appt as legal_addr_appt,
+					  la.anumber as legal_addr_anumber,
+					  la.street_location as legal_addr_street_location,
+					  getindex(la.street_id) as legal_addr_street_index_text
 			</selectClause>
-			<tableClause>organization_department o, addresses a, streets str, towns tw, addresses a1, streets str1, towns tw1</tableClause>
+			<tableClause>organization_department t1, V_FULL_ADDRESS pa, V_FULL_ADDRESS la</tableClause>
 			<whereClause>
 				 <![CDATA[
-						 o.physical_address_id = a.addr_id(+) and a.street_id = str.street_id(+) and a.town_id = tw.town_id(+) and 
-						 o.legal_address_id = a1.addr_id(+) and a1.street_id = str1.street_id(+) and a1.town_id = tw1.town_id(+)
-						 #if($criteria.department1) and o.department like '%'||($criteria.department1)||'%' #end
-						 #if($criteria.department2) and o.department like '%'||($criteria.department2)||'%' #end
-						 #if($criteria.department3) and o.department like '%'||($criteria.department3)||'%' #end
-						 #if($criteria.department4) and o.department like '%'||($criteria.department4)||'%' #end
-						 #if($criteria.department5) and o.department like '%'||($criteria.department5)||'%' #end
-						 #if($criteria.department6) and o.department like '%'||($criteria.department6)||'%' #end
-						 #if($criteria.department7) and o.department like '%'||($criteria.department7)||'%' #end
-						 #if($criteria.department8) and o.department like '%'||($criteria.department8)||'%' #end
-						 #if($criteria.department9) and o.department like '%'||($criteria.department9)||'%' #end						 						 
-						 #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end						 
-						 #if($criteria.parrent_department_id) and o.parrent_department_id = $criteria.parrent_department_id #end
+				 	t1.physical_address_id = pa.addr_id(+) and
+				 	t1.legal_address_id = la.addr_id(+) 
+				 	#if($criteria.organization_id) and t1.organization_id = $criteria.organization_id #end
+				 	#if($criteria.org_department_id) and t1.org_department_id = $criteria.org_department_id #end
 				 ]]>
 			</whereClause>
-			<orderClause>o.inner_order</orderClause>
 		</operationBinding>
-        
-        
-        
+	
         <!-- FETCH -->
         <operationBinding operationId="orgDepartSearch" operationType="fetch">
             <customSQL>
@@ -121,11 +118,13 @@
             		select 
             		  t1.isBold,
 					  t1.department, 
+					  t1.department_original,
 					  t1.legal_address_id,
 					  t1.physical_address_id,
 					  t1.parrent_department_id,
 					  t1.org_department_id,
 					  t1.organization_id,
+					  t1.remark,
 					  pa.street_id,
 					  decode(pa.hidden_by_request,1,'მისამართი დაფარულია',pa.town_name || ', ' ||pa.town_district_name||', '||pa.street_name||' '||pa.full_address) as real_address_descr,
 					  pa.town_name,
@@ -159,6 +158,8 @@
 					select 
 					     decode(LEVEL,1,1,0) isBold,
 					     LPAD(' ', (LEVEL - 1) * 4, '.') || dd.department department,
+					     dd.department as department_original,
+					     dd.remark,
 					     dd.legal_address_id,
 					     dd.physical_address_id,
 					     dd.parrent_department_id,
@@ -169,8 +170,9 @@
 					       start with o.org_department_id in
 					                  (select kk.org_department_id
 					                     from ccare.organization_department kk
-					                    where 
-					                    	kk.organization_id = $criteria.p_organization_id
+					                    where 1=1
+					                    	#if($criteria.organization_id) and kk.organization_id = $criteria.organization_id #end
+					                    	#if($criteria.org_department_id) and kk.org_department_id = $criteria.org_department_id #end
 					                    	#if($criteria.department1) and kk.department like '%'||($criteria.department1)||'%' #end
 					                        #if($criteria.department2) and kk.department like '%'||($criteria.department2)||'%' #end
 					                        #if($criteria.department3) and kk.department like '%'||($criteria.department3)||'%' #end
@@ -180,6 +182,19 @@
 					                        #if($criteria.department7) and kk.department like '%'||($criteria.department7)||'%' #end
 					                        #if($criteria.department8) and kk.department like '%'||($criteria.department8)||'%' #end
 					                        #if($criteria.department9) and kk.department like '%'||($criteria.department9)||'%' #end
+					                        #if($criteria.phone)
+					                        	and exists (
+					                        		select 
+					                        			1 
+					                        		from ccare.organization_depart_to_phones p
+                     									inner join ccare.phone_numbers pn on pn.phone_number_id = p.phone_number_id
+              										where 
+              											kk.org_department_id = p.org_department_id and pn.phone = $criteria.phone
+              											#if($criteria.for_contact)
+              												and p.for_contact = $criteria.for_contact 
+              											#end
+					                        	) 
+					                        #end
 					                   )
 					      connect by prior o.parrent_department_id = o.org_department_id
 					      union
@@ -188,8 +203,9 @@
 					       start with o.org_department_id in
 					                  (select kk.org_department_id
 					                     from ccare.organization_department kk
-					                    where 
-					                    	kk.organization_id = $criteria.p_organization_id
+					                    where 1=1
+					                    	#if($criteria.organization_id) and kk.organization_id = $criteria.organization_id #end
+					                    	#if($criteria.org_department_id) and kk.org_department_id = $criteria.org_department_id #end
 					                        #if($criteria.department1) and kk.department like '%'||($criteria.department1)||'%' #end
 					                        #if($criteria.department2) and kk.department like '%'||($criteria.department2)||'%' #end
 					                        #if($criteria.department3) and kk.department like '%'||($criteria.department3)||'%' #end
@@ -199,75 +215,25 @@
 					                        #if($criteria.department7) and kk.department like '%'||($criteria.department7)||'%' #end
 					                        #if($criteria.department8) and kk.department like '%'||($criteria.department8)||'%' #end
 					                        #if($criteria.department9) and kk.department like '%'||($criteria.department9)||'%' #end
+					                        #if($criteria.phone)
+					                        	and exists (
+					                        		select 
+					                        			1 
+					                        		from ccare.organization_depart_to_phones p
+                     									inner join ccare.phone_numbers pn on pn.phone_number_id = p.phone_number_id
+              										where 
+              											kk.org_department_id = p.org_department_id and pn.phone = $criteria.phone
+              											#if($criteria.for_contact)
+              												and p.for_contact = $criteria.for_contact 
+              											#end
+					                        	) 
+					                        #end
 					                   )
 					      connect by prior o.org_department_id = o.parrent_department_id) f
 					inner join ccare.organization_department dd on dd.org_department_id = f.org_department_id
 					start with f.parrent_department_id is null
 					connect by prior f.org_department_id = f.parrent_department_id
 					order by dd.inner_order ) t1
-					left join V_FULL_ADDRESS pa on pa.addr_id = t1.physical_address_id 
-					left join V_FULL_ADDRESS la on la.addr_id = t1.legal_address_id
-            	 ]]>
-            </customSQL> 
-        </operationBinding>
-        
-        
-         <!-- FETCH -->
-        <operationBinding operationId="orgDepartSearch2" operationType="fetch">
-            <customSQL>
-            	 <![CDATA[
-            		select 
-            		  decode(k.my_level,1,1,0) isBold,
-					  LPAD(' ', (k.my_level - 1) * 4, '.') || t1.department department, 
-					  t1.legal_address_id,
-					  t1.physical_address_id,
-					  t1.parrent_department_id,
-					  t1.org_department_id,
-					  t1.organization_id,
-					  pa.street_id,
-					  decode(pa.hidden_by_request,1,'მისამართი დაფარულია',pa.town_name || ', ' ||pa.town_district_name||', '||pa.street_name||' '||pa.full_address) as real_address_descr,
-					  pa.town_name,
-					  pa.town_district_name as town_district,
-					  pa.street_location,
-					  getindex(pa.street_id) as street_index_text,
-					  pa.town_id,
-					  pa.town_district_id,
-					  decode(pa.hidden_by_request,1,'მისამართი დაფარულია',(pa.town_name||' / '|| pa.town_district_name||' / '||pa.street_name||' '||pa.full_address)) as full_address,
-					  pa.street_name,
-					  pa.hidden_by_request,
-					  decode(t1.parrent_department_id,null,null,'home') as tree_parrent,
-					  decode((select min(1) from organization_department ms1 where ms1.parrent_department_id = t1.org_department_id),null,null,'associations') as tree_child,
-					  pa.full_address as old_address,
-					  pa.block,
-					  pa.appt,
-					  pa.descr,
-					  pa.anumber,
-					  (pa.town_name||' / '|| pa.town_district_name||' / '||pa.street_name||' '||pa.full_address) as full_address_not_hidden,
-					  la.town_id as legal_addr_town_id,
-					  la.street_id as legal_addr_street_id,
-					  la.town_district_id as legal_addr_town_district_id,
-					  la.hidden_by_request as legal_addr_hidden_by_request,
-					  la.full_address as legal_addr_full_address,
-					  la.block as legal_addr_block,
-					  la.appt as legal_addr_appt,
-					  la.anumber as legal_addr_anumber,
-					  la.street_location as legal_addr_street_location,
-					  getindex(la.street_id) as legal_addr_street_index_text
-					from table(getOrgDepartmentHier((select wm_concat(t.org_department_id)
-                                    from organization_department t
-                                    where    t.organization_id = $criteria.p_organization_id
-			                               	  #if($criteria.department1) and t.department like '%'||($criteria.department1)||'%' #end
-			                                  #if($criteria.department2) and t.department like '%'||($criteria.department2)||'%' #end
-			                                  #if($criteria.department3) and t.department like '%'||($criteria.department3)||'%' #end
-			                                  #if($criteria.department4) and t.department like '%'||($criteria.department4)||'%' #end
-			                                  #if($criteria.department5) and t.department like '%'||($criteria.department5)||'%' #end
-			                                  #if($criteria.department6) and t.department like '%'||($criteria.department6)||'%' #end
-						                      #if($criteria.department7) and t.department like '%'||($criteria.department7)||'%' #end
-					                          #if($criteria.department8) and t.department like '%'||($criteria.department8)||'%' #end
-					                          #if($criteria.department9) and t.department like '%'||($criteria.department9)||'%' #end
-                                         ))) k
-  					inner join organization_department t1 on t1.org_department_id= k.org_department_id
-   
 					left join V_FULL_ADDRESS pa on pa.addr_id = t1.physical_address_id 
 					left join V_FULL_ADDRESS la on la.addr_id = t1.legal_address_id
             	 ]]>

@@ -17,7 +17,9 @@
       				0,
       				decode(t.id, 1, map_char_codes_geo('dafaruli'),map_char_codes_geo('Ria')),
       				1,
-      				decode(t.id, 1, map_char_codes_geo('ara'),map_char_codes_geo('diax'))
+      				decode(t.id, 1, map_char_codes_geo('ara'),map_char_codes_geo('diax')),
+      				2,
+      				decode(t.id, 1, map_char_codes_geo('diax'),map_char_codes_geo('ara'))
       			)  as name
 			</selectClause>
 			<tableClause><![CDATA[(select rownum-1 as id,#if($criteria.ttype) $criteria.ttype #else 0 #end as ttype from dual

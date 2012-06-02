@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.server.impl.dmi;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,9 +13,11 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationActivity;
+import com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartMent;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationPartnerBank;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationToActivity;
 import com.info08.billing.callcenterbk.shared.items.Address;
+import com.info08.billing.callcenterbk.shared.items.PhoneNumber;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 import com.isomorphic.util.DataTools;
@@ -24,6 +27,7 @@ public class OrganizationDMI {
 	private static final String Q_CHECK_ORG_ACTIVITIES = "select count(1) from organization_to_activities t where t.org_activity_id = ? ";
 	private static final String Q_DELETE_ORG_ACTIVITIES = "delete from organization_to_activities t where t.organization_id = ? ";
 	private static final String Q_DELETE_ORG_PART_BANKS = "delete from organization_partner_banks t where t.organization_id = ? ";
+	private static final String Q_DELETE_ORG_DEP_PHONES = "delete from organization_depart_to_phones t where t.org_department_id = ? ";
 
 	private Logger logger = Logger.getLogger(OrganizationDMI.class.getName());
 
@@ -444,6 +448,127 @@ public class OrganizationDMI {
 					organizationPartnerBank.setPart_bank_org_id(new Long(value
 							.toString()));
 					oracleManager.persist(organizationPartnerBank);
+				}
+			}
+
+			EMF.commitTransaction(transaction);
+			log += ". Save Or Update Finished SuccessFully. ";
+			logger.info(log);
+			values = DMIUtils.findRecordById("OrgDS",
+					"customOrgSearchForCallCenterNew", organization_id,
+					"organization_id");
+			return values;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error(
+					"Error While adding New organization Into Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param dsRequest
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("rawtypes")
+	public Map<?, ?> addOrUpdateOrganizationDepartment(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:OrganizationDMI.addOrUpdateOrganizationDepartment.";
+			Map<?, ?> values = dsRequest.getValues();
+			Long org_department_id = values.containsKey("org_department_id") ? Long
+					.parseLong(values.get("org_department_id").toString())
+					: null;
+			String loggedUserName = values.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			OrganizationDepartMent organizationDepartMent = null;
+			if (org_department_id != null) {
+				organizationDepartMent = oracleManager.find(
+						OrganizationDepartMent.class, org_department_id);
+			}
+			if (organizationDepartMent == null && org_department_id != null)
+				throw new Exception("ვერ ვიპოვე დეპარტამენტი შესაცვლელად(ID="
+						+ org_department_id + ")");
+			if (organizationDepartMent == null) {
+				organizationDepartMent = new OrganizationDepartMent();
+			}
+			DataTools.setProperties(values, organizationDepartMent);
+
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, log);
+
+			Long physical_address_id = values.get("physical_address_id") != null ? new Long(
+					values.get("physical_address_id").toString()) : null;
+
+			Address physicalAddress = null;
+			if (physical_address_id != null) {
+				physicalAddress = oracleManager.find(Address.class,
+						physical_address_id);
+				if (physicalAddress == null) {
+					physicalAddress = new Address();
+				}
+			} else {
+				physicalAddress = new Address();
+			}
+			DataTools.setProperties(values, physicalAddress);
+
+			if (physicalAddress.getAddr_id() != null) {
+				oracleManager.merge(physicalAddress);
+			} else {
+				oracleManager.persist(physicalAddress);
+			}
+
+			organizationDepartMent.setPhysical_address_id(physicalAddress
+					.getAddr_id());
+
+			boolean isPersist = (org_department_id == null);
+			if (org_department_id == null) {
+				oracleManager.persist(organizationDepartMent);
+			} else {
+				oracleManager.merge(organizationDepartMent);
+			}
+			org_department_id = organizationDepartMent.getOrganization_id();
+
+			if (!isPersist) {
+				oracleManager.createNativeQuery(Q_DELETE_ORG_DEP_PHONES)
+						.setParameter(1, org_department_id).executeUpdate();
+			}
+
+			Map<?, ?> phones = (Map<?, ?>) values.get("phones");
+			Set<?> phoneKeys = phones.keySet();
+			for (Object phoneKey : phoneKeys) {
+				Map value = (Map) phones.get(phoneKey);
+				String phone = value.get("phone").toString();
+				ArrayList<PhoneNumber> phoneNumbers = (ArrayList<PhoneNumber>) oracleManager
+						.createNamedQuery("PhoneNumber.getByPhoneNumber")
+						.setParameter("phone", phone).getResultList();
+				PhoneNumber phoneNumber = null;
+				if (phoneNumbers == null || phoneNumbers.isEmpty()) {
+					phoneNumber = new PhoneNumber();
+					phoneNumber.setIs_parallel(new Long(value
+							.get("is_parallel").toString()));
+					phoneNumber.setPhone(phone);
+					phoneNumber.setPhone_state_id(new Long(value.get(
+							"phone_state_id").toString()));
+					phoneNumber.setPhone_type_id(new Long(value.get(
+							"phone_type_id").toString()));
+					oracleManager.persist(phoneNumber);
 				}
 			}
 
