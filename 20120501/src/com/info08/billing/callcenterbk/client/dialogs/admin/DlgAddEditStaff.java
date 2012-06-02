@@ -1,6 +1,8 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel;
@@ -18,6 +20,7 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.Side;
@@ -25,14 +28,18 @@ import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.DoubleClickEvent;
+import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -56,7 +63,7 @@ public class DlgAddEditStaff extends Window {
 
 	// forms
 	// org. main info
-	private DynamicForm dynamicFormMainInfo;
+	private DynamicForm dynamicFormStaffMainInfo;
 	private DynamicForm dynamicFormMainInfo1;
 	private DynamicForm dynamicFormMainInfo2;
 
@@ -113,6 +120,15 @@ public class DlgAddEditStaff extends Window {
 
 	private StaffEducationClientDS staffEducationClientDS;
 	private ListGrid staffEducationGrid;
+	private RecordList presaveStaffEducationGrid = new RecordList();
+	private ToolStripButton addEducationBtn;
+	private ToolStripButton editEducationBtn;
+
+	private StaffComputerSkillsClientDS staffComputerSkillsClientDS;
+	private ListGrid staffComputerSkillsGrid;
+	private RecordList presaveStaffComputerSkillsGrid = new RecordList();
+	private ToolStripButton addStaffComputerSkillsBtn;
+	private ToolStripButton editStaffComputerSkillsBtn;
 
 	public DlgAddEditStaff(DataSource dataSource, ListGridRecord listGridRecord) {
 		this.dataSource = dataSource;
@@ -140,12 +156,17 @@ public class DlgAddEditStaff extends Window {
 		topTabSet.setWidth100();
 		topTabSet.setHeight100();
 
-		dynamicFormMainInfo = new DynamicForm();
-		dynamicFormMainInfo.setAutoFocus(true);
-		dynamicFormMainInfo.setWidth100();
-		dynamicFormMainInfo.setNumCols(2);
-		dynamicFormMainInfo.setTitleWidth(150);
-		dynamicFormMainInfo.setTitleOrientation(TitleOrientation.TOP);
+		// TODO
+
+		dynamicFormStaffMainInfo = new DynamicForm();
+		dynamicFormStaffMainInfo.setAutoFocus(true);
+		dynamicFormStaffMainInfo.setWidth100();
+		dynamicFormStaffMainInfo.setNumCols(2);
+		dynamicFormStaffMainInfo.setTitleWidth(150);
+		dynamicFormStaffMainInfo.setTitleOrientation(TitleOrientation.TOP);
+		dynamicFormStaffMainInfo.setColWidths("50%", "50%");
+		dynamicFormStaffMainInfo.setLayoutAlign(Alignment.CENTER);
+		dynamicFormStaffMainInfo.setAlign(Alignment.CENTER);
 
 		dynamicFormMainInfo1 = new DynamicForm();
 		dynamicFormMainInfo1.setAutoFocus(false);
@@ -169,7 +190,7 @@ public class DlgAddEditStaff extends Window {
 
 		VLayout rigthLayOut = new VLayout();
 		rigthLayOut.setHeight100();
-		// rigthLayOut.addMember(dynamicFormMainInfo1);
+		rigthLayOut.addMember(dynamicFormMainInfo1);
 
 		formsLayout.setMembers(leftLayOut, rigthLayOut);
 		Tab tabMainInfo = new Tab(CallCenterBK.constants.maininfo());
@@ -230,22 +251,20 @@ public class DlgAddEditStaff extends Window {
 		fieldRecords.add(full_address_not_hidden);
 		fieldRecords.add(remark);
 
-		
-
 		firstNameItem = new TextItem();
 		firstNameItem.setName("first_name");
-		firstNameItem.setWidth(250);
+		firstNameItem.setWidth(300);
 		firstNameItem.setTitle("სახელი");
-
+		// 650
 		lastNameItem = new TextItem();
 		lastNameItem.setName("last_name");
-		lastNameItem.setWidth(250);
+		lastNameItem.setWidth(300);
 		lastNameItem.setTitle("გვარი");
 
 		departmentItem = new ComboBoxItem();
 		departmentItem.setTitle("განყოფილება");
 		departmentItem.setName("department_id");
-		departmentItem.setWidth(250);
+		departmentItem.setWidth(300);
 		departmentItem.setFetchMissingValues(false);
 
 		ClientUtils.fillCombo(departmentItem, "StaffDS", "getAllDepartments",
@@ -254,7 +273,7 @@ public class DlgAddEditStaff extends Window {
 		genderItem = new SelectItem();
 		genderItem.setTitle("სქესი");
 		genderItem.setName("genderItem");
-		genderItem.setWidth(250);
+		genderItem.setWidth(300);
 		genderItem.setFetchMissingValues(false);
 
 		ClientUtils.fillDescriptionCombo(genderItem, 64000);
@@ -262,7 +281,7 @@ public class DlgAddEditStaff extends Window {
 		nationalityItem = new SelectItem();
 		nationalityItem.setTitle("ეროვნება");
 		nationalityItem.setName("nationalityItem");
-		nationalityItem.setWidth(250);
+		nationalityItem.setWidth(300);
 		nationalityItem.setFetchMissingValues(false);
 
 		ClientUtils.fillDescriptionCombo(nationalityItem, 65000);
@@ -270,32 +289,32 @@ public class DlgAddEditStaff extends Window {
 		familyStatusItem = new SelectItem();
 		familyStatusItem.setTitle("ოჯახური მდგომარეობა");
 		familyStatusItem.setName("familyStatusItem");
-		familyStatusItem.setWidth(250);
+		familyStatusItem.setWidth(300);
 		familyStatusItem.setFetchMissingValues(false);
 
 		ClientUtils.fillDescriptionCombo(familyStatusItem, 66000);
 
 		docNumberItem = new TextItem();
 		docNumberItem.setTitle("პირადობა");
-		docNumberItem.setWidth(250);
+		docNumberItem.setWidth(300);
 		docNumberItem.setName("doc_num");
 
 		remarkItem = new TextAreaItem();
 		remarkItem.setTitle("კომენტარი");
 		remarkItem.setWidth(650);
-		remarkItem.setColSpan(4);
+		remarkItem.setColSpan(2);
 		remarkItem.setName("remark");
 		remarkItem.setHeight(70);
 
 		dobItem = new DateItem();
 		dobItem.setTitle("დაბადების თარიღი");
-		dobItem.setWidth(250);
+		dobItem.setWidth(300);
 		dobItem.setName("dobItem");
 		dobItem.setUseTextField(true);
 
 		startDateItem = new DateItem();
 		startDateItem.setTitle("დაწყების თარიღი");
-		startDateItem.setWidth(250);
+		startDateItem.setWidth(300);
 		startDateItem.setName("startDateItem");
 		startDateItem.setUseTextField(true);
 
@@ -303,25 +322,205 @@ public class DlgAddEditStaff extends Window {
 
 		staffEducationGrid = new ListGrid();
 		staffEducationGrid.setWidth100();
-		staffEducationGrid.setHeight(250);
+		staffEducationGrid.setHeight(100);
 		staffEducationGrid.setDataSource(staffEducationClientDS);
 		staffEducationGrid.setCanReorderRecords(true);
 		staffEducationGrid.setCanRemoveRecords(true);
 		staffEducationGrid.setAutoFetchData(true);
-		staffEducationGrid.setCanEdit(true);
-		staffEducationGrid
-				.setDuplicateDragMessage("ასეთი რაიონი უკვე არჩეულია !");
+		staffEducationGrid.setWrapCells(true);
+		staffEducationGrid.setFixedRecordHeights(false);
 
-		
-		
-		
-		
-		
-		
-		
-		leftLayOut.setMembers(dynamicFormMainInfo, staffEducationGrid); // TODO
-		
-		
+		ListGridField college_name = new ListGridField("college_name",
+				"დაწესებულების დასახელება");
+		ListGridField faculty_name = new ListGridField("faculty_name",
+				"ფაკულტეტი", 190);
+		ListGridField degree_descr = new ListGridField("degree_descr",
+				"წოდება", 90);
+		ListGridField se_years = new ListGridField("se_years", "წლები", 70);
+
+		staffEducationGrid.setFields(college_name, faculty_name, degree_descr,
+				se_years);
+
+		ToolStrip toolStripEducation = new ToolStrip();
+		toolStripEducation.setWidth100();
+		toolStripEducation.setPadding(5);
+
+		// TODO
+
+		Label label = new Label("განათლება");
+		label.setStyleName("staffGridTitle");
+		toolStripEducation.addMember(label);
+
+		addEducationBtn = new ToolStripButton(CallCenterBK.constants.add(),
+				"addIcon.png");
+		addEducationBtn.setLayoutAlign(Alignment.LEFT);
+		addEducationBtn.setWidth(50);
+		toolStripEducation.addButton(addEducationBtn);
+
+		addEducationBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				DlgAddEditStaffEducation dlgAddEditStaffEducation = new DlgAddEditStaffEducation(
+						staffEducationGrid, null);
+				dlgAddEditStaffEducation.show();
+			}
+		});
+
+		editEducationBtn = new ToolStripButton(CallCenterBK.constants.modify(),
+				"editIcon.png");
+		editEducationBtn.setLayoutAlign(Alignment.LEFT);
+		editEducationBtn.setWidth(50);
+		toolStripEducation.addButton(editEducationBtn);
+
+		editEducationBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				ListGridRecord listGridRecord = staffEducationGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffEducation dlgAddEditStaffEducation = new DlgAddEditStaffEducation(
+						staffEducationGrid, listGridRecord);
+				dlgAddEditStaffEducation.show();
+
+			}
+		});
+
+		staffEducationGrid.addDoubleClickHandler(new DoubleClickHandler() {
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				ListGridRecord listGridRecord = staffEducationGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffEducation dlgAddEditStaffEducation = new DlgAddEditStaffEducation(
+						staffEducationGrid, listGridRecord);
+				dlgAddEditStaffEducation.show();
+
+			}
+		});
+
+		/***********************************************************************************************/
+		/*************************************** Staff Computer Skills *********************************/
+		/***********************************************************************************************/
+
+		staffComputerSkillsClientDS = StaffComputerSkillsClientDS.getInstance();
+
+		staffComputerSkillsGrid = new ListGrid();
+		staffComputerSkillsGrid.setWidth100();
+		staffComputerSkillsGrid.setHeight(155);
+		staffComputerSkillsGrid.setDataSource(staffComputerSkillsClientDS);
+		staffComputerSkillsGrid.setCanReorderRecords(true);
+		staffComputerSkillsGrid.setCanRemoveRecords(true);
+		staffComputerSkillsGrid.setAutoFetchData(true);
+		staffComputerSkillsGrid.setWrapCells(true);
+		staffComputerSkillsGrid.setFixedRecordHeights(false);
+
+		ListGridField software = new ListGridField("software", "პროგრამა", 200);
+		ListGridField training_course = new ListGridField("training_course",
+				"კურსის დასახელება");
+		ListGridField comp_skill_remark = new ListGridField("remark",
+				"კომენტარი", 200);
+
+		staffComputerSkillsGrid.setFields(software, training_course,
+				comp_skill_remark);
+
+		ToolStrip toolComputerSkills = new ToolStrip();
+		toolComputerSkills.setWidth100();
+		toolComputerSkills.setPadding(5);
+
+		// TODO
+
+		Label toolComputerSkillsLabel = new Label("კომპ. ცოდნა");
+		toolComputerSkillsLabel.setStyleName("staffGridTitle");
+		toolComputerSkills.addMember(toolComputerSkillsLabel);
+
+		addStaffComputerSkillsBtn = new ToolStripButton(
+				CallCenterBK.constants.add(), "addIcon.png");
+		addStaffComputerSkillsBtn.setLayoutAlign(Alignment.LEFT);
+		addStaffComputerSkillsBtn.setWidth(50);
+		toolComputerSkills.addButton(addStaffComputerSkillsBtn);
+
+		addStaffComputerSkillsBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				DlgAddEditStaffComputerSkills addEditStaffComputerSkills = new DlgAddEditStaffComputerSkills(
+						staffComputerSkillsGrid, null);
+				addEditStaffComputerSkills.show();
+			}
+		});
+
+		editStaffComputerSkillsBtn = new ToolStripButton(
+				CallCenterBK.constants.modify(), "editIcon.png");
+		editStaffComputerSkillsBtn.setLayoutAlign(Alignment.LEFT);
+		editStaffComputerSkillsBtn.setWidth(50);
+		toolComputerSkills.addButton(editStaffComputerSkillsBtn);
+
+		editStaffComputerSkillsBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				ListGridRecord listGridRecord = staffComputerSkillsGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffComputerSkills addEditStaffComputerSkills = new DlgAddEditStaffComputerSkills(
+						staffComputerSkillsGrid, listGridRecord);
+				addEditStaffComputerSkills.show();
+
+			}
+		});
+
+		staffComputerSkillsGrid.addDoubleClickHandler(new DoubleClickHandler() {
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				ListGridRecord listGridRecord = staffComputerSkillsGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffComputerSkills addEditStaffComputerSkills = new DlgAddEditStaffComputerSkills(
+						staffComputerSkillsGrid, listGridRecord);
+				addEditStaffComputerSkills.show();
+
+			}
+		});
+
+		/***********************************************************************************/
+		/***********************************************************************************/
+		/***********************************************************************************/
+
+		SpacerItem spacerItem = new SpacerItem();
+		spacerItem.setHeight(10);
+		spacerItem.setColSpan(2);
+
+		// dynamicFormMainInfo.setGroupTitle("");
+		// dynamicFormMainInfo.setIsGroup(true);
+
+		VLayout vLayoutSpace = new VLayout();
+		vLayoutSpace.setHeight(10);
+		leftLayOut.setMembers(dynamicFormStaffMainInfo, toolStripEducation,
+				staffEducationGrid, vLayoutSpace, toolComputerSkills,
+				staffComputerSkillsGrid); // TODO
+
 		orgRemarkItem = new TextAreaItem();
 		orgRemarkItem.setName("remark");
 		orgRemarkItem.setWidth(650);
@@ -420,12 +619,13 @@ public class DlgAddEditStaff extends Window {
 		orgStatusItem.setValueMap(ClientMapUtil.getInstance().getOrgStatuses());
 		orgStatusItem.setDefaultToFirstOption(true);
 
-		// dynamicFormMainInfo.setFields(orgNameItem, orgNameEngItem,
-		// importantRemark, orgRemarkItem);
+//		 dynamicFormMainInfo.setFields(orgNameItem, orgNameEngItem,
+//		 importantRemark, orgRemarkItem);
 
-		dynamicFormMainInfo.setFields(firstNameItem, lastNameItem,
+		dynamicFormStaffMainInfo.setFields(firstNameItem, lastNameItem,
 				departmentItem, docNumberItem, genderItem, nationalityItem,
-				familyStatusItem, dobItem, startDateItem, remarkItem); // TODO
+				familyStatusItem, dobItem, startDateItem, remarkItem,
+				spacerItem); // TODO
 
 		dynamicFormMainInfo1.setFields(orgChiefItem, orgContactPersonItem,
 				orgIdentCodeItem, orgIdentCodeNewItem, orgWorkHoursItem,
@@ -555,7 +755,7 @@ public class DlgAddEditStaff extends Window {
 		gridsLayout1.setMargin(2);
 
 		gridsLayout1.setMembers(dayOffsGrid, arrowImg1, orgDayOffsGrid);
-		// rigthLayOut.addMember(gridsLayout1);
+		rigthLayOut.addMember(gridsLayout1);
 
 		cancItem.addClickHandler(new ClickHandler() {
 			@Override
@@ -696,9 +896,37 @@ public class DlgAddEditStaff extends Window {
 					}
 					for (Record record : records) {
 						staffEducationGrid.addData(record);
+						presaveStaffEducationGrid.add(record);
 					}
 				}
 			}, dsRequest);
+
+			DataSource staffComputerSkillsDS = DataSource
+					.get("StaffComputerSkillsDS");
+
+			Criteria criteriaCompSkills = new Criteria();
+			criteriaCompSkills.setAttribute("staff_id",
+					listGridRecord.getAttributeAsInt("staff_id"));
+
+			DSRequest dsRequestCompSkills = new DSRequest();
+			dsRequestCompSkills.setAttribute("operationId",
+					"getAllStaffComputerSkills");
+
+			staffComputerSkillsDS.fetchData(criteriaCompSkills,
+					new DSCallback() {
+
+						@Override
+						public void execute(DSResponse response,
+								Object rawData, DSRequest request) {
+							Record records[] = response.getData();
+							if (records == null || records.length <= 0) {
+								return;
+							}
+							for (Record record : records) {
+								staffComputerSkillsGrid.addData(record);
+							}
+						}
+					}, dsRequestCompSkills);
 
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -735,10 +963,57 @@ public class DlgAddEditStaff extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
+			Map<String, Map<String, String>> preStaffEducation = new TreeMap<String, Map<String, String>>();
+
+			if (staffEducationGrid.getDataAsRecordList() != null) {
+				for (int i = 0; i < staffEducationGrid.getDataAsRecordList()
+						.getLength(); i++) {
+					Record element = staffEducationGrid.getDataAsRecordList()
+							.get(i);
+					if (element != null) {
+						Map<String, String> item = new TreeMap<String, String>();
+						item.put("college_name",
+								element.getAttribute("college_name"));
+						item.put("faculty_name",
+								element.getAttribute("faculty_name"));
+						item.put("degree_descr_id",
+								element.getAttribute("degree_descr_id"));
+						item.put("start_year",
+								element.getAttribute("start_year"));
+						item.put("end_year", element.getAttribute("end_year"));
+						preStaffEducation.put(element
+								.getAttributeAsString("staff_education_id"),
+								item);
+					}
+				}
+			}
+
+			Map<String, Map<String, String>> preStaffCompSkills = new TreeMap<String, Map<String, String>>();
+
+			if (staffComputerSkillsGrid.getDataAsRecordList() != null) {
+				for (int i = 0; i < staffComputerSkillsGrid
+						.getDataAsRecordList().getLength(); i++) {
+					Record element = staffComputerSkillsGrid
+							.getDataAsRecordList().get(i);
+					if (element != null) {
+						Map<String, String> item = new TreeMap<String, String>();
+						item.put("software", element.getAttribute("software"));
+						item.put("training_course",
+								element.getAttribute("training_course"));
+						item.put("remark", element.getAttribute("remark"));
+						preStaffCompSkills.put(element
+								.getAttributeAsString("staff_comp_skill_id"),
+								item);
+					}
+				}
+			}
+
 			if (listGridRecord != null) {
 				record.setAttribute("staff_id",
 						listGridRecord.getAttributeAsInt("staff_id"));
+
 			}
+
 			record.setAttribute("first_name", firstName);
 			record.setAttribute("last_name", lastName);
 			record.setAttribute("department_id",
@@ -754,6 +1029,8 @@ public class DlgAddEditStaff extends Window {
 			record.setAttribute("remark", remarkItem.getValueAsString());
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
+			record.setAttribute("preStaffEducation", preStaffEducation);
+			record.setAttribute("preStaffCompSkills", preStaffCompSkills);
 			DSRequest req = new DSRequest();
 			if (listGridRecord == null) {
 				req.setAttribute("operationId", "addOrUpdate");

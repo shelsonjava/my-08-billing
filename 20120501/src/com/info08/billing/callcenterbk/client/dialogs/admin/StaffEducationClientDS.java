@@ -33,11 +33,17 @@ public class StaffEducationClientDS extends DataSource {
 		DataSourceTextField degree_descr = new DataSourceTextField(
 				"degree_descr", "წოდება");
 
+		DataSourceTextField start_year = new DataSourceTextField("start_year",
+				"დაწყება");
+
+		DataSourceTextField end_year = new DataSourceTextField("end_year",
+				"დამთავრება");
+
 		DataSourceTextField se_years = new DataSourceTextField("se_years",
 				"წლები");
 
 		setFields(staff_education_id, staff_id, college_name, faculty_name,
-				degree_descr_id, degree_descr, se_years);
+				degree_descr_id, degree_descr, se_years, start_year, end_year);
 		setClientOnly(true);
 	}
 }
