@@ -26,6 +26,7 @@
 		<field name="preStaffEducation"			type="any"			title="preStaffEducation" 	hidden="true" />
 		<field name="preStaffCompSkills"		type="any"			title="preStaffCompSkills" 	hidden="true" />
 		<field name="preStaffLanguages"			type="any"			title="preStaffLanguages" 	hidden="true" />
+		<field name="preStaffPhones"			type="any"			title="preStaffPhones" 	hidden="true" />
 	</fields>
 
 	<operationBindings>		

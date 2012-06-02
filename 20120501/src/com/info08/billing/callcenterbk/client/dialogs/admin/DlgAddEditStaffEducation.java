@@ -1,9 +1,8 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
+import com.info08.billing.callcenterbk.client.utils.Calendar;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.client.utils.GregorianCalendar;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
@@ -240,7 +239,7 @@ public class DlgAddEditStaffEducation extends Window {
 		} else {
 			listGrid.addData(record);
 		}
-		
+
 		destroy();
 	}
 }

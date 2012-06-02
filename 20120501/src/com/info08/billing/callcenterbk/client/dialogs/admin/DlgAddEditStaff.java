@@ -1264,6 +1264,26 @@ public class DlgAddEditStaff extends Window {
 				}
 			}
 
+			Map<String, Map<String, String>> preStaffPhones = new TreeMap<String, Map<String, String>>();
+
+			if (staffPhonesGrid.getDataAsRecordList() != null) {
+				for (int i = 0; i < staffPhonesGrid.getDataAsRecordList()
+						.getLength(); i++) {
+					Record element = staffPhonesGrid.getDataAsRecordList().get(
+							i);
+					if (element != null) {
+						Map<String, String> item = new TreeMap<String, String>();
+						item.put("staff_phone_type_id",
+								element.getAttribute("staff_phone_type_id"));
+						item.put("staff_phone",
+								element.getAttribute("staff_phone"));
+						preStaffPhones.put(
+								element.getAttributeAsString("staff_phone_id"),
+								item);
+					}
+				}
+			}
+
 			if (listGridRecord != null) {
 				record.setAttribute("staff_id",
 						listGridRecord.getAttributeAsInt("staff_id"));
@@ -1288,6 +1308,8 @@ public class DlgAddEditStaff extends Window {
 			record.setAttribute("preStaffEducation", preStaffEducation);
 			record.setAttribute("preStaffCompSkills", preStaffCompSkills);
 			record.setAttribute("preStaffLanguages", preStaffLanguages);
+			record.setAttribute("preStaffPhones", preStaffPhones);
+			
 
 			DSRequest req = new DSRequest();
 			if (listGridRecord == null) {
