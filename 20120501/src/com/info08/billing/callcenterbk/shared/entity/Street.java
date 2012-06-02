@@ -137,6 +137,14 @@ public class Street implements Serializable {
 	@Column(name = "VISIBLE_OPTIONS")
 	private Long visible_options;
 
+	@Basic
+	@Column(name = "HIDE_FOR_CALL_CENTER")
+	private Long hide_for_call_center;
+
+	@Basic
+	@Column(name = "HIDE_FOR_CORRECTION")
+	private Long hide_for_correction;
+
 	@Transient
 	private String loggedUserName;
 
@@ -388,4 +396,21 @@ public class Street implements Serializable {
 	public Long getRecord_type() {
 		return record_type;
 	}
+
+	public Long getHide_for_call_center() {
+		return hide_for_call_center;
+	}
+
+	public void setHide_for_call_center(Long hide_for_call_center) {
+		this.hide_for_call_center = hide_for_call_center;
+	}
+
+	public Long getHide_for_correction() {
+		return hide_for_correction;
+	}
+
+	public void setHide_for_correction(Long hide_for_correction) {
+		this.hide_for_correction = hide_for_correction;
+	}
+
 }

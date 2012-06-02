@@ -12,6 +12,8 @@ public class Street implements Serializable {
 	private String street_location;
 	private Long town_district_id;
 	private Long street_to_town_district_id;
+	private Long hide_for_call_center;
+	private Long hide_for_correction;
 
 	public Long getStreet_id() {
 		return street_id;
@@ -59,6 +61,22 @@ public class Street implements Serializable {
 
 	public void setStreet_to_town_district_id(Long street_to_town_district_id) {
 		this.street_to_town_district_id = street_to_town_district_id;
+	}
+
+	public Long getHide_for_call_center() {
+		return hide_for_call_center;
+	}
+
+	public void setHide_for_call_center(Long hide_for_call_center) {
+		this.hide_for_call_center = hide_for_call_center;
+	}
+
+	public Long getHide_for_correction() {
+		return hide_for_correction;
+	}
+
+	public void setHide_for_correction(Long hide_for_correction) {
+		this.hide_for_correction = hide_for_correction;
 	}
 
 }
