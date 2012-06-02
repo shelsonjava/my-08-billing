@@ -304,7 +304,7 @@ public class ClientUtils {
 		return false;
 	}
 
-	public static boolean contansStringOne(String source, String redex,
+	public static boolean contansStringOneOf(String source, String redex,
 			String... compare) {
 		for (String string : compare) {
 			if (contansString(source, string, redex))
