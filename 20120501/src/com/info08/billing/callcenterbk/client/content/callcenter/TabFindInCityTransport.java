@@ -38,6 +38,7 @@ public class TabFindInCityTransport extends Tab {
 	private TextItem routeNumItem;
 	private TextItem streetFromItem;
 	private TextItem streetToItem;
+	private TextItem remarkItem;
 
 	// main content layout
 	private VLayout mainLayout;
@@ -66,7 +67,7 @@ public class TabFindInCityTransport extends Tab {
 		searchForm = new DynamicForm();
 		searchForm.setAutoFocus(false);
 		searchForm.setWidth(500);
-		searchForm.setNumCols(2);
+		searchForm.setNumCols(3);
 		searchForm.setTitleOrientation(TitleOrientation.TOP);
 		mainLayout.addMember(searchForm);
 
@@ -84,17 +85,22 @@ public class TabFindInCityTransport extends Tab {
 		routeNumItem.setName("routeNumItem");
 
 		streetFromItem = new TextItem();
-		streetFromItem.setTitle(CallCenterBK.constants.street());
+		streetFromItem.setTitle(CallCenterBK.constants.streetStart());
 		streetFromItem.setName("streetFromItem");
 		streetFromItem.setWidth(250);
 
 		streetToItem = new TextItem();
-		streetToItem.setTitle(CallCenterBK.constants.street());
+		streetToItem.setTitle(CallCenterBK.constants.streetEnd());
 		streetToItem.setName("streetToItem");
 		streetToItem.setWidth(250);
+		
+		remarkItem = new TextItem();
+		remarkItem.setTitle(CallCenterBK.constants.remark());
+		remarkItem.setName("remarkItem");
+		remarkItem.setWidth(250);
 
-		searchForm.setFields(transportTypeItem, routeNumItem, streetFromItem,
-				streetToItem);
+		searchForm.setFields(transportTypeItem, routeNumItem, remarkItem, streetFromItem,
+				streetToItem );
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(500);
@@ -227,6 +233,9 @@ public class TabFindInCityTransport extends Tab {
 			if (transportno != null && !transportno.trim().equals("")) {
 				criteria.setAttribute("transportno", transportno.trim());
 			}
+			
+			criteria.setAttribute("remark", remarkItem.getValueAsString());
+			
 			String start_place_id = streetFromItem.getValueAsString();
 			if (start_place_id != null && !start_place_id.trim().equals("")) {
 				fromStreetId = start_place_id;
