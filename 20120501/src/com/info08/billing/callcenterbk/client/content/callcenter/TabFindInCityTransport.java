@@ -239,32 +239,34 @@ public class TabFindInCityTransport extends Tab {
 			String start_place_id = streetFromItem.getValueAsString();
 			if (start_place_id != null && !start_place_id.trim().equals("")) {
 				fromStreetId = start_place_id;
-				String tmp = start_place_id.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("start_place_id" + i, item);
-					i++;
-				}
+				criteria.setAttribute("start_place_id", start_place_id);
+//				String tmp = start_place_id.trim();
+//				String arrStr[] = tmp.split(" ");
+//				int i = 1;
+//				for (String string : arrStr) {
+//					String item = string.trim();
+//					if (item.equals("")) {
+//						continue;
+//					}
+//					criteria.setAttribute("start_place_id" + i, item);
+//					i++;
+//				}
 			}
 			String end_place_id = streetToItem.getValueAsString();
 			if (end_place_id != null && !end_place_id.trim().equals("")) {
 				toStreetId = end_place_id;
-				String tmp = end_place_id.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("end_place_id" + i, item);
-					i++;
-				}
+				criteria.setAttribute("end_place_id", end_place_id);
+//				String tmp = end_place_id.trim();
+//				String arrStr[] = tmp.split(" ");
+//				int i = 1;
+//				for (String string : arrStr) {
+//					String item = string.trim();
+//					if (item.equals("")) {
+//						continue;
+//					}
+//					criteria.setAttribute("end_place_id" + i, item);
+//					i++;
+//				}
 			}
 
 			DSRequest dsRequest = new DSRequest();
