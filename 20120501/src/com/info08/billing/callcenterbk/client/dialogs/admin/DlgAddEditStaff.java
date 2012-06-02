@@ -631,7 +631,7 @@ public class DlgAddEditStaff extends Window {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				DlgAddEditStaffPhones dlgAddEditStaffPhones = new DlgAddEditStaffPhones(
-						staffLanguagesGrid, null);
+						staffPhonesGrid, null);
 				dlgAddEditStaffPhones.show();
 			}
 		});
