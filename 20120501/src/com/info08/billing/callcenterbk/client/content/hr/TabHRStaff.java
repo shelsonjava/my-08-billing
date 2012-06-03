@@ -188,8 +188,8 @@ public class TabHRStaff extends Tab {
 			dataSource.getField("nationality_descr").setTitle("ეროვნება");
 			dataSource.getField("family_status_descr").setTitle(
 					"ოჯახური მდგომარეობა");
-			dataSource.getField("address_id").setTitle(
-					"");
+			dataSource.getField("address_id").setTitle("");
+			dataSource.getField("document_address_id").setTitle("");
 
 			ListGridField first_name = new ListGridField("first_name",
 					"სახელი", 110);

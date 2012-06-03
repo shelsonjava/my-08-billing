@@ -102,15 +102,67 @@ public class StaffDMI implements QueryConstants {
 
 			DataTools.setProperties(physicalAddressMap, physicalAddress);
 
-			if (physicalAddress.getAddr_id() != null) {
-				oracleManager.merge(physicalAddress);
-			} else {
-				oracleManager.persist(physicalAddress);
+			if (physicalAddress.getStreet_id() != null) {
+
+				if (physicalAddress.getAddr_id() != null) {
+					oracleManager.merge(physicalAddress);
+				} else {
+					oracleManager.persist(physicalAddress);
+				}
 			}
 
 			/************************************************************************************/
 
-			staff.setAddress_id(physicalAddress.getAddr_id());
+			/************************************************************************************/
+			// Address physicalAddress
+			Long legalAddress_id = values.get("document_address_id") != null ? new Long(
+					values.get("document_address_id").toString()) : null;
+			Map<?, ?> legalAddressMap = (Map<?, ?>) values.get("legalAddress");
+
+			Address legalAddress = null;
+			if (legalAddress_id != null) {
+				legalAddress = oracleManager.find(Address.class,
+						legalAddress_id);
+				if (legalAddress == null) {
+					legalAddress = new Address();
+				}
+			} else {
+				legalAddress = new Address();
+			}
+
+			// {PhysicalAddress_town_id=51063,
+			// PhysicalAddress_legalAdressOpCloseItem=0,
+			// PhysicalAddress_street_id=53046,
+			// PhysicalAddress_town_district_id=50005,
+			// PhysicalAddress_streetDescrItem=მდებარეობს მოსკოვის გამზირიდან,
+			// (ყოფილ უნივერმაღ "მოსკოვის" უკან). მეტრო "სამგორთან".,
+			// PhysicalAddress_street_index=0137 : ყველა; ,
+			// PhysicalAddress_legalAdressItem=12,
+			// PhysicalAddress_appartItem=12,
+			// PhysicalAddress_legalBlockItem=12}
+
+			// physicalAddress.set
+
+			// physicalAddress.set
+
+			DataTools.setProperties(legalAddressMap, legalAddress);
+
+			if (legalAddress.getStreet_id() != null) {
+				if (legalAddress.getAddr_id() != null) {
+					oracleManager.merge(legalAddress);
+				} else {
+					oracleManager.persist(legalAddress);
+				}
+			}
+
+			/************************************************************************************/
+			if (physicalAddress.getAddr_id() != null) {
+				staff.setAddress_id(physicalAddress.getAddr_id());
+			}
+
+			if (legalAddress.getAddr_id() != null) {
+				staff.setDocument_address_id(legalAddress.getAddr_id());
+			}
 
 			if (staff_id != null) {
 				oracleManager.merge(staff);
@@ -334,8 +386,7 @@ public class StaffDMI implements QueryConstants {
 			}
 
 			/************************************************************************************/
-			
-			
+
 			/************************************************************************************/
 
 			Map<String, Map<String, String>> staffFamousPeople = new TreeMap<String, Map<String, String>>();
@@ -361,10 +412,11 @@ public class StaffDMI implements QueryConstants {
 									.get("first_name"));
 							staffFamousPeopleItem.setLast_name(item
 									.get("last_name"));
-							staffFamousPeopleItem.setRelation_type_id(new Long(item
-									.get("relation_type_id")));							
-							staffFamousPeopleItem.setSphere_of_activity_id(new Long(item
-									.get("sphere_of_activity_id")));
+							staffFamousPeopleItem.setRelation_type_id(new Long(
+									item.get("relation_type_id")));
+							staffFamousPeopleItem
+									.setSphere_of_activity_id(new Long(item
+											.get("sphere_of_activity_id")));
 
 							oracleManager.persist(staffFamousPeopleItem);
 

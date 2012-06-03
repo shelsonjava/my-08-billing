@@ -1024,7 +1024,7 @@ public class DlgAddEditStaff extends Window {
 		copyAddress.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				// copyAddress();
+				legalAddress.setValues(physicalAddress.getValues());
 			}
 		});
 
@@ -1444,6 +1444,10 @@ public class DlgAddEditStaff extends Window {
 				if (listGridRecord.getAttributeAsInt("address_id") != null) {
 					record.setAttribute("address_id",
 							listGridRecord.getAttributeAsInt("address_id"));
+				}
+				if (listGridRecord.getAttributeAsInt("document_address_id") != null) {
+					record.setAttribute("document_address_id",
+							listGridRecord.getAttributeAsInt("document_address_id"));
 				}
 
 			}

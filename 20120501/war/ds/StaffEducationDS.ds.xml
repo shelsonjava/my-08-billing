@@ -19,8 +19,6 @@
 
 	<operationBindings>		
 
-		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.StaffDMI"/>
-
 		<operationBinding operationId="getAllStaffEducations" operationType="fetch">
     		<selectClause>   			
     		   se.staff_education_id
