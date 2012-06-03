@@ -19,6 +19,7 @@ import com.info08.billing.callcenterbk.shared.entity.StaffEducation;
 import com.info08.billing.callcenterbk.shared.entity.StaffLanguages;
 import com.info08.billing.callcenterbk.shared.entity.StaffPhones;
 import com.info08.billing.callcenterbk.shared.entity.StaffWorks;
+import com.info08.billing.callcenterbk.shared.items.Address;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 import com.isomorphic.util.DataTools;
@@ -48,6 +49,91 @@ public class StaffDMI implements QueryConstants {
 					.parseLong(values.get("staff_id").toString()) : null;
 			String loggedUserName = values.get("loggedUserName").toString();
 
+			Staff staff = null;
+			if (staff_id != null) {
+				staff = oracleManager.find(Staff.class, staff_id);
+			}
+			if (staff == null && staff_id != null)
+				throw new Exception("ვერ ვიპოვე თანამშრომელი შესაცვლელად(ID="
+						+ staff_id + ")");
+			if (staff == null) {
+				staff = new Staff();
+			}
+
+			DataTools.setProperties(values, staff);
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add or Update Staff.");
+			
+			
+			/************************************************************************************/
+			// Address physicalAddress
+			Long address_id = values.get("address_id") != null ? new Long(
+					values.get("address_id").toString()) : null;
+			Map<?, ?> physicalAddressMap = (Map<?, ?>) values
+					.get("physicalAddress");
+
+			Address physicalAddress = null;
+			if (address_id != null) {
+				physicalAddress = oracleManager.find(Address.class, address_id);
+				if (physicalAddress == null) {
+					physicalAddress = new Address();
+				}
+			} else {
+				physicalAddress = new Address();
+			}
+			
+//			{PhysicalAddress_town_id=51063, 
+//					PhysicalAddress_legalAdressOpCloseItem=0, 
+//					PhysicalAddress_street_id=53046, 
+//					PhysicalAddress_town_district_id=50005, 
+//					PhysicalAddress_streetDescrItem=მდებარეობს მოსკოვის გამზირიდან, (ყოფილ უნივერმაღ "მოსკოვის"  უკან). მეტრო "სამგორთან"., 
+//					PhysicalAddress_street_index=0137 : ყველა; , 
+//					PhysicalAddress_legalAdressItem=12, 
+//					PhysicalAddress_appartItem=12, 
+//					PhysicalAddress_legalBlockItem=12}
+
+			//physicalAddress.set
+			
+			physicalAddress
+					.setTown_id(physicalAddressMap.containsKey("PhysicalAddress_town_id") ? new Long(
+							physicalAddressMap.get("PhysicalAddress_town_id").toString()) : null);
+			physicalAddress.setStreet_id(physicalAddressMap
+					.containsKey("PhysicalAddress_street_id") ? new Long(physicalAddressMap.get(
+					"PhysicalAddress_street_id").toString()) : null);
+			physicalAddress.setTown_district_id(physicalAddressMap
+					.containsKey("PhysicalAddress_town_district_id") ? new Long(
+					physicalAddressMap.get("PhysicalAddress_town_district_id").toString())
+					: null);			
+			physicalAddress
+					.setAnumber(physicalAddressMap.containsKey("PhysicalAddress_legalAdressItem") ? physicalAddressMap
+							.get("PhysicalAddress_legalAdressItem").toString() : null);			
+			physicalAddress
+					.setBlock(physicalAddressMap.containsKey("PhysicalAddress_legalBlockItem") ? physicalAddressMap
+							.get("PhysicalAddress_legalBlockItem").toString() : null);
+			physicalAddress
+					.setAppt(physicalAddressMap.containsKey("PhysicalAddress_appartItem") ? physicalAddressMap
+							.get("PhysicalAddress_appartItem").toString() : null);
+
+			if (physicalAddress.getAddr_id() != null) {
+				oracleManager.merge(physicalAddress);
+			} else {
+				oracleManager.persist(physicalAddress);
+			}
+
+			/************************************************************************************/
+			
+			staff.setAddress_id(physicalAddress.getAddr_id());
+			
+
+			if (staff_id != null) {
+				oracleManager.merge(staff);
+			} else {
+				oracleManager.persist(staff);
+			}
+
+			staff_id = staff.getStaff_id();
 			Map<String, Map<String, String>> staffEducation = new TreeMap<String, Map<String, String>>();
 			staffEducation = (Map<String, Map<String, String>>) values
 					.get("preStaffEducation");
@@ -227,30 +313,7 @@ public class StaffDMI implements QueryConstants {
 				}
 			}
 
-			/************************************************************************************/
-
-			Staff staff = null;
-			if (staff_id != null) {
-				staff = oracleManager.find(Staff.class, staff_id);
-			}
-			if (staff == null && staff_id != null)
-				throw new Exception("ვერ ვიპოვე თანამშრომელი შესაცვლელად(ID="
-						+ staff_id + ")");
-			if (staff == null) {
-				staff = new Staff();
-			}
-
-			DataTools.setProperties(values, staff);
-
-			Timestamp updDate = new Timestamp(System.currentTimeMillis());
-			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
-					loggedUserName, "Add or Update Staff.");
-
-			if (staff_id != null) {
-				oracleManager.merge(staff);
-			} else {
-				oracleManager.persist(staff);
-			}
+		
 			oracleManager.flush();
 
 			staff = oracleManager.find(Staff.class, staff.getStaff_id());

@@ -23,11 +23,14 @@
 		<field name="department_name"			type="text"			title="department_name" />
 		<field name="start_date_descr"			type="text"			title="start_date_descr" />
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 	hidden="true" />
+		<field name="address_id"				type="integer"		title="address_id" 			hidden="true"/>
 		<field name="preStaffEducation"			type="any"			title="preStaffEducation" 	hidden="true" />
 		<field name="preStaffCompSkills"		type="any"			title="preStaffCompSkills" 	hidden="true" />
 		<field name="preStaffLanguages"			type="any"			title="preStaffLanguages" 	hidden="true" />
 		<field name="preStaffPhones"			type="any"			title="preStaffPhones" 		hidden="true" />
-		<field name="preStaffWorks"			type="any"			title="preStaffWorks" 		hidden="true" />
+		<field name="preStaffWorks"				type="any"			title="preStaffWorks" 		hidden="true" />
+		<field name="physicalAddress"			type="any"			title="physicalAddress" 	hidden="true" />
+		
 	</fields>
 
 	<operationBindings>		
@@ -68,6 +71,7 @@
 		      ,getdescription(s.family_status_id) as family_status_descr
 		      ,d.department_name
 		      ,to_char(s.start_date, 'mm/dd/yyyy') as start_date_descr
+		      ,s.address_id
 			</selectClause> 
 			<tableClause>staff s, departments d</tableClause>
 			<whereClause><![CDATA[
