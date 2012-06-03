@@ -181,15 +181,9 @@ public class DlgAddEditOrganization extends Window {
 
 			physicalAddress = new MyAddressPanel("PhysicalAddress",
 					CallCenterBK.constants.orgAddressHeaderReal(), 614, 0);
-			physicalAddress.setMyDataSource(DataSource.get("AddressDS"));
-			physicalAddress.setMyDataSourceOperation("addressSearch");
-			physicalAddress.setMyIdField("addr_id");
 
 			legalAddress = new MyAddressPanel("LegalAddress",
 					CallCenterBK.constants.orgAddressHeaderLegal(), 614, 0);
-			legalAddress.setMyDataSource(DataSource.get("AddressDS"));
-			legalAddress.setMyDataSourceOperation("addressSearch");
-			legalAddress.setMyIdField("addr_id");
 
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setWidth(1228);

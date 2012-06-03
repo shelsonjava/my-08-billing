@@ -42,9 +42,9 @@ public class MyAddressPanel1 extends HLayout {
 	private TextItem oldAddItem;
 	protected String addressName;
 
-	private String myIdField;
-	private DataSource myDataSource;
-	private String myDataSourceOperation;
+	private String myIdField = "addr_id";
+	private DataSource myDataSource = DataSource.get("AddressDS");
+	private String myDataSourceOperation = "addressSearch";
 	private HeaderItem legalAddHeaderItem;
 	private String title;
 
@@ -310,29 +310,4 @@ public class MyAddressPanel1 extends HLayout {
 	public void setAddressName(String addressName) {
 		this.addressName = addressName;
 	}
-
-	public String getMyIdField() {
-		return myIdField;
-	}
-
-	public void setMyIdField(String myIdField) {
-		this.myIdField = myIdField;
-	}
-
-	public DataSource getMyDataSource() {
-		return myDataSource;
-	}
-
-	public void setMyDataSource(DataSource myDataSource) {
-		this.myDataSource = myDataSource;
-	}
-
-	public String getMyDataSourceOperation() {
-		return myDataSourceOperation;
-	}
-
-	public void setMyDataSourceOperation(String myDataSourceOperation) {
-		this.myDataSourceOperation = myDataSourceOperation;
-	}
-	
 }

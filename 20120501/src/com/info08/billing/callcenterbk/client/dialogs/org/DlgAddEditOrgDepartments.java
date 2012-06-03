@@ -136,10 +136,6 @@ public class DlgAddEditOrgDepartments extends Window {
 			myAddressPanel1 = new MyAddressPanel1(
 					"organization_department_address",
 					CallCenterBK.constants.address(), 615, 0);
-			myAddressPanel1.setMyDataSource(DataSource.get("AddressDS"));
-			myAddressPanel1.setMyDataSourceOperation("addressSearch");
-			myAddressPanel1.setMyIdField("addr_id");
-
 			vLayout.addMember(myAddressPanel1);
 
 			ToolStrip toolStrip = new ToolStrip();
