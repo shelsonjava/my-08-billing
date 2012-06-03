@@ -41,7 +41,7 @@
 			<tableClause>v_full_address t</tableClause>
 			<whereClause>
 				 <![CDATA[
-				 	t.addr_id = $criteria.addr_id
+				 	t.addr_id #if($criteria.addr_id) = $criteria.addr_id #else is null #end
 				 ]]>
 			</whereClause>
 		</operationBinding>    
