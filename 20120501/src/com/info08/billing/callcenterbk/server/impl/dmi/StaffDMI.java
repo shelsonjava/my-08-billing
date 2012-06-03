@@ -16,8 +16,10 @@ import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.Staff;
 import com.info08.billing.callcenterbk.shared.entity.StaffComputerSkill;
 import com.info08.billing.callcenterbk.shared.entity.StaffEducation;
+import com.info08.billing.callcenterbk.shared.entity.StaffFamousPeople;
 import com.info08.billing.callcenterbk.shared.entity.StaffLanguages;
 import com.info08.billing.callcenterbk.shared.entity.StaffPhones;
+import com.info08.billing.callcenterbk.shared.entity.StaffRelative09;
 import com.info08.billing.callcenterbk.shared.entity.StaffWorks;
 import com.info08.billing.callcenterbk.shared.items.Address;
 import com.isomorphic.datasource.DSRequest;
@@ -65,8 +67,7 @@ public class StaffDMI implements QueryConstants {
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Add or Update Staff.");
-			
-			
+
 			/************************************************************************************/
 			// Address physicalAddress
 			Long address_id = values.get("address_id") != null ? new Long(
@@ -83,38 +84,23 @@ public class StaffDMI implements QueryConstants {
 			} else {
 				physicalAddress = new Address();
 			}
-			
-//			{PhysicalAddress_town_id=51063, 
-//					PhysicalAddress_legalAdressOpCloseItem=0, 
-//					PhysicalAddress_street_id=53046, 
-//					PhysicalAddress_town_district_id=50005, 
-//					PhysicalAddress_streetDescrItem=მდებარეობს მოსკოვის გამზირიდან, (ყოფილ უნივერმაღ "მოსკოვის"  უკან). მეტრო "სამგორთან"., 
-//					PhysicalAddress_street_index=0137 : ყველა; , 
-//					PhysicalAddress_legalAdressItem=12, 
-//					PhysicalAddress_appartItem=12, 
-//					PhysicalAddress_legalBlockItem=12}
 
-			//physicalAddress.set
-			
-			physicalAddress
-					.setTown_id(physicalAddressMap.containsKey("PhysicalAddress_town_id") ? new Long(
-							physicalAddressMap.get("PhysicalAddress_town_id").toString()) : null);
-			physicalAddress.setStreet_id(physicalAddressMap
-					.containsKey("PhysicalAddress_street_id") ? new Long(physicalAddressMap.get(
-					"PhysicalAddress_street_id").toString()) : null);
-			physicalAddress.setTown_district_id(physicalAddressMap
-					.containsKey("PhysicalAddress_town_district_id") ? new Long(
-					physicalAddressMap.get("PhysicalAddress_town_district_id").toString())
-					: null);			
-			physicalAddress
-					.setAnumber(physicalAddressMap.containsKey("PhysicalAddress_legalAdressItem") ? physicalAddressMap
-							.get("PhysicalAddress_legalAdressItem").toString() : null);			
-			physicalAddress
-					.setBlock(physicalAddressMap.containsKey("PhysicalAddress_legalBlockItem") ? physicalAddressMap
-							.get("PhysicalAddress_legalBlockItem").toString() : null);
-			physicalAddress
-					.setAppt(physicalAddressMap.containsKey("PhysicalAddress_appartItem") ? physicalAddressMap
-							.get("PhysicalAddress_appartItem").toString() : null);
+			// {PhysicalAddress_town_id=51063,
+			// PhysicalAddress_legalAdressOpCloseItem=0,
+			// PhysicalAddress_street_id=53046,
+			// PhysicalAddress_town_district_id=50005,
+			// PhysicalAddress_streetDescrItem=მდებარეობს მოსკოვის გამზირიდან,
+			// (ყოფილ უნივერმაღ "მოსკოვის" უკან). მეტრო "სამგორთან".,
+			// PhysicalAddress_street_index=0137 : ყველა; ,
+			// PhysicalAddress_legalAdressItem=12,
+			// PhysicalAddress_appartItem=12,
+			// PhysicalAddress_legalBlockItem=12}
+
+			// physicalAddress.set
+
+			// physicalAddress.set
+
+			DataTools.setProperties(physicalAddressMap, physicalAddress);
 
 			if (physicalAddress.getAddr_id() != null) {
 				oracleManager.merge(physicalAddress);
@@ -123,9 +109,8 @@ public class StaffDMI implements QueryConstants {
 			}
 
 			/************************************************************************************/
-			
+
 			staff.setAddress_id(physicalAddress.getAddr_id());
-			
 
 			if (staff_id != null) {
 				oracleManager.merge(staff);
@@ -313,7 +298,83 @@ public class StaffDMI implements QueryConstants {
 				}
 			}
 
-		
+			/************************************************************************************/
+
+			Map<String, Map<String, String>> staffRelative09 = new TreeMap<String, Map<String, String>>();
+			staffRelative09 = (Map<String, Map<String, String>>) values
+					.get("preStaffRaltive09");
+
+			oracleManager
+					.createNativeQuery(
+							QueryConstants.Q_DELETE_STAFF_RELATIVE_09)
+					.setParameter(1, staff_id).executeUpdate();
+
+			if (staffRelative09 != null) {
+				Set<String> keys = staffRelative09.keySet();
+				if (keys != null) {
+					for (String key : keys) {
+						Map<String, String> item = staffRelative09.get(key);
+						if (item != null) {
+							StaffRelative09 staffRelative09Item = new StaffRelative09();
+							staffRelative09Item.setStaff_id(staff_id);
+							staffRelative09Item
+									.setLoggedUserName(loggedUserName);
+							staffRelative09Item.setFirst_name(item
+									.get("first_name"));
+							staffRelative09Item.setLast_name(item
+									.get("last_name"));
+							staffRelative09Item.setPosition(item
+									.get("position"));
+
+							oracleManager.persist(staffRelative09Item);
+
+						}
+					}
+				}
+			}
+
+			/************************************************************************************/
+			
+			
+			/************************************************************************************/
+
+			Map<String, Map<String, String>> staffFamousPeople = new TreeMap<String, Map<String, String>>();
+			staffFamousPeople = (Map<String, Map<String, String>>) values
+					.get("preStaffFamousPeople");
+
+			oracleManager
+					.createNativeQuery(
+							QueryConstants.Q_DELETE_STAFF_FAMOUS_PEOPLE)
+					.setParameter(1, staff_id).executeUpdate();
+
+			if (staffFamousPeople != null) {
+				Set<String> keys = staffFamousPeople.keySet();
+				if (keys != null) {
+					for (String key : keys) {
+						Map<String, String> item = staffFamousPeople.get(key);
+						if (item != null) {
+							StaffFamousPeople staffFamousPeopleItem = new StaffFamousPeople();
+							staffFamousPeopleItem.setStaff_id(staff_id);
+							staffFamousPeopleItem
+									.setLoggedUserName(loggedUserName);
+							staffFamousPeopleItem.setFirst_name(item
+									.get("first_name"));
+							staffFamousPeopleItem.setLast_name(item
+									.get("last_name"));
+							staffFamousPeopleItem.setRelation_type_id(new Long(item
+									.get("relation_type_id")));							
+							staffFamousPeopleItem.setSphere_of_activity_id(new Long(item
+									.get("sphere_of_activity_id")));
+
+							oracleManager.persist(staffFamousPeopleItem);
+
+						}
+					}
+				}
+			}
+
+			/************************************************************************************/
+
 			oracleManager.flush();
 
 			staff = oracleManager.find(Staff.class, staff.getStaff_id());

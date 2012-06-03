@@ -1,0 +1,41 @@
+<DataSource
+	ID="StaffFamousPeopleDS"
+	serverType="sql"
+	tableName="staff_famous_people"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="staff_famous_people_id"		type="integer"	title="staff_famous_people_id"			primaryKey="true" />
+		<field name="staff_id"						type="integer"	title="staff_id"/>
+		<field name="first_name"					type="text"		title="first_name"/>
+		<field name="last_name"						type="text"		title="last_name"/>
+		<field name="relation_type_id"				type="integer"	title="relation_type_id"/>
+		<field name="relation_type_id_descr"		type="text"		title="relation_type_id_descr"/>
+		<field name="sphere_of_activity_id"			type="integer"	title="sphere_of_activity_id"/>
+		<field name="sphere_of_activity_id_descr"	type="text"		title="sphere_of_activity_id_descr"/>
+		<field name="loggedUserName"				type="text"		title="Logged UserName" 				hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<operationBinding operationId="getAllStaffFamousPeople" operationType="fetch">
+    		<selectClause>   			
+    		   t.staff_famous_people_id
+		      ,t.staff_id
+		      ,t.first_name
+		      ,t.last_name
+		      ,t.relation_type_id
+		      ,getdescription(t.relation_type_id) as relation_type_id_descr
+		      ,t.sphere_of_activity_id
+		      ,getdescription(t.sphere_of_activity_id) as sphere_of_activity_id_descr
+			</selectClause> 
+			<tableClause>staff_famous_people t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.staff_id) and t.staff_id = $criteria.staff_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.last_name</orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

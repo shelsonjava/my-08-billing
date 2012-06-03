@@ -1,13 +1,11 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel;
-import com.info08.billing.callcenterbk.client.common.components.MyComboBoxRecord;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
@@ -115,6 +113,11 @@ public class DlgAddEditStaff extends Window {
 	private ToolStripButton addStaffRelative09Btn;
 	private ToolStripButton editStaffRelative09Btn;
 
+	private StaffFamousPeopleClientDS staffFamousPeopleClientDS;
+	private ListGrid staffFamousPeopleGrid;
+	private ToolStripButton addStaffFamousPeopleBtn;
+	private ToolStripButton editStaffFamousPeopleBtn;
+
 	public DlgAddEditStaff(DataSource dataSource, ListGridRecord listGridRecord) {
 		this.dataSource = dataSource;
 		this.listGridRecord = listGridRecord;
@@ -197,14 +200,14 @@ public class DlgAddEditStaff extends Window {
 		// TODO
 
 		/***********************************************************************************/
-		/******************************* Staff Languages ***********************************/
+		/******************************* Staff Relative 09 *********************************/
 		/***********************************************************************************/
 
 		staffRelative09ClientDS = StaffRelative09ClientDS.getInstance();
 
 		staffRelative09Grid = new ListGrid();
 		staffRelative09Grid.setWidth100();
-		staffRelative09Grid.setHeight(120);
+		staffRelative09Grid.setHeight(250);
 		staffRelative09Grid.setDataSource(staffRelative09ClientDS);
 		staffRelative09Grid.setCanReorderRecords(true);
 		staffRelative09Grid.setCanRemoveRecords(true);
@@ -224,6 +227,7 @@ public class DlgAddEditStaff extends Window {
 		toolRelative09.setPadding(5);
 
 		Label toolRelative09Label = new Label("კავშირი 09-თან");
+		toolRelative09Label.setWidth(150);
 		toolRelative09Label.setStyleName("staffGridTitle");
 		toolRelative09.addMember(toolRelative09Label);
 
@@ -289,26 +293,119 @@ public class DlgAddEditStaff extends Window {
 		/***********************************************************************************/
 		/***********************************************************************************/
 
-		hLayoutForAddresses1.setMembers(toolRelative09, staffRelative09Grid);
+		/***********************************************************************************/
+		/******************************* Staff Famous People *******************************/
+		/***********************************************************************************/
+
+		staffFamousPeopleClientDS = StaffFamousPeopleClientDS.getInstance();
+
+		staffFamousPeopleGrid = new ListGrid();
+		staffFamousPeopleGrid.setWidth100();
+		staffFamousPeopleGrid.setHeight(250);
+		staffFamousPeopleGrid.setDataSource(staffFamousPeopleClientDS);
+		staffFamousPeopleGrid.setCanReorderRecords(true);
+		staffFamousPeopleGrid.setCanRemoveRecords(true);
+		staffFamousPeopleGrid.setAutoFetchData(true);
+		staffFamousPeopleGrid.setWrapCells(true);
+		staffFamousPeopleGrid.setFixedRecordHeights(false);
+
+		ListGridField famous_people_first_name = new ListGridField(
+				"first_name", "სახელი", 150);
+		ListGridField famous_people_last_name = new ListGridField("last_name",
+				"გვარი", 150);
+		ListGridField relation_type_id_descr = new ListGridField(
+				"relation_type_id_descr", "კავშირი");
+		ListGridField sphere_of_activity_id_descr = new ListGridField(
+				"sphere_of_activity_id_descr", "მოღვაწეობის სფერო");
+
+		staffFamousPeopleGrid.setFields(famous_people_first_name,
+				famous_people_last_name, relation_type_id_descr,
+				sphere_of_activity_id_descr);
+
+		ToolStrip toolFamousPeople = new ToolStrip();
+		toolFamousPeople.setWidth100();
+		toolFamousPeople.setPadding(5);
+
+		Label toolFamousPeopleLabel = new Label("ცნობილი პიროვნებები");
+		toolFamousPeopleLabel.setWidth(200);
+		toolFamousPeopleLabel.setStyleName("staffGridTitle");
+		toolFamousPeople.addMember(toolFamousPeopleLabel);
+
+		addStaffFamousPeopleBtn = new ToolStripButton(
+				CallCenterBK.constants.add(), "addIcon.png");
+		addStaffFamousPeopleBtn.setLayoutAlign(Alignment.LEFT);
+		addStaffFamousPeopleBtn.setWidth(50);
+		toolFamousPeople.addButton(addStaffFamousPeopleBtn);
+
+		addStaffFamousPeopleBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				DlgAddEditStaffFamousPeople dlgAddEditStaffFamousPeople = new DlgAddEditStaffFamousPeople(
+						staffFamousPeopleGrid, null);
+				dlgAddEditStaffFamousPeople.show();
+			}
+		});
+
+		editStaffFamousPeopleBtn = new ToolStripButton(
+				CallCenterBK.constants.modify(), "editIcon.png");
+		editStaffFamousPeopleBtn.setLayoutAlign(Alignment.LEFT);
+		editStaffFamousPeopleBtn.setWidth(50);
+		toolFamousPeople.addButton(editStaffFamousPeopleBtn);
+
+		editStaffFamousPeopleBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				ListGridRecord listGridRecord = staffFamousPeopleGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffFamousPeople dlgAddEditStaffFamousPeople = new DlgAddEditStaffFamousPeople(
+						staffFamousPeopleGrid, listGridRecord);
+				dlgAddEditStaffFamousPeople.show();
+
+			}
+		});
+
+		staffFamousPeopleGrid.addDoubleClickHandler(new DoubleClickHandler() {
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				ListGridRecord listGridRecord = staffFamousPeopleGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffFamousPeople dlgAddEditStaffFamousPeople = new DlgAddEditStaffFamousPeople(
+						staffFamousPeopleGrid, listGridRecord);
+				dlgAddEditStaffFamousPeople.show();
+
+			}
+		});
+
+		/***********************************************************************************/
+		/***********************************************************************************/
+		/***********************************************************************************/
+
+		VLayout layoutRelative09 = new VLayout();
+		layoutRelative09.setWidth("50%");
+
+		VLayout layoutFamousPeople = new VLayout();
+		layoutFamousPeople.setWidth("50%");
+
+		layoutRelative09.setMembers(toolRelative09, staffRelative09Grid);
+		layoutFamousPeople.setMembers(toolFamousPeople, staffFamousPeopleGrid);
+		hLayoutForAddresses1.setMembers(layoutRelative09, layoutFamousPeople);
 
 		formsLayoutAddInfo.addMember(toolStrip);
 		formsLayoutAddInfo
 				.addMembers(hLayoutForAddresses, hLayoutForAddresses1);
-		// formsLayoutAddInfo.addMember(dynamicFormMainInfo2);
-
-		ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>();
-		MyComboBoxRecord organization_name = new MyComboBoxRecord(
-				"organization_name", CallCenterBK.constants.parrentOrgName(),
-				true);
-		MyComboBoxRecord remark = new MyComboBoxRecord("remark",
-				CallCenterBK.constants.comment(), false);
-		MyComboBoxRecord full_address_not_hidden = new MyComboBoxRecord(
-				"full_address_not_hidden", CallCenterBK.constants.address(),
-				true);
-
-		fieldRecords.add(organization_name);
-		fieldRecords.add(full_address_not_hidden);
-		fieldRecords.add(remark);
 
 		firstNameItem = new TextItem();
 		firstNameItem.setName("first_name");
@@ -916,11 +1013,11 @@ public class DlgAddEditStaff extends Window {
 		saveItem.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				// if (selectedTabIndex == 0) {
-				// topTabSet.selectTab(1);
-				// } else {
-				save();
-				// }
+				if (selectedTabIndex == 0) {
+					topTabSet.selectTab(1);
+				} else {
+					save();
+				}
 			}
 		});
 
@@ -955,28 +1052,12 @@ public class DlgAddEditStaff extends Window {
 				return;
 			}
 
-			// Integer s = listGridRecord.getAttributeAsInt("address_id");
+			Integer address_id = listGridRecord.getAttributeAsInt("address_id");
+			Integer document_address_id = listGridRecord
+					.getAttributeAsInt("document_address_id");
 
-			physicalAddress.setTownValue(listGridRecord
-					.getAttributeAsInt("town_id"));
-			physicalAddress.setStreetValue(listGridRecord
-					.getAttributeAsInt("street_id"));
-			physicalAddress.setStreetDistrictValue(listGridRecord
-					.getAttributeAsInt("town_district_id"));
-			physicalAddress.setOpCloseValue(listGridRecord
-					.getAttributeAsInt("hidden_by_request"));
-			physicalAddress.setOldAddressValue(listGridRecord
-					.getAttributeAsString("full_address"));
-			physicalAddress.setBlockValue(listGridRecord
-					.getAttributeAsString("block"));
-			physicalAddress.setAppartValue(listGridRecord
-					.getAttributeAsString("appt"));
-			physicalAddress.setAdressValue(listGridRecord
-					.getAttributeAsString("anumber"));
-			physicalAddress.setStreetLocation(listGridRecord
-					.getAttributeAsString("street_location"));
-			physicalAddress.setStreetIndexes(listGridRecord
-					.getAttributeAsString("street_index_text"));
+			physicalAddress.setValue(address_id);
+			legalAddress.setValue(document_address_id);
 
 			firstNameItem.setValue(listGridRecord.getAttribute("first_name"));
 			lastNameItem.setValue(listGridRecord.getAttribute("last_name"));
@@ -1115,6 +1196,55 @@ public class DlgAddEditStaff extends Window {
 				}
 			}, dsRequestWorks);
 
+			DataSource staffRelative09DS = DataSource.get("StaffRelative09DS");
+
+			Criteria criteriaRelative09 = new Criteria();
+			criteriaRelative09.setAttribute("staff_id",
+					listGridRecord.getAttributeAsInt("staff_id"));
+
+			DSRequest dsRequestRelative09 = new DSRequest();
+			dsRequestRelative09.setAttribute("operationId",
+					"getAllStaffRelative09");
+
+			staffRelative09DS.fetchData(criteriaRelative09, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record records[] = response.getData();
+					if (records == null || records.length <= 0) {
+						return;
+					}
+					for (Record record : records) {
+						staffRelative09Grid.addData(record);
+					}
+				}
+			}, dsRequestRelative09);
+
+			DataSource staffFamousPeopleDS = DataSource
+					.get("StaffFamousPeopleDS");
+
+			Criteria criteriaFamousPeople = new Criteria();
+			criteriaFamousPeople.setAttribute("staff_id",
+					listGridRecord.getAttributeAsInt("staff_id"));
+
+			DSRequest dsRequestFamousPeople = new DSRequest();
+			dsRequestFamousPeople.setAttribute("operationId",
+					"getAllStaffFamousPeople");
+
+			staffFamousPeopleDS.fetchData(criteriaFamousPeople,
+					new DSCallback() {
+						@Override
+						public void execute(DSResponse response,
+								Object rawData, DSRequest request) {
+							Record records[] = response.getData();
+							if (records == null || records.length <= 0) {
+								return;
+							}
+							for (Record record : records) {
+								staffFamousPeopleGrid.addData(record);
+							}
+						}
+					}, dsRequestFamousPeople);
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -1262,6 +1392,50 @@ public class DlgAddEditStaff extends Window {
 				}
 			}
 
+			Map<String, Map<String, String>> preStaffRaltive09 = new TreeMap<String, Map<String, String>>();
+
+			if (staffRelative09Grid.getDataAsRecordList() != null) {
+				for (int i = 0; i < staffRelative09Grid.getDataAsRecordList()
+						.getLength(); i++) {
+					Record element = staffRelative09Grid.getDataAsRecordList()
+							.get(i);
+					if (element != null) {
+						Map<String, String> item = new TreeMap<String, String>();
+						item.put("first_name",
+								element.getAttribute("first_name"));
+						item.put("last_name", element.getAttribute("last_name"));
+						item.put("position", element.getAttribute("position"));
+						preStaffRaltive09.put(element
+								.getAttributeAsString("staff_relative_09_id"),
+								item);
+					}
+				}
+			}
+
+			Map<String, Map<String, String>> preStaffFamousPeople = new TreeMap<String, Map<String, String>>();
+
+			if (staffFamousPeopleGrid.getDataAsRecordList() != null) {
+				for (int i = 0; i < staffFamousPeopleGrid.getDataAsRecordList()
+						.getLength(); i++) {
+					Record element = staffFamousPeopleGrid
+							.getDataAsRecordList().get(i);
+					if (element != null) {
+						Map<String, String> item = new TreeMap<String, String>();
+						item.put("first_name",
+								element.getAttribute("first_name"));
+						item.put("last_name", element.getAttribute("last_name"));
+						item.put("relation_type_id",
+								element.getAttribute("relation_type_id"));
+						item.put("sphere_of_activity_id",
+								element.getAttribute("sphere_of_activity_id"));
+						preStaffFamousPeople
+								.put(element
+										.getAttributeAsString("staff_famous_people_id"),
+										item);
+					}
+				}
+			}
+
 			// Map<?, ?> asd = physicalAddress.getValues();
 
 			if (listGridRecord != null) {
@@ -1275,6 +1449,7 @@ public class DlgAddEditStaff extends Window {
 			}
 
 			record.setAttribute("physicalAddress", physicalAddress.getValues());
+			record.setAttribute("legalAddress", legalAddress.getValues());
 
 			record.setAttribute("first_name", firstName);
 			record.setAttribute("last_name", lastName);
@@ -1296,6 +1471,8 @@ public class DlgAddEditStaff extends Window {
 			record.setAttribute("preStaffLanguages", preStaffLanguages);
 			record.setAttribute("preStaffPhones", preStaffPhones);
 			record.setAttribute("preStaffWorks", preStaffWorks);
+			record.setAttribute("preStaffRaltive09", preStaffRaltive09);
+			record.setAttribute("preStaffFamousPeople", preStaffFamousPeople);
 
 			DSRequest req = new DSRequest();
 			if (listGridRecord == null) {
