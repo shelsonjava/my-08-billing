@@ -166,6 +166,10 @@ public class MyAddressPanel extends HLayout {
 		criteria.setAttribute("town_id", townValue);
 	}
 
+	public Map<?, ?> getValues() {
+		return dynamicForm.getValues();
+	}
+	
 	public void setStreetValue(Integer streetValue) {
 		if (streetValue == null) {
 			return;
