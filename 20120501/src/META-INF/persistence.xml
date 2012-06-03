@@ -79,12 +79,8 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.StaffComputerSkill</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.StaffLanguages</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.StaffPhones</class>
-		<class>com.info08.billing.callcenterbk.shared.entity.StaffWorks</class>
-		
-		
-		
-		
-
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffWorks</class>		
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffRelative09</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
 			<property name="hibernate.connection.username" value="ccare" />
