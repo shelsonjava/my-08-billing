@@ -603,14 +603,16 @@ public class DlgAddEditOrganization extends Window {
 		try {
 			if (listGridRecord != null) {
 				Map<?, ?> map = listGridRecord.toMap();
-				Integer important_remark = (Integer) map.get("important_remark");
+				Integer important_remark = (Integer) map
+						.get("important_remark");
 				map.remove("important_remark");
 				parrentOrgItem.setDataValue(map);
 				dynamicFormMainInfo.setValues(map);
 				dynamicFormMainInfo1.setValues(map);
 				dynamicFormMainInfo2.setValues(map);
 
-				if (important_remark != null && important_remark.equals(new Integer(-1))) {
+				if (important_remark != null
+						&& important_remark.equals(new Integer(-1))) {
 					importantRemark.setValue(true);
 				}
 
@@ -696,7 +698,10 @@ public class DlgAddEditOrganization extends Window {
 
 	private void copyAddress() {
 		try {
-			legalAddress.setValues(physicalAddress.getValues());
+			Map<?, ?> valuesCopy = physicalAddress.getValues();
+			String oldAddress = legalAddress.getOldAddItem().getValueAsString();
+			legalAddress.setValues(valuesCopy);
+			legalAddress.getOldAddItem().setValue(oldAddress);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

@@ -281,4 +281,12 @@ public class MyAddressPanel extends HLayout {
 	public void setAppartItem(TextItem appartItem) {
 		this.appartItem = appartItem;
 	}
+
+	public TextItem getOldAddItem() {
+		return oldAddItem;
+	}
+
+	public void setOldAddItem(TextItem oldAddItem) {
+		this.oldAddItem = oldAddItem;
+	}
 }

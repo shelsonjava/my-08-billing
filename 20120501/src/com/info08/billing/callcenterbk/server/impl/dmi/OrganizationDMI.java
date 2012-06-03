@@ -23,6 +23,7 @@ import com.info08.billing.callcenterbk.shared.entity.transport.TranspSchedule;
 import com.info08.billing.callcenterbk.shared.items.Address;
 import com.info08.billing.callcenterbk.shared.items.PhoneNumber;
 import com.isomorphic.datasource.DSRequest;
+import com.isomorphic.datasource.DSResponse;
 import com.isomorphic.jpa.EMF;
 import com.isomorphic.util.DataTools;
 
@@ -305,7 +306,7 @@ public class OrganizationDMI {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<?, ?> addOrUpdateOrganization(DSRequest dsRequest)
+	public DSResponse addOrUpdateOrganization(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -437,7 +438,10 @@ public class OrganizationDMI {
 			values = DMIUtils.findRecordById("OrgDS",
 					"customOrgSearchForCallCenterNew", organization_id,
 					"organization_id");
-			return values;
+			DSResponse dsResponse = new DSResponse();
+			dsResponse.setData(values);
+			dsResponse.setInvalidateCache(true);
+			return dsResponse;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
