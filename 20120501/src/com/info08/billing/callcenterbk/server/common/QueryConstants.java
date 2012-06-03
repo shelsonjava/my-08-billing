@@ -1399,5 +1399,9 @@ public interface QueryConstants {
 			+ "where t.staff_id = ?";
 	public static final String Q_DELETE_STAFF_LANGUAGES = "delete from ccare.staff_languages t \n "
 			+ "where t.staff_id = ?";
+	public static final String Q_DELETE_STAFF_PHONES = "delete from ccare.staff_phones t \n "
+			+ "where t.staff_id = ?";
+	public static final String Q_DELETE_STAFF_WORKS = "delete from ccare.staff_works t \n "
+			+ "where t.staff_id = ?";
 
 }

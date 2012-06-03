@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -138,6 +139,11 @@ public class DlgAddEditStaff extends Window {
 	private ToolStripButton addStaffPhonesBtn;
 	private ToolStripButton editStaffPhonesBtn;
 
+	private StaffWorksClientDS staffWorksClientDS;
+	private ListGrid staffWorksGrid;
+	private ToolStripButton addStaffWorksBtn;
+	private ToolStripButton editStaffWorksBtn;
+
 	public DlgAddEditStaff(DataSource dataSource, ListGridRecord listGridRecord) {
 		this.dataSource = dataSource;
 		this.listGridRecord = listGridRecord;
@@ -201,10 +207,10 @@ public class DlgAddEditStaff extends Window {
 		hLayoutForAddresses.setMargin(0);
 
 		physicalAddress = new MyAddressPanel("PhysicalAddress",
-				CallCenterBK.constants.orgAddressHeaderReal(), 614, 0);
+				"ფაქტიური მისამართი", 614, 0);
 
 		legalAddress = new MyAddressPanel("LegalAddress",
-				CallCenterBK.constants.orgAddressHeaderLegal(), 614, 0);
+				"იურიდიული მისამართი", 614, 0);
 
 		ToolStrip toolStrip = new ToolStrip();
 		toolStrip.setWidth(1228);
@@ -218,8 +224,8 @@ public class DlgAddEditStaff extends Window {
 
 		hLayoutForAddresses.setMembers(physicalAddress, legalAddress);
 
-		// formsLayoutAddInfo.addMember(toolStrip);
-		// formsLayoutAddInfo.addMember(hLayoutForAddresses);
+		 formsLayoutAddInfo.addMember(toolStrip);
+		 formsLayoutAddInfo.addMember(hLayoutForAddresses);
 		// formsLayoutAddInfo.addMember(dynamicFormMainInfo2);
 
 		ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>();
@@ -307,7 +313,7 @@ public class DlgAddEditStaff extends Window {
 
 		staffEducationGrid = new ListGrid();
 		staffEducationGrid.setWidth100();
-		staffEducationGrid.setHeight(100);
+		staffEducationGrid.setHeight(130);
 		staffEducationGrid.setDataSource(staffEducationClientDS);
 		staffEducationGrid.setCanReorderRecords(true);
 		staffEducationGrid.setCanRemoveRecords(true);
@@ -400,7 +406,7 @@ public class DlgAddEditStaff extends Window {
 
 		staffComputerSkillsGrid = new ListGrid();
 		staffComputerSkillsGrid.setWidth100();
-		staffComputerSkillsGrid.setHeight(155);
+		staffComputerSkillsGrid.setHeight(125);
 		staffComputerSkillsGrid.setDataSource(staffComputerSkillsClientDS);
 		staffComputerSkillsGrid.setCanReorderRecords(true);
 		staffComputerSkillsGrid.setCanRemoveRecords(true);
@@ -682,6 +688,108 @@ public class DlgAddEditStaff extends Window {
 		/***********************************************************************************/
 		/***********************************************************************************/
 
+		/***********************************************************************************/
+		/******************************* Staff Works ***************************************/
+		/***********************************************************************************/
+
+		staffWorksClientDS = StaffWorksClientDS.getInstance();
+
+		staffWorksGrid = new ListGrid();
+		staffWorksGrid.setWidth100();
+		staffWorksGrid.setHeight(299);
+		staffWorksGrid.setDataSource(staffWorksClientDS);
+		staffWorksGrid.setCanReorderRecords(true);
+		staffWorksGrid.setCanRemoveRecords(true);
+		staffWorksGrid.setAutoFetchData(true);
+		staffWorksGrid.setWrapCells(true);
+		staffWorksGrid.setFixedRecordHeights(false);
+
+		ListGridField work_place = new ListGridField("work_place", "კომპანია",
+				200);
+		ListGridField work_position = new ListGridField("work_position",
+				"პოზიცია");
+
+		ListGridField work_start_date_descr = new ListGridField(
+				"work_start_date_descr", "დაწყება", 75);
+		ListGridField work_end_date_descr = new ListGridField(
+				"work_end_date_descr", "დამთავრება", 75);
+
+		staffWorksGrid.setFields(work_place, work_position,
+				work_start_date_descr, work_end_date_descr);
+
+		ToolStrip toolWorks = new ToolStrip();
+		toolWorks.setWidth100();
+		toolWorks.setPadding(5);
+
+		// TODO
+
+		Label toolWorksLabel = new Label("სამსახურები");
+		toolWorksLabel.setStyleName("staffGridTitle");
+		toolWorks.addMember(toolWorksLabel);
+
+		addStaffWorksBtn = new ToolStripButton(CallCenterBK.constants.add(),
+				"addIcon.png");
+		addStaffWorksBtn.setLayoutAlign(Alignment.LEFT);
+		addStaffWorksBtn.setWidth(50);
+		toolWorks.addButton(addStaffWorksBtn);
+
+		addStaffWorksBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				DlgAddEditStaffWorks dlgAddEditStaffWorks = new DlgAddEditStaffWorks(
+						staffWorksGrid, null);
+				dlgAddEditStaffWorks.show();
+			}
+		});
+
+		editStaffWorksBtn = new ToolStripButton(
+				CallCenterBK.constants.modify(), "editIcon.png");
+		editStaffWorksBtn.setLayoutAlign(Alignment.LEFT);
+		editStaffWorksBtn.setWidth(50);
+		toolWorks.addButton(editStaffWorksBtn);
+
+		editStaffWorksBtn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				ListGridRecord listGridRecord = staffWorksGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffWorks dlgAddEditStaffWorks = new DlgAddEditStaffWorks(
+						staffWorksGrid, listGridRecord);
+				dlgAddEditStaffWorks.show();
+
+			}
+		});
+
+		staffWorksGrid.addDoubleClickHandler(new DoubleClickHandler() {
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+				ListGridRecord listGridRecord = staffWorksGrid
+						.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+					return;
+				}
+
+				DlgAddEditStaffWorks dlgAddEditStaffWorks = new DlgAddEditStaffWorks(
+						staffWorksGrid, listGridRecord);
+				dlgAddEditStaffWorks.show();
+
+			}
+		});
+
+		/***********************************************************************************/
+		/***********************************************************************************/
+		/***********************************************************************************/
+
 		SpacerItem spacerItem = new SpacerItem();
 		spacerItem.setHeight(10);
 		spacerItem.setColSpan(2);
@@ -692,10 +800,14 @@ public class DlgAddEditStaff extends Window {
 		VLayout vLayoutSpaceRight = new VLayout();
 		vLayoutSpaceRight.setHeight(10);
 
+		VLayout vLayoutSpaceRight2 = new VLayout();
+		vLayoutSpaceRight2.setHeight(16);
+
 		VLayout rigthLayOut = new VLayout();
 		rigthLayOut.setHeight100();
 		rigthLayOut.addMembers(toolLanguages, staffLanguagesGrid,
-				vLayoutSpaceRight, toolPhones, staffPhonesGrid);
+				vLayoutSpaceRight, toolPhones, staffPhonesGrid,
+				vLayoutSpaceRight2, toolWorks, staffWorksGrid);
 
 		formsLayout.setMembers(leftLayOut, rigthLayOut);
 		Tab tabMainInfo = new Tab(CallCenterBK.constants.maininfo());
@@ -1162,6 +1274,29 @@ public class DlgAddEditStaff extends Window {
 				}
 			}, dsRequestPhones);
 
+			DataSource staffWorksDS = DataSource.get("StaffWorksDS");
+
+			Criteria criteriaWorks = new Criteria();
+			criteriaWorks.setAttribute("staff_id",
+					listGridRecord.getAttributeAsInt("staff_id"));
+
+			DSRequest dsRequestWorks = new DSRequest();
+			dsRequestWorks.setAttribute("operationId", "getAllStaffWorks");
+
+			staffWorksDS.fetchData(criteriaWorks, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record records[] = response.getData();
+					if (records == null || records.length <= 0) {
+						return;
+					}
+					for (Record record : records) {
+						staffWorksGrid.addData(record);
+					}
+				}
+			}, dsRequestWorks);
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -1284,6 +1419,33 @@ public class DlgAddEditStaff extends Window {
 				}
 			}
 
+			Map<String, Map<String, Object>> preStaffWorks = new TreeMap<String, Map<String, Object>>();
+
+			if (staffWorksGrid.getDataAsRecordList() != null) {
+				for (int i = 0; i < staffWorksGrid.getDataAsRecordList()
+						.getLength(); i++) {
+					Record element = staffWorksGrid.getDataAsRecordList()
+							.get(i);
+					if (element != null) {
+						Map<String, Object> item = new LinkedHashMap<String, Object>();
+						item.put("work_place",
+								element.getAttributeAsString("work_place"));
+						item.put("work_position",
+								element.getAttributeAsString("work_position"));
+						item.put("work_start_date",
+								element.getAttributeAsDate("work_start_date"));
+						item.put("work_end_date",
+								element.getAttributeAsDate("work_end_date"));
+
+						preStaffWorks.put(
+								element.getAttributeAsString("staff_work_id"),
+								item);
+					}
+				}
+			}
+
+			//physicalAddress.get
+			
 			if (listGridRecord != null) {
 				record.setAttribute("staff_id",
 						listGridRecord.getAttributeAsInt("staff_id"));
@@ -1309,7 +1471,7 @@ public class DlgAddEditStaff extends Window {
 			record.setAttribute("preStaffCompSkills", preStaffCompSkills);
 			record.setAttribute("preStaffLanguages", preStaffLanguages);
 			record.setAttribute("preStaffPhones", preStaffPhones);
-			
+			record.setAttribute("preStaffWorks", preStaffWorks);
 
 			DSRequest req = new DSRequest();
 			if (listGridRecord == null) {

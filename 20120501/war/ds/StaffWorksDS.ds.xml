@@ -1,0 +1,42 @@
+<DataSource
+	ID="StaffWorksDS"
+	serverType="sql"
+	tableName="staff_works"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="staff_work_id"			type="integer"		title="staff_work_id"			primaryKey="true" />
+		<field name="staff_id"				type="integer"		title="staff_id"/>
+		<field name="work_place"			type="text"			title="work_place"/>
+		<field name="work_position"			type="text"			title="work_position"/>
+		<field name="work_start_date"		type="datetime"		title="work_start_date" 		hidden="true"/>
+		<field name="work_end_date"			type="datetime"		title="work_end_date" 			hidden="true"/>
+		<field name="work_start_date_descr"	type="text"			title="work_start_date_descr" 	hidden="true"/>
+		<field name="work_end_date_descr"	type="text"			title="work_end_date_descr"/>
+		<field name="loggedUserName"		type="text"			title="Logged UserName" 		hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<operationBinding operationId="getAllStaffWorks" operationType="fetch">
+    		<selectClause>   			
+    		   t.staff_work_id
+		      ,t.staff_id
+		      ,t.work_place
+		      ,t.work_position
+		      ,t.work_start_date
+		      ,t.work_end_date
+		      ,to_char(t.work_start_date, 'mm/dd/yyyy') as work_start_date_descr
+		      ,to_char(t.work_end_date, 'mm/dd/yyyy') as work_end_date_descr
+			</selectClause> 
+			<tableClause>staff_works t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				#if($criteria.staff_id) and t.staff_id = $criteria.staff_id #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.work_start_date</orderClause>
+    	</operationBinding>
+
+    </operationBindings>	
+</DataSource>

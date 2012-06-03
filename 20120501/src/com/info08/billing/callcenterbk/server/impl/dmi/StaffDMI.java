@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.server.impl.dmi;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -17,6 +18,7 @@ import com.info08.billing.callcenterbk.shared.entity.StaffComputerSkill;
 import com.info08.billing.callcenterbk.shared.entity.StaffEducation;
 import com.info08.billing.callcenterbk.shared.entity.StaffLanguages;
 import com.info08.billing.callcenterbk.shared.entity.StaffPhones;
+import com.info08.billing.callcenterbk.shared.entity.StaffWorks;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.jpa.EMF;
 import com.isomorphic.util.DataTools;
@@ -157,7 +159,7 @@ public class StaffDMI implements QueryConstants {
 					.get("preStaffPhones");
 
 			oracleManager
-					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_LANGUAGES)
+					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_PHONES)
 					.setParameter(1, staff_id).executeUpdate();
 
 			if (staffPhones != null) {
@@ -174,6 +176,51 @@ public class StaffDMI implements QueryConstants {
 							staffPhone.setStaff_phone(item.get("staff_phone"));
 
 							oracleManager.persist(staffPhone);
+
+						}
+					}
+				}
+			}
+
+			/************************************************************************************/
+
+			/************************************************************************************/
+
+			Map<String, Map<String, String>> staffWorks = new TreeMap<String, Map<String, String>>();
+			staffWorks = (Map<String, Map<String, String>>) values
+					.get("preStaffWorks");
+
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_WORKS)
+					.setParameter(1, staff_id).executeUpdate();
+
+			if (staffWorks != null) {
+				Set<String> keys = staffWorks.keySet();
+				if (keys != null) {
+					for (String key : keys) {
+						Map<?, ?> item = staffWorks.get(key);
+						if (item != null) {
+							StaffWorks staffWork = new StaffWorks();
+							staffWork.setStaff_id(staff_id);
+							staffWork.setLoggedUserName(loggedUserName);
+							staffWork.setWork_place(item.get("work_place")
+									.toString());
+							staffWork.setWork_position(item
+									.get("work_position").toString());
+
+							Date a_start = (Date) item.get("work_start_date");
+							Date a_end = (Date) item.get("work_end_date");
+
+							if (a_start != null) {
+								staffWork.setWork_start_date(new Timestamp(
+										a_start.getTime()));
+							}
+							if (a_end != null) {
+								staffWork.setWork_end_date(new Timestamp(a_end
+										.getTime()));
+							}
+
+							oracleManager.persist(staffWork);
 
 						}
 					}
