@@ -1,0 +1,49 @@
+<DataSource 
+	ID="AddressDS" 
+	serverType="sql"
+	tableName="addresses" 
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	
+	<fields>
+		<field name="addr_id" 				type="integer" 		title="addr_id" 				hidden="true" 	primaryKey="true" />
+		<field name="town_id"				type="integer" 		title="town_id"					hidden="true"/>
+		<field name="street_id"				type="integer" 		title="street_id"				hidden="true"/>
+		<field name="hidden_by_request" 	type="integer" 		title="hidden_by_request" 		hidden="true" />
+		<field name="town_district_id" 		type="integer" 		title="town_district_id" 		hidden="true" />
+		<field name="full_address" 			type="text" 		title="full_address" />
+		<field name="block" 				type="text" 		title="block" />
+		<field name="appt" 					type="text" 		title="appt" />
+		<field name="descr" 				type="text" 		title="descr" />
+		<field name="anumber" 				type="text" 		title="anumber" />		
+		<field name="street_location" 		type="text" 		title="street_location" />
+		<field name="street_index_text" 	type="text" 		title="street_index_text" />	
+	</fields>
+
+	<operationBindings>
+		
+		<!-- FETCH -->
+		<operationBinding operationId="addressSearch" operationType="fetch">			
+			<selectClause>
+					    t.addr_id,
+						t.town_id,
+						t.street_id,
+						t.full_address,
+						t.hidden_by_request,
+						t.town_district_id,
+						t.block,
+						t.appt,
+						t.descr,
+						t.anumber,						
+						t.street_location,
+						t.street_index_text
+			</selectClause>
+			<tableClause>v_full_address t</tableClause>
+			<whereClause>
+				 <![CDATA[
+				 	t.addr_id = $criteria.addr_id
+				 ]]>
+			</whereClause>
+		</operationBinding>    
+	</operationBindings>
+</DataSource>

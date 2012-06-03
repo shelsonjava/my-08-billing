@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -11,6 +12,7 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
@@ -265,38 +267,52 @@ public class DlgManageOrgDepartments extends Window {
 			orgDepPhonesListGrid.setCanSelectText(true);
 			orgDepPhonesListGrid.setCanDragSelectText(true);
 
-			ListGridField phone = new ListGridField("phone",CallCenterBK.constants.phone());
+			ListGridField phone = new ListGridField("phone",
+					CallCenterBK.constants.phone());
 			phone.setCanFilter(true);
 
-			ListGridField phone_state_descr = new ListGridField("phone_state_descr",CallCenterBK.constants.phoneState(), 150); 
-			//ClientUtils.createDescrFilterField("phone_state_id",CallCenterBK.constants.phoneState(), 150, 52000,false);
+			ListGridField phone_state_descr = new ListGridField(
+					"phone_state_descr", CallCenterBK.constants.phoneState(),
+					150);
+			// ClientUtils.createDescrFilterField("phone_state_id",CallCenterBK.constants.phoneState(),
+			// 150, 52000,false);
 			phone_state_descr.setAlign(Alignment.CENTER);
 			phone_state_descr.setCanFilter(false);
 
-			ListGridField hidden_by_request_descr = new ListGridField("hidden_by_request_descr", CallCenterBK.constants.openClose(),150);
+			ListGridField hidden_by_request_descr = new ListGridField(
+					"hidden_by_request_descr",
+					CallCenterBK.constants.openClose(), 150);
 			hidden_by_request_descr.setAlign(Alignment.CENTER);
 			hidden_by_request_descr.setCanFilter(false);
-			//hidden_by_request_descr.setValueMap(ClientMapUtil.getInstance().getMapOpClose());
+			// hidden_by_request_descr.setValueMap(ClientMapUtil.getInstance().getMapOpClose());
 
-			ListGridField phone_contract_type_descr = new ListGridField("phone_contract_type_descr",CallCenterBK.constants.phoneStatus(), 150); 
-			//ClientUtils.createDescrFilterField("phone_contract_type",CallCenterBK.constants.phoneStatus(), 150, 53000, false);
+			ListGridField phone_contract_type_descr = new ListGridField(
+					"phone_contract_type_descr",
+					CallCenterBK.constants.phoneStatus(), 150);
+			// ClientUtils.createDescrFilterField("phone_contract_type",CallCenterBK.constants.phoneStatus(),
+			// 150, 53000, false);
 			phone_contract_type_descr.setAlign(Alignment.CENTER);
 			phone_contract_type_descr.setCanFilter(false);
 
-			ListGridField for_contact_descr = new ListGridField("for_contact_descr", CallCenterBK.constants.contactPhone(), 150);
+			ListGridField for_contact_descr = new ListGridField(
+					"for_contact_descr", CallCenterBK.constants.contactPhone(),
+					150);
 			for_contact_descr.setAlign(Alignment.CENTER);
 			for_contact_descr.setCanFilter(false);
-			//for_contact_descr.setValueMap(ClientMapUtil.getInstance().getYesAndNo());
+			// for_contact_descr.setValueMap(ClientMapUtil.getInstance().getYesAndNo());
 
-			ListGridField phone_type_descr = new ListGridField("phone_type_descr",CallCenterBK.constants.type(), 150); 
-			//ClientUtils.createDescrFilterField("phone_type_id",CallCenterBK.constants.type(), 150, 54000, false);
+			ListGridField phone_type_descr = new ListGridField(
+					"phone_type_descr", CallCenterBK.constants.type(), 150);
+			// ClientUtils.createDescrFilterField("phone_type_id",CallCenterBK.constants.type(),
+			// 150, 54000, false);
 			phone_type_descr.setAlign(Alignment.CENTER);
 			phone_type_descr.setCanFilter(false);
 
-			ListGridField is_parallel_descr = new ListGridField("is_parallel_descr",CallCenterBK.constants.paraller(), 150);
+			ListGridField is_parallel_descr = new ListGridField(
+					"is_parallel_descr", CallCenterBK.constants.paraller(), 150);
 			is_parallel_descr.setAlign(Alignment.CENTER);
 			is_parallel_descr.setCanFilter(false);
-			//is_parallel_descr.setValueMap(ClientMapUtil.getInstance().getMapParall());
+			// is_parallel_descr.setValueMap(ClientMapUtil.getInstance().getMapParall());
 
 			orgDepPhonesListGrid.setFields(phone, phone_state_descr,
 					hidden_by_request_descr, phone_contract_type_descr,
@@ -396,11 +412,11 @@ public class DlgManageOrgDepartments extends Window {
 					Integer organization_id = orgListGridRecord
 							.getAttributeAsInt("organization_id");
 					DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
-							organization_id, null, null, orgDepListGrid);
+							organization_id, null, null, orgDepListGrid,
+							DlgManageOrgDepartments.this);
 					dlgAddEditOrgDepartments.show();
 				}
 			});
-
 			editBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -416,7 +432,8 @@ public class DlgManageOrgDepartments extends Window {
 
 					DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
 							organization_id, depListGridRecord,
-							orgDepPhonesListGrid.getRecords(), orgDepListGrid);
+							orgDepPhonesListGrid.getRecords(), orgDepListGrid,
+							DlgManageOrgDepartments.this);
 					dlgAddEditOrgDepartments.show();
 				}
 			});
@@ -427,7 +444,33 @@ public class DlgManageOrgDepartments extends Window {
 				}
 			});
 
-			fillFields();
+			deleteBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+
+				}
+			});
+			deleteBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					final ListGridRecord listGridRecord = orgDepListGrid
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+					SC.ask(CallCenterBK.constants.askForDisable(),
+							new BooleanCallback() {
+								@Override
+								public void execute(Boolean value) {
+									if (value) {
+										removeDepartment(listGridRecord
+												.getAttributeAsInt("org_department_id"));
+									}
+								}
+							});
+				}
+			});
 			addItem(hLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -435,9 +478,10 @@ public class DlgManageOrgDepartments extends Window {
 		}
 	}
 
-	private void searchDepartment() {
+	public void searchDepartment() {
 		try {
-			Integer organization_id = orgListGridRecord.getAttributeAsInt("organization_id");
+			Integer organization_id = orgListGridRecord
+					.getAttributeAsInt("organization_id");
 			String departament = orgDepNameItem.getValueAsString();
 			String real_address_descr = orgDepAddrItem.getValueAsString();
 			String phone = orgDepPhoneItem.getValueAsString();
@@ -478,25 +522,31 @@ public class DlgManageOrgDepartments extends Window {
 						DSRequest request) {
 				}
 			}, dsRequest);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
 
-	private void fillFields() {
+	private void removeDepartment(Integer org_department_id) {
 		try {
-			if (orgListGridRecord != null) {
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			SC.say(e.toString());
-		}
-	}
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+			Record record = new Record();
+			record.setAttribute("org_department_id", org_department_id);
+			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name());
+			DSRequest req = new DSRequest();
 
-	protected void save() {
-		try {
-
+			req.setAttribute("operationId", "removeOrganizationDepartment");
+			orgDepListGrid.removeData(record, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					searchDepartment();
+				}
+			}, req);
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

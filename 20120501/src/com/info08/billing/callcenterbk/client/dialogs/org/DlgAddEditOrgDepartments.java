@@ -48,18 +48,21 @@ public class DlgAddEditOrgDepartments extends Window {
 	private ListGrid orgDepPhonesListGrid;
 	private MyAddressPanel1 myAddressPanel1;
 
-	protected ListGridRecord listGridRecord;
-	protected ListGridRecord listGridRecordPhones[];
-	protected ListGrid listGrid;
-	protected Integer organization_id;
+	private ListGridRecord listGridRecord;
+	private ListGridRecord listGridRecordPhones[];
+	private ListGrid listGrid;
+	private Integer organization_id;
+	private DlgManageOrgDepartments dlgManageOrgDepartments;
 
 	public DlgAddEditOrgDepartments(Integer organization_id,
 			ListGridRecord listGridRecord,
-			ListGridRecord listGridRecordPhones[], ListGrid listGrid) {
+			ListGridRecord listGridRecordPhones[], ListGrid listGrid,
+			DlgManageOrgDepartments dlgManageOrgDepartments) {
 		try {
 			this.listGrid = listGrid;
 			this.listGridRecord = listGridRecord;
 			this.organization_id = organization_id;
+			this.dlgManageOrgDepartments = dlgManageOrgDepartments;
 			this.listGridRecordPhones = listGridRecordPhones;
 			setTitle(listGridRecord == null ? CallCenterBK.constants
 					.addOrgDepartment() : CallCenterBK.constants
@@ -96,8 +99,6 @@ public class DlgAddEditOrgDepartments extends Window {
 			parrentOrgDepItem.setMyCriteria(myCriteria);
 
 			ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>();
-			MyComboBoxRecord department = new MyComboBoxRecord("department",
-					CallCenterBK.constants.department(), false);
 			MyComboBoxRecord department_original = new MyComboBoxRecord(
 					"department_original", CallCenterBK.constants.department(),
 					true);
@@ -105,7 +106,6 @@ public class DlgAddEditOrgDepartments extends Window {
 					"full_address_not_hidden",
 					CallCenterBK.constants.address(), false);
 
-			fieldRecords.add(department);
 			fieldRecords.add(department_original);
 			fieldRecords.add(full_address_not_hidden);
 
@@ -136,6 +136,9 @@ public class DlgAddEditOrgDepartments extends Window {
 			myAddressPanel1 = new MyAddressPanel1(
 					"organization_department_address",
 					CallCenterBK.constants.address(), 615, 0);
+			myAddressPanel1.setMyDataSource(DataSource.get("AddressDS"));
+			myAddressPanel1.setMyDataSourceOperation("addressSearch");
+			myAddressPanel1.setMyIdField("addr_id");
 
 			vLayout.addMember(myAddressPanel1);
 
@@ -356,27 +359,11 @@ public class DlgAddEditOrgDepartments extends Window {
 			parrentOrgDepItem.setDataValue(map);
 			dynamicForm.setValues(map);
 
-			myAddressPanel1.setOldAddressValue(listGridRecord
-					.getAttributeAsString("remark"));
-			myAddressPanel1.setTownValue(listGridRecord
-					.getAttributeAsInt("town_id"));
-			myAddressPanel1.setStreetValue(listGridRecord
-					.getAttributeAsInt("street_id"));
-			myAddressPanel1.setStreetDistrictValue(listGridRecord
-					.getAttributeAsInt("town_district_id"));
-			myAddressPanel1.setOpCloseValue(listGridRecord
-					.getAttributeAsInt("hidden_by_request"));
-			myAddressPanel1.setBlockValue(listGridRecord
-					.getAttributeAsString("block"));
-			myAddressPanel1.setAppartValue(listGridRecord
-					.getAttributeAsString("appt"));
-			myAddressPanel1.setAdressValue(listGridRecord
-					.getAttributeAsString("anumber"));
-			myAddressPanel1.setStreetLocation(listGridRecord
-					.getAttributeAsString("street_location"));
-			myAddressPanel1.setStreetIndexes(listGridRecord
-					.getAttributeAsString("street_index_text"));
-
+			Object physical_address_id = map.get("physical_address_id");
+			if (physical_address_id != null) {
+				myAddressPanel1.setValue(new Integer(physical_address_id
+						.toString()));
+			}
 			if (listGridRecordPhones != null && listGridRecordPhones.length > 0) {
 				for (ListGridRecord record : listGridRecordPhones) {
 					ListGridRecord recordPhone = new ListGridRecord();
@@ -412,7 +399,6 @@ public class DlgAddEditOrgDepartments extends Window {
 							record.getAttributeAsInt("is_parallel"));
 					orgDepPhonesListGrid.addData(recordPhone);
 				}
-				orgDepPhonesListGrid.filterData();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -437,7 +423,10 @@ public class DlgAddEditOrgDepartments extends Window {
 				return;
 			}
 
-			Integer town_id = myAddressPanel1.getTownValue();
+			Map<?, ?> physicalAddrValues = myAddressPanel1.getValues();
+
+			Integer town_id = physicalAddrValues.get("town_id") == null ? null
+					: new Integer(physicalAddrValues.get("town_id").toString());
 			if (town_id == null) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.plzChoosePhysicalAddrTown());
@@ -445,7 +434,9 @@ public class DlgAddEditOrgDepartments extends Window {
 						myAddressPanel1.getAddrTownItem());
 				return;
 			}
-			Integer street_id = myAddressPanel1.getStreetValue();
+			Integer street_id = physicalAddrValues.get("street_id") == null ? null
+					: new Integer(physicalAddrValues.get("street_id")
+							.toString());
 			if (street_id == null) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.plzChoosePhysicalAddrStreet());
@@ -459,30 +450,7 @@ public class DlgAddEditOrgDepartments extends Window {
 			fromMaps.put("parrent_department_id", parrent_department_id);
 			fromMaps.put("organization_id", organization_id);
 			fromMaps.put("department_original", department_original);
-			fromMaps.put("town_id", town_id);
-			fromMaps.put("street_id", street_id);
-			String block = myAddressPanel1.getBlockValue();
-			if (block != null && !block.trim().equals("")) {
-				fromMaps.put("block", block);
-			}
-
-			String appt = myAddressPanel1.getAppartValue();
-			if (appt != null && !appt.trim().equals("")) {
-				fromMaps.put("appt", appt);
-			}
-
-			String anumber = myAddressPanel1.getAdressValue();
-			if (anumber != null && !anumber.trim().equals("")) {
-				fromMaps.put("anumber", anumber);
-			}
-			Integer town_district_id = myAddressPanel1.getStreetDistrictValue();
-			if (town_district_id != null) {
-				fromMaps.put("town_district_id", town_district_id);
-			}
-			Integer hidden_by_request = myAddressPanel1.getOpCloseValue();
-			if (hidden_by_request != null) {
-				fromMaps.put("hidden_by_request", hidden_by_request);
-			}
+			fromMaps.put("physicalAddrValues", physicalAddrValues);
 
 			RecordList phonesRecordList = orgDepPhonesListGrid
 					.getDataAsRecordList();
@@ -520,6 +488,7 @@ public class DlgAddEditOrgDepartments extends Window {
 					@Override
 					public void execute(DSResponse response, Object rawData,
 							DSRequest request) {
+						dlgManageOrgDepartments.searchDepartment();
 						destroy();
 					}
 				}, req);
@@ -529,6 +498,7 @@ public class DlgAddEditOrgDepartments extends Window {
 					@Override
 					public void execute(DSResponse response, Object rawData,
 							DSRequest request) {
+						dlgManageOrgDepartments.searchDepartment();
 						destroy();
 					}
 				}, req);

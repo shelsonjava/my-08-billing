@@ -2,6 +2,8 @@ package com.info08.billing.callcenterbk.server.impl.dmi;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +19,7 @@ import com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartMent;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartToPhone;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationPartnerBank;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationToActivity;
+import com.info08.billing.callcenterbk.shared.entity.transport.TranspSchedule;
 import com.info08.billing.callcenterbk.shared.items.Address;
 import com.info08.billing.callcenterbk.shared.items.PhoneNumber;
 import com.isomorphic.datasource.DSRequest;
@@ -29,6 +32,8 @@ public class OrganizationDMI {
 	private static final String Q_DELETE_ORG_ACTIVITIES = "delete from organization_to_activities t where t.organization_id = ? ";
 	private static final String Q_DELETE_ORG_PART_BANKS = "delete from organization_partner_banks t where t.organization_id = ? ";
 	private static final String Q_DELETE_ORG_DEP_PHONES = "delete from organization_depart_to_phones t where t.org_department_id = ? ";
+	private static final String Q_DELETE_ORG_DEPARTMENT = "delete from organization_department t where t.org_department_id = ? ";
+	private static final String Q_DELETE_ORG_DEP_ADDRESS = "delete from addresses a where a.addr_id = ? ";
 
 	private Logger logger = Logger.getLogger(OrganizationDMI.class.getName());
 
@@ -347,7 +352,10 @@ public class OrganizationDMI {
 			} else {
 				legalAddress = new Address();
 			}
-			DataTools.setProperties(values, legalAddress);
+			Map<?, ?> legalAddrValues = (Map<?, ?>) values
+					.get("legalAddrValues");
+			DataTools.setProperties(legalAddrValues, legalAddress);
+			legalAddress.setAddr_id(legal_address_id);
 
 			if (legalAddress.getAddr_id() != null) {
 				oracleManager.merge(legalAddress);
@@ -365,32 +373,10 @@ public class OrganizationDMI {
 			} else {
 				physicalAddress = new Address();
 			}
-			physicalAddress
-					.setTown_id(values.containsKey("legal_addr_town_id") ? new Long(
-							values.get("legal_addr_town_id").toString()) : null);
-			physicalAddress.setStreet_id(values
-					.containsKey("legal_addr_street_id") ? new Long(values.get(
-					"legal_addr_street_id").toString()) : null);
-			physicalAddress.setTown_district_id(values
-					.containsKey("legal_addr_town_district_id") ? new Long(
-					values.get("legal_addr_town_district_id").toString())
-					: null);
-			physicalAddress.setHidden_by_request(values
-					.containsKey("legal_addr_hidden_by_request") ? new Long(
-					values.get("legal_addr_hidden_by_request").toString())
-					: null);
-			physicalAddress
-					.setAnumber(values.containsKey("legal_addr_anumber") ? values
-							.get("legal_addr_anumber").toString() : null);
-			physicalAddress.setFull_address(values
-					.containsKey("legal_addr_full_address") ? values.get(
-					"legal_addr_full_address").toString() : null);
-			physicalAddress
-					.setBlock(values.containsKey("legal_addr_block") ? values
-							.get("legal_addr_block").toString() : null);
-			physicalAddress
-					.setAppt(values.containsKey("legal_addr_appt") ? values
-							.get("legal_addr_appt").toString() : null);
+			Map<?, ?> physicalAddrValues = (Map<?, ?>) values
+					.get("physicalAddrValues");
+			DataTools.setProperties(physicalAddrValues, physicalAddress);
+			physicalAddress.setAddr_id(physical_address_id);
 
 			if (physicalAddress.getAddr_id() != null) {
 				oracleManager.merge(physicalAddress);
@@ -523,7 +509,9 @@ public class OrganizationDMI {
 			} else {
 				physicalAddress = new Address();
 			}
-			DataTools.setProperties(values, physicalAddress);
+			Map<?, ?> physicalAddrValues = (Map<?, ?>) values
+					.get("physicalAddrValues");
+			DataTools.setProperties(physicalAddrValues, physicalAddress);
 
 			if (physicalAddress.getAddr_id() != null) {
 				oracleManager.merge(physicalAddress);
@@ -607,4 +595,80 @@ public class OrganizationDMI {
 			}
 		}
 	}
+
+	/**
+	 * Updating Transport Status
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public TranspSchedule removeOrganizationDepartment(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.removeOrganizationDepartment.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long org_department_id = new Long(dsRequest.getOldValues()
+					.get("org_department_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+
+			Map<String, Integer> criteria = new LinkedHashMap<String, Integer>();
+			criteria.put("org_department_id", org_department_id.intValue());
+			List<OrganizationDepartMent> dataForDelete = DMIUtils
+					.findObjectsdByCriteria("OrgDepartmentDS",
+							"orgDepartSearchCustom1", criteria,
+							OrganizationDepartMent.class);
+
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Remove Transport.");
+
+			if (dataForDelete != null && !dataForDelete.isEmpty()) {
+				for (OrganizationDepartMent item : dataForDelete) {
+					Long orgDepartId = item.getOrg_department_id();
+					oracleManager.createNativeQuery(Q_DELETE_ORG_DEP_PHONES)
+							.setParameter(1, orgDepartId).executeUpdate();
+					oracleManager.createNativeQuery(Q_DELETE_ORG_DEPARTMENT)
+							.setParameter(1, orgDepartId).executeUpdate();
+					Long physical_address_id = item.getPhysical_address_id();
+					if (physical_address_id != null) {
+						oracleManager
+								.createNativeQuery(Q_DELETE_ORG_DEP_ADDRESS)
+								.setParameter(1, physical_address_id)
+								.executeUpdate();
+					}
+					Long legal_address_id = item.getLegal_address_id();
+					if (legal_address_id != null) {
+						oracleManager
+								.createNativeQuery(Q_DELETE_ORG_DEP_ADDRESS)
+								.setParameter(1, legal_address_id)
+								.executeUpdate();
+					}
+				}
+			}
+
+			EMF.commitTransaction(transaction);
+			log += ". Removing Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Remove Data From Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წაშლისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
 }

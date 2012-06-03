@@ -46,6 +46,7 @@
 		<field name="legal_addr_street_index_text"		type="text"  		title="legal_addr_street_index_text"		hidden="true"/>
 		<field name="isBold" 							type="integer" 		title="isBold" 								hidden="true" />
 		<field name="phones" 							type="any" 			title="phones" 								hidden="true" />
+		<field name="physicalAddrValues" 				type="any" 			title="physicalAddrValues" 					hidden="true" />
 		
 	</fields>
 
@@ -58,12 +59,15 @@
         <operationBinding operationType="update" operationId="updateOrganizationDepartment" serverMethod="addOrUpdateOrganizationDepartment">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
         </operationBinding>
-		
+		<operationBinding operationType="remove" operationId="removeOrganizationDepartment" serverMethod="removeOrganizationDepartment">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
 	
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgDepSearchByOrgId" operationType="fetch">			
 			<selectClause>
 					  t1.department, 
+					  t1.department as department_original,
 					  t1.legal_address_id,
 					  t1.physical_address_id,
 					  t1.parrent_department_id,
@@ -109,6 +113,7 @@
 				 	#if($criteria.org_department_id) and t1.org_department_id = $criteria.org_department_id #end
 				 ]]>
 			</whereClause>
+			<orderClause>nvl(t1.parrent_department_id,0), t1.inner_order</orderClause>
 		</operationBinding>
 	
         <!-- FETCH -->
@@ -233,12 +238,29 @@
 					inner join ccare.organization_department dd on dd.org_department_id = f.org_department_id
 					start with f.parrent_department_id is null
 					connect by prior f.org_department_id = f.parrent_department_id
-					order by dd.inner_order ) t1
+					order siblings by dd.inner_order ) t1
 					left join V_FULL_ADDRESS pa on pa.addr_id = t1.physical_address_id 
 					left join V_FULL_ADDRESS la on la.addr_id = t1.legal_address_id
             	 ]]>
             </customSQL> 
         </operationBinding>
         
+        
+        
+         <!-- FETCH -->
+        <operationBinding operationId="orgDepartSearchCustom1" operationType="fetch">
+            <customSQL>
+            	 <![CDATA[
+            	 select *
+					  from (select level m_level, t.*
+					          from organization_department t
+					         start with t.org_department_id = $criteria.org_department_id
+					        connect by prior t.org_department_id = t.parrent_department_id
+					         order siblings by t.inner_order) k
+					 order by k.m_level desc
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+
 	</operationBindings>
 </DataSource>

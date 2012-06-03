@@ -104,7 +104,8 @@ public class DlgAddEditOrganization extends Window {
 	private ListGrid orgPartBankOrgsGrid;
 	private ToolStripButton copyAddress;
 
-	public DlgAddEditOrganization(ListGridRecord listGridRecord, TreeGrid orgTreeGrid) {
+	public DlgAddEditOrganization(ListGridRecord listGridRecord,
+			TreeGrid orgTreeGrid) {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
 			this.listGridRecord = listGridRecord;
@@ -180,9 +181,15 @@ public class DlgAddEditOrganization extends Window {
 
 			physicalAddress = new MyAddressPanel("PhysicalAddress",
 					CallCenterBK.constants.orgAddressHeaderReal(), 614, 0);
+			physicalAddress.setMyDataSource(DataSource.get("AddressDS"));
+			physicalAddress.setMyDataSourceOperation("addressSearch");
+			physicalAddress.setMyIdField("addr_id");
 
 			legalAddress = new MyAddressPanel("LegalAddress",
 					CallCenterBK.constants.orgAddressHeaderLegal(), 614, 0);
+			legalAddress.setMyDataSource(DataSource.get("AddressDS"));
+			legalAddress.setMyDataSourceOperation("addressSearch");
+			legalAddress.setMyIdField("addr_id");
 
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setWidth(1228);
@@ -348,6 +355,7 @@ public class DlgAddEditOrganization extends Window {
 			importantRemark.setName("important_remark");
 			importantRemark.setWidth(650);
 			importantRemark.setHeight(23);
+			importantRemark.setValue(false);
 
 			orgStatusItem = new SelectItem();
 			orgStatusItem.setTitle(CallCenterBK.constants.status());
@@ -601,15 +609,14 @@ public class DlgAddEditOrganization extends Window {
 		try {
 			if (listGridRecord != null) {
 				Map<?, ?> map = listGridRecord.toMap();
+				Integer important_remark = (Integer) map.get("important_remark");
+				map.remove("important_remark");
 				parrentOrgItem.setDataValue(map);
 				dynamicFormMainInfo.setValues(map);
 				dynamicFormMainInfo1.setValues(map);
 				dynamicFormMainInfo2.setValues(map);
 
-				Integer important_remark = (Integer) map
-						.get("important_remark");
-				if (important_remark != null
-						&& important_remark.equals(new Integer(-1))) {
+				if (important_remark != null && important_remark.equals(new Integer(-1))) {
 					importantRemark.setValue(true);
 				}
 
@@ -661,47 +668,10 @@ public class DlgAddEditOrganization extends Window {
 							});
 				}
 
-				physicalAddress.setTownValue(listGridRecord
-						.getAttributeAsInt("town_id"));
-				physicalAddress.setStreetValue(listGridRecord
-						.getAttributeAsInt("street_id"));
-				physicalAddress.setStreetDistrictValue(listGridRecord
-						.getAttributeAsInt("town_district_id"));
-				physicalAddress.setOpCloseValue(listGridRecord
-						.getAttributeAsInt("hidden_by_request"));
-				physicalAddress.setOldAddressValue(listGridRecord
-						.getAttributeAsString("full_address"));
-				physicalAddress.setBlockValue(listGridRecord
-						.getAttributeAsString("block"));
-				physicalAddress.setAppartValue(listGridRecord
-						.getAttributeAsString("appt"));
-				physicalAddress.setAdressValue(listGridRecord
-						.getAttributeAsString("anumber"));
-				physicalAddress.setStreetLocation(listGridRecord
-						.getAttributeAsString("street_location"));
-				physicalAddress.setStreetIndexes(listGridRecord
-						.getAttributeAsString("street_index_text"));
-
-				legalAddress.setTownValue(listGridRecord
-						.getAttributeAsInt("legal_addr_town_id"));
-				legalAddress.setStreetValue(listGridRecord
-						.getAttributeAsInt("legal_addr_street_id"));
-				legalAddress.setStreetDistrictValue(listGridRecord
-						.getAttributeAsInt("legal_addr_town_district_id"));
-				legalAddress.setOpCloseValue(listGridRecord
-						.getAttributeAsInt("legal_addr_hidden_by_request"));
-				legalAddress.setOldAddressValue(listGridRecord
-						.getAttributeAsString("legal_addr_full_address"));
-				legalAddress.setBlockValue(listGridRecord
-						.getAttributeAsString("legal_addr_block"));
-				legalAddress.setAppartValue(listGridRecord
-						.getAttributeAsString("legal_addr_appt"));
-				legalAddress.setAdressValue(listGridRecord
-						.getAttributeAsString("legal_addr_anumber"));
-				legalAddress.setStreetLocation(listGridRecord
-						.getAttributeAsString("legal_addr_street_location"));
-				legalAddress.setStreetIndexes(listGridRecord
-						.getAttributeAsString("legal_addr_street_index_text"));
+				physicalAddress.setValue(listGridRecord
+						.getAttributeAsInt("physical_address_id"));
+				legalAddress.setValue(listGridRecord
+						.getAttributeAsInt("legal_address_id"));
 
 				DataSource orgDS = DataSource.get("OrgDS");
 				Criteria criteria1 = new Criteria();
@@ -732,49 +702,7 @@ public class DlgAddEditOrganization extends Window {
 
 	private void copyAddress() {
 		try {
-			Integer town_id = physicalAddress.getTownValue();
-			Integer street_id = physicalAddress.getStreetValue();
-			Integer town_district_id = physicalAddress.getStreetDistrictValue();
-			Integer hidden_by_request = physicalAddress.getOpCloseValue();
-			String full_address = physicalAddress.getOldAddressValue();
-			String block = physicalAddress.getBlockValue();
-			String appt = physicalAddress.getAppartValue();
-			String anumber = physicalAddress.getAdressValue();
-			String street_location = physicalAddress.getStreetLocationValue();
-			String street_index_text = physicalAddress.getStreetIndexesValue();
-
-			if (town_id != null) {
-				legalAddress.setTownValue(town_id);
-			}
-			if (street_id != null) {
-				legalAddress.setStreetValue(street_id);
-			}
-			if (town_district_id != null) {
-				legalAddress.setStreetDistrictValue(town_district_id);
-			}
-			if (hidden_by_request != null) {
-				legalAddress.setOpCloseValue(hidden_by_request);
-			}
-			if (full_address != null && !full_address.trim().equals("")) {
-				legalAddress.setOldAddressValue(full_address);
-			}
-			if (block != null && !block.trim().equals("")) {
-				legalAddress.setBlockValue(block);
-			}
-			if (appt != null && !appt.trim().equals("")) {
-				legalAddress.setAppartValue(appt);
-			}
-			if (anumber != null && !anumber.trim().equals("")) {
-				legalAddress.setAdressValue(anumber);
-			}
-			if (street_location != null && !street_location.trim().equals("")) {
-				legalAddress.setStreetLocation(street_location);
-			}
-			if (street_index_text != null
-					&& !street_index_text.trim().equals("")) {
-				legalAddress.setStreetIndexes(street_index_text);
-			}
-
+			legalAddress.setValues(physicalAddress.getValues());
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -876,7 +804,11 @@ public class DlgAddEditOrganization extends Window {
 				return;
 			}
 
-			Integer town_id = physicalAddress.getTownValue();
+			Map<?, ?> physicalAddrValues = physicalAddress.getValues();
+			Map<?, ?> legalAddrValues = physicalAddress.getValues();
+
+			Integer town_id = physicalAddrValues.get("town_id") == null ? null
+					: new Integer(physicalAddrValues.get("town_id").toString());
 			if (town_id == null) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.plzChoosePhysicalAddrTown());
@@ -885,7 +817,9 @@ public class DlgAddEditOrganization extends Window {
 						physicalAddress.getAddrTownItem());
 				return;
 			}
-			Integer street_id = physicalAddress.getStreetValue();
+			Integer street_id = physicalAddrValues.get("street_id") == null ? null
+					: new Integer(physicalAddrValues.get("street_id")
+							.toString());
 			if (street_id == null) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.plzChoosePhysicalAddrStreet());
@@ -895,7 +829,8 @@ public class DlgAddEditOrganization extends Window {
 				return;
 			}
 
-			Integer legal_town_id = legalAddress.getTownValue();
+			Integer legal_town_id = legalAddrValues.get("town_id") == null ? null
+					: new Integer(legalAddrValues.get("town_id").toString());
 			if (legal_town_id == null) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.plzChooseLegalAddrTown());
@@ -904,7 +839,8 @@ public class DlgAddEditOrganization extends Window {
 						legalAddress.getAddrTownItem());
 				return;
 			}
-			Integer legal_street_id = legalAddress.getStreetValue();
+			Integer legal_street_id = legalAddrValues.get("street_id") == null ? null
+					: new Integer(legalAddrValues.get("street_id").toString());
 			if (legal_street_id == null) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.plzChooseLegalAddrStreet());
@@ -949,12 +885,12 @@ public class DlgAddEditOrganization extends Window {
 						"org_activity_id").toString();
 				orgActivities.put("org_activity_id_" + orgActStr, orgActStr);
 			}
-			Boolean bImportant_remark = importantRemark.getValueAsBoolean();
-			Integer important_remark = null;
-			if (bImportant_remark != null && bImportant_remark) {
-				important_remark = -1;
+			boolean bImportant_remark = importantRemark.getValueAsBoolean();
+			Integer important_remark1 = null;
+			if (bImportant_remark) {
+				important_remark1 = -1;
 			} else {
-				important_remark = 0;
+				important_remark1 = 0;
 			}
 			Map<String, Object> fromMaps = new LinkedHashMap<String, Object>();
 			fromMaps.put("priority", new Integer(0));
@@ -971,80 +907,8 @@ public class DlgAddEditOrganization extends Window {
 				fromMaps.put("physical_address_id",
 						listGridRecord.getAttributeAsInt("physical_address_id"));
 			}
-			fromMaps.put("town_id", town_id);
-			fromMaps.put("street_id", street_id);
-			Integer town_district_id = physicalAddress.getStreetDistrictValue();
-			if (town_district_id != null) {
-				fromMaps.put("town_district_id", town_district_id);
-			}
-			Integer hidden_by_request = physicalAddress.getOpCloseValue();
-			if (hidden_by_request != null) {
-				fromMaps.put("hidden_by_request", hidden_by_request);
-			}
-			String full_address = physicalAddress.getOldAddressValue();
-			if (full_address != null && !full_address.trim().equals("")) {
-				fromMaps.put("full_address", full_address);
-			}
-
-			String block = physicalAddress.getBlockValue();
-			if (block != null && !block.trim().equals("")) {
-				fromMaps.put("block", block);
-			}
-
-			String appt = physicalAddress.getAppartValue();
-			if (appt != null && !appt.trim().equals("")) {
-				fromMaps.put("appt", appt);
-			}
-
-			String anumber = physicalAddress.getAdressValue();
-			if (anumber != null && !anumber.trim().equals("")) {
-				fromMaps.put("anumber", anumber);
-			}
-
-			Integer legal_addr_town_id = legalAddress.getTownValue();
-			if (legal_addr_town_id != null) {
-				fromMaps.put("legal_addr_town_id", legal_addr_town_id);
-			}
-
-			Integer legal_addr_street_id = legalAddress.getStreetValue();
-			if (legal_addr_street_id != null) {
-				fromMaps.put("legal_addr_street_id", legal_addr_street_id);
-			}
-
-			Integer legal_addr_town_district_id = legalAddress
-					.getStreetDistrictValue();
-			if (legal_addr_town_district_id != null) {
-				fromMaps.put("legal_addr_town_district_id",
-						legal_addr_town_district_id);
-			}
-			Integer legal_addr_hidden_by_request = legalAddress
-					.getOpCloseValue();
-			if (legal_addr_hidden_by_request != null) {
-				fromMaps.put("legal_addr_hidden_by_request",
-						legal_addr_hidden_by_request);
-			}
-
-			String legal_addr_full_address = legalAddress.getOldAddressValue();
-			if (legal_addr_full_address != null
-					&& !legal_addr_full_address.trim().equals("")) {
-				fromMaps.put("legal_addr_full_address", legal_addr_full_address);
-			}
-
-			String legal_addr_block = legalAddress.getBlockValue();
-			if (legal_addr_block != null && !legal_addr_block.trim().equals("")) {
-				fromMaps.put("legal_addr_block", legal_addr_block);
-			}
-
-			String legal_addr_appt = legalAddress.getAppartValue();
-			if (legal_addr_appt != null && !legal_addr_appt.trim().equals("")) {
-				fromMaps.put("legal_addr_appt", legal_addr_appt);
-			}
-
-			String legal_addr_anumber = legalAddress.getAdressValue();
-			if (legal_addr_anumber != null
-					&& !legal_addr_anumber.trim().equals("")) {
-				fromMaps.put("legal_addr_anumber", legal_addr_anumber);
-			}
+			fromMaps.put("physicalAddrValues", physicalAddrValues);
+			fromMaps.put("legalAddrValues", legalAddrValues);
 
 			ListGridRecord partBankRecordList[] = orgPartBankOrgsGrid
 					.getRecords();
@@ -1059,7 +923,7 @@ public class DlgAddEditOrganization extends Window {
 			}
 			ClientUtils.fillMapFromForm(fromMaps, dynamicFormMainInfo,
 					dynamicFormMainInfo1, dynamicFormMainInfo2);
-			fromMaps.put("important_remark", important_remark);
+			fromMaps.put("important_remark", important_remark1);
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record(fromMaps);
