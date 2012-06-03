@@ -10,9 +10,11 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -74,17 +76,11 @@ public class MyComboBoxItem extends HLayout {
 
 		dynamicForm.setFields(displayFormItem);
 
+		setLayoutAlign(Alignment.LEFT);
+
 		buttonItem = new IButton();
 		buttonItem.setTitle(" ... ");
-		buttonItem.setWidth(20);
-		buttonItem.setHeight(23);
-
-		VLayout hLayout = new VLayout();
-		hLayout.addMember(buttonItem);
-		hLayout.setHeight(40);
-		hLayout.setLayoutMargin(2);
-		hLayout.setAlign(VerticalAlignment.BOTTOM);
-		addMember(hLayout);
+		addCanvas(buttonItem);
 
 		buttonItem.addClickHandler(new ClickHandler() {
 			@Override
@@ -92,6 +88,18 @@ public class MyComboBoxItem extends HLayout {
 				showChooserDlg(event);
 			}
 		});
+	}
+
+	public void addCanvas(Canvas component) {
+		component.setWidth(20);
+		component.setHeight(23);
+		VLayout hLayout = new VLayout();
+		hLayout.setHeight(40);
+		hLayout.setLayoutMargin(2);
+		hLayout.setAlign(VerticalAlignment.BOTTOM);
+		hLayout.addMember(component);
+		// hLayout.setBorder("1px red solid");
+		addMember(hLayout);
 	}
 
 	public void setDataValue(Record record) {
@@ -256,6 +264,7 @@ public class MyComboBoxItem extends HLayout {
 		if (selectedRecord == null) {
 			displayFormItem.clearValue();
 			this.selectedRecord = selectedRecord;
+			currentValue = null;
 			return;
 		}
 		String diplayValue = "";
