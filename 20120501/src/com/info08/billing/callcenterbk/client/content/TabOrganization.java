@@ -669,8 +669,8 @@ public class TabOrganization extends Tab {
 
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateMainOrgDeleteOrRestore");
-			orgTreeGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "removeOrganization");
+			orgTreeGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

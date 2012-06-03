@@ -630,7 +630,7 @@ public class OrganizationDMI {
 							OrganizationDepartMent.class);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
-					loggedUserName, "Remove Transport.");
+					loggedUserName, "Remove Department.");
 
 			if (dataForDelete != null && !dataForDelete.isEmpty()) {
 				for (OrganizationDepartMent item : dataForDelete) {
@@ -639,6 +639,120 @@ public class OrganizationDMI {
 							.setParameter(1, orgDepartId).executeUpdate();
 					oracleManager.createNativeQuery(Q_DELETE_ORG_DEPARTMENT)
 							.setParameter(1, orgDepartId).executeUpdate();
+					Long physical_address_id = item.getPhysical_address_id();
+					if (physical_address_id != null) {
+						oracleManager
+								.createNativeQuery(Q_DELETE_ORG_DEP_ADDRESS)
+								.setParameter(1, physical_address_id)
+								.executeUpdate();
+					}
+					Long legal_address_id = item.getLegal_address_id();
+					if (legal_address_id != null) {
+						oracleManager
+								.createNativeQuery(Q_DELETE_ORG_DEP_ADDRESS)
+								.setParameter(1, legal_address_id)
+								.executeUpdate();
+					}
+				}
+			}
+
+			EMF.commitTransaction(transaction);
+			log += ". Removing Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Remove Data From Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წაშლისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	/**
+	 * Updating Transport Status
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public TranspSchedule removeOrganization(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.removeOrganization.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long organization_id = new Long(dsRequest.getOldValues()
+					.get("organization_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+
+			Map<String, Integer> criteria = new LinkedHashMap<String, Integer>();
+			criteria.put("organization_id", organization_id.intValue());
+			List<Organization> dataForDelete = DMIUtils.findObjectsdByCriteria(
+					"OrgDS", "searchOrgReversed", criteria, Organization.class);
+
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Remove Organization.");
+
+			if (dataForDelete != null && !dataForDelete.isEmpty()) {
+				for (Organization item : dataForDelete) {
+					Long child_organization_id = item.getOrganization_id();
+
+					oracleManager.createNativeQuery(Q_DELETE_ORG_ACTIVITIES)
+							.setParameter(1, child_organization_id)
+							.executeUpdate();
+					oracleManager.createNativeQuery(Q_DELETE_ORG_PART_BANKS)
+							.setParameter(1, child_organization_id)
+							.executeUpdate();
+
+					List<OrganizationDepartMent> dataForDeleteDeps = DMIUtils
+							.findObjectsdByCriteria("OrgDepartmentDS",
+									"orgDepartSearchCustom2", criteria,
+									OrganizationDepartMent.class);
+
+					if (dataForDeleteDeps != null
+							&& !dataForDeleteDeps.isEmpty()) {
+						for (OrganizationDepartMent itemDeps : dataForDeleteDeps) {
+							Long orgDepartId = itemDeps.getOrg_department_id();
+							oracleManager
+									.createNativeQuery(Q_DELETE_ORG_DEP_PHONES)
+									.setParameter(1, orgDepartId)
+									.executeUpdate();
+							oracleManager
+									.createNativeQuery(Q_DELETE_ORG_DEPARTMENT)
+									.setParameter(1, orgDepartId)
+									.executeUpdate();
+							Long physical_address_id = item
+									.getPhysical_address_id();
+							if (physical_address_id != null) {
+								oracleManager
+										.createNativeQuery(
+												Q_DELETE_ORG_DEP_ADDRESS)
+										.setParameter(1, physical_address_id)
+										.executeUpdate();
+							}
+							Long legal_address_id = item.getLegal_address_id();
+							if (legal_address_id != null) {
+								oracleManager
+										.createNativeQuery(
+												Q_DELETE_ORG_DEP_ADDRESS)
+										.setParameter(1, legal_address_id)
+										.executeUpdate();
+							}
+						}
+					}
+
 					Long physical_address_id = item.getPhysical_address_id();
 					if (physical_address_id != null) {
 						oracleManager

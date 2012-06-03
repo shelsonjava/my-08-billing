@@ -104,10 +104,28 @@
         </operationBinding>
         
 		<!-- Main Service Update On Drag And Drop -->
-		<operationBinding operationType="update" operationId="updateMainServiceOrg" serverMethod="updateMainServiceOrg">
+		<operationBinding operationType="remove" operationId="removeOrganization" serverMethod="removeOrganization">
 			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>            
         </operationBinding>
-	
+		
+		
+		
+		 <!-- FETCH -->
+        <operationBinding operationId="searchOrgReversed" operationType="fetch">
+            <customSQL>
+            	 <![CDATA[
+            	 select *
+				 from (select level m_level, t.*
+				          from organizations t
+				         start with t.organization_id = $criteria.organization_id
+				        connect by prior t.organization_id = t.parrent_organization_id
+				         order siblings by nvl(t.parrent_organization_id,0),t.priority) k
+				 order by k.m_level desc
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+		
+		
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchByMainId" operationType="fetch">			
 			<selectClause>

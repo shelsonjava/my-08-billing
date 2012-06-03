@@ -245,13 +245,11 @@
             </customSQL> 
         </operationBinding>
         
-        
-        
-         <!-- FETCH -->
+        <!-- FETCH -->
         <operationBinding operationId="orgDepartSearchCustom1" operationType="fetch">
             <customSQL>
             	 <![CDATA[
-            	 select *
+            	     select *
 					  from (select level m_level, t.*
 					          from organization_department t
 					         start with t.org_department_id = $criteria.org_department_id
@@ -261,6 +259,24 @@
             	 ]]>
             </customSQL> 
         </operationBinding>
+        
+        <!-- FETCH -->
+        <operationBinding operationId="orgDepartSearchCustom2" operationType="fetch">
+            <customSQL>
+            	 <![CDATA[
+            	     select t2.org_department_id
+					 from (select level as my_level, t1.org_department_id
+					          from (select distinct t.org_department_id, t.parrent_department_id
+					                  from organization_department t
+					                 start with t.organization_id = $criteria.organization_id
+					                connect by prior t.org_department_id = t.parrent_department_id) t1
+					         start with t1.parrent_department_id is null
+					        connect by prior t1.org_department_id = t1.parrent_department_id) t2
+					 order by t2.my_level desc
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
 
 	</operationBindings>
 </DataSource>
