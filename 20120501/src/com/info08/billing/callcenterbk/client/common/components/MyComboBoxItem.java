@@ -118,10 +118,10 @@ public class MyComboBoxItem extends HLayout {
 		Criteria cr = new Criteria();
 		cr.setAttribute(myIdField, currentValue);
 		DSRequest req = new DSRequest();
-		if (myDataSourceOperation != null)
+		if (myDataSourceOperation != null) {
 			req.setOperationId(myDataSourceOperation);
+		}
 		myDataSource.fetchData(cr, new DSCallback() {
-
 			@Override
 			public void execute(DSResponse response, Object rawData,
 					DSRequest request) {

@@ -275,7 +275,7 @@ public class DlgAddEditOrgDepPhone extends Window {
 			} else {
 				phoneListGrid.updateData(listGridRecord);
 			}
-			phoneListGrid.filterData();
+			//phoneListGrid.filterData();
 			destroy();
 		} catch (Exception e) {
 			e.printStackTrace();

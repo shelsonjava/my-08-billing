@@ -8,15 +8,14 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel1;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxRecord;
-import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
-import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
@@ -89,7 +88,8 @@ public class DlgAddEditOrgDepartments extends Window {
 			parrentOrgDepItem.setMyDlgWidth(900);
 			DataSource orgDepartmentDS = DataSource.get("OrgDepartmentDS");
 			parrentOrgDepItem.setMyDataSource(orgDepartmentDS);
-			parrentOrgDepItem.setMyDataSourceOperation("orgDepartSearch");
+			parrentOrgDepItem
+					.setMyDataSourceOperation("customOrgDepSearchByOrgId");
 			parrentOrgDepItem.setMyIdField("org_department_id");
 			Criteria myCriteria = new Criteria();
 			myCriteria.setAttribute("organization_id", organization_id);
@@ -185,6 +185,7 @@ public class DlgAddEditOrgDepartments extends Window {
 			orgDepPhonesListGrid.setWidth100();
 			orgDepPhonesListGrid.setHeight100();
 			orgDepPhonesListGrid.setDataSource(phoneDS);
+			orgDepPhonesListGrid.setCriteria(new Criteria());
 			orgDepPhonesListGrid.setAutoFetchData(true);
 			orgDepPhonesListGrid.setCanEdit(false);
 			orgDepPhonesListGrid.setCanRemoveRecords(false);
@@ -201,41 +202,48 @@ public class DlgAddEditOrgDepartments extends Window {
 					CallCenterBK.constants.phone());
 			phone.setCanFilter(true);
 
-			ListGridField phone_state_descr = ClientUtils
-					.createDescrFilterField("phone_state_id",
-							CallCenterBK.constants.phoneState(), 150, 52000,
-							false);
+			ListGridField phone_state_descr = new ListGridField(
+					"phone_state_descr", CallCenterBK.constants.phoneState(),
+					150);
+			// ClientUtils.createDescrFilterField("phone_state_id",CallCenterBK.constants.phoneState(),
+			// 150, 52000,false);
 			phone_state_descr.setAlign(Alignment.CENTER);
+			phone_state_descr.setCanFilter(false);
 
 			ListGridField hidden_by_request_descr = new ListGridField(
-					"hidden_by_request", CallCenterBK.constants.openClose(),
-					150);
+					"hidden_by_request_descr",
+					CallCenterBK.constants.openClose(), 150);
 			hidden_by_request_descr.setAlign(Alignment.CENTER);
-			hidden_by_request_descr.setValueMap(ClientMapUtil.getInstance()
-					.getMapOpClose());
+			hidden_by_request_descr.setCanFilter(false);
+			// hidden_by_request_descr.setValueMap(ClientMapUtil.getInstance().getMapOpClose());
 
-			ListGridField phone_contract_type_descr = ClientUtils
-					.createDescrFilterField("phone_contract_type",
-							CallCenterBK.constants.phoneStatus(), 150, 53000,
-							false);
+			ListGridField phone_contract_type_descr = new ListGridField(
+					"phone_contract_type_descr",
+					CallCenterBK.constants.phoneStatus(), 150);
+			// ClientUtils.createDescrFilterField("phone_contract_type",CallCenterBK.constants.phoneStatus(),
+			// 150, 53000,false);
 			phone_contract_type_descr.setAlign(Alignment.CENTER);
+			phone_contract_type_descr.setCanFilter(false);
 
-			ListGridField for_contact_descr = new ListGridField("for_contact",
-					CallCenterBK.constants.contactPhone(), 150);
+			ListGridField for_contact_descr = new ListGridField(
+					"for_contact_descr", CallCenterBK.constants.contactPhone(),
+					150);
 			for_contact_descr.setAlign(Alignment.CENTER);
-			for_contact_descr.setValueMap(ClientMapUtil.getInstance()
-					.getYesAndNo());
+			for_contact_descr.setCanFilter(false);
+			// for_contact_descr.setValueMap(ClientMapUtil.getInstance().getYesAndNo());
 
-			ListGridField phone_type_descr = ClientUtils
-					.createDescrFilterField("phone_type_id",
-							CallCenterBK.constants.type(), 150, 54000, false);
+			ListGridField phone_type_descr = new ListGridField(
+					"phone_type_descr", CallCenterBK.constants.type(), 150);
+			// ClientUtils.createDescrFilterField("phone_type_id",CallCenterBK.constants.type(),
+			// 150, 54000, false);
 			phone_type_descr.setAlign(Alignment.CENTER);
+			phone_type_descr.setCanFilter(false);
 
-			ListGridField is_parallel_descr = new ListGridField("is_parallel",
-					CallCenterBK.constants.paraller(), 150);
+			ListGridField is_parallel_descr = new ListGridField(
+					"is_parallel_descr", CallCenterBK.constants.paraller(), 150);
 			is_parallel_descr.setAlign(Alignment.CENTER);
-			is_parallel_descr.setValueMap(ClientMapUtil.getInstance()
-					.getMapParall());
+			is_parallel_descr.setCanFilter(false);
+			// is_parallel_descr.setValueMap(ClientMapUtil.getInstance().getMapParall());
 
 			orgDepPhonesListGrid.setFields(phone, phone_state_descr,
 					hidden_by_request_descr, phone_contract_type_descr,
@@ -415,10 +423,10 @@ public class DlgAddEditOrgDepartments extends Window {
 	private void saveData() {
 		try {
 			Integer parrent_department_id = null;
-			Record parrentRecord = parrentOrgDepItem.getSelectedRecord();
+			Object parrentRecord = parrentOrgDepItem.getCurrentValue();
 			if (parrentRecord != null) {
-				parrent_department_id = parrentRecord
-						.getAttributeAsInt("org_department_id");
+				parrent_department_id = Integer.parseInt(parrentRecord
+						.toString());
 			}
 			String department_original = orgDepartmentNameItem
 					.getValueAsString();
@@ -476,15 +484,17 @@ public class DlgAddEditOrgDepartments extends Window {
 				fromMaps.put("hidden_by_request", hidden_by_request);
 			}
 
-			ListGridRecord phonesRecordList[] = orgDepPhonesListGrid
-					.getRecords();
-			if (phonesRecordList != null && phonesRecordList.length > 0) {
+			RecordList phonesRecordList = orgDepPhonesListGrid
+					.getDataAsRecordList();
+			if (phonesRecordList != null && !phonesRecordList.isEmpty()) {
 				LinkedHashMap<String, Object> phones = new LinkedHashMap<String, Object>();
-				for (ListGridRecord rec : phonesRecordList) {
+				for (int i = 0; i < phonesRecordList.getLength(); i++) {
+					Record rec = phonesRecordList.get(i);
 					String org_dep_to_ph_id = rec
 							.getAttributeAsString("org_dep_to_ph_id");
 					Map<?, ?> mapData = rec.toMap();
 					mapData.remove("_ref");
+					mapData.remove("__ref");
 					phones.put(org_dep_to_ph_id, mapData);
 				}
 				fromMaps.put("phones", phones);
@@ -498,7 +508,8 @@ public class DlgAddEditOrgDepartments extends Window {
 				fromMaps.put("physical_address_id",
 						listGridRecord.getAttributeAsInt("physical_address_id"));
 			}
-
+			fromMaps.remove("_ref");
+			fromMaps.remove("__ref");
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record(fromMaps);
 			DSRequest req = new DSRequest();

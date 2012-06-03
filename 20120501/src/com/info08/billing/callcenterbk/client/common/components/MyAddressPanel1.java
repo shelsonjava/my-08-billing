@@ -155,6 +155,10 @@ public class MyAddressPanel1 extends HLayout {
 		addMember(dynamicForm);
 	}
 
+	public Map<?, ?> getValues() {
+		return dynamicForm.getValues();
+	}
+
 	public void setTownValue(Integer townValue) {
 		if (townValue == null) {
 			return;

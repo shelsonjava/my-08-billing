@@ -14,6 +14,7 @@ import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationActivity;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartMent;
+import com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartToPhone;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationPartnerBank;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationToActivity;
 import com.info08.billing.callcenterbk.shared.items.Address;
@@ -251,8 +252,6 @@ public class OrganizationDMI {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			System.out
-					.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			String log = "Method:CommonDMI.updateMainServiceOrg.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
@@ -263,11 +262,6 @@ public class OrganizationDMI {
 			Long organization_id = new Long(record.get("organization_id")
 					.toString());
 			String loggedUserName = record.get("loggedUserName").toString();
-
-			System.out.println("parrent_organization_id = "
-					+ parrent_organization_id);
-			System.out.println("organization_id = " + organization_id);
-			System.out.println("loggedUserName = " + loggedUserName);
 
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
@@ -480,7 +474,7 @@ public class OrganizationDMI {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map<?, ?> addOrUpdateOrganizationDepartment(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
@@ -509,6 +503,9 @@ public class OrganizationDMI {
 				organizationDepartMent = new OrganizationDepartMent();
 			}
 			DataTools.setProperties(values, organizationDepartMent);
+			organizationDepartMent.setDepartment(values.get(
+					"department_original").toString());
+			organizationDepartMent.setInner_order(0L);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
 					loggedUserName, log);
@@ -543,41 +540,57 @@ public class OrganizationDMI {
 			} else {
 				oracleManager.merge(organizationDepartMent);
 			}
-			org_department_id = organizationDepartMent.getOrganization_id();
+			org_department_id = organizationDepartMent.getOrg_department_id();
+
+			oracleManager.flush();
 
 			if (!isPersist) {
 				oracleManager.createNativeQuery(Q_DELETE_ORG_DEP_PHONES)
 						.setParameter(1, org_department_id).executeUpdate();
+				oracleManager.flush();
 			}
 
 			Map<?, ?> phones = (Map<?, ?>) values.get("phones");
-			Set<?> phoneKeys = phones.keySet();
-			for (Object phoneKey : phoneKeys) {
-				Map value = (Map) phones.get(phoneKey);
-				String phone = value.get("phone").toString();
-				ArrayList<PhoneNumber> phoneNumbers = (ArrayList<PhoneNumber>) oracleManager
-						.createNamedQuery("PhoneNumber.getByPhoneNumber")
-						.setParameter("phone", phone).getResultList();
-				PhoneNumber phoneNumber = null;
-				if (phoneNumbers == null || phoneNumbers.isEmpty()) {
-					phoneNumber = new PhoneNumber();
-					phoneNumber.setIs_parallel(new Long(value
-							.get("is_parallel").toString()));
-					phoneNumber.setPhone(phone);
-					phoneNumber.setPhone_state_id(new Long(value.get(
-							"phone_state_id").toString()));
-					phoneNumber.setPhone_type_id(new Long(value.get(
-							"phone_type_id").toString()));
-					oracleManager.persist(phoneNumber);
+			if (phones != null && !phones.isEmpty()) {
+				Set<?> phoneKeys = phones.keySet();
+				for (Object phoneKey : phoneKeys) {
+					Map value = (Map) phones.get(phoneKey);
+					String phone = value.get("phone").toString();
+					ArrayList<PhoneNumber> phoneNumbers = (ArrayList<PhoneNumber>) oracleManager
+							.createNamedQuery("PhoneNumber.getByPhoneNumber")
+							.setParameter("phone", phone).getResultList();
+					PhoneNumber phoneNumber = null;
+					if (phoneNumbers == null || phoneNumbers.isEmpty()) {
+						phoneNumber = new PhoneNumber();
+						phoneNumber.setIs_parallel(new Long(value.get(
+								"is_parallel").toString()));
+						phoneNumber.setPhone(phone);
+						phoneNumber.setPhone_state_id(new Long(value.get(
+								"phone_state_id").toString()));
+						phoneNumber.setPhone_type_id(new Long(value.get(
+								"phone_type_id").toString()));
+						oracleManager.persist(phoneNumber);
+					} else {
+						phoneNumber = phoneNumbers.get(0);
+					}
+					OrganizationDepartToPhone orgDepartToPhone = new OrganizationDepartToPhone();
+					orgDepartToPhone.setFor_contact(new Long(value.get(
+							"for_contact").toString()));
+					orgDepartToPhone.setHidden_by_request(new Long(value.get(
+							"hidden_by_request").toString()));
+					orgDepartToPhone.setOrg_department_id(org_department_id);
+					orgDepartToPhone.setPhone_contract_type(new Long(value.get(
+							"phone_contract_type").toString()));
+					orgDepartToPhone.setPhone_number_id(phoneNumber
+							.getPhone_number_id());
+					oracleManager.persist(orgDepartToPhone);
 				}
 			}
-
 			EMF.commitTransaction(transaction);
 			log += ". Save Or Update Finished SuccessFully. ";
 			logger.info(log);
-			values = DMIUtils.findRecordById("OrgDS",
-					"customOrgSearchForCallCenterNew", 1L,
-					"organization_id");
+			values = DMIUtils.findRecordById("OrgDepartmentDS",
+					"orgDepartSearch", org_department_id, "org_department_id");
 			return values;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);

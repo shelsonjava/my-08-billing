@@ -107,7 +107,7 @@ public class TabOrganization extends Tab {
 		orgNameGeoItem.setTitle(CallCenterBK.constants.orgName());
 		orgNameGeoItem.setWidth(245);
 		orgNameGeoItem.setName("orgNameGeoItem");
-		orgNameGeoItem.setValue("\"თი ბი სი ბანკ");
+		orgNameGeoItem.setValue("aaaaaaaa");
 
 		orgCommentItem = new TextItem();
 		orgCommentItem.setTitle(CallCenterBK.constants.comment());
