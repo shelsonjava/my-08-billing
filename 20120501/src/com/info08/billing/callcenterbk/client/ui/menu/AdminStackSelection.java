@@ -8,6 +8,7 @@ import com.info08.billing.callcenterbk.client.content.admin.TabLandlineIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabGSMIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabBillingComps;
 import com.info08.billing.callcenterbk.client.content.admin.TabOperatorBreaks;
+import com.info08.billing.callcenterbk.client.content.admin.TabOrgPriorityList;
 import com.info08.billing.callcenterbk.client.content.admin.TabPartniorNumbersList;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
@@ -42,7 +43,9 @@ public class AdminStackSelection extends SectionStackSection {
 			new MenuNode("106", "1", CallCenterBK.constants.schedule(), true,
 					"calendar.png"),
 			new MenuNode("107", "1", CallCenterBK.constants.importedNumbers(),
-					true, "calendar.png") };
+					true, "import.png"),
+			new MenuNode("108", "1", CallCenterBK.constants.extraPriority(),
+					true, "sort.png") };
 
 	private TreeGrid menuTreeGrid;
 
@@ -141,8 +144,9 @@ public class AdminStackSelection extends SectionStackSection {
 			TabOperatorBreaks tabOperatorBreaks = new TabOperatorBreaks();
 			body.addTab(tabOperatorBreaks);
 		} else if (menuId.equals("107")) {
-			TabPartniorNumbersList tabOperatorBreaks = new TabPartniorNumbersList();
-			body.addTab(tabOperatorBreaks);
+			body.addTab(new TabPartniorNumbersList());
+		} else if (menuId.equals("108")) {
+			body.addTab(new TabOrgPriorityList());
 		}
 
 	}

@@ -1,0 +1,21 @@
+<DataSource ID="OrgPriorityTypeDS" serverType="sql"
+	tableName="ORG_PRIORITY_TYPE" qualifyColumnNames="false">
+	<fields>
+		<field name="org_priority_type_id" type="integer" title="org_priority_type_id"
+			hidden="true" primaryKey="true" />
+		<field name="description" type="text" title="description" />
+		<field name="remark" type="text" title="remark" />
+		<field name="changer_user" type="text" title="changer_user" />
+		<field name="org_ids" type="text" title="org_ids" hidden="true" />
+	</fields>
+	<serverObject lookupStyle="new"
+		className="com.info08.billing.callcenterbk.server.impl.dmi.DefaultDMI" />
+	<operationBindings>
+		<operationBinding operationType="fetch">
+			<orderClause>org_priority_type_id</orderClause>
+		</operationBinding>
+		<operationBinding operationType="add">
+
+		</operationBinding>
+	</operationBindings>
+</DataSource>
