@@ -477,6 +477,31 @@ public class StaffDMI implements QueryConstants {
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Removing Staff.");
 
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_EDUCATION)
+					.setParameter(1, staff_id).executeUpdate();
+			oracleManager
+					.createNativeQuery(
+							QueryConstants.Q_DELETE_STAFF_COMPUTER_SKILLS)
+					.setParameter(1, staff_id).executeUpdate();
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_LANGUAGES)
+					.setParameter(1, staff_id).executeUpdate();
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_PHONES)
+					.setParameter(1, staff_id).executeUpdate();
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_WORKS)
+					.setParameter(1, staff_id).executeUpdate();
+			oracleManager
+					.createNativeQuery(
+							QueryConstants.Q_DELETE_STAFF_RELATIVE_09)
+					.setParameter(1, staff_id).executeUpdate();
+			oracleManager
+					.createNativeQuery(
+							QueryConstants.Q_DELETE_STAFF_FAMOUS_PEOPLE)
+					.setParameter(1, staff_id).executeUpdate();
+
 			Staff staff = oracleManager.find(Staff.class, staff_id);
 			staff.setLoggedUserName(loggedUserName);
 
