@@ -1,7 +1,5 @@
 package com.info08.billing.callcenterbk.client.content;
 
-import java.util.LinkedHashMap;
-
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddEditLastName;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -20,7 +18,6 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
@@ -39,13 +36,11 @@ public class TabAbonentLastNames extends Tab {
 	private DataSource lastNameDS;
 	private DynamicForm searchForm;
 	private TextItem lastNameItem;
-	private SelectItem statusItem;
 	private IButton findButton;
 	private IButton clearButton;
 	private ToolStripButton addLastNameBtn;
 	private ToolStripButton editLastNameBtn;
 	private ToolStripButton deleteLastNameBtn;
-	private ToolStripButton restoreLastNameBtn;
 	private ToolStripButton exportButton;
 
 	public TabAbonentLastNames() {
@@ -54,7 +49,7 @@ public class TabAbonentLastNames extends Tab {
 			setTitle("აბონენტების გვარების მართვა");
 			setCanClose(true);
 
-			lastNameDS = DataSource.get("LastNameDS");			
+			lastNameDS = DataSource.get("LastNameDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -73,19 +68,7 @@ public class TabAbonentLastNames extends Tab {
 			lastNameItem.setWidth("100%");
 			lastNameItem.setName("lastname");
 
-			statusItem = new SelectItem();
-			statusItem.setTitle("სტატუსი");
-			statusItem.setType("comboBox");
-			statusItem.setName("deleted");
-
-			LinkedHashMap<String, String> mapStatuses = new LinkedHashMap<String, String>();
-			mapStatuses.put("0", "აქტიური");
-			mapStatuses.put("-1", "გაუქმებული");
-			statusItem.setValueMap(mapStatuses);
-			statusItem.setDefaultToFirstOption(true);
-			statusItem.setWidth("100%");
-
-			searchForm.setFields(lastNameItem, statusItem);
+			searchForm.setFields(lastNameItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(540);
@@ -122,11 +105,6 @@ public class TabAbonentLastNames extends Tab {
 			deleteLastNameBtn.setWidth(50);
 			toolStrip.addButton(deleteLastNameBtn);
 
-			restoreLastNameBtn = new ToolStripButton("აღდგენა", "restore.png");
-			restoreLastNameBtn.setLayoutAlign(Alignment.LEFT);
-			restoreLastNameBtn.setWidth(50);
-			toolStrip.addButton(restoreLastNameBtn);
-
 			toolStrip.addSeparator();
 
 			exportButton = new ToolStripButton("Excel - ში გადატანა",
@@ -135,14 +113,7 @@ public class TabAbonentLastNames extends Tab {
 			exportButton.setWidth(50);
 			toolStrip.addButton(exportButton);
 
-			ListGridField lastName = new ListGridField("lastname", "სახელი",
-					250);
-			ListGridField rec_date = new ListGridField("rec_date", "თარიღი",
-					120);
-			ListGridField deletedText = new ListGridField("deletedText",
-					"სტატუსი", 110);
-			rec_date.setAlign(Alignment.CENTER);
-			deletedText.setAlign(Alignment.CENTER);
+			ListGridField lastName = new ListGridField("lastname", "გვარი");
 
 			final ListGrid lastNamesGrid = new ListGrid();
 			lastNamesGrid.setWidth(530);
@@ -153,8 +124,8 @@ public class TabAbonentLastNames extends Tab {
 			lastNamesGrid.setShowFilterEditor(false);
 			lastNamesGrid.setCanEdit(false);
 			lastNamesGrid.setCanRemoveRecords(false);
-			lastNamesGrid.setFetchOperation("lastNameSearch");
-			lastNamesGrid.setFields(lastName, rec_date, deletedText);
+			lastNamesGrid.setFetchOperation("searchFromDB");
+			lastNamesGrid.setFields(lastName);
 
 			mainLayout.addMember(lastNamesGrid);
 
@@ -205,16 +176,16 @@ public class TabAbonentLastNames extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
 						return;
 					}
-					Integer lastname_Id = listGridRecord
-							.getAttributeAsInt("lastname_Id");
-					if (lastname_Id == null) {
+					Integer lastname_id = listGridRecord
+							.getAttributeAsInt("lastname_id");
+					if (lastname_id == null) {
 						SC.say("არასწორი ჩანაწერი");
 						return;
 					}
 					String lastName = listGridRecord
 							.getAttributeAsString("lastname");
 					DlgAddEditLastName dlgAddEditLastName = new DlgAddEditLastName(
-							lastname_Id, lastName, lastNameDS);
+							lastname_id, lastName, lastNameDS);
 					dlgAddEditLastName.show();
 				}
 			});
@@ -228,13 +199,6 @@ public class TabAbonentLastNames extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
 						return;
 					}
-					Integer status = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (status.equals(-1)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია");
-						return;
-					}
-
 					SC.ask("გაფრთხილება",
 							"დარწმუნებული ხართ რომ გნებავთ ჩანაწერის გაუქმება ?",
 							new BooleanCallback() {
@@ -247,82 +211,20 @@ public class TabAbonentLastNames extends Tab {
 													.startQueue();
 											Record record = new Record();
 											record.setAttribute(
-													"lastname_Id",
+													"lastname_id",
 													listGridRecord
-															.getAttributeAsInt("lastname_Id"));
+															.getAttributeAsInt("lastname_id"));
 											record.setAttribute(
 													"loggedUserName",
 													CommonSingleton
 															.getInstance()
 															.getSessionPerson()
 															.getUser_name());
-											record.setAttribute("deleted", -1);
 
 											DSRequest req = new DSRequest();
 											req.setAttribute("operationId",
-													"updateLastNameStatus");
-											lastNameDS.updateData(record,
-													new DSCallback() {
-														@Override
-														public void execute(
-																DSResponse response,
-																Object rawData,
-																DSRequest request) {
-														}
-													}, req);
-											com.smartgwt.client.rpc.RPCManager
-													.sendQueue();
-
-										} catch (Exception e) {
-											SC.say(e.toString());
-										}
-									}
-								}
-							});
-				}
-			});
-			restoreLastNameBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = lastNamesGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
-						return;
-					}
-					Integer status = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (status.equals(0)) {
-						SC.say("ჩანაწერი უკვე აღდგენილია");
-						return;
-					}
-					SC.ask("გაფრთხილება",
-							"დარწმუნებული ხართ რომ გნებავთ ჩანაწერის აღდგენა ?",
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										try {
-
-											com.smartgwt.client.rpc.RPCManager
-													.startQueue();
-											Record record = new Record();
-											record.setAttribute(
-													"lastname_Id",
-													listGridRecord
-															.getAttributeAsInt("lastname_Id"));
-											record.setAttribute(
-													"loggedUserName",
-													CommonSingleton
-															.getInstance()
-															.getSessionPerson()
-															.getUser_name());
-											record.setAttribute("deleted", 0);
-
-											DSRequest req = new DSRequest();
-											req.setAttribute("operationId",
-													"updateLastNameStatus");
-											lastNameDS.updateData(record,
+													"removeLastName");
+											lastNamesGrid.removeData(record,
 													new DSCallback() {
 														@Override
 														public void execute(
@@ -347,8 +249,10 @@ public class TabAbonentLastNames extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					com.smartgwt.client.data.DSRequest dsRequestProperties = new com.smartgwt.client.data.DSRequest();
-					dsRequestProperties.setExportAs((ExportFormat) EnumUtil.getEnum(ExportFormat.values(), "xls"));
-					dsRequestProperties.setExportDisplay(ExportDisplay.DOWNLOAD);
+					dsRequestProperties.setExportAs((ExportFormat) EnumUtil
+							.getEnum(ExportFormat.values(), "xls"));
+					dsRequestProperties
+							.setExportDisplay(ExportDisplay.DOWNLOAD);
 					dsRequestProperties.setOperationId("searchFromDB");
 					lastNamesGrid.exportData(dsRequestProperties);
 				}
@@ -360,18 +264,18 @@ public class TabAbonentLastNames extends Tab {
 		}
 	}
 
-	private void search(final ListGrid firtNamesGrid) {
-		Criteria criteria = firtNamesGrid.getCriteria();
+	private void search(final ListGrid lastNamesGrid) {
+		Criteria criteria = lastNamesGrid.getCriteria();
 		if (criteria == null) {
 			criteria = new Criteria();
 		}
 		Criteria formCriteria = searchForm.getValuesAsCriteria();
 		criteria.addCriteria(formCriteria);
 
-		firtNamesGrid.invalidateCache();
+		lastNamesGrid.invalidateCache();
 		DSRequest dsRequest = new DSRequest();
 		dsRequest.setOperationId("searchFromDB");
-		firtNamesGrid.filterData(criteria, new DSCallback() {
+		lastNamesGrid.filterData(criteria, new DSCallback() {
 			@Override
 			public void execute(DSResponse response, Object rawData,
 					DSRequest request) {

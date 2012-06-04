@@ -1,24 +1,44 @@
 package com.info08.billing.callcenterbk.shared.items;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name = "FIRSTNAMES")
 public class FirstName implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = -180371369122938828L;
-	private Integer firstname_Id;
+	@Id
+	@SequenceGenerator(name = "SEQ_FIRSTNAME_GENERATOR", sequenceName = "SEQ_FIRSTNAME")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FIRSTNAME_GENERATOR")
+	@Column(name = "FIRSTNAME_ID")
+	private Long firstname_id;
+
+	@Basic
+	@Column(name = "FIRSTNAME")
 	private String firstname;
-	private Timestamp rec_date;
-	private Integer deleted;
-	private String deletedText;
+
+	@Transient
 	private String loggedUserName;
 
-	public Integer getFirstname_Id() {
-		return firstname_Id;
+	public FirstName() {
 	}
 
-	public void setFirstname_Id(Integer firstname_Id) {
-		this.firstname_Id = firstname_Id;
+	public Long getFirstname_id() {
+		return firstname_id;
+	}
+
+	public void setFirstname_id(Long firstname_id) {
+		this.firstname_id = firstname_id;
 	}
 
 	public String getFirstname() {
@@ -27,30 +47,6 @@ public class FirstName implements Serializable {
 
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
-	}
-
-	public Timestamp getRec_date() {
-		return rec_date;
-	}
-
-	public void setRec_date(Timestamp rec_date) {
-		this.rec_date = rec_date;
-	}
-
-	public Integer getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Integer deleted) {
-		this.deleted = deleted;
-	}
-
-	public String getDeletedText() {
-		return deletedText;
-	}
-
-	public void setDeletedText(String deletedText) {
-		this.deletedText = deletedText;
 	}
 
 	public String getLoggedUserName() {

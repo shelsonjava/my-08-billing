@@ -1,11 +1,9 @@
 package com.info08.billing.callcenterbk.server.impl.dmi;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -2594,111 +2592,58 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	public ArrayList<LastName> fetchLastNames(DSRequest dsRequest)
-			throws CallCenterException {
-		PreparedStatement selectStmt = null;
-		Connection connection = null;
-		try {
-			logger.info("getting lastnames ...");
-
-			if (lastNames == null || lastNames.isEmpty()) {
-				logger.info("getting lastnames from DB. ");
-				lastNames = new TreeMap<Integer, LastName>();
-				DataSource ds = DataSourceManager.get("CallSessDS");
-				SQLDataSource sqlDS = (SQLDataSource) ds;
-				connection = sqlDS.getConnection();
-
-				selectStmt = connection.prepareStatement(Q_GET_LAST_NAMES_ALL);
-				ResultSet rLastNames = selectStmt.executeQuery();
-				while (rLastNames.next()) {
-					LastName lastName = new LastName();
-					Integer lastname_id = rLastNames.getInt(4);
-					lastName.setDeleted(rLastNames.getInt(1));
-					lastName.setDeletedText(rLastNames.getString(2));
-					lastName.setLastname(rLastNames.getString(3));
-					lastName.setLastname_Id(lastname_id);
-					lastName.setRec_date(rLastNames.getTimestamp(5));
-					lastNames.put(lastname_id, lastName);
-				}
-			}
-			ArrayList<LastName> ret = new ArrayList<LastName>();
-			ret.addAll(lastNames.values());
-			return ret;
-		} catch (Exception e) {
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error("Error While Select LastNames From Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			try {
-				if (selectStmt != null) {
-					selectStmt.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Closing Connection : ", e2);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
-			}
-		}
-	}
-
-	public ArrayList<FirstName> fetchFirstNames(DSRequest dsRequest)
-			throws CallCenterException {
-		PreparedStatement selectStmt = null;
-		Connection connection = null;
-		try {
-			logger.info("getting first names ...");
-			if (firstNames == null || firstNames.isEmpty()) {
-
-				logger.info("getting first names from DB. ");
-				firstNames = new TreeMap<Integer, FirstName>();
-				DataSource ds = DataSourceManager.get("CallSessDS");
-				SQLDataSource sqlDS = (SQLDataSource) ds;
-				connection = sqlDS.getConnection();
-
-				selectStmt = connection.prepareStatement(Q_GET_FIRST_NAMES_ALL);
-				ResultSet rFirstNames = selectStmt.executeQuery();
-				while (rFirstNames.next()) {
-					FirstName firstName = new FirstName();
-					Integer firstname_id = rFirstNames.getInt(4);
-					firstName.setDeleted(rFirstNames.getInt(1));
-					firstName.setDeletedText(rFirstNames.getString(2));
-					firstName.setFirstname(rFirstNames.getString(3));
-					firstName.setFirstname_Id(firstname_id);
-					firstName.setRec_date(rFirstNames.getTimestamp(5));
-					firstNames.put(firstname_id, firstName);
-				}
-			}
-			ArrayList<FirstName> ret = new ArrayList<FirstName>();
-			ret.addAll(firstNames.values());
-			return ret;
-		} catch (Exception e) {
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error("Error While Select FirstNames From Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			try {
-				if (selectStmt != null) {
-					selectStmt.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Closing Connection : ", e2);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
-			}
-		}
-	}
+	// public ArrayList<LastName> fetchLastNames(DSRequest dsRequest)
+	// throws CallCenterException {
+	// PreparedStatement selectStmt = null;
+	// Connection connection = null;
+	// try {
+	// logger.info("getting lastnames ...");
+	//
+	// if (lastNames == null || lastNames.isEmpty()) {
+	// logger.info("getting lastnames from DB. ");
+	// lastNames = new TreeMap<Integer, LastName>();
+	// DataSource ds = DataSourceManager.get("CallSessDS");
+	// SQLDataSource sqlDS = (SQLDataSource) ds;
+	// connection = sqlDS.getConnection();
+	//
+	// selectStmt = connection.prepareStatement(Q_GET_LAST_NAMES_ALL);
+	// ResultSet rLastNames = selectStmt.executeQuery();
+	// while (rLastNames.next()) {
+	// LastName lastName = new LastName();
+	// Integer lastname_id = rLastNames.getInt(4);
+	// lastName.setDeleted(rLastNames.getInt(1));
+	// lastName.setDeletedText(rLastNames.getString(2));
+	// lastName.setLastname(rLastNames.getString(3));
+	// lastName.setLastname_Id(lastname_id);
+	// lastName.setRec_date(rLastNames.getTimestamp(5));
+	// lastNames.put(lastname_id, lastName);
+	// }
+	// }
+	// ArrayList<LastName> ret = new ArrayList<LastName>();
+	// ret.addAll(lastNames.values());
+	// return ret;
+	// } catch (Exception e) {
+	// if (e instanceof CallCenterException) {
+	// throw (CallCenterException) e;
+	// }
+	// logger.error("Error While Select LastNames From Database : ", e);
+	// throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+	// + e.toString());
+	// } finally {
+	// try {
+	// if (selectStmt != null) {
+	// selectStmt.close();
+	// }
+	// if (connection != null) {
+	// connection.close();
+	// }
+	// } catch (Exception e2) {
+	// logger.error("Error While Closing Connection : ", e2);
+	// throw new CallCenterException(
+	// "შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+	// }
+	// }
+	// }
 
 	/**
 	 * Adding New First Name
@@ -2707,94 +2652,157 @@ public class CommonDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public FirstName addFirstName(FirstName record) throws Exception {
-		PreparedStatement countStatement = null;
-		CallableStatement insertStatement = null;
-		Connection connection = null;
+	// public FirstName addFirstName(FirstName record) throws Exception {
+	// PreparedStatement countStatement = null;
+	// CallableStatement insertStatement = null;
+	// Connection connection = null;
+	// try {
+	// String firstName = record.getFirstname();
+	// String loggedUserName = record.getLoggedUserName();
+	//
+	// String log = "Method:CommonDMI.addFirstName. Params : 1. firstName = "
+	// + firstName;
+	// if (firstName == null || firstName.trim().equals("")) {
+	// log += ". Result : Invalid SessionId";
+	// logger.info(log);
+	// throw new CallCenterException("არასწორი სახელი : " + firstName);
+	// }
+	// // sysdate
+	// Timestamp recDate = new Timestamp(System.currentTimeMillis());
+	//
+	// DataSource ds = DataSourceManager.get("CallSessDS");
+	// SQLDataSource sqlDS = (SQLDataSource) ds;
+	// connection = sqlDS.getConnection();
+	//
+	// countStatement = connection
+	// .prepareStatement(Q_GET_FIRST_NAME_COUNT);
+	// countStatement.setString(1, firstName);
+	// ResultSet names = countStatement.executeQuery();
+	// if (names.next()) {
+	// int count = names.getInt(1);
+	// if (count > 0) {
+	// log += ". Result : Duplicate First Name ";
+	// logger.info(log);
+	// throw new CallCenterException(
+	// "ასეთი სახელი უკვე არსებობს: " + firstName);
+	// }
+	// }
+	// connection.setAutoCommit(false);
+	//
+	// insertStatement = connection
+	// .prepareCall("{ call ccare.newBillSupport2.saveOrUpdateFirstName( ?,?,?,?,?,? ) }");
+	// insertStatement.setInt(1, -100);
+	// insertStatement.setString(2, firstName);
+	// insertStatement.setTimestamp(3, recDate);
+	// insertStatement.setString(4, loggedUserName);
+	// insertStatement.setString(5, "");
+	// insertStatement.setInt(6, 0);
+	// insertStatement.registerOutParameter(1, Types.INTEGER);
+	// insertStatement.executeUpdate();
+	//
+	// Integer firstNameId = insertStatement.getInt(1);
+	//
+	// FirstName retItem = getFirstName(firstNameId, loggedUserName,
+	// connection);
+	// firstNames.put(retItem.getFirstname_Id(), retItem);
+	// connection.commit();
+	// log += ". Inserting Finished SuccessFully. ";
+	// logger.info(log);
+	// return retItem;
+	// } catch (Exception e) {
+	// try {
+	// if (connection != null) {
+	// connection.rollback();
+	// }
+	// } catch (Exception e2) {
+	// logger.error("Error While Rollback Database : ", e);
+	// throw new CallCenterException(
+	// "შეცდომა მონაცემების შენახვისას Ex1: " + e.toString());
+	// }
+	//
+	// if (e instanceof CallCenterException) {
+	// throw (CallCenterException) e;
+	// }
+	// logger.error("Error While Insert FirstName Into Database : ", e);
+	// throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+	// + e.toString());
+	// } finally {
+	// try {
+	// if (countStatement != null) {
+	// countStatement.close();
+	// }
+	// if (insertStatement != null) {
+	// insertStatement.close();
+	// }
+	// if (connection != null) {
+	// connection.close();
+	// }
+	// } catch (Exception e2) {
+	// logger.error("Error While Closing Connection : ", e2);
+	// throw new CallCenterException(
+	// "შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+	// }
+	// }
+	// }
+
+	@SuppressWarnings("rawtypes")
+	public FirstName addFirstName(DSRequest dsRequest) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
 		try {
-			String firstName = record.getFirstname();
-			String loggedUserName = record.getLoggedUserName();
+			String log = "Method:CommonDMI.addFirstName.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
 
-			String log = "Method:CommonDMI.addFirstName. Params : 1. firstName = "
-					+ firstName;
-			if (firstName == null || firstName.trim().equals("")) {
-				log += ". Result : Invalid SessionId";
-				logger.info(log);
-				throw new CallCenterException("არასწორი სახელი : " + firstName);
-			}
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+			Map<?, ?> values = dsRequest.getValues();
+			String firstname = values.containsKey("firstname") ? values.get(
+					"firstname").toString() : null;
+			String loggedUserName = values.get("loggedUserName").toString();
 
-			DataSource ds = DataSourceManager.get("CallSessDS");
-			SQLDataSource sqlDS = (SQLDataSource) ds;
-			connection = sqlDS.getConnection();
-			countStatement = connection
-					.prepareStatement(Q_GET_FIRST_NAME_COUNT);
-			countStatement.setString(1, firstName);
-			ResultSet names = countStatement.executeQuery();
-			if (names.next()) {
-				int count = names.getInt(1);
+			FirstName firstNameObj = new FirstName();
+			firstNameObj.setFirstname(firstname);
+			firstNameObj.setLoggedUserName(loggedUserName);
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add FirstName.");
+
+			List countIfFirstNames = oracleManager
+					.createNativeQuery(Q_GET_FIRST_NAME_COUNT)
+					.setParameter(1, firstname).getResultList();
+			if (countIfFirstNames != null && !countIfFirstNames.isEmpty()) {
+				Long count = new Long(countIfFirstNames.get(0).toString());
 				if (count > 0) {
 					log += ". Result : Duplicate First Name ";
 					logger.info(log);
 					throw new CallCenterException(
-							"ასეთი სახელი უკვე არსებობს: " + firstName);
+							"ასეთი სახელი უკვე არსებობს: " + firstname);
 				}
 			}
-			connection.setAutoCommit(false);
 
-			insertStatement = connection
-					.prepareCall("{ call ccare.newBillSupport2.saveOrUpdateFirstName( ?,?,?,?,?,? ) }");
-			insertStatement.setInt(1, -100);
-			insertStatement.setString(2, firstName);
-			insertStatement.setTimestamp(3, recDate);
-			insertStatement.setString(4, loggedUserName);
-			insertStatement.setString(5, "");
-			insertStatement.setInt(6, 0);
-			insertStatement.registerOutParameter(1, Types.INTEGER);
-			insertStatement.executeUpdate();
+			oracleManager.persist(firstNameObj);
+			oracleManager.flush();
 
-			Integer firstNameId = insertStatement.getInt(1);
+			firstNameObj = oracleManager.find(FirstName.class,
+					firstNameObj.getFirstname_id());
 
-			FirstName retItem = getFirstName(firstNameId, loggedUserName,
-					connection);
-			firstNames.put(retItem.getFirstname_Id(), retItem);
-			connection.commit();
+			firstNameObj.setLoggedUserName(loggedUserName);
+
+			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return retItem;
+			return firstNameObj;
 		} catch (Exception e) {
-			try {
-				if (connection != null) {
-					connection.rollback();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Rollback Database : ", e);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex1: " + e.toString());
-			}
-
+			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert FirstName Into Database : ", e);
+			logger.error("Error While Insert firstName Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
-			try {
-				if (countStatement != null) {
-					countStatement.close();
-				}
-				if (insertStatement != null) {
-					insertStatement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Closing Connection : ", e2);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
 			}
 		}
 	}
@@ -2806,71 +2814,132 @@ public class CommonDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
+	// @SuppressWarnings("rawtypes")
+	// public FirstName updateFirstName(Map record) throws Exception {
+	// Connection connection = null;
+	// PreparedStatement updateStatement = null;
+	// try {
+	// Integer firstname_id = new Integer(record.get("firstname_id")
+	// .toString());
+	// String firstName = record.get("firstname").toString();
+	// String loggedUserName = record.get("loggedUserName").toString();
+	//
+	// String log =
+	// "Method:CommonDMI.updateFirstName. Params : 1. firstname_id = "
+	// + firstname_id
+	// + ", firstName = "
+	// + firstName
+	// + ", loggedUserName = " + loggedUserName;
+	//
+	// DataSource ds = DataSourceManager.get("CallSessDS");
+	// SQLDataSource sqlDS = (SQLDataSource) ds;
+	// connection = sqlDS.getConnection();
+	//
+	// connection.setAutoCommit(false);
+	//
+	// updateStatement = connection.prepareStatement(Q_UPDATE_FIRST_NAME);
+	// updateStatement.setString(1, firstName);
+	// updateStatement.setString(2, loggedUserName);
+	// updateStatement.setInt(3, firstname_id);
+	// updateStatement.executeUpdate();
+	//
+	// log += ". Update Finished Successfully";
+	// FirstName updatedRecord = getFirstName(firstname_id,
+	// loggedUserName, connection);
+	// connection.commit();
+	// firstNames.remove(updatedRecord.getFirstname());
+	// firstNames.put(updatedRecord.getFirstname_Id(), updatedRecord);
+	// logger.info(log);
+	// return updatedRecord;
+	// } catch (Exception e) {
+	// try {
+	// if (connection != null) {
+	// connection.rollback();
+	// }
+	// } catch (Exception e2) {
+	// logger.error("Error While Rollback Database : ", e);
+	// throw new CallCenterException(
+	// "შეცდომა მონაცემების შენახვისას Ex2: " + e.toString());
+	// }
+	//
+	// if (e instanceof CallCenterException) {
+	// throw (CallCenterException) e;
+	// }
+	// logger.error("Error While Update FirstName Into Database : ", e);
+	// throw new CallCenterException("შეცდომა მონაცემების განახლებისას : "
+	// + e.toString());
+	// } finally {
+	// try {
+	// if (updateStatement != null) {
+	// updateStatement.close();
+	// }
+	// if (connection != null) {
+	// connection.close();
+	// }
+	// } catch (Exception e2) {
+	// logger.error("Error While Closing Connection : ", e2);
+	// throw new CallCenterException(
+	// "შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+	// }
+	// }
+	// }
+
 	@SuppressWarnings("rawtypes")
 	public FirstName updateFirstName(Map record) throws Exception {
-		Connection connection = null;
-		PreparedStatement updateStatement = null;
+		EntityManager oracleManager = null;
+		Object transaction = null;
 		try {
-			Integer firstname_Id = new Integer(record.get("firstname_Id")
-					.toString());
-			String firstName = record.get("firstname").toString();
+			String log = "Method:CommonDMI.updateFirstName.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long firstname_id = new Long(record.get("firstname_id").toString());
+			String firstname = record.get("firstname") == null ? null : record
+					.get("firstname").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update updateFirstName.");
 
-			String log = "Method:CommonDMI.updateFirstName. Params : 1. firstname_Id = "
-					+ firstname_Id
-					+ ", firstName = "
-					+ firstName
-					+ ", loggedUserName = " + loggedUserName;
+			FirstName firstNameObj = oracleManager.find(FirstName.class,
+					firstname_id);
 
-			DataSource ds = DataSourceManager.get("CallSessDS");
-			SQLDataSource sqlDS = (SQLDataSource) ds;
-			connection = sqlDS.getConnection();
+			firstNameObj.setFirstname(firstname);
+			firstNameObj.setLoggedUserName(loggedUserName);
 
-			connection.setAutoCommit(false);
-
-			updateStatement = connection.prepareStatement(Q_UPDATE_FIRST_NAME);
-			updateStatement.setString(1, firstName);
-			updateStatement.setString(2, loggedUserName);
-			updateStatement.setInt(3, firstname_Id);
-			updateStatement.executeUpdate();
-
-			log += ". Update Finished Successfully";
-			FirstName updatedRecord = getFirstName(firstname_Id,
-					loggedUserName, connection);
-			connection.commit();
-			firstNames.remove(updatedRecord.getFirstname());
-			firstNames.put(updatedRecord.getFirstname_Id(), updatedRecord);
-			logger.info(log);
-			return updatedRecord;
-		} catch (Exception e) {
-			try {
-				if (connection != null) {
-					connection.rollback();
+			List countIfFirstNames = oracleManager
+					.createNativeQuery(Q_GET_FIRST_NAME_COUNT)
+					.setParameter(1, firstname).getResultList();
+			if (countIfFirstNames != null && !countIfFirstNames.isEmpty()) {
+				Long count = new Long(countIfFirstNames.get(0).toString());
+				if (count > 0) {
+					log += ". Result : Duplicate First Name ";
+					logger.info(log);
+					throw new CallCenterException(
+							"ასეთი სახელი უკვე არსებობს: " + firstname);
 				}
-			} catch (Exception e2) {
-				logger.error("Error While Rollback Database : ", e);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex2: " + e.toString());
 			}
 
+			oracleManager.merge(firstNameObj);
+			oracleManager.flush();
+
+			firstNameObj = oracleManager.find(FirstName.class, firstname_id);
+
+			EMF.commitTransaction(transaction);
+			log += ". Updating Finished SuccessFully. ";
+			logger.info(log);
+			return firstNameObj;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update FirstName Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების განახლებისას : "
+			logger.error("Error While Update firstNameObj Into Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
-			try {
-				if (updateStatement != null) {
-					updateStatement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Closing Connection : ", e2);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
 			}
 		}
 	}
@@ -2882,118 +2951,180 @@ public class CommonDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
+	// @SuppressWarnings("rawtypes")
+	// public FirstName updateFirstNameStatus(Map record) throws Exception {
+	// Connection connection = null;
+	// PreparedStatement updateStatement = null;
+	// try {
+	// Integer firstname_id = new Integer(record.get("firstname_id")
+	// .toString());
+	// Integer deleted = new Integer(record.get("deleted").toString());
+	// String loggedUserName = record.get("loggedUserName").toString();
+	//
+	// String log =
+	// "Method:CommonDMI.updateFirstNameStatus. Params : 1. firstname_id = "
+	// + firstname_id
+	// + ", deleted = "
+	// + deleted
+	// + ", loggedUserName = " + loggedUserName;
+	//
+	// DataSource ds = DataSourceManager.get("CallSessDS");
+	// SQLDataSource sqlDS = (SQLDataSource) ds;
+	// connection = sqlDS.getConnection();
+	//
+	// connection.setAutoCommit(false);
+	//
+	// updateStatement = connection
+	// .prepareStatement(Q_UPDATE_FIRST_NAME_STATUS);
+	// updateStatement.setInt(1, deleted);
+	// updateStatement.setString(2, loggedUserName);
+	// updateStatement.setInt(3, firstname_id);
+	// updateStatement.executeUpdate();
+	//
+	// log += ". Update Finished Successfully";
+	// FirstName updatedRecord = getFirstName(firstname_id,
+	// loggedUserName, connection);
+	// firstNames.remove(updatedRecord.getFirstname_Id());
+	// firstNames.put(updatedRecord.getFirstname_Id(), updatedRecord);
+	// connection.commit();
+	// logger.info(log);
+	// return updatedRecord;
+	// } catch (Exception e) {
+	// try {
+	// if (connection != null) {
+	// connection.rollback();
+	// }
+	// } catch (Exception e2) {
+	// logger.error("Error While Rollback Database : ", e);
+	// throw new CallCenterException(
+	// "შეცდომა მონაცემების შენახვისას Ex2: " + e.toString());
+	// }
+	//
+	// if (e instanceof CallCenterException) {
+	// throw (CallCenterException) e;
+	// }
+	// logger.error(
+	// "Error While Update FirstiName Status Into Database : ", e);
+	// throw new CallCenterException("შეცდომა მონაცემების განახლებისას : "
+	// + e.toString());
+	// } finally {
+	// try {
+	// if (updateStatement != null) {
+	// updateStatement.close();
+	// }
+	// if (connection != null) {
+	// connection.close();
+	// }
+	// } catch (Exception e2) {
+	// logger.error("Error While Closing Connection : ", e2);
+	// throw new CallCenterException(
+	// "შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+	// }
+	// }
+	// }
+
 	@SuppressWarnings("rawtypes")
-	public FirstName updateFirstNameStatus(Map record) throws Exception {
-		Connection connection = null;
-		PreparedStatement updateStatement = null;
+	public FirstName removeFirstName(DSRequest dsRequest) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
 		try {
-			Integer firstname_Id = new Integer(record.get("firstname_Id")
-					.toString());
-			Integer deleted = new Integer(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			String log = "Method:CommonDMI.removeFirstName.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
 
-			String log = "Method:CommonDMI.updateFirstNameStatus. Params : 1. firstname_Id = "
-					+ firstname_Id
-					+ ", deleted = "
-					+ deleted
-					+ ", loggedUserName = " + loggedUserName;
+			Long firstname_id = new Long(dsRequest.getOldValues()
+					.get("firstname_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing removeFirstName.");
 
-			DataSource ds = DataSourceManager.get("CallSessDS");
-			SQLDataSource sqlDS = (SQLDataSource) ds;
-			connection = sqlDS.getConnection();
+			FirstName firstNameObj = oracleManager.find(FirstName.class,
+					firstname_id);
+			firstNameObj.setLoggedUserName(loggedUserName);
 
-			connection.setAutoCommit(false);
+			List result = oracleManager
+					.createNativeQuery(QueryConstants.Q_CHECK_FIRSTNAME_FK)
+					.setParameter(1, firstname_id).getResultList();
+			if (result != null && !result.isEmpty()) {
+				for (Object row : result) {
+					Object cols[] = (Object[]) row;
+					Long cnt = new Long(cols[0] == null ? "-1"
+							: cols[0].toString());
+					if (cnt != null && cnt.intValue() > 0) {
+						throw new CallCenterException(
+								"შეცდომა სახელის წაშლის დროს : ნაპოვნია სახელი აბონენტებში!");
+					}
 
-			updateStatement = connection
-					.prepareStatement(Q_UPDATE_FIRST_NAME_STATUS);
-			updateStatement.setInt(1, deleted);
-			updateStatement.setString(2, loggedUserName);
-			updateStatement.setInt(3, firstname_Id);
-			updateStatement.executeUpdate();
-
-			log += ". Update Finished Successfully";
-			FirstName updatedRecord = getFirstName(firstname_Id,
-					loggedUserName, connection);
-			firstNames.remove(updatedRecord.getFirstname_Id());
-			firstNames.put(updatedRecord.getFirstname_Id(), updatedRecord);
-			connection.commit();
-			logger.info(log);
-			return updatedRecord;
-		} catch (Exception e) {
-			try {
-				if (connection != null) {
-					connection.rollback();
 				}
-			} catch (Exception e2) {
-				logger.error("Error While Rollback Database : ", e);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex2: " + e.toString());
 			}
 
+			oracleManager.remove(firstNameObj);
+			oracleManager.flush();
+
+			firstNameObj = oracleManager.find(FirstName.class, firstname_id);
+
+			EMF.commitTransaction(transaction);
+			log += ". Status Updating Finished SuccessFully. ";
+			logger.info(log);
+			return firstNameObj;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			logger.error(
-					"Error While Update FirstiName Status Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების განახლებისას : "
+					"Error While Update Status for firstNameObj Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
-			try {
-				if (updateStatement != null) {
-					updateStatement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Closing Connection : ", e2);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
 			}
 		}
 	}
 
-	private FirstName getFirstName(Integer firstNameId, String loggedUserName,
-			Connection connection) throws CallCenterException {
-		PreparedStatement selectNote = null;
-		try {
-			String log = "Method:CommonDMI.getFirstName. Params : 1. firstNameId = "
-					+ firstNameId + ", 2. loggedUserName = " + loggedUserName;
-			selectNote = connection.prepareStatement(Q_GET_FIRST_NAME_BY_ID);
-			selectNote.setInt(1, firstNameId);
-			ResultSet resultSetNote = selectNote.executeQuery();
-			if (!resultSetNote.next()) {
-				log += ". Result : Invalid FirstName From Database: "
-						+ firstNameId;
-				logger.info(log);
-				throw new CallCenterException(
-						"შეცდომა შენიშვნის ჩანაწერის წამოღებისას");
-			}
-			FirstName existingRecord = new FirstName();
-			existingRecord.setLoggedUserName(loggedUserName);
-			existingRecord.setFirstname_Id(resultSetNote.getInt(1));
-			existingRecord.setFirstname(resultSetNote.getString(2));
-			existingRecord.setRec_date(resultSetNote.getTimestamp(3));
-			existingRecord.setDeleted(resultSetNote.getInt(4));
-			existingRecord.setDeletedText(resultSetNote.getString(5));
-			log += ". Result : getFirstName Finished Successfully.";
-			logger.info(log);
-			return existingRecord;
-		} catch (Exception e) {
-			logger.error("Error While Retrieving FirstNames : ", e);
-			throw new CallCenterException(
-					"შეცდომა მონაცემების წამოღებისას მონაცემთა ბაზიდან: "
-							+ e.toString());
-		} finally {
-			try {
-				if (selectNote != null) {
-					selectNote.close();
-				}
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-	}
+	// private FirstName getFirstName(Integer firstNameId, String
+	// loggedUserName,
+	// Connection connection) throws CallCenterException {
+	// PreparedStatement selectNote = null;
+	// try {
+	// String log = "Method:CommonDMI.getFirstName. Params : 1. firstNameId = "
+	// + firstNameId + ", 2. loggedUserName = " + loggedUserName;
+	// selectNote = connection.prepareStatement(Q_GET_FIRST_NAME_BY_ID);
+	// selectNote.setInt(1, firstNameId);
+	// ResultSet resultSetNote = selectNote.executeQuery();
+	// if (!resultSetNote.next()) {
+	// log += ". Result : Invalid FirstName From Database: "
+	// + firstNameId;
+	// logger.info(log);
+	// throw new CallCenterException(
+	// "შეცდომა შენიშვნის ჩანაწერის წამოღებისას");
+	// }
+	// FirstName existingRecord = new FirstName();
+	// existingRecord.setLoggedUserName(loggedUserName);
+	// existingRecord.setFirstname_Id(resultSetNote.getInt(1));
+	// existingRecord.setFirstname(resultSetNote.getString(2));
+	// log += ". Result : getFirstName Finished Successfully.";
+	// logger.info(log);
+	// return existingRecord;
+	// } catch (Exception e) {
+	// logger.error("Error While Retrieving FirstNames : ", e);
+	// throw new CallCenterException(
+	// "შეცდომა მონაცემების წამოღებისას მონაცემთა ბაზიდან: "
+	// + e.toString());
+	// } finally {
+	// try {
+	// if (selectNote != null) {
+	// selectNote.close();
+	// }
+	// } catch (Exception e2) {
+	// e2.printStackTrace();
+	// }
+	// }
+	// }
 
 	/**
 	 * Adding New LastName
@@ -3002,93 +3133,64 @@ public class CommonDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public LastName addLastName(LastName record) throws Exception {
-		PreparedStatement countStatement = null;
-		CallableStatement insertStatement = null;
-		Connection connection = null;
+	@SuppressWarnings("rawtypes")
+	public LastName addLastName(DSRequest dsRequest) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
 		try {
-			String lastName = record.getLastname();
-			String loggedUserName = record.getLoggedUserName();
+			String log = "Method:CommonDMI.addLastName.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
 
-			String log = "Method:CommonDMI.addLastName. Params : 1. lastName = "
-					+ lastName;
-			if (lastName == null || lastName.trim().equals("")) {
-				log += ". Result : Invalid lastName";
-				logger.info(log);
-				throw new CallCenterException("არასწორი გვარი : " + lastName);
-			}
-			// sysdate
-			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+			Map<?, ?> values = dsRequest.getValues();
+			String lastname = values.containsKey("lastname") ? values.get(
+					"lastname").toString() : null;
+			String loggedUserName = values.get("loggedUserName").toString();
 
-			DataSource ds = DataSourceManager.get("CallSessDS");
-			SQLDataSource sqlDS = (SQLDataSource) ds;
-			connection = sqlDS.getConnection();
-			countStatement = connection.prepareStatement(Q_GET_LAST_NAME_COUNT);
-			countStatement.setString(1, lastName);
-			ResultSet names = countStatement.executeQuery();
-			if (names.next()) {
-				int count = names.getInt(1);
+			LastName lastNameObj = new LastName();
+			lastNameObj.setLastname(lastname);
+			lastNameObj.setLoggedUserName(loggedUserName);
+
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Add addLastName.");
+
+			List countIfLastNames = oracleManager
+					.createNativeQuery(Q_GET_LAST_NAME_COUNT)
+					.setParameter(1, lastname).getResultList();
+			if (countIfLastNames != null && !countIfLastNames.isEmpty()) {
+				Long count = new Long(countIfLastNames.get(0).toString());
 				if (count > 0) {
-					log += ". Result : Duplicate LastName ";
+					log += ". Result : Duplicate Last Name ";
 					logger.info(log);
 					throw new CallCenterException("ასეთი გვარი უკვე არსებობს: "
-							+ lastName);
+							+ lastname);
 				}
 			}
-			connection.setAutoCommit(false);
 
-			insertStatement = connection
-					.prepareCall("{ call ccare.newBillSupport2.saveOrUpdateLastName( ?,?,?,?,?,? ) }");
-			insertStatement.setInt(1, -100);
-			insertStatement.setString(2, lastName);
-			insertStatement.setTimestamp(3, recDate);
-			insertStatement.setString(4, loggedUserName);
-			insertStatement.setString(5, "");
-			insertStatement.setInt(6, 0);
-			insertStatement.registerOutParameter(1, Types.INTEGER);
-			insertStatement.executeUpdate();
+			oracleManager.persist(lastNameObj);
+			oracleManager.flush();
 
-			Integer lastNameId = insertStatement.getInt(1);
+			lastNameObj = oracleManager.find(LastName.class,
+					lastNameObj.getLastname_id());
 
-			LastName retItem = getLastName(lastNameId, loggedUserName,
-					connection);
-			lastNames.put(retItem.getLastname_Id(), retItem);
-			connection.commit();
+			lastNameObj.setLoggedUserName(loggedUserName);
+
+			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return retItem;
+			return lastNameObj;
 		} catch (Exception e) {
-			try {
-				if (connection != null) {
-					connection.rollback();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Rollback Database : ", e);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex1: " + e.toString());
-			}
-
+			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert FirstName Into Database : ", e);
+			logger.error("Error While Insert addLastName Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
-			try {
-				if (countStatement != null) {
-					countStatement.close();
-				}
-				if (insertStatement != null) {
-					insertStatement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Closing Connection : ", e2);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
 			}
 		}
 	}
@@ -3102,69 +3204,60 @@ public class CommonDMI implements QueryConstants {
 	 */
 	@SuppressWarnings("rawtypes")
 	public LastName updateLastName(Map record) throws Exception {
-		Connection connection = null;
-		PreparedStatement updateStatement = null;
+		EntityManager oracleManager = null;
+		Object transaction = null;
 		try {
-			Integer lastname_Id = new Integer(record.get("lastname_Id")
-					.toString());
-			String lastName = record.get("lastname").toString();
+			String log = "Method:CommonDMI.updateFirstName.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long lastname_id = new Long(record.get("lastname_id").toString());
+			String lastname = record.get("lastname") == null ? null : record
+					.get("lastname").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Update lastname.");
 
-			String log = "Method:CommonDMI.updateLastName. Params : 1. lastname_Id = "
-					+ lastname_Id
-					+ ", lastName = "
-					+ lastName
-					+ ", loggedUserName = " + loggedUserName;
+			LastName lastNameObj = oracleManager.find(LastName.class,
+					lastname_id);
 
-			DataSource ds = DataSourceManager.get("CallSessDS");
-			SQLDataSource sqlDS = (SQLDataSource) ds;
-			connection = sqlDS.getConnection();
+			lastNameObj.setLastname(lastname);
+			lastNameObj.setLoggedUserName(loggedUserName);
 
-			connection.setAutoCommit(false);
-
-			updateStatement = connection.prepareStatement(Q_UPDATE_LAST_NAME);
-			updateStatement.setString(1, lastName);
-			updateStatement.setString(2, loggedUserName);
-			updateStatement.setInt(3, lastname_Id);
-			updateStatement.executeUpdate();
-
-			log += ". Update Finished Successfully";
-			LastName updatedRecord = getLastName(lastname_Id, loggedUserName,
-					connection);
-			lastNames.remove(updatedRecord.getLastname_Id());
-			lastNames.put(updatedRecord.getLastname_Id(), updatedRecord);
-			connection.commit();
-			logger.info(log);
-			return updatedRecord;
-		} catch (Exception e) {
-			try {
-				if (connection != null) {
-					connection.rollback();
+			List countIfLastNames = oracleManager
+					.createNativeQuery(Q_GET_LAST_NAME_COUNT)
+					.setParameter(1, lastname).getResultList();
+			if (countIfLastNames != null && !countIfLastNames.isEmpty()) {
+				Long count = new Long(countIfLastNames.get(0).toString());
+				if (count > 0) {
+					log += ". Result : Duplicate Last Name ";
+					logger.info(log);
+					throw new CallCenterException("ასეთი გვარი უკვე არსებობს: "
+							+ lastname);
 				}
-			} catch (Exception e2) {
-				logger.error("Error While Rollback Database : ", e);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex2: " + e.toString());
 			}
 
+			oracleManager.merge(lastNameObj);
+			oracleManager.flush();
+
+			lastNameObj = oracleManager.find(LastName.class, lastname_id);
+
+			EMF.commitTransaction(transaction);
+			log += ". Updating Finished SuccessFully. ";
+			logger.info(log);
+			return lastNameObj;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update FirstName Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების განახლებისას : "
+			logger.error("Error While Update firstNameObj Into Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
-			try {
-				if (updateStatement != null) {
-					updateStatement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Closing Connection : ", e2);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
 			}
 		}
 	}
@@ -3176,118 +3269,108 @@ public class CommonDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
+
 	@SuppressWarnings("rawtypes")
-	public LastName updateLastNameStatus(Map record) throws Exception {
-		Connection connection = null;
-		PreparedStatement updateStatement = null;
+	public LastName removeLastName(DSRequest dsRequest) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
 		try {
-			Integer lastname_Id = new Integer(record.get("lastname_Id")
-					.toString());
-			Integer deleted = new Integer(record.get("deleted").toString());
-			String loggedUserName = record.get("loggedUserName").toString();
+			String log = "Method:CommonDMI.removeFirstName.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
 
-			String log = "Method:CommonDMI.updateLastNameStatus. Params : 1. lastname_Id = "
-					+ lastname_Id
-					+ ", deleted = "
-					+ deleted
-					+ ", loggedUserName = " + loggedUserName;
+			Long lastname_id = new Long(dsRequest.getOldValues()
+					.get("lastname_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing lastname.");
 
-			DataSource ds = DataSourceManager.get("CallSessDS");
-			SQLDataSource sqlDS = (SQLDataSource) ds;
-			connection = sqlDS.getConnection();
+			LastName lastNameObj = oracleManager.find(LastName.class,
+					lastname_id);
+			lastNameObj.setLoggedUserName(loggedUserName);
 
-			connection.setAutoCommit(false);
+			List result = oracleManager
+					.createNativeQuery(QueryConstants.Q_CHECK_LASTNAME_FK)
+					.setParameter(1, lastname_id).getResultList();
+			if (result != null && !result.isEmpty()) {
+				for (Object row : result) {
+					Object cols[] = (Object[]) row;
+					Long cnt = new Long(cols[0] == null ? "-1"
+							: cols[0].toString());
+					if (cnt != null && cnt.intValue() > 0) {
+						throw new CallCenterException(
+								"შეცდომა გვარის წაშლის დროს : ნაპოვნია გვარი აბონენტებში!");
+					}
 
-			updateStatement = connection
-					.prepareStatement(Q_UPDATE_LAST_NAME_STATUS);
-			updateStatement.setInt(1, deleted);
-			updateStatement.setString(2, loggedUserName);
-			updateStatement.setInt(3, lastname_Id);
-			updateStatement.executeUpdate();
-
-			log += ". Update Finished Successfully";
-			LastName updatedRecord = getLastName(lastname_Id, loggedUserName,
-					connection);
-			lastNames.remove(updatedRecord.getLastname_Id());
-			lastNames.put(updatedRecord.getLastname_Id(), updatedRecord);
-			connection.commit();
-			logger.info(log);
-			return updatedRecord;
-		} catch (Exception e) {
-			try {
-				if (connection != null) {
-					connection.rollback();
 				}
-			} catch (Exception e2) {
-				logger.error("Error While Rollback Database : ", e);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex2: " + e.toString());
 			}
 
+			oracleManager.remove(lastNameObj);
+			oracleManager.flush();
+
+			lastNameObj = oracleManager.find(LastName.class, lastname_id);
+
+			EMF.commitTransaction(transaction);
+			log += ". Status Updating Finished SuccessFully. ";
+			logger.info(log);
+			return lastNameObj;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
 			logger.error(
-					"Error While Update FirstiName Status Into Database : ", e);
-			throw new CallCenterException("შეცდომა მონაცემების განახლებისას : "
+					"Error While Update Status for lastNameObj Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
-			try {
-				if (updateStatement != null) {
-					updateStatement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Closing Connection : ", e2);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
 			}
 		}
 	}
 
-	private LastName getLastName(Integer lastNameId, String loggedUserName,
-			Connection connection) throws CallCenterException {
-		PreparedStatement selectNote = null;
-		try {
-			String log = "Method:CommonDMI.getLastName. Params : 1. lastNameId = "
-					+ lastNameId + ", 2. loggedUserName = " + loggedUserName;
-			selectNote = connection.prepareStatement(Q_GET_LAST_NAME_BY_ID);
-			selectNote.setInt(1, lastNameId);
-			ResultSet resultSetNote = selectNote.executeQuery();
-			if (!resultSetNote.next()) {
-				log += ". Result : Invalid LastName From Database: "
-						+ lastNameId;
-				logger.info(log);
-				throw new CallCenterException(
-						"შეცდომა შენიშვნის ჩანაწერის წამოღებისას");
-			}
-			LastName existingRecord = new LastName();
-			existingRecord.setLoggedUserName(loggedUserName);
-			existingRecord.setLastname_Id(resultSetNote.getInt(1));
-			existingRecord.setLastname(resultSetNote.getString(2));
-			existingRecord.setRec_date(resultSetNote.getTimestamp(3));
-			existingRecord.setDeleted(resultSetNote.getInt(4));
-			existingRecord.setDeletedText(resultSetNote.getString(5));
-			log += ". Result : getLastName Finished Successfully.";
-			logger.info(log);
-			return existingRecord;
-		} catch (Exception e) {
-			logger.error("Error While Retrieving LastNames : ", e);
-			throw new CallCenterException(
-					"შეცდომა მონაცემების წამოღებისას მონაცემთა ბაზიდან: "
-							+ e.toString());
-		} finally {
-			try {
-				if (selectNote != null) {
-					selectNote.close();
-				}
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-	}
+	// private LastName getLastName(Integer lastNameId, String loggedUserName,
+	// Connection connection) throws CallCenterException {
+	// PreparedStatement selectNote = null;
+	// try {
+	// String log = "Method:CommonDMI.getLastName. Params : 1. lastNameId = "
+	// + lastNameId + ", 2. loggedUserName = " + loggedUserName;
+	// selectNote = connection.prepareStatement(Q_GET_LAST_NAME_BY_ID);
+	// selectNote.setInt(1, lastNameId);
+	// ResultSet resultSetNote = selectNote.executeQuery();
+	// if (!resultSetNote.next()) {
+	// log += ". Result : Invalid LastName From Database: "
+	// + lastNameId;
+	// logger.info(log);
+	// throw new CallCenterException(
+	// "შეცდომა შენიშვნის ჩანაწერის წამოღებისას");
+	// }
+	// LastName existingRecord = new LastName();
+	// existingRecord.setLoggedUserName(loggedUserName);
+	// existingRecord.setLastname_id(new Long((resultSetNote.getInt(1))));
+	// existingRecord.setLastname(resultSetNote.getString(2));
+	// log += ". Result : getLastName Finished Successfully.";
+	// logger.info(log);
+	// return existingRecord;
+	// } catch (Exception e) {
+	// logger.error("Error While Retrieving LastNames : ", e);
+	// throw new CallCenterException(
+	// "შეცდომა მონაცემების წამოღებისას მონაცემთა ბაზიდან: "
+	// + e.toString());
+	// } finally {
+	// try {
+	// if (selectNote != null) {
+	// selectNote.close();
+	// }
+	// } catch (Exception e2) {
+	// e2.printStackTrace();
+	// }
+	// }
+	// }
 
 	/**
 	 * Update LastName Status

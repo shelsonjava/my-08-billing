@@ -994,6 +994,14 @@ public interface QueryConstants {
 			+ "union all\n"
 			+ "select count(t4.country_id) as cnt, 4 as n\n"
 			+ "  from c_regional_centers t4\n" + " where country_id = ?";
+	
+	public static final String Q_CHECK_FIRSTNAME_FK = "select count(1) as cnt, 1 as n \n"
+			+ "  from subscribers t\n"
+			+ " where name_id = ? \n";
+	
+	public static final String Q_CHECK_LASTNAME_FK = "select count(1) as cnt, 1 as n \n"
+			+ "  from subscribers t\n"
+			+ " where family_name_id = ? \n";
 
 	public static final String Q_CHECK_TOWN_FK =
 
@@ -1104,7 +1112,7 @@ public interface QueryConstants {
 	public static final String Q_GET_FIRST_NAME_COUNT = " select count(1) from ccare.firstnames t where t.firstname = ? ";
 	public static final String Q_GET_LAST_NAME_COUNT = " select count(1) from ccare.lastnames t where t.lastname = ? ";
 	public static final String Q_GET_FIRST_NAME_COUNT_ALL = " select count(1) from ccare.firstnames t ";
-	public static final String Q_GET_FIRST_NAMES_ALL = " select t.deleted,decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText,t.firstname, t.firstname_id,t.rec_date from ccare.firstnames t where t.deleted=0 order by t.firstname ";
+	public static final String Q_GET_FIRST_NAMES_ALL = " select t.firstname, t.firstname_id from ccare.firstnames t order by t.firstname ";
 	public static final String Q_GET_LAST_NAMES_ALL = " select t.deleted,decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText,t.lastname, t.lastname_id,t.rec_date from ccare.lastnames t where t.deleted=0 order by t.lastname ";
 	public static final String Q_GET_DEPARTMENTS = " select * from departments t order by 1 ";
 	public static final String Q_GET_USER_PERMISSIONS = " select t.permission_id from user_permission t where t.user_id = ? ";
@@ -1115,18 +1123,12 @@ public interface QueryConstants {
 			+ " where t.deleted = 0\n"
 			+ " order by 3";
 
-	public static final String Q_GET_FIRST_NAME_BY_ID = "select t.firstname_Id,\n"
-			+ "       t.firstname,\n"
-			+ "       t.rec_date,\n"
-			+ "       t.deleted,\n"
-			+ "       decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText \n"
+	public static final String Q_GET_FIRST_NAME_BY_ID = "select t.firstname_id,\n"
+			+ "       t.firstname \n"
 			+ "from ccare.firstnames t\n" + "where t.firstname_id = ? ";
 
-	public static final String Q_GET_LAST_NAME_BY_ID = "select t.lastname_Id,\n"
-			+ "       t.lastname,\n"
-			+ "       t.rec_date,\n"
-			+ "       t.deleted,\n"
-			+ "       decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText \n"
+	public static final String Q_GET_LAST_NAME_BY_ID = "select t.lastname_id,\n"
+			+ "       t.lastname \n"
 			+ "from ccare.lastnames t\n" + "where t.lastname_id = ? ";
 
 	public static final String Q_GET_ABONENT_BY_ID = "select t.abonent_id,\n"

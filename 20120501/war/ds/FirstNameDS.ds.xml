@@ -1,10 +1,10 @@
 <DataSource
 	ID="FirstNameDS"
 	serverType="sql"
-	tableName="ccare.firstnames"
+	tableName="firstnames"
 	qualifyColumnNames="false">
 	<fields>
-		<field name="firstname_Id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="firstname_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
 		<field name="firstname"			type="text" 	title="Firstname"/>		
 	</fields>
 	
@@ -23,53 +23,42 @@
         </operationBinding>
         
         <!-- FirstName Status Update -->
-		<operationBinding operationType="update" operationId="updateFirstNameStatus" serverMethod="updateFirstNameStatus">
+		<operationBinding operationType="remove" operationId="removeFirstName" serverMethod="removeFirstName">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
         </operationBinding>
 	
-		<operationBinding operationId="firstNameSearch" operationType="fetch" serverMethod="fetchFirstNames">
-    		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
-    	</operationBinding>    	
-    	<operationBinding operationId="searchFromDB" operationType="fetch" customFields="firstname_Id,firstname,rec_date,deleted,deletedText">
+		<operationBinding operationId="searchFromDB" operationType="fetch">
     		<selectClause>   			
-    			t.firstname_Id,
-    			t.firstname,
-    			t.rec_date,
-    			t.deleted,
-    			decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText
+    			t.firstname_id,
+    			t.firstname
 			</selectClause> 
 			<tableClause>firstnames t</tableClause>
 			<whereClause><![CDATA[ 
 				1 = 1
 				#if($criteria.firstname) AND t.firstname like ($criteria.firstname)||'%' #end
-				#if($criteria.deleted) AND t.deleted = $criteria.deleted #end				
 				]]>  
 			</whereClause> 
     	</operationBinding>    	
-    	<operationBinding operationId="searchFromDB1" operationType="fetch" customFields="firstname_Id,firstname,rec_date,deleted,deletedText">
+    	<operationBinding operationId="searchFromDB1" operationType="fetch">
     		<selectClause>   			
-    			t.firstname_Id,
-    			t.firstname,
-    			t.rec_date,
-    			t.deleted,
-    			decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText
+    			t.firstname_id,
+    			t.firstname
 			</selectClause> 
 			<tableClause>firstnames t</tableClause>
 			<whereClause><![CDATA[ 
 				1 = 1
 				#if($criteria.firstname) AND t.firstname like ($criteria.firstname)||'%' #end
-				and t.deleted = 0				
 				]]>  
 			</whereClause> 
     	</operationBinding> 	
 		<operationBinding operationId="searchFNamesFromDBCustomForCombos" operationType="fetch">
     		<selectClause>   			
-    			t.firstname_Id,
+    			t.firstname_id,
     			t.firstname
 			</selectClause> 
 			<tableClause>firstnames t</tableClause>	
 			<whereClause>
-				($defaultWhereClause) AND t.deleted = 0
+				($defaultWhereClause) 
 			</whereClause>			
     	</operationBinding>
     </operationBindings>	

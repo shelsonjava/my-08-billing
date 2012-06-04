@@ -118,7 +118,7 @@ public class TabSubscriber extends Tab {
 			firstNameItem.setName("name_id");
 			firstNameItem.setWidth(200);
 			ClientUtils.fillCombo(firstNameItem, "FirstNameDS",
-					"searchFNamesFromDBCustomForCombos", "firstname_Id",
+					"searchFNamesFromDBCustomForCombos", "firstname_id",
 					"firstname");
 
 			lastNameItem = new ComboBoxItem();
@@ -126,7 +126,7 @@ public class TabSubscriber extends Tab {
 			lastNameItem.setName("family_name_id");
 			lastNameItem.setWidth(200);
 			ClientUtils.fillCombo(lastNameItem, "LastNameDS",
-					"searchLastNamesFromDBCustomForCombos", "lastname_Id",
+					"searchLastNamesFromDBCustomForCombos", "lastname_id",
 					"lastname");
 
 			phoneItem = new TextItem();

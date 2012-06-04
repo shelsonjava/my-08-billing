@@ -112,7 +112,7 @@ public class DlgAddEditSubscriber extends Window {
 			firstNameItem.setName("name_id");
 			firstNameItem.setWidth(270);
 			ClientUtils.fillCombo(firstNameItem, "FirstNameDS",
-					"searchFNamesFromDBCustomForCombos", "firstname_Id",
+					"searchFNamesFromDBCustomForCombos", "firstname_id",
 					"firstname");
 
 			lastNameItem = new ComboBoxItem();
@@ -121,7 +121,7 @@ public class DlgAddEditSubscriber extends Window {
 			lastNameItem.setWidth(324);
 
 			ClientUtils.fillCombo(lastNameItem, "LastNameDS",
-					"searchLastNamesFromDBCustomForCombos", "lastname_Id",
+					"searchLastNamesFromDBCustomForCombos", "lastname_id",
 					"lastname");
 
 			formPersInfo.setFields(headerItemPersInfo, firstNameItem,
@@ -470,13 +470,13 @@ public class DlgAddEditSubscriber extends Window {
 		try {
 			ListGridRecord nameRecord = firstNameItem.getSelectedRecord();
 			if (nameRecord == null
-					|| nameRecord.getAttributeAsInt("firstname_Id") == null) {
+					|| nameRecord.getAttributeAsInt("firstname_id") == null) {
 				SC.say("გთხოვთ აირჩიოთ სახელი !");
 				return;
 			}
 			ListGridRecord lastNameRecord = lastNameItem.getSelectedRecord();
 			if (lastNameRecord == null
-					|| lastNameRecord.getAttributeAsInt("lastname_Id") == null) {
+					|| lastNameRecord.getAttributeAsInt("lastname_id") == null) {
 				SC.say("გთხოვთ აირჩიოთ გვარი !");
 				return;
 			}

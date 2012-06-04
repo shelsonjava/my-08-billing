@@ -61,7 +61,7 @@ public class DlgAddEditFirstName extends Window {
 		if (firstNameId != null) {
 			firstNameIdItem = new HiddenItem();
 			firstNameIdItem.setValue(firstNameId);
-			firstNameIdItem.setName("firstname_Id");
+			firstNameIdItem.setName("firstname_id");
 			firstNameIdItem.setVisible(false);
 		}
 		if (firstNameId == null) {
@@ -106,7 +106,7 @@ public class DlgAddEditFirstName extends Window {
 					com.smartgwt.client.rpc.RPCManager.startQueue();
 					Record record = new Record();
 					record.setAttribute("firstname", firstName);
-					record.setAttribute("firstname_Id", firstNameId);
+					record.setAttribute("firstname_id", firstNameId);
 					record.setAttribute("loggedUserName", CommonSingleton
 							.getInstance().getSessionPerson().getUser_name());
 
