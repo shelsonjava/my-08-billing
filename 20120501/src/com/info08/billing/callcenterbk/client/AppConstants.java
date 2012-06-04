@@ -720,4 +720,5 @@ public interface AppConstants extends Constants {
 	String streetEnd();
 	String parrentOrgDepName();
 	String plzEnterOrgDepName();
+	String parrentOrgDepIsSameAsChild();
 }
