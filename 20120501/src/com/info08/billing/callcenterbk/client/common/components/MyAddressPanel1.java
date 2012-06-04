@@ -188,7 +188,24 @@ public class MyAddressPanel1 extends HLayout {
 					return;
 				}
 				Record record = records[0];
+
+				Criteria cr = addrStreetItem.getOptionCriteria();
+				if (cr == null) {
+					cr = new Criteria();
+				}
+				cr.setAttribute("town_id", record.getAttributeAsInt("town_id"));
+				addrStreetItem.setOptionCriteria(cr);
+
+				Criteria cr1 = addrRegionItem.getOptionCriteria();
+				if (cr1 == null) {
+					cr1 = new Criteria();
+				}
+				cr1.setAttribute("street_id",
+						record.getAttributeAsInt("street_id"));
+				addrRegionItem.setOptionCriteria(cr1);
+
 				dynamicForm.setValues(record.toMap());
+
 				legalAddHeaderItem.setTitle(title);
 			}
 		}, req);

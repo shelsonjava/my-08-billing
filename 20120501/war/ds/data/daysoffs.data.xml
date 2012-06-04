@@ -32,5 +32,9 @@
 	    <day_id>64</day_id>
 	    <day_name>კვირა</day_name>
 	</weekday>
+	<weekday>
+	    <day_id>128</day_id>
+	    <day_name>უცნობია</day_name>
+	</weekday>
 </List>
 

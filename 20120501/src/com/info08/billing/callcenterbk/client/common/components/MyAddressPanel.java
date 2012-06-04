@@ -16,11 +16,15 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.HeaderItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 
 public class MyAddressPanel extends HLayout {
@@ -40,16 +44,18 @@ public class MyAddressPanel extends HLayout {
 	private TextItem blockItem;
 	private TextItem appartItem;
 	private TextItem oldAddItem;
+	private CheckboxItem turnOffItem;
 	protected String addressName;
 
 	private String myIdField = "addr_id";
 	private DataSource myDataSource = DataSource.get("AddressDS");
 	private String myDataSourceOperation = "addressSearch";
-	private HeaderItem legalAddHeaderItem;
+	private HeaderItem addHeaderItem;
 	private String title;
+	private FormItem header;
 
-	public MyAddressPanel(String addressName, String title, Integer width,
-			Integer height) {
+	public MyAddressPanel(Boolean needTurnOffCheck, String addressName,
+			String title, Integer width, Integer height) {
 
 		this.height = height;
 		this.width = width;
@@ -144,9 +150,28 @@ public class MyAddressPanel extends HLayout {
 		oldAddItem.setWidth(200);
 		oldAddItem.setCanEdit(false);
 
-		legalAddHeaderItem = new HeaderItem();
-		legalAddHeaderItem.setValue(title);
-		legalAddHeaderItem.setTextBoxStyle("headerStyle");
+		if (needTurnOffCheck == null) {
+			addHeaderItem = new HeaderItem();
+			addHeaderItem.setValue(title);
+			addHeaderItem.setTextBoxStyle("headerStyle");
+			header = addHeaderItem;
+		} else {
+			turnOffItem = new CheckboxItem();
+			turnOffItem.setTitle(title);
+			turnOffItem.setName("turnOffItem");
+			turnOffItem.setWidth(613);
+			turnOffItem.setColSpan(2);
+			turnOffItem.setDisabled(!needTurnOffCheck);
+			turnOffItem.setValue(true);
+			header = turnOffItem;
+			turnOffItem.addChangedHandler(new ChangedHandler() {
+				@Override
+				public void onChanged(ChangedEvent event) {
+					setCleared();
+					
+				}
+			});
+		}
 
 		ClientUtils.makeDependancy(addrTownItem, "town_id", addrStreetItem,
 				addrRegionItem);
@@ -159,7 +184,7 @@ public class MyAddressPanel extends HLayout {
 				new FormItemDescr(addrStreetDescrItem, "", "street_location"),
 				new FormItemDescr(addrStreetIdxItem, "", "street_index"));
 
-		dynamicForm.setFields(legalAddHeaderItem, addrTownItem, addrStreetItem,
+		dynamicForm.setFields(header, addrTownItem, addrStreetItem,
 				addrRegionItem, adressOpCloseItem, oldAddItem, adressItem,
 				blockItem, appartItem, addrStreetDescrItem, addrStreetIdxItem);
 
@@ -167,11 +192,17 @@ public class MyAddressPanel extends HLayout {
 	}
 
 	public void setValue(Integer addressa_id_value) {
-		if (myDataSource == null) {
-			dynamicForm.clearValues();
-			addrTownItem.setValue(Constants.defCityTbilisiId);
+		dynamicForm.clearValues();
+		if (addressa_id_value == null) {
+			if (turnOffItem != null) {
+				turnOffItem.setValue(false);
+				setCleared();
+			}
 			return;
 		}
+
+		if (turnOffItem != null)
+			turnOffItem.setValue(true);
 		Criteria cr = new Criteria();
 		cr.setAttribute(myIdField, addressa_id_value);
 		DSRequest req = new DSRequest();
@@ -184,21 +215,46 @@ public class MyAddressPanel extends HLayout {
 					DSRequest request) {
 				Record[] records = response.getData();
 				if (records == null || records.length == 0) {
+					dynamicForm.clearValues();
+					if (turnOffItem != null) {
+						turnOffItem.setValue(false);
+						setCleared();
+					}
 					return;
 				}
 				Record record = records[0];
+
+				Criteria cr = addrStreetItem.getOptionCriteria();
+				if (cr == null) {
+					cr = new Criteria();
+				}
+				cr.setAttribute("town_id", record.getAttributeAsInt("town_id"));
+				addrStreetItem.setOptionCriteria(cr);
+
+				Criteria cr1 = addrRegionItem.getOptionCriteria();
+				if (cr1 == null) {
+					cr1 = new Criteria();
+				}
+				cr1.setAttribute("street_id",
+						record.getAttributeAsInt("street_id"));
+				addrRegionItem.setOptionCriteria(cr1);
+
 				dynamicForm.setValues(record.toMap());
-				legalAddHeaderItem.setTitle(title);
+				header.setTitle(title);
+				if (turnOffItem != null)
+					turnOffItem.setValue(true);
 			}
 		}, req);
 	}
 
 	public void setValues(Map<?, ?> values) {
 		dynamicForm.setValues(values);
-		legalAddHeaderItem.setTitle(title);
+		header.setTitle(title);
 	}
 
 	public Map<?, ?> getValues() {
+		if (turnOffItem != null && !turnOffItem.getValueAsBoolean())
+			return null;
 		return dynamicForm.getValues();
 	}
 
@@ -288,5 +344,23 @@ public class MyAddressPanel extends HLayout {
 
 	public void setOldAddItem(TextItem oldAddItem) {
 		this.oldAddItem = oldAddItem;
+	}
+
+	private void setCleared() {
+		if (turnOffItem.isDisabled())
+			return;
+		boolean disabled = !turnOffItem.getValueAsBoolean().booleanValue();
+		FormItem[] fields = dynamicForm.getFields();
+		for (FormItem formItem : fields)
+			if (!formItem.equals(turnOffItem))
+				formItem.setDisabled(disabled);
+		if (disabled){
+			dynamicForm.clearValues();
+		}else{
+			addrTownItem.setValue(Constants.defCityTbilisiId);
+		}
+		
+		
+			
 	}
 }

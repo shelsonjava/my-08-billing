@@ -47,7 +47,7 @@
 		<field name="isBold" 							type="integer" 		title="isBold" 								hidden="true" />
 		<field name="phones" 							type="any" 			title="phones" 								hidden="true" />
 		<field name="physicalAddrValues" 				type="any" 			title="physicalAddrValues" 					hidden="true" />
-		
+		<field name="orgDepIdList" 						type="any" 			title="orgDepIdList" 						hidden="true" />		
 	</fields>
 
 	<operationBindings>
@@ -60,6 +60,9 @@
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
         </operationBinding>
 		<operationBinding operationType="remove" operationId="removeOrganizationDepartment" serverMethod="removeOrganizationDepartment">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+        <operationBinding operationType="update" operationId="updateOrgDepSortOrder" serverMethod="updateOrgDepSortOrder">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
         </operationBinding>
 	
@@ -111,6 +114,7 @@
 				 	t1.legal_address_id = la.addr_id(+) 
 				 	#if($criteria.organization_id) and t1.organization_id = $criteria.organization_id #end
 				 	#if($criteria.org_department_id) and t1.org_department_id = $criteria.org_department_id #end
+				 	#if($criteria.parrent_department_id) and nvl(t1.parrent_department_id,-100000) = $criteria.parrent_department_id #end
 				 ]]>
 			</whereClause>
 			<orderClause>nvl(t1.parrent_department_id,0), t1.inner_order</orderClause>

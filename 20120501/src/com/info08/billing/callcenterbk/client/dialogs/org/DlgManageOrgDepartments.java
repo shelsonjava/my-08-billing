@@ -471,7 +471,35 @@ public class DlgManageOrgDepartments extends Window {
 							});
 				}
 			});
+
+			sortBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					sort();
+				}
+			});
+
 			addItem(hLayout);
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void sort() {
+		try {
+			Integer organization_id = orgListGridRecord
+					.getAttributeAsInt("organization_id");
+			ListGridRecord listGridRecord = orgDepListGrid.getSelectedRecord();
+			Integer org_department_id = null;
+			if (listGridRecord != null) {
+				org_department_id = listGridRecord
+						.getAttributeAsInt("org_department_id");
+			}
+			DlgSortOrderOrgDeps dlgSortOrderOrgDeps = new DlgSortOrderOrgDeps(
+					organization_id, org_department_id,
+					DlgManageOrgDepartments.this);
+			dlgSortOrderOrgDeps.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

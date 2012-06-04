@@ -179,10 +179,10 @@ public class DlgAddEditOrganization extends Window {
 			hLayoutForAddresses.setPadding(0);
 			hLayoutForAddresses.setMargin(0);
 
-			physicalAddress = new MyAddressPanel("PhysicalAddress",
+			physicalAddress = new MyAddressPanel(false, "PhysicalAddress",
 					CallCenterBK.constants.orgAddressHeaderReal(), 614, 0);
 
-			legalAddress = new MyAddressPanel("LegalAddress",
+			legalAddress = new MyAddressPanel(true, "LegalAddress",
 					CallCenterBK.constants.orgAddressHeaderLegal(), 614, 0);
 
 			ToolStrip toolStrip = new ToolStrip();
@@ -194,6 +194,7 @@ public class DlgAddEditOrganization extends Window {
 			copyAddress.setLayoutAlign(Alignment.LEFT);
 			copyAddress.setWidth(50);
 			toolStrip.addButton(copyAddress);
+			toolStrip.addFill();
 
 			hLayoutForAddresses.setMembers(physicalAddress, legalAddress);
 
@@ -732,14 +733,14 @@ public class DlgAddEditOrganization extends Window {
 				dynamicFormMainInfo.focusInItem(orgRemarkItem);
 				return;
 			}
-			if (orgChiefItem.getValueAsString() == null
-					|| orgChiefItem.getValueAsString().trim().equals("")) {
-				SC.say(CallCenterBK.constants.warning(),
-						CallCenterBK.constants.plzEnterOrgChief());
-				topTabSet.selectTab(0);
-				dynamicFormMainInfo1.focusInItem(orgChiefItem);
-				return;
-			}
+			// if (orgChiefItem.getValueAsString() == null
+			// || orgChiefItem.getValueAsString().trim().equals("")) {
+			// SC.say(CallCenterBK.constants.warning(),
+			// CallCenterBK.constants.plzEnterOrgChief());
+			// topTabSet.selectTab(0);
+			// dynamicFormMainInfo1.focusInItem(orgChiefItem);
+			// return;
+			// }
 
 			String identCode = orgIdentCodeItem.getValueAsString();
 			String identCodeNew = orgIdentCodeNewItem.getValueAsString();
@@ -772,14 +773,14 @@ public class DlgAddEditOrganization extends Window {
 				return;
 			}
 
-			if (orgWorkHoursItem.getValueAsString() == null
-					|| orgWorkHoursItem.getValueAsString().trim().equals("")) {
-				SC.say(CallCenterBK.constants.warning(),
-						CallCenterBK.constants.plzEnterOrgWorkHours());
-				topTabSet.selectTab(0);
-				dynamicFormMainInfo1.focusInItem(orgWorkHoursItem);
-				return;
-			}
+			// if (orgWorkHoursItem.getValueAsString() == null
+			// || orgWorkHoursItem.getValueAsString().trim().equals("")) {
+			// SC.say(CallCenterBK.constants.warning(),
+			// CallCenterBK.constants.plzEnterOrgWorkHours());
+			// topTabSet.selectTab(0);
+			// dynamicFormMainInfo1.focusInItem(orgWorkHoursItem);
+			// return;
+			// }
 
 			ListGridRecord orgActivityList[] = orgActivityGrid.getRecords();
 			if (orgActivityList == null || orgActivityList.length <= 0) {
@@ -787,6 +788,7 @@ public class DlgAddEditOrganization extends Window {
 						CallCenterBK.constants.plzChooseOneOrgActivity());
 				return;
 			}
+
 			ListGridRecord orgDayOffsList[] = orgDayOffsGrid.getRecords();
 			if (orgDayOffsList == null || orgDayOffsList.length <= 0) {
 				SC.say(CallCenterBK.constants.warning(),
@@ -804,7 +806,7 @@ public class DlgAddEditOrganization extends Window {
 			}
 
 			Map<?, ?> physicalAddrValues = physicalAddress.getValues();
-			Map<?, ?> legalAddrValues = physicalAddress.getValues();
+			Map<?, ?> legalAddrValues = legalAddress.getValues();
 
 			Integer town_id = physicalAddrValues.get("town_id") == null ? null
 					: new Integer(physicalAddrValues.get("town_id").toString());
@@ -828,37 +830,40 @@ public class DlgAddEditOrganization extends Window {
 				return;
 			}
 
-			Integer legal_town_id = legalAddrValues.get("town_id") == null ? null
-					: new Integer(legalAddrValues.get("town_id").toString());
-			if (legal_town_id == null) {
-				SC.say(CallCenterBK.constants.warning(),
-						CallCenterBK.constants.plzChooseLegalAddrTown());
-				topTabSet.selectTab(1);
-				legalAddress.getDynamicForm().focusInItem(
-						legalAddress.getAddrTownItem());
-				return;
-			}
-			Integer legal_street_id = legalAddrValues.get("street_id") == null ? null
-					: new Integer(legalAddrValues.get("street_id").toString());
-			if (legal_street_id == null) {
-				SC.say(CallCenterBK.constants.warning(),
-						CallCenterBK.constants.plzChooseLegalAddrStreet());
-				topTabSet.selectTab(1);
-				legalAddress.getDynamicForm().focusInItem(
-						legalAddress.getAddrStreetItem());
-				return;
-			}
-			if (orgIndItem.getValueAsString() == null
-					|| orgIndItem.getValueAsString().trim().equals("")) {
-				SC.say(CallCenterBK.constants.warning(),
-						CallCenterBK.constants.plzEnterOrgIndex());
-				topTabSet.selectTab(1);
-				dynamicFormMainInfo2.focusInItem(orgIndItem);
-				return;
-			}
+			// Integer legal_town_id = legalAddrValues.get("town_id") == null ?
+			// null
+			// : new Integer(legalAddrValues.get("town_id").toString());
+			// if (legal_town_id == null) {
+			// SC.say(CallCenterBK.constants.warning(),
+			// CallCenterBK.constants.plzChooseLegalAddrTown());
+			// topTabSet.selectTab(1);
+			// legalAddress.getDynamicForm().focusInItem(
+			// legalAddress.getAddrTownItem());
+			// return;
+			// }
+			// Integer legal_street_id = legalAddrValues.get("street_id") ==
+			// null ? null
+			// : new Integer(legalAddrValues.get("street_id").toString());
+			// if (legal_street_id == null) {
+			// SC.say(CallCenterBK.constants.warning(),
+			// CallCenterBK.constants.plzChooseLegalAddrStreet());
+			// topTabSet.selectTab(1);
+			// legalAddress.getDynamicForm().focusInItem(
+			// legalAddress.getAddrStreetItem());
+			// return;
+			// }
+			// if (orgIndItem.getValueAsString() == null
+			// || orgIndItem.getValueAsString().trim().equals("")) {
+			// SC.say(CallCenterBK.constants.warning(),
+			// CallCenterBK.constants.plzEnterOrgIndex());
+			// topTabSet.selectTab(1);
+			// dynamicFormMainInfo2.focusInItem(orgIndItem);
+			// return;
+			// }
 
 			Integer days = 0;
 			boolean allDayOffsIsSel = false;
+
 			for (ListGridRecord listGridRecord : orgDayOffsList) {
 				Integer day_id = listGridRecord.getAttributeAsInt("day_id");
 				if (day_id.intValue() == 0) {
@@ -872,12 +877,14 @@ public class DlgAddEditOrganization extends Window {
 				topTabSet.selectTab(0);
 				return;
 			}
+
 			if (days == 127) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.plzChooseValidOrgDayOffs1());
 				topTabSet.selectTab(0);
 				return;
 			}
+
 			LinkedHashMap<String, String> orgActivities = new LinkedHashMap<String, String>();
 			for (ListGridRecord orgActivity : orgActivityList) {
 				String orgActStr = orgActivity.getAttributeAsInt(

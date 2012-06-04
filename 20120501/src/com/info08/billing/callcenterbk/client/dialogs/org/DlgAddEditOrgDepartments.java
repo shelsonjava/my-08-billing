@@ -410,6 +410,16 @@ public class DlgAddEditOrgDepartments extends Window {
 				parrent_department_id = Integer.parseInt(parrentRecord
 						.toString());
 			}
+			if (parrent_department_id != null && listGridRecord != null) {
+				Integer org_department_id = listGridRecord
+						.getAttributeAsInt("org_department_id");
+				if (org_department_id != null
+						&& org_department_id.equals(parrent_department_id)) {
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.parrentOrgDepIsSameAsChild());
+					return;
+				}
+			}
 			String department_original = orgDepartmentNameItem
 					.getValueAsString();
 			if (department_original == null
