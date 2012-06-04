@@ -174,10 +174,10 @@ public class DlgAddEditStaff extends Window {
 		hLayoutForAddresses.setPadding(0);
 		hLayoutForAddresses.setMargin(0);
 
-		physicalAddress = new MyAddressPanel(false, "PhysicalAddress",
+		physicalAddress = new MyAddressPanel(null, "PhysicalAddress",
 				"ფაქტიური მისამართი", 614, 0);
 
-		legalAddress = new MyAddressPanel(false, "LegalAddress",
+		legalAddress = new MyAddressPanel(null, "LegalAddress",
 				"იურიდიული მისამართი", 614, 0);
 
 		ToolStrip toolStrip = new ToolStrip();
