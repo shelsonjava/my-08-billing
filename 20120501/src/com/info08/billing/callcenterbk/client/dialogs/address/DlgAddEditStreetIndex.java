@@ -1,11 +1,15 @@
 package com.info08.billing.callcenterbk.client.dialogs.address;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
-import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
@@ -16,8 +20,6 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -29,6 +31,7 @@ public class DlgAddEditStreetIndex extends Window {
 	private DynamicForm dynamicForm;
 
 	// form fields
+	private ComboBoxItem townsItem;
 	private ComboBoxItem streetsItem;
 	private TextItem streetIndexRemarkItem;
 	private TextItem streetIndexValueItem;
@@ -43,7 +46,7 @@ public class DlgAddEditStreetIndex extends Window {
 		setTitle(pRecord == null ? "ქუჩის ინდექსის დამატება"
 				: "ქუჩის ინდექსის მოდიფიცირება");
 
-		setHeight(160);
+		setHeight(180);
 		setWidth(520);
 		setShowMinimizeButton(false);
 		setIsModal(true);
@@ -66,37 +69,29 @@ public class DlgAddEditStreetIndex extends Window {
 		dynamicForm.setNumCols(2);
 		hLayout.addMember(dynamicForm);
 
+		townsItem = new ComboBoxItem();
+		townsItem.setTitle("ქალაქი");
+		townsItem.setName("town_id");
+		townsItem.setWidth(350);
+		ClientUtils.fillCombo(townsItem, "TownsDS",
+				"searchCitiesFromDBForCombos", "town_id", "town_name");
+		townsItem.setValue(Constants.defCityTbilisiId);
+
 		streetsItem = new ComboBoxItem();
 		streetsItem.setTitle("ქუჩა");
 		streetsItem.setWidth(350);
-		streetsItem.setName("street_name");
+		streetsItem.setName("street_id");
 		streetsItem.setFetchMissingValues(true);
 		streetsItem.setFilterLocally(false);
 		streetsItem.setAddUnknownValues(false);
 
-		DataSource streetsNewDS = DataSource.get("StreetsDS");
-		streetsItem
-				.setOptionOperationId("searchStreetFromDBForCombosNoDistrTbil");
-		streetsItem.setOptionDataSource(streetsNewDS);
-		streetsItem.setValueField("street_id");
-		streetsItem.setDisplayField("street_name");
+		Map<String, Object> aditionalCriteria = new TreeMap<String, Object>();
 
-		streetsItem.setOptionCriteria(new Criteria());
-		streetsItem.setAutoFetchData(false);
+		aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
 
-		streetsItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = streetsItem.getOptionCriteria();
-				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("street_id");
-					if (oldAttr != null) {
-						Object nullO = null;
-						criteria.setAttribute("street_id", nullO);
-					}
-				}
-			}
-		});
+		ClientUtils.fillCombo(streetsItem, "StreetsDS",
+				"searchStreetFromDBForCombos", "street_id", "street_name",
+				aditionalCriteria);
 
 		streetIndexRemarkItem = new TextItem();
 		streetIndexRemarkItem.setTitle("კომენტარი");
@@ -108,9 +103,10 @@ public class DlgAddEditStreetIndex extends Window {
 		streetIndexValueItem.setWidth(350);
 		streetIndexValueItem.setName("street_index_value");
 
-		dynamicForm.setFields(streetsItem, streetIndexRemarkItem,
+		dynamicForm.setFields(townsItem, streetsItem, streetIndexRemarkItem,
 				streetIndexValueItem);
 
+		ClientUtils.makeDependancy(townsItem, "town_id", streetsItem);
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
 		hLayoutItem.setAlign(Alignment.RIGHT);
@@ -148,11 +144,12 @@ public class DlgAddEditStreetIndex extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			streetIndexRemarkItem.setValue(editRecord
-					.getAttributeAsString("street_index_remark"));
-			streetIndexValueItem.setValue(editRecord
-					.getAttributeAsString("street_index_value"));
-			streetsItem.setValue(editRecord.getAttributeAsInt("street_id"));
+			dynamicForm.setValues(editRecord.toMap());
+			Criteria cr = streetsItem.getOptionCriteria();
+			if (cr == null)
+				cr = new Criteria();
+			cr.setAttribute("town_id", editRecord.getAttribute("town_id"));
+			streetsItem.setOptionCriteria(cr);
 
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -166,13 +163,16 @@ public class DlgAddEditStreetIndex extends Window {
 				SC.say("აირჩიეთ ქუჩა !");
 				return;
 			}
-			String street_index_remark = streetIndexRemarkItem.getValueAsString();
-			if (street_index_remark == null || street_index_remark.trim().equals("")) {
+			String street_index_remark = streetIndexRemarkItem
+					.getValueAsString();
+			if (street_index_remark == null
+					|| street_index_remark.trim().equals("")) {
 				SC.say("შეიყვანეთ კომენტარი !");
 				return;
 			}
 			String street_index_value = streetIndexValueItem.getValueAsString();
-			if (street_index_value == null || street_index_value.trim().equals("")) {
+			if (street_index_value == null
+					|| street_index_value.trim().equals("")) {
 				SC.say("შეიყვანეთ ინდექსი !");
 				return;
 			}
@@ -186,7 +186,7 @@ public class DlgAddEditStreetIndex extends Window {
 			record.setAttribute("street_id", street_id);
 			record.setAttribute("street_index_remark", street_index_remark);
 			record.setAttribute("street_index_value", street_index_value);
-			
+
 			if (editRecord != null) {
 				record.setAttribute("street_index_id",
 						editRecord.getAttributeAsInt("street_index_id"));

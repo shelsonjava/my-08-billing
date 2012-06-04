@@ -31,6 +31,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
+import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -371,14 +372,27 @@ public class TabSubscriber extends Tab {
 				}
 			});
 
-			phoneItem.addKeyPressHandler(new KeyPressHandler() {
+			KeyPressHandler kh = new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
 						search();
 					}
 				}
-			});
+			};
+
+			FormItem[] formItems = searchFormMain.getFields();
+			for (FormItem formItem : formItems) {
+				formItem.addKeyPressHandler(kh);
+			}
+			formItems = searchFormAddress.getFields();
+			for (FormItem formItem : formItems) {
+				formItem.addKeyPressHandler(kh);
+			}
+			formItems = searchFormPhone.getFields();
+			for (FormItem formItem : formItems) {
+				formItem.addKeyPressHandler(kh);
+			}
 
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override

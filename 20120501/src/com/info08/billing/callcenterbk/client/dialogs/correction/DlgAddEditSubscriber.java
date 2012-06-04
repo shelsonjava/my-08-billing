@@ -50,7 +50,7 @@ public class DlgAddEditSubscriber extends Window {
 	private ComboBoxItem firstNameItem;
 	private ComboBoxItem lastNameItem;
 	private TextItem oldAddItem;
-	private ComboBoxItem citiesItem;
+	private ComboBoxItem townsItem;
 	private ComboBoxItem streetItem;
 	private ComboBoxItem regionItem;
 	private SelectItem adressOpCloseItem;
@@ -152,11 +152,11 @@ public class DlgAddEditSubscriber extends Window {
 			headerItemAddr.setValue("აბონენტის მისამართი");
 			headerItemAddr.setTextBoxStyle("headerStyle");
 
-			citiesItem = new ComboBoxItem();
-			citiesItem.setTitle("ქალაქი");
-			citiesItem.setName("town_id");
-			citiesItem.setWidth(170);
-			ClientUtils.fillCombo(citiesItem, "TownsDS",
+			townsItem = new ComboBoxItem();
+			townsItem.setTitle("ქალაქი");
+			townsItem.setName("town_id");
+			townsItem.setWidth(170);
+			ClientUtils.fillCombo(townsItem, "TownsDS",
 					"searchCitiesFromDBForCombos", "town_id", "town_name");
 
 			streetItem = new ComboBoxItem();
@@ -189,17 +189,17 @@ public class DlgAddEditSubscriber extends Window {
 			streetDescrItem.setHeight(50);
 			streetDescrItem.setCanEdit(false);
 
-			ClientUtils.makeDependancy(citiesItem, "town_id", streetItem,
+			ClientUtils.makeDependancy(townsItem, "town_id", streetItem,
 					regionItem);
 
-			ClientUtils.makeDependancy(citiesItem, true, new FormItemDescr(
+			ClientUtils.makeDependancy(townsItem, true, new FormItemDescr(
 					streetDescrItem, "", "g"));
 
 			ClientUtils.makeDependancy(streetItem, true, new FormItemDescr(
 					regionItem, "street_id", "town_district_id"),
 					new FormItemDescr(streetDescrItem, "", "street_location"));
 
-			formAddress.setFields(headerItemAddr, citiesItem, streetItem,
+			formAddress.setFields(headerItemAddr, townsItem, streetItem,
 					regionItem, streetDescrItem);
 
 			DynamicForm readOnlyForm = new DynamicForm();
@@ -421,7 +421,7 @@ public class DlgAddEditSubscriber extends Window {
 	public void fillFields(Record abonentRecord, Integer defCityTbilisiId) {
 		try {
 			if (abonentRecord == null) {
-				citiesItem.setValue(defCityTbilisiId);
+				townsItem.setValue(defCityTbilisiId);
 				return;
 			}
 			Map<?, ?> values = abonentRecord.toMap();
@@ -481,7 +481,7 @@ public class DlgAddEditSubscriber extends Window {
 				return;
 			}
 
-			ListGridRecord cityRecord = citiesItem.getSelectedRecord();
+			ListGridRecord cityRecord = townsItem.getSelectedRecord();
 			if (cityRecord == null
 					|| cityRecord.getAttributeAsInt("town_id") == null) {
 				SC.say("გთხოვთ აირჩიოთ ქალაქი !");
@@ -528,7 +528,7 @@ public class DlgAddEditSubscriber extends Window {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
-					if (saveManager != null || response.getData() != null
+					if (saveManager != null && response.getData() != null
 							&& response.getData().length > 0)
 						saveManager.saved(response.getData()[0],
 								DlgAddEditSubscriber.class);

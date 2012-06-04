@@ -100,24 +100,21 @@
 					#if($criteria.name_id) AND t.name_id = $criteria.name_id #end
 					#if($criteria.family_name_id) AND t.family_name_id = $criteria.family_name_id #end
 					
-					#if($criteria.for_call_center)
-							and hidden_by_request=0
+					#if(!$criteria.for_call_center)
+							#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+							#if($criteria.town_district_id) AND t.town_district_id = $criteria.town_district_id #end
+							#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+							#if($criteria.street_name_geo) AND street_location like '%'||$criteria.street_name_geo||'%' #end
+							#if($criteria.anumber) AND anumber like '%%'||($criteria.anumber)||'%' #end
+							#if($criteria.block) AND block like '%%'||($criteria.block)||'%' #end
+							#if($criteria.appt) AND appt like '%%'||($criteria.appt)||'%' #end
+							#if($criteria.descr) AND descr like '%%'||($criteria.descr)||'%' #end
+							#if($criteria.name) AND name like '%%'||($criteria.name)||'%' #end
+							#if($criteria.family_name) AND family_name like '%%'||($criteria.family_name)||'%' #end
+							#if($criteria.full_address) AND full_address like '%%'||($criteria.full_address)||'%' #end
+							
 					#end
-					
-					#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
-					#if($criteria.town_district_id) AND t.town_district_id = $criteria.town_district_id #end
-					#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
-					#if($criteria.street_name_geo) AND street_location like '%'||$criteria.street_name_geo||'%' #end
-					#if($criteria.anumber) AND anumber like '%%'||($criteria.anumber)||'%' #end
-					#if($criteria.block) AND block like '%%'||($criteria.block)||'%' #end
-					#if($criteria.appt) AND appt like '%%'||($criteria.appt)||'%' #end
-					#if($criteria.descr) AND descr like '%%'||($criteria.descr)||'%' #end
-					#if($criteria.name) AND name like '%%'||($criteria.name)||'%' #end
-					#if($criteria.family_name) AND family_name like '%%'||($criteria.family_name)||'%' #end
-					#if($criteria.full_address) AND full_address like '%%'||($criteria.full_address)||'%' #end
 					#if($criteria.hidden_by_request) AND hidden_by_request = $criteria.hidden_by_request #end
-					
-					
 					#if($criteria.name_param) AND name like '%%'||($criteria.name_param)||'%' #end
 					#if($criteria.family_name_param) AND family_name like '%%'||($criteria.family_name_param)||'%' #end
 					#if($criteria.phone||$criteria.is_parallel
