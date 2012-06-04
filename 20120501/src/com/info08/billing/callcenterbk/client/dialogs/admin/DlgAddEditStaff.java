@@ -174,10 +174,10 @@ public class DlgAddEditStaff extends Window {
 		hLayoutForAddresses.setPadding(0);
 		hLayoutForAddresses.setMargin(0);
 
-		physicalAddress = new MyAddressPanel("PhysicalAddress",
+		physicalAddress = new MyAddressPanel(false, "PhysicalAddress",
 				"ფაქტიური მისამართი", 614, 0);
 
-		legalAddress = new MyAddressPanel("LegalAddress",
+		legalAddress = new MyAddressPanel(false, "LegalAddress",
 				"იურიდიული მისამართი", 614, 0);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -1446,8 +1446,8 @@ public class DlgAddEditStaff extends Window {
 							listGridRecord.getAttributeAsInt("address_id"));
 				}
 				if (listGridRecord.getAttributeAsInt("document_address_id") != null) {
-					record.setAttribute("document_address_id",
-							listGridRecord.getAttributeAsInt("document_address_id"));
+					record.setAttribute("document_address_id", listGridRecord
+							.getAttributeAsInt("document_address_id"));
 				}
 
 			}
