@@ -207,7 +207,7 @@ public class TabStreet extends Tab {
 			};
 
 			listGrid.setWidth100();
-			listGrid.setHeight(280);
+			listGrid.setHeight(500);
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(datasource);
 			listGrid.setAutoFetchData(false);
@@ -380,7 +380,21 @@ public class TabStreet extends Tab {
 
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("street_name", street_name);
-			criteria.setAttribute("street_location", street_location);
+			//criteria.setAttribute("street_location", street_location);
+			
+			
+			if (street_location != null && !street_location.trim().equals("")) {
+				String tmp = street_location.trim();
+				String arrStr[] = tmp.split(" ");
+				int i = 1;
+				for (String string : arrStr) {
+					String item = string.trim();
+					criteria.setAttribute("street_location" + i, item);
+					i++;
+				}
+			}
+			
+			
 			if (record_type != null) {
 				criteria.setAttribute("record_type", new Integer(record_type));
 			}

@@ -111,7 +111,23 @@
 				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
 				 #if($criteria.record_type) AND t.record_type = $criteria.record_type #end
 				 #if($criteria.street_name) AND t.street_name like '%'||($criteria.street_name)||'%' #end
-				 #if($criteria.street_location) AND t.street_location like '%'||($criteria.street_location)||'%' #end
+				 
+				  #if($criteria.street_location1) 
+				 	AND (t.street_location like '%'||$criteria.street_location1||'%') 
+				 #end
+				 #if($criteria.street_location2) 
+				 	AND (t.street_location like '%'||$criteria.street_location2||'%') 
+				 #end
+				 #if($criteria.street_location3) 
+				 	AND (t.street_location like '%'||$criteria.street_location3||'%') 
+				 #end
+				 #if($criteria.street_location4) 
+				 	AND (t.street_location like '%'||$criteria.street_location4||'%') 
+				 #end
+				 #if($criteria.street_location5) 
+				 	AND (t.street_location like '%'||$criteria.street_location5||'%') 
+				 #end
+				 #if($criteria.street_index) AND t.street_index like '%'||($criteria.street_index)||'%' #end
 				]]>  
 			</whereClause>
 			<orderClause>t.street_name</orderClause>
