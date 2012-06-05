@@ -638,12 +638,12 @@ public class TabOrganization extends Tab {
 
 	private void fingOrgById(Integer organization_id) {
 		try {
+			searchForm.clearValues();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", new Integer(0));
 			criteria.setAttribute("pp_organization_id", organization_id);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId",
-					"customOrgSearchForCorrectByMainId");
+					"customOrgSearchForCallCenterNew");
 			orgTreeGrid.invalidateCache();
 			orgTreeGrid.fetchData(criteria, new DSCallback() {
 				@Override

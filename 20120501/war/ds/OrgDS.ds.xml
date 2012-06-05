@@ -224,59 +224,61 @@
 				 <![CDATA[
 						 o.physical_address_id = a.addr_id(+) and a.street_id = str.street_id(+) and a.town_id = tw.town_id(+) and 
 						 o.legal_address_id = a1.addr_id(+) and a1.street_id = str1.street_id(+) and a1.town_id = tw1.town_id(+)
-						 #if($criteria.parrent_organization_id) and o.parrent_organization_id = $criteria.parrent_organization_id #end
-						 #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
-						 #if($criteria.pp_organization_id) and o.organization_id = $criteria.pp_organization_id #end
-						 #if($criteria.organization_name1) and o.organization_name like '%'||($criteria.organization_name1)||'%' #end
-						 #if($criteria.organization_name2) and o.organization_name like '%'||($criteria.organization_name2)||'%' #end
-						 #if($criteria.organization_name3) and o.organization_name like '%'||($criteria.organization_name3)||'%' #end
-						 #if($criteria.organization_name4) and o.organization_name like '%'||($criteria.organization_name4)||'%' #end
-						 #if($criteria.organization_name5) and o.organization_name like '%'||($criteria.organization_name5)||'%' #end
-						 #if($criteria.organization_name6) and o.organization_name like '%'||($criteria.organization_name6)||'%' #end
-						 #if($criteria.organization_name7) and o.organization_name like '%'||($criteria.organization_name7)||'%' #end
-						 #if($criteria.organization_name8) and o.organization_name like '%'||($criteria.organization_name8)||'%' #end
-						 #if($criteria.organization_name9) and o.organization_name like '%'||($criteria.organization_name9)||'%' #end								 
-						 #if($criteria.remark1) and o.remark like '%'||($criteria.remark1)||'%' #end
-						 #if($criteria.remark2) and o.remark like '%'||($criteria.remark2)||'%' #end
-						 #if($criteria.remark3) and o.remark like '%'||($criteria.remark3)||'%' #end
-						 #if($criteria.remark4) and o.remark like '%'||($criteria.remark4)||'%' #end
-						 #if($criteria.remark5) and o.remark like '%'||($criteria.remark5)||'%' #end
-						 #if($criteria.remark6) and o.remark like '%'||($criteria.remark6)||'%' #end
-						 #if($criteria.remark7) and o.remark like '%'||($criteria.remark7)||'%' #end
-						 #if($criteria.remark8) and o.remark like '%'||($criteria.remark8)||'%' #end
-						 #if($criteria.remark9) and o.remark like '%'||($criteria.remark9)||'%' #end
-						 #if($criteria.remark10) and o.remark like '%'||($criteria.remark)||'%' #end
-						 #if($criteria.real_address_descr1) and str.street_name like '%'||($criteria.real_address_descr1)||'%' #end
-						 #if($criteria.real_address_descr2) and str.street_name like '%'||($criteria.real_address_descr2)||'%' #end
-						 #if($criteria.real_address_descr3) and str.street_name like '%'||($criteria.real_address_descr3)||'%' #end
-						 #if($criteria.real_address_descr4) and str.street_name like '%'||($criteria.real_address_descr4)||'%' #end
-						 #if($criteria.real_address_descr5) and str.street_name like '%'||($criteria.real_address_descr5)||'%' #end
-						 #if($criteria.legaladdress) and o.legaladdress like '%'||($criteria.legaladdress)||'%' #end
-						 #if($criteria.legaladdress1) and o.legaladdress like '%'||($criteria.legaladdress1)||'%' #end
-						 #if($criteria.legaladdress2) and o.legaladdress like '%'||($criteria.legaladdress2)||'%' #end
-						 #if($criteria.legaladdress3) and o.legaladdress like '%'||($criteria.legaladdress3)||'%' #end
-						 #if($criteria.legaladdress4) and o.legaladdress like '%'||($criteria.legaladdress4)||'%' #end
-						 #if($criteria.legaladdress5) and mo1.legaladdress like '%'||($criteria.legaladdress5)||'%' #end
-						 #if($criteria.chief1) and o.chief like '%'||($criteria.chief1)||'%' #end
-						 #if($criteria.chief2) and o.chief like '%'||($criteria.chief2)||'%' #end
-						 #if($criteria.chief3) and o.chief like '%'||($criteria.chief3)||'%' #end
-						 #if($criteria.day_offs1) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs1)||'%' #end
-						 #if($criteria.day_offs2) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs2)||'%' #end
-						 #if($criteria.day_offs3) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs3)||'%' #end
-						 #if($criteria.day_offs4) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs4)||'%' #end
-						 #if($criteria.day_offs5) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs5)||'%' #end
-						 #if($criteria.day_offs6) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs6)||'%' #end
-						 #if($criteria.full_address) and a.full_address||' '||a.block||' '||a.appt||' '||a.descr||' '||a.anumber like '%'||($criteria.full_address)||'%' #end						 
-						 #if($criteria.work_hours) and o.work_hours like '%'||($criteria.work_hours)||'%' #end
-						 #if($criteria.web_address) and o.web_address like '%'||($criteria.web_address)||'%' #end
-						 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
-						 #if($criteria.legal_statuse_id) and o.legal_statuse_id = $criteria.legal_statuse_id #end
-						 #if($criteria.ind) and o.ind = $criteria.ind #end
-						 #if($criteria.street_id) and ma.street_id = $criteria.street_id #end
-						 #if($criteria.town_id) and a.town_id = $criteria.town_id #end
-						 #if($criteria.ident_code) and (o.ident_code = $criteria.ident_code or o.ident_code_new = $criteria.ident_code) #end
-						 #if($criteria.town_district_id) and a.town_district_id = $criteria.town_district_id #end
-						 #if($criteria.org_found_date_start) and trunc(o.found_date)>= trunc($criteria.org_found_date_start) and  trunc(o.found_date)<= trunc($criteria.org_found_date_end) #end
+						 #if($criteria.parrent_organization_id) and o.parrent_organization_id = $criteria.parrent_organization_id
+						 #else 
+							 #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+							 #if($criteria.pp_organization_id) and o.organization_id = $criteria.pp_organization_id #end
+							 #if($criteria.organization_name1) and o.organization_name like '%'||($criteria.organization_name1)||'%' #end
+							 #if($criteria.organization_name2) and o.organization_name like '%'||($criteria.organization_name2)||'%' #end
+							 #if($criteria.organization_name3) and o.organization_name like '%'||($criteria.organization_name3)||'%' #end
+							 #if($criteria.organization_name4) and o.organization_name like '%'||($criteria.organization_name4)||'%' #end
+							 #if($criteria.organization_name5) and o.organization_name like '%'||($criteria.organization_name5)||'%' #end
+							 #if($criteria.organization_name6) and o.organization_name like '%'||($criteria.organization_name6)||'%' #end
+							 #if($criteria.organization_name7) and o.organization_name like '%'||($criteria.organization_name7)||'%' #end
+							 #if($criteria.organization_name8) and o.organization_name like '%'||($criteria.organization_name8)||'%' #end
+							 #if($criteria.organization_name9) and o.organization_name like '%'||($criteria.organization_name9)||'%' #end								 
+							 #if($criteria.remark1) and o.remark like '%'||($criteria.remark1)||'%' #end
+							 #if($criteria.remark2) and o.remark like '%'||($criteria.remark2)||'%' #end
+							 #if($criteria.remark3) and o.remark like '%'||($criteria.remark3)||'%' #end
+							 #if($criteria.remark4) and o.remark like '%'||($criteria.remark4)||'%' #end
+							 #if($criteria.remark5) and o.remark like '%'||($criteria.remark5)||'%' #end
+							 #if($criteria.remark6) and o.remark like '%'||($criteria.remark6)||'%' #end
+							 #if($criteria.remark7) and o.remark like '%'||($criteria.remark7)||'%' #end
+							 #if($criteria.remark8) and o.remark like '%'||($criteria.remark8)||'%' #end
+							 #if($criteria.remark9) and o.remark like '%'||($criteria.remark9)||'%' #end
+							 #if($criteria.remark10) and o.remark like '%'||($criteria.remark)||'%' #end
+							 #if($criteria.real_address_descr1) and str.street_name like '%'||($criteria.real_address_descr1)||'%' #end
+							 #if($criteria.real_address_descr2) and str.street_name like '%'||($criteria.real_address_descr2)||'%' #end
+							 #if($criteria.real_address_descr3) and str.street_name like '%'||($criteria.real_address_descr3)||'%' #end
+							 #if($criteria.real_address_descr4) and str.street_name like '%'||($criteria.real_address_descr4)||'%' #end
+							 #if($criteria.real_address_descr5) and str.street_name like '%'||($criteria.real_address_descr5)||'%' #end
+							 #if($criteria.legaladdress) and o.legaladdress like '%'||($criteria.legaladdress)||'%' #end
+							 #if($criteria.legaladdress1) and o.legaladdress like '%'||($criteria.legaladdress1)||'%' #end
+							 #if($criteria.legaladdress2) and o.legaladdress like '%'||($criteria.legaladdress2)||'%' #end
+							 #if($criteria.legaladdress3) and o.legaladdress like '%'||($criteria.legaladdress3)||'%' #end
+							 #if($criteria.legaladdress4) and o.legaladdress like '%'||($criteria.legaladdress4)||'%' #end
+							 #if($criteria.legaladdress5) and mo1.legaladdress like '%'||($criteria.legaladdress5)||'%' #end
+							 #if($criteria.chief1) and o.chief like '%'||($criteria.chief1)||'%' #end
+							 #if($criteria.chief2) and o.chief like '%'||($criteria.chief2)||'%' #end
+							 #if($criteria.chief3) and o.chief like '%'||($criteria.chief3)||'%' #end
+							 #if($criteria.day_offs1) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs1)||'%' #end
+							 #if($criteria.day_offs2) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs2)||'%' #end
+							 #if($criteria.day_offs3) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs3)||'%' #end
+							 #if($criteria.day_offs4) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs4)||'%' #end
+							 #if($criteria.day_offs5) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs5)||'%' #end
+							 #if($criteria.day_offs6) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs6)||'%' #end
+							 #if($criteria.full_address) and a.full_address||' '||a.block||' '||a.appt||' '||a.descr||' '||a.anumber like '%'||($criteria.full_address)||'%' #end						 
+							 #if($criteria.work_hours) and o.work_hours like '%'||($criteria.work_hours)||'%' #end
+							 #if($criteria.web_address) and o.web_address like '%'||($criteria.web_address)||'%' #end
+							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
+							 #if($criteria.legal_statuse_id) and o.legal_statuse_id = $criteria.legal_statuse_id #end
+							 #if($criteria.ind) and o.ind = $criteria.ind #end
+							 #if($criteria.street_id) and ma.street_id = $criteria.street_id #end
+							 #if($criteria.town_id) and a.town_id = $criteria.town_id #end
+							 #if($criteria.ident_code) and (o.ident_code = $criteria.ident_code or o.ident_code_new = $criteria.ident_code) #end
+							 #if($criteria.town_district_id) and a.town_district_id = $criteria.town_district_id #end
+							 #if($criteria.org_found_date_start) and trunc(o.found_date)>= trunc($criteria.org_found_date_start) and  trunc(o.found_date)<= trunc($criteria.org_found_date_end) #end
+						 #end
 				 ]]>
 			</whereClause>
 			<orderClause>getTbilisiOrder(tw.town_id), o.super_priority,o.parrent_organization_id, o.priority</orderClause>
@@ -341,11 +343,11 @@
             <customSQL>
             	 <![CDATA[
             	 	select tt.organization_id
-					  from (select t.organization_id, t.main_master_id
-					          from ccare.main_services t
+					  from (select t.organization_id, t.parrent_organization_id
+					          from organizations t
 					         start with t.organization_id = $criteria.organization_id
-					        connect by prior t.main_master_id = t.organization_id) tt
-					 where tt.main_master_id = 0
+					        connect by prior t.parrent_organization_id = t.organization_id) tt
+					 where tt.parrent_organization_id is null
             	 ]]>
             </customSQL> 
         </operationBinding>
