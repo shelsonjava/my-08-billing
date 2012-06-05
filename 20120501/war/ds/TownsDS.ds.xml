@@ -159,8 +159,8 @@
 			<tableClause>towns c</tableClause>
 			<whereClause><![CDATA[ 
 				($defaultWhereClause) 
-				#if($criteria.transport_type_id) 
-					 and c.town_id in (select town_id from transport_places where transport_type_id = $criteria.transport_type_id) 
+				#if($criteria.transp_type_id) 
+					 and c.town_id in (select town_id from transp_stations where transp_type_id = $criteria.transp_type_id) 
 				#end
 				]]>  
 			</whereClause> 

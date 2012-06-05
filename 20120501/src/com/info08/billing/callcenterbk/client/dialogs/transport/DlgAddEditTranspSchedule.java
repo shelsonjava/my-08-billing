@@ -134,7 +134,7 @@ public class DlgAddEditTranspSchedule extends Window {
 			depTranspStationItem = new ComboBoxItem();
 			depTranspStationItem.setTitle("გასვლის პუნქტი");
 			depTranspStationItem.setWidth(250);
-			depTranspStationItem.setName("transp_stat_id");
+			depTranspStationItem.setName("dep_transp_stat_id");
 			ClientUtils.fillCombo(depTranspStationItem, "TranspStatDS",
 					"searchAllTransportPlacesForCB", "transp_stat_id",
 					"name_descr", aditionalCriteria);
@@ -142,7 +142,7 @@ public class DlgAddEditTranspSchedule extends Window {
 			arrivalTranspStationItem = new ComboBoxItem();
 			arrivalTranspStationItem.setTitle("ჩასვლის პუნქტი");
 			arrivalTranspStationItem.setWidth(250);
-			arrivalTranspStationItem.setName("transp_stat_id");
+			arrivalTranspStationItem.setName("arr_transp_stat_id");
 			ClientUtils.fillCombo(arrivalTranspStationItem, "TranspStatDS",
 					"searchAllTransportPlacesForCB", "transp_stat_id",
 					"name_descr", aditionalCriteria);

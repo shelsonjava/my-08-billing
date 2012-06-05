@@ -347,7 +347,8 @@ public class CallCenterStackSelection extends SectionStackSection {
 				return;
 			}
 			Long persTypeId = user.getDepartment_id();
-			if (persTypeId == null || !persTypeId.equals(Constants.OperatorDepartmentID)) {
+			if (persTypeId == null
+					|| !persTypeId.equals(Constants.OperatorDepartmentID)) {
 				SC.say(CallCenterBK.constants.notCallCenterUser());
 				return;
 			}
