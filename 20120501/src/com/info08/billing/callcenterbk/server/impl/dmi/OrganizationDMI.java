@@ -34,7 +34,8 @@ public class OrganizationDMI {
 	private static final String Q_DELETE_ORG_PART_BANKS = "delete from organization_partner_banks t where t.organization_id = ? ";
 	private static final String Q_DELETE_ORG_DEP_PHONES = "delete from organization_depart_to_phones t where t.org_department_id = ? ";
 	private static final String Q_DELETE_ORG_DEPARTMENT = "delete from organization_department t where t.org_department_id = ? ";
-	private static final String Q_DELETE_ORG_DEP_ADDRESS = "delete from addresses a where a.addr_id = ? ";
+	private static final String Q_DELETE_ADDRESS = "delete from addresses a where a.addr_id = ? ";
+	private static final String Q_DELETE_ORGANIZATION = "delete from organizations t where t.organization_id = ? ";
 	private static final String Q_UPDATE_ORG_DEP_ORDER = " update organization_department t set t.inner_order = ? where t.org_department_id = ? and t.inner_order <> ? ";
 
 	private Logger logger = Logger.getLogger(OrganizationDMI.class.getName());
@@ -643,15 +644,13 @@ public class OrganizationDMI {
 							.setParameter(1, orgDepartId).executeUpdate();
 					Long physical_address_id = item.getPhysical_address_id();
 					if (physical_address_id != null) {
-						oracleManager
-								.createNativeQuery(Q_DELETE_ORG_DEP_ADDRESS)
+						oracleManager.createNativeQuery(Q_DELETE_ADDRESS)
 								.setParameter(1, physical_address_id)
 								.executeUpdate();
 					}
 					Long legal_address_id = item.getLegal_address_id();
 					if (legal_address_id != null) {
-						oracleManager
-								.createNativeQuery(Q_DELETE_ORG_DEP_ADDRESS)
+						oracleManager.createNativeQuery(Q_DELETE_ADDRESS)
 								.setParameter(1, legal_address_id)
 								.executeUpdate();
 					}
@@ -739,33 +738,33 @@ public class OrganizationDMI {
 									.getPhysical_address_id();
 							if (physical_address_id != null) {
 								oracleManager
-										.createNativeQuery(
-												Q_DELETE_ORG_DEP_ADDRESS)
+										.createNativeQuery(Q_DELETE_ADDRESS)
 										.setParameter(1, physical_address_id)
 										.executeUpdate();
 							}
 							Long legal_address_id = item.getLegal_address_id();
 							if (legal_address_id != null) {
 								oracleManager
-										.createNativeQuery(
-												Q_DELETE_ORG_DEP_ADDRESS)
+										.createNativeQuery(Q_DELETE_ADDRESS)
 										.setParameter(1, legal_address_id)
 										.executeUpdate();
 							}
 						}
 					}
 
+					oracleManager.createNativeQuery(Q_DELETE_ORGANIZATION)
+							.setParameter(1, child_organization_id)
+							.executeUpdate();
+
 					Long physical_address_id = item.getPhysical_address_id();
 					if (physical_address_id != null) {
-						oracleManager
-								.createNativeQuery(Q_DELETE_ORG_DEP_ADDRESS)
+						oracleManager.createNativeQuery(Q_DELETE_ADDRESS)
 								.setParameter(1, physical_address_id)
 								.executeUpdate();
 					}
 					Long legal_address_id = item.getLegal_address_id();
 					if (legal_address_id != null) {
-						oracleManager
-								.createNativeQuery(Q_DELETE_ORG_DEP_ADDRESS)
+						oracleManager.createNativeQuery(Q_DELETE_ADDRESS)
 								.setParameter(1, legal_address_id)
 								.executeUpdate();
 					}
