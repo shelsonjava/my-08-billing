@@ -8,6 +8,7 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 /*changed*/
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddEditSubscriber;
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgOrgInfoViewByPhone;
+import com.info08.billing.callcenterbk.client.dialogs.history.DlgHistSubscriber;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
@@ -82,6 +83,8 @@ public class TabSubscriber extends Tab {
 	private ToolStripButton deletePersonBtn;
 	private ToolStripButton phoneOwnersBtn;
 	private ToolStripButton exportButton;
+	private ToolStripButton historyButton;
+
 	private ListGrid abonentsGrid;
 
 	Map<String, Object> aditionalCriteria = new TreeMap<String, Object>();
@@ -322,6 +325,12 @@ public class TabSubscriber extends Tab {
 			exportButton.setWidth(50);
 			toolStrip.addButton(exportButton);
 
+			historyButton = new ToolStripButton(
+					CallCenterBK.constants.history(), "date.png");
+			historyButton.setLayoutAlign(Alignment.LEFT);
+			historyButton.setWidth(50);
+			toolStrip.addButton(historyButton);
+
 			ListGridField firstName = new ListGridField("name", "სახელი", 70);
 			ListGridField lastName = new ListGridField("family_name", "გვარი",
 					100);
@@ -556,7 +565,22 @@ public class TabSubscriber extends Tab {
 							}
 						}
 					});
+			historyButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
 
+					ListGridRecord listGridRecord = abonentsGrid
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+					DlgHistSubscriber dlgHistSubscriber = new DlgHistSubscriber(
+							listGridRecord);
+					dlgHistSubscriber.show();
+				}
+			});
 			setPane(mainLayout);
 		} catch (Exception e) {
 			e.printStackTrace();

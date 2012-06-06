@@ -721,4 +721,5 @@ public interface AppConstants extends Constants {
 	String parrentOrgDepName();
 	String plzEnterOrgDepName();
 	String parrentOrgDepIsSameAsChild();
+	String history();
 }
