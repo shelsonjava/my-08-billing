@@ -262,11 +262,22 @@ public class TabStreetNames extends Tab {
 
 	private void search() {
 		try {
-			String street_name_descr = streetNameDescrItem
-					.getValueAsString();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("street_name_descr",
-					street_name_descr);
+			
+			String street_name_descr = streetNameDescrItem.getValueAsString();
+			if (street_name_descr != null && !street_name_descr.trim().equals("")) {
+				String tmp = street_name_descr.trim();
+				String arrStr[] = tmp.split(" ");
+				int i = 1;
+				for (String string : arrStr) {
+					String item = string.trim();
+					if (item.equals("")) {
+						continue;
+					}
+					criteria.setAttribute("street_name_descr" + i, item);
+					i++;
+				}
+			}
 			
 
 			DSRequest dsRequest = new DSRequest();

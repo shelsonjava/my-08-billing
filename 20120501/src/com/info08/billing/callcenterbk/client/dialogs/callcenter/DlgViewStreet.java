@@ -84,15 +84,15 @@ public class DlgViewStreet extends Window {
 		DetailViewerField street_name = new DetailViewerField("street_name",
 				CallCenterBK.constants.street());
 
-		DetailViewerField oldName = new DetailViewerField("oldName",
+		DetailViewerField oldName = new DetailViewerField("street_old_name_descr",
 				CallCenterBK.constants.oldStreetName());
 
-		DetailViewerField streetIndex = new DetailViewerField("streetIndex",
+		DetailViewerField streetIndex = new DetailViewerField("street_index",
 				CallCenterBK.constants.indexes());
 		streetIndex.setCellStyle("fontRedWithBorder");
 
 		DetailViewerField streetDistrict = new DetailViewerField(
-				"streetDistrict", CallCenterBK.constants.district());
+				"street_to_town_district", CallCenterBK.constants.district());
 
 		DetailViewerField street_location = new DetailViewerField(
 				"street_location", CallCenterBK.constants.streetDescr());

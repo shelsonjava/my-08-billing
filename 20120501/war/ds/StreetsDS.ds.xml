@@ -28,7 +28,7 @@
 		<field name="descr_type_id_level_9"		type="integer"	title="descr_type_id_level_9"	hidden="true"/>
 		<field name="descr_type_id_level_10"	type="integer"	title="descr_type_id_level_10"	hidden="true"/>
 		<field name="record_type"				type="integer"	title="record_type"				hidden="true"/>		
-		<field name="street_location"			type="text" 	title="street_location"		hidden="true"/>
+		<field name="street_location"			type="text" 	title="street_location"		/>
 		<field name="street_name"				type="text" 	title="Street Name"/>
 		<field name="town_name"					type="text"		title="City Name"/>
 		<field name="town_district_name"		type="text"		title="town_district_name"/>			

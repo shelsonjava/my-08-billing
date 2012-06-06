@@ -41,7 +41,12 @@
 			<tableClause>street_names t</tableClause>
 			<whereClause><![CDATA[ 
 				1 = 1
-				#if($criteria.street_name_descr) AND t.street_name_descr like ($criteria.street_name_descr)||'%' #end
+				#if($criteria.street_name_descr1) AND t.street_name_descr like '%'||($criteria.street_name_descr1)||'%' #end
+				#if($criteria.street_name_descr2) AND t.street_name_descr like '%'||($criteria.street_name_descr2)||'%' #end
+				#if($criteria.street_name_descr3) AND t.street_name_descr like '%'||($criteria.street_name_descr3)||'%' #end
+				#if($criteria.street_name_descr4) AND t.street_name_descr like '%'||($criteria.street_name_descr4)||'%' #end
+				#if($criteria.street_name_descr5) AND t.street_name_descr like '%'||($criteria.street_name_descr5)||'%' #end
+				#if($criteria.street_name_descr6) AND t.street_name_descr like '%'||($criteria.street_name_descr6)||'%' #end
 				]]>  
 			</whereClause> 
     	</operationBinding>
