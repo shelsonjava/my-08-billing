@@ -1,8 +1,12 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewStreet;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.client.utils.FormItemDescr;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -35,7 +39,8 @@ public class TabFindStreets extends Tab {
 	private DynamicForm searchForm;
 
 	// fields
-	private ComboBoxItem citiesItem;
+	private ComboBoxItem townsItem;
+	private ComboBoxItem townDistrictsItem;
 	private TextItem streetNameItem;
 	private TextItem indexItem;
 
@@ -66,36 +71,54 @@ public class TabFindStreets extends Tab {
 		searchForm = new DynamicForm();
 		searchForm.setAutoFocus(true);
 		searchForm.setWidth(750);
-		searchForm.setNumCols(3);
+		searchForm.setNumCols(2);
 		searchForm.setTitleOrientation(TitleOrientation.TOP);
 		mainLayout.addMember(searchForm);
 
-		citiesItem = new ComboBoxItem();
-		citiesItem.setTitle(CallCenterBK.constants.town());
-		citiesItem.setName("town_name");
-		citiesItem.setWidth(250);
-		citiesItem.setFetchMissingValues(true);
-		citiesItem.setFilterLocally(false);
-		citiesItem.setAddUnknownValues(false);
+		townsItem = new ComboBoxItem();
+		townsItem.setTitle(CallCenterBK.constants.town());
+		townsItem.setName("town_name");
+		townsItem.setWidth(250);
+		townsItem.setFetchMissingValues(true);
+		townsItem.setFilterLocally(false);
+		townsItem.setAddUnknownValues(false);
 
-//		DataSource townsDS = DataSource.get("TownsDS");
-//		citiesItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-//		citiesItem.setOptionDataSource(townsDS);
-//		citiesItem.setValueField("town_id");
-//		citiesItem.setDisplayField("town_name");
-//		Criteria criteria = new Criteria();
-//		// criteria.setAttribute("country_id", Constants.defCountryGeorgiaId);
-//		citiesItem.setOptionCriteria(criteria);
-//		citiesItem.setAutoFetchData(false);
-		
-		ClientUtils.fillCombo(citiesItem, "TownsDS",
+		// DataSource townsDS = DataSource.get("TownsDS");
+		// citiesItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
+		// citiesItem.setOptionDataSource(townsDS);
+		// citiesItem.setValueField("town_id");
+		// citiesItem.setDisplayField("town_name");
+		// Criteria criteria = new Criteria();
+		// // criteria.setAttribute("country_id",
+		// Constants.defCountryGeorgiaId);
+		// citiesItem.setOptionCriteria(criteria);
+		// citiesItem.setAutoFetchData(false);
+
+		ClientUtils.fillCombo(townsItem, "TownsDS",
 				"searchCitiesFromDBForCombosAll", "town_id", "town_name");
-		
 
-		citiesItem.addKeyPressHandler(new KeyPressHandler() {
+		townDistrictsItem = new ComboBoxItem();
+		townDistrictsItem.setTitle(CallCenterBK.constants.district());
+		townDistrictsItem.setName("town_district_name");
+		townDistrictsItem.setWidth(250);
+		townDistrictsItem.setFetchMissingValues(true);
+		townDistrictsItem.setFilterLocally(false);
+		townDistrictsItem.setAddUnknownValues(false);
+
+		Map<String, Integer> aditionalCriteria1 = new TreeMap<String, Integer>();
+		aditionalCriteria1.put("town_id", Constants.defCityTbilisiId);
+
+		ClientUtils.fillCombo(townDistrictsItem, "TownDistrictDS",
+				"searchFromDB", "town_district_id", "town_district_name",
+				aditionalCriteria1);
+
+		ClientUtils.makeDependancy(townsItem, true, new FormItemDescr(
+				townDistrictsItem, "town_id"));
+
+		townsItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = citiesItem.getOptionCriteria();
+				Criteria criteria = townsItem.getOptionCriteria();
 				if (criteria != null) {
 					String oldAttr = criteria.getAttribute("town_id");
 					if (oldAttr != null) {
@@ -105,7 +128,7 @@ public class TabFindStreets extends Tab {
 				}
 			}
 		});
-		citiesItem.setValue(Constants.defCityTbilisiId);
+		townsItem.setValue(Constants.defCityTbilisiId);
 
 		streetNameItem = new TextItem();
 		streetNameItem.setTitle(CallCenterBK.constants.street());
@@ -117,7 +140,8 @@ public class TabFindStreets extends Tab {
 		indexItem.setName("indexItem");
 		indexItem.setWidth(250);
 
-		searchForm.setFields(citiesItem, streetNameItem, indexItem);
+		searchForm.setFields(townsItem, townDistrictsItem, streetNameItem,
+				indexItem);
 		searchForm.focusInItem(streetNameItem);
 
 		HLayout buttonLayout = new HLayout(5);
@@ -167,7 +191,8 @@ public class TabFindStreets extends Tab {
 				CallCenterBK.constants.street(), 170);
 		street_name.setAlign(Alignment.LEFT);
 
-		ListGridField street_old_name_descr = new ListGridField("street_old_name_descr",
+		ListGridField street_old_name_descr = new ListGridField(
+				"street_old_name_descr",
 				CallCenterBK.constants.oldStreetName(), 170);
 		street_old_name_descr.setAlign(Alignment.LEFT);
 
@@ -175,12 +200,13 @@ public class TabFindStreets extends Tab {
 				CallCenterBK.constants.indexes(), 120);
 		streetIndex.setAlign(Alignment.LEFT);
 
-		ListGridField streetDistrict = new ListGridField("street_to_town_district",
-				CallCenterBK.constants.district(), 120);
+		ListGridField streetDistrict = new ListGridField(
+				"street_to_town_district", CallCenterBK.constants.district(),
+				120);
 		streetDistrict.setAlign(Alignment.LEFT);
 
-		ListGridField street_location = new ListGridField(
-				"street_location", CallCenterBK.constants.streetDescr());
+		ListGridField street_location = new ListGridField("street_location",
+				CallCenterBK.constants.streetDescr());
 		street_location.setAlign(Alignment.LEFT);
 
 		listGrid.setFields(town_name, street_name, street_old_name_descr,
@@ -235,13 +261,12 @@ public class TabFindStreets extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("deleted", 0);
 
-			String town_id = citiesItem.getValueAsString();
+			String town_id = townsItem.getValueAsString();
 			String streetIndex = indexItem.getValueAsString();
 			String street_name = streetNameItem.getValueAsString();
 
 			if ((streetIndex == null || streetIndex.trim().equals(""))
-					&& (street_name == null || street_name.trim()
-							.equals(""))) {
+					&& (street_name == null || street_name.trim().equals(""))) {
 				SC.say(CallCenterBK.constants.plzEnterStreetNameOrIdx());
 				return;
 			}

@@ -1,10 +1,14 @@
 package com.info08.billing.callcenterbk.client.content;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditStreet;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.client.utils.FormItemDescr;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -46,7 +50,8 @@ public class TabStreet extends Tab {
 	private TextItem streetNameItem;
 	private TextItem streetLocationItem;
 	private ComboBoxItem recordTypeItem;
-	private ComboBoxItem citiesItem;
+	private ComboBoxItem townsItem;
+	private ComboBoxItem townDistrictsItem;
 
 	// actions
 	private IButton findButton;
@@ -125,18 +130,18 @@ public class TabStreet extends Tab {
 				}
 			});
 
-			citiesItem = new ComboBoxItem();
-			citiesItem.setTitle("ქალაქი");
-			citiesItem.setName("town_name");
-			citiesItem.setWidth(300);
-			citiesItem.setFetchMissingValues(true);
-			citiesItem.setFilterLocally(false);
-			citiesItem.setAddUnknownValues(false);
+			townsItem = new ComboBoxItem();
+			townsItem.setTitle("ქალაქი");
+			townsItem.setName("town_name");
+			townsItem.setWidth(300);
+			townsItem.setFetchMissingValues(true);
+			townsItem.setFilterLocally(false);
+			townsItem.setAddUnknownValues(false);
 
-			citiesItem.addKeyPressHandler(new KeyPressHandler() {
+			townsItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = citiesItem.getOptionCriteria();
+					Criteria criteria = townsItem.getOptionCriteria();
 					if (criteria != null) {
 						String oldAttr = criteria.getAttribute("town_id");
 						if (oldAttr != null) {
@@ -149,9 +154,28 @@ public class TabStreet extends Tab {
 					}
 				}
 			});
+			
+			
+			townDistrictsItem = new ComboBoxItem();
+			townDistrictsItem.setTitle(CallCenterBK.constants.district());
+			townDistrictsItem.setName("town_district_name");
+			townDistrictsItem.setWidth(300);
+			townDistrictsItem.setFetchMissingValues(true);
+			townDistrictsItem.setFilterLocally(false);
+			townDistrictsItem.setAddUnknownValues(false);
+
+			Map<String, Integer> aditionalCriteria1 = new TreeMap<String, Integer>();
+			aditionalCriteria1.put("town_id", Constants.defCityTbilisiId);
+
+			ClientUtils.fillCombo(townDistrictsItem, "TownDistrictDS",
+					"searchFromDB", "town_district_id", "town_district_name",
+					aditionalCriteria1);
+
+			ClientUtils.makeDependancy(townsItem, true, new FormItemDescr(
+					townDistrictsItem, "town_id"));
 
 			searchForm.setFields(streetNameItem, streetLocationItem,
-					recordTypeItem, citiesItem);
+					recordTypeItem, townsItem, townDistrictsItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -361,9 +385,9 @@ public class TabStreet extends Tab {
 			// citiesItem.setAutoFetchData(true);
 			// citiesItem.setValue(Constants.defCityTbilisiId);
 
-			ClientUtils.fillCombo(citiesItem, "TownsDS",
+			ClientUtils.fillCombo(townsItem, "TownsDS",
 					"searchCitiesFromDBForCombosAll", "town_id", "town_name");
-			citiesItem.setValue(Constants.defCityTbilisiId);
+			townsItem.setValue(Constants.defCityTbilisiId);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -376,7 +400,7 @@ public class TabStreet extends Tab {
 			String street_name = streetNameItem.getValueAsString();
 			String street_location = streetLocationItem.getValueAsString();
 			String record_type = recordTypeItem.getValueAsString();
-			String town_id = citiesItem.getValueAsString();
+			String town_id = townsItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("street_name", street_name);
