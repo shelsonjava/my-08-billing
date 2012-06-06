@@ -179,7 +179,7 @@ public class TabSubscriber extends Tab {
 					"town_district_name", aditionalCriteria);
 
 			adressItem = new TextItem();
-			adressItem.setTitle("ქუჩის დასახელება");
+			adressItem.setTitle(CallCenterBK.constants.home());
 
 			adressItem.setName("anumber");
 			adressItem.setWidth(200);
@@ -502,53 +502,53 @@ public class TabSubscriber extends Tab {
 							switch (fieldNum) {
 							case 1: // FirstName
 								Integer firstname_id = record
-										.getAttributeAsInt("firstname_id");
+										.getAttributeAsInt("name_id");
 								if (firstname_id != null) {
 									firstNameItem.setValue(firstname_id);
 								}
 								break;
 							case 2: // LastName
 								Integer lastname_id = record
-										.getAttributeAsInt("lastname_id");
+										.getAttributeAsInt("family_name_id");
 								if (lastname_id != null) {
 									lastNameItem.setValue(lastname_id);
 								}
 								break;
 							case 3: // Phone
 								String phone = record
-										.getAttributeAsString("phone");
+										.getAttributeAsString("phones");
 								phoneItem.setValue(phone);
 								break;
-							case 5: // Street
+							case 4: // Street
 								Integer street_id = record
 										.getAttributeAsInt("street_id");
 								if (street_id != null) {
 									streetItem.setValue(street_id);
 								}
 								Integer city_region_id = record
-										.getAttributeAsInt("city_region_id");
+										.getAttributeAsInt("town_district_id");
 								if (city_region_id != null) {
 									regionItem.setValue(city_region_id);
 								}
 								break;
-							case 6: // address number
+							case 5: // address number
 								String addr_number = record
-										.getAttributeAsString("addr_number");
+										.getAttributeAsString("anumber");
 								adressItem.setValue(addr_number);
 								break;
-							case 7: // block
+							case 6: // block
 								String addr_block = record
-										.getAttributeAsString("addr_block");
+										.getAttributeAsString("block");
 								blockItem.setValue(addr_block);
 								break;
-							case 8: // appt
+							case 7: // appt
 								String addr_appt = record
-										.getAttributeAsString("addr_appt");
+										.getAttributeAsString("appt");
 								appartItem.setValue(addr_appt);
 								break;
-							case 9: // add. Info.
+							case 8: // add. Info.
 								String addr_descr = record
-										.getAttributeAsString("addr_descr");
+										.getAttributeAsString("descr");
 								addrAddInfoItem.setValue(addr_descr);
 								break;
 							default:

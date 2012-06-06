@@ -168,7 +168,7 @@ public class MyAddressPanel extends HLayout {
 				@Override
 				public void onChanged(ChangedEvent event) {
 					setCleared();
-					
+
 				}
 			});
 		}
@@ -198,6 +198,7 @@ public class MyAddressPanel extends HLayout {
 				turnOffItem.setValue(false);
 				setCleared();
 			}
+			header.setValue(title);
 			return;
 		}
 
@@ -354,13 +355,11 @@ public class MyAddressPanel extends HLayout {
 		for (FormItem formItem : fields)
 			if (!formItem.equals(turnOffItem))
 				formItem.setDisabled(disabled);
-		if (disabled){
+		if (disabled) {
 			dynamicForm.clearValues();
-		}else{
+		} else {
 			addrTownItem.setValue(Constants.defCityTbilisiId);
 		}
-		
-		
-			
+
 	}
 }
