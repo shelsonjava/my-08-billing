@@ -724,26 +724,26 @@ public class CommonDMI implements QueryConstants {
 			Long hideForCorrectionItem = new Long(record.get(
 					"hide_for_correction").toString());
 
-			List result = oracleManager
-					.createNativeQuery(QueryConstants.Q_CHECK_STREET_HIDE_FK)
-					.setParameter(1, street_id).setParameter(2, street_id)
-					.setParameter(3, street_id).getResultList();
-
-			if (result != null && !result.isEmpty()) {
-				for (Object row : result) {
-					Object cols[] = (Object[]) row;
-					Long cnt = new Long(cols[0] == null ? "-1"
-							: cols[0].toString());
-					String type = cols[1] == null ? "" : cols[1].toString();
-					if (cnt != null && cnt.intValue() > 0) {
-						throw new CallCenterException(
-								"შეცდომა ქუჩის დამალვის დროს : "
-										+ String.format(hideText, "ქუჩის",
-												type, type, "ქუჩის"));
-					}
-
-				}
-			}
+//			List result = oracleManager
+//					.createNativeQuery(QueryConstants.Q_CHECK_STREET_HIDE_FK)
+//					.setParameter(1, street_id).setParameter(2, street_id)
+//					.setParameter(3, street_id).getResultList();
+//
+//			if (result != null && !result.isEmpty()) {
+//				for (Object row : result) {
+//					Object cols[] = (Object[]) row;
+//					Long cnt = new Long(cols[0] == null ? "-1"
+//							: cols[0].toString());
+//					String type = cols[1] == null ? "" : cols[1].toString();
+//					if (cnt != null && cnt.intValue() > 0) {
+//						throw new CallCenterException(
+//								"შეცდომა ქუჩის დამალვის დროს : "
+//										+ String.format(hideText, "ქუჩის",
+//												type, type, "ქუჩის"));
+//					}
+//
+//				}
+//			}
 
 			// Boolean bhideForCorrectionItem = (hideForCorrectionItem == null)
 			// ? null
