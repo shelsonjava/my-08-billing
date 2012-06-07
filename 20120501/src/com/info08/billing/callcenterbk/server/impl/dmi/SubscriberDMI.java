@@ -34,23 +34,24 @@ public class SubscriberDMI implements QueryConstants {
 	 * 
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public Map<?, ?> saveOrUpdateSubscriber(DSRequest dsRequest) throws Exception {
+	public Map<?, ?> saveOrUpdateSubscriber(DSRequest dsRequest)
+			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
 			String log = "Method:SubscriberDMI.saveOrUpdateSubscriber.";
-			
+
 			Map<?, ?> values = dsRequest.getValues();
 			Long subscriber_id = values.containsKey("subscriber_id") ? Long
 					.parseLong(values.get("subscriber_id").toString()) : null;
-			
+
 			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
 					.toString();
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			
+
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
 					loggedUserName, log);
 			Subscribers subscr = null;
