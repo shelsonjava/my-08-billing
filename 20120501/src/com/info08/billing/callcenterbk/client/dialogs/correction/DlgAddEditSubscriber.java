@@ -259,13 +259,14 @@ public class DlgAddEditSubscriber extends Window {
 			adressOpCloseItem = new SelectItem();
 			adressOpCloseItem.setValueMap(ClientMapUtil.getInstance()
 					.getAddrMapOpClose());
-			adressOpCloseItem.setDefaultToFirstOption(true);
 			adressOpCloseItem.setTitle("ღია/დაფარული");
 			adressOpCloseItem.setName("hidden_by_request");
 			adressOpCloseItem.setWidth(170);
-			adressOpCloseItem.setFetchMissingValues(false);
-			ClientUtils.fillCombo(adressOpCloseItem, "ClosedOpenedDS",
-					"searchClosedOpened", "id", "name");
+			adressOpCloseItem.setDefaultToFirstOption(true);
+//			adressOpCloseItem.setAutoFetchData(true);
+//			ClientUtils.fillCombo(adressOpCloseItem, "ClosedOpenedDS",
+//					"searchClosedOpened", "id", "name");
+			
 
 			adressItem = new TextItem();
 			adressItem.setTitle("სახლი");
