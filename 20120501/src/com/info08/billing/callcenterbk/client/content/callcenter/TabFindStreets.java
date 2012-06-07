@@ -264,11 +264,19 @@ public class TabFindStreets extends Tab {
 			String town_id = townsItem.getValueAsString();
 			String streetIndex = indexItem.getValueAsString();
 			String street_name = streetNameItem.getValueAsString();
+			String town_district_id = townDistrictsItem.getValueAsString();
 
 			if ((streetIndex == null || streetIndex.trim().equals(""))
-					&& (street_name == null || street_name.trim().equals(""))) {
+					&& (street_name == null || street_name.trim().equals(""))
+					&& (town_district_id == null || town_district_id.trim()
+							.equals(""))) {
 				SC.say(CallCenterBK.constants.plzEnterStreetNameOrIdx());
 				return;
+			}
+
+			if (town_district_id != null && !town_district_id.trim().equals("")) {
+				criteria.setAttribute("town_district_id", new Integer(
+						town_district_id));
 			}
 
 			if (town_id != null && !town_id.trim().equals("")) {

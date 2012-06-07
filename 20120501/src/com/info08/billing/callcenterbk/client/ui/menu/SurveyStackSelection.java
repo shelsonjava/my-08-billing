@@ -1,11 +1,12 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.content.admin.TabOperatorBreaks;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurvey;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurveyCallCenterNews;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurveyHist;
-import com.info08.billing.callcenterbk.client.content.survey.TabSurveyReplyType;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurveyKinds;
+import com.info08.billing.callcenterbk.client.content.survey.TabSurveyReplyType;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -24,18 +25,13 @@ public class SurveyStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1",
-					CallCenterBK.constants.menuSurveyStatuses(), true,
-					"survey.png"),
-			new MenuNode("101", "2", CallCenterBK.constants.menuSurveyKinds(),
-					true, "survey.png"),
-			new MenuNode("102", "3", CallCenterBK.constants.menuSurvey(), true,
-					"survey.png"),
-			new MenuNode("103", "4", CallCenterBK.constants.menuSurveyHist(),
-					true, "survey.png"),
-			new MenuNode("104", "5",
-					CallCenterBK.constants.menuCallCenterNews(), true,
-					"survey.png") };
+			new MenuNode("100", "1", CallCenterBK.constants.menuSurveyStatuses(), true, "survey.png"),
+			new MenuNode("101", "2", CallCenterBK.constants.menuSurveyKinds(), true, "survey.png"),
+			new MenuNode("102", "3", CallCenterBK.constants.menuSurvey(), true, "survey.png"),
+			new MenuNode("103", "4", CallCenterBK.constants.menuSurveyHist(), true, "survey.png"),
+			new MenuNode("104", "5", CallCenterBK.constants.menuCallCenterNews(), true, "survey.png"), 
+			new MenuNode("105", "1", CallCenterBK.constants.schedule(), true,"calendar.png")
+			};
 
 	private TreeGrid employeeTreeGrid;
 
@@ -116,6 +112,7 @@ public class SurveyStackSelection extends SectionStackSection {
 					.hasPermission("404000");
 
 			menuData[4].setAttribute("enabled", hasCallCenterNewsPerm);
+			menuData[5].setAttribute("enabled", hasCallCenterNewsPerm);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -142,6 +139,9 @@ public class SurveyStackSelection extends SectionStackSection {
 		} else if (menuId.equals("104")) {
 			TabSurveyCallCenterNews tabSurveyCallCenterNews = new TabSurveyCallCenterNews();
 			body.addTab(tabSurveyCallCenterNews);
+		} else if (menuId.equals("105")) {
+			TabOperatorBreaks tabOperatorBreaks = new TabOperatorBreaks();
+			body.addTab(tabOperatorBreaks);
 		}
 	}
 

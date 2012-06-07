@@ -830,36 +830,29 @@ public class DlgAddEditOrganization extends Window {
 				return;
 			}
 
-			// Integer legal_town_id = legalAddrValues.get("town_id") == null ?
-			// null
-			// : new Integer(legalAddrValues.get("town_id").toString());
-			// if (legal_town_id == null) {
-			// SC.say(CallCenterBK.constants.warning(),
-			// CallCenterBK.constants.plzChooseLegalAddrTown());
-			// topTabSet.selectTab(1);
-			// legalAddress.getDynamicForm().focusInItem(
-			// legalAddress.getAddrTownItem());
-			// return;
-			// }
-			// Integer legal_street_id = legalAddrValues.get("street_id") ==
-			// null ? null
-			// : new Integer(legalAddrValues.get("street_id").toString());
-			// if (legal_street_id == null) {
-			// SC.say(CallCenterBK.constants.warning(),
-			// CallCenterBK.constants.plzChooseLegalAddrStreet());
-			// topTabSet.selectTab(1);
-			// legalAddress.getDynamicForm().focusInItem(
-			// legalAddress.getAddrStreetItem());
-			// return;
-			// }
-			// if (orgIndItem.getValueAsString() == null
-			// || orgIndItem.getValueAsString().trim().equals("")) {
-			// SC.say(CallCenterBK.constants.warning(),
-			// CallCenterBK.constants.plzEnterOrgIndex());
-			// topTabSet.selectTab(1);
-			// dynamicFormMainInfo2.focusInItem(orgIndItem);
-			// return;
-			// }
+			if (legalAddress.isCheckedTurnOffItem()) {
+				Integer legal_town_id = legalAddrValues.get("town_id") == null ? null
+						: new Integer(legalAddrValues.get("town_id").toString());
+				if (legal_town_id == null) {
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.plzChooseLegalAddrTown());
+					topTabSet.selectTab(1);
+					legalAddress.getDynamicForm().focusInItem(
+							legalAddress.getAddrTownItem());
+					return;
+				}
+				Integer legal_street_id = legalAddrValues.get("street_id") == null ? null
+						: new Integer(legalAddrValues.get("street_id")
+								.toString());
+				if (legal_street_id == null) {
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.plzChooseLegalAddrStreet());
+					topTabSet.selectTab(1);
+					legalAddress.getDynamicForm().focusInItem(
+							legalAddress.getAddrStreetItem());
+					return;
+				}
+			}
 
 			Integer days = 0;
 			boolean allDayOffsIsSel = false;

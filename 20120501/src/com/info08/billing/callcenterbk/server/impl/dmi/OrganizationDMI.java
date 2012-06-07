@@ -350,7 +350,7 @@ public class OrganizationDMI {
 			boolean deleteLegalAddress = legal_address_id != null
 					&& legalAddrValues == null;
 
-			if (!deleteLegalAddress) {
+			if (legalAddrValues != null) {
 				legal_address_id = persistAddress(oracleManager, values,
 						legal_address_id, "legalAddrValues");
 			}
@@ -734,15 +734,14 @@ public class OrganizationDMI {
 									.createNativeQuery(Q_DELETE_ORG_DEPARTMENT)
 									.setParameter(1, orgDepartId)
 									.executeUpdate();
-							Long physical_address_id = item
-									.getPhysical_address_id();
+							Long physical_address_id = itemDeps.getPhysical_address_id();
 							if (physical_address_id != null) {
 								oracleManager
 										.createNativeQuery(Q_DELETE_ADDRESS)
 										.setParameter(1, physical_address_id)
 										.executeUpdate();
 							}
-							Long legal_address_id = item.getLegal_address_id();
+							Long legal_address_id = itemDeps.getLegal_address_id();
 							if (legal_address_id != null) {
 								oracleManager
 										.createNativeQuery(Q_DELETE_ADDRESS)

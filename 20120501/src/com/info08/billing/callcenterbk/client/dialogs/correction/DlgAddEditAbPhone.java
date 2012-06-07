@@ -8,7 +8,6 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -95,26 +94,29 @@ public class DlgAddEditAbPhone extends Window {
 		isParallelItem.setFetchMissingValues(false);
 
 		phoneContractType = new SelectItem();
-		ClientUtils.fillDescriptionCombo(phoneContractType,
-				Constants.DT_PHONECONTRACTTYPES);
+		//ClientUtils.fillDescriptionCombo(phoneContractType,Constants.DT_PHONECONTRACTTYPES);
+		phoneContractType.setValueMap(ClientMapUtil.getInstance().getMapStatuses());
 		phoneContractType.setTitle(CallCenterBK.constants.status());
 		phoneContractType.setName("phone_contract_type");
 		phoneContractType.setWidth(100);
+		phoneContractType.setDefaultToFirstOption(true);
 
 		phoneStateItem = new SelectItem();
-		ClientUtils.fillDescriptionCombo(phoneStateItem,
-				Constants.DT_PHONESTATES);
+		//ClientUtils.fillDescriptionCombo(phoneStateItem,Constants.DT_PHONESTATES);
+		phoneStateItem.setValueMap(ClientMapUtil.getInstance().getMapStates());
 		phoneStateItem.setTitle(CallCenterBK.constants.state());
 		phoneStateItem.setName("phone_state_id");
+		phoneStateItem.setDefaultToFirstOption(true);
 
 		phoneStateItem.setWidth(100);
 
 		phoneTypeItem = new SelectItem();
-		ClientUtils
-				.fillDescriptionCombo(phoneTypeItem, Constants.DT_PHONETYPES);
+		//ClientUtils.fillDescriptionCombo(phoneTypeItem, Constants.DT_PHONETYPES);
+		phoneTypeItem.setValueMap(ClientMapUtil.getInstance().getMapTypes());
 		phoneTypeItem.setTitle(CallCenterBK.constants.type());
 		phoneTypeItem.setName("phone_type_id");
 		phoneTypeItem.setWidth(119);
+		phoneTypeItem.setDefaultToFirstOption(true);
 
 		formPhone.setFields(phoneItem, isHideItem, isParallelItem,
 				phoneContractType, phoneStateItem, phoneTypeItem);
@@ -153,7 +155,7 @@ public class DlgAddEditAbPhone extends Window {
 				addRecord(listGridRecord);
 			}
 		});
-		if(phone_number!=null)
+		if (phone_number != null)
 			phoneItem.setValue(phone_number);
 	}
 

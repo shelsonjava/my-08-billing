@@ -2,14 +2,12 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.admin.TabAdmin;
+import com.info08.billing.callcenterbk.client.content.admin.TabBillingComps;
 import com.info08.billing.callcenterbk.client.content.admin.TabBlackList;
 import com.info08.billing.callcenterbk.client.content.admin.TabContractors;
-import com.info08.billing.callcenterbk.client.content.admin.TabLandlineIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabGSMIndexes;
-import com.info08.billing.callcenterbk.client.content.admin.TabBillingComps;
-import com.info08.billing.callcenterbk.client.content.admin.TabOperatorBreaks;
+import com.info08.billing.callcenterbk.client.content.admin.TabLandlineIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabOrgPriorityList;
-import com.info08.billing.callcenterbk.client.content.admin.TabPartniorNumbersList;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -39,12 +37,8 @@ public class AdminStackSelection extends SectionStackSection {
 			new MenuNode("104", "1", CallCenterBK.constants.blockPhone(), true,
 					"telephone_delete.png"),
 			new MenuNode("105", "1", CallCenterBK.constants.billingComps(),
-					true, "phone.png"),
-			new MenuNode("106", "1", CallCenterBK.constants.schedule(), true,
-					"calendar.png"),
-			new MenuNode("107", "1", CallCenterBK.constants.importedNumbers(),
-					true, "import.png"),
-			new MenuNode("108", "1", CallCenterBK.constants.extraPriority(),
+					true, "phone.png"),					
+			new MenuNode("106", "1", CallCenterBK.constants.extraPriority(),
 					true, "sort.png") };
 
 	private TreeGrid menuTreeGrid;
@@ -140,12 +134,7 @@ public class AdminStackSelection extends SectionStackSection {
 		} else if (menuId.equals("105")) {
 			TabBillingComps tabBillingComps = new TabBillingComps();
 			body.addTab(tabBillingComps);
-		} else if (menuId.equals("106")) {
-			TabOperatorBreaks tabOperatorBreaks = new TabOperatorBreaks();
-			body.addTab(tabOperatorBreaks);
-		} else if (menuId.equals("107")) {
-			body.addTab(new TabPartniorNumbersList());
-		} else if (menuId.equals("108")) {
+		}   else if (menuId.equals("106")) {
 			body.addTab(new TabOrgPriorityList());
 		}
 

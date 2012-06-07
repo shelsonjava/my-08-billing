@@ -109,6 +109,7 @@
 				 t.street_id = sd.street_id(+) and
 				 sd.town_district_id = sr.town_district_id(+)
 				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+				 #if($criteria.town_district_id) AND sd.town_district_id = $criteria.town_district_id #end
 				 #if($criteria.record_type) AND t.record_type = $criteria.record_type #end
 				 #if($criteria.street_name) AND t.street_name like '%'||($criteria.street_name)||'%' #end
 				 
@@ -205,6 +206,9 @@
 			<whereClause><![CDATA[ 
 				 c.town_id = t.town_id and t.hide_for_call_center = 0
 				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+				 #if($criteria.town_district_id) 
+				 	AND getDistrictid(t.street_id) like '%' || ($criteria.town_district_id)||'%'				 	 
+				 #end
 				 #if($criteria.street_index) AND t.street_index like '%' || ($criteria.street_index)||'%' #end
 				 #if($criteria.street_name1) 
 				 	AND (t.street_name like '%'||$criteria.street_name1||'%' OR t.street_old_name_descr like '%'||$criteria.street_name1||'%') 

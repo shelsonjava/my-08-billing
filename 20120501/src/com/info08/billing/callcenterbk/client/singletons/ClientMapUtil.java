@@ -103,17 +103,17 @@ public class ClientMapUtil {
 		mapParall.put("0", "ჩვეულებრივი");
 		mapParall.put("1", "პარალელური");
 
-		mapStatuses.put("4", "პირ.");
-		mapStatuses.put("1", "აღ. იჯარ.");
-		mapStatuses.put("3", "გაც. იჯარ.");
+		mapStatuses.put("53102", "პირდაპირი");
+		mapStatuses.put("53100", "აღებულია იჯარით");
+		mapStatuses.put("53101", "გაცემულია იჯარით");
 
-		mapStates.put("1", "სწორი");
-		mapStates.put("2", "არ პას.");
-		mapStates.put("3", "გათიშ.");
-		mapStates.put("6", "მოხს.");
+		mapStates.put("52100", "სწორი");
+		mapStates.put("52103", "არ პასუხობს");
+		mapStates.put("52101", "გათიშული");
+		mapStates.put("52102", "მოხსნილი");
 
-		mapTypes.put("1", "კაბ.");
-		mapTypes.put("2", "უკაბ.");
+		mapTypes.put("54100", "კაბელიანი");
+		mapTypes.put("54101", "უკაბელო");
 
 		addrMapOpClose.put("0", "ღია");
 		addrMapOpClose.put("1", "დაფარულია");

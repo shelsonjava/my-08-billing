@@ -154,8 +154,7 @@ public class TabStreet extends Tab {
 					}
 				}
 			});
-			
-			
+
 			townDistrictsItem = new ComboBoxItem();
 			townDistrictsItem.setTitle(CallCenterBK.constants.district());
 			townDistrictsItem.setName("town_district_name");
@@ -401,12 +400,14 @@ public class TabStreet extends Tab {
 			String street_location = streetLocationItem.getValueAsString();
 			String record_type = recordTypeItem.getValueAsString();
 			String town_id = townsItem.getValueAsString();
-
+			String town_district_id = townDistrictsItem.getValueAsString();
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("street_name", street_name);
-			//criteria.setAttribute("street_location", street_location);
-			
-			
+			if (town_district_id != null && !town_district_id.trim().equals("")) {
+				criteria.setAttribute("town_district_id", new Integer(
+						town_district_id));
+			}
+
 			if (street_location != null && !street_location.trim().equals("")) {
 				String tmp = street_location.trim();
 				String arrStr[] = tmp.split(" ");
@@ -417,8 +418,7 @@ public class TabStreet extends Tab {
 					i++;
 				}
 			}
-			
-			
+
 			if (record_type != null) {
 				criteria.setAttribute("record_type", new Integer(record_type));
 			}

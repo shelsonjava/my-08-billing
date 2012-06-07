@@ -362,4 +362,15 @@ public class MyAddressPanel extends HLayout {
 		}
 
 	}
+
+	public CheckboxItem getTurnOffItem() {
+		return turnOffItem;
+	}
+
+	public boolean isCheckedTurnOffItem() {
+		if (turnOffItem == null || turnOffItem.isDisabled()) {
+			return true;
+		}
+		return turnOffItem.getValueAsBoolean().booleanValue();
+	}
 }

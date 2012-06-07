@@ -1,12 +1,13 @@
 package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.content.TabSubscriber;
 import com.info08.billing.callcenterbk.client.content.TabAbonentLastNames;
 import com.info08.billing.callcenterbk.client.content.TabAbonentNames;
 import com.info08.billing.callcenterbk.client.content.TabOrgBusinessActivity;
 import com.info08.billing.callcenterbk.client.content.TabOrganization;
+import com.info08.billing.callcenterbk.client.content.TabSubscriber;
 import com.info08.billing.callcenterbk.client.content.TabVirtualCharge;
+import com.info08.billing.callcenterbk.client.content.admin.TabPartniorNumbersList;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -30,7 +31,9 @@ public class CorrectionStackSelection extends SectionStackSection {
 			new MenuNode("102", "3", "აბონენტები", true, "person.png"),
 			new MenuNode("103", "4", "სახელები", true, "person.png"),
 			new MenuNode("104", "5", "გვარები", true, "person.png"),
-			new MenuNode("105", "6", CallCenterBK.constants.virtualCharge(), true, "moneySmall.png") };
+			new MenuNode("105", "6", CallCenterBK.constants.virtualCharge(), true, "moneySmall.png"), 
+			new MenuNode("106", "1", CallCenterBK.constants.importedNumbers(),true, "import.png")
+	};
 
 	private TreeGrid menuTreeGrid;
 
@@ -105,6 +108,7 @@ public class CorrectionStackSelection extends SectionStackSection {
 			menuData[3].setAttribute("enabled", hasAbonentNameSurPerm);
 			menuData[4].setAttribute("enabled", hasAbonentNameSurPerm);
 			menuData[5].setAttribute("enabled", hasVirtChargePerm);
+			menuData[6].setAttribute("enabled", hasOrgManPerm);
 			
 
 		} catch (Exception e) {
@@ -136,6 +140,8 @@ public class CorrectionStackSelection extends SectionStackSection {
 		} else if (menuId.equals("105")) {
 			TabVirtualCharge tabVirtualCharge = new TabVirtualCharge();
 			body.addTab(tabVirtualCharge);
+		}else if (menuId.equals("106")) {
+			body.addTab(new TabPartniorNumbersList());
 		}
 	}
 
