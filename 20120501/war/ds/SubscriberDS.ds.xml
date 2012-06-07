@@ -63,7 +63,6 @@
 					/*+ index(lmn,#if($criteria.family_name) UK_LASTNAMES) #else PK_LASTNAMES_ID #end
 						index(lmn,#if($criteria.name) UK_FIRSTNAME) #else PK_FIRSTNAME_ID #end 
 					*/
-					
 				   t.family_name,
 			       t.name,
 			       pnm.phone phones,
