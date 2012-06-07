@@ -773,6 +773,30 @@ public class DlgAddEditOrganization extends Window {
 				return;
 			}
 
+			if (identCode != null && !identCode.trim().equals("")) {
+				try {
+					Integer.parseInt(identCode);
+				} catch (NumberFormatException e) {
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.orgIdentCodeIsInvalid());
+					topTabSet.selectTab(0);
+					dynamicFormMainInfo1.focusInItem(orgIdentCodeItem);
+					return;
+				}
+			}
+
+			if (identCodeNew != null && !identCodeNew.trim().equals("")) {
+				try {
+					Integer.parseInt(identCodeNew);
+				} catch (NumberFormatException e) {
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.orgIdentCodeIsInvalid());
+					topTabSet.selectTab(0);
+					dynamicFormMainInfo1.focusInItem(orgIdentCodeNewItem);
+					return;
+				}
+			}
+
 			// if (orgWorkHoursItem.getValueAsString() == null
 			// || orgWorkHoursItem.getValueAsString().trim().equals("")) {
 			// SC.say(CallCenterBK.constants.warning(),

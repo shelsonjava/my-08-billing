@@ -285,28 +285,33 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		SC.ask("დარწმუნებული ხართ რომ გინდათ დაადასტუროთ ცვლილებები?", new BooleanCallback() {
-			
-			@Override
-			public void execute(Boolean value) {
-				if(value){
-					DSRequest dsRequest = new DSRequest();
-					dsRequest.setAttribute("operationId", "deletePartniorNumbers");
-					importedListGrid.removeData(newReq, new DSCallback() {
 
-						@Override
-						public void execute(DSResponse response, Object rawData,
-								DSRequest request) {
+		SC.ask("დარწმუნებული ხართ რომ გინდათ დაადასტუროთ ცვლილებები?",
+				new BooleanCallback() {
 
-							searchPhones();
+					@Override
+					public void execute(Boolean value) {
+						if (value) {
+							DSRequest dsRequest = new DSRequest();
+							dsRequest.setAttribute("operationId",
+									"deletePartniorNumbers");
+							importedListGrid.removeData(newReq,
+									new DSCallback() {
 
+										@Override
+										public void execute(
+												DSResponse response,
+												Object rawData,
+												DSRequest request) {
+
+											searchPhones();
+
+										}
+									}, dsRequest);
 						}
-					}, dsRequest);
-				}
-				
-			}
-		});
+
+					}
+				});
 	}
 
 	protected void searchPhones() {
@@ -333,7 +338,10 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 
 		boolean add = subscriber_id == null;
 		if (add) {
-			new DlgAddEditSubscriber(null, null, phone_number, this);
+			DlgAddEditSubscriber dlg = new DlgAddEditSubscriber(null, null,
+					phone_number, this);
+			dlg.setCanDrag(true);
+			dlg.setCanDragReposition(true);
 			return;
 		}
 		if (subscriber_id != null) {
@@ -348,10 +356,14 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
 					Record[] records = response.getData();
-					if (records != null && records.length == 1)
-						new DlgAddEditSubscriber(records[0], null, null,
-								TabPartniorNumbersList.this).show();
-
+					if (records != null && records.length == 1) {
+						DlgAddEditSubscriber dlg = new DlgAddEditSubscriber(
+								records[0], null, null,
+								TabPartniorNumbersList.this);
+						dlg.setCanDrag(true);
+						dlg.setCanDragReposition(true);
+						dlg.show();
+					}
 				}
 			}, req);
 		}
