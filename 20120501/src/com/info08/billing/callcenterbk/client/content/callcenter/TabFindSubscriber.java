@@ -117,11 +117,9 @@ public class TabFindSubscriber extends Tab {
 				"searchCityRegsFromDBForCombos", "town_district_id",
 				"town_district_name", aditionalCriteria);
 
-		
-
 		searchForm.setFields(family_nameItem, nameItem, phoneItem, streetItem,
 				citiesItem, regionItem);
-		
+
 		ClientUtils.makeDependancy(citiesItem, "town_id", regionItem);
 
 		HLayout buttonLayout = new HLayout(5);
@@ -173,8 +171,10 @@ public class TabFindSubscriber extends Tab {
 		address.setCanFilter(true);
 
 		ListGridField phone = new ListGridField("shown_phones",
-				CallCenterBK.constants.phones(), 100);
+				CallCenterBK.constants.phone(), 100);
 		phone.setCanFilter(true);
+		ListGridField phoneStateField = new ListGridField("phone_state",
+				"მდგომარეობა", 100);
 
 		name.setAlign(Alignment.LEFT);
 		family_name.setAlign(Alignment.LEFT);
@@ -182,7 +182,8 @@ public class TabFindSubscriber extends Tab {
 		address.setAlign(Alignment.LEFT);
 		phone.setAlign(Alignment.CENTER);
 
-		listGrid.setFields(family_name, name, city, address, phone);
+		listGrid.setFields(family_name, name, city, address, phone,
+				phoneStateField);
 		mainLayout.addMember(listGrid);
 
 		clearButton.addClickHandler(new ClickHandler() {
@@ -204,17 +205,17 @@ public class TabFindSubscriber extends Tab {
 			}
 		});
 
-//		citiesItem.addChangedHandler(new ChangedHandler() {
-//			@Override
-//			public void onChanged(ChangedEvent event) {
-//				String value = citiesItem.getValueAsString();
-//				if (value == null) {
-//					return;
-//				}
-//				regionItem.clearValue();
-//				fillCityRegionCombo(new Integer(value));
-//			}
-//		});
+		// citiesItem.addChangedHandler(new ChangedHandler() {
+		// @Override
+		// public void onChanged(ChangedEvent event) {
+		// String value = citiesItem.getValueAsString();
+		// if (value == null) {
+		// return;
+		// }
+		// regionItem.clearValue();
+		// fillCityRegionCombo(new Integer(value));
+		// }
+		// });
 
 		nameItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
@@ -249,8 +250,6 @@ public class TabFindSubscriber extends Tab {
 
 		setPane(mainLayout);
 	}
-
-	
 
 	private void search() {
 		try {

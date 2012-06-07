@@ -399,7 +399,7 @@ public class TabTransportCityBusStreet extends Tab {
 				criteria.setAttribute("street_id", new Integer(street_id));
 			}
 			if (route_dir != null) {
-				criteria.setAttribute("route_dir", new Integer(route_dir));
+				criteria.setAttribute("dir", new Integer(route_dir));
 			}
 			if (remarks != null && !remarks.trim().equals("")) {
 				criteria.setAttribute("remarks", remarks);

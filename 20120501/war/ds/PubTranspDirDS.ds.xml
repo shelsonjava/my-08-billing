@@ -111,11 +111,8 @@
 										#if($criteria.end_place_id) 
 												and exists (select 1 from ccare.public_transp_dir_street tt2 , ccare.streets str1
 																   where tt2.dir_id =tt1.dir_id and tt1.dir=tt2.dir 
-																   and (
-																   		(tt2.dir_id = 1 and tt2.dir_order>tt1.dir_order)
-																   			or
-																   		(tt2.dir_id = 2 and tt1.dir_order>tt2.dir_order)
-																   )
+																   and 
+																   		 tt2.dir_order>tt1.dir_order
 																   	 and str1.hide_for_call_center = 0 and tt2.street_id = str1.street_id
 																		#foreach($str in $criteria.end_place_id.split(" ")) 
 																			and trim(str1.street_name ||' '||tt2.remarks) like '%'||'$str'||'%'

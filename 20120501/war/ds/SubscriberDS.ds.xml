@@ -30,6 +30,11 @@
 		<field name="loggedUserName" 				type="text"		title="address"				hidden="true"/>
 		<field name="town_name" 					type="text"		title="address"				hidden="true"/>
 		<field name="concat_address" 				type="text"		title="address"/>
+		<field name="phone_state"					type="text"		title="Phone State"/>
+		<field name="phone_contract_type_desr"		type="text"		title="Phone Status"/>
+		<field name="phone_type"					type="text"		title="Phone Type"/>
+		<field name="is_parallel_descr"				type="text"		title="Is Parallel Descr"/>
+		<field name="ph_hidden_by_request_descr"	type="text"		title="Is Parallel Descr"/>
 				
 	</fields>
 	
@@ -59,50 +64,70 @@
 						index(lmn,#if($criteria.name) UK_FIRSTNAME) #else PK_FIRSTNAME_ID #end 
 					*/
 					
-				   family_name,
-			       name,
-			       phones,
-			       subscriber_id,
+				   t.family_name,
+			       t.name,
+			       pnm.phone phones,
+			       t.subscriber_id,
 			       #if($criteria.for_call_center) 
-			       	nvl(shown_phones,map_char_codes_geo('dafarulia')) shown_phones,
+			       	decode(spm.hidden_by_request,1,map_char_codes_geo('dafaruli'), 
+			       		decode(pnm.phone_state_id,52102,map_char_codes_geo('moxs.'),'032' || pnm.phone)
+			       		) shown_phones,
 			       #else
-				       addr_id,
-				       street_name,
-				       street_location,
-				       name_id,
-				       family_name_id,
-				       town_id,
-				       street_id,
-				       town_district_id,
-				       hidden_by_request,
-				       full_address,
-				       anumber,
-				       block,
-				       appt,
-				       descr,
-				       street_to_town_district_id,
+				       t.addr_id,
+				       t.street_name,
+				       t.street_location,
+				       t.name_id,
+				       t.family_name_id,
+				       t.town_id,
+				       t.street_id,
+				       t.town_district_id,
+				       t.hidden_by_request,
+				       t.full_address,
+				       t.anumber,
+				       t.block,
+				       t.appt,
+				       t.descr,
+				       t.street_to_town_district_id,
+				       decode(pnm.is_parallel,
+			              0,
+			              'ჩვეულებრივი',
+			              1,
+			              'პარალელური') as is_parallel_descr,
+			           decode(spm.hidden_by_request, 0, 'ღია', 1, 'დაფარულია') ph_hidden_by_request_descr,
+			           getDescription(spm.phone_contract_type) phone_contract_type_desr,
+			           getDescription(pnm.phone_type_id) phone_type,
 				    #end
- 					   
+ 					#if($criteria.for_call_center) 
+ 					   		decode(spm.hidden_by_request,1,map_char_codes_geo('dafaruli'),
+ 					#end
+ 					   getDescription(pnm.phone_state_id)
  					#if($criteria.for_call_center)
- 						decode(hidden_by_request,1,map_char_codes_geo('dafaruli'),town_name) town_name,
- 					    decode(hidden_by_request,1,map_char_codes_geo('dafaruli'),concat_address) concat_address
+ 					   ) 
+ 					#end   
+ 					phone_state,
+ 					#if($criteria.for_call_center)
+ 						decode(t.hidden_by_request,1,map_char_codes_geo('dafaruli'),t.town_name) town_name,
+ 					    decode(t.hidden_by_request,1,map_char_codes_geo('dafaruli'),t.concat_address) concat_address
  					#else
  						town_name,
  						concat_address
  					#end
 			</selectClause>
 			<tableClause>
-			  	   v_full_subscriber              t
+			  	   v_full_subscriber              t,
+			  	   SUBSCRIBER_TO_PHONES			  spm,
+			  	   phone_numbers 				  pnm
        		</tableClause>
 			<whereClause><![CDATA[ 
-				   	1 = 1
+				   	t.subscriber_id=spm.subscriber_id
+				   	and pnm.phone_number_id=spm.phone_number_id
 					#if($criteria.subscriber_id) AND t.subscriber_id = $criteria.subscriber_id #end
 					#if($criteria.name_id) AND t.name_id = $criteria.name_id #end
 					#if($criteria.family_name_id) AND t.family_name_id = $criteria.family_name_id #end
+					#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
+					#if($criteria.town_district_id) AND t.town_district_id = $criteria.town_district_id #end
 					
 					#if(!$criteria.for_call_center)
-							#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
-							#if($criteria.town_district_id) AND t.town_district_id = $criteria.town_district_id #end
 							#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
 							#if($criteria.street_name_geo) AND street_location like '%'||$criteria.street_name_geo||'%' #end
 							#if($criteria.anumber) AND anumber like '%%'||($criteria.anumber)||'%' #end
@@ -112,7 +137,6 @@
 							#if($criteria.name) AND name like '%%'||($criteria.name)||'%' #end
 							#if($criteria.family_name) AND family_name like '%%'||($criteria.family_name)||'%' #end
 							#if($criteria.full_address) AND full_address like '%%'||($criteria.full_address)||'%' #end
-							
 					#end
 					#if($criteria.hidden_by_request) AND hidden_by_request = $criteria.hidden_by_request #end
 					#if($criteria.name_param) AND name like '%%'||($criteria.name_param)||'%' #end
@@ -121,18 +145,14 @@
 							||$criteria.phone_contract_type||$criteria.phone_contract_type
 							||$criteria.phone_state_id||$criteria.phone_type_id||$criteria.ph_hidden_by_request
 						)
-							AND exists (select 1
-					          from subscriber_to_phones sp
-					         inner join phone_numbers pn
-					            on pn.phone_number_id = sp.phone_number_id
-					         where sp.subscriber_id = t.subscriber_id 
-						         #if($criteria.phone) and pn.phone = $criteria.phone #end
-						         #if($criteria.is_parallel) AND pn.is_parallel = $criteria.is_parallel #end
-								 #if($criteria.phone_contract_type) AND sp.phone_contract_type = $criteria.phone_contract_type #end
-								 #if($criteria.phone_state_id) AND pn.phone_state_id = $criteria.phone_state_id #end
-								 #if($criteria.phone_type_id) AND pn.phone_type_id = $criteria.phone_type_id #end
-								 #if($criteria.ph_hidden_by_request) AND sp.hidden_by_request = $criteria.ph_hidden_by_request #end
-								)
+								 #if($criteria.for_call_center)  AND spm.hidden_by_request =0 #end
+						         #if($criteria.phone) and pnm.phone = $criteria.phone #end
+						         #if($criteria.is_parallel) AND pnm.is_parallel = $criteria.is_parallel #end
+								 #if($criteria.phone_contract_type) AND spm.phone_contract_type = $criteria.phone_contract_type #end
+								 #if($criteria.phone_state_id) AND pnm.phone_state_id = $criteria.phone_state_id #end
+								 #if($criteria.phone_type_id) AND pnm.phone_type_id = $criteria.phone_type_id #end
+								 #if($criteria.ph_hidden_by_request) AND spm.hidden_by_request = $criteria.ph_hidden_by_request #end
+							
 			        #end
 					#if($criteria.street_name_param) 
 							#foreach($str in $criteria.street_name_param.split(" "))
@@ -146,7 +166,7 @@
 					
 									
 				]]>
-			</whereClause>			
+			</whereClause>	
 		</operationBinding>
 		
 	</operationBindings>

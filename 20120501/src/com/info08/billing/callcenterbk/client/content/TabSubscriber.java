@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-/*changed*/
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddEditSubscriber;
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgOrgInfoViewByPhone;
 import com.info08.billing.callcenterbk.client.dialogs.history.DlgHistSubscriber;
@@ -334,8 +333,6 @@ public class TabSubscriber extends Tab {
 			ListGridField firstName = new ListGridField("name", "სახელი", 70);
 			ListGridField lastName = new ListGridField("family_name", "გვარი",
 					100);
-			ListGridField phone = new ListGridField("phones",
-					CallCenterBK.constants.phones(), 70);
 
 			ListGridField street = new ListGridField("street_name", "ქუჩა", 230);
 
@@ -345,6 +342,23 @@ public class TabSubscriber extends Tab {
 			ListGridField addr_appt = new ListGridField("appt", "ბინა", 50);
 			ListGridField addr_descr = new ListGridField("descr",
 					"დამ. ინფორმაცია", 120);
+			ListGridField phone = new ListGridField("phones",
+					CallCenterBK.constants.phone(), 70);
+
+			ListGridField opCloseField = new ListGridField(
+					"ph_hidden_by_request_descr", "ღია/დაფარული", 100);
+			// is parallel or not field
+			ListGridField parallelUsualField = new ListGridField(
+					"is_parallel_descr", "პარალელური", 120);
+			// phone status field
+			ListGridField phoneStatusField = new ListGridField(
+					"phone_contract_type_desr", "სტატუსი", 100);
+			// phone state field
+			ListGridField phoneStateField = new ListGridField("phone_state",
+					"მდგომარეობა", 100);
+			// phone type field
+			ListGridField phoneTypeField = new ListGridField("phone_type",
+					"ტიპი", 119);
 
 			addr_number.setAlign(Alignment.CENTER);
 			addr_block.setAlign(Alignment.CENTER);
@@ -368,8 +382,10 @@ public class TabSubscriber extends Tab {
 			abonentsGrid.setWrapCells(true);
 			abonentsGrid.setCanSelectText(true);
 
-			abonentsGrid.setFields(firstName, lastName, phone, street,
-					addr_number, addr_block, addr_appt, addr_descr);
+			abonentsGrid.setFields(firstName, lastName, street, addr_number,
+					addr_block, addr_appt, addr_descr, phone, opCloseField,
+					parallelUsualField, phoneStatusField, phoneStateField,
+					phoneTypeField);
 
 			mainLayout.addMember(abonentsGrid);
 
