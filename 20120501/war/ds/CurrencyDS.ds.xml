@@ -83,7 +83,7 @@
 				#if($criteria.country_name) and c.country_name like '%'||($criteria.country_name)||'%' #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.sort_order</orderClause>
+			<orderClause>t.main_order, t.sort_order</orderClause>
     	</operationBinding>
     	
     </operationBindings>	
