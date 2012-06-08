@@ -127,6 +127,11 @@ public class Organization implements Serializable {
 	@Basic
 	@Column(name = "PHYSICAL_ADDRESS_ID")
 	private Long physical_address_id;
+	
+	
+	@Basic
+	@Column(name = "PH_TOWN_ID")
+	private Long ph_town_id;
 
 	@Transient
 	private String loggedUserName;
@@ -591,4 +596,12 @@ public class Organization implements Serializable {
 	public void setSocial_address(String social_address) {
 		this.social_address = social_address;
 	}
+
+	public Long getPh_town_id() {
+		return ph_town_id;
+	}
+
+	public void setPh_town_id(Long ph_town_id) {
+		this.ph_town_id = ph_town_id;
+	}	
 }

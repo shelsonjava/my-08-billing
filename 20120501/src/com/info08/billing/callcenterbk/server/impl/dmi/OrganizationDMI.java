@@ -352,15 +352,17 @@ public class OrganizationDMI {
 
 			if (legalAddrValues != null) {
 				legal_address_id = persistAddress(oracleManager, values,
-						legal_address_id, "legalAddrValues");
+						legal_address_id, "legalAddrValues").getAddr_id();
 			}
-
-			physical_address_id = persistAddress(oracleManager, values,
+			Address physical_address = persistAddress(oracleManager, values,
 					physical_address_id, "physicalAddrValues");
+			physical_address_id = physical_address.getAddr_id();
 
 			organization.setLegal_address_id(deleteLegalAddress ? null
 					: legal_address_id);
 			organization.setPhysical_address_id(physical_address_id);
+
+			organization.setPh_town_id(physical_address.getTown_id());
 
 			boolean isPersist = (organization_id == null);
 			if (organization_id == null) {
@@ -437,8 +439,9 @@ public class OrganizationDMI {
 		}
 	}
 
-	private Long persistAddress(EntityManager oracleManager, Map<?, ?> values,
-			Long address_id, String subMapValueNames) throws Exception {
+	private Address persistAddress(EntityManager oracleManager,
+			Map<?, ?> values, Long address_id, String subMapValueNames)
+			throws Exception {
 		Address address = null;
 		if (address_id != null) {
 			address = oracleManager.find(Address.class, address_id);
@@ -458,7 +461,7 @@ public class OrganizationDMI {
 		} else {
 			oracleManager.persist(address);
 		}
-		return address.getAddr_id();
+		return address;
 	}
 
 	/**
@@ -734,14 +737,16 @@ public class OrganizationDMI {
 									.createNativeQuery(Q_DELETE_ORG_DEPARTMENT)
 									.setParameter(1, orgDepartId)
 									.executeUpdate();
-							Long physical_address_id = itemDeps.getPhysical_address_id();
+							Long physical_address_id = itemDeps
+									.getPhysical_address_id();
 							if (physical_address_id != null) {
 								oracleManager
 										.createNativeQuery(Q_DELETE_ADDRESS)
 										.setParameter(1, physical_address_id)
 										.executeUpdate();
 							}
-							Long legal_address_id = itemDeps.getLegal_address_id();
+							Long legal_address_id = itemDeps
+									.getLegal_address_id();
 							if (legal_address_id != null) {
 								oracleManager
 										.createNativeQuery(Q_DELETE_ADDRESS)

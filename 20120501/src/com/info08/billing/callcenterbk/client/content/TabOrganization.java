@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.org.DlgManageOrgDepartments;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditOrganization;
+import com.info08.billing.callcenterbk.client.dialogs.org.DlgManageOrgDepartments;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgSortOrderOrgs;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
@@ -34,13 +34,15 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
-import com.smartgwt.client.widgets.tree.TreeGrid;
-import com.smartgwt.client.widgets.tree.TreeGridField;
+import com.smartgwt.client.widgets.viewer.DetailViewer;
+import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
 public class TabOrganization extends Tab {
 
@@ -58,7 +60,7 @@ public class TabOrganization extends Tab {
 	private TextItem orgEmailItem;
 	private TextItem orgWorkingHoursItem;
 	private TextItem orgDayOffsItem;
-	private TextItem orgDepartmentItem;
+	private TextItem phoneItem;
 	private DateItem orgFoundedStartItem;
 	private DateItem orgFoundedEndItem;
 
@@ -81,6 +83,7 @@ public class TabOrganization extends Tab {
 	private ToolStripButton orgDepartmentsBtn;
 
 	private ListGrid orgTreeGrid;
+	private DetailViewer detailViewer;
 	private VLayout mainLayout;
 
 	private DataSource orgDS;
@@ -149,10 +152,10 @@ public class TabOrganization extends Tab {
 		orgDayOffsItem.setWidth(245);
 		orgDayOffsItem.setName("orgDayOffsItem");
 
-		orgDepartmentItem = new TextItem();
-		orgDepartmentItem.setTitle(CallCenterBK.constants.department());
-		orgDepartmentItem.setWidth(245);
-		orgDepartmentItem.setName("orgDepartmentItem");
+		phoneItem = new TextItem();
+		phoneItem.setTitle(CallCenterBK.constants.phone());
+		phoneItem.setWidth(245);
+		phoneItem.setName("phone");
 
 		orgFoundedStartItem = new DateItem();
 		orgFoundedStartItem
@@ -197,7 +200,7 @@ public class TabOrganization extends Tab {
 				"searchCityRegsFromDBForCombos", "town_district_id",
 				"town_district_name", aditionalCriteria);
 
-		searchForm.setFields(orgNameGeoItem, orgCommentItem, orgDepartmentItem,
+		searchForm.setFields(orgNameGeoItem, orgCommentItem, phoneItem,
 				orgDirectorItem, streetItem, adressItem, regionItem, townItem,
 				orgWorkingHoursItem, orgDayOffsItem, orgIdentCodeItem,
 				orgLegalAddressItem, orgWebAddressItem, orgEmailItem,
@@ -352,10 +355,41 @@ public class TabOrganization extends Tab {
 		ListGridField real_address = new ListGridField(
 				"full_address_not_hidden",
 				CallCenterBK.constants.realAddress(), 400);
-		real_address.setCanFilter(true);
+		real_address.setCanFilter(false);
 
 		orgTreeGrid.setFields(tree_org_parrent, tree_org_child,
 				organization_name, real_address);
+
+		detailViewer = new DetailViewer();
+		detailViewer.setCanSelectText(true);
+		detailViewer.setDataSource(orgDS);
+		DetailViewerField original_org_name = new DetailViewerField(
+				"original_org_name", CallCenterBK.constants.organization());
+		DetailViewerField remarkDF = new DetailViewerField("remark",
+				CallCenterBK.constants.remark());
+
+		DetailViewerField full_address_not_hiddenDF = new DetailViewerField(
+				"full_address_not_hidden", CallCenterBK.constants.realAddress());
+
+		DetailViewerField chiefDF = new DetailViewerField("chief",
+				CallCenterBK.constants.director());
+
+		DetailViewerField organization_indexDF = new DetailViewerField(
+				"organization_index", CallCenterBK.constants.postIndex());
+
+		detailViewer.setFields(original_org_name, remarkDF,
+				full_address_not_hiddenDF, chiefDF, organization_indexDF);
+
+		detailViewer.setWidth100();
+		detailViewer.setHeight(150);
+
+		mainLayout.addMember(detailViewer);
+
+		orgTreeGrid.addRecordClickHandler(new RecordClickHandler() {
+			public void onRecordClick(RecordClickEvent event) {
+				detailViewer.viewSelectedData(orgTreeGrid);
+			}
+		});
 
 		findButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -369,7 +403,7 @@ public class TabOrganization extends Tab {
 			public void onClick(ClickEvent event) {
 				orgNameGeoItem.clearValue();
 				orgCommentItem.clearValue();
-				orgDepartmentItem.clearValue();
+				phoneItem.clearValue();
 				orgDirectorItem.clearValue();
 				streetItem.clearValue();
 				adressItem.clearValue();
@@ -383,7 +417,6 @@ public class TabOrganization extends Tab {
 				orgEmailItem.clearValue();
 				orgFoundedEndItem.clearValue();
 				orgFoundedStartItem.clearValue();
-
 				searchForm.focusInItem(orgNameGeoItem);
 			}
 		});
@@ -514,7 +547,7 @@ public class TabOrganization extends Tab {
 				}
 			}
 		});
-		orgDepartmentItem.addKeyPressHandler(new KeyPressHandler() {
+		phoneItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
@@ -782,6 +815,11 @@ public class TabOrganization extends Tab {
 				criteria.setAttribute("ident_code", ident_code);
 			}
 
+			String phone = phoneItem.getValueAsString();
+			if (phone != null && !phone.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("phone", phone);
+			}
+
 			String legaladdress = orgLegalAddressItem.getValueAsString();
 			if (legaladdress != null
 					&& !legaladdress.trim().equalsIgnoreCase("")) {
@@ -820,9 +858,11 @@ public class TabOrganization extends Tab {
 					&& (ident_code == null || ident_code.trim().equals(""))
 					&& (legaladdress == null || legaladdress.trim().equals(""))
 					&& (web_address == null || web_address.trim().equals(""))
-					&& (email_address == null || email_address.trim()
-							.equals(""))
-					&& (street == null || street.trim().equals(""))) {
+					&& (email_address == null || email_address.trim().equals(""))
+					&& (street == null || street.trim().equals(""))
+					&& (phone == null || phone.trim().equals(""))
+					) 
+			{
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.findOrgEnterAnyParam());
 				return;
@@ -831,6 +871,7 @@ public class TabOrganization extends Tab {
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId",
 					"customOrgSearchForCallCenterNew");
+			detailViewer.setData(new Record[0]);
 			orgTreeGrid.invalidateCache();
 			orgTreeGrid.fetchData(criteria, new DSCallback() {
 				@Override
