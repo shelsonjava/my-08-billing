@@ -28,13 +28,13 @@
 				t.item_order,
 				t.transp_schedule_id,
 				t.transp_station_id,
-				o.name_descr as depart_station,
+				c.town_name || ' ( ' || o.name_descr || ' )' as depart_station,
 				t.departure_transp_stat_id,
 				t.arrival_transp_stat_id
 			</selectClause> 
-			<tableClause>transp_items t, transp_stations o</tableClause>
+			<tableClause>transp_items t, transp_stations o, towns c</tableClause>
 			<whereClause><![CDATA[				
-					t.transp_station_id = o.transp_stat_id
+					t.transp_station_id = o.transp_stat_id and c.town_id = o.town_id
 					#if($criteria.transp_schedule_id) and t.transp_schedule_id = $criteria.transp_schedule_id #end
 				]]>  
 			</whereClause> 

@@ -13,18 +13,18 @@ public class TranspDetailsClientDS extends DataSource {
 
 	public TranspDetailsClientDS(String id) {
 		//setID(id);
-		DataSourceIntegerField transport_detail_id = new DataSourceIntegerField("transport_detail_id");
-		transport_detail_id.setHidden(true);
-		transport_detail_id.setPrimaryKey(true);
-		transport_detail_id.setRequired(true);
+		DataSourceIntegerField transp_item_id = new DataSourceIntegerField("transp_item_id");
+		transp_item_id.setHidden(true);
+		transp_item_id.setPrimaryKey(true);
+		transp_item_id.setRequired(true);
 
-		DataSourceTextField transport_place_geo_out = new DataSourceTextField("transport_place_geo_out", "გავლის პუნქტი");
-		DataSourceDateTimeField in_time = new DataSourceDateTimeField("in_time", "ჩასვლის დრო");
-		DataSourceDateTimeField out_time = new DataSourceDateTimeField("out_time", "გასვლის დრო");
-		DataSourceDateTimeField transport_detail_order = new DataSourceDateTimeField("transport_detail_order", "თანმიმდევრობა");
+		DataSourceTextField depart_station = new DataSourceTextField("depart_station", "გავლის პუნქტი");
+		DataSourceDateTimeField arrival_time = new DataSourceDateTimeField("arrival_time", "ჩასვლის დრო");
+		DataSourceDateTimeField departure_time = new DataSourceDateTimeField("departure_time", "გასვლის დრო");
+		DataSourceDateTimeField item_order = new DataSourceDateTimeField("item_order", "თანმიმდევრობა");
 
-		setFields(transport_detail_id, transport_place_geo_out, in_time,
-				out_time, transport_detail_order);
+		setFields(transp_item_id, depart_station, arrival_time,
+				departure_time, item_order);
 		setClientOnly(true);
 	}
 }

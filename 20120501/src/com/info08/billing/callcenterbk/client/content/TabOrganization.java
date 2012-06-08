@@ -31,6 +31,7 @@ import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -79,7 +80,7 @@ public class TabOrganization extends Tab {
 	private ToolStripButton supperOrgBtn;
 	private ToolStripButton orgDepartmentsBtn;
 
-	private TreeGrid orgTreeGrid;
+	private ListGrid orgTreeGrid;
 	private VLayout mainLayout;
 
 	private DataSource orgDS;
@@ -261,7 +262,7 @@ public class TabOrganization extends Tab {
 		orgDepartmentsBtn.setWidth(50);
 		toolStrip.addButton(orgDepartmentsBtn);
 
-		orgTreeGrid = new TreeGrid() {
+		orgTreeGrid = new ListGrid() {
 			protected String getCellCSSText(ListGridRecord record, int rowNum,
 					int colNum) {
 				ListGridRecord countryRecord = (ListGridRecord) record;
@@ -307,7 +308,7 @@ public class TabOrganization extends Tab {
 		orgTreeGrid.setTop(50);
 		orgTreeGrid.setWidth100();
 		orgTreeGrid.setHeight100();
-		orgTreeGrid.setShowConnectors(true);
+		// orgTreeGrid.setShowConnectors(true);
 		orgTreeGrid.setFetchOperation("customOrgSearchForCallCenterNew");
 		orgTreeGrid.setDataSource(orgDS);
 		orgTreeGrid.setAutoFetchData(false);
@@ -316,6 +317,11 @@ public class TabOrganization extends Tab {
 		orgTreeGrid.setWrapCells(true);
 		orgTreeGrid.setFixedRecordHeights(false);
 		orgTreeGrid.setCanSort(false);
+		orgTreeGrid.setCanSelectText(true);
+		orgTreeGrid.setWrapCells(true);
+		orgTreeGrid.setCanDragSelectText(true);
+		orgTreeGrid.setShowFilterEditor(true);
+		orgTreeGrid.setFilterOnKeypress(true);
 
 		mainLayout.addMember(orgTreeGrid);
 		ListGridField tree_org_parrent = new ListGridField("tree_org_parrent",
@@ -336,15 +342,20 @@ public class TabOrganization extends Tab {
 		tree_org_child.setCanSort(false);
 		tree_org_child.setCanFilter(false);
 
-		TreeGridField organization_name = new TreeGridField(
+		ListGridField organization_name = new ListGridField(
 				"organization_name", CallCenterBK.constants.orgName());
-		organization_name.setTreeField(true);
+		// organization_name.setTreeField(true);
+
+		// ListGridField remark = new ListGridField("remark",
+		// CallCenterBK.constants.remark());remark,
 
 		ListGridField real_address = new ListGridField(
 				"full_address_not_hidden",
 				CallCenterBK.constants.realAddress(), 400);
-		orgTreeGrid.setFields(organization_name, real_address,
-				tree_org_parrent, tree_org_child);
+		real_address.setCanFilter(true);
+
+		orgTreeGrid.setFields(tree_org_parrent, tree_org_child,
+				organization_name, real_address);
 
 		findButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -637,19 +648,16 @@ public class TabOrganization extends Tab {
 
 	private void fingOrgById(Integer organization_id) {
 		try {
-			searchForm.clearValues();
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("pp_organization_id", organization_id);
-			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId",
-					"customOrgSearchForCallCenterNew");
-			orgTreeGrid.invalidateCache();
-			orgTreeGrid.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, dsRequest);
+			orgTreeGrid.setCriteria(criteria);
+			// orgTreeGrid.invalidateCache();
+			// orgTreeGrid.fetchData(criteria, new DSCallback() {
+			// @Override
+			// public void execute(DSResponse response, Object rawData,
+			// DSRequest request) {
+			// }
+			// });
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -686,17 +694,18 @@ public class TabOrganization extends Tab {
 			Criteria criteria = new Criteria();
 			String org_name = orgNameGeoItem.getValueAsString();
 			if (org_name != null && !org_name.trim().equals("")) {
-				String tmp = org_name.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("organization_name" + i, item);
-					i++;
-				}
+				criteria.setAttribute("organization_name_param", org_name);
+				// String tmp = org_name.trim();
+				// String arrStr[] = tmp.split(" ");
+				// int i = 1;
+				// for (String string : arrStr) {
+				// String item = string.trim();
+				// if (item.equals("")) {
+				// continue;
+				// }
+				// criteria.setAttribute("organization_name" + i, item);
+				// i++;
+				// }
 			}
 
 			String note = orgCommentItem.getValueAsString();

@@ -51,7 +51,7 @@ public class DlgManageOrgDepartments extends Window {
 	private DataSource orgDepDataSource;
 
 	protected ListGridRecord orgListGridRecord;
-	protected TreeGrid orgTreeGrid;
+	protected ListGrid orgTreeGrid;
 
 	private ToolStripButton sortBtn;
 	private ToolStripButton addNewOrgBtn;
@@ -59,7 +59,7 @@ public class DlgManageOrgDepartments extends Window {
 	private ToolStripButton deleteBtn;
 
 	public DlgManageOrgDepartments(ListGridRecord listGridRecord,
-			TreeGrid orgTreeGrid) {
+			ListGrid orgTreeGrid) {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
 			this.orgListGridRecord = listGridRecord;

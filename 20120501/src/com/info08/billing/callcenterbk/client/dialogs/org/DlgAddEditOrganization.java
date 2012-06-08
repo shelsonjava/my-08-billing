@@ -94,7 +94,7 @@ public class DlgAddEditOrganization extends Window {
 	private IButton saveItem;
 	private int selectedTabIndex = 0;
 
-	private TreeGrid orgTreeGrid;
+	private ListGrid orgTreeGrid;
 	private ListGridRecord listGridRecord;
 	private ListGrid dayOffsGrid;
 	private ListGrid orgDayOffsGrid;
@@ -105,7 +105,7 @@ public class DlgAddEditOrganization extends Window {
 	private ToolStripButton copyAddress;
 
 	public DlgAddEditOrganization(ListGridRecord listGridRecord,
-			TreeGrid orgTreeGrid) {
+			ListGrid orgTreeGrid) {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
 			this.listGridRecord = listGridRecord;

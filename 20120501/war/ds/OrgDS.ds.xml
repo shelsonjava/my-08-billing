@@ -154,11 +154,18 @@
 		
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchForCallCenterNew" operationType="fetch">			
-			<selectClause>distinct 
+			<selectClause><![CDATA[distinct 
+						
 						o.organization_id,
 						o.parrent_organization_id,
 						o.parrent_organization_id as parrent_organization_id1,
-						o.organization_name,
+						#if($criteria.pp_organization_id)
+							hr.my_rownum,
+							lpad(' ', (hr.mylevel - 1) * 4, '.') || o.organization_name 
+						#else
+							o.organization_name 
+						#end
+						as organization_name,					
 						o.ident_code,
 						o.ident_code_new,
 						o.chief,
@@ -218,25 +225,54 @@
 						a1.anumber as legal_addr_anumber,
 						str1.street_location as legal_addr_street_location,
 						getindex(str1.street_id) as legal_addr_street_index_text
+				 ]]>
 			</selectClause>
-			<tableClause>organizations o, addresses a, streets str, towns tw, addresses a1, streets str1, towns tw1</tableClause>
+			<tableClause>organizations o,
+				#if($criteria.pp_organization_id)(
+							select t.organization_id, level mylevel, rownum as my_rownum
+			  from organizations t
+			  		inner join addresses aa on aa.addr_id = t.physical_address_id
+			 start with t.organization_id =(select tt.organization_id
+								            from (select t.organization_id, t.parrent_organization_id
+								                    from organizations t
+								                   start with t.organization_id = $criteria.pp_organization_id
+								                  connect by prior t.parrent_organization_id = t.organization_id) tt
+								           where tt.parrent_organization_id is null)
+			connect by prior t.organization_id = t.parrent_organization_id
+			order siblings by getTbilisiOrder(aa.town_id), t.super_priority, nvl(t.parrent_organization_id,0), t.priority
+			) hr, #end
+				addresses a, streets str, towns tw, addresses a1, streets str1, towns tw1</tableClause>
 			<whereClause>
 				 <![CDATA[
 						 o.physical_address_id = a.addr_id(+) and a.street_id = str.street_id(+) and a.town_id = tw.town_id(+) and 
 						 o.legal_address_id = a1.addr_id(+) and a1.street_id = str1.street_id(+) and a1.town_id = tw1.town_id(+)
-						 #if($criteria.parrent_organization_id) and o.parrent_organization_id = $criteria.parrent_organization_id
-						 #else 
+						 
+						 
+							#if($criteria.organization_name) 
+								#foreach($str in $criteria.organization_name.split(" "))
+									and o.organization_name like '%'||'$str'||'%'
+								#end
+							#end
+						 	#if($criteria.organization_name_param) 
+								#foreach($str in $criteria.organization_name_param.split(" "))
+									and o.organization_name like '%'||'$str'||'%'
+								#end
+							#end
+						 	
+						 	#if($criteria.full_address_not_hidden) 
+								#foreach($str in $criteria.full_address_not_hidden.split(" "))
+									and (tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) like '%'||'$str'||'%'
+								#end
+							#end
+						 	
+						 
+						 
+						 #if($criteria.pp_organization_id)
+						 	and hr.organization_id=o.organization_id
+						 #else
+							 #if($criteria.parrent_organization_id) and o.parrent_organization_id = $criteria.parrent_organization_id #end
 							 #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
 							 #if($criteria.pp_organization_id) and o.organization_id = $criteria.pp_organization_id #end
-							 #if($criteria.organization_name1) and o.organization_name like '%'||($criteria.organization_name1)||'%' #end
-							 #if($criteria.organization_name2) and o.organization_name like '%'||($criteria.organization_name2)||'%' #end
-							 #if($criteria.organization_name3) and o.organization_name like '%'||($criteria.organization_name3)||'%' #end
-							 #if($criteria.organization_name4) and o.organization_name like '%'||($criteria.organization_name4)||'%' #end
-							 #if($criteria.organization_name5) and o.organization_name like '%'||($criteria.organization_name5)||'%' #end
-							 #if($criteria.organization_name6) and o.organization_name like '%'||($criteria.organization_name6)||'%' #end
-							 #if($criteria.organization_name7) and o.organization_name like '%'||($criteria.organization_name7)||'%' #end
-							 #if($criteria.organization_name8) and o.organization_name like '%'||($criteria.organization_name8)||'%' #end
-							 #if($criteria.organization_name9) and o.organization_name like '%'||($criteria.organization_name9)||'%' #end								 
 							 #if($criteria.remark1) and o.remark like '%'||($criteria.remark1)||'%' #end
 							 #if($criteria.remark2) and o.remark like '%'||($criteria.remark2)||'%' #end
 							 #if($criteria.remark3) and o.remark like '%'||($criteria.remark3)||'%' #end
@@ -278,10 +314,17 @@
 							 #if($criteria.ident_code) and (o.ident_code = $criteria.ident_code or o.ident_code_new = $criteria.ident_code) #end
 							 #if($criteria.town_district_id) and a.town_district_id = $criteria.town_district_id #end
 							 #if($criteria.org_found_date_start) and trunc(o.found_date)>= trunc($criteria.org_found_date_start) and  trunc(o.found_date)<= trunc($criteria.org_found_date_end) #end
-						 #end
+						  #end
 				 ]]>
 			</whereClause>
-			<orderClause>getTbilisiOrder(tw.town_id), o.super_priority,o.parrent_organization_id, o.priority</orderClause>
+			<orderClause>
+						#if($criteria.pp_organization_id)
+							hr.my_rownum 
+						#else
+							getTbilisiOrder(tw.town_id), o.super_priority, nvl(o.parrent_organization_id,0), o.priority 
+						#end
+				
+			</orderClause>
 		</operationBinding>
 		
 		
