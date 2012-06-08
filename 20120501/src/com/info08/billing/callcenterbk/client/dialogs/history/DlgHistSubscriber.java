@@ -13,8 +13,7 @@ public class DlgHistSubscriber extends Window {
 		try {
 			setWidth(760);
 			setHeight(730);
-			setTitle(abonentRecord == null ? "ახალი აბონენტის დამატება"
-					: "აბონენტის მოდიფიცირება");
+			setTitle("აბონენტის ინსტორია");
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);
