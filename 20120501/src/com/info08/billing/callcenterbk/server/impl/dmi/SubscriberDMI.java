@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.items.Address;
 import com.info08.billing.callcenterbk.shared.items.PhoneNumber;
 import com.info08.billing.callcenterbk.shared.items.Subscribers;
@@ -158,6 +159,9 @@ public class SubscriberDMI implements QueryConstants {
 				oracleManager.persist(sp);
 
 			}
+			oracleManager.createNativeQuery("{call createSubscriberHist(?)}")
+					.setParameter(1, subscriber_id)
+					.executeUpdate();
 			EMF.commitTransaction(transaction);
 			values = DMIUtils.findRecordById("SubscriberDS", "customSearch",
 					subscriber_id, "subscriber_id");
