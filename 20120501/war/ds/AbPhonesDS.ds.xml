@@ -17,6 +17,18 @@
 		<field name="phone_contract_type_desr"	type="text"		title="Phone Status"/>
 		<field name="phone_type_id"				type="integer"	title="Phone Type ID"		hidden="true"/>
 		<field name="phone_type"				type="text"		title="Phone Type"/>
+		<field name="htp_rcn"   				type="integer"  title="htp_rcn"/>
+		<field name="hph_rcn"   				type="integer"  title="hph_rcn"/>
+		<field name="htp_hist_start_date"   	type="datetime" title="htp_hist_start_date"/>
+		<field name="hph_hist_start_date"   	type="datetime" title="hph_hist_start_date"/>
+		<field name="htp_hist_end_date"   		type="datetime" title="htp_hist_end_date"/>
+		<field name="hph_hist_end_date"   		type="datetime" title="hph_hist_end_date"/>
+		<field name="htp_on_user"  				type="text"  	title="htp_on_user"/>
+		<field name="hph_on_user"   			type="datetime" title="hph_on_user"/>
+		<field name="htp_off_user"   			type="text"  	title="htp_off_user"/>
+		<field name="hph_off_user"   			type="text"  	title="hph_off_user"/>
+		<field name="rdeleted"   				type="boolean"  title="hph_rcn" sqlStorageStrategy="integer"/>
+		
 	</fields>	
 	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
 	
@@ -80,6 +92,42 @@
 				]]>  
 			</whereClause> 
 			<orderClause>t.phone</orderClause>
-    	</operationBinding>      		
+    	</operationBinding>   
+    	
+    	
+    	<operationBinding operationId="getPhoneHistoryForSubscriber" operationType="fetch" >    		
+    		<selectClause>  
+				subscriber_id, 
+				hidden_by_request_descr, 
+				phone_contract_type, 
+				phone_contract_type_desr, 
+				phone_number_id, 
+				phone, 
+				phone_state_id, 
+				phone_state, 
+				phone_type_id, 
+				phone_type, 
+				is_parallel, 
+				is_parallel_descr, 
+				htp_rcn, 
+				hph_rcn, 
+				htp_hist_start_date, 
+				hph_hist_start_date, 
+				htp_hist_end_date, 
+				hph_hist_end_date, 
+				htp_on_user, 
+				hph_on_user, 
+				htp_off_user, 
+				hph_off_user, 
+				rdeleted
+    			
+			</selectClause> 
+			<tableClause>v_hist_subscriber_numbers t</tableClause>
+			<whereClause><![CDATA[ 
+				 t.subscriber_id != $criteria.subscriber_id 
+				]]>  
+			</whereClause> 
+			<orderClause>greatest(htp_rcn,hph_rcn) desc</orderClause>
+    	</operationBinding>     		
     </operationBindings>	
 </DataSource>
