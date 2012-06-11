@@ -724,4 +724,5 @@ public interface AppConstants extends Constants {
 	String history();
 	String sortPhones();
 	String phoneDataIsEmpty();
+	String advParameters();
 }
