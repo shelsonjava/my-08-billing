@@ -13,12 +13,11 @@ public class HistoryResult {
 	private static final String OFF_USER_NAME = "_off_user";
 	private static final String START_NAME = "_hist_start_date";
 	private static final String END_NAME = "_hist_end_date";
-	
-	
-	String on_user;
-	String off_user;
-	Date start;
-	Date end;
+
+	private String on_user;
+	private String off_user;
+	private Date start;
+	private Date end;
 
 	public HistoryResult(Record rec) {
 		Map<?, ?> map = rec.toMap();
@@ -79,6 +78,22 @@ public class HistoryResult {
 		if (obj != null)
 			return obj.toString().trim();
 		return null;
+	}
+
+	public String getOn_user() {
+		return on_user;
+	}
+
+	public String getOff_user() {
+		return off_user;
+	}
+
+	public Date getStart() {
+		return start;
+	}
+
+	public Date getEnd() {
+		return end;
 	}
 
 }
