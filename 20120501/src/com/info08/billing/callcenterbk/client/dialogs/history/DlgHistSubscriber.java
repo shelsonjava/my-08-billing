@@ -181,17 +181,17 @@ public class DlgHistSubscriber extends Window {
 			ListGridField street = new ListGridField("concat_address",
 					CallCenterBK.constants.street());
 
-			ListGridField hist_user_on = new ListGridField("on_user", "user_on");
+			ListGridField hist_user_on = new ListGridField("on_user", "დაამატა");
 			hist_user_on.setWidth(50);
 			ListGridField hist_user_off = new ListGridField("off_user",
-					"user_off");
+					"შეცვალა");
 			hist_user_off.setWidth(50);
 			ListGridField hist_start = new ListGridField("hist_start_date",
-					"hist_start");
+					"-დან");
 			hist_start.setWidth(120);
 
 			ListGridField hist_end = new ListGridField("hist_end_date",
-					"hist_end");
+					"-მდე");
 			hist_end.setWidth(120);
 
 			histSubscriberListGrid.setFields(first_name, last_name, town,
@@ -236,20 +236,20 @@ public class DlgHistSubscriber extends Window {
 					"hidden_by_request_descr", "ღია/დაფარული");
 
 			ListGridField ph_hist_user_on = new ListGridField("on_user",
-					"user_on");
-			ph_hist_user_on.setWidth(50);
+					"დაამატა");
+			ph_hist_user_on.setWidth(80);
 			ListGridField ph_hist_user_off = new ListGridField("off_user",
-					"user_off");
-			ph_hist_user_off.setWidth(50);
+					"შეცვალა");
+			ph_hist_user_off.setWidth(80);
 			ListGridField ph_hist_start = new ListGridField("hist_start_date",
-					"hist_start");
-			ph_hist_start.setWidth(120);
+					"-დან");
+			ph_hist_start.setWidth(100);
 
 			ListGridField ph_hist_end = new ListGridField("hist_end_date",
-					"hist_end");
-			ph_hist_end.setWidth(120);
-			ListGridField ph_deleted = new ListGridField("rdeleted", "rdeleted");
-			ph_deleted.setWidth(50);
+					"-მდე");
+			ph_hist_end.setWidth(100);
+			ListGridField ph_deleted = new ListGridField("rdeleted", "წაშლილი");
+			ph_deleted.setWidth(70);
 			ph_deleted.setType(ListGridFieldType.BOOLEAN);
 
 			histSubscriberPhoneListGrid.setFields(phones,
