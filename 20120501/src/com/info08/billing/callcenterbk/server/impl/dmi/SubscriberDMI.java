@@ -158,6 +158,7 @@ public class SubscriberDMI implements QueryConstants {
 				oracleManager.persist(sp);
 
 			}
+			oracleManager.flush();
 			oracleManager.createNativeQuery("{call createSubscriberHist(?)}")
 					.setParameter(1, subscriber_id)
 					.executeUpdate();
