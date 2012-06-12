@@ -47,7 +47,8 @@
 		<field name="isBold" 							type="integer" 		title="isBold" 								hidden="true" />
 		<field name="phones" 							type="any" 			title="phones" 								hidden="true" />
 		<field name="physicalAddrValues" 				type="any" 			title="physicalAddrValues" 					hidden="true" />
-		<field name="orgDepIdList" 						type="any" 			title="orgDepIdList" 						hidden="true" />		
+		<field name="orgDepIdList" 						type="any" 			title="orgDepIdList" 						hidden="true" />
+		<field name="recCount" 							type="integer" 		title="recCount" 							hidden="true" />		
 	</fields>
 
 	<operationBindings>
@@ -281,6 +282,22 @@
             </customSQL> 
         </operationBinding>
         
+        
+        <!-- FETCH -->
+        <operationBinding operationId="orgDepartCheckParrChild" operationType="fetch">
+            <customSQL>
+            	 <![CDATA[
+            	     select 
+            	     		count(1) as recCount
+					 from (select level as my_level, t.*
+					          from organization_department t
+					         start with t.org_department_id = $criteria.curr_org_department_id
+					        connect by prior t.org_department_id = t.parrent_department_id) tt
+					 where tt.my_level > 1
+					   and tt.org_department_id = $criteria.parr_org_department_id
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
 
 	</operationBindings>
 </DataSource>

@@ -40,6 +40,8 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -573,8 +575,9 @@ public class TabOrganization extends Tab {
 		addNewOrgBtn.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				ListGridRecord listGridRecord = orgTreeGrid.getSelectedRecord();
 				DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
-						null, orgTreeGrid);
+						listGridRecord, null, orgTreeGrid);
 				dlgAddEditMainOrg.show();
 			}
 		});
@@ -589,7 +592,7 @@ public class TabOrganization extends Tab {
 					return;
 				}
 				DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
-						listGridRecord, orgTreeGrid);
+						null, listGridRecord, orgTreeGrid);
 				dlgAddEditMainOrg.show();
 			}
 		});
@@ -731,6 +734,21 @@ public class TabOrganization extends Tab {
 			@Override
 			public void onChanged(ChangedEvent event) {
 				advParamButton.setDisabled(!advSearch.getValueAsBoolean());
+			}
+		});
+
+		orgTreeGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
+			@Override
+			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
+				ListGridRecord listGridRecord = orgTreeGrid.getSelectedRecord();
+				if (listGridRecord == null) {
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.pleaseSelrecord());
+					return;
+				}
+				DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
+						null, listGridRecord, orgTreeGrid);
+				dlgAddEditMainOrg.show();
 			}
 		});
 

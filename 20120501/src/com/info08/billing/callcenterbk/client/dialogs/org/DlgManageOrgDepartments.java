@@ -26,6 +26,8 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionChangedHandler;
 import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -235,8 +237,8 @@ public class DlgManageOrgDepartments extends Window {
 			ListGridField real_address = new ListGridField(
 					"full_address_not_hidden",
 					CallCenterBK.constants.realAddress(), 400);
-			orgDepListGrid.setFields(organization_name, real_address,
-					tree_org_parrent, tree_org_child);
+			orgDepListGrid.setFields(tree_org_parrent, tree_org_child,
+					organization_name, real_address);
 
 			orgDepPhonesListGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -282,8 +284,6 @@ public class DlgManageOrgDepartments extends Window {
 			ListGridField phone_state_descr = new ListGridField(
 					"phone_state_descr", CallCenterBK.constants.phoneState(),
 					150);
-			// ClientUtils.createDescrFilterField("phone_state_id",CallCenterBK.constants.phoneState(),
-			// 150, 52000,false);
 			phone_state_descr.setAlign(Alignment.CENTER);
 			phone_state_descr.setCanFilter(false);
 
@@ -292,13 +292,10 @@ public class DlgManageOrgDepartments extends Window {
 					CallCenterBK.constants.openClose(), 150);
 			hidden_by_request_descr.setAlign(Alignment.CENTER);
 			hidden_by_request_descr.setCanFilter(false);
-			// hidden_by_request_descr.setValueMap(ClientMapUtil.getInstance().getMapOpClose());
 
 			ListGridField phone_contract_type_descr = new ListGridField(
 					"phone_contract_type_descr",
 					CallCenterBK.constants.phoneStatus(), 150);
-			// ClientUtils.createDescrFilterField("phone_contract_type",CallCenterBK.constants.phoneStatus(),
-			// 150, 53000, false);
 			phone_contract_type_descr.setAlign(Alignment.CENTER);
 			phone_contract_type_descr.setCanFilter(false);
 
@@ -307,12 +304,9 @@ public class DlgManageOrgDepartments extends Window {
 					150);
 			for_contact_descr.setAlign(Alignment.CENTER);
 			for_contact_descr.setCanFilter(false);
-			// for_contact_descr.setValueMap(ClientMapUtil.getInstance().getYesAndNo());
 
 			ListGridField phone_type_descr = new ListGridField(
 					"phone_type_descr", CallCenterBK.constants.type(), 150);
-			// ClientUtils.createDescrFilterField("phone_type_id",CallCenterBK.constants.type(),
-			// 150, 54000, false);
 			phone_type_descr.setAlign(Alignment.CENTER);
 			phone_type_descr.setCanFilter(false);
 
@@ -320,7 +314,6 @@ public class DlgManageOrgDepartments extends Window {
 					"is_parallel_descr", CallCenterBK.constants.paraller(), 150);
 			is_parallel_descr.setAlign(Alignment.CENTER);
 			is_parallel_descr.setCanFilter(false);
-			// is_parallel_descr.setValueMap(ClientMapUtil.getInstance().getMapParall());
 
 			orgDepPhonesListGrid.setFields(phone, phone_state_descr,
 					hidden_by_request_descr, phone_contract_type_descr,
@@ -417,11 +410,13 @@ public class DlgManageOrgDepartments extends Window {
 			addNewOrgBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
+					ListGridRecord depListGridRecord = orgDepListGrid
+							.getSelectedRecord();
 					Integer organization_id = orgListGridRecord
 							.getAttributeAsInt("organization_id");
 					DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
-							organization_id, null, null, orgDepListGrid,
-							DlgManageOrgDepartments.this);
+							depListGridRecord, organization_id, null, null,
+							orgDepListGrid, DlgManageOrgDepartments.this);
 					dlgAddEditOrgDepartments.show();
 				}
 			});
@@ -439,7 +434,7 @@ public class DlgManageOrgDepartments extends Window {
 							.getAttributeAsInt("organization_id");
 
 					DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
-							organization_id, depListGridRecord,
+							null, organization_id, depListGridRecord,
 							orgDepPhonesListGrid.getRecords(), orgDepListGrid,
 							DlgManageOrgDepartments.this);
 					dlgAddEditOrgDepartments.show();
@@ -493,6 +488,31 @@ public class DlgManageOrgDepartments extends Window {
 					sort1();
 				}
 			});
+
+			orgDepListGrid
+					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
+						@Override
+						public void onRecordDoubleClick(
+								RecordDoubleClickEvent event) {
+							ListGridRecord depListGridRecord = orgDepListGrid
+									.getSelectedRecord();
+							if (depListGridRecord == null) {
+								SC.say(CallCenterBK.constants.warning(),
+										CallCenterBK.constants
+												.pleaseSelrecord());
+								return;
+							}
+							Integer organization_id = orgListGridRecord
+									.getAttributeAsInt("organization_id");
+
+							DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
+									null, organization_id, depListGridRecord,
+									orgDepPhonesListGrid.getRecords(),
+									orgDepListGrid,
+									DlgManageOrgDepartments.this);
+							dlgAddEditOrgDepartments.show();
+						}
+					});
 
 			addItem(hLayout);
 		} catch (Exception e) {

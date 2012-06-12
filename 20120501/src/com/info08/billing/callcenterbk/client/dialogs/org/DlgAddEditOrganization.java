@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
@@ -102,12 +103,14 @@ public class DlgAddEditOrganization extends Window {
 	private ListGrid bankOrgsGrid;
 	private ListGrid orgPartBankOrgsGrid;
 	private ToolStripButton copyAddress;
+	private ListGridRecord parrentRecord;
 
-	public DlgAddEditOrganization(ListGridRecord listGridRecord,
-			ListGrid orgTreeGrid) {
+	public DlgAddEditOrganization(ListGridRecord parrentRecord,
+			ListGridRecord listGridRecord, ListGrid orgTreeGrid) {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
 			this.listGridRecord = listGridRecord;
+			this.parrentRecord = parrentRecord;
 			setTitle(CallCenterBK.constants.manageOrgs());
 
 			setHeight(760);
@@ -239,7 +242,7 @@ public class DlgAddEditOrganization extends Window {
 			leftLayOut.setMembers(parrentOrgItem, dynamicFormMainInfo);
 
 			orgNameItem = new TextAreaItem();
-			orgNameItem.setName("organization_name");
+			orgNameItem.setName("original_org_name");
 			orgNameItem.setWidth(650);
 			orgNameItem.setTitle(CallCenterBK.constants.orgName());
 			orgNameItem.setHeight(62);
@@ -271,13 +274,15 @@ public class DlgAddEditOrganization extends Window {
 			orgIdentCodeItem.setName("ident_code");
 			orgIdentCodeItem.setWidth(284);
 			orgIdentCodeItem.setTitle(CallCenterBK.constants.identCode());
-			orgIdentCodeItem.setKeyPressFilter("[0-9]");
+			// orgIdentCodeItem.setKeyPressFilter("[0-9]{0,11}");
+			orgIdentCodeItem.setMask("###########");
 
 			orgIdentCodeNewItem = new TextItem();
 			orgIdentCodeNewItem.setName("ident_code_new");
 			orgIdentCodeNewItem.setWidth(284);
 			orgIdentCodeNewItem.setTitle(CallCenterBK.constants.identCodeNew());
-			orgIdentCodeNewItem.setKeyPressFilter("[0-9]");
+			// orgIdentCodeNewItem.setKeyPressFilter("[0-9]");
+			orgIdentCodeNewItem.setMask("###########");
 
 			orgWorkHoursItem = new TextItem();
 			orgWorkHoursItem.setName("work_hours");
@@ -688,6 +693,9 @@ public class DlgAddEditOrganization extends Window {
 					}
 				}, dsRequest1);
 
+			} else if (parrentRecord != null) {
+				parrentOrgItem.setDataValue(parrentRecord
+						.getAttributeAsInt("organization_id"));
 			}
 
 		} catch (Exception e) {
@@ -774,7 +782,7 @@ public class DlgAddEditOrganization extends Window {
 
 			if (identCode != null && !identCode.trim().equals("")) {
 				try {
-					Integer.parseInt(identCode);
+					Long.parseLong(identCode);
 				} catch (NumberFormatException e) {
 					SC.say(CallCenterBK.constants.warning(),
 							CallCenterBK.constants.orgIdentCodeIsInvalid());
@@ -786,7 +794,7 @@ public class DlgAddEditOrganization extends Window {
 
 			if (identCodeNew != null && !identCodeNew.trim().equals("")) {
 				try {
-					Integer.parseInt(identCodeNew);
+					Long.parseLong(identCodeNew);
 				} catch (NumberFormatException e) {
 					SC.say(CallCenterBK.constants.warning(),
 							CallCenterBK.constants.orgIdentCodeIsInvalid());
@@ -914,7 +922,7 @@ public class DlgAddEditOrganization extends Window {
 			} else {
 				important_remark1 = 0;
 			}
-			Map<String, Object> fromMaps = new LinkedHashMap<String, Object>();
+			final Map<String, Object> fromMaps = new LinkedHashMap<String, Object>();
 			fromMaps.put("priority", new Integer(0));
 			fromMaps.put("orgActivities", orgActivities);
 			fromMaps.put("loggedUserName", CommonSingleton.getInstance()
@@ -946,7 +954,51 @@ public class DlgAddEditOrganization extends Window {
 			ClientUtils.fillMapFromForm(fromMaps, dynamicFormMainInfo,
 					dynamicFormMainInfo1, dynamicFormMainInfo2);
 			fromMaps.put("important_remark", important_remark1);
+			fromMaps.put("organization_name", orgNameItem.getValueAsString());
 
+			if (listGridRecord == null || parrent_organization_id == null) {
+				saveData(fromMaps);
+			} else {
+				com.smartgwt.client.rpc.RPCManager.startQueue();
+				DSRequest req = new DSRequest();
+				req.setAttribute("operationId", "orgCheckParrChild");
+				Criteria criteria = new Criteria();
+				criteria.setAttribute("curr_organization_id",
+						listGridRecord.getAttributeAsInt("organization_id"));
+				criteria.setAttribute("parr_organization_id",
+						parrent_organization_id);
+				criteria.setAttribute("cr_uId_" + HTMLPanel.createUniqueId(),
+						HTMLPanel.createUniqueId());
+				DataSource dataSource = DataSource.get("OrgDS");
+				dataSource.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						Record records[] = response.getData();
+						if (records != null && records.length > 0) {
+							Integer count = records[0]
+									.getAttributeAsInt("recCount");
+							if (count != null && count.intValue() > 0) {
+								SC.say(CallCenterBK.constants.warning(),
+										CallCenterBK.constants
+												.parrentIsAlsoChild());
+								return;
+							}
+						}
+						saveData(fromMaps);
+					}
+				}, req);
+				com.smartgwt.client.rpc.RPCManager.sendQueue();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void saveData(Map<String, Object> fromMaps) {
+		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record(fromMaps);
 			DSRequest req = new DSRequest();

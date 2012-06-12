@@ -84,6 +84,7 @@
 		<field name="ph_town_id"					type="integer"  	title="ph_town_id"						hidden="true"/>
 		<field name="original_org_name"				type="text"  		title="original_org_name"				hidden="true"/>
 		<field name="mainIdList"					type="any"  		title="mainIdList"						hidden="true"/>
+		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true" />
 	</fields>
 	<operationBindings>
 	
@@ -123,6 +124,22 @@
 		
 		
 		<!-- FETCH -->
+        <operationBinding operationId="orgCheckParrChild" operationType="fetch">
+            <customSQL>
+            	 <![CDATA[
+            	  select 
+            	  		count(1) as recCount
+				  from (select level as my_level, t.*
+				          from organizations t
+				         start with t.organization_id = $criteria.curr_organization_id
+				        connect by prior t.organization_id = t.parrent_organization_id) tt
+				  where tt.my_level > 1
+				   and tt.organization_id = $criteria.parr_organization_id
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+		
+		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchForCallCenterNew" operationType="fetch">			
 			<selectClause><![CDATA[distinct 
 						o.organization_id,
@@ -136,10 +153,10 @@
 						#end
 						as organization_name,
 						o.organization_name as original_org_name,
-						(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden,
+						a.concat_address as full_address_not_hidden,
 						decode(o.parrent_organization_id,null,null,'home') as tree_org_parrent,
 		                decode((select min(1) from organizations ms1 where ms1.parrent_organization_id = o.organization_id),null,null,'associations') as tree_org_child,
-						tw.town_id,
+						a.town_id,
 						o.priority,
              			o.super_priority,
 						o.ident_code,
@@ -161,16 +178,14 @@
 						getdaysdescription(o.legal_form_desc_id) as legal_form_desc,
 						o.status,
 						a.street_id,
-						decode(a.hidden_by_request,1,'მისამართი დაფარულია',tw.town_name || ', ' ||getDistrict(str.street_id)||', '||str.street_name||' '||a.full_address) as real_address_descr,
-						tw.town_name,
-						getDistrict(str.street_id) as town_district,
-						str.street_location,
-						getindex(str.street_id) as street_index_text,
+						a.town_name,
+						a.town_district_name as town_district,
+						a.street_location,
+						a.street_index_text,
 						o.important_remark,						
              			a.town_district_id,
-             		    decode(a.hidden_by_request,1,'მისამართი დაფარულია',(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address)) as full_address,
-		                getTbilisiOrder(tw.town_id) as cust_order,
-		                str.street_name,
+             		    getTbilisiOrder(a.town_id) as cust_order,
+		                a.street_name,
 		                a.hidden_by_request,		                
 		                a.full_address,
 						a.block,
@@ -182,8 +197,7 @@
 						o.legal_address_id,
 						o.physical_address_id,
 						o.social_address,
-						a.hidden_by_request,
-						tw1.town_id as legal_addr_town_id,
+						a1.town_id as legal_addr_town_id,
 						a1.street_id as legal_addr_street_id,
 						a1.town_district_id as legal_addr_town_district_id,
 						a1.hidden_by_request as legal_addr_hidden_by_request,
@@ -191,8 +205,8 @@
 						a1.block as legal_addr_block,
 						a1.appt as legal_addr_appt,
 						a1.anumber as legal_addr_anumber,
-						str1.street_location as legal_addr_street_location,
-						getindex(str1.street_id) as legal_addr_street_index_text						
+						a1.street_location as legal_addr_street_location,
+						a1.street_index_text as legal_addr_street_index_text						
 				 ]]>
 			</selectClause>
 			<tableClause>organizations o,
@@ -208,12 +222,11 @@
 			connect by prior t.organization_id = t.parrent_organization_id
 			order siblings by getTbilisiOrder(t.ph_town_id), t.super_priority, nvl(t.parrent_organization_id,0), t.priority
 			) hr, #end
-				addresses a, streets str, towns tw, addresses a1, streets str1, towns tw1</tableClause>
+				v_full_address a, v_full_address a1</tableClause>
 			<whereClause>
 				 <![CDATA[
-						 o.physical_address_id = a.addr_id(+) and a.street_id = str.street_id(+) and a.town_id = tw.town_id(+) and 
-						 o.legal_address_id = a1.addr_id(+) and a1.street_id = str1.street_id(+) and a1.town_id = tw1.town_id(+)
-						 
+						 o.physical_address_id = a.addr_id(+) and 
+						 o.legal_address_id = a1.addr_id(+) 
 						 
 							#if($criteria.organization_name) 
 								#foreach($str in $criteria.organization_name.split(" "))
@@ -299,7 +312,7 @@
 						#if($criteria.pp_organization_id)
 							hr.my_rownum 
 						#else
-							getTbilisiOrder(tw.town_id), o.super_priority, nvl(o.parrent_organization_id,0), o.priority 
+							getTbilisiOrder(a.town_id), o.super_priority, nvl(o.parrent_organization_id,0), o.priority 
 						#end
 				
 			</orderClause>

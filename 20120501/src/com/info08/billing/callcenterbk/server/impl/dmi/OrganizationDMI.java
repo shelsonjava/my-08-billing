@@ -508,31 +508,21 @@ public class OrganizationDMI {
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
 					loggedUserName, log);
 
-			Long physical_address_id = values.get("physical_address_id") != null ? new Long(
-					values.get("physical_address_id").toString()) : null;
-
-			Address physicalAddress = null;
-			if (physical_address_id != null) {
-				physicalAddress = oracleManager.find(Address.class,
-						physical_address_id);
-				if (physicalAddress == null) {
-					physicalAddress = new Address();
-				}
-			} else {
-				physicalAddress = new Address();
-			}
 			Map<?, ?> physicalAddrValues = (Map<?, ?>) values
 					.get("physicalAddrValues");
-			DataTools.setProperties(physicalAddrValues, physicalAddress);
+			Long physical_address_id = values.get("physical_address_id") != null ? new Long(
+					values.get("physical_address_id").toString()) : null;
+			boolean deletePhysicalAddress = physical_address_id != null
+					&& physicalAddrValues == null;
 
-			if (physicalAddress.getAddr_id() != null) {
-				oracleManager.merge(physicalAddress);
-			} else {
-				oracleManager.persist(physicalAddress);
+			if (physicalAddrValues != null) {
+				physical_address_id = persistAddress(oracleManager, values,
+						physical_address_id, "physicalAddrValues").getAddr_id();
 			}
 
-			organizationDepartMent.setPhysical_address_id(physicalAddress
-					.getAddr_id());
+			organizationDepartMent
+					.setPhysical_address_id(deletePhysicalAddress ? null
+							: physical_address_id);
 
 			boolean isPersist = (org_department_id == null);
 			if (org_department_id == null) {
@@ -541,6 +531,11 @@ public class OrganizationDMI {
 				oracleManager.merge(organizationDepartMent);
 			}
 			org_department_id = organizationDepartMent.getOrg_department_id();
+
+			if (deletePhysicalAddress) {
+				oracleManager.remove(oracleManager.find(Address.class,
+						physical_address_id));
+			}
 
 			oracleManager.flush();
 
@@ -583,7 +578,8 @@ public class OrganizationDMI {
 							"phone_contract_type").toString()));
 					orgDepartToPhone.setPhone_number_id(phoneNumber
 							.getPhone_number_id());
-					orgDepartToPhone.setPhone_order(new Long(value.get(
+					orgDepartToPhone.setPhone_order(new Long(value
+							.get("phone_order") == null ? "0" : value.get(
 							"phone_order").toString()));
 					oracleManager.persist(orgDepartToPhone);
 				}

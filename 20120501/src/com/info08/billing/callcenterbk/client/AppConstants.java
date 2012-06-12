@@ -726,4 +726,5 @@ public interface AppConstants extends Constants {
 	String phoneDataIsEmpty();
 	String advParameters();
 	String parameters();
+	String parrentIsAlsoChild();
 }

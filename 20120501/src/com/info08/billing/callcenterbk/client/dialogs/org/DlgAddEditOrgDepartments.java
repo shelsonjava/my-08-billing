@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel1;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
@@ -53,12 +54,14 @@ public class DlgAddEditOrgDepartments extends Window {
 	private ListGrid listGrid;
 	private Integer organization_id;
 	private DlgManageOrgDepartments dlgManageOrgDepartments;
+	private ListGridRecord parrentListGridRecord;
 
-	public DlgAddEditOrgDepartments(Integer organization_id,
-			ListGridRecord listGridRecord,
+	public DlgAddEditOrgDepartments(ListGridRecord parrentListGridRecord,
+			Integer organization_id, ListGridRecord listGridRecord,
 			ListGridRecord listGridRecordPhones[], ListGrid listGrid,
 			DlgManageOrgDepartments dlgManageOrgDepartments) {
 		try {
+			this.parrentListGridRecord = parrentListGridRecord;
 			this.listGrid = listGrid;
 			this.listGridRecord = listGridRecord;
 			this.organization_id = organization_id;
@@ -133,7 +136,7 @@ public class DlgAddEditOrgDepartments extends Window {
 
 			dynamicForm.setFields(orgDepartmentNameItem);
 
-			myAddressPanel1 = new MyAddressPanel1(
+			myAddressPanel1 = new MyAddressPanel1(true,
 					"organization_department_address",
 					CallCenterBK.constants.address(), 615, 0);
 			vLayout.addMember(myAddressPanel1);
@@ -349,6 +352,10 @@ public class DlgAddEditOrgDepartments extends Window {
 	private void fillData() {
 		try {
 			if (listGridRecord == null) {
+				if (parrentListGridRecord != null) {
+					parrentOrgDepItem.setDataValue(parrentListGridRecord
+							.getAttributeAsInt("org_department_id"));
+				}
 				return;
 			}
 			Map<?, ?> map = listGridRecord.toMap();
@@ -356,10 +363,8 @@ public class DlgAddEditOrgDepartments extends Window {
 			dynamicForm.setValues(map);
 
 			Object physical_address_id = map.get("physical_address_id");
-			if (physical_address_id != null) {
-				myAddressPanel1.setValue(new Integer(physical_address_id
-						.toString()));
-			}
+			myAddressPanel1.setValue(physical_address_id == null ? null
+					: new Integer(physical_address_id.toString()));
 			if (listGridRecordPhones != null && listGridRecordPhones.length > 0) {
 				for (ListGridRecord record : listGridRecordPhones) {
 					ListGridRecord recordPhone = new ListGridRecord();
@@ -428,35 +433,42 @@ public class DlgAddEditOrgDepartments extends Window {
 						CallCenterBK.constants.plzEnterOrgDepName());
 				return;
 			}
-
-			Map<?, ?> physicalAddrValues = myAddressPanel1.getValues();
-
-			Integer town_id = physicalAddrValues.get("town_id") == null ? null
-					: new Integer(physicalAddrValues.get("town_id").toString());
-			if (town_id == null) {
-				SC.say(CallCenterBK.constants.warning(),
-						CallCenterBK.constants.plzChoosePhysicalAddrTown());
-				myAddressPanel1.getDynamicForm().focusInItem(
-						myAddressPanel1.getAddrTownItem());
-				return;
+			
+			final Map<String, Object> fromMaps = new LinkedHashMap<String, Object>();
+			boolean addressCheck = myAddressPanel1.isCheckedTurnOffItem();
+			if (addressCheck) {
+				Map<?, ?> physicalAddrValues = myAddressPanel1.getValues();
+				
+				Integer town_id = physicalAddrValues.get("town_id") == null ? null
+						: new Integer(physicalAddrValues.get("town_id").toString());
+				if (town_id == null) {
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.plzChoosePhysicalAddrTown());
+					myAddressPanel1.getDynamicForm().focusInItem(
+							myAddressPanel1.getAddrTownItem());
+					return;
+				}
+				Integer street_id = physicalAddrValues.get("street_id") == null ? null
+						: new Integer(physicalAddrValues.get("street_id")
+								.toString());
+				if (street_id == null) {
+					SC.say(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.plzChoosePhysicalAddrStreet());
+					myAddressPanel1.getDynamicForm().focusInItem(
+							myAddressPanel1.getAddrStreetItem());
+					return;
+				}
+				
+				fromMaps.put("physicalAddrValues", physicalAddrValues);
 			}
-			Integer street_id = physicalAddrValues.get("street_id") == null ? null
-					: new Integer(physicalAddrValues.get("street_id")
-							.toString());
-			if (street_id == null) {
-				SC.say(CallCenterBK.constants.warning(),
-						CallCenterBK.constants.plzChoosePhysicalAddrStreet());
-				myAddressPanel1.getDynamicForm().focusInItem(
-						myAddressPanel1.getAddrStreetItem());
-				return;
-			}
-			Map<String, Object> fromMaps = new LinkedHashMap<String, Object>();
+			
+			
 			fromMaps.put("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			fromMaps.put("parrent_department_id", parrent_department_id);
 			fromMaps.put("organization_id", organization_id);
 			fromMaps.put("department_original", department_original);
-			fromMaps.put("physicalAddrValues", physicalAddrValues);
+			
 
 			RecordList phonesRecordList = orgDepPhonesListGrid
 					.getDataAsRecordList();
@@ -484,6 +496,50 @@ public class DlgAddEditOrgDepartments extends Window {
 			}
 			fromMaps.remove("_ref");
 			fromMaps.remove("__ref");
+
+			if (listGridRecord == null || parrent_department_id == null) {
+				saveDataReal(fromMaps);
+			} else {
+				com.smartgwt.client.rpc.RPCManager.startQueue();
+				DSRequest req = new DSRequest();
+				req.setAttribute("operationId", "orgDepartCheckParrChild");
+				Criteria criteria = new Criteria();
+				criteria.setAttribute("curr_org_department_id",
+						listGridRecord.getAttributeAsInt("org_department_id"));
+				criteria.setAttribute("parr_org_department_id",
+						parrent_department_id);
+				criteria.setAttribute("cr_uId_" + HTMLPanel.createUniqueId(),
+						HTMLPanel.createUniqueId());
+				DataSource dataSource = DataSource.get("OrgDepartmentDS");
+				dataSource.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						Record records[] = response.getData();
+						if (records != null && records.length > 0) {
+							Integer count = records[0]
+									.getAttributeAsInt("recCount");
+							if (count != null && count.intValue() > 0) {
+								SC.say(CallCenterBK.constants.warning(),
+										CallCenterBK.constants
+												.parrentIsAlsoChild());
+								return;
+							}
+						}
+						saveDataReal(fromMaps);
+					}
+				}, req);
+				com.smartgwt.client.rpc.RPCManager.sendQueue();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void saveDataReal(Map<String, Object> fromMaps) {
+		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record(fromMaps);
 			DSRequest req = new DSRequest();

@@ -162,13 +162,11 @@ public class MyAddressPanel extends HLayout {
 			turnOffItem.setWidth(613);
 			turnOffItem.setColSpan(2);
 			turnOffItem.setDisabled(!needTurnOffCheck);
-			turnOffItem.setValue(true);
 			header = turnOffItem;
 			turnOffItem.addChangedHandler(new ChangedHandler() {
 				@Override
 				public void onChanged(ChangedEvent event) {
 					setCleared();
-
 				}
 			});
 		}
@@ -198,12 +196,16 @@ public class MyAddressPanel extends HLayout {
 				turnOffItem.setValue(false);
 				setCleared();
 			}
-			header.setValue(title);
+			if (turnOffItem == null) {
+				header.setValue(title);
+			}
 			return;
 		}
 
-		if (turnOffItem != null)
+		if (turnOffItem != null) {
 			turnOffItem.setValue(true);
+		}
+
 		Criteria cr = new Criteria();
 		cr.setAttribute(myIdField, addressa_id_value);
 		DSRequest req = new DSRequest();
@@ -242,10 +244,13 @@ public class MyAddressPanel extends HLayout {
 
 				dynamicForm.setValues(record.toMap());
 				header.setTitle(title);
-				if (turnOffItem != null)
+				if (turnOffItem != null) {
 					turnOffItem.setValue(true);
+				}
+
 			}
 		}, req);
+
 	}
 
 	public void setValues(Map<?, ?> values) {

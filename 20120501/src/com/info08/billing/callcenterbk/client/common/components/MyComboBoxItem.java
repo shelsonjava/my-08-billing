@@ -115,6 +115,15 @@ public class MyComboBoxItem extends HLayout {
 		refreshView();
 	}
 
+	public void setDataValue(Integer value) {
+		if (nameField == null)
+			return;
+		if (value == null)
+			return;
+		currentValue = value;
+		refreshView();
+	}
+
 	private void refreshView() {
 		if (myDataSource == null)
 			return;
