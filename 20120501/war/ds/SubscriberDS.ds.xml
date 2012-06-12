@@ -41,6 +41,7 @@
 		<field name="off_user"		   				type="text"  	title="hs_off_user"/>
 	</fields>
 	
+	
 	<operationBindings>
 	 
 		<!-- Add Subscriber -->
