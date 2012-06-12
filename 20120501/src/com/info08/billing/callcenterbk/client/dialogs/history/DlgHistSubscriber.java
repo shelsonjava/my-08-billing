@@ -2,10 +2,8 @@ package com.info08.billing.callcenterbk.client.dialogs.history;
 
 import java.util.Date;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.utils.HistoryResult;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -13,6 +11,7 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
@@ -23,12 +22,13 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
-import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DlgHistSubscriber extends Window {
 
@@ -181,68 +181,18 @@ public class DlgHistSubscriber extends Window {
 			ListGridField street = new ListGridField("concat_address",
 					CallCenterBK.constants.street());
 
-			ListGridField hist_user_on = new ListGridField("hist_user_on",
-					"user_on");
+			ListGridField hist_user_on = new ListGridField("on_user", "user_on");
 			hist_user_on.setWidth(50);
-			hist_user_on.setCellFormatter(new CellFormatter() {
-
-				@Override
-				public String format(Object value, ListGridRecord record,
-						int rowNum, int colNum) {
-
-					return new HistoryResult(record).getOn_user();
-				}
-			});
-			ListGridField hist_user_off = new ListGridField("hist_user_off",
+			ListGridField hist_user_off = new ListGridField("off_user",
 					"user_off");
 			hist_user_off.setWidth(50);
-			hist_user_off.setCellFormatter(new CellFormatter() {
-
-				@Override
-				public String format(Object value, ListGridRecord record,
-						int rowNum, int colNum) {
-
-					return new HistoryResult(record).getOff_user();
-				}
-			});
-
-			final DateTimeFormat formatter = DateTimeFormat
-					.getFormat("dd.MM.yyyy HH:mm:ss");
-
-			ListGridField hist_start = new ListGridField("hist_start",
+			ListGridField hist_start = new ListGridField("hist_start_date",
 					"hist_start");
 			hist_start.setWidth(120);
 
-			hist_start.setCellFormatter(new CellFormatter() {
-
-				@Override
-				public String format(Object value, ListGridRecord record,
-						int rowNum, int colNum) {
-					try {
-						return formatter.format(new HistoryResult(record)
-								.getStart());
-					} catch (Exception e) {
-						return null;
-					}
-				}
-			});
-
-			ListGridField hist_end = new ListGridField("hist_end", "hist_end");
+			ListGridField hist_end = new ListGridField("hist_end_date",
+					"hist_end");
 			hist_end.setWidth(120);
-
-			hist_end.setCellFormatter(new CellFormatter() {
-
-				@Override
-				public String format(Object value, ListGridRecord record,
-						int rowNum, int colNum) {
-					try {
-						return formatter.format(new HistoryResult(record)
-								.getEnd());
-					} catch (Exception e) {
-						return null;
-					}
-				}
-			});
 
 			histSubscriberListGrid.setFields(first_name, last_name, town,
 					street, hist_user_on, hist_start, hist_user_off, hist_end);
@@ -282,12 +232,64 @@ public class DlgHistSubscriber extends Window {
 
 			ListGridField is_parallel_descr = new ListGridField(
 					"is_parallel_descr", "პარალელური");
+			ListGridField hidden_by_request_descr = new ListGridField(
+					"hidden_by_request_descr", "ღია/დაფარული");
 
-			histSubscriberPhoneListGrid.setFields(phones, phone_state,
-					phone_contract_type_desr, phone_type, is_parallel_descr);
+			ListGridField ph_hist_user_on = new ListGridField("on_user",
+					"user_on");
+			ph_hist_user_on.setWidth(50);
+			ListGridField ph_hist_user_off = new ListGridField("off_user",
+					"user_off");
+			ph_hist_user_off.setWidth(50);
+			ListGridField ph_hist_start = new ListGridField("hist_start_date",
+					"hist_start");
+			ph_hist_start.setWidth(120);
+
+			ListGridField ph_hist_end = new ListGridField("hist_end_date",
+					"hist_end");
+			ph_hist_end.setWidth(120);
+			ListGridField ph_deleted = new ListGridField("rdeleted", "rdeleted");
+			ph_deleted.setWidth(50);
+			ph_deleted.setType(ListGridFieldType.BOOLEAN);
+
+			histSubscriberPhoneListGrid.setFields(phones,
+					hidden_by_request_descr, phone_state,
+					phone_contract_type_desr, phone_type, is_parallel_descr,
+					ph_hist_user_on, ph_hist_start, ph_hist_user_off,
+					ph_hist_end, ph_deleted);
 
 			hLayout.addMember(searchForm);
 			hLayout.addMember(buttonLayout);
+
+			ToolStrip toolStrip = new ToolStrip();
+			toolStrip.setWidth100();
+			toolStrip.setPadding(5);
+
+			ToolStripButton historyButton = new ToolStripButton(
+					"კონკრეტული აბონენტის ისტორია", "date.png");
+			historyButton.setLayoutAlign(Alignment.LEFT);
+			historyButton.setWidth(50);
+			toolStrip.addButton(historyButton);
+			historyButton.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					ListGridRecord listGridRecord = null;
+					listGridRecord = histSubscriberListGrid
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say("მონიშნეთ ჩანაწერი ცხრილში");
+						return;
+					}
+					Integer subscriber_id = listGridRecord
+							.getAttributeAsInt("subscriber_id");
+					Criteria criteria = new Criteria();
+					criteria.setAttribute("subscriber_id", subscriber_id);
+					searchByCriteria(criteria);
+				}
+			});
+
+			hLayout.addMember(toolStrip);
 			hLayout.addMember(histSubscriberListGrid);
 			hLayout.addMember(histSubscriberPhoneListGrid);
 
@@ -363,18 +365,22 @@ public class DlgHistSubscriber extends Window {
 				criteria.setAttribute("phone_number", phone);
 			}
 
-			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "histSearch");
-			histSubscriberListGrid.invalidateCache();
-			histSubscriberListGrid.filterData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, dsRequest);
+			searchByCriteria(criteria);
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
+	}
+
+	protected void searchByCriteria(Criteria criteria) {
+		DSRequest dsRequest = new DSRequest();
+		dsRequest.setAttribute("operationId", "histSearch");
+		histSubscriberListGrid.invalidateCache();
+		histSubscriberListGrid.filterData(criteria, new DSCallback() {
+			@Override
+			public void execute(DSResponse response, Object rawData,
+					DSRequest request) {
+			}
+		}, dsRequest);
 	}
 
 	private void searchPhones() {
@@ -387,7 +393,7 @@ public class DlgHistSubscriber extends Window {
 			}
 			Criteria criteria = new Criteria();
 			if (!subscriber_id.equals("")) {
-				criteria.setAttribute("subscriber_id", subscriber_id);
+				criteria.setAttribute("subscriber_id", new Long(subscriber_id));
 			}
 
 			DSRequest dsRequest = new DSRequest();

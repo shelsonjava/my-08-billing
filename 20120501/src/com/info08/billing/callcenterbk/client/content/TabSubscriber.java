@@ -585,15 +585,15 @@ public class TabSubscriber extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 
-					ListGridRecord listGridRecord = abonentsGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.warning(),
-								CallCenterBK.constants.pleaseSelrecord());
-						return;
-					}
+//					ListGridRecord listGridRecord = abonentsGrid
+//							.getSelectedRecord();
+//					if (listGridRecord == null) {
+//						SC.say(CallCenterBK.constants.warning(),
+//								CallCenterBK.constants.pleaseSelrecord());
+//						return;
+//					}
 					DlgHistSubscriber dlgHistSubscriber = new DlgHistSubscriber(
-							listGridRecord);
+							null);
 					dlgHistSubscriber.show();
 				}
 			});

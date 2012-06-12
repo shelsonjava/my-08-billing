@@ -174,11 +174,11 @@ public class DlgAddEditAbPhone extends Window {
 						+ " !. ტელეფონის ნომერი შედგება მხოლოდ ციფრებისაგან. ");
 				return;
 			}
-			if (oPhone.length() > 7) {
+			/*if (oPhone.length() > 7) {
 				SC.say("არასწორი ტელეფონის ნომერი " + oPhone
 						+ " !. ტელეფონის ნომერი შედგება მხოლოდ 7 ციფრისაგან. ");
 				return;
-			}
+			}*/
 
 			String opClose = isHideItem.getValueAsString();
 			if (opClose == null) {

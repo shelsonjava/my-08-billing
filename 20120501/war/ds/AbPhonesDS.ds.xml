@@ -17,16 +17,10 @@
 		<field name="phone_contract_type_desr"	type="text"		title="Phone Status"/>
 		<field name="phone_type_id"				type="integer"	title="Phone Type ID"		hidden="true"/>
 		<field name="phone_type"				type="text"		title="Phone Type"/>
-		<field name="htp_rcn"   				type="integer"  title="htp_rcn"/>
-		<field name="hph_rcn"   				type="integer"  title="hph_rcn"/>
-		<field name="htp_hist_start_date"   	type="datetime" title="htp_hist_start_date"/>
-		<field name="hph_hist_start_date"   	type="datetime" title="hph_hist_start_date"/>
-		<field name="htp_hist_end_date"   		type="datetime" title="htp_hist_end_date"/>
-		<field name="hph_hist_end_date"   		type="datetime" title="hph_hist_end_date"/>
-		<field name="htp_on_user"  				type="text"  	title="htp_on_user"/>
-		<field name="hph_on_user"   			type="text" 	title="hph_on_user"/>
-		<field name="htp_off_user"   			type="text"  	title="htp_off_user"/>
-		<field name="hph_off_user"   			type="text"  	title="hph_off_user"/>
+		<field name="hist_start_date"   		type="datetime"  	title="hs_hist_start_date"/>
+		<field name="hist_end_date"   			type="datetime"  	title="hs_hist_end_date"/>
+		<field name="on_user"  					type="text"  	title="hs_on_user"/>
+		<field name="off_user"		   			type="text"  	title="hs_off_user"/>
 		<field name="rdeleted"   				type="boolean"  title="hph_rcn" sqlStorageStrategy="integer"/>
 		
 	</fields>	
@@ -107,27 +101,20 @@
 				phone_state, 
 				phone_type_id, 
 				phone_type, 
-				is_parallel, 
+				is_parallel,
 				is_parallel_descr, 
-				htp_rcn, 
-				hph_rcn, 
-				htp_hist_start_date, 
-				hph_hist_start_date, 
-				htp_hist_end_date, 
-				hph_hist_end_date, 
-				htp_on_user, 
-				hph_on_user, 
-				htp_off_user, 
-				hph_off_user, 
+				case when htp_rcn > hph_rcn then htp_hist_start_date else hph_hist_start_date end hist_start_date,
+				case when htp_rcn > hph_rcn then nvl(htp_hist_end_date,hph_hist_end_date) else nvl(hph_hist_end_date,htp_hist_end_date) end hist_end_date,
+				case when htp_rcn > hph_rcn then htp_on_user else hph_on_user end on_user,
+				case when htp_rcn > hph_rcn then nvl(htp_off_user,hph_off_user) else nvl(hph_off_user,htp_off_user) end off_user,
 				rdeleted
-    			
 			</selectClause> 
 			<tableClause>v_hist_subscriber_numbers t</tableClause>
 			<whereClause><![CDATA[ 
 				 t.subscriber_id = $criteria.subscriber_id 
 				]]>  
 			</whereClause> 
-			<orderClause>greatest(htp_rcn,hph_rcn) desc</orderClause>
+			<orderClause> phone, hist_end_date desc</orderClause>
     	</operationBinding>     		
     </operationBindings>	
 </DataSource>
