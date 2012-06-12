@@ -24,7 +24,7 @@
 		<field name="htp_hist_end_date"   		type="datetime" title="htp_hist_end_date"/>
 		<field name="hph_hist_end_date"   		type="datetime" title="hph_hist_end_date"/>
 		<field name="htp_on_user"  				type="text"  	title="htp_on_user"/>
-		<field name="hph_on_user"   			type="datetime" title="hph_on_user"/>
+		<field name="hph_on_user"   			type="text" 	title="hph_on_user"/>
 		<field name="htp_off_user"   			type="text"  	title="htp_off_user"/>
 		<field name="hph_off_user"   			type="text"  	title="hph_off_user"/>
 		<field name="rdeleted"   				type="boolean"  title="hph_rcn" sqlStorageStrategy="integer"/>
@@ -124,7 +124,7 @@
 			</selectClause> 
 			<tableClause>v_hist_subscriber_numbers t</tableClause>
 			<whereClause><![CDATA[ 
-				 t.subscriber_id != $criteria.subscriber_id 
+				 t.subscriber_id = $criteria.subscriber_id 
 				]]>  
 			</whereClause> 
 			<orderClause>greatest(htp_rcn,hph_rcn) desc</orderClause>

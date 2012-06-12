@@ -35,6 +35,42 @@
 		<field name="phone_type"					type="text"		title="Phone Type"/>
 		<field name="is_parallel_descr"				type="text"		title="Is Parallel Descr"/>
 		<field name="ph_hidden_by_request_descr"	type="text"		title="Is Parallel Descr"/>
+		<field name="hs_rcn"   						type="integer"  	title="hs_rcn"/>
+		<field name="hf_rcn"   						type="integer"  	title="hf_rcn"/>
+		<field name="hl_rcn"   						type="integer"  	title="hl_rcn"/>
+		<field name="ha_rcn"   						type="integer"  	title="ha_rcn"/>
+		<field name="hst_rcn"   					type="integer"  	title="hst_rcn"/>
+		<field name="ht_rcn"   						type="integer"  	title="ht_rcn"/>
+		<field name="htd_rcn"   					type="integer"  	title="htd_rcn"/>
+		<field name="hs_hist_start_date"   			type="datetime"  	title="hs_hist_start_date"/>
+		<field name="hf_hist_start_date"   			type="datetime"  	title="hf_hist_start_date"/>
+		<field name="hl_hist_start_date"   			type="datetime"  	title="hl_hist_start_date"/>
+		<field name="ha_hist_start_date"   			type="datetime"  	title="ha_hist_start_date"/>
+		<field name="hst_hist_start_date"   		type="datetime"  	title="hst_hist_start_date"/>
+		<field name="ht_hist_start_date"   			type="datetime"  	title="ht_hist_start_date"/>
+		<field name="htd_hist_start_date"   		type="datetime"  	title="htd_hist_start_date"/>
+		<field name="hs_hist_end_date"   			type="datetime"  	title="hs_hist_end_date"/>
+		<field name="hf_hist_end_date"   			type="datetime"  	title="hf_hist_end_date"/>
+		<field name="hl_hist_end_date"   			type="datetime"  	title="hl_hist_end_date"/>
+		<field name="ha_hist_end_date"   			type="datetime"  	title="ha_hist_end_date"/>
+		<field name="hst_hist_end_date"   			type="datetime"  	title="hst_hist_end_date"/>
+		<field name="ht_hist_end_date"   			type="datetime"  	title="ht_hist_end_date"/>
+		<field name="htd_hist_end_date"   			type="datetime"  	title="htd_hist_end_date"/>
+		<field name="hs_on_user"  					type="text"  	title="hs_on_user"/>
+		<field name="hf_on_user"   					type="text"  	title="hf_on_user"/>
+		<field name="hl_on_user"   					type="text"  	title="hl_on_user"/>
+		<field name="ha_on_user"   					type="text"  	title="ha_on_user"/>
+		<field name="hst_on_user"   				type="text"  	title="hst_on_user"/>
+		<field name="ht_on_user"   					type="text"  	title="ht_on_user"/>
+		<field name="htd_on_user"   				type="text"  	title="htd_on_user"/>
+		<field name="hs_off_user"   				type="text"  	title="hs_off_user"/>
+		<field name="hf_off_user"   				type="text"  	title="hf_off_user"/>
+		<field name="hl_off_user"   				type="text"  	title="hl_off_user"/>
+		<field name="ha_off_user"   				type="text"  	title="ha_off_user"/>
+		<field name="hst_off_user"   				type="text"  	title="hst_off_user"/>
+		<field name="ht_off_user"   				type="text"  	title="ht_off_user"/>
+		<field name="htd_off_user"   				type="text"  	title="htd_off_user"/>
+		
 				
 	</fields>
 	
@@ -158,13 +194,77 @@
 								and t.concat_address like '%'||'$str'||'%'
 							#end
 					#end
-					
-					
-					
-					
-					
-									
 				]]>
+			</whereClause>	
+		</operationBinding>
+		
+		<operationBinding operationId="histSearch"
+			operationType="fetch">			
+			<selectClause>
+				t.firstname_id, 
+				t.firstname as  name, 
+				t.lastname_id, 
+				t.lastname as  family_name, 
+				t.addr_id, 
+				t.town_id, 
+				t.town_name, 
+				t.town_district_id, 
+				t.concat_address, 
+				t.street_id, 
+				t.subscriber_id, 
+				t.hs_rcn, 
+				t.hf_rcn, 
+				t.hl_rcn, 
+				t.ha_rcn, 
+				t.hst_rcn, 
+				t.ht_rcn, 
+				t.htd_rcn, 
+				t.hs_hist_start_date, 
+				t.hf_hist_start_date, 
+				t.hl_hist_start_date, 
+				t.ha_hist_start_date, 
+				t.hst_hist_start_date, 
+				t.ht_hist_start_date, 
+				t.htd_hist_start_date, 
+				t.hs_hist_end_date, 
+				t.hf_hist_end_date, 
+				t.hl_hist_end_date, 
+				t.ha_hist_end_date, 
+				t.hst_hist_end_date, 
+				t.ht_hist_end_date, 
+				t.htd_hist_end_date, 
+				t.hs_on_user, 
+				t.hf_on_user, 
+				t.hl_on_user, 
+				t.ha_on_user, 
+				t.hst_on_user, 
+				t.ht_on_user, 
+				t.htd_on_user, 
+				t.hs_off_user, 
+				t.hf_off_user, 
+				t.hl_off_user, 
+				t.ha_off_user, 
+				t.hst_off_user, 
+				t.ht_off_user, 
+				t.htd_off_user					
+			</selectClause>
+			<tableClause>
+			  	   V_SUBSCRIBER_HIST t
+       		</tableClause>
+			<whereClause><![CDATA[ 
+				   	1 = 1
+				   	#if($criteria.lastname) AND t.lastname like '%'||($criteria.lastname)||'%' #end
+				   	#if($criteria.firstname) AND t.firstname like '%'||($criteria.firstname)||'%' #end
+				   	#if($criteria.concat_address) AND t.concat_address like '%'||($criteria.concat_address)||'%' #end
+				   	#if($criteria.phone_number)
+				   	and exists (select 1
+				          from ccare.hist_subscriber_to_phones htp
+				              ,ccare.hist_phone_numbers        hph
+				         where htp.subscriber_id = t.subscriber_id
+				           and htp.phone_number_id = hph.phone_number_id
+				           and hph.phone = ($criteria.phone_number) )				   	
+				   	 #end
+				   	]]>
 			</whereClause>	
 		</operationBinding>
 		
