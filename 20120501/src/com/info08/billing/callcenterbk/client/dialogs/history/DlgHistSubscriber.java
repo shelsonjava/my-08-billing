@@ -197,7 +197,20 @@ public class DlgHistSubscriber extends Window {
 			histSubscriberListGrid.setFields(first_name, last_name, town,
 					street, hist_user_on, hist_start, hist_user_off, hist_end);
 
-			histSubscriberPhoneListGrid = new ListGrid();
+			histSubscriberPhoneListGrid = new ListGrid() {
+				@Override
+				protected String getCellCSSText(ListGridRecord record,
+						int rowNum, int colNum) {
+					String rdeleted = record.getAttribute("rdeleted");
+					if (rdeleted != null)
+						if (rdeleted.trim().equals("true"))
+							return "color:red;";
+						else
+							return super.getCellCSSText(record, rowNum, colNum);
+					else
+						return super.getCellCSSText(record, rowNum, colNum);
+				}
+			};
 			histSubscriberPhoneListGrid.setWidth100();
 			histSubscriberPhoneListGrid.setHeight(200);
 			histSubscriberPhoneListGrid.setAlternateRecordStyles(true);
@@ -275,8 +288,7 @@ public class DlgHistSubscriber extends Window {
 				@Override
 				public void onClick(ClickEvent event) {
 					ListGridRecord listGridRecord = null;
-					listGridRecord = histSubscriberListGrid
-							.getSelectedRecord();
+					listGridRecord = histSubscriberListGrid.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say("მონიშნეთ ჩანაწერი ცხრილში");
 						return;
