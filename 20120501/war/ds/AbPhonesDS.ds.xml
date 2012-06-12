@@ -4,24 +4,24 @@
 	tableName="ccare.phone_numbers"
 	qualifyColumnNames="false">
 	<fields>
-		<field name="phone_number_id"			type="integer"	title="ID"					hidden="true" primaryKey="true" />
-		<field name="phone"						type="text" 	title="Phone"/>		
-		<field name="subscriber_id"				type="integer"	title="Abonent ID" 			hidden="true"/>
-		<field name="hidden_by_request"			type="integer"	title="Is Hide" 			hidden="true"/>
-		<field name="hidden_by_request_descr"	type="text"		title="Is Hide Descr"/>
-		<field name="is_parallel"				type="integer"	title="Is Hide" 			hidden="true"/>
-		<field name="is_parallel_descr"			type="text"		title="Is Parallel Descr"/>
-		<field name="phone_state_id"			type="integer"	title="Phone State ID"		hidden="true"/>		
-		<field name="phone_state"				type="text"		title="Phone State"/>
-		<field name="phone_contract_type"		type="integer"	title="Phone Status ID"		hidden="true"/>
-		<field name="phone_contract_type_desr"	type="text"		title="Phone Status"/>
-		<field name="phone_type_id"				type="integer"	title="Phone Type ID"		hidden="true"/>
-		<field name="phone_type"				type="text"		title="Phone Type"/>
-		<field name="hist_start_date"   		type="datetime"  	title="hs_hist_start_date"/>
-		<field name="hist_end_date"   			type="datetime"  	title="hs_hist_end_date"/>
-		<field name="on_user"  					type="text"  	title="hs_on_user"/>
-		<field name="off_user"		   			type="text"  	title="hs_off_user"/>
-		<field name="rdeleted"   				type="boolean"  title="hph_rcn" sqlStorageStrategy="integer"/>
+		<field name="phone_number_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
+		<field name="phone"						type="text" 		title="Phone"/>		
+		<field name="subscriber_id"				type="integer"		title="Abonent ID" 			hidden="true"/>
+		<field name="hidden_by_request"			type="integer"		title="Is Hide" 			hidden="true"/>
+		<field name="hidden_by_request_descr"	type="text"			title="Is Hide Descr"/>
+		<field name="is_parallel"				type="integer"		title="Is Hide" 			hidden="true"/>
+		<field name="is_parallel_descr"			type="text"			title="Is Parallel Descr"/>
+		<field name="phone_state_id"			type="integer"		title="Phone State ID"		hidden="true"/>		
+		<field name="phone_state"				type="text"			title="Phone State"/>
+		<field name="phone_contract_type"		type="integer"		title="Phone Status ID"		hidden="true"/>
+		<field name="phone_contract_type_desr"	type="text"			title="Phone Status"/>
+		<field name="phone_type_id"				type="integer"		title="Phone Type ID"		hidden="true"/>
+		<field name="phone_type"				type="text"			title="Phone Type"/>
+		<field name="hist_start_date"   		type="datetime" 	title="hs_hist_start_date"/>
+		<field name="hist_end_date"   			type="datetime" 	title="hs_hist_end_date"/>
+		<field name="on_user"  					type="text"  		title="hs_on_user"/>
+		<field name="off_user"		   			type="text"  		title="hs_off_user"/>
+		<field name="rdeleted"   				type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
 		
 	</fields>	
 	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
