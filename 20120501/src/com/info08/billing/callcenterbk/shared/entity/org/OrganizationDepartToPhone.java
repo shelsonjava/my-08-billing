@@ -46,6 +46,10 @@ public class OrganizationDepartToPhone implements Serializable {
 	@Column(name = "FOR_CONTACT")
 	private Long for_contact;
 	
+	@Basic
+	@Column(name = "PHONE_ORDER")
+	private Long phone_order;
+	
 	public OrganizationDepartToPhone() {
 	}
 
@@ -95,5 +99,13 @@ public class OrganizationDepartToPhone implements Serializable {
 
 	public void setFor_contact(Long for_contact) {
 		this.for_contact = for_contact;
+	}
+
+	public Long getPhone_order() {
+		return phone_order;
+	}
+
+	public void setPhone_order(Long phone_order) {
+		this.phone_order = phone_order;
 	}
 }

@@ -83,6 +83,7 @@
 		<field name="partBankUpdated"				type="integer"  	title="partBankUpdated"					hidden="true"/>
 		<field name="ph_town_id"					type="integer"  	title="ph_town_id"						hidden="true"/>
 		<field name="original_org_name"				type="text"  		title="original_org_name"				hidden="true"/>
+		<field name="mainIdList"					type="any"  		title="mainIdList"						hidden="true"/>
 	</fields>
 	<operationBindings>
 	
@@ -95,22 +96,15 @@
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
         </operationBinding>
 	
-		 <!-- Sort Order Update For Orgs -->
-		<operationBinding operationType="update" operationId="updateMainServiceOrders" serverMethod="updateMainServiceOrders">
+		 <!-- Sort Order -->
+		<operationBinding operationType="update" operationId="updateOrgSortOrder" serverMethod="updateOrgSortOrder">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
         </operationBinding>
         
-        <!-- Delete Or Restore Update For Orgs -->
-		<operationBinding operationType="update" operationId="updateMainOrgDeleteOrRestore" serverMethod="updateMainOrgDeleteOrRestore">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
-        </operationBinding>
-        
-		<!-- Main Service Update On Drag And Drop -->
+		<!-- Remove Organization -->
 		<operationBinding operationType="remove" operationId="removeOrganization" serverMethod="removeOrganization">
 			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>            
         </operationBinding>
-		
-		
 		
 		 <!-- FETCH -->
         <operationBinding operationId="searchOrgReversed" operationType="fetch">
@@ -127,32 +121,6 @@
             </customSQL> 
         </operationBinding>
 		
-		
-		<!-- FETCH -->
-		<operationBinding operationId="customOrgSearchByMainId" operationType="fetch">			
-			<selectClause>
-				o.organization_id,
-				o.parrent_organization_id,
-				o.organization_name,
-				o.ident_code,
-				o.chief,
-				o.remark,
-				o.work_hours,
-				o.found_date,
-				o.important_remark,
-				o.super_priority,
-				o.status,
-				str.street_name||' '||a.full_address as real_address_descr
-			</selectClause>
-			<tableClause>organizations o, addresses a, streets str</tableClause>
-			<whereClause>
-				 <![CDATA[
-					 o.physical_address_id = a.addr_id(+) and a.street_id = str.street_id(+)
-					 and o.parrent_organization_id = $criteria.organization_id
-					 order by o.priority
-				 ]]>
-			</whereClause>
-		</operationBinding>
 		
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchForCallCenterNew" operationType="fetch">			
@@ -337,60 +305,6 @@
 			</orderClause>
 		</operationBinding>
 		
-		
-		<!-- FETCH - For CallCenter -->
-		<operationBinding operationId="customOrgSearchForCallCenterByMainId" operationType="fetch">			
-			<customSQL>
-            	 <![CDATA[
-            	 	   select   ms.organization_id,
-								ms.main_master_id,
-								mo1.organization_name,
-								mo1.identcode,
-								mo1.director,
-								mo1.legaladdress,
-								ms.deleted,
-								mo1.note,
-								mo1.workinghours,
-								mo1.founded,
-								mo1.mail,
-								mo1.org_info,
-								mo1.webaddress,
-								mo1.contactperson,
-								mo1.dayoffs,
-								mo1.workpersoncountity,
-								mo1.ind,
-								mo1.organization_name_eng,
-								mo1.new_identcode,
-								mo1.legal_statuse_id,
-								mo1.statuse,
-								str.street_name_geo||' '||ma.address_suffix_geo as real_address,
-								c.city_name_geo,
-								getDistrict(str.street_id) as city_region_name_geo,
-								str.street_location_geo,
-								getindex(str.street_id) as index_text,
-								mo1.note_crit,
-								ls.legal_statuse,
-								c.city_id,
-								ms.priority,
-               					mo1.extra_priority,
-               					ma.street_id,
-               					ma.address_suffix_geo,
-								ma.addr_block,
-								ma.addr_appt,
-								ma.addr_descr,
-								ma.addr_number,
-								ccare.getorgbusiness_alerts(ms.organization_id) as org_allert_by_buss_det
-						 from ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls
-						 where  
-						 		 mo1.organization_id = ms.organization_id and ma.organization_id=ms.organization_id and str.street_id(+) = ma.street_id and 
-								 c.city_id(+) = ma.city_id and ls.legal_statuse_id(+) = mo1.legal_statuse_id and ms.service_id = 3 and ms.deleted = 0
-								 #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id #end
-            	 ]]>
-            </customSQL>
-		</operationBinding>	
-		
-		
-		
 		<!-- Main Service Update On Drag And Drop -->
 		<operationBinding operationId="findSupperMainOrgId" operationType="fetch">
             <customSQL>
@@ -405,97 +319,6 @@
             </customSQL> 
         </operationBinding>
         
-		<!-- FETCH -->
-		<operationBinding operationId="customOrgSearchForCorrectByMainId" operationType="fetch">			
-			<customSQL>
-            	 <![CDATA[
-            	 	select 
-            	 		   ms.organization_id,
-					       ms.main_master_id,
-					       mo1.organization_name,
-					       mo1.identcode,
-					       mo1.director,
-					       mo1.legaladdress,
-					       ms.deleted,
-					       mo1.note,
-					       mo1.workinghours,
-					       mo1.founded,
-					       mo1.mail,
-					       mo1.org_info,
-					       mo1.webaddress,
-					       mo1.contactperson,
-					       mo1.dayoffs,
-					       mo1.workpersoncountity,
-					       mo1.ind,
-					       mo1.organization_name_eng,
-					       mo1.new_identcode,
-					       mo1.legal_statuse_id,
-					       mo1.statuse,
-					       decode(ma.address_hide,
-					             1,
-					             'მისამართი დაფარულია',
-					             c.city_name_geo || ', ' || getDistrict(str.street_id) || ', ' ||
-					             str.street_name_geo || ' ' || ma.address_suffix_geo) as real_address,
-					       c.city_name_geo,
-					       getDistrict(str.street_id) as city_region_name_geo,
-					       str.street_location_geo,
-					       getindex(str.street_id) as index_text,
-					       mo1.note_crit,
-					       ls.legal_statuse,
-					       c.city_id,
-					       ms.priority,
-					       mo1.extra_priority,
-					       ma.city_region_id,
-					       ma.street_id,
-					       p.partnerbank,
-					       p.organization_id as p_bank_organization_id,
-					       decode(ma.address_hide,
-					             1,
-					             'მისამართი დაფარულია',
-					             (c.city_name_geo || ' / ' ||
-					             getDistrict(str.street_id) || ' / ' ||
-					             str.street_name_geo || ' ' || ma.address_suffix_geo)) as full_address,
-					       ccare.getTbilisiOrder(c.city_id) as cust_order,
-					       ccare.getStreetOldNames(str.street_id) as street_old_name,
-					       str.street_name_geo,
-					       ma.address_hide,
-					       decode(ms.main_master_id, 0, null, 'home') as tree_org_parrent,
-					       decode((select min(1)
-					               from ccare.main_services ms1
-					              where ms1.main_master_id = ms.organization_id
-					                and ms1.deleted = 0),
-					             null,
-					             null,
-					             'associations') as tree_org_child,
-					        ma.address_suffix_geo,
-							ma.addr_block,
-							ma.addr_appt,
-							ma.addr_descr,
-							ma.addr_number,
-							getStreetIdxs(str.street_id) as street_indexes,
-							(c.city_name_geo||' / '|| getDistrict(str.street_id)||' / '||str.street_name_geo||' '||ma.address_suffix_geo) as full_address_not_hidden
-					  from ccare.main_services ms, ccare.main_orgs mo1, main_address ma, streets str, cities c, legal_statuses ls , org_partnerbank_lists_new p
-					 where ms.service_id = 3 and 
-					       ms.deleted = 0 and 
-					       ms.organization_id = mo1.organization_id and 
-					       ma.organization_id = ms.organization_id and 
-					       ma.deleted = 0 and 
-					       ma.street_id = str.street_id(+) and
-					       ma.city_id = c.city_id(+) and
-					       mo1.legal_statuse_id = ls.legal_statuse_id(+) and
-					       mo1.partnerbank_id = p.organization_id(+) 
-					 #if(!$criteria.main_master_id && $criteria.pp_organization_id) 
-					 	   start with ms.organization_id = $criteria.pp_organization_id					 
-						   connect by prior ms.organization_id = ms.main_master_id
-					       order siblings by ccare.getTbilisiOrder(c.city_id), mo1.extra_priority , ms.priority	 					 
-					 #elseif($criteria.main_master_id)
-					 		and ms.main_master_id = $criteria.main_master_id
-					 #end
-            	  ]]>
-            </customSQL>
-		</operationBinding>
-		
-		
 		<operationBinding operationId="searchMainOrgsForCB" operationType="fetch">
     		<selectClause>   			
     			mo.organization_id,
@@ -505,21 +328,6 @@
 			<whereClause>
 				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id and
 				    ($defaultWhereClause)
-			</whereClause>	
-			<orderClause>mo.organization_name</orderClause>		
-    	</operationBinding>
-    	
-    	
-    	<operationBinding operationId="searchMainOrgsForCB1" operationType="fetch">
-    		<selectClause>   			
-    			mo.organization_id,
-    			mo.organization_name 
-			</selectClause> 
-			<tableClause>ccare.main_orgs mo, ccare.main_services ms</tableClause>	
-			<whereClause>
-				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id
-				    #if($criteria.organization_id) and ms.organization_id = $criteria.organization_id and mo.organization_id = $criteria.organization_id #end
-					#if($criteria.organization_name) and mo.organization_name like $criteria.organization_name||'%' #end				    
 			</whereClause>	
 			<orderClause>mo.organization_name</orderClause>		
     	</operationBinding>

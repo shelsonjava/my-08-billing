@@ -37,6 +37,8 @@ public class OrganizationDMI {
 	private static final String Q_DELETE_ADDRESS = "delete from addresses a where a.addr_id = ? ";
 	private static final String Q_DELETE_ORGANIZATION = "delete from organizations t where t.organization_id = ? ";
 	private static final String Q_UPDATE_ORG_DEP_ORDER = " update organization_department t set t.inner_order = ? where t.org_department_id = ? and t.inner_order <> ? ";
+	private static final String Q_UPDATE_ORG_ORDER = " update organizations t set t.priority = ? where t.organization_id = ? and t.priority <> ? ";
+	private static final String Q_UPDATE_ORG_DEP_PHONE_ORDER = " update organization_depart_to_phones t set t.phone_order = ? where t.org_dep_to_ph_id = ? and t.phone_order <> ? ";
 
 	private Logger logger = Logger.getLogger(OrganizationDMI.class.getName());
 
@@ -581,6 +583,8 @@ public class OrganizationDMI {
 							"phone_contract_type").toString()));
 					orgDepartToPhone.setPhone_number_id(phoneNumber
 							.getPhone_number_id());
+					orgDepartToPhone.setPhone_order(new Long(value.get(
+							"phone_order").toString()));
 					oracleManager.persist(orgDepartToPhone);
 				}
 			}
@@ -802,7 +806,7 @@ public class OrganizationDMI {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public TranspSchedule updateOrgDepSortOrder(DSRequest dsRequest)
+	public OrganizationDepartMent updateOrgDepSortOrder(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -849,4 +853,99 @@ public class OrganizationDMI {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
+	public Organization updateOrgSortOrder(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.updateOrgSortOrder.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+			ArrayList mainIdList = (ArrayList) dsRequest.getOldValues().get(
+					"mainIdList");
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Update Organization Order.");
+			if (mainIdList != null && !mainIdList.isEmpty()) {
+				int order = 1;
+				for (Object org_id_o : mainIdList) {
+					Long organization_id = new Long(org_id_o.toString());
+					oracleManager.createNativeQuery(Q_UPDATE_ORG_ORDER)
+							.setParameter(1, order)
+							.setParameter(2, organization_id)
+							.setParameter(3, order).executeUpdate();
+					order++;
+				}
+			}
+			EMF.commitTransaction(transaction);
+			log += ". Removing Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Remove Data From Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წაშლისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	public Organization updateOrgDepPhoneSortOrder(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:CommonDMI.updateOrgDepPhoneSortOrder.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+			ArrayList orgDepPhoneIdList = (ArrayList) dsRequest.getOldValues()
+					.get("orgDepPhoneIdList");
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "Update Organization Order.");
+			if (orgDepPhoneIdList != null && !orgDepPhoneIdList.isEmpty()) {
+				int order = 1;
+				for (Object org_dep_phone_id_o : orgDepPhoneIdList) {
+					Long org_dep_phone_id = new Long(
+							org_dep_phone_id_o.toString());
+					oracleManager
+							.createNativeQuery(Q_UPDATE_ORG_DEP_PHONE_ORDER)
+							.setParameter(1, order)
+							.setParameter(2, org_dep_phone_id)
+							.setParameter(3, order).executeUpdate();
+					order++;
+				}
+			}
+			EMF.commitTransaction(transaction);
+			log += ". Removing Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Remove Data From Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წაშლისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
 }

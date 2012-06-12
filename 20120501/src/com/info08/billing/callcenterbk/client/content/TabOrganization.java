@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditOrganization;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgManageOrgDepartments;
+import com.info08.billing.callcenterbk.client.dialogs.org.DlgOrgAdvSearch;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgSortOrderOrgs;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
@@ -26,9 +27,12 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -37,6 +41,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -75,6 +80,8 @@ public class TabOrganization extends Tab {
 	// actions
 	private IButton findButton;
 	private IButton clearButton;
+	private IButton advParamButton;
+
 	private ToolStripButton sortBtn;
 	private ToolStripButton addNewOrgBtn;
 	private ToolStripButton editBtn;
@@ -87,8 +94,8 @@ public class TabOrganization extends Tab {
 	private VLayout mainLayout;
 
 	private DataSource orgDS;
-
 	private TabOrganization instance;
+	private Criteria advCriteria;
 
 	public TabOrganization() {
 		setTitle(CallCenterBK.constants.manageOrgs());
@@ -209,7 +216,22 @@ public class TabOrganization extends Tab {
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(980);
 		buttonLayout.setHeight(30);
-		buttonLayout.setAlign(Alignment.RIGHT);
+		buttonLayout.setAlign(Alignment.LEFT);
+
+		DynamicForm checkBoxForm = new DynamicForm();
+		checkBoxForm.setAutoFocus(false);
+		checkBoxForm.setNumCols(1);
+		checkBoxForm.setTitleWidth(0);
+
+		final CheckboxItem advSearch = new CheckboxItem("advSearch",
+				CallCenterBK.constants.advParameters());
+		advSearch.setValue(false);
+		checkBoxForm.setFields(advSearch);
+
+		advParamButton = new IButton();
+		advParamButton.setTitle(CallCenterBK.constants.parameters());
+		advParamButton.setWidth(170);
+		advParamButton.setDisabled(true);
 
 		clearButton = new IButton();
 		clearButton.setTitle(CallCenterBK.constants.clear());
@@ -217,7 +239,13 @@ public class TabOrganization extends Tab {
 		findButton = new IButton();
 		findButton.setTitle(CallCenterBK.constants.find());
 
-		buttonLayout.setMembers(findButton, clearButton);
+		buttonLayout.addMember(checkBoxForm);
+		buttonLayout.addMember(advParamButton);
+		LayoutSpacer spacer = new LayoutSpacer();
+		spacer.setWidth100();
+		buttonLayout.addMember(spacer);
+		buttonLayout.addMember(findButton);
+		buttonLayout.addMember(clearButton);
 		mainLayout.addMember(buttonLayout);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -277,33 +305,72 @@ public class TabOrganization extends Tab {
 						.getAttributeAsInt("super_priority");
 				Integer important_remark = countryRecord
 						.getAttributeAsInt("important_remark");
+				Integer tree_org_child = (countryRecord
+						.getAttributeAsString("tree_org_child") != null && countryRecord
+						.getAttributeAsString("tree_org_child").equals(
+								"associations")) ? 1 : -1000;
 
 				if (super_priority != null && super_priority < 0) {
-					return "color:red;";
+					if (tree_org_child != -1000) {
+						return "font-weight:bold;color:red;";
+					} else {
+						return "color:red;";
+					}
+
 				} else if (status != null && status.equals(2)) {
 					if (important_remark != null
 							&& important_remark.intValue() == -1 && colNum == 2) {
-						return "color:red;";
+						if (tree_org_child != -1000) {
+							return "font-weight:bold;color:red;";
+						} else {
+							return "color:red;";
+						}
 					} else {
-						return "color:gray;";
+						if (tree_org_child != -1000) {
+							return "font-weight:bold;color:gray;";
+						} else {
+							return "color:gray;";
+						}
 					}
 				} else if (status != null && status.equals(1)) {
 					if (important_remark != null
 							&& important_remark.intValue() == -1 && colNum == 2) {
-						return "color:red;";
+						if (tree_org_child != -1000) {
+							return "font-weight:bold;color:red;";
+						} else {
+							return "color:red;";
+						}
 					} else {
-						return "color:blue;";
+						if (tree_org_child != -1000) {
+							return "font-weight:bold;color:blue;";
+						} else {
+							return "color:blue;";
+						}
 					}
 
 				} else if (status != null && status.equals(3)) {
 					if (important_remark != null
 							&& important_remark.intValue() == -1 && colNum == 2) {
-						return "color:red;";
+
+						if (tree_org_child != -1000) {
+							return "font-weight:bold;color:red;";
+						} else {
+							return "color:red;";
+						}
+
 					} else {
-						return "color:green;";
+						if (tree_org_child != -1000) {
+							return "font-weight:bold;color:green;";
+						} else {
+							return "color:green;";
+						}
 					}
 				} else {
-					return super.getCellCSSText(record, rowNum, colNum);
+					if (tree_org_child != -1000) {
+						return "font-weight:bold;";
+					} else {
+						return super.getCellCSSText(record, rowNum, colNum);
+					}
 				}
 			};
 		};
@@ -374,11 +441,11 @@ public class TabOrganization extends Tab {
 		DetailViewerField chiefDF = new DetailViewerField("chief",
 				CallCenterBK.constants.director());
 
-		DetailViewerField organization_indexDF = new DetailViewerField(
-				"organization_index", CallCenterBK.constants.postIndex());
+		DetailViewerField work_hoursDF = new DetailViewerField("work_hours",
+				CallCenterBK.constants.workinghours());
 
 		detailViewer.setFields(original_org_name, remarkDF,
-				full_address_not_hiddenDF, chiefDF, organization_indexDF);
+				full_address_not_hiddenDF, chiefDF, work_hoursDF);
 
 		detailViewer.setWidth100();
 		detailViewer.setHeight(150);
@@ -395,6 +462,15 @@ public class TabOrganization extends Tab {
 			@Override
 			public void onClick(ClickEvent event) {
 				search();
+			}
+		});
+
+		advParamButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				DlgOrgAdvSearch dlgOrgAdvSearch = new DlgOrgAdvSearch(
+						TabOrganization.this, null);
+				dlgOrgAdvSearch.show();
 			}
 		});
 
@@ -447,9 +523,11 @@ public class TabOrganization extends Tab {
 				}
 				try {
 					Criteria criteria = new Criteria();
-					criteria.setAttribute("organization_id", organization_id);
+					criteria.setAttribute("parrent_organization_id",
+							organization_id);
 					DSRequest requestProperties = new DSRequest();
-					requestProperties.setOperationId("customOrgSearchByMainId");
+					requestProperties
+							.setOperationId("customOrgSearchForCallCenterNew");
 					orgDS.fetchData(criteria, new DSCallback() {
 						@Override
 						public void execute(DSResponse response,
@@ -648,6 +726,14 @@ public class TabOrganization extends Tab {
 				findBySupperOrg(organization_id);
 			}
 		});
+
+		advSearch.addChangedHandler(new ChangedHandler() {
+			@Override
+			public void onChanged(ChangedEvent event) {
+				advParamButton.setDisabled(!advSearch.getValueAsBoolean());
+			}
+		});
+
 		setPane(mainLayout);
 		instance = this;
 	}
@@ -684,13 +770,6 @@ public class TabOrganization extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("pp_organization_id", organization_id);
 			orgTreeGrid.setCriteria(criteria);
-			// orgTreeGrid.invalidateCache();
-			// orgTreeGrid.fetchData(criteria, new DSCallback() {
-			// @Override
-			// public void execute(DSResponse response, Object rawData,
-			// DSRequest request) {
-			// }
-			// });
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -728,17 +807,6 @@ public class TabOrganization extends Tab {
 			String org_name = orgNameGeoItem.getValueAsString();
 			if (org_name != null && !org_name.trim().equals("")) {
 				criteria.setAttribute("organization_name_param", org_name);
-				// String tmp = org_name.trim();
-				// String arrStr[] = tmp.split(" ");
-				// int i = 1;
-				// for (String string : arrStr) {
-				// String item = string.trim();
-				// if (item.equals("")) {
-				// continue;
-				// }
-				// criteria.setAttribute("organization_name" + i, item);
-				// i++;
-				// }
 			}
 
 			String note = orgCommentItem.getValueAsString();
@@ -858,11 +926,10 @@ public class TabOrganization extends Tab {
 					&& (ident_code == null || ident_code.trim().equals(""))
 					&& (legaladdress == null || legaladdress.trim().equals(""))
 					&& (web_address == null || web_address.trim().equals(""))
-					&& (email_address == null || email_address.trim().equals(""))
+					&& (email_address == null || email_address.trim()
+							.equals(""))
 					&& (street == null || street.trim().equals(""))
-					&& (phone == null || phone.trim().equals(""))
-					) 
-			{
+					&& (phone == null || phone.trim().equals(""))) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.findOrgEnterAnyParam());
 				return;
@@ -884,5 +951,13 @@ public class TabOrganization extends Tab {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
+	}
+
+	public Criteria getAdvCriteria() {
+		return advCriteria;
+	}
+
+	public void setAdvCriteria(Criteria advCriteria) {
+		this.advCriteria = advCriteria;
 	}
 }

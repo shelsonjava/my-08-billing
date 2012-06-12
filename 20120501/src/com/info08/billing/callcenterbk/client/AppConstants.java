@@ -725,4 +725,5 @@ public interface AppConstants extends Constants {
 	String sortPhones();
 	String phoneDataIsEmpty();
 	String advParameters();
+	String parameters();
 }

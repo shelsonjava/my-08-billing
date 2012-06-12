@@ -42,6 +42,10 @@ public class OrgDepPhoneClientDS extends DataSource {
 				"is_parallel");
 		is_parallel.setHidden(true);
 
+		DataSourceIntegerField phone_order = new DataSourceIntegerField(
+				"phone_order");
+		phone_order.setHidden(true);
+
 		DataSourceTextField phone = new DataSourceTextField("phone",
 				CallCenterBK.constants.phone());
 		phone.setRequired(true);
@@ -61,10 +65,10 @@ public class OrgDepPhoneClientDS extends DataSource {
 				"is_parallel_descr", CallCenterBK.constants.paraller());
 
 		setFields(org_dep_to_ph_id, hidden_by_request, phone_contract_type,
-				for_contact, phone_state_id, phone_type_id, is_parallel, phone,
-				hidden_by_request_descr, phone_contract_type_descr,
-				for_contact_descr, phone_state_descr, phone_type_descr,
-				is_parallel_descr);
+				for_contact, phone_state_id, phone_type_id, is_parallel,
+				phone_order, phone, hidden_by_request_descr,
+				phone_contract_type_descr, for_contact_descr,
+				phone_state_descr, phone_type_descr, is_parallel_descr);
 		setClientOnly(true);
 	}
 }

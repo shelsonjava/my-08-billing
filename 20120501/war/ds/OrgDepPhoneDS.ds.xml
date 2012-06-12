@@ -14,6 +14,7 @@
 		<field name="phone_state_id"			type="integer"  	title="phone_state_id"			hidden="true"/>
 		<field name="phone_type_id"				type="integer"  	title="phone_type_id"			hidden="true"/>
 		<field name="is_parallel"				type="integer"  	title="is_parallel"				hidden="true"/>
+		<field name="phone_order"				type="integer"  	title="phone_order"				hidden="true"/>
 		<field name="phone"						type="text"  		title="phone"/>
 		<field name="hidden_by_request_descr"	type="text"  		title="hidden_by_request_descr"/>
 		<field name="phone_contract_type_descr"	type="text"  		title="phone_contract_type_descr"/>
@@ -21,11 +22,16 @@
 		<field name="phone_state_descr"			type="text"  		title="phone_state_descr"/>
 		<field name="phone_type_descr"			type="text"  		title="phone_type_descr"/>
 		<field name="is_parallel_descr"			type="text"  		title="is_parallel_descr"/>
+		<field name="orgDepPhoneIdList"			type="any"  		title="orgDepPhoneIdList"		hidden="true"/>
 	</fields>
 	
 	<operationBindings>
-	
-	
+		
+		<!-- Sort Order -->
+		<operationBinding operationType="update" operationId="updateOrgDepPhoneSortOrder" serverMethod="updateOrgDepPhoneSortOrder">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+		
 		<!-- FETCH -->
 		<operationBinding operationId="searchOrgDepPhones" operationType="fetch">			
 			<selectClause>
@@ -39,6 +45,7 @@
 				  p.phone_state_id,
 				  p.phone_type_id,
 				  p.is_parallel,
+				  t.phone_order,
 				  decode(hidden_by_request,1,'დაფარული','ღია') as hidden_by_request_descr,
 				  getdescription(t.phone_contract_type) as phone_contract_type_descr,
 				  decode(t.for_contact,1,'დიახ','არა') as for_contact_descr,
@@ -54,36 +61,8 @@
 					 #if($criteria.phone) and p.phone like '%'||$criteria.phone||'%' #end
 				 ]]>
 			</whereClause>
-			<orderClause>t.for_contact desc</orderClause>
+			<orderClause>t.for_contact desc, phone_order</orderClause>
 		</operationBinding>
-
-		<!-- FETCH -->
-        <operationBinding operationId="searchOrgDepPhones111" operationType="fetch">
-            <customSQL>
-            	 <![CDATA[
-            	 	select * from (select ab.abonent_id,decode(ps.phone_state_id,6,'მხს.',decode(ab.abonent_hide,1,'დაფ.',p.phone)) as dep_phone,
-					       ps.phone_state,ab.contact_phones
-					from abonents ab, phones p, phone_states ps
-					where ab.phone_id = p.phone_id
-					   and p.phone_state_id = ps.phone_state_id
-					   and ab.deleted = 0
-					   and ab.main_detail_id = $criteria.main_detail_id
-					   and ab.contact_phones = 1 order by ab.abonent_id) tt
-					union all
-					select * from (select ab.abonent_id,decode(ps.phone_state_id,6,'მხს.',decode(ab.abonent_hide,1,'დაფ.',p.phone)) as dep_phone,
-					       ps.phone_state,ab.contact_phones
-					from abonents ab, phones p, phone_states ps
-					where ab.phone_id = p.phone_id
-					   and p.phone_state_id = ps.phone_state_id
-					   and ab.deleted = 0
-					   and ab.main_detail_id = $criteria.main_detail_id
-					   and ab.contact_phones = 0 order by ab.abonent_id) tt
-					where 1 = 1
-					 #if($criteria.dep_phone) and tt.dep_phone like '%'||$criteria.dep_phone||'%' #end
-				]]>
-            </customSQL> 
-        </operationBinding>
-		
 		
 	</operationBindings>
 </DataSource>

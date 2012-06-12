@@ -56,6 +56,7 @@ public class DlgManageOrgDepartments extends Window {
 	private ToolStripButton addNewOrgBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
+	private ToolStripButton sortPhonesBtn;
 
 	public DlgManageOrgDepartments(ListGridRecord listGridRecord,
 			ListGrid orgTreeGrid) {
@@ -165,6 +166,14 @@ public class DlgManageOrgDepartments extends Window {
 			sortBtn.setLayoutAlign(Alignment.LEFT);
 			sortBtn.setWidth(50);
 			toolStrip.addButton(sortBtn);
+
+			toolStrip.addFill();
+
+			sortPhonesBtn = new ToolStripButton(
+					CallCenterBK.constants.sortPhones(), "sort.png");
+			sortPhonesBtn.setLayoutAlign(Alignment.LEFT);
+			sortPhonesBtn.setWidth(50);
+			toolStrip.addButton(sortPhonesBtn);
 
 			orgDepDataSource = DataSource.get("OrgDepartmentDS");
 			Criteria criteria = new Criteria();
@@ -478,7 +487,39 @@ public class DlgManageOrgDepartments extends Window {
 				}
 			});
 
+			sortPhonesBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					sort1();
+				}
+			});
+
 			addItem(hLayout);
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void sort1() {
+		try {
+			ListGridRecord listGridRecord = orgDepListGrid.getSelectedRecord();
+			if (listGridRecord == null) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.pleaseSelrecord());
+				return;
+			}
+
+			ListGridRecord phoneData[] = orgDepPhonesListGrid.getRecords();
+			if (phoneData == null || phoneData.length <= 0) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.phoneDataIsEmpty());
+				return;
+			}
+
+			DlgSortOrderOrgDepPhones dlgSortOrderOrgDeps = new DlgSortOrderOrgDepPhones(
+					orgDepPhonesListGrid, phoneData);
+			dlgSortOrderOrgDeps.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
