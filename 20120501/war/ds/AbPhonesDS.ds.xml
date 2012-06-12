@@ -25,7 +25,7 @@
 		
 	</fields>	
 	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.CommonDMI"/>
-	
+	 
 	<operationBindings>
 		<operationBinding operationId="getPhonesByAbonentId" operationType="fetch">    		
     		<selectClause>  
