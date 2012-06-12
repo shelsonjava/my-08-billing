@@ -103,10 +103,10 @@
 				phone_type, 
 				is_parallel,
 				is_parallel_descr, 
-				case when htp_rcn > hph_rcn then htp_hist_start_date else hph_hist_start_date end hist_start_date,
-				case when htp_rcn > hph_rcn then nvl(htp_hist_end_date,hph_hist_end_date) else nvl(hph_hist_end_date,htp_hist_end_date) end hist_end_date,
-				case when htp_rcn > hph_rcn then htp_on_user else hph_on_user end on_user,
-				case when htp_rcn > hph_rcn then nvl(htp_off_user,hph_off_user) else nvl(hph_off_user,htp_off_user) end off_user,
+				hist_start_date,
+				hist_end_date,
+				on_user,
+				off_user,
 				rdeleted
 			</selectClause> 
 			<tableClause>v_hist_subscriber_numbers t</tableClause>
@@ -114,7 +114,7 @@
 				 t.subscriber_id = $criteria.subscriber_id 
 				]]>  
 			</whereClause> 
-			<orderClause> phone, hist_end_date desc</orderClause>
+			<orderClause> phone, start_rcn desc</orderClause>
     	</operationBinding>     		
     </operationBindings>	
 </DataSource>
