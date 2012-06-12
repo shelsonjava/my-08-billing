@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.items.Address;
 import com.info08.billing.callcenterbk.shared.items.PhoneNumber;
 import com.info08.billing.callcenterbk.shared.items.Subscribers;
