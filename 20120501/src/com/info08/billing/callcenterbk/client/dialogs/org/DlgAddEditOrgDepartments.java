@@ -355,6 +355,9 @@ public class DlgAddEditOrgDepartments extends Window {
 				if (parrentListGridRecord != null) {
 					parrentOrgDepItem.setDataValue(parrentListGridRecord
 							.getAttributeAsInt("org_department_id"));
+					myAddressPanel1.setValue(null);
+				} else {
+					myAddressPanel1.setValue(null);
 				}
 				return;
 			}
@@ -433,14 +436,15 @@ public class DlgAddEditOrgDepartments extends Window {
 						CallCenterBK.constants.plzEnterOrgDepName());
 				return;
 			}
-			
+
 			final Map<String, Object> fromMaps = new LinkedHashMap<String, Object>();
 			boolean addressCheck = myAddressPanel1.isCheckedTurnOffItem();
 			if (addressCheck) {
 				Map<?, ?> physicalAddrValues = myAddressPanel1.getValues();
-				
+
 				Integer town_id = physicalAddrValues.get("town_id") == null ? null
-						: new Integer(physicalAddrValues.get("town_id").toString());
+						: new Integer(physicalAddrValues.get("town_id")
+								.toString());
 				if (town_id == null) {
 					SC.say(CallCenterBK.constants.warning(),
 							CallCenterBK.constants.plzChoosePhysicalAddrTown());
@@ -453,22 +457,21 @@ public class DlgAddEditOrgDepartments extends Window {
 								.toString());
 				if (street_id == null) {
 					SC.say(CallCenterBK.constants.warning(),
-							CallCenterBK.constants.plzChoosePhysicalAddrStreet());
+							CallCenterBK.constants
+									.plzChoosePhysicalAddrStreet());
 					myAddressPanel1.getDynamicForm().focusInItem(
 							myAddressPanel1.getAddrStreetItem());
 					return;
 				}
-				
+
 				fromMaps.put("physicalAddrValues", physicalAddrValues);
 			}
-			
-			
+
 			fromMaps.put("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			fromMaps.put("parrent_department_id", parrent_department_id);
 			fromMaps.put("organization_id", organization_id);
 			fromMaps.put("department_original", department_original);
-			
 
 			RecordList phonesRecordList = orgDepPhonesListGrid
 					.getDataAsRecordList();

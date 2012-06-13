@@ -162,6 +162,7 @@ public class MyAddressPanel extends HLayout {
 			turnOffItem.setWidth(613);
 			turnOffItem.setColSpan(2);
 			turnOffItem.setDisabled(!needTurnOffCheck);
+			turnOffItem.setValue(!needTurnOffCheck);
 			header = turnOffItem;
 			turnOffItem.addChangedHandler(new ChangedHandler() {
 				@Override
@@ -193,7 +194,7 @@ public class MyAddressPanel extends HLayout {
 		dynamicForm.clearValues();
 		if (addressa_id_value == null) {
 			if (turnOffItem != null) {
-				turnOffItem.setValue(false);
+				turnOffItem.setValue(turnOffItem.isDisabled());
 				setCleared();
 			}
 			if (turnOffItem == null) {
@@ -254,13 +255,19 @@ public class MyAddressPanel extends HLayout {
 	}
 
 	public void setValues(Map<?, ?> values) {
+		boolean checkBoxValue = (turnOffItem == null) ? false : turnOffItem
+				.getValueAsBoolean();
 		dynamicForm.setValues(values);
 		header.setTitle(title);
+		if (turnOffItem != null) {
+			turnOffItem.setValue(checkBoxValue);
+		}
 	}
 
 	public Map<?, ?> getValues() {
-		if (turnOffItem != null && !turnOffItem.getValueAsBoolean())
+		if (turnOffItem != null && !turnOffItem.getValueAsBoolean()) {
 			return null;
+		}
 		return dynamicForm.getValues();
 	}
 
@@ -353,19 +360,21 @@ public class MyAddressPanel extends HLayout {
 	}
 
 	private void setCleared() {
-		if (turnOffItem.isDisabled())
+		if (turnOffItem.isDisabled()) {
+			addrTownItem.setValue(Constants.defCityTbilisiId);
 			return;
+		}
 		boolean disabled = !turnOffItem.getValueAsBoolean().booleanValue();
 		FormItem[] fields = dynamicForm.getFields();
-		for (FormItem formItem : fields)
-			if (!formItem.equals(turnOffItem))
+		for (FormItem formItem : fields) {
+			if (!formItem.equals(turnOffItem)) {
 				formItem.setDisabled(disabled);
+			}
+		}
+		addrTownItem.setValue(Constants.defCityTbilisiId);
 		if (disabled) {
 			dynamicForm.clearValues();
-		} else {
-			addrTownItem.setValue(Constants.defCityTbilisiId);
 		}
-
 	}
 
 	public CheckboxItem getTurnOffItem() {

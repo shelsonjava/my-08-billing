@@ -696,6 +696,11 @@ public class DlgAddEditOrganization extends Window {
 			} else if (parrentRecord != null) {
 				parrentOrgItem.setDataValue(parrentRecord
 						.getAttributeAsInt("organization_id"));
+				physicalAddress.setValue(null);
+				legalAddress.setValue(null);
+			} else {
+				physicalAddress.setValue(null);
+				legalAddress.setValue(null);
 			}
 
 		} catch (Exception e) {
