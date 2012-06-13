@@ -87,6 +87,7 @@ public class TabSubscriber extends Tab {
 	private ListGrid abonentsGrid;
 
 	Map<String, Object> aditionalCriteria = new TreeMap<String, Object>();
+	Map<String, String> columnMap = new TreeMap<String, String>();
 
 	public TabSubscriber() {
 		try {
@@ -123,7 +124,7 @@ public class TabSubscriber extends Tab {
 			ClientUtils.fillCombo(firstNameItem, "FirstNameDS",
 					"searchFNamesFromDBCustomForCombos", "firstname_id",
 					"firstname");
-
+			columnMap.put("name_id", "name");
 			lastNameItem = new ComboBoxItem();
 			lastNameItem.setTitle(CallCenterBK.constants.lastName());
 			lastNameItem.setName("family_name_id");
@@ -131,11 +132,14 @@ public class TabSubscriber extends Tab {
 			ClientUtils.fillCombo(lastNameItem, "LastNameDS",
 					"searchLastNamesFromDBCustomForCombos", "lastname_id",
 					"lastname");
+			columnMap.put("family_name_id", "family_name");
 
 			phoneItem = new TextItem();
 			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setWidth(200);
 			phoneItem.setName("phone");
+
+			columnMap.put("phone", "phones");
 
 			searchFormMain.setFields(firstNameItem, lastNameItem, phoneItem);
 
@@ -158,12 +162,13 @@ public class TabSubscriber extends Tab {
 			ClientUtils.fillCombo(citiesItem, "TownsDS",
 					"searchCitiesFromDBForCombos", "town_id", "town_name",
 					aditionalCriteria);
-
+			columnMap.put("town_id", "town_name");
 			streetItem = new ComboBoxItem();
 			streetItem.setTitle(CallCenterBK.constants.street());
 			streetItem.setName("street_id");
 			streetItem.setWidth(200);
 			// streetItem.setColSpan(3);
+			columnMap.put("street_id", "concat_address");
 
 			aditionalCriteria.put("town_id",
 					Constants.defCityTbilisiId.toString());
@@ -185,16 +190,19 @@ public class TabSubscriber extends Tab {
 
 			adressItem.setName("anumber");
 			adressItem.setWidth(200);
+			columnMap.put("anumber", "anumber");
 
 			blockItem = new TextItem();
 			blockItem.setTitle(CallCenterBK.constants.block());
 			blockItem.setName("block");
 			blockItem.setWidth(200);
+			columnMap.put("block", "block");
 
 			appartItem = new TextItem();
 			appartItem.setTitle(CallCenterBK.constants.appartment());
 			appartItem.setName("appt");
 			appartItem.setWidth(200);
+			columnMap.put("appt", "appt");
 
 			adressOpCloseItem = new SelectItem();
 			adressOpCloseItem.setTitle(CallCenterBK.constants.openClose());
@@ -202,6 +210,8 @@ public class TabSubscriber extends Tab {
 			adressOpCloseItem.setWidth(200);
 			ClientUtils.fillCombo(adressOpCloseItem, "ClosedOpenedDS",
 					"searchClosedOpened", "id", "name");
+
+			columnMap.put("appt", "appt");
 
 			addrAddInfoItem = new TextAreaItem();
 			addrAddInfoItem.setTitle(CallCenterBK.constants.infoShort());
@@ -243,6 +253,8 @@ public class TabSubscriber extends Tab {
 			ClientUtils.fillCombo(phoneIsHideItem, "ClosedOpenedDS",
 					"searchClosedOpened", "id", "name");
 
+			columnMap.put("ph_hidden_by_request", "ph_hidden_by_request_descr");
+
 			isParallelItem = new SelectItem();
 
 			isParallelItem.setValueMap(ClientMapUtil.getInstance()
@@ -251,12 +263,15 @@ public class TabSubscriber extends Tab {
 			isParallelItem.setName("is_parallel");
 			isParallelItem.setWidth(200);
 
+			columnMap.put("is_parallel", "is_parallel_descr");
+
 			phoneContractType = new SelectItem();
 			ClientUtils.fillDescriptionCombo(phoneContractType,
 					Constants.DT_PHONECONTRACTTYPES);
 			phoneContractType.setTitle(CallCenterBK.constants.status());
 			phoneContractType.setName("phone_contract_type");
 			phoneContractType.setWidth(200);
+			columnMap.put("phone_contract_type", "ph_hidden_by_request_descr");
 
 			phoneStateItem = new SelectItem();
 			ClientUtils.fillDescriptionCombo(phoneStateItem,
@@ -265,12 +280,23 @@ public class TabSubscriber extends Tab {
 			phoneStateItem.setName("phone_state_id");
 			phoneStateItem.setWidth(200);
 
+			columnMap.put("phone_state_id", "phone_state");
+
 			phoneTypeItem = new SelectItem();
 			ClientUtils.fillDescriptionCombo(phoneTypeItem,
 					Constants.DT_PHONETYPES);
 			phoneTypeItem.setTitle(CallCenterBK.constants.type());
 			phoneTypeItem.setName("phone_type_id");
 			phoneTypeItem.setWidth(200);
+			columnMap.put("phone_type_id", "phone_type");
+			Map<String, String> newcolumnMap = new TreeMap<String, String>();
+
+			Set<String> keys = columnMap.keySet();
+
+			for (String key : keys) {
+				newcolumnMap.put(columnMap.get(key), key);
+			}
+			columnMap = newcolumnMap;
 
 			searchFormPhone.setFields(phoneIsHideItem, isParallelItem,
 					phoneContractType, phoneStateItem, phoneTypeItem);
@@ -334,7 +360,8 @@ public class TabSubscriber extends Tab {
 			ListGridField lastName = new ListGridField("family_name", "გვარი",
 					100);
 
-			ListGridField street = new ListGridField("street_name", "ქუჩა", 230);
+			ListGridField street = new ListGridField("concat_address", "ქუჩა",
+					230);
 
 			ListGridField addr_number = new ListGridField("anumber", "სახლი",
 					50);
@@ -523,77 +550,57 @@ public class TabSubscriber extends Tab {
 							if (record == null) {
 								return;
 							}
-							int fieldNum = event.getFieldNum();
-							switch (fieldNum) {
-							case 1: // FirstName
-								Integer firstname_id = record
-										.getAttributeAsInt("name_id");
-								if (firstname_id != null) {
-									firstNameItem.setValue(firstname_id);
-								}
-								break;
-							case 2: // LastName
-								Integer lastname_id = record
-										.getAttributeAsInt("family_name_id");
-								if (lastname_id != null) {
-									lastNameItem.setValue(lastname_id);
-								}
-								break;
-							case 3: // Phone
-								String phone = record
-										.getAttributeAsString("phones");
-								phoneItem.setValue(phone);
-								break;
-							case 4: // Street
-								Integer street_id = record
-										.getAttributeAsInt("street_id");
-								if (street_id != null) {
-									streetItem.setValue(street_id);
-								}
-								Integer city_region_id = record
-										.getAttributeAsInt("town_district_id");
-								if (city_region_id != null) {
-									regionItem.setValue(city_region_id);
-								}
-								break;
-							case 5: // address number
-								String addr_number = record
-										.getAttributeAsString("anumber");
-								adressItem.setValue(addr_number);
-								break;
-							case 6: // block
-								String addr_block = record
-										.getAttributeAsString("block");
-								blockItem.setValue(addr_block);
-								break;
-							case 7: // appt
-								String addr_appt = record
-										.getAttributeAsString("appt");
-								appartItem.setValue(addr_appt);
-								break;
-							case 8: // add. Info.
-								String addr_descr = record
-										.getAttributeAsString("descr");
-								addrAddInfoItem.setValue(addr_descr);
-								break;
-							default:
-								break;
+							if (event.getField() == null)
+								return;
+
+							String field_name = event.getField().getName();
+							if (field_name == null)
+								return;
+							
+							String formItemName = columnMap.get(field_name);
+							if (formItemName == null)
+								return;
+							FormItem fmItem = searchFormAddress
+									.getField(formItemName);
+							if (fmItem == null)
+								fmItem = searchFormMain.getField(formItemName);
+							if (fmItem == null)
+								fmItem = searchFormPhone.getField(formItemName);
+							if (fmItem == null)
+								return;
+							Object value=record.getAttribute(formItemName);
+							if(value==null)
+								return;
+							if(fmItem instanceof ComboBoxItem||fmItem instanceof SelectItem){
+								fmItem.setOptionCriteria(new Criteria());
+								fmItem.invalidateDisplayValueCache();
 							}
+							fmItem.setValue(value);
+//							fmItem.setOptionCriteria(fmItem.getOptionCriteria());
+//							if (fmItem instanceof ComboBoxItem) {
+//								ComboBoxItem cItem = (ComboBoxItem) fmItem;
+//								cItem.setAutoFetchData(true);
+//								cItem.setAutoFetchData(false);
+//								// cItem.setTextMatchStyle(TextMatchStyle.SUBSTRING);
+//
+//							} else if (fmItem instanceof SelectItem) {
+//								SelectItem sItem = (SelectItem) fmItem;
+//								sItem.setAutoFetchData(true);
+//								sItem.setAutoFetchData(false);
+//
+//							}
+//							fmItem.getForm().setValues(fmItem.getForm().getValues());
+
 						}
 					});
 			historyButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 
-//					ListGridRecord listGridRecord = abonentsGrid
-//							.getSelectedRecord();
-//					if (listGridRecord == null) {
-//						SC.say(CallCenterBK.constants.warning(),
-//								CallCenterBK.constants.pleaseSelrecord());
-//						return;
-//					}
+					ListGridRecord listGridRecord = abonentsGrid
+							.getSelectedRecord();
 					DlgHistSubscriber dlgHistSubscriber = new DlgHistSubscriber(
-							null);
+							listGridRecord);
 					dlgHistSubscriber.show();
 				}
 			});

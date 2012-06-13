@@ -111,7 +111,11 @@
 			</selectClause> 
 			<tableClause>v_hist_subscriber_numbers t</tableClause>
 			<whereClause><![CDATA[ 
-				 t.subscriber_id = $criteria.subscriber_id 
+				#if($criteria.subscriber_id )
+				 t.subscriber_id = $criteria.subscriber_id
+				#else
+					1=0
+				#end	 
 				]]>  
 			</whereClause> 
 			<orderClause> phone, start_rcn desc</orderClause>

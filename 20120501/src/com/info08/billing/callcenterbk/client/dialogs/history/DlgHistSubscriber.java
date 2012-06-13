@@ -11,6 +11,7 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.GroupStartOpen;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
@@ -22,6 +23,8 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.grid.GroupNode;
+import com.smartgwt.client.widgets.grid.GroupTitleRenderer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -127,8 +130,8 @@ public class DlgHistSubscriber extends Window {
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth100();
-			searchForm.setNumCols(2);
-			searchForm.setColWidths("50%", "50%");
+			searchForm.setNumCols(3);
+			searchForm.setColWidths("33%", "33%", "33%");
 			searchForm.setPadding(5);
 			searchForm.setTitleOrientation(TitleOrientation.TOP);
 
@@ -153,7 +156,7 @@ public class DlgHistSubscriber extends Window {
 
 			histSubscriberListGrid = new ListGrid();
 			histSubscriberListGrid.setWidth100();
-			histSubscriberListGrid.setHeight(250);
+			histSubscriberListGrid.setHeight(320);
 			histSubscriberListGrid.setAlternateRecordStyles(true);
 			histSubscriberListGrid.setDataSource(SubscriberDS);
 			histSubscriberListGrid.setAutoFetchData(false);
@@ -167,6 +170,22 @@ public class DlgHistSubscriber extends Window {
 			histSubscriberListGrid.setFixedRecordHeights(false);
 			histSubscriberListGrid.setCanDragSelectText(true);
 
+			histSubscriberListGrid.setGroupStartOpen(GroupStartOpen.ALL);
+			histSubscriberListGrid.setGroupByField("subscriber_id");
+
+			ListGridField subscriber_id = new ListGridField("subscriber_id",
+					"სახელი", 100);
+
+			subscriber_id.setGroupTitleRenderer(new GroupTitleRenderer() {
+
+				@Override
+				public String getGroupTitle(Object groupValue,
+						GroupNode groupNode, ListGridField field,
+						String fieldName, ListGrid grid) {
+					return "აბონენტი";
+				}
+			});
+			subscriber_id.setHidden(true);
 			ListGridField first_name = new ListGridField("name", "სახელი", 100);
 			first_name.setAlign(Alignment.LEFT);
 
@@ -190,12 +209,12 @@ public class DlgHistSubscriber extends Window {
 					"-დან");
 			hist_start.setWidth(120);
 
-			ListGridField hist_end = new ListGridField("hist_end_date",
-					"-მდე");
+			ListGridField hist_end = new ListGridField("hist_end_date", "-მდე");
 			hist_end.setWidth(120);
 
-			histSubscriberListGrid.setFields(first_name, last_name, town,
-					street, hist_user_on, hist_start, hist_user_off, hist_end);
+			histSubscriberListGrid.setFields(subscriber_id, first_name,
+					last_name, town, street, hist_user_on, hist_start,
+					hist_user_off, hist_end);
 
 			histSubscriberPhoneListGrid = new ListGrid() {
 				@Override
@@ -212,7 +231,7 @@ public class DlgHistSubscriber extends Window {
 				}
 			};
 			histSubscriberPhoneListGrid.setWidth100();
-			histSubscriberPhoneListGrid.setHeight(200);
+			histSubscriberPhoneListGrid.setHeight(180);
 			histSubscriberPhoneListGrid.setAlternateRecordStyles(true);
 			histSubscriberPhoneListGrid.setDataSource(AbPhonesDS);
 			histSubscriberPhoneListGrid.setAutoFetchData(false);
@@ -226,9 +245,12 @@ public class DlgHistSubscriber extends Window {
 			histSubscriberPhoneListGrid.setWrapCells(true);
 			histSubscriberPhoneListGrid.setFixedRecordHeights(false);
 			histSubscriberPhoneListGrid.setCanDragSelectText(true);
+			histSubscriberPhoneListGrid.setGroupStartOpen(GroupStartOpen.ALL);
+			histSubscriberPhoneListGrid.setGroupByField("phone");
 
 			ListGridField phones = new ListGridField("phone",
 					CallCenterBK.constants.phone(), 100);
+			phones.setHidden(true);
 			first_name.setAlign(Alignment.LEFT);
 
 			ListGridField phone_state = new ListGridField("phone_state",
@@ -293,14 +315,12 @@ public class DlgHistSubscriber extends Window {
 						SC.say("მონიშნეთ ჩანაწერი ცხრილში");
 						return;
 					}
-					Integer subscriber_id = listGridRecord
-							.getAttributeAsInt("subscriber_id");
-					Criteria criteria = new Criteria();
-					criteria.setAttribute("subscriber_id", subscriber_id);
-					searchByCriteria(criteria);
+					searchBySubscriber(listGridRecord);
 				}
 			});
-
+			if (abonentRecord != null) {
+				searchBySubscriber(abonentRecord);
+			}
 			hLayout.addMember(toolStrip);
 			hLayout.addMember(histSubscriberListGrid);
 			hLayout.addMember(histSubscriberPhoneListGrid);
@@ -386,11 +406,17 @@ public class DlgHistSubscriber extends Window {
 	protected void searchByCriteria(Criteria criteria) {
 		DSRequest dsRequest = new DSRequest();
 		dsRequest.setAttribute("operationId", "histSearch");
-		histSubscriberListGrid.invalidateCache();
+		// histSubscriberListGrid.invalidateCache();
 		histSubscriberListGrid.filterData(criteria, new DSCallback() {
 			@Override
 			public void execute(DSResponse response, Object rawData,
 					DSRequest request) {
+				histSubscriberListGrid.getGroupTree().openAll();
+				if(response.getData()!=null && response.getData().length>0)
+				{
+					histSubscriberListGrid.selectRecord(1);
+					searchPhones();
+				}
 			}
 		}, dsRequest);
 	}
@@ -411,15 +437,25 @@ public class DlgHistSubscriber extends Window {
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId",
 					"getPhoneHistoryForSubscriber");
-			histSubscriberPhoneListGrid.invalidateCache();
+			// histSubscriberPhoneListGrid.invalidateCache();
 			histSubscriberPhoneListGrid.filterData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
+					histSubscriberPhoneListGrid.getGroupTree().openAll();
 				}
 			}, dsRequest);
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
+	}
+
+	protected void searchBySubscriber(Record listGridRecord) {
+		Integer subscriber_id = listGridRecord
+				.getAttributeAsInt("subscriber_id");
+		Criteria criteria = new Criteria();
+		criteria.setAttribute("subscriber_id", subscriber_id);
+		searchByCriteria(criteria);
+		
 	}
 }
