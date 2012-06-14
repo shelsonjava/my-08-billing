@@ -589,6 +589,11 @@ public class OrganizationDMI {
 					oracleManager.persist(orgDepartToPhone);
 				}
 			}
+			
+			oracleManager.flush();
+			oracleManager.createNativeQuery("{call createOrgDepartmentHist(?)}")
+					.setParameter(1, org_department_id)
+					.executeUpdate();
 			EMF.commitTransaction(transaction);
 			log += ". Save Or Update Finished SuccessFully. ";
 			logger.info(log);
