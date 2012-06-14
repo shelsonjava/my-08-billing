@@ -415,6 +415,11 @@ public class OrganizationDMI {
 				}
 			}
 
+			oracleManager.flush();
+			oracleManager.createNativeQuery("{call createOrganizationHist(?)}")
+					.setParameter(1, organization_id)
+					.executeUpdate();
+			
 			EMF.commitTransaction(transaction);
 			log += ". Save Or Update Finished SuccessFully. ";
 			logger.info(log);
