@@ -54,6 +54,8 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> callTypes;
 	private LinkedHashMap<String, String> allYesAndNo;
 	private LinkedHashMap<String, String> yesAndNo;
+	private LinkedHashMap<String, String> gender;
+	private LinkedHashMap<String, String> visible;
 
 	protected ClientMapUtil() {
 		mapOpClose = new LinkedHashMap<String, String>();
@@ -96,6 +98,8 @@ public class ClientMapUtil {
 		callTypes = new LinkedHashMap<String, String>();
 		allYesAndNo = new LinkedHashMap<String, String>();
 		yesAndNo = new LinkedHashMap<String, String>();
+		gender = new LinkedHashMap<String, String>();
+		visible = new LinkedHashMap<String, String>();
 
 		mapOpClose.put("0", "ღია");
 		mapOpClose.put("1", "დაფარულია");
@@ -132,7 +136,7 @@ public class ClientMapUtil {
 		streetRecTypes.put("1", "ახალი");
 
 		raionCentTypes.put("0", "სოფელი");
-		raionCentTypes.put("1", "ქალაქი");		
+		raionCentTypes.put("1", "ქალაქი");
 		raionCentTypes.put("-1", "რაიონული ცენტრი");
 
 		transpTypeInt.put("0", "საქალაქო");
@@ -175,7 +179,7 @@ public class ClientMapUtil {
 
 		orgNoteCrits.put("0", "ჩვეულებრივი");
 		orgNoteCrits.put("-1", "გაწითლებული");
-		
+
 		indexSearchTypes.put("1", CallCenterBK.constants.findByCountry());
 		indexSearchTypes.put("2", CallCenterBK.constants.findByTown());
 		indexSearchTypes.put("3", CallCenterBK.constants.findByOperator());
@@ -244,6 +248,12 @@ public class ClientMapUtil {
 
 		yesAndNo.put("0", CallCenterBK.constants.noInGeo());
 		yesAndNo.put("1", CallCenterBK.constants.yes());
+
+		gender.put("74100", "მამაკაცი");
+		gender.put("74101", "ქალი");
+
+		visible.put("75100", "ღია");
+		visible.put("75101", "დაფარული");
 	}
 
 	public LinkedHashMap<String, String> getCallTypes() {
@@ -397,13 +407,13 @@ public class ClientMapUtil {
 	public LinkedHashMap<String, String> getBillingCompIndTypes() {
 		return billingCompIndTypes;
 	}
-	
+
 	public LinkedHashMap<String, String> getAllYesAndNo() {
 		return allYesAndNo;
 	}
-	
+
 	public LinkedHashMap<String, String> getYesAndNo() {
 		return yesAndNo;
 	}
-	
+
 }
