@@ -11,5 +11,5 @@ select 'insert into ' || HIST_TABLE ||
          inner join user_tab_columns uc1
             on upper(uc1.TABLE_NAME) = upper('HIST_' || uc.TABLE_NAME)
            and uc.COLUMN_NAME = uc1.COLUMN_NAME
-         where upper(uc.TABLE_NAME) = upper('town_district')
+         where upper(uc.TABLE_NAME) = upper('organization_to_activities')
          group by uc1.TABLE_NAME, uc.TABLE_NAME) k;
