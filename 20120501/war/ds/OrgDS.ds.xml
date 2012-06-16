@@ -425,7 +425,97 @@
 			</whereClause>				
 			<orderClause>gettbilisiorder(tw.town_id),o.organization_name</orderClause>	
     	</operationBinding>
-    	
+    	<operationBinding operationId="histSearch"
+			operationType="fetch">			
+			<selectClause>
+				   organization_id,
+			       parrent_organization_id,
+			       parrent_organization,
+			       original_org_name,
+			       full_address_not_hidden,
+			       tree_org_parrent,
+			       town_id,
+			       priority,
+			       super_priority,
+			       ident_code,
+			       ident_code_new,
+			       chief,
+			       remark,
+			       work_hours,
+			       found_date,
+			       email_address,
+			       additional_info,
+			       web_address,
+			       contact_person,
+			       day_offs,
+			       day_offs_descr,
+			       staff_count,
+			       organization_index,
+			       organization_name_eng,
+			       legal_form_desc_id,
+			       legal_form_desc,
+			       status,
+			       street_id,
+			       town_name,
+			       town_district,
+			       street_location,
+			       street_index_text,
+			       important_remark,
+			       town_district_id,
+			       cust_order,
+			       hidden_by_request,
+			       block,
+			       appt,
+			       descr,
+			       anumber,
+			       org_allert_by_buss_det,
+			       legal_address_id,
+			       physical_address_id,
+			       social_address,
+			       legal_addr_town_id,
+			       legal_addr_street_id,
+			       legal_addr_town_district_id,
+			       legal_addr_hidden_by_request,
+			       legal_addr_full_address,
+			       legal_addr_block,
+			       legal_addr_appt,
+			       legal_addr_anumber,
+			       legal_addr_street_location,
+			       legal_addr_street_index_text,
+			       legal_addr_not_hidden,
+			       hist_start_date,
+			       hist_end_date,
+			       start_rcn,
+			       end_rcn,
+			       on_user,
+			       off_user,
+			       rdeleted
+			</selectClause>
+			<tableClause>
+			  	   hist_V_ORGANIZATION t
+       		</tableClause>
+			<whereClause><![CDATA[ 
+				   	1 = 1
+				   	#if($criteria.organization_id) AND t.organization_id = $criteria.organization_id #end
+				   	#if($criteria.original_org_name) AND t.original_org_name like '%'||($criteria.original_org_name)||'%' #end
+				   	#if($criteria.concat_address) AND t.concat_address like '%'||($criteria.concat_address)||'%' #end
+				   	#if($criteria.phone_number)
+				   	and exists (select 1
+				          from  ccare.hist_phone_numbers        hph
+				          	    ,ccare.HIST_ORG_DEPART_TO_PHONES htp
+				          		,ccare.HIST_ORGANIZATION_DEPARTMENT hd
+				         where hph.phone = ($criteria.phone_number) )
+				         	and htp.phone_number_id = hph.phone_number_id
+				         	and htp.ORG_DEPARTMENT_ID = hd.ORG_DEPARTMENT_ID
+				         	and hd.organization_id = t.organization_id
+				           
+				           
+				            				   	
+				   	 #end
+				   	]]>
+			</whereClause>	
+			<orderClause>t.subscriber_id, start_rcn desc</orderClause>
+		</operationBinding>
     	
 	</operationBindings>
 </DataSource>
