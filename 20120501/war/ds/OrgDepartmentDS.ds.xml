@@ -49,11 +49,13 @@
 		<field name="physicalAddrValues" 				type="any" 			title="physicalAddrValues" 					hidden="true" />
 		<field name="orgDepIdList" 						type="any" 			title="orgDepIdList" 						hidden="true" />
 		<field name="recCount" 							type="integer" 		title="recCount" 							hidden="true" />
+		<field name="organization_name"  				type="text"  		title="organization_name"/>
+		<field name="parrent_org_department"  			type="text"  		title="parrent_org_department"/>
 		<field name="hist_start_date"   				type="datetime" 	title="hs_hist_start_date"/>
 		<field name="hist_end_date"   					type="datetime" 	title="hs_hist_end_date"/>
 		<field name="on_user"  							type="text"  		title="hs_on_user"/>
 		<field name="off_user"		   					type="text"  		title="hs_off_user"/>
-		<field name="rdeleted"   						type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
+		<field name="rdeleted"   						type="boolean"  	title="hph_rcn" 							sqlStorageStrategy="integer"/>
 				
 	</fields>
 
@@ -304,6 +306,53 @@
             	 ]]>
             </customSQL> 
         </operationBinding>
+
+
+<operationBinding operationId="searchOrgDepartmentHist" operationType="fetch">			
+			<selectClause>
+					department, 
+					legal_address_id, 
+					physical_address_id, 
+					parrent_department_id, 
+					org_department_id, 
+					organization_id, 
+					organization_name, 
+					parrent_org_department, 
+					remark, 
+					street_id, 
+					town_name, 
+					town_district, 
+					street_location, 
+					street_index_text, 
+					town_id, 
+					town_district_id, 
+					hidden_by_request_desc, 
+					street_name, 
+					hidden_by_request, 
+					tree_parrent, 
+					tree_child, 
+					old_address, 
+					block, 
+					appt, 
+					descr, 
+					anumber, 
+					full_address_not_hidden, 
+					hist_start_date, 
+					hist_end_date, 
+					start_rcn, 
+					end_rcn, 
+					on_user, 
+					off_user, 
+					rdeleted
+			</selectClause>
+			<tableClause>HIST_V_ORGANIZATION_DEPARTMENT</tableClause>
+			<whereClause>
+				 <![CDATA[
+				 	#if($criteria.organization_id) and t1.organization_id = $criteria.organization_id #end
+				 ]]>
+			</whereClause>
+			<orderClause>org_department_id, start_rcn desc</orderClause>
+		</operationBinding>
 
 	</operationBindings>
 </DataSource>
