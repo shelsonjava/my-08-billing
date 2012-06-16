@@ -502,6 +502,8 @@
 				   	#if($criteria.original_org_name) AND t.original_org_name like '%'||($criteria.original_org_name)||'%' #end
 				   	#if($criteria.concat_address) AND t.concat_address like '%'||($criteria.concat_address)||'%' #end
 				   	#if($criteria.town_name) AND t.town_name like '%'||($criteria.town_name)||'%' #end
+				   	#if($criteria.town_district) AND t.town_district like '%'||($criteria.town_district)||'%' #end
+				   	
 				   	#if($criteria.phone_number)
 				   	and exists (select 1
 				          from  ccare.hist_phone_numbers        hph
