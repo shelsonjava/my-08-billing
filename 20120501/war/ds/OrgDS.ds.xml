@@ -93,6 +93,9 @@
 		<field name="rdeleted"   					type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
 		<field name="parrent_organization"			type="text"  		title="parrent_organization"/>
 		<field name="cust_order"					type="integer"  	title="cust_order"/>
+		<field name="org_acctivity_name"			type="text"  	title="cust_order"/>
+		<field name="org_activity_id"				type="integer"  	title="cust_order"/>
+		
 	</fields>
 	<operationBindings>
 	
@@ -429,9 +432,8 @@
     	
     	<operationBinding operationId="searchOrgPartnerBanksHist" operationType="fetch">
     		<selectClause>   			
-    			organization_id,
-				part_bank_org_id,
-				partnior_bank_name,
+				part_bank_org_id organization_id,
+				partnior_bank_name organization_name,
 				hist_start_date,
 				hist_end_date,
 				start_rcn,
@@ -440,11 +442,32 @@
 				off_user,
 				rdeleted
 			</selectClause> 
-			<tableClause>hist_org_partner_banks t</tableClause>	
+			<tableClause>hist_org_partner_banks o</tableClause>	
 			<whereClause>
 				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
 			</whereClause>				
 			<orderClause>part_bank_org_id, start_rcn desc</orderClause>	
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchOrgAcctivitiesHist" operationType="fetch">
+    		<selectClause>   			
+				organization_id, 
+				org_activity_id, 
+				org_acctivity_name, 
+				hist_start_date, 
+				hist_end_date, 
+				start_rcn, 
+				end_rcn, 
+				on_user, 
+				off_user, 
+				rdeleted
+			</selectClause> 
+			<tableClause>hist_organization_to_act o</tableClause>	
+			<whereClause>
+				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+			</whereClause>				
+			<orderClause>org_activity_id, start_rcn desc</orderClause>	
     	</operationBinding>
     	
     	
