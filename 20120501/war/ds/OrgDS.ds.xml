@@ -38,6 +38,7 @@
 		<field name="legal_form_desc"				type="text"  		title="legal_form_desc"/>		
 		<field name="town_id"						type="integer"  	title="town_id"							hidden="true"/>		
 		<field name="priority"						type="integer"  	title="priority"						hidden="true"/>
+		<field name="priority_descr"				type="text"  		title="priority_descr"					/>
 		<field name="super_priority"				type="integer"  	title="super_priority"					hidden="true"/>		
 		<field name="street_name"					type="text"  		title="street_name"/>
 		<field name="phone_number"					type="text"  		title="phone_number"/>		
@@ -82,7 +83,7 @@
 		<field name="legalAddrValues"				type="any"  		title="legalAddrValues"					hidden="true"/>
 		<field name="partBankUpdated"				type="integer"  	title="partBankUpdated"					hidden="true"/>
 		<field name="ph_town_id"					type="integer"  	title="ph_town_id"						hidden="true"/>
-		<field name="original_org_name"				type="text"  		title="original_org_name"				hidden="true"/>
+		<field name="original_org_name"				type="text"  		title="original_org_name"				/>
 		<field name="mainIdList"					type="any"  		title="mainIdList"						hidden="true"/>
 		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true" />
 		<field name="hist_start_date"   			type="datetime" 	title="hs_hist_start_date"/>
@@ -482,6 +483,7 @@
 			       tree_org_parrent,
 			       town_id,
 			       priority,
+			       decode(priority, 0, "ჩვეულებრივი", -1, "გაწითლებული", "") as priority_descr,
 			       super_priority,
 			       ident_code,
 			       ident_code_new,
