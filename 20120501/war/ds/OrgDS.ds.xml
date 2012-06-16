@@ -85,6 +85,12 @@
 		<field name="original_org_name"				type="text"  		title="original_org_name"				hidden="true"/>
 		<field name="mainIdList"					type="any"  		title="mainIdList"						hidden="true"/>
 		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true" />
+		<field name="hist_start_date"   			type="datetime" 	title="hs_hist_start_date"/>
+		<field name="hist_end_date"   				type="datetime" 	title="hs_hist_end_date"/>
+		<field name="on_user"  						type="text"  		title="hs_on_user"/>
+		<field name="off_user"		   				type="text"  		title="hs_off_user"/>
+		<field name="off_user"		   				type="text"  		title="hs_off_user"/>
+		<field name="rdeleted"   					type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
 	</fields>
 	<operationBindings>
 	
