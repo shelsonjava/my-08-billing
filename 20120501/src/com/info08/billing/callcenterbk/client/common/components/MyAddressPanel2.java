@@ -143,8 +143,8 @@ public class MyAddressPanel2 extends HLayout {
 		oldAddItem.setCanEdit(false);
 
 		addrDescrItem = new TextItem();
-		addrDescrItem.setTitle(CallCenterBK.constants.description());
-		addrDescrItem.setName("addrDescrItem");
+		addrDescrItem.setTitle(CallCenterBK.constants.addInfo());
+		addrDescrItem.setName("descr");
 		addrDescrItem.setWidth(220);
 
 		if (needTurnOffCheck == null) {
@@ -156,7 +156,7 @@ public class MyAddressPanel2 extends HLayout {
 			turnOffItem = new CheckboxItem();
 			turnOffItem.setTitle(title);
 			turnOffItem.setName("turnOffItem");
-			turnOffItem.setWidth("100%");			
+			turnOffItem.setWidth("100%");
 			turnOffItem.setColSpan(4);
 			turnOffItem.setDisabled(!needTurnOffCheck);
 			turnOffItem.setValue(!needTurnOffCheck);

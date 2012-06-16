@@ -44,8 +44,6 @@ import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
-import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
-import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 
 public class DlgAddEditOrganization extends Window {
 
@@ -89,7 +87,7 @@ public class DlgAddEditOrganization extends Window {
 
 	private IButton saveItem;
 	private IButton copyItem;
-	private int selectedTabIndex = 0;
+	// private int selectedTabIndex = 0;
 
 	private ListGrid orgTreeGrid;
 	private ListGridRecord listGridRecord;
@@ -165,17 +163,9 @@ public class DlgAddEditOrganization extends Window {
 			formsLayoutAddInfo.setMargin(0);
 			formsLayoutAddInfo.setMembersMargin(10);
 
-			HLayout hLayoutForAddresses = new HLayout();
-			hLayoutForAddresses.setWidth100();
-			hLayoutForAddresses.setPadding(0);
-			hLayoutForAddresses.setMargin(0);
-
-			hLayoutForAddresses.setMembers(physicalAddress, legalAddress);
-			formsLayoutAddInfo.addMember(hLayoutForAddresses);
-
-			Tab tabAddInfo = new Tab(CallCenterBK.constants.addInfo());
-			tabAddInfo.setPane(formsLayoutAddInfo);
-			topTabSet.addTab(tabAddInfo);
+			// Tab tabDepartment = new Tab(CallCenterBK.constants.department());
+			// tabDepartment.setPane(formsLayoutAddInfo);
+			// topTabSet.addTab(tabDepartment);
 
 			hLayout.addMember(topTabSet);
 
@@ -486,12 +476,12 @@ public class DlgAddEditOrganization extends Window {
 			saveItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					if (selectedTabIndex == 0) {
-						topTabSet.selectTab(1);
-						copyItem.hide();
-					} else {
-						save();
-					}
+					// if (selectedTabIndex == 0) {
+					// topTabSet.selectTab(1);
+					// copyItem.hide();
+					// } else {
+					save();
+					// }
 				}
 			});
 
@@ -589,19 +579,19 @@ public class DlgAddEditOrganization extends Window {
 				}
 			});
 
-			topTabSet.addTabSelectedHandler(new TabSelectedHandler() {
-				@Override
-				public void onTabSelected(TabSelectedEvent event) {
-					selectedTabIndex = event.getTabNum();
-					if (selectedTabIndex == 0) {
-						saveItem.setTitle(CallCenterBK.constants.next());
-						copyItem.show();
-					} else {
-						copyItem.hide();
-						saveItem.setTitle(CallCenterBK.constants.save());
-					}
-				}
-			});
+			// topTabSet.addTabSelectedHandler(new TabSelectedHandler() {
+			// @Override
+			// public void onTabSelected(TabSelectedEvent event) {
+			// selectedTabIndex = event.getTabNum();
+			// if (selectedTabIndex == 0) {
+			// saveItem.setTitle(CallCenterBK.constants.next());
+			// copyItem.show();
+			// } else {
+			// copyItem.hide();
+			// saveItem.setTitle(CallCenterBK.constants.save());
+			// }
+			// }
+			// });
 
 			fillFields();
 			addItem(hLayout);
@@ -883,7 +873,8 @@ public class DlgAddEditOrganization extends Window {
 			boolean allDayOffsIsSel = false;
 
 			for (ListGridRecord listGridRecord : orgDayOffsList) {
-				Integer day_id = listGridRecord.getAttributeAsInt("day_id");
+				Integer day_id = Integer.parseInt(listGridRecord
+						.getAttributeAsString("day_id"));
 				if (day_id.intValue() == 0) {
 					allDayOffsIsSel = true;
 				}

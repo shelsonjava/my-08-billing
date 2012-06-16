@@ -315,8 +315,6 @@ public class TabOrganization extends Tab {
 				Integer status = countryRecord.getAttributeAsInt("status");
 				Integer super_priority = countryRecord
 						.getAttributeAsInt("super_priority");
-				Integer important_remark = countryRecord
-						.getAttributeAsInt("important_remark");
 				Integer tree_org_child = (countryRecord
 						.getAttributeAsString("tree_org_child") != null && countryRecord
 						.getAttributeAsString("tree_org_child").equals(
@@ -328,54 +326,23 @@ public class TabOrganization extends Tab {
 					} else {
 						return "color:red;";
 					}
-
 				} else if (status != null && status.equals(2)) {
-					if (important_remark != null
-							&& important_remark.intValue() == -1 && colNum == 2) {
-						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:red;";
-						} else {
-							return "color:red;";
-						}
+					if (tree_org_child != -1000) {
+						return "font-weight:bold;color:gray;";
 					} else {
-						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:gray;";
-						} else {
-							return "color:gray;";
-						}
+						return "color:gray;";
 					}
 				} else if (status != null && status.equals(1)) {
-					if (important_remark != null
-							&& important_remark.intValue() == -1 && colNum == 2) {
-						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:red;";
-						} else {
-							return "color:red;";
-						}
+					if (tree_org_child != -1000) {
+						return "font-weight:bold;color:blue;";
 					} else {
-						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:blue;";
-						} else {
-							return "color:blue;";
-						}
+						return "color:blue;";
 					}
-
 				} else if (status != null && status.equals(3)) {
-					if (important_remark != null
-							&& important_remark.intValue() == -1 && colNum == 2) {
-
-						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:red;";
-						} else {
-							return "color:red;";
-						}
-
+					if (tree_org_child != -1000) {
+						return "font-weight:bold;color:green;";
 					} else {
-						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:green;";
-						} else {
-							return "color:green;";
-						}
+						return "color:green;";
 					}
 				} else {
 					if (tree_org_child != -1000) {
@@ -390,7 +357,6 @@ public class TabOrganization extends Tab {
 		orgTreeGrid.setTop(50);
 		orgTreeGrid.setWidth100();
 		orgTreeGrid.setHeight100();
-		// orgTreeGrid.setShowConnectors(true);
 		orgTreeGrid.setFetchOperation("customOrgSearchForCallCenterNew");
 		orgTreeGrid.setDataSource(orgDS);
 		orgTreeGrid.setAutoFetchData(false);
