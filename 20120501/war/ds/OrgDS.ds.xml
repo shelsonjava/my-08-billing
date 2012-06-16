@@ -427,6 +427,27 @@
     	</operationBinding>
     	
     	
+    	<operationBinding operationId="searchOrgPartnerBanksHist" operationType="fetch">
+    		<selectClause>   			
+    			organization_id,
+				part_bank_org_id,
+				partnior_bank_name,
+				hist_start_date,
+				hist_end_date,
+				start_rcn,
+				end_rcn,
+				on_user,
+				off_user,
+				rdeleted
+			</selectClause> 
+			<tableClause>hist_org_partner_banks t</tableClause>	
+			<whereClause>
+				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+			</whereClause>				
+			<orderClause>part_bank_org_id, start_rcn desc</orderClause>	
+    	</operationBinding>
+    	
+    	
     	<operationBinding operationId="histSearch"
 			operationType="fetch">			
 			<selectClause>
