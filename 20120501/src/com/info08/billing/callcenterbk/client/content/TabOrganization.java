@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.dialogs.history.DlgHistOrganization;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditOrganization;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgManageOrgDepartments;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgOrgAdvSearch;
@@ -90,6 +91,7 @@ public class TabOrganization extends Tab {
 	private ToolStripButton deleteBtn;
 	private ToolStripButton supperOrgBtn;
 	private ToolStripButton orgDepartmentsBtn;
+	private ToolStripButton historyBtn;
 
 	private ListGrid orgTreeGrid;
 	private DetailViewer detailViewer;
@@ -294,6 +296,14 @@ public class TabOrganization extends Tab {
 		orgDepartmentsBtn.setLayoutAlign(Alignment.LEFT);
 		orgDepartmentsBtn.setWidth(50);
 		toolStrip.addButton(orgDepartmentsBtn);
+
+		toolStrip.addSeparator();
+
+		historyBtn = new ToolStripButton(CallCenterBK.constants.history(),
+				"date.png");
+		historyBtn.setLayoutAlign(Alignment.LEFT);
+		historyBtn.setWidth(50);
+		toolStrip.addButton(historyBtn);
 
 		orgTreeGrid = new ListGrid() {
 			protected String getCellCSSText(ListGridRecord record, int rowNum,
@@ -609,6 +619,17 @@ public class TabOrganization extends Tab {
 				DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
 						listGridRecord, orgTreeGrid);
 				addEditOrgDepartments.show();
+			}
+		});
+
+		historyBtn.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+
+				ListGridRecord listGridRecord = orgTreeGrid.getSelectedRecord();
+				DlgHistOrganization dlgHistOrganization = new DlgHistOrganization(
+						listGridRecord);
+				dlgHistOrganization.show();
 			}
 		});
 
