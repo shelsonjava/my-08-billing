@@ -99,7 +99,8 @@
 			</selectClause>
 			<tableClause>HIST_ORG_DEPART_TO_PHONES_VIEW p</tableClause>
 			<whereClause>
-				 <![CDATA[				 	 
+				 <![CDATA[	
+				 	 1 = 1			 	 
 					 #if($criteria.org_department_id) and t.org_department_id = $criteria.org_department_id #else and 1=0 #end
 					 #if($criteria.phone) and p.phone like '%'||$criteria.phone||'%' #end
 				 ]]>
