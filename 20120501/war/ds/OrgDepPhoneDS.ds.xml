@@ -64,5 +64,35 @@
 			<orderClause>t.for_contact desc, phone_order</orderClause>
 		</operationBinding>
 		
+		
+		<operationBinding operationId="searchOrgDepPhonesHist" operationType="fetch">			
+			<selectClause>
+				  t.org_department_id, 
+				  t.phone_number_id, 
+				  t.hidden_by_request, 
+				  t.phone_contract_type, 
+				  t.for_contact,
+				  t.phone,
+				  t.phone_state_id,
+				  t.phone_type_id,
+				  t.is_parallel,
+				  t.phone_order,
+				  decode(hidden_by_request,1,'დაფარული','ღია') as hidden_by_request_descr,
+				  getdescription(t.phone_contract_type) as phone_contract_type_descr,
+				  decode(t.for_contact,1,'დიახ','არა') as for_contact_descr,
+				  getdescription(t.phone_state_id) as phone_state_descr,
+				  getdescription(t.phone_type_id) as phone_type_descr,
+				  decode(t.is_parallel,1,'დიახ','არა') as is_parallel_descr
+			</selectClause>
+			<tableClause>HIST_ORG_DEPART_TO_PHONES_VIEW p</tableClause>
+			<whereClause>
+				 <![CDATA[				 	 
+					 #if($criteria.org_department_id) and t.org_department_id = $criteria.org_department_id #else and 1=0 #end
+					 #if($criteria.phone) and p.phone like '%'||$criteria.phone||'%' #end
+				 ]]>
+			</whereClause>
+			<orderClause>phone, start_rcn desc</orderClause>
+		</operationBinding>
+		
 	</operationBindings>
 </DataSource>
