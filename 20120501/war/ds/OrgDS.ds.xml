@@ -465,7 +465,7 @@
 			</selectClause> 
 			<tableClause>hist_organization_to_act o</tableClause>	
 			<whereClause>
-				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+				    #if($criteria.organization_id) o.organization_id = $criteria.organization_id #end
 			</whereClause>				
 			<orderClause>org_activity_id, start_rcn desc</orderClause>	
     	</operationBinding>
