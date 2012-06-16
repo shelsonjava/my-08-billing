@@ -19,9 +19,8 @@ public class OrgPartnetBanksClientDS extends DataSource {
 		organization_id.setRequired(true);
 
 		DataSourceTextField organization_name = new DataSourceTextField("organization_name", CallCenterBK.constants.orgName());
-		DataSourceTextField full_address_not_hidden = new DataSourceTextField("full_address_not_hidden", CallCenterBK.constants.orgName());
 
-		setFields(organization_id, organization_name, full_address_not_hidden);
+		setFields(organization_id, organization_name);
 		setClientOnly(true);		
 	}	
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel;
+import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel2;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxRecord;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
@@ -20,12 +20,10 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -33,22 +31,21 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.PickerIcon;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 import com.smartgwt.client.widgets.grid.ListGrid;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
 import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DlgAddEditOrganization extends Window {
 
@@ -59,19 +56,18 @@ public class DlgAddEditOrganization extends Window {
 	// org. main info
 	private DynamicForm dynamicFormMainInfo;
 	private DynamicForm dynamicFormMainInfo1;
-	private DynamicForm dynamicFormMainInfo2;
 
 	private MyComboBoxItem parrentOrgItem;
 
 	// org. address
-	private MyAddressPanel physicalAddress;
-	private MyAddressPanel legalAddress;
+	private MyAddressPanel2 physicalAddress;
+	private MyAddressPanel2 legalAddress;
 
 	private TabSet topTabSet;
 
 	// main info fields.
 	private TextAreaItem orgNameItem;
-	private TextAreaItem orgNameEngItem;
+	private TextItem orgNameEngItem;
 	private TextAreaItem orgRemarkItem;
 	private TextItem orgChiefItem;
 	private TextItem orgContactPersonItem;
@@ -84,7 +80,7 @@ public class DlgAddEditOrganization extends Window {
 	private TextItem orgMailItem;
 	private TextItem orgIndItem;
 	private TextItem orgStaffCountItem;
-	private TextAreaItem orgInfoItem;
+	private TextItem orgInfoItem;
 	private ComboBoxItem orgLegalStatusItem;
 	private DateItem orgFoundedItem;
 	private SelectItem superPriorityItem;
@@ -92,17 +88,14 @@ public class DlgAddEditOrganization extends Window {
 	private SelectItem orgStatusItem;
 
 	private IButton saveItem;
+	private IButton copyItem;
 	private int selectedTabIndex = 0;
 
 	private ListGrid orgTreeGrid;
 	private ListGridRecord listGridRecord;
-	private ListGrid dayOffsGrid;
 	private ListGrid orgDayOffsGrid;
-	private ListGrid activityGrid;
 	private ListGrid orgActivityGrid;
-	private ListGrid bankOrgsGrid;
 	private ListGrid orgPartBankOrgsGrid;
-	private ToolStripButton copyAddress;
 	private ListGridRecord parrentRecord;
 
 	public DlgAddEditOrganization(ListGridRecord parrentRecord,
@@ -114,7 +107,7 @@ public class DlgAddEditOrganization extends Window {
 			setTitle(CallCenterBK.constants.manageOrgs());
 
 			setHeight(760);
-			setWidth(1272);
+			setWidth(1232);
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);
@@ -146,18 +139,14 @@ public class DlgAddEditOrganization extends Window {
 			dynamicFormMainInfo1.setNumCols(2);
 			dynamicFormMainInfo1.setTitleOrientation(TitleOrientation.TOP);
 
-			dynamicFormMainInfo2 = new DynamicForm();
-			dynamicFormMainInfo2.setAutoFocus(false);
-			dynamicFormMainInfo2.setWidth100();
-			dynamicFormMainInfo2.setNumCols(2);
-			dynamicFormMainInfo2.setTitleOrientation(TitleOrientation.TOP);
-
 			HLayout formsLayout = new HLayout();
 			formsLayout.setWidth100();
 			formsLayout.setHeight100();
 
+			int minus = 15;
+
 			VLayout leftLayOut = new VLayout();
-			leftLayOut.setWidth(650);
+			leftLayOut.setWidth(610 - minus);
 			leftLayOut.setHeight100();
 
 			VLayout rigthLayOut = new VLayout();
@@ -181,28 +170,8 @@ public class DlgAddEditOrganization extends Window {
 			hLayoutForAddresses.setPadding(0);
 			hLayoutForAddresses.setMargin(0);
 
-			physicalAddress = new MyAddressPanel(false, "PhysicalAddress",
-					CallCenterBK.constants.orgAddressHeaderReal(), 614, 0);
-
-			legalAddress = new MyAddressPanel(true, "LegalAddress",
-					CallCenterBK.constants.orgAddressHeaderLegal(), 614, 0);
-
-			ToolStrip toolStrip = new ToolStrip();
-			toolStrip.setWidth(1228);
-			toolStrip.setPadding(5);
-
-			copyAddress = new ToolStripButton(
-					CallCenterBK.constants.sameAddress(), "copy.png");
-			copyAddress.setLayoutAlign(Alignment.LEFT);
-			copyAddress.setWidth(50);
-			toolStrip.addButton(copyAddress);
-			toolStrip.addFill();
-
 			hLayoutForAddresses.setMembers(physicalAddress, legalAddress);
-
-			formsLayoutAddInfo.addMember(toolStrip);
 			formsLayoutAddInfo.addMember(hLayoutForAddresses);
-			formsLayoutAddInfo.addMember(dynamicFormMainInfo2);
 
 			Tab tabAddInfo = new Tab(CallCenterBK.constants.addInfo());
 			tabAddInfo.setPane(formsLayoutAddInfo);
@@ -211,7 +180,7 @@ public class DlgAddEditOrganization extends Window {
 			hLayout.addMember(topTabSet);
 
 			parrentOrgItem = new MyComboBoxItem("parrent_organization_name",
-					CallCenterBK.constants.parrentOrgName(), 0, 650);
+					CallCenterBK.constants.parrentOrgName(), 0, 610 - minus);
 			parrentOrgItem.setNameField("parrent_organization_id1");
 			parrentOrgItem.setMyDlgHeight(400);
 			parrentOrgItem.setMyDlgWidth(900);
@@ -243,21 +212,26 @@ public class DlgAddEditOrganization extends Window {
 
 			orgNameItem = new TextAreaItem();
 			orgNameItem.setName("original_org_name");
-			orgNameItem.setWidth(650);
+			orgNameItem.setWidth(610 - minus);
 			orgNameItem.setTitle(CallCenterBK.constants.orgName());
 			orgNameItem.setHeight(62);
 
-			orgNameEngItem = new TextAreaItem();
+			orgNameEngItem = new TextItem();
 			orgNameEngItem.setName("organization_name_eng");
-			orgNameEngItem.setWidth(650);
+			orgNameEngItem.setWidth(610 - minus);
 			orgNameEngItem.setTitle(CallCenterBK.constants.orgNameEng());
-			orgNameEngItem.setHeight(62);
 
 			orgRemarkItem = new TextAreaItem();
 			orgRemarkItem.setName("remark");
-			orgRemarkItem.setWidth(650);
+			orgRemarkItem.setWidth(610 - minus);
 			orgRemarkItem.setTitle(CallCenterBK.constants.comment());
-			orgRemarkItem.setHeight(142);
+			orgRemarkItem.setHeight(102);
+
+			orgInfoItem = new TextItem();
+			orgInfoItem.setName("additional_info");
+			orgInfoItem.setWidth(591);
+			orgInfoItem.setColSpan(2);
+			orgInfoItem.setTitle(CallCenterBK.constants.orgInfo());
 
 			orgChiefItem = new TextItem();
 			orgChiefItem.setName("chief");
@@ -266,7 +240,7 @@ public class DlgAddEditOrganization extends Window {
 
 			orgContactPersonItem = new TextItem();
 			orgContactPersonItem.setName("contact_person");
-			orgContactPersonItem.setWidth(284);
+			orgContactPersonItem.setWidth(307);
 			orgContactPersonItem.setTitle(CallCenterBK.constants
 					.contactPerson());
 
@@ -274,14 +248,12 @@ public class DlgAddEditOrganization extends Window {
 			orgIdentCodeItem.setName("ident_code");
 			orgIdentCodeItem.setWidth(284);
 			orgIdentCodeItem.setTitle(CallCenterBK.constants.identCode());
-			// orgIdentCodeItem.setKeyPressFilter("[0-9]{0,11}");
 			orgIdentCodeItem.setMask("###########");
 
 			orgIdentCodeNewItem = new TextItem();
 			orgIdentCodeNewItem.setName("ident_code_new");
-			orgIdentCodeNewItem.setWidth(284);
+			orgIdentCodeNewItem.setWidth(307);
 			orgIdentCodeNewItem.setTitle(CallCenterBK.constants.identCodeNew());
-			// orgIdentCodeNewItem.setKeyPressFilter("[0-9]");
 			orgIdentCodeNewItem.setMask("###########");
 
 			orgWorkHoursItem = new TextItem();
@@ -296,34 +268,27 @@ public class DlgAddEditOrganization extends Window {
 
 			orgSocialAddressItem = new TextItem();
 			orgSocialAddressItem.setName("social_address");
-			orgSocialAddressItem.setWidth(284);
+			orgSocialAddressItem.setWidth(307);
 			orgSocialAddressItem.setTitle(CallCenterBK.constants
 					.socialAddress());
 
 			orgMailItem = new TextItem();
 			orgMailItem.setName("email_address");
-			orgMailItem.setWidth(284);
+			orgMailItem.setWidth(307);
 			orgMailItem.setTitle(CallCenterBK.constants.eMail());
 
 			orgIndItem = new TextItem();
 			orgIndItem.setName("organization_index");
-			orgIndItem.setWidth(614);
+			orgIndItem.setWidth(284);
 			orgIndItem.setTitle(CallCenterBK.constants.postIndex());
 			orgIndItem.setKeyPressFilter("[0-9]");
 
 			orgStaffCountItem = new TextItem();
 			orgStaffCountItem.setName("staff_count");
-			orgStaffCountItem.setWidth(284);
+			orgStaffCountItem.setWidth(307);
 			orgStaffCountItem.setTitle(CallCenterBK.constants
 					.workPersonCountity());
 			orgStaffCountItem.setKeyPressFilter("[0-9]");
-
-			orgInfoItem = new TextAreaItem();
-			orgInfoItem.setName("additional_info");
-			orgInfoItem.setWidth(568);
-			orgInfoItem.setHeight(142);
-			orgInfoItem.setColSpan(2);
-			orgInfoItem.setTitle(CallCenterBK.constants.orgInfo());
 
 			orgLegalStatusItem = new ComboBoxItem();
 			orgLegalStatusItem.setTitle(CallCenterBK.constants.legalStatuse());
@@ -340,7 +305,7 @@ public class DlgAddEditOrganization extends Window {
 
 			superPriorityItem = new SelectItem();
 			superPriorityItem.setTitle(CallCenterBK.constants.extraPriority());
-			superPriorityItem.setWidth(614);
+			superPriorityItem.setWidth(307);
 			superPriorityItem.setName("super_priority");
 			superPriorityItem.setDefaultToFirstOption(true);
 			superPriorityItem.setValueMap(ClientMapUtil.getInstance()
@@ -352,14 +317,14 @@ public class DlgAddEditOrganization extends Window {
 			importantRemark = new CheckboxItem();
 			importantRemark.setTitle(CallCenterBK.constants.noteCrit());
 			importantRemark.setName("important_remark");
-			importantRemark.setWidth(650);
+			importantRemark.setWidth(610 - minus);
 			importantRemark.setHeight(23);
 			importantRemark.setValue(false);
 
 			orgStatusItem = new SelectItem();
 			orgStatusItem.setTitle(CallCenterBK.constants.status());
 			orgStatusItem.setName("status");
-			orgStatusItem.setWidth(284);
+			orgStatusItem.setWidth(307);
 			orgStatusItem.setValueMap(ClientMapUtil.getInstance()
 					.getOrgStatuses());
 			orgStatusItem.setDefaultToFirstOption(true);
@@ -371,36 +336,57 @@ public class DlgAddEditOrganization extends Window {
 					orgIdentCodeItem, orgIdentCodeNewItem, orgWorkHoursItem,
 					orgStaffCountItem, orgLegalStatusItem, orgStatusItem,
 					orgFoundedItem, orgSocialAddressItem, orgWebAddressItem,
-					orgMailItem, orgInfoItem);
+					orgMailItem, orgIndItem, superPriorityItem, orgInfoItem);
 
-			dynamicFormMainInfo2.setFields(orgIndItem, superPriorityItem);
+			DynamicForm dForm1 = new DynamicForm();
+			dForm1.setAutoFocus(false);
+			dForm1.setWidth100();
+			dForm1.setNumCols(3);
+			dForm1.setTitleWidth(100);
 
-			DataSource orgActDS = DataSource.get("OrgActDS");
+			final ComboBoxItem orgActsItem = new ComboBoxItem();
+			orgActsItem.setTitle(CallCenterBK.constants.activity());
+			orgActsItem.setName("org_activity_id");
+			orgActsItem.setWidth(220 - (minus / 2));
+			orgActsItem.setTitleAlign(Alignment.LEFT);
+			ClientUtils.fillCombo(orgActsItem, "OrgActDS",
+					"searchAllBusinesActivitiesForCB", "org_activity_id",
+					"activity_description");
 
-			activityGrid = new ListGrid();
-			activityGrid.setWidth(305);
-			activityGrid.setHeight100();
-			activityGrid.setDataSource(orgActDS);
-			activityGrid.setShowFilterEditor(true);
-			activityGrid.setFilterOnKeypress(true);
-			activityGrid.setCanDragRecordsOut(true);
-			activityGrid.setDragDataAction(DragDataAction.COPY);
-			activityGrid.setAlternateRecordStyles(true);
-			activityGrid.setAutoFetchData(true);
-			activityGrid.setFetchOperation("searchAllBusinesActivitiesForCB");
+			PickerIcon addOrgActivity = new PickerIcon(new PickerIcon.Picker(
+					"addIcon.png"), new FormItemClickHandler() {
+				public void onFormItemClick(FormItemIconClickEvent event) {
+					ListGridRecord listGridRecord = orgActsItem
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+					Record oldRecord = orgActivityGrid
+							.getRecordList()
+							.find("org_activity_id",
+									listGridRecord
+											.getAttributeAsInt("org_activity_id"));
+					if (oldRecord != null) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants
+										.thisOrgActAlreadyChoosen());
+						return;
+					}
+					orgActivityGrid.addData(listGridRecord);
+				}
+			});
+			orgActsItem.setIcons(addOrgActivity);
 
-			ListGridField activity = new ListGridField("activity_description",
-					CallCenterBK.constants.activity());
-			activity.setAlign(Alignment.LEFT);
-
-			activityGrid.setFields(activity);
+			dForm1.setFields(orgActsItem);
 
 			MainOrgActClientDS mainOrgActClientDS = MainOrgActClientDS
 					.getInstance();
 
 			orgActivityGrid = new ListGrid();
-			orgActivityGrid.setWidth(305);
-			orgActivityGrid.setHeight100();
+			orgActivityGrid.setWidth(300 - (minus / 2));
+			orgActivityGrid.setHeight(130);
 			orgActivityGrid.setDataSource(mainOrgActClientDS);
 			orgActivityGrid.setCanAcceptDroppedRecords(true);
 			orgActivityGrid.setCanRemoveRecords(true);
@@ -409,39 +395,20 @@ public class DlgAddEditOrganization extends Window {
 			orgActivityGrid.setDuplicateDragMessage(CallCenterBK.constants
 					.thisOrgActAlreadyChoosen());
 
-			Img arrowImg = new Img("arrow_right.png", 32, 32);
-			arrowImg.setLayoutAlign(Alignment.CENTER);
-			arrowImg.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					orgActivityGrid.transferSelectedData(activityGrid);
-				}
-			});
-			activityGrid
-					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-						@Override
-						public void onRecordDoubleClick(
-								RecordDoubleClickEvent event) {
-							orgActivityGrid.transferSelectedData(activityGrid);
-						}
-					});
-
-			HLayout gridsLayout = new HLayout();
+			VLayout gridsLayout = new VLayout();
 			gridsLayout.setMargin(2);
 			gridsLayout.setHeight100();
 
-			HLayout hLayoutImg = new HLayout();
-			hLayoutImg.setHeight100();
-			hLayoutImg.setWidth(36);
-			hLayoutImg.setAlign(Alignment.CENTER);
-			hLayoutImg.addMember(arrowImg);
-
-			gridsLayout.setMembers(activityGrid, hLayoutImg, orgActivityGrid);
-
-			leftLayOut.addMember(gridsLayout);
+			gridsLayout.setMembers(dForm1, orgActivityGrid);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
-			hLayoutItem.setAlign(Alignment.RIGHT);
+			hLayoutItem.setAlign(Alignment.LEFT);
+
+			copyItem = new IButton();
+			copyItem.setTitle(CallCenterBK.constants.sameAddress());
+			copyItem.setWidth(350);
+			copyItem.setIcon("copy.png");
 
 			saveItem = new IButton();
 			saveItem.setTitle(CallCenterBK.constants.save());
@@ -451,26 +418,53 @@ public class DlgAddEditOrganization extends Window {
 			cancItem.setTitle(CallCenterBK.constants.close());
 			cancItem.setWidth(100);
 
-			hLayoutItem.setMembers(saveItem, cancItem);
+			LayoutSpacer spacer = new LayoutSpacer();
+			spacer.setWidth100();
+			hLayoutItem.setMembers(copyItem, spacer, saveItem, cancItem);
 
 			hLayout.addMember(hLayoutItem);
 
-			DayOffsClientDS dayOffsClientDS = DayOffsClientDS.getInstance();
+			DynamicForm dForm2 = new DynamicForm();
+			dForm2.setAutoFocus(false);
+			dForm2.setWidth100();
+			dForm2.setNumCols(2);
+			dForm2.setTitleWidth(200);
 
-			dayOffsGrid = new ListGrid();
-			dayOffsGrid.setWidth(268);
-			dayOffsGrid.setHeight100();
-			dayOffsGrid.setCanDragRecordsOut(true);
-			dayOffsGrid.setDragDataAction(DragDataAction.COPY);
-			dayOffsGrid.setAlternateRecordStyles(true);
-			dayOffsGrid.setDataSource(dayOffsClientDS);
-			dayOffsGrid.setAutoFetchData(true);
+			final SelectItem weekDaysItem = new SelectItem();
+			weekDaysItem.setTitle(CallCenterBK.constants.weekDay());
+			weekDaysItem.setName("day_id");
+			weekDaysItem.setWidth(220 - (minus / 2));
+			weekDaysItem.setTitleAlign(Alignment.LEFT);
+			weekDaysItem.setValueMap(ClientMapUtil.getInstance().getWeekDays());
+			weekDaysItem.setDefaultToFirstOption(true);
+			PickerIcon addWeekDay = new PickerIcon(new PickerIcon.Picker(
+					"addIcon.png"), new FormItemClickHandler() {
+				public void onFormItemClick(FormItemIconClickEvent event) {
+					String idValue = weekDaysItem.getValueAsString();
+					String displayValue = weekDaysItem.getDisplayValue();
+
+					Record oldRecord = orgDayOffsGrid.getRecordList().find(
+							"day_id", new Integer(idValue));
+					if (oldRecord != null) {
+						SC.say(CallCenterBK.constants.warning(),
+								"ასეთი უკვე არჩეულია !");
+						return;
+					}
+					ListGridRecord listGridRecord = new ListGridRecord();
+					listGridRecord.setAttribute("day_id", idValue);
+					listGridRecord.setAttribute("day_name", displayValue);
+					orgDayOffsGrid.addData(listGridRecord);
+				}
+			});
+			weekDaysItem.setIcons(addWeekDay);
+
+			dForm2.setFields(weekDaysItem);
 
 			OrgDayOffsClientDS orgDayOffsClientDS = OrgDayOffsClientDS
 					.getInstance();
 			orgDayOffsGrid = new ListGrid();
-			orgDayOffsGrid.setWidth(267);
-			orgDayOffsGrid.setHeight100();
+			orgDayOffsGrid.setWidth(300 - (minus / 2));
+			orgDayOffsGrid.setHeight(130);
 			orgDayOffsGrid.setDataSource(orgDayOffsClientDS);
 			orgDayOffsGrid.setCanAcceptDroppedRecords(true);
 			orgDayOffsGrid.setCanRemoveRecords(true);
@@ -478,27 +472,10 @@ public class DlgAddEditOrganization extends Window {
 			orgDayOffsGrid.setPreventDuplicates(true);
 			orgDayOffsGrid.setDuplicateDragMessage("ასეთი უკვე არჩეულია !");
 
-			Img arrowImg1 = new Img("arrow_right.png", 32, 32);
-			arrowImg1.setLayoutAlign(Alignment.CENTER);
-			arrowImg1.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					orgDayOffsGrid.transferSelectedData(dayOffsGrid);
-				}
-			});
-			dayOffsGrid
-					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-						@Override
-						public void onRecordDoubleClick(
-								RecordDoubleClickEvent event) {
-							orgDayOffsGrid.transferSelectedData(dayOffsGrid);
-						}
-					});
-
-			HLayout gridsLayout1 = new HLayout(0);
+			VLayout gridsLayout1 = new VLayout(0);
 			gridsLayout1.setMargin(2);
 
-			gridsLayout1.setMembers(dayOffsGrid, arrowImg1, orgDayOffsGrid);
-			rigthLayOut.addMember(gridsLayout1);
+			gridsLayout1.setMembers(dForm2, orgDayOffsGrid);
 
 			cancItem.addClickHandler(new ClickHandler() {
 				@Override
@@ -511,54 +488,61 @@ public class DlgAddEditOrganization extends Window {
 				public void onClick(ClickEvent event) {
 					if (selectedTabIndex == 0) {
 						topTabSet.selectTab(1);
+						copyItem.hide();
 					} else {
 						save();
 					}
 				}
 			});
 
-			DataSource orgDSForBanks = DataSource.get("OrgDS");
-			bankOrgsGrid = new ListGrid();
-			bankOrgsGrid.setWidth(612);
-			bankOrgsGrid.setHeight100();
-			bankOrgsGrid.setDataSource(orgActDS);
-			bankOrgsGrid.setShowFilterEditor(true);
-			bankOrgsGrid.setFilterOnKeypress(true);
-			bankOrgsGrid.setAlternateRecordStyles(true);
-			bankOrgsGrid.setAutoFetchData(true);
-			bankOrgsGrid.setCanDragRecordsOut(true);
-			bankOrgsGrid.setDragDataAction(DragDataAction.COPY);
-			bankOrgsGrid.setDataSource(orgDSForBanks);
-			bankOrgsGrid.setFetchOperation("searchPartnerBanks");
-			bankOrgsGrid.setWrapCells(true);
-			bankOrgsGrid.setFixedRecordHeights(false);
-			bankOrgsGrid
-					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-						@Override
-						public void onRecordDoubleClick(
-								RecordDoubleClickEvent event) {
-							orgPartBankOrgsGrid
-									.transferSelectedData(bankOrgsGrid);
+			DynamicForm dForm3 = new DynamicForm();
+			dForm3.setAutoFocus(false);
+			dForm3.setWidth100();
+			dForm3.setNumCols(2);
+			dForm3.setTitleWidth(174);
+
+			final ComboBoxItem partnerBankItem = new ComboBoxItem();
+			partnerBankItem.setTitle(CallCenterBK.constants.partnerBank());
+			partnerBankItem.setName("organization_id");
+			partnerBankItem.setWidth(419);
+			partnerBankItem.setTitleAlign(Alignment.LEFT);
+			ClientUtils.fillCombo(partnerBankItem, "OrgDS",
+					"searchPartnerBanks", "organization_id",
+					"organization_name");
+			PickerIcon addPartnerOrgBank = new PickerIcon(
+					new PickerIcon.Picker("addIcon.png"),
+					new FormItemClickHandler() {
+						public void onFormItemClick(FormItemIconClickEvent event) {
+							ListGridRecord listGridRecord = partnerBankItem
+									.getSelectedRecord();
+							if (listGridRecord == null) {
+								SC.say(CallCenterBK.constants.warning(),
+										CallCenterBK.constants
+												.pleaseSelrecord());
+								return;
+							}
+							Record oldRecord = orgPartBankOrgsGrid
+									.getRecordList()
+									.find("organization_id",
+											listGridRecord
+													.getAttributeAsInt("organization_id"));
+							if (oldRecord != null) {
+								SC.say(CallCenterBK.constants.warning(),
+										"ასეთი უკვე არჩეულია !");
+								return;
+							}
+							orgPartBankOrgsGrid.addData(listGridRecord);
 						}
 					});
+			partnerBankItem.setIcons(addPartnerOrgBank);
 
-			ListGridField bank_organization_name = new ListGridField(
-					"organization_name", CallCenterBK.constants.partnerBank());
-			bank_organization_name.setAlign(Alignment.LEFT);
-
-			ListGridField bank_full_address_not_hidden = new ListGridField(
-					"full_address_not_hidden", CallCenterBK.constants.address());
-			bank_full_address_not_hidden.setAlign(Alignment.LEFT);
-
-			bankOrgsGrid.setFields(bank_organization_name,
-					bank_full_address_not_hidden);
+			dForm3.setFields(partnerBankItem);
 
 			OrgPartnetBanksClientDS orgPartnetBanksClientDS = OrgPartnetBanksClientDS
 					.getInstance();
 			orgPartBankOrgsGrid = new ListGrid();
-			orgPartBankOrgsGrid.setWidth(610);
-			orgPartBankOrgsGrid.setHeight100();
-			orgPartBankOrgsGrid.setDataSource(orgActDS);
+			orgPartBankOrgsGrid.setWidth(591);
+			orgPartBankOrgsGrid.setHeight(130);
 			orgPartBankOrgsGrid.setPreventDuplicates(true);
 			orgPartBankOrgsGrid
 					.setDuplicateDragMessage("ასეთი უკვე არჩეულია !");
@@ -570,14 +554,35 @@ public class DlgAddEditOrganization extends Window {
 			orgPartBankOrgsGrid.setFixedRecordHeights(false);
 			orgPartBankOrgsGrid.setCanRemoveRecords(true);
 
-			HLayout hLayoutPartBanks = new HLayout();
-			hLayoutPartBanks.setWidth100();
-			hLayoutPartBanks.setMembersMargin(5);
+			VLayout hLayoutPartBanks = new VLayout();
+			hLayoutPartBanks.setWidth(591);
+			hLayoutPartBanks.setMembersMargin(2);
+			hLayoutPartBanks.setHeight(130);
 
-			hLayoutPartBanks.setMembers(bankOrgsGrid, orgPartBankOrgsGrid);
-			formsLayoutAddInfo.addMember(hLayoutPartBanks);
+			hLayoutPartBanks.setMembers(dForm3, orgPartBankOrgsGrid);
 
-			copyAddress.addClickHandler(new ClickHandler() {
+			HLayout vLayoutGrids = new HLayout();
+			vLayoutGrids.setMembers(gridsLayout, gridsLayout1);
+
+			leftLayOut.addMember(vLayoutGrids);
+
+			// Address
+			HLayout hLayoutGrids = new HLayout();
+			hLayoutGrids.setHeight100();
+
+			physicalAddress = new MyAddressPanel2(false, "PhysicalAddress1",
+					CallCenterBK.constants.orgAddressHeaderReal(), 550, 0);
+			hLayoutGrids.addMember(physicalAddress);
+			leftLayOut.addMember(hLayoutGrids);
+			//
+
+			rigthLayOut.addMember(hLayoutPartBanks);
+
+			legalAddress = new MyAddressPanel2(true, "LegalAddress",
+					CallCenterBK.constants.orgAddressHeaderLegal(), 550, 0);
+			rigthLayOut.addMember(legalAddress);
+
+			copyItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					copyAddress();
@@ -590,7 +595,9 @@ public class DlgAddEditOrganization extends Window {
 					selectedTabIndex = event.getTabNum();
 					if (selectedTabIndex == 0) {
 						saveItem.setTitle(CallCenterBK.constants.next());
+						copyItem.show();
 					} else {
+						copyItem.hide();
 						saveItem.setTitle(CallCenterBK.constants.save());
 					}
 				}
@@ -614,7 +621,6 @@ public class DlgAddEditOrganization extends Window {
 				parrentOrgItem.setDataValue(map);
 				dynamicFormMainInfo.setValues(map);
 				dynamicFormMainInfo1.setValues(map);
-				dynamicFormMainInfo2.setValues(map);
 
 				if (important_remark != null
 						&& important_remark.equals(new Integer(-1))) {
@@ -745,14 +751,6 @@ public class DlgAddEditOrganization extends Window {
 				dynamicFormMainInfo.focusInItem(orgRemarkItem);
 				return;
 			}
-			// if (orgChiefItem.getValueAsString() == null
-			// || orgChiefItem.getValueAsString().trim().equals("")) {
-			// SC.say(CallCenterBK.constants.warning(),
-			// CallCenterBK.constants.plzEnterOrgChief());
-			// topTabSet.selectTab(0);
-			// dynamicFormMainInfo1.focusInItem(orgChiefItem);
-			// return;
-			// }
 
 			String identCode = orgIdentCodeItem.getValueAsString();
 			String identCodeNew = orgIdentCodeNewItem.getValueAsString();
@@ -808,15 +806,6 @@ public class DlgAddEditOrganization extends Window {
 					return;
 				}
 			}
-
-			// if (orgWorkHoursItem.getValueAsString() == null
-			// || orgWorkHoursItem.getValueAsString().trim().equals("")) {
-			// SC.say(CallCenterBK.constants.warning(),
-			// CallCenterBK.constants.plzEnterOrgWorkHours());
-			// topTabSet.selectTab(0);
-			// dynamicFormMainInfo1.focusInItem(orgWorkHoursItem);
-			// return;
-			// }
 
 			ListGridRecord orgActivityList[] = orgActivityGrid.getRecords();
 			if (orgActivityList == null || orgActivityList.length <= 0) {
@@ -957,7 +946,7 @@ public class DlgAddEditOrganization extends Window {
 				fromMaps.put("orgPartnerBanks", orgPartnerBanks);
 			}
 			ClientUtils.fillMapFromForm(fromMaps, dynamicFormMainInfo,
-					dynamicFormMainInfo1, dynamicFormMainInfo2);
+					dynamicFormMainInfo1);
 			fromMaps.put("important_remark", important_remark1);
 			fromMaps.put("organization_name", orgNameItem.getValueAsString());
 
