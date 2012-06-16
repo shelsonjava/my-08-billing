@@ -425,6 +425,8 @@
 			</whereClause>				
 			<orderClause>gettbilisiorder(tw.town_id),o.organization_name</orderClause>	
     	</operationBinding>
+    	
+    	
     	<operationBinding operationId="histSearch"
 			operationType="fetch">			
 			<selectClause>
