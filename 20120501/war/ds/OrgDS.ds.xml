@@ -91,6 +91,8 @@
 		<field name="off_user"		   				type="text"  		title="hs_off_user"/>
 		<field name="off_user"		   				type="text"  		title="hs_off_user"/>
 		<field name="rdeleted"   					type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
+		<field name="parrent_organization"			type="text"  		title="parrent_organization"/>
+		<field name="cust_order"					type="integer"  	title="cust_order"/>
 	</fields>
 	<operationBindings>
 	
