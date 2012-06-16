@@ -23,6 +23,12 @@
 		<field name="phone_type_descr"			type="text"  		title="phone_type_descr"/>
 		<field name="is_parallel_descr"			type="text"  		title="is_parallel_descr"/>
 		<field name="orgDepPhoneIdList"			type="any"  		title="orgDepPhoneIdList"		hidden="true"/>
+		<field name="hist_start_date"   		type="datetime" 	title="hs_hist_start_date"/>
+		<field name="hist_end_date"   			type="datetime" 	title="hs_hist_end_date"/>
+		<field name="on_user"  					type="text"  		title="hs_on_user"/>
+		<field name="off_user"		   			type="text"  		title="hs_off_user"/>
+		<field name="rdeleted"   				type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
+		
 	</fields>
 	
 	<operationBindings>
@@ -82,7 +88,14 @@
 				  decode(t.for_contact,1,'დიახ','არა') as for_contact_descr,
 				  getdescription(t.phone_state_id) as phone_state_descr,
 				  getdescription(t.phone_type_id) as phone_type_descr,
-				  decode(t.is_parallel,1,'დიახ','არა') as is_parallel_descr
+				  decode(t.is_parallel,1,'დიახ','არა') as is_parallel_descr,
+			      hist_start_date, 
+				  hist_end_date, 
+				  start_rcn, 
+				  end_rcn, 
+				  on_user, 
+				  off_user,
+				  rdeleted
 			</selectClause>
 			<tableClause>HIST_ORG_DEPART_TO_PHONES_VIEW p</tableClause>
 			<whereClause>
