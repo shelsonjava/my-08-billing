@@ -728,4 +728,7 @@ public interface AppConstants extends Constants {
 	String parameters();
 	String parrentIsAlsoChild();
 	String phoneNumber();
+	String streetLegal();
+	String townLegal();
+	String cityRegionLegal();
 }
