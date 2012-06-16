@@ -444,7 +444,7 @@
 			</selectClause> 
 			<tableClause>hist_org_partner_banks o</tableClause>	
 			<whereClause>
-				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
+				    #if($criteria.organization_id) o.organization_id = $criteria.organization_id #end
 			</whereClause>				
 			<orderClause>part_bank_org_id, start_rcn desc</orderClause>	
     	</operationBinding>
