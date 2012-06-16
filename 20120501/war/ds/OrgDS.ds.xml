@@ -149,7 +149,7 @@
 		
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchForCallCenterNew" operationType="fetch">			
-			<selectClause><![CDATA[distinct 
+			<selectClause><![CDATA[
 						o.organization_id,
 						o.parrent_organization_id,
 						o.parrent_organization_id as parrent_organization_id1,
@@ -256,15 +256,31 @@
 						 	
 						 #if($criteria.phone)
 						 	and o.organization_id in (
-						 	select distinct od.organization_id
-						  from ccare.organization_department od
-						 where od.org_department_id in
-						       (select distinct dp.org_department_id
-						          from organization_depart_to_phones dp
-						         where dp.phone_number_id in
-						               (select t.phone_number_id
-						                  from phone_numbers t
-						                 where t.phone = $criteria.phone)) )
+						 		select 
+						 			distinct od.organization_id
+						  		from ccare.organization_department od
+						 		where od.org_department_id in
+						       		  (select 
+						       		  		  distinct dp.org_department_id
+						          	   from organization_depart_to_phones dp
+						         	   where dp.phone_number_id in
+						               		(select 
+						               				t.phone_number_id
+						                  	 from phone_numbers t
+						                 	 where t.phone = $criteria.phone
+						                 	)
+						              ) 
+						       )
+						 #end
+						 
+						 #if($criteria.department)
+						 	and o.organization_id in (
+						 		select od.organization_id from organization_department od
+						 		where 1 = 1
+						 		#foreach($str in $criteria.department.split(" "))
+									and od.department like '%'||'$str'||'%'
+								#end
+						 	)						 	
 						 #end
 						 
 						 #if($criteria.pp_organization_id)
@@ -283,11 +299,11 @@
 							 #if($criteria.remark8) and o.remark like '%'||($criteria.remark8)||'%' #end
 							 #if($criteria.remark9) and o.remark like '%'||($criteria.remark9)||'%' #end
 							 #if($criteria.remark10) and o.remark like '%'||($criteria.remark)||'%' #end
-							 #if($criteria.real_address_descr1) and str.street_name like '%'||($criteria.real_address_descr1)||'%' #end
-							 #if($criteria.real_address_descr2) and str.street_name like '%'||($criteria.real_address_descr2)||'%' #end
-							 #if($criteria.real_address_descr3) and str.street_name like '%'||($criteria.real_address_descr3)||'%' #end
-							 #if($criteria.real_address_descr4) and str.street_name like '%'||($criteria.real_address_descr4)||'%' #end
-							 #if($criteria.real_address_descr5) and str.street_name like '%'||($criteria.real_address_descr5)||'%' #end
+							 #if($criteria.real_address_descr1) and a.concat_address like '%'||($criteria.real_address_descr1)||'%' #end
+							 #if($criteria.real_address_descr2) and a.concat_address like '%'||($criteria.real_address_descr2)||'%' #end
+							 #if($criteria.real_address_descr3) and a.concat_address like '%'||($criteria.real_address_descr3)||'%' #end
+							 #if($criteria.real_address_descr4) and a.concat_address like '%'||($criteria.real_address_descr4)||'%' #end
+							 #if($criteria.real_address_descr5) and a.concat_address like '%'||($criteria.real_address_descr5)||'%' #end
 							 #if($criteria.legaladdress) and o.legaladdress like '%'||($criteria.legaladdress)||'%' #end
 							 #if($criteria.legaladdress1) and o.legaladdress like '%'||($criteria.legaladdress1)||'%' #end
 							 #if($criteria.legaladdress2) and o.legaladdress like '%'||($criteria.legaladdress2)||'%' #end
