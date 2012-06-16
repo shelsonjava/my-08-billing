@@ -33,17 +33,19 @@
 		<field name="concat_address" 				type="text"		title="address"/>
 		<field name="phone_state"					type="text"		title="Phone State"/>
 		<field name="phone_state_id"				type="text"		title="Phone State"/>
-		<field name="phone_contract_type_desr"		type="text"	title="Phone Status"/>
+		<field name="phone_contract_type_desr"		type="text"		title="Phone Status"/>
 		<field name="phone_contract_type"			type="integer"	title="Phone Status"/>
 		<field name="phone_type"					type="text"		title="Phone Type"/>
-		<field name="is_parallel"					type="integer"		title="Is Parallel Descr"/>
+		<field name="is_parallel"					type="integer"	title="Is Parallel Descr"/>
 		<field name="is_parallel_descr"				type="text"		title="Is Parallel Descr"/>
 		<field name="ph_hidden_by_request_descr"	type="text"		title="Is Parallel Descr"/>
 		<field name="ph_hidden_by_request"			type="integer"	title="Is Parallel Descr"/>
-		<field name="hist_start_date"   			type="datetime"  	title="hs_hist_start_date"/>
-		<field name="hist_end_date"   				type="datetime"  	title="hs_hist_end_date"/>
+		<field name="hist_start_date"   			type="datetime" title="hs_hist_start_date"/>
+		<field name="hist_end_date"   				type="datetime" title="hs_hist_end_date"/>
 		<field name="on_user"  						type="text"  	title="hs_on_user"/>
 		<field name="off_user"		   				type="text"  	title="hs_off_user"/>
+		<field name="off_user"		   				type="text"  	title="hs_off_user"/>
+		<field name="rdeleted"   				type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
 	</fields>
 	
 	
@@ -207,7 +209,8 @@
 				start_rcn, 
 				end_rcn, 
 				on_user, 
-				off_user
+				off_user,
+				rdeleted
 					
 			</selectClause>
 			<tableClause>
