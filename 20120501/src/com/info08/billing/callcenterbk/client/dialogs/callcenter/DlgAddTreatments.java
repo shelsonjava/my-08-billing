@@ -121,6 +121,7 @@ public class DlgAddTreatments extends Window {
 
 	private void save(Treatments treatmentObj) {
 		try {
+
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
@@ -150,7 +151,7 @@ public class DlgAddTreatments extends Window {
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			if (treatment != null) {
+			if (treatmentObj != null) {
 				record.setAttribute("treatment_id",
 						treatmentObj.getTreatment_id());
 			}
@@ -161,7 +162,7 @@ public class DlgAddTreatments extends Window {
 			DSRequest req = new DSRequest();
 			DataSource treatmentsDS = DataSource.get("TreatmentsDS");
 
-			if (treatmentObj.getTreatment_id() == null) {
+			if (treatmentObj == null) {
 				req.setAttribute("operationId", "addTreatments");
 				treatmentsDS.addData(record, new DSCallback() {
 					@Override

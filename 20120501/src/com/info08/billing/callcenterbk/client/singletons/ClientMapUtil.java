@@ -416,4 +416,12 @@ public class ClientMapUtil {
 		return yesAndNo;
 	}
 
+	public LinkedHashMap<String, String> getGender() {
+		return gender;
+	}
+
+	public LinkedHashMap<String, String> getVisible() {
+		return visible;
+	}
+
 }

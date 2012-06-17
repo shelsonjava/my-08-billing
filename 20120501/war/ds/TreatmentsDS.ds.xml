@@ -1,41 +1,67 @@
-<DataSource
-	ID="TreatmentsDS"
-	serverType="sql"
-	tableName="treatments"
-	qualifyColumnNames="false"
-	dropExtraFields = "false">
+<DataSource ID="TreatmentsDS" serverType="sql" tableName="treatments"
+	qualifyColumnNames="false" dropExtraFields="false">
 	<fields>
-		<field name="treatment_id"		type="integer"	title="treatment_id"	hidden="true" primaryKey="true" />
-		<field name="treatment"			type="text"		title="treatment"/>
-		<field name="phone_number"		type="text"		title="phone_number"/>
-		<field name="gender"			type="integer"	title="gender"/>
-		<field name="loggedUserName"	type="text"		title="Logged UserName"	hidden="true" />		
+		<field name="treatment_id" type="integer" title="treatment_id"
+			hidden="true" primaryKey="true" />
+		<field name="treatment" type="text" title="treatment" />
+		<field name="phone_number" type="text" title="phone_number" />
+		<field name="gender" type="integer" title="gender" />
+		<field name="visible" type="integer" title="visible" />
+		<field name="gender_descr" type="text" title="gender_descr" />
+		<field name="visible_descr" type="text" title="visible_descr" />
+		<field name="loggedUserName" type="text" title="Logged UserName"
+			hidden="true" />
 	</fields>
 
-	<operationBindings>		
+	<serverObject lookupStyle="new"
+		className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
 
-		<!-- Add Treatments -->
-		<operationBinding operationId="addTreatments" operationType="add">
-            <customSQL>
-            	 <![CDATA[
-            	 	insert into treatments 
-            	 			(treatment, phone_number, gender)
-            		values 
-            				($values.treatment,$values.phone_number,$values.gender)
-            	 ]]>
-            </customSQL> 
-        </operationBinding>
+	<operationBindings>
+		<!-- Add -->
+		<operationBinding operationType="add" operationId="addTreatment"
+			serverMethod="addTreatment">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
+		</operationBinding>
 
-		<!-- Update Treatments -->
-		<operationBinding operationId="updateTreatments" operationType="update">
-            <customSQL>
-            	 <![CDATA[
-            	 	update treatments t set 
-            	 		t.phone_number = $values.phone_number, t.treatment = $values.treatment 
-            	 		where t.treatment_id = $values.treatment_id
-            	 ]]>
-            </customSQL> 
-        </operationBinding>
-                
-    </operationBindings>	
+		<!-- Update -->
+		<operationBinding operationType="update" operationId="updateTreatments"
+			serverMethod="updateTreatments">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
+		</operationBinding>
+
+		<!-- Delete -->
+		<operationBinding operationType="remove" operationId="removeTreatments"
+			serverMethod="removeTreatments">
+			<serverObject lookupStyle="new"
+				className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
+		</operationBinding>
+
+		<!-- FETCH - For Correction -->
+		<operationBinding operationId="searchFromDB"
+			operationType="fetch">
+			<selectClause>
+				   t.treatment_id
+			      ,t.phone_number
+			      ,t.treatment
+			      ,t.visible
+			      ,getdescription(t.visible) as visible_descr
+			      ,t.gender
+			      ,getdescription(t.gender) as gender_descr
+			</selectClause>
+			<tableClause>treatments t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1 
+				#if($criteria.treatment) and t.treatment like '%'||$criteria.treatment||'%' #end
+				#if($criteria.phone_number) and t.phone_number like '%'||$criteria.phone_number||'%' #end
+				#if($criteria.visible) and t.visible = $criteria.visible #end
+				#if($criteria.gender) and t.gender = $criteria.gender #end
+				#if($criteria.treatment_id) and t.treatment_id = $criteria.treatment_id #end
+				]]>
+			</whereClause>
+			<orderClause>t.treatment</orderClause>
+		</operationBinding>
+
+	</operationBindings>
 </DataSource>

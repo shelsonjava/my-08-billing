@@ -6,6 +6,7 @@ import com.info08.billing.callcenterbk.client.content.TabAbonentNames;
 import com.info08.billing.callcenterbk.client.content.TabOrgBusinessActivity;
 import com.info08.billing.callcenterbk.client.content.TabOrganization;
 import com.info08.billing.callcenterbk.client.content.TabSubscriber;
+import com.info08.billing.callcenterbk.client.content.TabTreatments;
 import com.info08.billing.callcenterbk.client.content.TabVirtualCharge;
 import com.info08.billing.callcenterbk.client.content.admin.TabPartniorNumbersList;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -26,14 +27,17 @@ public class CorrectionStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", "ორგ. საქმიანობები", true, "organization.gif"),
+			new MenuNode("100", "1", "ორგ. საქმიანობები", true,
+					"organization.gif"),
 			new MenuNode("101", "2", "ორგანიზაციები", true, "organization.gif"),
 			new MenuNode("102", "3", "აბონენტები", true, "person.png"),
 			new MenuNode("103", "4", "სახელები", true, "person.png"),
 			new MenuNode("104", "5", "გვარები", true, "person.png"),
-			new MenuNode("105", "6", CallCenterBK.constants.virtualCharge(), true, "moneySmall.png"), 
-			new MenuNode("106", "1", CallCenterBK.constants.importedNumbers(),true, "import.png")
-	};
+			new MenuNode("105", "6", CallCenterBK.constants.virtualCharge(),
+					true, "moneySmall.png"),
+			new MenuNode("106", "1", CallCenterBK.constants.importedNumbers(),
+					true, "import.png"),
+			new MenuNode("107", "1", "მიმართვები", true, "person.png") };
 
 	private TreeGrid menuTreeGrid;
 
@@ -95,12 +99,16 @@ public class CorrectionStackSelection extends SectionStackSection {
 
 	public void setMenuPersmission() {
 		try {
-			boolean hasOrgBusActPerm = CommonSingleton.getInstance().hasPermission("103500");
-			boolean hasAbonentPerm = CommonSingleton.getInstance().hasPermission("105000");
-			boolean hasAbonentNameSurPerm = CommonSingleton.getInstance().hasPermission("104000");
-			boolean hasOrgManPerm = CommonSingleton.getInstance().hasPermission("105500");
-			boolean hasVirtChargePerm = CommonSingleton.getInstance().hasPermission("106550");
-			
+			boolean hasOrgBusActPerm = CommonSingleton.getInstance()
+					.hasPermission("103500");
+			boolean hasAbonentPerm = CommonSingleton.getInstance()
+					.hasPermission("105000");
+			boolean hasAbonentNameSurPerm = CommonSingleton.getInstance()
+					.hasPermission("104000");
+			boolean hasOrgManPerm = CommonSingleton.getInstance()
+					.hasPermission("105500");
+			boolean hasVirtChargePerm = CommonSingleton.getInstance()
+					.hasPermission("106550");
 
 			menuData[0].setAttribute("enabled", hasOrgBusActPerm);
 			menuData[1].setAttribute("enabled", hasOrgManPerm);
@@ -109,7 +117,7 @@ public class CorrectionStackSelection extends SectionStackSection {
 			menuData[4].setAttribute("enabled", hasAbonentNameSurPerm);
 			menuData[5].setAttribute("enabled", hasVirtChargePerm);
 			menuData[6].setAttribute("enabled", hasOrgManPerm);
-			
+			menuData[7].setAttribute("enabled", hasOrgManPerm);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,8 +132,7 @@ public class CorrectionStackSelection extends SectionStackSection {
 		if (menuId.equals("100")) {
 			TabOrgBusinessActivity tabOrgBusinessActivity = new TabOrgBusinessActivity();
 			body.addTab(tabOrgBusinessActivity);
-		}
-		else if (menuId.equals("101")) {
+		} else if (menuId.equals("101")) {
 			TabOrganization controlTabPane = new TabOrganization();
 			body.addTab(controlTabPane);
 		} else if (menuId.equals("102")) {
@@ -140,8 +147,10 @@ public class CorrectionStackSelection extends SectionStackSection {
 		} else if (menuId.equals("105")) {
 			TabVirtualCharge tabVirtualCharge = new TabVirtualCharge();
 			body.addTab(tabVirtualCharge);
-		}else if (menuId.equals("106")) {
+		} else if (menuId.equals("106")) {
 			body.addTab(new TabPartniorNumbersList());
+		} else if (menuId.equals("107")) {
+			body.addTab(new TabTreatments());
 		}
 	}
 

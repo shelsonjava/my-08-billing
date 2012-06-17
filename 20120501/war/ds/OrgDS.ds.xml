@@ -39,7 +39,8 @@
 		<field name="town_id"						type="integer"  	title="town_id"							hidden="true"/>		
 		<field name="priority"						type="integer"  	title="priority"						hidden="true"/>
 		<field name="priority_descr"				type="text"  		title="priority_descr"					/>
-		<field name="super_priority"				type="integer"  	title="super_priority"					hidden="true"/>		
+		<field name="super_priority"				type="integer"  	title="super_priority"					hidden="true"/>
+		<field name="super_priority_descr"  		type="text"  		title="super_priority_descr"			/>
 		<field name="street_name"					type="text"  		title="street_name"/>
 		<field name="phone_number"					type="text"  		title="phone_number"/>		
 		<field name="org_or_abon_type"				type="integer"  	title="org_or_abon_type"				hidden="true"/>
@@ -483,8 +484,9 @@
 			       tree_org_parrent,
 			       town_id,
 			       priority,
-			       decode(priority, 0, "ჩვეულებრივი", -1, "გაწითლებული", "") as priority_descr,
+			       decode(priority, 0, 'ჩვეულებრივი', -1, 'გაწითლებული', '') as priority_descr,
 			       super_priority,
+			       decode(super_priority, 0, 'არაპრიორიტეტული', 'პრიორიტეტული') as super_priority_descr,
 			       ident_code,
 			       ident_code_new,
 			       chief,
@@ -550,19 +552,24 @@
 				   	#if($criteria.town_name) AND t.town_name like '%'||($criteria.town_name)||'%' #end
 				   	#if($criteria.town_district) AND t.town_district like '%'||($criteria.town_district)||'%' #end
 				   	#if($criteria.ident_code) AND $criteria.ident_code in (ident_code,ident_code_new) #end
+				   	#if($criteria.remark) AND t.remark like '%'||($criteria.remark)||'%' #end
 				   	
 				   	#if($criteria.phone_number)
 				   	and exists (select 1
 				          from  ccare.hist_phone_numbers        hph
 				          	    ,ccare.HIST_ORG_DEPART_TO_PHONES htp
 				          		,ccare.HIST_ORGANIZATION_DEPARTMENT hd
-				         where hph.phone = ($criteria.phone_number) )
+				         where hph.phone = ($criteria.phone_number) 
 				         	and htp.phone_number_id = hph.phone_number_id
 				         	and htp.ORG_DEPARTMENT_ID = hd.ORG_DEPARTMENT_ID
-				         	and hd.organization_id = t.organization_id
-				           
-				           
-				            				   	
+				         	and hd.organization_id = t.organization_id)
+				   	 #end
+				   	 
+				   	 	#if($criteria.departmentName)
+				   	and exists (select 1
+				          from  ccare.HIST_ORGANIZATION_DEPARTMENT hd
+				         where hd.department like '%' || ($criteria.departmentName) || '%' 
+				         	and hd.organization_id = t.organization_id )
 				   	 #end
 				   	]]>
 			</whereClause>	

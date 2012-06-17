@@ -98,43 +98,41 @@ public class West extends VLayout {
 				statistics = new StatStackSelection(body);
 				menuStack.addSection(statistics);
 
-			}
-			switch (personelTypeId.intValue()) {
-			case 2: // Admin
-				control.setExpanded(true);
-				break;
-			case 4: // Correction
-				correction.setExpanded(true);
-				break;
-			case 6: // Survey
-				survey.setExpanded(true);
-				break;
-			case 7: // IT
-				control.setExpanded(true);
-				break;
-			case 8: // Control
-				control.setExpanded(true);
-				break;
-			case 9: // Operator
-				callCenter.setExpanded(true);
-				break;
-			case 10: // Accounting
-				break;
-			case 11: // Address
-				address.setExpanded(true);
-				break;
-			case 12: // Transport
-				transport.setExpanded(true);
-				break;
-			case 13: // Various
-				various.setExpanded(true);
-				break;
-			default: // Other
-				control.setExpanded(true);
-				break;
-			}
-			// Not Call Center User
-			if (!personelTypeId.equals(Constants.OperatorDepartmentID)) {
+				switch (personelTypeId.intValue()) {
+				case 2: // Admin
+					control.setExpanded(true);
+					break;
+				case 4: // Correction
+					correction.setExpanded(true);
+					break;
+				case 6: // Survey
+					survey.setExpanded(true);
+					break;
+				case 7: // IT
+					control.setExpanded(true);
+					break;
+				case 8: // Control
+					control.setExpanded(true);
+					break;
+				case 9: // Operator
+					callCenter.setExpanded(true);
+					break;
+				case 10: // Accounting
+					break;
+				case 11: // Address
+					address.setExpanded(true);
+					break;
+				case 12: // Transport
+					transport.setExpanded(true);
+					break;
+				case 13: // Various
+					various.setExpanded(true);
+					break;
+				default: // Other
+					control.setExpanded(true);
+					break;
+				}
+
 				control.setMenuPersmission();
 				correction.setMenuPersmission();
 				admin.setMenuPersmission();
@@ -145,6 +143,7 @@ public class West extends VLayout {
 				survey.setMenuPersmission();
 				statistics.setMenuPersmission();
 			}
+
 			callCenter.setMenuPersmission();
 			if (personelTypeId.equals(Constants.OperatorDepartmentID)) {
 

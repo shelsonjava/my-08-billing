@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -118,7 +119,7 @@ public class DlgHistSubscriber extends Window {
 			streetItem.setWidth(300);
 
 			phoneItem = new TextItem();
-			phoneItem.setTitle(CallCenterBK.constants.phone());
+			phoneItem.setTitle("ტელ.ნომერი");
 			phoneItem.setName("phoneItem");
 			phoneItem.setWidth(300);
 
@@ -200,8 +201,12 @@ public class DlgHistSubscriber extends Window {
 			ListGridField street = new ListGridField("concat_address",
 					CallCenterBK.constants.street());
 
+			boolean hasPermission = CommonSingleton.getInstance()
+					.hasPermission("106500");
+
 			ListGridField hist_user_on = new ListGridField("on_user", "დაამატა");
 			hist_user_on.setWidth(50);
+
 			ListGridField hist_user_off = new ListGridField("off_user",
 					"შეცვალა");
 			hist_user_off.setWidth(50);
@@ -212,9 +217,14 @@ public class DlgHistSubscriber extends Window {
 			ListGridField hist_end = new ListGridField("hist_end_date", "-მდე");
 			hist_end.setWidth(120);
 
-			histSubscriberListGrid.setFields(subscriber_id, first_name,
-					last_name, town, street, hist_user_on, hist_start,
-					hist_user_off, hist_end);
+			if (hasPermission) {
+				histSubscriberListGrid.setFields(subscriber_id, first_name,
+						last_name, town, street, hist_user_on, hist_start,
+						hist_user_off, hist_end);
+			} else {
+				histSubscriberListGrid.setFields(subscriber_id, first_name,
+						last_name, town, street, hist_start, hist_end);
+			}
 
 			histSubscriberPhoneListGrid = new ListGrid() {
 				@Override
@@ -287,11 +297,19 @@ public class DlgHistSubscriber extends Window {
 			ph_deleted.setWidth(70);
 			ph_deleted.setType(ListGridFieldType.BOOLEAN);
 
-			histSubscriberPhoneListGrid.setFields(phones,
-					hidden_by_request_descr, phone_state,
-					phone_contract_type_desr, phone_type, is_parallel_descr,
-					ph_hist_user_on, ph_hist_start, ph_hist_user_off,
-					ph_hist_end, ph_deleted);
+			if (hasPermission) {
+				histSubscriberPhoneListGrid.setFields(phones,
+						hidden_by_request_descr, phone_state,
+						phone_contract_type_desr, phone_type,
+						is_parallel_descr, ph_hist_user_on, ph_hist_start,
+						ph_hist_user_off, ph_hist_end, ph_deleted);
+			} else {
+				histSubscriberPhoneListGrid.setFields(phones,
+						hidden_by_request_descr, phone_state,
+						phone_contract_type_desr, phone_type,
+						is_parallel_descr, ph_hist_start, ph_hist_end,
+						ph_deleted);
+			}
 
 			hLayout.addMember(searchForm);
 			hLayout.addMember(buttonLayout);
@@ -412,8 +430,7 @@ public class DlgHistSubscriber extends Window {
 			public void execute(DSResponse response, Object rawData,
 					DSRequest request) {
 				histSubscriberListGrid.getGroupTree().openAll();
-				if(response.getData()!=null && response.getData().length>0)
-				{
+				if (response.getData() != null && response.getData().length > 0) {
 					histSubscriberListGrid.selectRecord(1);
 					searchPhones();
 				}
@@ -456,6 +473,6 @@ public class DlgHistSubscriber extends Window {
 		Criteria criteria = new Criteria();
 		criteria.setAttribute("subscriber_id", subscriber_id);
 		searchByCriteria(criteria);
-		
+
 	}
 }

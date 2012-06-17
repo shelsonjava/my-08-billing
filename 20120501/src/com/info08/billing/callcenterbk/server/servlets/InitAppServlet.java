@@ -98,7 +98,8 @@ public class InitAppServlet extends HttpServlet {
 			}
 			Users user = users.get(0);
 			Long department_id = user.getDepartment_id();
-			if (department_id == null || !department_id.equals(Constants.OperatorDepartmentID)) {
+			if (department_id == null
+					|| !department_id.equals(Constants.OperatorDepartmentID)) {
 				out.println("This UserName Is Not Operator : " + userName);
 				return;
 			}
@@ -138,6 +139,7 @@ public class InitAppServlet extends HttpServlet {
 			String phoneDescription = "";
 			String abonentName = "";
 			Long gender = -1L;
+			Long abonentVisible = 1L;
 			Double bid = new Double(-1);
 			Treatments treatment = null;
 			Long organization_id = -1L;
@@ -172,6 +174,8 @@ public class InitAppServlet extends HttpServlet {
 					treatment = list.get(0);
 					abonentName = treatment.getTreatment();
 					gender = treatment.getGender();
+					abonentVisible = treatment.getVisible();
+					treatment.setLoggedUserName(userName);
 				}
 			} else {
 				// fixed telephony
@@ -288,6 +292,9 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setPhoneDescription(phoneDescription);
 			serverSession.setSessionId(sessionId);
 			serverSession.setGender(gender);
+			serverSession.setAbonentVisible(abonentVisible.equals(75100L) ? true
+					: false);
+			serverSession.setTreatment(treatment);
 			serverSession.setUser(user);
 			serverSession.setUserName(userName);
 			serverSession.setWebSession(false);
@@ -332,7 +339,7 @@ public class InitAppServlet extends HttpServlet {
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
 			response.sendRedirect(response
-					.encodeRedirectURL("http://192.168.1.3:8888/CallCenterBK.html?gwt.codesvr=192.168.1.3:9997&sessionId="
+					.encodeRedirectURL("http://192.168.1.8:8888/CallCenterBK.html?gwt.codesvr=192.168.1.8:9997&sessionId="
 							+ sessionId));
 			// } else {
 			// Live

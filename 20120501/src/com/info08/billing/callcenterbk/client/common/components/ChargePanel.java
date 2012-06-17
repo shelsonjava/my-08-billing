@@ -3,12 +3,13 @@ package com.info08.billing.callcenterbk.client.common.components;
 import java.util.Date;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
-import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgAddTreatments;
+import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgAddEditTreatments;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgSendSurvey;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewChargesByPhone;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
+import com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -21,6 +22,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -248,12 +250,23 @@ public class ChargePanel extends HLayout {
 				String abonentName = serverSession.getAbonentName();
 				Long gender = serverSession.getGender();
 				// currentNameItem.setTextBoxStyle("textBoxStyleWoman");
-				if (gender.equals(0L)
-						|| (phoneDescription != null && !phoneDescription
-								.trim().equalsIgnoreCase(""))) {
-					currentNameItem.setTextBoxStyle("textBoxStyleWoman");
-				} else if (gender.equals(1L)) {
-					currentNameItem.setTextBoxStyle("textBoxStyleMan");
+
+				if (abonentName != null
+						&& !abonentName.trim().equalsIgnoreCase("")) {
+					addMyMobileInfo.setDisabled(!serverSession
+							.isAbonentVisible());
+				}
+
+				if (!serverSession.isAbonentVisible()) {
+					currentNameItem.setTextBoxStyle("textBoxStyle");
+				} else {
+					if (gender.equals(74101L)
+							|| (phoneDescription != null && !phoneDescription
+									.trim().equalsIgnoreCase(""))) {
+						currentNameItem.setTextBoxStyle("textBoxStyleWoman");
+					} else if (gender.equals(74100L)) {
+						currentNameItem.setTextBoxStyle("textBoxStyleMan");
+					}
 				}
 				// if (phoneDescription != null
 				// && !phoneDescription.trim().equalsIgnoreCase("")
@@ -263,12 +276,18 @@ public class ChargePanel extends HLayout {
 				// + abonentName);
 				// }
 				if (phoneDescription != null
-						&& !phoneDescription.trim().equalsIgnoreCase("")) {
+						&& !phoneDescription.trim().equalsIgnoreCase("")
+						&& serverSession.isAbonentVisible()) {
 					currentNameItem.setValue(abonentName + ", "
 							+ phoneDescription);
 				} else if (abonentName != null
-						&& !abonentName.trim().equalsIgnoreCase("")) {
+						&& !abonentName.trim().equalsIgnoreCase("")
+						&& serverSession.isAbonentVisible()) {
 					currentNameItem.setValue(abonentName);
+				} else if (!serverSession.isAbonentVisible()
+						&& abonentName != null
+						&& !abonentName.trim().equalsIgnoreCase("")) {
+					currentNameItem.setValue("დაფარულია");
 				}
 				currentNumberItem.setValue(phone);
 
@@ -287,7 +306,8 @@ public class ChargePanel extends HLayout {
 					prevNumberItem.setValue(prevPhone);
 
 					if (prevAbonentName != null
-							&& !prevAbonentName.trim().equalsIgnoreCase("")) {
+							&& !prevAbonentName.trim().equalsIgnoreCase("")
+							&& prevServerSession.isAbonentVisible()) {
 						prevNameItem.setValue(prevAbonentName);
 					}
 				}
@@ -344,8 +364,23 @@ public class ChargePanel extends HLayout {
 				SC.say(CallCenterBK.constants.phoneIsNotMobile());
 				return;
 			}
-			DlgAddTreatments dlgAddTreatment = new DlgAddTreatments();
-			dlgAddTreatment.show();
+			// TODO
+			// DlgAddTreatments dlgAddTreatment = new DlgAddTreatments();
+			// dlgAddTreatment.show();
+
+			if (serverSession.getTreatment() == null) {
+				String serverSession_phone = serverSession.getPhone();
+				Treatments treatments = new Treatments();
+				treatments.setPhone_number(serverSession_phone);
+				DlgAddEditTreatments dlgAddEditTreatments = new DlgAddEditTreatments(
+						new ListGrid(), null, treatments);
+				dlgAddEditTreatments.show();
+			} else {
+
+				DlgAddEditTreatments dlgAddEditTreatments = new DlgAddEditTreatments(
+						new ListGrid(), null, serverSession.getTreatment());
+				dlgAddEditTreatments.show();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

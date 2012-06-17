@@ -12,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * The persistent class for the TREATMENTS database table.
@@ -22,9 +23,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "TREATMENTS", schema = "ccare")
 public class Treatments implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1000L;
 
 	@Id
+	@Column(name = "TREATMENT_ID")
 	@SequenceGenerator(name = "SEQ_TREATMENTS_GENERATOR", sequenceName = "SEQ_TREATMENTS")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TREATMENTS_GENERATOR")
 	private Long treatment_id;
@@ -45,6 +47,15 @@ public class Treatments implements Serializable {
 	@Column(name = "GENDER")
 	private Long gender;
 
+	@Transient
+	private String loggedUserName;
+
+	@Transient
+	private String gender_descr;
+
+	@Transient
+	private String visible_descr;
+
 	public Treatments() {
 	}
 
@@ -56,12 +67,12 @@ public class Treatments implements Serializable {
 		this.treatment_id = treatment_id;
 	}
 
-	public Long getVisible() {
-		return visible;
+	public String getPhone_number() {
+		return phone_number;
 	}
 
-	public void setVisible(Long visible) {
-		this.visible = visible;
+	public void setPhone_number(String phone_number) {
+		this.phone_number = phone_number;
 	}
 
 	public String getTreatment() {
@@ -72,12 +83,12 @@ public class Treatments implements Serializable {
 		this.treatment = treatment;
 	}
 
-	public String getPhone_number() {
-		return phone_number;
+	public Long getVisible() {
+		return visible;
 	}
 
-	public void setPhone_number(String phone_number) {
-		this.phone_number = phone_number;
+	public void setVisible(Long visible) {
+		this.visible = visible;
 	}
 
 	public Long getGender() {
@@ -88,4 +99,27 @@ public class Treatments implements Serializable {
 		this.gender = gender;
 	}
 
+	public String getLoggedUserName() {
+		return loggedUserName;
+	}
+
+	public void setLoggedUserName(String loggedUserName) {
+		this.loggedUserName = loggedUserName;
+	}
+
+	public String getGender_descr() {
+		return gender_descr;
+	}
+
+	public void setGender_descr(String gender_descr) {
+		this.gender_descr = gender_descr;
+	}
+
+	public String getVisible_descr() {
+		return visible_descr;
+	}
+
+	public void setVisible_descr(String visible_descr) {
+		this.visible_descr = visible_descr;
+	}
 }

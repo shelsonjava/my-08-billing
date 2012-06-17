@@ -18,6 +18,7 @@ public class ServerSession implements Serializable {
 	private String userName;
 	private String phoneDescription;
 	private String abonentName;
+	private boolean abonentVisible = true;
 	private boolean webSession = true;
 	private int chcount = 0;
 	private Long gender = -1L;
@@ -58,6 +59,14 @@ public class ServerSession implements Serializable {
 		String str = syear.substring(2) + ""
 				+ (month < 10 ? "0" + month : month);
 		yearMonth = Integer.parseInt(str);
+	}
+
+	public boolean isAbonentVisible() {
+		return abonentVisible;
+	}
+
+	public void setAbonentVisible(boolean abonentVisible) {
+		this.abonentVisible = abonentVisible;
 	}
 
 	public String getSessionId() {

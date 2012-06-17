@@ -73,22 +73,22 @@
 		
 		<operationBinding operationId="searchOrgDepPhonesHist" operationType="fetch">			
 			<selectClause>
-				  t.org_department_id, 
-				  t.phone_number_id, 
-				  t.hidden_by_request, 
-				  t.phone_contract_type, 
-				  t.for_contact,
-				  t.phone,
-				  t.phone_state_id,
-				  t.phone_type_id,
-				  t.is_parallel,
-				  t.phone_order,
+				  org_department_id, 
+				  phone_number_id, 
+				  hidden_by_request, 
+				  phone_contract_type, 
+				  for_contact,
+				  phone,
+				  phone_state_id,
+				  phone_type_id,
+				  is_parallel,
+				  phone_order,
 				  decode(hidden_by_request,1,'დაფარული','ღია') as hidden_by_request_descr,
-				  getdescription(t.phone_contract_type) as phone_contract_type_descr,
-				  decode(t.for_contact,1,'დიახ','არა') as for_contact_descr,
-				  getdescription(t.phone_state_id) as phone_state_descr,
-				  getdescription(t.phone_type_id) as phone_type_descr,
-				  decode(t.is_parallel,1,'დიახ','არა') as is_parallel_descr,
+				  getdescription(phone_contract_type) as phone_contract_type_descr,
+				  decode(for_contact,1,'დიახ','არა') as for_contact_descr,
+				  getdescription(phone_state_id) as phone_state_descr,
+				  getdescription(phone_type_id) as phone_type_descr,
+				  decode(is_parallel,1,'დიახ','არა') as is_parallel_descr,
 			      hist_start_date, 
 				  hist_end_date, 
 				  start_rcn, 
@@ -97,12 +97,12 @@
 				  off_user,
 				  rdeleted
 			</selectClause>
-			<tableClause>HIST_ORG_DEPART_TO_PHONES_VIEW p</tableClause>
+			<tableClause>HIST_ORG_DEPART_TO_PHONES_VIEW</tableClause>
 			<whereClause>
 				 <![CDATA[	
 				 	 1 = 1			 	 
-					 #if($criteria.org_department_id) and t.org_department_id = $criteria.org_department_id #else and 1=0 #end
-					 #if($criteria.phone) and p.phone like '%'||$criteria.phone||'%' #end
+					 #if($criteria.org_department_id) and org_department_id = $criteria.org_department_id #else and 1=0 #end
+					 #if($criteria.phone) and phone like '%'||$criteria.phone||'%' #end
 				 ]]>
 			</whereClause>
 			<orderClause>phone, start_rcn desc</orderClause>

@@ -348,7 +348,7 @@
 			<tableClause>HIST_V_ORGANIZATION_DEPARTMENT</tableClause>
 			<whereClause>
 				 <![CDATA[
-				 	#if($criteria.organization_id) t1.organization_id = $criteria.organization_id #end
+				 	#if($criteria.organization_id) organization_id = $criteria.organization_id #end
 				 ]]>
 			</whereClause>
 			<orderClause>org_department_id, start_rcn desc</orderClause>

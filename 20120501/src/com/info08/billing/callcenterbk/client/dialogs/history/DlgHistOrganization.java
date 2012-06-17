@@ -34,6 +34,8 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
+import com.smartgwt.client.widgets.viewer.DetailViewer;
+import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
 public class DlgHistOrganization extends Window {
 
@@ -57,14 +59,18 @@ public class DlgHistOrganization extends Window {
 	private IButton clearButton;
 	private IButton histOrgButton;
 
-	private ListGrid histSubscriberListGrid;
+	private ListGrid histOrganizaionListGrid;
 	private ListGrid partnerBankListGrid;
 	private ListGrid activitiesListGrid;
+	private ListGrid departmentListGrid;
+	private ListGrid phonesListGrid;
 	// private ListGrid histSubscriberPhoneListGrid;
-	private DataSource SubscriberDS;
-	private DataSource AbPhonesDS;
+	private DataSource OrgDS;
+	private DataSource OrgDepartmentDS;
+	private DataSource OrgDepPhoneDS;
 
 	private TabSet topTabSet;
+	private DetailViewer detailViewer;
 
 	public DlgHistOrganization(final Record abonentRecord) {
 		try {
@@ -80,6 +86,9 @@ public class DlgHistOrganization extends Window {
 			setCanDragScroll(false);
 			centerInPage();
 
+			boolean hasPermission = CommonSingleton.getInstance()
+					.hasPermission("106500");
+
 			hLayout = new VLayout(5);
 			hLayout.setWidth100();
 			hLayout.setHeight100();
@@ -88,8 +97,9 @@ public class DlgHistOrganization extends Window {
 			Date startDate = new Date();
 			CalendarUtil.addMonthsToDate(startDate, -1);
 
-			SubscriberDS = DataSource.get("SubscriberDS");
-			AbPhonesDS = DataSource.get("AbPhonesDS");
+			OrgDS = DataSource.get("OrgDS");
+			OrgDepartmentDS = DataSource.get("OrgDepartmentDS");
+			OrgDepPhoneDS = DataSource.get("OrgDepPhoneDS");
 
 			orgNameItem = new TextItem();
 			orgNameItem.setTitle(CallCenterBK.constants.orgName());
@@ -163,7 +173,8 @@ public class DlgHistOrganization extends Window {
 				@Override
 				public void onClick(ClickEvent event) {
 					ListGridRecord listGridRecord = null;
-					listGridRecord = histSubscriberListGrid.getSelectedRecord();
+					listGridRecord = histOrganizaionListGrid
+							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say("მონიშნეთ ჩანაწერი ცხრილში");
 						return;
@@ -182,54 +193,58 @@ public class DlgHistOrganization extends Window {
 			buttonLayout.setMembers(histOrgButton, spacesLayout, findButton,
 					clearButton);
 
-			histSubscriberListGrid = new ListGrid();
-			histSubscriberListGrid.setWidth100();
-			histSubscriberListGrid.setHeight(200);
-			histSubscriberListGrid.setAlternateRecordStyles(true);
-			histSubscriberListGrid.setDataSource(SubscriberDS);
-			histSubscriberListGrid.setAutoFetchData(false);
-			histSubscriberListGrid.setShowFilterEditor(false);
-			histSubscriberListGrid.setCanEdit(false);
-			histSubscriberListGrid.setCanRemoveRecords(false);
-			histSubscriberListGrid.setFetchOperation("histSearch");
-			histSubscriberListGrid.setCanSort(false);
-			histSubscriberListGrid.setCanResizeFields(false);
-			histSubscriberListGrid.setWrapCells(true);
-			histSubscriberListGrid.setFixedRecordHeights(false);
-			histSubscriberListGrid.setCanDragSelectText(true);
+			histOrganizaionListGrid = new ListGrid() {
+				@Override
+				protected String getCellCSSText(ListGridRecord record,
+						int rowNum, int colNum) {
+					String rdeleted = record.getAttribute("rdeleted");
+					if (rdeleted != null)
+						if (rdeleted.trim().equals("true"))
+							return "color:red;";
+						else
+							return super.getCellCSSText(record, rowNum, colNum);
+					else
+						return super.getCellCSSText(record, rowNum, colNum);
+				}
+			};
+			histOrganizaionListGrid.setWidth100();
+			histOrganizaionListGrid.setHeight(200);
+			histOrganizaionListGrid.setAlternateRecordStyles(true);
+			histOrganizaionListGrid.setDataSource(OrgDS);
+			histOrganizaionListGrid.setAutoFetchData(false);
+			histOrganizaionListGrid.setShowFilterEditor(false);
+			histOrganizaionListGrid.setCanEdit(false);
+			histOrganizaionListGrid.setCanRemoveRecords(false);
+			histOrganizaionListGrid.setFetchOperation("histSearch");
+			histOrganizaionListGrid.setCanSort(false);
+			histOrganizaionListGrid.setCanResizeFields(false);
+			histOrganizaionListGrid.setWrapCells(true);
+			histOrganizaionListGrid.setFixedRecordHeights(false);
+			histOrganizaionListGrid.setCanDragSelectText(true);
 
-			histSubscriberListGrid.setGroupStartOpen(GroupStartOpen.ALL);
-			histSubscriberListGrid.setGroupByField("subscriber_id");
+			histOrganizaionListGrid.setGroupStartOpen(GroupStartOpen.ALL);
+			histOrganizaionListGrid.setGroupByField("organization_id");
 
-			ListGridField subscriber_id = new ListGridField("subscriber_id",
-					"სახელი", 100);
+			ListGridField organization_id = new ListGridField(
+					"organization_id", "", 100);
 
-			subscriber_id.setGroupTitleRenderer(new GroupTitleRenderer() {
+			organization_id.setGroupTitleRenderer(new GroupTitleRenderer() {
 
 				@Override
 				public String getGroupTitle(Object groupValue,
 						GroupNode groupNode, ListGridField field,
 						String fieldName, ListGrid grid) {
-					return "აბონენტი";
+					return "ორგანიზაცია";
 				}
 			});
-			subscriber_id.setHidden(true);
-			ListGridField first_name = new ListGridField("name", "სახელი", 100);
-			first_name.setAlign(Alignment.LEFT);
+			organization_id.setHidden(true);
+			ListGridField l_original_org_name = new ListGridField(
+					"original_org_name", "დასახელება", 400);
+			l_original_org_name.setAlign(Alignment.LEFT);
 
-			ListGridField last_name = new ListGridField("family_name", "გვარი",
-					100);
-			last_name.setAlign(Alignment.LEFT);
-
-			ListGridField town = new ListGridField("town_name",
-					CallCenterBK.constants.town(), 120);
-			town.setAlign(Alignment.CENTER);
-
-			ListGridField street = new ListGridField("concat_address",
-					CallCenterBK.constants.street());
-
-			boolean hasPermission = CommonSingleton.getInstance()
-					.hasPermission("106500");
+			ListGridField l_full_address_not_hidden = new ListGridField(
+					"full_address_not_hidden", "მისამართი");
+			l_full_address_not_hidden.setAlign(Alignment.LEFT);
 
 			ListGridField hist_user_on = new ListGridField("on_user", "დაამატა");
 			hist_user_on.setWidth(50);
@@ -244,99 +259,21 @@ public class DlgHistOrganization extends Window {
 			ListGridField hist_end = new ListGridField("hist_end_date", "-მდე");
 			hist_end.setWidth(120);
 
+			ListGridField ph_deleted_org = new ListGridField("rdeleted",
+					"წაშლილი");
+			ph_deleted_org.setWidth(70);
+			ph_deleted_org.setType(ListGridFieldType.BOOLEAN);
+
 			if (hasPermission) {
-				histSubscriberListGrid.setFields(subscriber_id, first_name,
-						last_name, town, street, hist_user_on, hist_start,
-						hist_user_off, hist_end);
+				histOrganizaionListGrid.setFields(organization_id,
+						l_original_org_name, l_full_address_not_hidden,
+						hist_user_on, hist_start, hist_user_off, hist_end,
+						ph_deleted_org);
 			} else {
-				histSubscriberListGrid.setFields(subscriber_id, first_name,
-						last_name, town, street, hist_start, hist_end);
+				histOrganizaionListGrid.setFields(organization_id,
+						l_original_org_name, l_full_address_not_hidden,
+						hist_start, hist_end, ph_deleted_org);
 			}
-
-//			histSubscriberPhoneListGrid = new ListGrid() {
-//				@Override
-//				protected String getCellCSSText(ListGridRecord record,
-//						int rowNum, int colNum) {
-//					String rdeleted = record.getAttribute("rdeleted");
-//					if (rdeleted != null)
-//						if (rdeleted.trim().equals("true"))
-//							return "color:red;";
-//						else
-//							return super.getCellCSSText(record, rowNum, colNum);
-//					else
-//						return super.getCellCSSText(record, rowNum, colNum);
-//				}
-//			};
-//			histSubscriberPhoneListGrid.setWidth100();
-//			histSubscriberPhoneListGrid.setHeight(180);
-//			histSubscriberPhoneListGrid.setAlternateRecordStyles(true);
-//			histSubscriberPhoneListGrid.setDataSource(AbPhonesDS);
-//			histSubscriberPhoneListGrid.setAutoFetchData(false);
-//			histSubscriberPhoneListGrid.setShowFilterEditor(false);
-//			histSubscriberPhoneListGrid.setCanEdit(false);
-//			histSubscriberPhoneListGrid.setCanRemoveRecords(false);
-//			histSubscriberPhoneListGrid
-//					.setFetchOperation("getPhoneHistoryForSubscriber");
-//			histSubscriberPhoneListGrid.setCanSort(false);
-//			histSubscriberPhoneListGrid.setCanResizeFields(false);
-//			histSubscriberPhoneListGrid.setWrapCells(true);
-//			histSubscriberPhoneListGrid.setFixedRecordHeights(false);
-//			histSubscriberPhoneListGrid.setCanDragSelectText(true);
-//			histSubscriberPhoneListGrid.setGroupStartOpen(GroupStartOpen.ALL);
-//			histSubscriberPhoneListGrid.setGroupByField("phone");
-
-			ListGridField phones = new ListGridField("phone",
-					CallCenterBK.constants.phone(), 100);
-			phones.setHidden(true);
-			first_name.setAlign(Alignment.LEFT);
-
-			ListGridField phone_state = new ListGridField("phone_state",
-					CallCenterBK.constants.phoneState(), 100);
-			phone_state.setAlign(Alignment.LEFT);
-
-			ListGridField phone_contract_type_desr = new ListGridField(
-					"phone_contract_type_desr",
-					CallCenterBK.constants.phoneStatus(), 100);
-			phone_contract_type_desr.setAlign(Alignment.CENTER);
-
-			ListGridField phone_type = new ListGridField("phone_type", "ტიპი",
-					100);
-
-			ListGridField is_parallel_descr = new ListGridField(
-					"is_parallel_descr", "პარალელური");
-			ListGridField hidden_by_request_descr = new ListGridField(
-					"hidden_by_request_descr", "ღია/დაფარული");
-
-			ListGridField ph_hist_user_on = new ListGridField("on_user",
-					"დაამატა");
-			ph_hist_user_on.setWidth(80);
-			ListGridField ph_hist_user_off = new ListGridField("off_user",
-					"შეცვალა");
-			ph_hist_user_off.setWidth(80);
-			ListGridField ph_hist_start = new ListGridField("hist_start_date",
-					"-დან");
-			ph_hist_start.setWidth(100);
-
-			ListGridField ph_hist_end = new ListGridField("hist_end_date",
-					"-მდე");
-			ph_hist_end.setWidth(100);
-			ListGridField ph_deleted = new ListGridField("rdeleted", "წაშლილი");
-			ph_deleted.setWidth(70);
-			ph_deleted.setType(ListGridFieldType.BOOLEAN);
-
-//			if (hasPermission) {
-//				histSubscriberPhoneListGrid.setFields(phones,
-//						hidden_by_request_descr, phone_state,
-//						phone_contract_type_desr, phone_type,
-//						is_parallel_descr, ph_hist_user_on, ph_hist_start,
-//						ph_hist_user_off, ph_hist_end, ph_deleted);
-//			} else {
-//				histSubscriberPhoneListGrid.setFields(phones,
-//						hidden_by_request_descr, phone_state,
-//						phone_contract_type_desr, phone_type,
-//						is_parallel_descr, ph_hist_start, ph_hist_end,
-//						ph_deleted);
-//			}
 
 			findButton.addClickHandler(new ClickHandler() {
 
@@ -365,36 +302,237 @@ public class DlgHistOrganization extends Window {
 			phoneItem.addKeyPressHandler(keyPressHandler);
 			districtItem.addKeyPressHandler(keyPressHandler);
 
-			histSubscriberListGrid.addClickHandler(new ClickHandler() {
+			histOrganizaionListGrid.addClickHandler(new ClickHandler() {
 
 				@Override
 				public void onClick(ClickEvent event) {
-					//searchPhones();
+					if (histOrganizaionListGrid.getSelectedRecord() != null) {
+						searchBankPartners();
+						searchActivities();
+						searchDepartments();
+
+						detailViewer.viewSelectedData(histOrganizaionListGrid);
+					}
 				}
 			});
-			
-			
-			
-			
-			
-			
-			
 
-			HLayout formsLayout = new HLayout();
-			formsLayout.setWidth100();
-			formsLayout.setHeight100();
+			partnerBankListGrid = new ListGrid() {
+				@Override
+				protected String getCellCSSText(ListGridRecord record,
+						int rowNum, int colNum) {
+					String rdeleted = record.getAttribute("rdeleted");
+					if (rdeleted != null)
+						if (rdeleted.trim().equals("true"))
+							return "color:red;";
+						else
+							return super.getCellCSSText(record, rowNum, colNum);
+					else
+						return super.getCellCSSText(record, rowNum, colNum);
+				}
+			};
+			partnerBankListGrid.setWidth100();
+			partnerBankListGrid.setHeight("50%");
+			partnerBankListGrid.setAlternateRecordStyles(true);
+			partnerBankListGrid.setDataSource(OrgDS);
+			partnerBankListGrid.setAutoFetchData(false);
+			partnerBankListGrid.setShowFilterEditor(false);
+			partnerBankListGrid.setCanEdit(false);
+			partnerBankListGrid.setCanRemoveRecords(false);
+			partnerBankListGrid.setFetchOperation("searchOrgPartnerBanksHist");
+			partnerBankListGrid.setCanSort(false);
+			partnerBankListGrid.setCanResizeFields(false);
+			partnerBankListGrid.setWrapCells(true);
+			partnerBankListGrid.setFixedRecordHeights(false);
+			partnerBankListGrid.setCanDragSelectText(true);
 
-			VLayout leftLayOut = new VLayout();
-			leftLayOut.setHeight100();
+			ListGridField partnior_bank_name = new ListGridField(
+					"organization_name", "პარტნიორი ბანკი");
+			partnior_bank_name.setAlign(Alignment.LEFT);
 
-			VLayout rigthLayOut = new VLayout();
-			rigthLayOut.setHeight100();
+			ListGridField pb_hist_user_on = new ListGridField("on_user",
+					"დაამატა");
+			pb_hist_user_on.setWidth(50);
 
-			leftLayOut.setMembers();
+			ListGridField pb_hist_user_off = new ListGridField("off_user",
+					"შეცვალა");
+			pb_hist_user_off.setWidth(50);
+			ListGridField pb_hist_start = new ListGridField("hist_start_date",
+					"-დან");
+			pb_hist_start.setWidth(120);
 
-			rigthLayOut.addMembers();
+			ListGridField pb_hist_end = new ListGridField("hist_end_date",
+					"-მდე");
+			pb_hist_end.setWidth(120);
 
-			formsLayout.setMembers(leftLayOut, rigthLayOut);
+			ListGridField ph_deleted_par = new ListGridField("rdeleted",
+					"წაშლილი");
+			ph_deleted_par.setWidth(70);
+			ph_deleted_par.setType(ListGridFieldType.BOOLEAN);
+
+			if (hasPermission) {
+				partnerBankListGrid.setFields(partnior_bank_name,
+						pb_hist_user_on, pb_hist_start, pb_hist_user_off,
+						pb_hist_end, ph_deleted_par);
+			} else {
+				partnerBankListGrid.setFields(partnior_bank_name,
+						pb_hist_start, pb_hist_end, ph_deleted_par);
+			}
+
+			activitiesListGrid = new ListGrid() {
+				@Override
+				protected String getCellCSSText(ListGridRecord record,
+						int rowNum, int colNum) {
+					String rdeleted = record.getAttribute("rdeleted");
+					if (rdeleted != null)
+						if (rdeleted.trim().equals("true"))
+							return "color:red;";
+						else
+							return super.getCellCSSText(record, rowNum, colNum);
+					else
+						return super.getCellCSSText(record, rowNum, colNum);
+				}
+			};
+			activitiesListGrid.setWidth100();
+			activitiesListGrid.setHeight("50%");
+			activitiesListGrid.setAlternateRecordStyles(true);
+			activitiesListGrid.setDataSource(OrgDS);
+			activitiesListGrid.setAutoFetchData(false);
+			activitiesListGrid.setShowFilterEditor(false);
+			activitiesListGrid.setCanEdit(false);
+			activitiesListGrid.setCanRemoveRecords(false);
+			activitiesListGrid.setFetchOperation("searchOrgAcctivitiesHist");
+			activitiesListGrid.setCanSort(false);
+			activitiesListGrid.setCanResizeFields(false);
+			activitiesListGrid.setWrapCells(true);
+			activitiesListGrid.setFixedRecordHeights(false);
+			activitiesListGrid.setCanDragSelectText(true);
+
+			ListGridField org_acctivity_name = new ListGridField(
+					"org_acctivity_name", "საქმიანობა");
+			partnior_bank_name.setAlign(Alignment.LEFT);
+
+			ListGridField acct_hist_user_on = new ListGridField("on_user",
+					"დაამატა");
+			acct_hist_user_on.setWidth(50);
+
+			ListGridField acct_hist_user_off = new ListGridField("off_user",
+					"შეცვალა");
+			acct_hist_user_off.setWidth(50);
+			ListGridField acct_hist_start = new ListGridField(
+					"hist_start_date", "-დან");
+			acct_hist_start.setWidth(120);
+
+			ListGridField acct_hist_end = new ListGridField("hist_end_date",
+					"-მდე");
+			acct_hist_end.setWidth(120);
+
+			ListGridField ph_deleted_acc = new ListGridField("rdeleted",
+					"წაშლილი");
+			ph_deleted_acc.setWidth(70);
+			ph_deleted_acc.setType(ListGridFieldType.BOOLEAN);
+
+			if (hasPermission) {
+				activitiesListGrid.setFields(org_acctivity_name,
+						acct_hist_user_on, acct_hist_start, acct_hist_user_off,
+						acct_hist_end, ph_deleted_acc);
+			} else {
+				activitiesListGrid.setFields(org_acctivity_name,
+						acct_hist_start, acct_hist_end, ph_deleted_acc);
+			}
+
+			OrgDS.getField("original_org_name").setTitle(
+					CallCenterBK.constants.organization());
+			OrgDS.getField("full_address_not_hidden").setTitle(
+					CallCenterBK.constants.realAddress());
+			OrgDS.getField("priority").setTitle("priority");
+			// OrgDS.getField("dob_descr").setTitle("დაბადების თარიღი");
+			// OrgDS.getField("department_name").setTitle("განყოფილება");
+			// OrgDS.getField("remark").setTitle("კომენტარი");
+			// OrgDS.getField("start_date_descr").setTitle("დაწყების თარიღი");
+			// OrgDS.getField("gender_descr").setTitle("სქესი");
+
+			detailViewer = new DetailViewer();
+			detailViewer.setCanSelectText(true);
+			detailViewer.setDataSource(OrgDS);
+			DetailViewerField original_org_name = new DetailViewerField(
+					"original_org_name", CallCenterBK.constants.organization());
+
+			DetailViewerField full_address_not_hiddenDF = new DetailViewerField(
+					"full_address_not_hidden",
+					CallCenterBK.constants.realAddress());
+
+			DetailViewerField priority = new DetailViewerField(
+					"priority_descr", "გაწითლებული");
+
+			DetailViewerField super_priority_descr = new DetailViewerField(
+					"priority_descr", "პრიორიტეტი");
+
+			DetailViewerField ident_code = new DetailViewerField("ident_code",
+					"საიდენტიფიკაციო კოდი");
+
+			DetailViewerField ident_code_new = new DetailViewerField(
+					"ident_code_new", "საიდენტიფიკაციო კოდი (ახალი)");
+
+			DetailViewerField chief = new DetailViewerField("chief",
+					CallCenterBK.constants.director());
+
+			DetailViewerField remark = new DetailViewerField("remark",
+					CallCenterBK.constants.comment());
+
+			DetailViewerField work_hours = new DetailViewerField("work_hours",
+					CallCenterBK.constants.workinghours());
+
+			DetailViewerField found_date = new DetailViewerField("found_date",
+					CallCenterBK.constants.orgFoundDateStart());
+
+			DetailViewerField email_address = new DetailViewerField(
+					"email_address", CallCenterBK.constants.eMail());
+
+			DetailViewerField additional_info = new DetailViewerField(
+					"additional_info", "დამატებითი ინფორმაცია");
+
+			DetailViewerField web_address = new DetailViewerField(
+					"web_address", CallCenterBK.constants.webaddress());
+
+			DetailViewerField contact_person = new DetailViewerField(
+					"contact_person", "საკონტაქტო პირი");
+
+			DetailViewerField day_offs_descr = new DetailViewerField(
+					"day_offs_descr", CallCenterBK.constants.dayOffs());
+
+			DetailViewerField staff_count = new DetailViewerField(
+					"staff_count", "თანამშრომლების რაოდენობა");
+
+			detailViewer.setFields(original_org_name,
+					full_address_not_hiddenDF, priority, super_priority_descr,
+					ident_code, ident_code_new, chief, remark, work_hours,
+					found_date, email_address, additional_info, web_address,
+					contact_person, day_offs_descr, staff_count);
+
+			detailViewer.setWidth100();
+			detailViewer.setHeight100();
+
+			VLayout orgDetLayout = new VLayout();
+			orgDetLayout.setWidth100();
+			orgDetLayout.setHeight100();
+			orgDetLayout.setMembers(partnerBankListGrid, activitiesListGrid);
+
+			HLayout tabOrgHistLayout = new HLayout();
+			tabOrgHistLayout.setWidth100();
+			tabOrgHistLayout.setHeight100();
+
+			HLayout leftLayout = new HLayout();
+			leftLayout.setHeight100();
+			leftLayout.setWidth100();
+
+			// VLayout rigthLayout = new VLayout();
+			// rigthLayout.setHeight100();
+
+			leftLayout.setMembers(detailViewer, orgDetLayout);
+
+			// rigthLayout.addMembers();
+
+			tabOrgHistLayout.setMembers(leftLayout);// , rigthLayout);
 
 			topTabSet = new TabSet();
 			topTabSet.setTabBarPosition(Side.TOP);
@@ -402,8 +540,177 @@ public class DlgHistOrganization extends Window {
 			topTabSet.setHeight100();
 
 			Tab tabMainInfo = new Tab("ორგანიზაციის ისტორია");
-			tabMainInfo.setPane(formsLayout);
+			tabMainInfo.setPane(tabOrgHistLayout);
 			topTabSet.addTab(tabMainInfo);
+
+			VLayout tabDepHistLayout = new VLayout();
+			tabDepHistLayout.setWidth100();
+			tabDepHistLayout.setHeight100();
+
+			departmentListGrid = new ListGrid() {
+				@Override
+				protected String getCellCSSText(ListGridRecord record,
+						int rowNum, int colNum) {
+					String rdeleted = record.getAttribute("rdeleted");
+					if (rdeleted != null)
+						if (rdeleted.trim().equals("true"))
+							return "color:red;";
+						else
+							return super.getCellCSSText(record, rowNum, colNum);
+					else
+						return super.getCellCSSText(record, rowNum, colNum);
+				}
+			};
+			departmentListGrid.setWidth100();
+			departmentListGrid.setHeight("50%");
+			departmentListGrid.setAlternateRecordStyles(true);
+			departmentListGrid.setDataSource(OrgDepartmentDS);
+			departmentListGrid.setAutoFetchData(false);
+			departmentListGrid.setShowFilterEditor(false);
+			departmentListGrid.setCanEdit(false);
+			departmentListGrid.setCanRemoveRecords(false);
+			departmentListGrid.setFetchOperation("searchOrgDepartmentHist");
+			departmentListGrid.setCanSort(false);
+			departmentListGrid.setCanResizeFields(false);
+			departmentListGrid.setWrapCells(true);
+			departmentListGrid.setFixedRecordHeights(false);
+			departmentListGrid.setCanDragSelectText(true);
+
+			ListGridField department = new ListGridField("department",
+					"დეპარტამენტი");
+			partnior_bank_name.setAlign(Alignment.LEFT);
+
+			ListGridField full_address_not_hidden = new ListGridField(
+					"full_address_not_hidden", "მისამართი");
+			partnior_bank_name.setAlign(Alignment.LEFT);
+
+			ListGridField dep_hist_user_on = new ListGridField("on_user",
+					"დაამატა");
+			dep_hist_user_on.setWidth(50);
+
+			ListGridField dep_hist_user_off = new ListGridField("off_user",
+					"შეცვალა");
+			dep_hist_user_off.setWidth(50);
+			ListGridField dep_hist_start = new ListGridField("hist_start_date",
+					"-დან");
+			dep_hist_start.setWidth(120);
+
+			ListGridField dep_hist_end = new ListGridField("hist_end_date",
+					"-მდე");
+			dep_hist_end.setWidth(120);
+
+			ListGridField ph_deleted_d = new ListGridField("rdeleted",
+					"წაშლილი");
+			ph_deleted_d.setWidth(70);
+			ph_deleted_d.setType(ListGridFieldType.BOOLEAN);
+
+			if (hasPermission) {
+				departmentListGrid.setFields(department,
+						full_address_not_hidden, dep_hist_user_on,
+						dep_hist_start, dep_hist_user_off, dep_hist_end,
+						ph_deleted_d);
+			} else {
+				departmentListGrid.setFields(department,
+						full_address_not_hidden, dep_hist_start, dep_hist_end,
+						ph_deleted_d);
+			}
+
+			departmentListGrid.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					if (departmentListGrid.getSelectedRecord() != null) {
+						searchDepPhones();
+					}
+				}
+			});
+
+			phonesListGrid = new ListGrid() {
+				@Override
+				protected String getCellCSSText(ListGridRecord record,
+						int rowNum, int colNum) {
+					String rdeleted = record.getAttribute("rdeleted");
+					if (rdeleted != null)
+						if (rdeleted.trim().equals("true"))
+							return "color:red;";
+						else
+							return super.getCellCSSText(record, rowNum, colNum);
+					else
+						return super.getCellCSSText(record, rowNum, colNum);
+				}
+			};
+			phonesListGrid.setWidth100();
+			phonesListGrid.setHeight("50%");
+			phonesListGrid.setAlternateRecordStyles(true);
+			phonesListGrid.setDataSource(OrgDepPhoneDS);
+			phonesListGrid.setAutoFetchData(false);
+			phonesListGrid.setShowFilterEditor(false);
+			phonesListGrid.setCanEdit(false);
+			phonesListGrid.setCanRemoveRecords(false);
+			phonesListGrid.setFetchOperation("searchOrgDepPhonesHist");
+			phonesListGrid.setCanSort(false);
+			phonesListGrid.setCanResizeFields(false);
+			phonesListGrid.setWrapCells(true);
+			phonesListGrid.setFixedRecordHeights(false);
+			phonesListGrid.setCanDragSelectText(true);
+
+			ListGridField phone = new ListGridField("phone",
+					CallCenterBK.constants.phone(), 100);
+
+			ListGridField phone_state_l = new ListGridField(
+					"phone_state_descr", CallCenterBK.constants.phoneState(),
+					100);
+			phone_state_l.setAlign(Alignment.LEFT);
+
+			ListGridField phone_contract_type_desr_l = new ListGridField(
+					"phone_contract_type_descr",
+					CallCenterBK.constants.phoneStatus(), 100);
+			phone_contract_type_desr_l.setAlign(Alignment.CENTER);
+
+			ListGridField phone_type_l = new ListGridField("phone_type_descr",
+					"ტიპი", 100);
+
+			ListGridField is_parallel_descr_l = new ListGridField(
+					"is_parallel_descr", "პარალელური");
+			ListGridField hidden_by_request_descr_l = new ListGridField(
+					"hidden_by_request_descr", "ღია/დაფარული");
+
+			ListGridField ph_hist_user_on_l = new ListGridField("on_user",
+					"დაამატა");
+			ph_hist_user_on_l.setWidth(80);
+			ListGridField ph_hist_user_off_l = new ListGridField("off_user",
+					"შეცვალა");
+			ph_hist_user_off_l.setWidth(80);
+			ListGridField ph_hist_start_l = new ListGridField(
+					"hist_start_date", "-დან");
+			ph_hist_start_l.setWidth(100);
+
+			ListGridField ph_hist_end_l = new ListGridField("hist_end_date",
+					"-მდე");
+			ph_hist_end_l.setWidth(100);
+			ListGridField ph_deleted_l = new ListGridField("rdeleted",
+					"წაშლილი");
+			ph_deleted_l.setWidth(70);
+			ph_deleted_l.setType(ListGridFieldType.BOOLEAN);
+
+			if (hasPermission) {
+				phonesListGrid.setFields(phone, hidden_by_request_descr_l,
+						phone_state_l, phone_contract_type_desr_l,
+						phone_type_l, is_parallel_descr_l, ph_hist_user_on_l,
+						ph_hist_start_l, ph_hist_user_off_l, ph_hist_end_l,
+						ph_deleted_l);
+			} else {
+				phonesListGrid.setFields(phone, hidden_by_request_descr_l,
+						phone_state_l, phone_contract_type_desr_l,
+						phone_type_l, is_parallel_descr_l, ph_hist_start_l,
+						ph_hist_end_l, ph_deleted_l);
+			}
+
+			tabDepHistLayout.setMembers(departmentListGrid, phonesListGrid);
+
+			Tab tabDepInfo = new Tab("დეპარტამენტების ისტორია");
+			tabDepInfo.setPane(tabDepHistLayout);
+			topTabSet.addTab(tabDepInfo);
 
 			hLayout.addMember(searchForm);
 			hLayout.addMember(buttonLayout);
@@ -411,7 +718,7 @@ public class DlgHistOrganization extends Window {
 			if (abonentRecord != null) {
 				searchBySubscriber(abonentRecord);
 			}
-			hLayout.addMember(histSubscriberListGrid);
+			hLayout.addMember(histOrganizaionListGrid);
 			hLayout.addMember(topTabSet);
 			addItem(hLayout);
 
@@ -423,29 +730,58 @@ public class DlgHistOrganization extends Window {
 
 	private void search() {
 		try {
-			String firstName = orgNameItem.getValueAsString();
-			String lastName = remarkItem.getValueAsString();
-			String phone = phoneItem.getValueAsString();
-			// Date startDate = histStartDateItem.getValueAsDate();
-			// Date endDate = histEndDateItem.getValueAsDate();
+			String orgName = orgNameItem.getValueAsString();
+			String remark = remarkItem.getValueAsString();
+			String departmentName = departmentNameItem.getValueAsString();
+			String ident_code = identCodeItem.getValueAsString();
+
+			String street = streetItem.getValueAsString();
+			String town_name = townItem.getValueAsString();
+			String town_district = districtItem.getValueAsString();
+			String phone_number = phoneItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
 
-			if ((firstName == null || lastName == null) && phone == null) {
-				SC.say("გთხოვთ შეიყვანოთ აუცილებელი კრიტერიები!");
+			if ((orgName == null || orgName.equals(""))
+					&& (remark == null || remark.equals(""))
+					&& (departmentName == null || departmentName.equals(""))
+					&& (ident_code == null || ident_code.equals(""))
+					&& (phone_number == null || phone_number.equals(""))) {
+				SC.say("გთხოვთ შეიყვანოთ აუცილებელი მნიშვნელობები!");
 				return;
+
 			}
 
-			if (firstName != null && !firstName.equals("")) {
-				criteria.setAttribute("firstname", firstName);
+			if (orgName != null && !orgName.equals("")) {
+				criteria.setAttribute("original_org_name", orgName);
 			}
 
-			if (lastName != null && !lastName.equals("")) {
-				criteria.setAttribute("lastname", lastName);
+			if (remark != null && !remark.equals("")) {
+				criteria.setAttribute("remark", remark);
 			}
 
-			if (phone != null && !phone.equals("")) {
-				criteria.setAttribute("phone_number", phone);
+			if (departmentName != null && !departmentName.equals("")) {
+				criteria.setAttribute("departmentName", departmentName);
+			}
+
+			if (ident_code != null && !ident_code.equals("")) {
+				criteria.setAttribute("ident_code", ident_code);
+			}
+
+			if (street != null && !street.equals("")) {
+				criteria.setAttribute("concat_address", street);
+			}
+
+			if (town_name != null && !town_name.equals("")) {
+				criteria.setAttribute("town_name", town_name);
+			}
+
+			if (town_district != null && !town_district.equals("")) {
+				criteria.setAttribute("town_district", town_district);
+			}
+
+			if (phone_number != null && !phone_number.equals("")) {
+				criteria.setAttribute("phone_number", phone_number);
 			}
 
 			searchByCriteria(criteria);
@@ -458,47 +794,135 @@ public class DlgHistOrganization extends Window {
 		DSRequest dsRequest = new DSRequest();
 		dsRequest.setAttribute("operationId", "histSearch");
 		// histSubscriberListGrid.invalidateCache();
-		histSubscriberListGrid.filterData(criteria, new DSCallback() {
+		histOrganizaionListGrid.filterData(criteria, new DSCallback() {
 			@Override
 			public void execute(DSResponse response, Object rawData,
 					DSRequest request) {
-				histSubscriberListGrid.getGroupTree().openAll();
+				histOrganizaionListGrid.getGroupTree().openAll();
 				if (response.getData() != null && response.getData().length > 0) {
-					histSubscriberListGrid.selectRecord(1);
-					//searchPhones();
+					histOrganizaionListGrid.selectRecord(1);
+					// searchPhones();
 				}
 			}
 		}, dsRequest);
 	}
 
-//	private void searchPhones() {
-//		try {
-//			ListGridRecord gridRecord = histSubscriberListGrid
-//					.getSelectedRecord();
-//			String subscriber_id = "";
-//			if (gridRecord != null) {
-//				subscriber_id = gridRecord.getAttribute("subscriber_id");
-//			}
-//			Criteria criteria = new Criteria();
-//			if (!subscriber_id.equals("")) {
-//				criteria.setAttribute("subscriber_id", new Long(subscriber_id));
-//			}
-//
-//			DSRequest dsRequest = new DSRequest();
-//			dsRequest.setAttribute("operationId",
-//					"getPhoneHistoryForSubscriber");
-//			// histSubscriberPhoneListGrid.invalidateCache();
-//			histSubscriberPhoneListGrid.filterData(criteria, new DSCallback() {
-//				@Override
-//				public void execute(DSResponse response, Object rawData,
-//						DSRequest request) {
-//					histSubscriberPhoneListGrid.getGroupTree().openAll();
-//				}
-//			}, dsRequest);
-//		} catch (Exception e) {
-//			SC.say(e.toString());
-//		}
-//	}
+	private void searchBankPartners() {
+		try {
+			ListGridRecord gridRecord = histOrganizaionListGrid
+					.getSelectedRecord();
+			String organization_id = "";
+			if (gridRecord != null) {
+				organization_id = gridRecord.getAttribute("organization_id");
+			}
+			Criteria criteria = new Criteria();
+			if (!organization_id.equals("")) {
+				criteria.setAttribute("organization_id", new Long(
+						organization_id));
+			}
+
+			DSRequest dsRequest = new DSRequest();
+			dsRequest.setAttribute("operationId", "searchOrgPartnerBanksHist");
+			partnerBankListGrid.invalidateCache();
+			partnerBankListGrid.filterData(criteria, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					// partnerBankListGrid.getGroupTree().openAll();
+				}
+			}, dsRequest);
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
+
+	private void searchActivities() {
+		try {
+			ListGridRecord gridRecord = histOrganizaionListGrid
+					.getSelectedRecord();
+			String organization_id = "";
+			if (gridRecord != null) {
+				organization_id = gridRecord.getAttribute("organization_id");
+			}
+			Criteria criteria = new Criteria();
+			if (!organization_id.equals("")) {
+				criteria.setAttribute("organization_id", new Long(
+						organization_id));
+			}
+
+			DSRequest dsRequest = new DSRequest();
+			dsRequest.setAttribute("operationId", "searchOrgAcctivitiesHist");
+			activitiesListGrid.invalidateCache();
+			activitiesListGrid.filterData(criteria, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					// partnerBankListGrid.getGroupTree().openAll();
+				}
+			}, dsRequest);
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
+
+	private void searchDepartments() {
+		try {
+
+			ListGridRecord gridRecord = histOrganizaionListGrid
+					.getSelectedRecord();
+			String organization_id = "";
+			if (gridRecord != null) {
+				organization_id = gridRecord.getAttribute("organization_id");
+			}
+			Criteria criteria = new Criteria();
+			if (!organization_id.equals("")) {
+				criteria.setAttribute("organization_id", new Long(
+						organization_id));
+			}
+
+			DSRequest dsRequest = new DSRequest();
+			dsRequest.setAttribute("operationId", "searchOrgDepartmentHist");
+			departmentListGrid.invalidateCache();
+			departmentListGrid.filterData(criteria, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					searchDepPhones();
+				}
+			}, dsRequest);
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
+
+	private void searchDepPhones() {
+		try {
+			ListGridRecord gridRecord = departmentListGrid.getSelectedRecord();
+			String org_department_id = "";
+			if (gridRecord != null) {
+				org_department_id = gridRecord
+						.getAttribute("org_department_id");
+			}
+			Criteria criteria = new Criteria();
+			if (!org_department_id.equals("")) {
+				criteria.setAttribute("org_department_id", new Long(
+						org_department_id));
+			}
+
+			DSRequest dsRequest = new DSRequest();
+			dsRequest.setAttribute("operationId", "searchOrgDepPhonesHist");
+			phonesListGrid.invalidateCache();
+			phonesListGrid.filterData(criteria, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					// partnerBankListGrid.getGroupTree().openAll();
+				}
+			}, dsRequest);
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
 
 	protected void searchBySubscriber(Record listGridRecord) {
 		Integer subscriber_id = listGridRecord
