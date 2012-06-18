@@ -5,11 +5,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyComboboxItemMultClass;
+import com.info08.billing.callcenterbk.client.common.components.MyComboboxItemMultiple;
 import com.info08.billing.callcenterbk.client.dialogs.history.DlgHistOrganization;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddEditOrganization;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgManageOrgDepartments;
-import com.info08.billing.callcenterbk.client.dialogs.org.DlgOrgAdvSearch;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgSortOrderOrgs;
+import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -28,12 +30,10 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -44,7 +44,6 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -58,12 +57,10 @@ public class TabOrganization extends Tab {
 
 	// form fields
 	private TextItem orgNameGeoItem;
-	// private TextItem orgNameEngItem;
 	private TextItem orgCommentItem;
 	private TextItem orgDirectorItem;
-	private TextItem orgLegalAddressItem;
+	private TextItem orgDepartmentItem;
 	private TextItem orgIdentCodeItem;
-	// private TextItem orgIdentCodeNewItem;
 	private TextItem orgWebAddressItem;
 	private TextItem orgEmailItem;
 	private TextItem orgWorkingHoursItem;
@@ -71,19 +68,23 @@ public class TabOrganization extends Tab {
 	private TextItem phoneItem;
 	private DateItem orgFoundedStartItem;
 	private DateItem orgFoundedEndItem;
-
-	// address fields.
+	private TextItem orgIndItem;
+	private TextItem orgSocialAddressItem;
 	private ComboBoxItem townItem;
 	private TextItem streetItem;
-	private ComboBoxItem regionItem;
-	private TextItem adressItem;
-	// private TextItem blockItem;
-	// private TextItem appartItem;
+	private SelectItem regionItem;
+	private ComboBoxItem legalTownItem;
+	private TextItem legalStreetItem;
+	private SelectItem legalRegionItem;
+	private SelectItem partnerBankItem;
+	// private SelectItem orgActsItem;
+	private SelectItem weekDaysItem;
+	private TextItem orgContactPersonItem;
+	private SelectItem orgStatusItem;
 
 	// actions
 	private IButton findButton;
 	private IButton clearButton;
-	private IButton advParamButton;
 
 	private ToolStripButton sortBtn;
 	private ToolStripButton addNewOrgBtn;
@@ -114,7 +115,7 @@ public class TabOrganization extends Tab {
 		searchForm = new DynamicForm();
 		searchForm.setAutoFocus(true);
 		searchForm.setWidth(980);
-		searchForm.setNumCols(4);
+		searchForm.setNumCols(5);
 		searchForm.setTitleOrientation(TitleOrientation.TOP);
 		mainLayout.addMember(searchForm);
 
@@ -133,10 +134,10 @@ public class TabOrganization extends Tab {
 		orgDirectorItem.setWidth(245);
 		orgDirectorItem.setName("orgDirectorItem");
 
-		orgLegalAddressItem = new TextItem();
-		orgLegalAddressItem.setTitle(CallCenterBK.constants.legalAddress());
-		orgLegalAddressItem.setWidth(245);
-		orgLegalAddressItem.setName("orgLegalAddressItem");
+		orgDepartmentItem = new TextItem();
+		orgDepartmentItem.setTitle(CallCenterBK.constants.department());
+		orgDepartmentItem.setWidth(245);
+		orgDepartmentItem.setName("department");
 
 		orgIdentCodeItem = new TextItem();
 		orgIdentCodeItem.setTitle(CallCenterBK.constants.identCodeAndNew());
@@ -164,7 +165,7 @@ public class TabOrganization extends Tab {
 		orgDayOffsItem.setName("orgDayOffsItem");
 
 		phoneItem = new TextItem();
-		phoneItem.setTitle(CallCenterBK.constants.phone());
+		phoneItem.setTitle(CallCenterBK.constants.phoneNumber());
 		phoneItem.setWidth(245);
 		phoneItem.setName("phone");
 
@@ -186,11 +187,6 @@ public class TabOrganization extends Tab {
 		streetItem.setName("streetItem");
 		streetItem.setWidth(245);
 
-		adressItem = new TextItem();
-		adressItem.setTitle(CallCenterBK.constants.number());
-		adressItem.setName("adressItem");
-		adressItem.setWidth(245);
-
 		townItem = new ComboBoxItem();
 		townItem.setTitle(CallCenterBK.constants.town());
 		townItem.setName("town_id");
@@ -198,7 +194,8 @@ public class TabOrganization extends Tab {
 		ClientUtils.fillCombo(townItem, "TownsDS",
 				"searchCitiesFromDBForCombos", "town_id", "town_name");
 
-		regionItem = new ComboBoxItem();
+		regionItem = new SelectItem();
+		regionItem.setMultiple(true);
 		regionItem.setTitle(CallCenterBK.constants.cityRegion());
 		regionItem.setName("town_district_id");
 		regionItem.setWidth(245);
@@ -211,31 +208,110 @@ public class TabOrganization extends Tab {
 				"searchCityRegsFromDBForCombos", "town_district_id",
 				"town_district_name", aditionalCriteria);
 
-		searchForm.setFields(orgNameGeoItem, orgCommentItem, phoneItem,
-				orgDirectorItem, streetItem, adressItem, regionItem, townItem,
-				orgWorkingHoursItem, orgDayOffsItem, orgIdentCodeItem,
-				orgLegalAddressItem, orgWebAddressItem, orgEmailItem,
-				orgFoundedStartItem, orgFoundedEndItem);
+		legalStreetItem = new TextItem();
+		legalStreetItem.setTitle(CallCenterBK.constants.streetLegal());
+		legalStreetItem.setName("legalStreetItem");
+		legalStreetItem.setWidth(245);
+
+		legalTownItem = new ComboBoxItem();
+		legalTownItem.setTitle(CallCenterBK.constants.townLegal());
+		legalTownItem.setName("town_id");
+		legalTownItem.setWidth(245);
+		ClientUtils.fillCombo(legalTownItem, "TownsDS",
+				"searchCitiesFromDBForCombos", "town_id", "town_name");
+
+		legalRegionItem = new SelectItem();
+		legalRegionItem.setMultiple(true);
+		legalRegionItem.setTitle(CallCenterBK.constants.cityRegionLegal());
+		legalRegionItem.setName("town_district_id");
+		legalRegionItem.setWidth(245);
+
+		ClientUtils.fillCombo(legalRegionItem, "TownDistrictDS",
+				"searchCityRegsFromDBForCombos", "town_district_id",
+				"town_district_name", aditionalCriteria);
+
+		orgIndItem = new TextItem();
+		orgIndItem.setName("organization_index");
+		orgIndItem.setWidth(245);
+		orgIndItem.setTitle(CallCenterBK.constants.postIndex());
+		orgIndItem.setKeyPressFilter("[0-9]");
+
+		orgSocialAddressItem = new TextItem();
+		orgSocialAddressItem.setName("social_address");
+		orgSocialAddressItem.setWidth(245);
+		orgSocialAddressItem.setTitle(CallCenterBK.constants.socialAddress());
+
+		partnerBankItem = new SelectItem();
+		partnerBankItem.setMultiple(true);
+		partnerBankItem.setTitle(CallCenterBK.constants.partnerBank());
+		partnerBankItem.setName("organization_id");
+		partnerBankItem.setWidth(245);
+		ClientUtils.fillCombo(partnerBankItem, "OrgDS", "searchPartnerBanks",
+				"organization_id", "organization_name");
+
+		// ListGrid pickListProperties = new ListGrid();
+		// pickListProperties.setShowFilterEditor(true);
+		//
+		// ListGridField activity_description = new ListGridField(
+		// "activity_description", CallCenterBK.constants.activity());
+
+		// orgActsItem = new SelectItem();
+		// orgActsItem.setMultiple(true);
+		// orgActsItem.setTitle(CallCenterBK.constants.activity());
+		// orgActsItem.setName("org_activity_id");
+		// orgActsItem.setWidth(245);
+		// orgActsItem.setTitleAlign(Alignment.LEFT);
+		// ClientUtils.fillCombo(orgActsItem, "OrgActDS",
+		// "searchAllBusinesActivitiesForCB", "org_activity_id",
+		// "activity_description");
+		// orgActsItem.setPickListFields(activity_description);
+		// orgActsItem.setPickListProperties(pickListProperties);
+
+		MyComboboxItemMultiple myComboboxItemMultiple = new MyComboboxItemMultiple();
+		myComboboxItemMultiple.setTitle(CallCenterBK.constants.activity());
+		myComboboxItemMultiple.setWidth(245);
+		MyComboboxItemMultClass params = new MyComboboxItemMultClass(
+				"OrgActDS", "searchAllBusinesActivitiesForCB",
+				"org_activity_id", new String[] { "activity_description" },
+				new String[] { CallCenterBK.constants.activity() }, null,
+				CallCenterBK.constants.chooseActivity(), 700, 400,
+				CallCenterBK.constants.thisRecordAlreadyChoosen());
+		myComboboxItemMultiple.setParams(params);
+
+		weekDaysItem = new SelectItem();
+		weekDaysItem.setMultiple(true);
+		weekDaysItem.setTitle(CallCenterBK.constants.weekDay());
+		weekDaysItem.setName("day_id");
+		weekDaysItem.setWidth(245);
+		weekDaysItem.setValueMap(ClientMapUtil.getInstance().getWeekDays());
+		weekDaysItem.setDefaultToFirstOption(true);
+
+		orgContactPersonItem = new TextItem();
+		orgContactPersonItem.setName("contact_person");
+		orgContactPersonItem.setWidth(245);
+		orgContactPersonItem.setTitle(CallCenterBK.constants.contactPerson());
+
+		orgStatusItem = new SelectItem();
+		orgStatusItem.setMultiple(true);
+		orgStatusItem.setTitle(CallCenterBK.constants.status());
+		orgStatusItem.setName("status");
+		orgStatusItem.setWidth(245);
+		orgStatusItem.setValueMap(ClientMapUtil.getInstance().getOrgStatuses());
+		orgStatusItem.setDefaultToFirstOption(true);
+
+		searchForm.setFields(orgNameGeoItem, orgCommentItem, orgDepartmentItem,
+				phoneItem, orgDirectorItem, streetItem, regionItem, townItem,
+				orgIdentCodeItem, orgIndItem, legalStreetItem, legalRegionItem,
+				legalTownItem, orgWorkingHoursItem, orgDayOffsItem,
+				orgWebAddressItem, orgEmailItem, orgSocialAddressItem,
+				orgFoundedStartItem, orgFoundedEndItem, partnerBankItem,
+				myComboboxItemMultiple, weekDaysItem, orgStatusItem,
+				orgContactPersonItem);
 
 		HLayout buttonLayout = new HLayout(5);
-		buttonLayout.setWidth(980);
+		buttonLayout.setWidth(1223);
 		buttonLayout.setHeight(30);
-		buttonLayout.setAlign(Alignment.LEFT);
-
-		DynamicForm checkBoxForm = new DynamicForm();
-		checkBoxForm.setAutoFocus(false);
-		checkBoxForm.setNumCols(1);
-		checkBoxForm.setTitleWidth(0);
-
-		final CheckboxItem advSearch = new CheckboxItem("advSearch",
-				CallCenterBK.constants.advParameters());
-		advSearch.setValue(false);
-		checkBoxForm.setFields(advSearch);
-
-		advParamButton = new IButton();
-		advParamButton.setTitle(CallCenterBK.constants.parameters());
-		advParamButton.setWidth(170);
-		advParamButton.setDisabled(true);
+		buttonLayout.setAlign(Alignment.RIGHT);
 
 		clearButton = new IButton();
 		clearButton.setTitle(CallCenterBK.constants.clear());
@@ -243,11 +319,6 @@ public class TabOrganization extends Tab {
 		findButton = new IButton();
 		findButton.setTitle(CallCenterBK.constants.find());
 
-		buttonLayout.addMember(checkBoxForm);
-		buttonLayout.addMember(advParamButton);
-		LayoutSpacer spacer = new LayoutSpacer();
-		spacer.setWidth100();
-		buttonLayout.addMember(spacer);
 		buttonLayout.addMember(findButton);
 		buttonLayout.addMember(clearButton);
 		mainLayout.addMember(buttonLayout);
@@ -392,11 +463,6 @@ public class TabOrganization extends Tab {
 
 		ListGridField organization_name = new ListGridField(
 				"organization_name", CallCenterBK.constants.orgName());
-		// organization_name.setTreeField(true);
-
-		// ListGridField remark = new ListGridField("remark",
-		// CallCenterBK.constants.remark());remark,
-
 		ListGridField real_address = new ListGridField(
 				"full_address_not_hidden",
 				CallCenterBK.constants.realAddress(), 400);
@@ -443,15 +509,6 @@ public class TabOrganization extends Tab {
 			}
 		});
 
-		advParamButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				DlgOrgAdvSearch dlgOrgAdvSearch = new DlgOrgAdvSearch(
-						TabOrganization.this, null);
-				dlgOrgAdvSearch.show();
-			}
-		});
-
 		clearButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -460,13 +517,12 @@ public class TabOrganization extends Tab {
 				phoneItem.clearValue();
 				orgDirectorItem.clearValue();
 				streetItem.clearValue();
-				adressItem.clearValue();
 				regionItem.clearValue();
 				townItem.clearValue();
 				orgWorkingHoursItem.clearValue();
 				orgDayOffsItem.clearValue();
 				orgIdentCodeItem.clearValue();
-				orgLegalAddressItem.clearValue();
+				orgDepartmentItem.clearValue();
 				orgWebAddressItem.clearValue();
 				orgEmailItem.clearValue();
 				orgFoundedEndItem.clearValue();
@@ -599,102 +655,26 @@ public class TabOrganization extends Tab {
 			}
 		});
 
-		orgNameGeoItem.addKeyPressHandler(new KeyPressHandler() {
+		KeyPressHandler searchHendler = new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
 					search();
 				}
 			}
-		});
-		orgCommentItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		phoneItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		orgDirectorItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		adressItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		orgIdentCodeItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		orgLegalAddressItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		orgWebAddressItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		orgEmailItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		orgDayOffsItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		orgWorkingHoursItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
-		streetItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if (event.getKeyName().equals("Enter")) {
-					search();
-				}
-			}
-		});
+		};
+		orgNameGeoItem.addKeyPressHandler(searchHendler);
+		orgCommentItem.addKeyPressHandler(searchHendler);
+		orgDepartmentItem.addKeyPressHandler(searchHendler);
+		phoneItem.addKeyPressHandler(searchHendler);
+		orgDirectorItem.addKeyPressHandler(searchHendler);
+		orgIdentCodeItem.addKeyPressHandler(searchHendler);		
+		orgWebAddressItem.addKeyPressHandler(searchHendler);
+		orgEmailItem.addKeyPressHandler(searchHendler);
+		orgDayOffsItem.addKeyPressHandler(searchHendler);
+		orgWorkingHoursItem.addKeyPressHandler(searchHendler);
+		streetItem.addKeyPressHandler(searchHendler);
+		orgContactPersonItem.addKeyPressHandler(searchHendler);
 
 		supperOrgBtn.addClickHandler(new ClickHandler() {
 			@Override
@@ -717,12 +697,12 @@ public class TabOrganization extends Tab {
 			}
 		});
 
-		advSearch.addChangedHandler(new ChangedHandler() {
-			@Override
-			public void onChanged(ChangedEvent event) {
-				advParamButton.setDisabled(!advSearch.getValueAsBoolean());
-			}
-		});
+		// advSearch.addChangedHandler(new ChangedHandler() {
+		// @Override
+		// public void onChanged(ChangedEvent event) {
+		// advParamButton.setDisabled(!advSearch.getValueAsBoolean());
+		// }
+		// });
 
 		orgTreeGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
@@ -814,33 +794,13 @@ public class TabOrganization extends Tab {
 				criteria.setAttribute("organization_name_param", org_name);
 			}
 
-			String note = orgCommentItem.getValueAsString();
-			if (note != null && !note.trim().equals("")) {
-				String tmp = note.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("remark" + i, item);
-					i++;
-				}
+			String remark = orgCommentItem.getValueAsString();
+			if (remark != null && !remark.trim().equals("")) {
+				criteria.setAttribute("remark", remark);
 			}
-			String director = orgDirectorItem.getValueAsString();
-			if (director != null && !director.trim().equals("")) {
-				String tmp = director.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("chief" + i, item);
-					i++;
-				}
+			String chief = orgDirectorItem.getValueAsString();
+			if (chief != null && !chief.trim().equals("")) {
+				criteria.setAttribute("chief", chief);
 			}
 			String street = streetItem.getValueAsString();
 			if (street != null && !street.trim().equalsIgnoreCase("")) {
@@ -855,11 +815,6 @@ public class TabOrganization extends Tab {
 					criteria.setAttribute("real_address_descr" + i, item);
 					i++;
 				}
-			}
-			String full_address = adressItem.getValueAsString();
-			if (full_address != null
-					&& !full_address.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("full_address", full_address);
 			}
 			String town_id = townItem.getValueAsString();
 			if (town_id != null && !town_id.trim().equalsIgnoreCase("")) {
@@ -893,10 +848,9 @@ public class TabOrganization extends Tab {
 				criteria.setAttribute("phone", phone);
 			}
 
-			String legaladdress = orgLegalAddressItem.getValueAsString();
-			if (legaladdress != null
-					&& !legaladdress.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("legaladdress", legaladdress);
+			String department = orgDepartmentItem.getValueAsString();
+			if (department != null && !department.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("department", department);
 			}
 
 			String web_address = orgWebAddressItem.getValueAsString();
@@ -924,12 +878,12 @@ public class TabOrganization extends Tab {
 			}
 
 			if ((org_name == null || org_name.trim().equals(""))
-					&& (note == null || note.trim().equals(""))
-					&& (director == null || director.trim().equals(""))
+					&& (remark == null || remark.trim().equals(""))
+					&& (chief == null || chief.trim().equals(""))
 					&& (work_hours == null || work_hours.trim().equals(""))
 					&& (dayoffs == null || dayoffs.trim().equals(""))
 					&& (ident_code == null || ident_code.trim().equals(""))
-					&& (legaladdress == null || legaladdress.trim().equals(""))
+					&& (department == null || department.trim().equals(""))
 					&& (web_address == null || web_address.trim().equals(""))
 					&& (email_address == null || email_address.trim()
 							.equals(""))
