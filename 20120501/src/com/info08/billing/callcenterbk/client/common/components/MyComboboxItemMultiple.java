@@ -73,10 +73,11 @@ public class MyComboboxItemMultiple extends TextItem {
 		}
 		String displayFields[] = paramClass.getDisplayFields();
 		String value = "";
-		String valuePrompt = "<table style=\"width: 300px;background-color:yellow;\"><tr>";
+
+		String valuePrompt = "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width: 350px; border: 1px solid #ABABAB;\"><tr>";
 		for (String displayField : paramClass.getDisplayFieldTitles()) {
-			valuePrompt += "<th style=\"border: solid 1px;\">" + displayField
-					+ "</th>";
+			valuePrompt += "<td style=\"border-top: 1px solid #F0F0F0; font-weight: bold; height: 22px; padding-left: 4px; padding-right: 4px; background-image: url('images/hdr-bg-image.png');\">"
+					+ displayField + "</td>";
 		}
 		valuePrompt += "</tr>";
 		int i = 0;
@@ -89,16 +90,27 @@ public class MyComboboxItemMultiple extends TextItem {
 					value += ",";
 				}
 				value += itemValue;
-				valuePrompt += "<td style=\"border: solid 1px\">" + itemValue
-						+ "</td>";
+				String borderColor = "#ABABAB";
+				String bgColor = "";
+				if (i != 0) {
+					borderColor = "#F0F0F0";
+				}
+				if (i % 2 != 0) {
+					bgColor = "background-color: #FAFAFA;";
+				}
+
+				valuePrompt += "<td style=\"border-top: 1px solid "
+						+ borderColor
+						+ "; height: 22px; padding-left: 4px; padding-right: 4px; "
+						+ bgColor + "\">" + itemValue + "</td>";
 			}
+
 			valuePrompt += "</tr>";
 			i++;
 
 		}
 
 		valuePrompt += "</table>";
-		System.out.println("valuePrompt = " + valuePrompt);
 		setPrompt(valuePrompt);
 		setValue(value);
 	}
