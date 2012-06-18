@@ -334,7 +334,7 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 
 	protected void manageSubscriber(Integer subscriber_id) {
 		Record rec = importedListGrid.getSelectedRecord();
-		Integer phone_number = rec.getAttributeAsInt("phone_number");
+		String phone_number = rec.getAttribute("phone_number");
 
 		boolean add = subscriber_id == null;
 		if (add) {

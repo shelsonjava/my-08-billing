@@ -178,4 +178,44 @@ public class TreatmentDMI implements QueryConstants {
 			}
 		}
 	}
+
+	// ----------------------------------------------------------------------------------------------
+
+	public Long removeUnknownNumber(DSRequest dsRequest) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:TreatmentDMI.removeUnknownNumber.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long phone_number_id = new Long(dsRequest.getOldValues()
+					.get("phone_number_id").toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing UnknownNumber.");
+
+			oracleManager.createNativeQuery(QueryConstants.DEL_UNKNOWN_NUMBER)
+					.setParameter(1, phone_number_id).executeUpdate();
+
+			EMF.commitTransaction(transaction);
+			log += ". Status Removing Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Remove UnknownNumber From Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
 }

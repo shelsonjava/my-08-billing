@@ -1,0 +1,38 @@
+<DataSource ID="UnknownNumbersDS" 
+			serverType="sql" 
+			tableName="unknown_phone_numbers"	
+			qualifyColumnNames="false" 
+			dropExtraFields="false">
+	<fields>
+		<field name="phone_number_id" 	type="integer" 	title="phone_number_id" 	hidden="true" 	primaryKey="true" />
+		<field name="phone_number" 		type="text" 	title="phone_number" />
+		<field name="loggedUserName" 	type="text" 	title="Logged UserName" 	hidden="true" />
+	</fields>
+
+	<serverObject lookupStyle="new"
+		className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
+
+	<operationBindings>
+		
+		<!-- Delete -->
+		<operationBinding operationType="remove" operationId="removeUnknownNumber" serverMethod="removeUnknownNumber">
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
+		</operationBinding>
+
+		<!-- FETCH - For Correction -->
+		<operationBinding operationId="searchFromDB"	operationType="fetch">
+			<selectClause>
+				   t.phone_number_id
+			      ,t.phone_number
+			</selectClause>
+			<tableClause>unknown_phone_numbers t</tableClause>
+			<whereClause><![CDATA[
+				1 = 1 
+				#if($criteria.phone_number) and t.phone_number like '%'||$criteria.phone_number||'%' #end
+				]]>
+			</whereClause>
+			<orderClause>t.phone_number</orderClause>
+		</operationBinding>
+
+	</operationBindings>
+</DataSource>

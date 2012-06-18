@@ -139,16 +139,42 @@ public class InitAppServlet extends HttpServlet {
 			String phoneDescription = "";
 			String abonentName = "";
 			Long gender = -1L;
-			Long abonentVisible = 1L;
+			Long abonentVisible = 75100L;
 			Double bid = new Double(-1);
 			Treatments treatment = null;
 			Long organization_id = -1L;
 			boolean checkContractor = false;
+
+			boolean isUnknownPhoneNumber = false;
+
 			String findPhone = "";
 			if (realPhone.startsWith("22") || realPhone.startsWith("32")) {
 				findPhone = realPhone.substring(2);
 			} else {
 				findPhone = realPhone;
+			}
+
+			// Check for Unknown Phone Number
+			// TODO
+			List qResisUnknownPhoneNumber = oracleManager
+					.createNativeQuery(
+							QueryConstants.Q_GET_IS_UNKNOWN_PHONE_NUMBER)
+					.setParameter(1, findPhone).setParameter(2, findPhone)
+					.getResultList();
+
+			if (qResisUnknownPhoneNumber != null
+					&& qResisUnknownPhoneNumber.size() > 0) {
+				int res = new Long(qResisUnknownPhoneNumber.get(0).toString())
+						.intValue();
+				if (res == 0) {
+					isUnknownPhoneNumber = true;
+				}
+			}
+
+			if (isUnknownPhoneNumber) {
+				oracleManager
+						.createNativeQuery(QueryConstants.INS_UNKNOWN_NUMBER)
+						.setParameter(1, findPhone).executeUpdate();
 			}
 
 			// mobile
@@ -195,10 +221,10 @@ public class InitAppServlet extends HttpServlet {
 						Object array[] = (Object[]) result.get(0);
 						organization_id = new Long(array[0] == null ? "-1"
 								: array[0].toString());
-						abonentName = array[2] == null ? "" : array[2]
+						abonentName = array[1] == null ? "" : array[1]
 								.toString();
-						bid = new Double(array[4] == null ? "-1"
-								: array[4].toString());
+						bid = new Double(array[2] == null ? "-1"
+								: array[2].toString());
 						callKind = Constants.callTypeOrganization;
 					} else {
 						callKind = Constants.callTypeAbonent;
@@ -236,54 +262,54 @@ public class InitAppServlet extends HttpServlet {
 
 			boolean isContractor = false;
 
-			if (checkContractor) {
-				List resultList = oracleManager
-						.createNativeQuery(QueryConstants.Q_GET_CONTRACTOR_INFO)
-						.setParameter(1, findPhone).getResultList();
-				if (resultList != null && !resultList.isEmpty()) {
-					serverSession.setContractorPhone(true);
-					Object dateRow[] = (Object[]) resultList.get(0);
-					Long contractorId = new Long(dateRow[0] == null ? "-1"
-							: dateRow[0].toString());
-					serverSession.setContractorId(contractorId);
-					if (dateRow[1] != null) {
-						serverSession.setContractorStartDate(new Timestamp(
-								new Long(dateRow[1].toString())));
-					}
-					if (dateRow[2] != null) {
-						serverSession.setContractorEndDate(new Timestamp(
-								new Long(dateRow[2].toString())));
-					}
-					Long contractorCirtNumber = new Long(
-							dateRow[3] == null ? "-1" : dateRow[3].toString());
-					serverSession
-							.setContractorCriticalNumber(contractorCirtNumber);
-					Long contractorIsBudget = new Long(
-							dateRow[4] == null ? "-1" : dateRow[4].toString());
-					serverSession.setContractorIsBudget(contractorIsBudget);
-					Long contractorPriceType = new Long(
-							dateRow[5] == null ? "-1" : dateRow[5].toString());
-					serverSession.setContractorPriceType(contractorPriceType);
-					Double contractorPrice = new Double(
-							dateRow[6] == null ? "0" : dateRow[6].toString());
-					Long contractorBlock = new Long(dateRow[7] == null ? "-1"
-							: dateRow[7].toString());
-					serverSession.setContractorBlock(contractorBlock);
-
-					Long contractorMainId = new Long(dateRow[8] == null ? "-1"
-							: dateRow[8].toString());
-					serverSession.setContractorMainId(contractorMainId);
-
-					Long contractorMainDetailId = new Long(
-							dateRow[9] == null ? "-1" : dateRow[9].toString());
-					serverSession
-							.setContractorMainDetailId(contractorMainDetailId);
-					serverSession.setContractorCallPrice(contractorPrice);
-					serverSession.setContractorCallCnt(0L);
-
-					isContractor = true;
-				}
-			}
+			// if (checkContractor) {
+			// List resultList = oracleManager
+			// .createNativeQuery(QueryConstants.Q_GET_CONTRACTOR_INFO)
+			// .setParameter(1, findPhone).getResultList();
+			// if (resultList != null && !resultList.isEmpty()) {
+			// serverSession.setContractorPhone(true);
+			// Object dateRow[] = (Object[]) resultList.get(0);
+			// Long contractorId = new Long(dateRow[0] == null ? "-1"
+			// : dateRow[0].toString());
+			// serverSession.setContractorId(contractorId);
+			// if (dateRow[1] != null) {
+			// serverSession.setContractorStartDate(new Timestamp(
+			// new Long(dateRow[1].toString())));
+			// }
+			// if (dateRow[2] != null) {
+			// serverSession.setContractorEndDate(new Timestamp(
+			// new Long(dateRow[2].toString())));
+			// }
+			// Long contractorCirtNumber = new Long(
+			// dateRow[3] == null ? "-1" : dateRow[3].toString());
+			// serverSession
+			// .setContractorCriticalNumber(contractorCirtNumber);
+			// Long contractorIsBudget = new Long(
+			// dateRow[4] == null ? "-1" : dateRow[4].toString());
+			// serverSession.setContractorIsBudget(contractorIsBudget);
+			// Long contractorPriceType = new Long(
+			// dateRow[5] == null ? "-1" : dateRow[5].toString());
+			// serverSession.setContractorPriceType(contractorPriceType);
+			// Double contractorPrice = new Double(
+			// dateRow[6] == null ? "0" : dateRow[6].toString());
+			// Long contractorBlock = new Long(dateRow[7] == null ? "-1"
+			// : dateRow[7].toString());
+			// serverSession.setContractorBlock(contractorBlock);
+			//
+			// Long contractorMainId = new Long(dateRow[8] == null ? "-1"
+			// : dateRow[8].toString());
+			// serverSession.setContractorMainId(contractorMainId);
+			//
+			// Long contractorMainDetailId = new Long(
+			// dateRow[9] == null ? "-1" : dateRow[9].toString());
+			// serverSession
+			// .setContractorMainDetailId(contractorMainDetailId);
+			// serverSession.setContractorCallPrice(contractorPrice);
+			// serverSession.setContractorCallCnt(0L);
+			//
+			// isContractor = true;
+			// }
+			// }
 
 			serverSession.setUnreadPersNotesCount(persNotesCount);
 			serverSession.setAbonentName(abonentName);
@@ -292,8 +318,9 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setPhoneDescription(phoneDescription);
 			serverSession.setSessionId(sessionId);
 			serverSession.setGender(gender);
-			serverSession.setAbonentVisible(abonentVisible.equals(75100L) ? true
-					: false);
+			serverSession
+					.setAbonentVisible(abonentVisible.equals(75100L) ? true
+							: false);
 			serverSession.setTreatment(treatment);
 			serverSession.setUser(user);
 			serverSession.setUserName(userName);

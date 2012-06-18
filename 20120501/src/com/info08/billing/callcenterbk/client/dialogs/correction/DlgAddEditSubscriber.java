@@ -67,14 +67,14 @@ public class DlgAddEditSubscriber extends Window {
 	private ISaveResult saveManager;
 
 	public DlgAddEditSubscriber(final Record abonentRecord,
-			ListGrid abonentsGrid, final Integer phoneNumber,
+			ListGrid abonentsGrid, final String phoneNumber,
 			ISaveResult saveManager) {
 		this(abonentRecord, abonentsGrid, phoneNumber);
 		this.saveManager = saveManager;
 	}
 
 	public DlgAddEditSubscriber(final Record abonentRecord,
-			ListGrid abonentsGrid, final Integer phoneNumber) {
+			ListGrid abonentsGrid, final String phoneNumber) {
 		try {
 			this.abonentsGrid = abonentsGrid;
 			setWidth(760);

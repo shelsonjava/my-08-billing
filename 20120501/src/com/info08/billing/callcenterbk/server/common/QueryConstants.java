@@ -829,6 +829,36 @@ public interface QueryConstants {
 			+ " inner join ccare.abonents a on a.phone_id = t.phone_id\n"
 			+ " inner join ccare.contracts c on c.organization_id = a.organization_id\n"
 			+ " where t.phone = ? and a.deleted = 0 and c.deleted = 0 ";
+	
+	public static final String Q_GET_IS_UNKNOWN_PHONE_NUMBER = 
+				"select sum(m.cnt) as cnt\n" +
+				"  from (select /*+ use_nl(pn, sp, dp) */\n" + 
+				"         count(8) as cnt\n" + 
+				"          from ccare.phone_numbers pn\n" + 
+				"         where pn.phone = ? \n" + 
+				"           and (exists\n" + 
+				"                (select 1\n" + 
+				"                   from ccare.subscriber_to_phones sp\n" + 
+				"                  where sp.phone_number_id = pn.phone_number_id) or exists\n" + 
+				"                (select 1\n" + 
+				"                   from ccare.organization_depart_to_phones sp\n" + 
+				"                  where sp.phone_number_id = pn.phone_number_id))\n" + 
+				"        union all\n" + 
+				"        select count(8) as cnt\n" + 
+				"          from ccare.unknown_phone_numbers u\n" + 
+				"         where u.phone_number = ? ) m ";
+
+
+	public static final String INS_UNKNOWN_NUMBER = 
+				"insert into ccare.unknown_phone_numbers\n" +
+				"  (phone_number_id, phone_number)\n" + 
+				"values\n" + 
+				"  (SEQ_UNKNOWN_PHONE_NUMBER.Nextval, ?)";
+	
+	public static final String DEL_UNKNOWN_NUMBER = "delete from ccare.unknown_phone_numbers t where t.phone_number_id = ?";
+
+
+
 
 	public static final String Q_GET_CALL_CENTER_REQ_MSG = "select t.description from ccare.descriptions t where t.description_id = 57100 ";
 
@@ -840,10 +870,25 @@ public interface QueryConstants {
 			+ "   and t.received = 0\n" + " order by t.rec_user desc";
 
 	public static final String Q_GET_SPECIAL_TEXT_BY_NUMBER = " select t.note from ALERTS_BY_PHONE t where t.phone_number = ? ";
-	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone) from FREE_OF_CHARGE_PHONE t where t.phone = ? ";
+	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone_number) from FREE_OF_CHARGE_PHONE t where t.phone_number = ? and trunc(sysdate) between t.start_date and t.end_date ";
 	public static final String Q_GET_MOBITEL_NOTE = "select t.description from ccare.descriptions t where t.description_id = 56101 ";
 	public static final String Q_GET_TREATMENT = " select treatment, gender from treatments where phone_number = ? ";
-	public static final String Q_GET_ORG_ABONENT = " select * from searchOrg where phone = ? ";
+	public static final String Q_GET_ORG_ABONENT = 
+			"select /*+ use_nl(ph, dtp, od, o)*/\n" +
+					" o.organization_id\n" + 
+					",o.organization_name\n" + 
+					",decode(to_char(o.found_date, 'dd/mm'), to_char(sysdate, 'dd/mm'), 1, 0) as bid\n" + 
+					"  from ccare.phone_numbers                 pn\n" + 
+					"      ,ccare.organization_depart_to_phones dtp\n" + 
+					"      ,ccare.organization_department       od\n" + 
+					"      ,ccare.organizations                 o\n" + 
+					" where dtp.phone_number_id = pn.phone_number_id\n" + 
+					"   and od.org_department_id = dtp.org_department_id\n" + 
+					"   and o.organization_id = od.organization_id\n" + 
+					"   and o.parrent_organization_id is null\n" + 
+					"   and pn.phone = ? \n" + 
+					"   and rownum < 2";
+
 	public static final String Q_GET_WEB_SESSION_ID = " select (to_number(to_char(sysdate,'YYMM'))*1000000 + log_calls_seq.nextval) AS sessionID from dual ";
 
 	public static final String Q_GET_DEP_LIST_BY_ORG = "select distinct * from (\n"

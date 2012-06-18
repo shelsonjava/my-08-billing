@@ -43,7 +43,7 @@ public class DlgAddEditAbPhone extends Window {
 	private Integer subscriber_id;
 
 	public DlgAddEditAbPhone(final Record listGridRecord,
-			ListGrid listGridPhones, Integer subscriber_id, Integer phone_number) {
+			ListGrid listGridPhones, Integer subscriber_id, String phone_number) {
 		this.listGridPhones = listGridPhones;
 		this.subscriber_id = subscriber_id;
 		setWidth(750);
