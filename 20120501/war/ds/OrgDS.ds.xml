@@ -166,7 +166,7 @@
 						#end
 						as organization_name,
 						o.organization_name as original_org_name,
-						a.concat_address as full_address_not_hidden,
+						a.concat_address_with_town as full_address_not_hidden,
 						decode(o.parrent_organization_id,null,null,'home') as tree_org_parrent,
 		                decode((select min(1) from organizations ms1 where ms1.parrent_organization_id = o.organization_id),null,null,'associations') as tree_org_child,
 						a.town_id,
@@ -294,30 +294,31 @@
 							 #if($criteria.parrent_organization_id) and o.parrent_organization_id = $criteria.parrent_organization_id #end
 							 #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
 							 #if($criteria.pp_organization_id) and o.organization_id = $criteria.pp_organization_id #end
-							 #if($criteria.remark1) and o.remark like '%'||($criteria.remark1)||'%' #end
-							 #if($criteria.remark2) and o.remark like '%'||($criteria.remark2)||'%' #end
-							 #if($criteria.remark3) and o.remark like '%'||($criteria.remark3)||'%' #end
-							 #if($criteria.remark4) and o.remark like '%'||($criteria.remark4)||'%' #end
-							 #if($criteria.remark5) and o.remark like '%'||($criteria.remark5)||'%' #end
-							 #if($criteria.remark6) and o.remark like '%'||($criteria.remark6)||'%' #end
-							 #if($criteria.remark7) and o.remark like '%'||($criteria.remark7)||'%' #end
-							 #if($criteria.remark8) and o.remark like '%'||($criteria.remark8)||'%' #end
-							 #if($criteria.remark9) and o.remark like '%'||($criteria.remark9)||'%' #end
-							 #if($criteria.remark10) and o.remark like '%'||($criteria.remark)||'%' #end
-							 #if($criteria.real_address_descr1) and a.concat_address like '%'||($criteria.real_address_descr1)||'%' #end
-							 #if($criteria.real_address_descr2) and a.concat_address like '%'||($criteria.real_address_descr2)||'%' #end
-							 #if($criteria.real_address_descr3) and a.concat_address like '%'||($criteria.real_address_descr3)||'%' #end
-							 #if($criteria.real_address_descr4) and a.concat_address like '%'||($criteria.real_address_descr4)||'%' #end
-							 #if($criteria.real_address_descr5) and a.concat_address like '%'||($criteria.real_address_descr5)||'%' #end
+							 #if($criteria.remark) 
+							 	 #foreach($str in $criteria.remark.split(" "))
+									and o.remark like '%'||'$str'||'%'
+								#end
+							 #end		
+							 #if($criteria.chief) 
+							 	#foreach($str in $criteria.remark.split(" "))
+									and o.chief like '%'||'$str'||'%'
+								#end							 	
+							 #end							 
+							 					 
+							 #if($criteria.real_address_descr1) and a.concat_address like '%'||($criteria.real_address_descr1)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
+							 #if($criteria.real_address_descr2) and a.concat_address like '%'||($criteria.real_address_descr2)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
+							 #if($criteria.real_address_descr3) and a.concat_address like '%'||($criteria.real_address_descr3)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
+							 #if($criteria.real_address_descr4) and a.concat_address like '%'||($criteria.real_address_descr4)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
+							 #if($criteria.real_address_descr5) and a.concat_address like '%'||($criteria.real_address_descr5)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
+							 
+							 
 							 #if($criteria.legaladdress) and o.legaladdress like '%'||($criteria.legaladdress)||'%' #end
 							 #if($criteria.legaladdress1) and o.legaladdress like '%'||($criteria.legaladdress1)||'%' #end
 							 #if($criteria.legaladdress2) and o.legaladdress like '%'||($criteria.legaladdress2)||'%' #end
 							 #if($criteria.legaladdress3) and o.legaladdress like '%'||($criteria.legaladdress3)||'%' #end
 							 #if($criteria.legaladdress4) and o.legaladdress like '%'||($criteria.legaladdress4)||'%' #end
 							 #if($criteria.legaladdress5) and mo1.legaladdress like '%'||($criteria.legaladdress5)||'%' #end
-							 #if($criteria.chief1) and o.chief like '%'||($criteria.chief1)||'%' #end
-							 #if($criteria.chief2) and o.chief like '%'||($criteria.chief2)||'%' #end
-							 #if($criteria.chief3) and o.chief like '%'||($criteria.chief3)||'%' #end
+							 
 							 #if($criteria.day_offs1) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs1)||'%' #end
 							 #if($criteria.day_offs2) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs2)||'%' #end
 							 #if($criteria.day_offs3) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs3)||'%' #end
