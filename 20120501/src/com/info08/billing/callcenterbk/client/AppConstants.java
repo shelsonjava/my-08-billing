@@ -734,4 +734,5 @@ public interface AppConstants extends Constants {
 	String chooseActivity();
 	String thisRecordAlreadyChoosen();
 	String mainOrganization();
+	String doYouWantOrgDepManagement();
 }
