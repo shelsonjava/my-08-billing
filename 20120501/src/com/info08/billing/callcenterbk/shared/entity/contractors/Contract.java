@@ -38,9 +38,6 @@ public class Contract implements Serializable {
 	@Column(name = "CRITICAL_NUMBER")
 	private Long critical_number;
 
-	@Basic
-	@Column(name = "DELETED")
-	private Long deleted;
 
 	@Basic
 	@Column(name = "END_DATE")
@@ -49,10 +46,6 @@ public class Contract implements Serializable {
 	@Basic
 	@Column(name = "IS_BUDGET")
 	private Long is_budget;
-
-	@Basic
-	@Column(name = "MAIN_DETAIL_ID")
-	private Long main_detail_id;
 
 	@Basic
 	@Column(name = "ORGANIZATION_ID")
@@ -70,13 +63,6 @@ public class Contract implements Serializable {
 	@Column(name = "PRICE_TYPE")
 	private Long price_type;
 
-	@Basic
-	@Column(name = "REC_DATE")
-	private Timestamp rec_date;
-
-	@Basic
-	@Column(name = "REC_USER")
-	private String rec_user;
 
 	@Basic
 	@Column(name = "SMS_WARNING")
@@ -86,17 +72,6 @@ public class Contract implements Serializable {
 	@Column(name = "START_DATE")
 	private Timestamp start_date;
 
-	@Basic
-	@Column(name = "UPD_DATE")
-	private Timestamp upd_date;
-
-	@Basic
-	@Column(name = "UPD_USER")
-	private String upd_user;
-
-	@Basic
-	@Column(name = "PHONE_LIST_TYPE")
-	private Long phone_list_type;
 
 	@Basic
 	@Column(name = "RANGE_CURR_PRICE")
@@ -108,8 +83,6 @@ public class Contract implements Serializable {
 	@Transient
 	private String orgName;
 
-	@Transient
-	private String orgDepName;
 
 	@Transient
 	private String price_type_descr;
@@ -156,13 +129,6 @@ public class Contract implements Serializable {
 		this.critical_number = critical_number;
 	}
 
-	public Long getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Long deleted) {
-		this.deleted = deleted;
-	}
 
 	public Timestamp getEnd_date() {
 		return end_date;
@@ -180,13 +146,6 @@ public class Contract implements Serializable {
 		this.is_budget = is_budget;
 	}
 
-	public Long getMain_detail_id() {
-		return main_detail_id;
-	}
-
-	public void setMain_detail_id(Long main_detail_id) {
-		this.main_detail_id = main_detail_id;
-	}
 
 	public Long getOrganization_id() {
 		return organization_id;
@@ -220,22 +179,6 @@ public class Contract implements Serializable {
 		this.price_type = price_type;
 	}
 
-	public Timestamp getRec_date() {
-		return rec_date;
-	}
-
-	public void setRec_date(Timestamp rec_date) {
-		this.rec_date = rec_date;
-	}
-
-	public String getRec_user() {
-		return rec_user;
-	}
-
-	public void setRec_user(String rec_user) {
-		this.rec_user = rec_user;
-	}
-
 	public Long getSms_warning() {
 		return sms_warning;
 	}
@@ -252,21 +195,6 @@ public class Contract implements Serializable {
 		this.start_date = start_date;
 	}
 
-	public Timestamp getUpd_date() {
-		return upd_date;
-	}
-
-	public void setUpd_date(Timestamp upd_date) {
-		this.upd_date = upd_date;
-	}
-
-	public String getUpd_user() {
-		return upd_user;
-	}
-
-	public void setUpd_user(String upd_user) {
-		this.upd_user = upd_user;
-	}
 
 	public String getLoggedUserName() {
 		return loggedUserName;
@@ -284,14 +212,6 @@ public class Contract implements Serializable {
 		this.orgName = orgName;
 	}
 
-	public String getOrgDepName() {
-		return orgDepName;
-	}
-
-	public void setOrgDepName(String orgDepName) {
-		this.orgDepName = orgDepName;
-	}
-
 	public LinkedHashMap<String, LinkedHashMap<String, String>> getContractorAdvPrices() {
 		return contractorAdvPrices;
 	}
@@ -301,13 +221,6 @@ public class Contract implements Serializable {
 		this.contractorAdvPrices = contractorAdvPrices;
 	}
 
-	public Long getPhone_list_type() {
-		return phone_list_type;
-	}
-
-	public void setPhone_list_type(Long phone_list_type) {
-		this.phone_list_type = phone_list_type;
-	}
 
 	public LinkedHashMap<String, String> getContractorAdvPhones() {
 		return contractorAdvPhones;

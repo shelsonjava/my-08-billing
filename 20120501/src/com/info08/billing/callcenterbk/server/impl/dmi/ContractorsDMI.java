@@ -60,7 +60,7 @@ public class ContractorsDMI implements QueryConstants {
 	 * @throws Exception
 	 *             შეცდომის დამუშავება.
 	 */
-	@SuppressWarnings("rawtypes")
+/*	@SuppressWarnings("rawtypes")
 	public Contract addContractor(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -83,7 +83,6 @@ public class ContractorsDMI implements QueryConstants {
 					.parseLong(oCriticalNumber.toString());
 			contract.setCritical_number(critical_number);
 
-			contract.setDeleted(0L);
 
 			Object oEndDate = dsRequest.getFieldValue("end_date");
 			Timestamp end_date = (oEndDate == null) ? null : new Timestamp(
@@ -107,7 +106,6 @@ public class ContractorsDMI implements QueryConstants {
 			Object oMainDetailId = dsRequest.getFieldValue("main_detail_id");
 			Long main_detail_id = (oMainDetailId == null) ? null : Long
 					.parseLong(oMainDetailId.toString());
-			contract.setMain_detail_id(main_detail_id);
 
 			Object oNote = dsRequest.getFieldValue("note");
 			String note = (oNote == null) ? null : oNote.toString();
@@ -125,19 +123,12 @@ public class ContractorsDMI implements QueryConstants {
 
 			// sysdate
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
-			contract.setRec_date(recDate);
-
-			contract.setRec_user(loggedUserName);
 
 			Object oSmsWarning = dsRequest.getFieldValue("sms_warning");
 			Long sms_warning = (oSmsWarning == null) ? null : Long
 					.parseLong(oSmsWarning.toString());
 			contract.setSms_warning(sms_warning);
 
-			Object oPhoneListType = dsRequest.getFieldValue("phone_list_type");
-			Long phone_list_type = (oPhoneListType == null) ? null : Long
-					.parseLong(oPhoneListType.toString());
-			contract.setPhone_list_type(phone_list_type);
 
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
@@ -266,7 +257,7 @@ public class ContractorsDMI implements QueryConstants {
 			}
 		}
 	}
-
+*/
 	/**
 	 * მეთოდი რომელიც გამოიყენება ლოკალურად მხოლოდ მიმდინარე კლასში და
 	 * განკუთვნილია კონტრაქტორის ფასის გამოსათვლელად რომელსაც აქვს ზღვრული ფასი.
@@ -287,7 +278,7 @@ public class ContractorsDMI implements QueryConstants {
 	 * @throws CallCenterException
 	 *             შეცდომის დამუშავება
 	 */
-	private BigDecimal getRangeCurrPrice(Long organization_id,
+	/*private BigDecimal getRangeCurrPrice(Long organization_id,
 			Long main_detail_id, EntityManager oracleManager,
 			ArrayList<ContractPriceItem> contractAdvPrices)
 			throws CallCenterException {
@@ -328,7 +319,7 @@ public class ContractorsDMI implements QueryConstants {
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		}
-	}
+	}*/
 
 	/**
 	 * კონტრაქტორის ინფორმაციის განახლება.
@@ -339,7 +330,7 @@ public class ContractorsDMI implements QueryConstants {
 	 *         შესულია ცვლილება და ასახულია ბაზაში.
 	 * @throws Exception
 	 *             შეცდომის დამუშავება
-	 */
+	 *//*
 	@SuppressWarnings("rawtypes")
 	public Contract updateContractor(Map record) throws Exception {
 		EntityManager oracleManager = null;
@@ -378,20 +369,15 @@ public class ContractorsDMI implements QueryConstants {
 			Contract contract = oracleManager.find(Contract.class, contract_id);
 			contract.setBlock(block);
 			contract.setCritical_number(critical_number);
-			contract.setDeleted(deleted);
 			contract.setEnd_date(end_date);
 			contract.setIs_budget(is_budget);
 			contract.setLoggedUserName(loggedUserName);
-			contract.setMain_detail_id(main_detail_id);
 			contract.setOrganization_id(organization_id);
 			contract.setNote(note);
 			contract.setPrice(price);
 			contract.setPrice_type(price_type);
 			contract.setSms_warning(sms_warning);
 			contract.setStart_date(start_date);
-			contract.setUpd_date(updDate);
-			contract.setUpd_user(loggedUserName);
-			contract.setPhone_list_type(phone_list_type);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Updating Contract.");
@@ -523,7 +509,7 @@ public class ContractorsDMI implements QueryConstants {
 				EMF.returnEntityManager(oracleManager);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * კონტრაქტორის გაუმქნების ფუნქცია.
@@ -533,7 +519,7 @@ public class ContractorsDMI implements QueryConstants {
 	 *            მონაცემთა ბაზიდან
 	 * @return
 	 * @throws Exception
-	 */
+	 *//*
 	@SuppressWarnings("rawtypes")
 	public Contract removeContractor(Map record) throws Exception {
 		EntityManager oracleManager = null;
@@ -584,7 +570,7 @@ public class ContractorsDMI implements QueryConstants {
 			}
 		}
 	}
-
+*/
 	/**
 	 * მიმდინარე ფუნქცია გამოიყენება იმისათვის რომ მოხდეს ზღვრული ფასების მქონე
 	 * კონტრაქტორის მიმდინარე ფასის ცვლილება.
@@ -594,7 +580,7 @@ public class ContractorsDMI implements QueryConstants {
 	 *            რა მნიშვნელობა უნდა მიენიჭოს.
 	 * @return
 	 * @throws Exception
-	 */
+	 *//*
 	@SuppressWarnings("rawtypes")
 	public Contract updateContractorRangePrice(Map record) throws Exception {
 		EntityManager oracleManager = null;
@@ -628,13 +614,6 @@ public class ContractorsDMI implements QueryConstants {
 					contract.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
-			if (contract.getMain_detail_id() != null) {
-				MainDetail mainDetail = oracleManager.find(MainDetail.class,
-						contract.getMain_detail_id());
-				if (mainDetail != null) {
-					contract.setOrgDepName(mainDetail.getMain_detail_geo());
-				}
-			}
 			contract.setContractor_call_cnt(0L);
 			contract.setPrice_type_descr((contract.getPrice_type() != null
 					&& contract.getPrice_type().equals(0L) ? "მარტ." : "რთული"));
@@ -658,13 +637,13 @@ public class ContractorsDMI implements QueryConstants {
 			}
 		}
 	}
-
+*/
 	/**
 	 * 
 	 * @param record
 	 * @return
 	 * @throws Exception
-	 */
+	 *//*
 	@SuppressWarnings("rawtypes")
 	public Contract blockUnBlockContractor(Map record) throws Exception {
 		EntityManager oracleManager = null;
@@ -682,13 +661,6 @@ public class ContractorsDMI implements QueryConstants {
 						contract.getOrganization_id());
 				if (mainOrg != null) {
 					contract.setOrgName(mainOrg.getOrganization_name());
-				}
-			}
-			if (contract.getMain_detail_id() != null) {
-				MainDetail mainDetail = oracleManager.find(MainDetail.class,
-						contract.getMain_detail_id());
-				if (mainDetail != null) {
-					contract.setOrgDepName(mainDetail.getMain_detail_geo());
 				}
 			}
 			List resultList = oracleManager
@@ -717,7 +689,7 @@ public class ContractorsDMI implements QueryConstants {
 			}
 		}
 	}
-
+*/
 	/**
 	 * ხდება შემოწმება თუ რამდენად სწორედ შეიყვანა ოპერატორმა კონტრაქტორის
 	 * ნომრები - ეკუთვნის თუ არა ეს ნომრების არჩეულ ორგანიზაციას(დეპარტამენტს).
@@ -728,7 +700,7 @@ public class ContractorsDMI implements QueryConstants {
 	 * @throws Exception
 	 *             გამოისვის შეცდომას თუ რომელიმე ნომერი არ ეკუთვბნის ამ
 	 *             ორგანიზაციას(დეპარტამენტს)
-	 */
+	 *//*
 	@SuppressWarnings("rawtypes")
 	public Contract checkContractorNumbers(Map record) throws Exception {
 		EntityManager oracleManager = null;
@@ -797,7 +769,7 @@ public class ContractorsDMI implements QueryConstants {
 			}
 		}
 	}
-
+*/
 	/**
 	 * ფუნქცია აბრუნებს თუ რამდენი ზარი აქვს განხორციელებული კონტრაქტორს
 	 * 
@@ -807,6 +779,7 @@ public class ContractorsDMI implements QueryConstants {
 	 * @throws Exception
 	 *             შეცდომის დამუშავება
 	 */
+	/*
 	@SuppressWarnings("rawtypes")
 	public Contract getContractorCallCnt(Map record) throws Exception {
 		EntityManager oracleManager = null;
@@ -826,15 +799,6 @@ public class ContractorsDMI implements QueryConstants {
 					contract.setOrgName(mainOrg.getOrganization_name());
 				}
 			}
-			if (contract.getMain_detail_id() != null
-					&& contract.getMain_detail_id().longValue() > 0) {
-				MainDetail mainDetail = oracleManager.find(MainDetail.class,
-						contract.getMain_detail_id());
-				if (mainDetail != null) {
-					contract.setOrgDepName(mainDetail.getMain_detail_geo());
-				}
-			}
-			Long main_detail_id = contract.getMain_detail_id();
 			Long organization_id = contract.getOrganization_id();
 			Long contrCallCnt = -1L;
 
@@ -878,7 +842,7 @@ public class ContractorsDMI implements QueryConstants {
 			}
 		}
 	}
-
+ */
 	/**
 	 * ფუნქციის საშუალებით ხდება კონტრაქტორის მიმდინარე დავალიანების გამოთვლა.
 	 * 
@@ -886,7 +850,7 @@ public class ContractorsDMI implements QueryConstants {
 	 *            რომელი კონტრაქტორის დავალიანების გამოთვლა უნდა მოხდეს
 	 * @return აბრუნებს დავალიანებას ლარებში.
 	 * @throws Exception
-	 */
+	 *//*
 	@SuppressWarnings("rawtypes")
 	public Contract getContractorCharges(Map record) throws Exception {
 		EntityManager oracleManager = null;
@@ -959,7 +923,7 @@ public class ContractorsDMI implements QueryConstants {
 			}
 		}
 	}
-
+*/
 	/**
 	 * ფუნქცია გამოიყენება ლოკალურად მხოლოდ ამ კლასში და უზრუნველყოფს
 	 * კონტრაქტორის ნომრების მართვას ე.წ. SIP ის ბაზაში. ამ ფუნქციის საშუალებით
@@ -977,7 +941,7 @@ public class ContractorsDMI implements QueryConstants {
 	@SuppressWarnings("rawtypes")
 	public void blockUnblockContractorPhones(Contract contract,
 			EntityManager oracleManager) throws CallCenterException {
-		try {
+	/*	try {
 			StringBuilder log = new StringBuilder(
 					"Checking Contractor Blocking ... \n");
 			if (contract == null || contract.getContract_id() == null) {
@@ -1218,6 +1182,6 @@ public class ContractorsDMI implements QueryConstants {
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების ცვლილებისას : "
 					+ e.toString());
-		}
+		}*/
 	}
 }

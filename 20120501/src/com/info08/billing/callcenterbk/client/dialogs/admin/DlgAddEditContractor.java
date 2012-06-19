@@ -118,7 +118,13 @@ public class DlgAddEditContractor extends Window {
 			myComboBoxItemOrg.setMyIdField("organization_id");
 			//myComboBoxItemOrg.setMyDisplayField("organization_name","remark");
 			myComboBoxItemOrg.setMyChooserTitle(CallCenterBK.constants.organization());
-
+			myComboBoxItemOrg.addDataChangedHandler(new MyComboBoxItemDataChangedHandler() {
+				@Override
+				public void onDataChanged(MyComboBoxEvent event) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			hLayout.addMember(myComboBoxItemOrg);
 
 			String arrCapt1[] = new String[2];

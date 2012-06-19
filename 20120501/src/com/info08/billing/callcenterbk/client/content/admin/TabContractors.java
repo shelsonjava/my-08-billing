@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.content.admin;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditContractor;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgBlackPhoneList;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgContractorPhones;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetContractorsBilling;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgUpdateContrCurrRangePrice;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
@@ -318,9 +319,10 @@ public class TabContractors extends Tab {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditContractor dlgAddEditContractor = new DlgAddEditContractor(
+				/*	DlgAddEditContractor dlgAddEditContractor = new DlgAddEditContractor(
 							contractorsGrid, null);
-					dlgAddEditContractor.show();
+					dlgAddEditContractor.show();*/
+					new DlgContractorPhones().show();
 				}
 			});
 
