@@ -92,7 +92,7 @@
 		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true" />
 		<field name="concat_phones"					type="text"  		title="concat_phones"					hidden="true"/>
 		<field name="concat_activity_descrs"		type="text"  		title="concat_activity_descrs"			hidden="true"/>
-		<field name="concat_org_partner_banks"		type="text"  		title="concat_org_partner_banks"		hidden="true"/>
+		<field name="concat_org_partner_banks"		type="text"  		title="concat_org_partner_banks"/>
 		<field name="hist_start_date"   			type="datetime" 	title="hs_hist_start_date"/>
 		<field name="hist_end_date"   				type="datetime" 	title="hs_hist_end_date"/>
 		<field name="on_user"  						type="text"  		title="hs_on_user"/>
@@ -193,7 +193,7 @@
 								 wm_concat(oo.organization_name) as concat_org_partner_banks 
 							from organization_partner_banks t
        						inner join organizations oo on oo.organization_id = t.part_bank_org_id
-							where t.organization_id = oo.organization_id) as concat_org_partner_banks,
+							where t.organization_id = o.organization_id) as concat_org_partner_banks,
 						#end
 						o.organization_name as original_org_name,
 						a.concat_address_with_town as full_address_not_hidden,
