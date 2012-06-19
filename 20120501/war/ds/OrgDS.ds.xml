@@ -92,12 +92,13 @@
 		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true" />
 		<field name="concat_phones"					type="text"  		title="concat_phones"					hidden="true"/>
 		<field name="concat_activity_descrs"		type="text"  		title="concat_activity_descrs"			hidden="true"/>
+		<field name="concat_org_partner_banks"		type="text"  		title="concat_org_partner_banks"		hidden="true"/>
 		<field name="hist_start_date"   			type="datetime" 	title="hs_hist_start_date"/>
 		<field name="hist_end_date"   				type="datetime" 	title="hs_hist_end_date"/>
 		<field name="on_user"  						type="text"  		title="hs_on_user"/>
 		<field name="off_user"		   				type="text"  		title="hs_off_user"/>
 		<field name="off_user"		   				type="text"  		title="hs_off_user"/>
-		<field name="rdeleted"   					type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
+		<field name="rdeleted"   					type="boolean"  	title="hph_rcn" 						sqlStorageStrategy="integer"/>
 		<field name="parrent_organization"			type="text"  		title="parrent_organization"/>
 		<field name="cust_order"					type="integer"  	title="cust_order"/>
 		<field name="org_acctivity_name"			type="text"  		title="cust_order"/>
@@ -186,7 +187,14 @@
 							  from organization_to_activities t 
        								inner join organization_activities tt on tt.org_activity_id = t.org_activity_id
 							  where t.organization_id = o.organization_id ) as concat_activity_descrs,
-						#end						
+						#end
+						#if($criteria.isCallCenter)
+							(select 
+								 wm_concat(o.organization_name) as concat_org_partner_banks 
+							from organization_partner_banks t
+       						inner join organizations o on o.organization_id = t.part_bank_org_id
+							where t.organization_id = o.organization_id) as concat_org_partner_banks,
+						#end
 						o.organization_name as original_org_name,
 						a.concat_address_with_town as full_address_not_hidden,
 						a1.concat_address_with_town as legal_full_address_not_hidden,
