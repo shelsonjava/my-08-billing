@@ -28,7 +28,7 @@
 		<field name="real_address_descr"			type="text"  		title="real_address_descr"/>
 		<field name="legal_address_descr"			type="text"  		title="legal_address_descr"/>
 		<field name="full_address_not_hidden"		type="text"  		title="full_address_not_hidden"/>
-		<field name="call_center_address"		type="text"  		title="call_center_address"/>
+		<field name="call_center_address"			type="text"  		title="call_center_address"/>
 		<field name="legal_form_desc_id"			type="integer"  	title="legal_form_desc_id"				hidden="true"/>
 		<field name="status"						type="integer"  	title="status"							hidden="true"/>		
 		<field name="important_remark"				type="integer"  	title="important_remark"				hidden="true"/>		
