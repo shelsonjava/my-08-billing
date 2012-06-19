@@ -325,7 +325,7 @@
 							 #end	
 							 #if($criteria.real_address_descr) 
 							 	#foreach($str in $criteria.real_address_descr.split(" "))
-							 		and a.concat_address like '%'||'$str'||'%' AND a.town_district not like '%'||'$str'||'%'
+							 		and a.concat_address like '%'||'$str'||'%' AND a.town_district_name not like '%'||'$str'||'%'
 								#end							 	
 							 #end
 							 #if($criteria.town_district_id) 
@@ -341,7 +341,7 @@
 								
 							 #if($criteria.legal_real_address_descr) 
 							 	#foreach($str in $criteria.legal_real_address_descr.split(" "))
-							 		and a1.concat_address like '%'||'$str'||'%' AND a1.town_district not like '%'||'$str'||'%'
+							 		and a1.concat_address like '%'||'$str'||'%' AND a1.town_district_name not like '%'||'$str'||'%'
 								#end							 	
 							 #end
 							 #if($criteria.legal_town_district_id) 
