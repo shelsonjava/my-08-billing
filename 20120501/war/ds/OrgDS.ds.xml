@@ -361,7 +361,6 @@
 							 #if($criteria.main_organization) and o.parrent_organization_id is null #end
 							 #if($criteria.web_address) and o.web_address like '%'||($criteria.web_address)||'%' #end
 							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
-							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
 							 #if($criteria.social_address) and o.social_address like '%'||($criteria.social_address)||'%' #end
 							 #if($criteria.org_found_date_start) and trunc(o.found_date)>= trunc($criteria.org_found_date_start) and  trunc(o.found_date)<= trunc($criteria.org_found_date_end) #end
 							 
