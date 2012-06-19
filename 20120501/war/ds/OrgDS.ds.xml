@@ -89,6 +89,8 @@
 		<field name="original_org_name"				type="text"  		title="original_org_name"/>
 		<field name="mainIdList"					type="any"  		title="mainIdList"						hidden="true"/>
 		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true" />
+		<field name="concat_phones"					type="text"  		title="concat_phones"					hidden="true"/>
+		<field name="concat_activity_descrs"		type="text"  		title="concat_activity_descrs"			hidden="true"/>
 		<field name="hist_start_date"   			type="datetime" 	title="hs_hist_start_date"/>
 		<field name="hist_end_date"   				type="datetime" 	title="hs_hist_end_date"/>
 		<field name="on_user"  						type="text"  		title="hs_on_user"/>
@@ -166,10 +168,24 @@
 						#else
 							o.organization_name 
 						#end
-						#if($criteria.need_phones)
-							
-						#end
 						as organization_name,
+						#if($criteria.need_phones)
+							 (select 
+							 		wm_concat(pn.phone) as concat_phones
+							 from organization_depart_to_phones tt
+							 inner join phone_numbers pn on pn.phone_number_id = tt.phone_number_id
+							 where tt.org_department_id in
+							       (select t.org_department_id
+							          from ccare.organization_department t
+							         where t.organization_id = o.organization_id)
+							  and tt.for_contact = 1 ) as concat_phones,
+							  
+							  (select 
+							  		wm_concat(tt.activity_description) as concat_activity_descrs 
+							  from organization_to_activities t 
+       								inner join organization_activities tt on tt.org_activity_id = t.org_activity_id
+							  where t.organization_id = o.organization_id ) as concat_activity_descrs,
+						#end						
 						o.organization_name as original_org_name,
 						a.concat_address_with_town as full_address_not_hidden,
 						a1.concat_address_with_town as legal_full_address_not_hidden,
@@ -340,6 +356,7 @@
 									and getOrgDayoffs(o.day_offs) like '%'||'$str'||'%'
 								#end
 							 #end
+							 #if($criteria.main_organization) and o.parrent_organization_id is null #end
 							 #if($criteria.web_address) and o.web_address like '%'||($criteria.web_address)||'%' #end
 							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
 							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
