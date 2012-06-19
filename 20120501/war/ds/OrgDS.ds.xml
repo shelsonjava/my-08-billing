@@ -192,8 +192,8 @@
 							(select 
 								 wm_concat(o.organization_name) as concat_org_partner_banks 
 							from organization_partner_banks t
-       						inner join organizations o on o.organization_id = t.part_bank_org_id
-							where t.organization_id = o.organization_id) as concat_org_partner_banks,
+       						inner join organizations oo on oo.organization_id = t.part_bank_org_id
+							where t.organization_id = oo.organization_id) as concat_org_partner_banks,
 						#end
 						o.organization_name as original_org_name,
 						a.concat_address_with_town as full_address_not_hidden,
