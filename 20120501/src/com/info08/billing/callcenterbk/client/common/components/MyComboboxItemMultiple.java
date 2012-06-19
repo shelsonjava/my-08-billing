@@ -65,10 +65,21 @@ public class MyComboboxItemMultiple extends TextItem {
 		return paramClass;
 	}
 
+	public void clearValues() {
+		clearValue();
+		paramClass.setValueRecords(null);
+		setPrompt(null);
+	}
+
 	public void setDisplayValue() {
+		if (paramClass == null) {
+			setPrompt(null);
+			return;
+		}
 		Record records[] = paramClass.getValueRecords();
 		setValue("");
 		if (records == null) {
+			setPrompt(null);
 			return;
 		}
 		String displayFields[] = paramClass.getDisplayFields();

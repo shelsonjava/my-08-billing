@@ -22,9 +22,12 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ExportDisplay;
+import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -77,7 +80,7 @@ public class TabOrganization extends Tab {
 	private TextItem legalStreetItem;
 	private SelectItem legalRegionItem;
 	private SelectItem partnerBankItem;
-	// private SelectItem orgActsItem;
+	private MyComboboxItemMultiple orgActivity;
 	private SelectItem weekDaysItem;
 	private TextItem orgContactPersonItem;
 	private SelectItem orgStatusItem;
@@ -93,6 +96,7 @@ public class TabOrganization extends Tab {
 	private ToolStripButton supperOrgBtn;
 	private ToolStripButton orgDepartmentsBtn;
 	private ToolStripButton historyBtn;
+	private ToolStripButton exportBtn;
 
 	private ListGrid orgTreeGrid;
 	private DetailViewer detailViewer;
@@ -215,7 +219,7 @@ public class TabOrganization extends Tab {
 
 		legalTownItem = new ComboBoxItem();
 		legalTownItem.setTitle(CallCenterBK.constants.townLegal());
-		legalTownItem.setName("town_id");
+		legalTownItem.setName("town_id_1");
 		legalTownItem.setWidth(245);
 		ClientUtils.fillCombo(legalTownItem, "TownsDS",
 				"searchCitiesFromDBForCombos", "town_id", "town_name");
@@ -223,7 +227,7 @@ public class TabOrganization extends Tab {
 		legalRegionItem = new SelectItem();
 		legalRegionItem.setMultiple(true);
 		legalRegionItem.setTitle(CallCenterBK.constants.cityRegionLegal());
-		legalRegionItem.setName("town_district_id");
+		legalRegionItem.setName("town_district_id_1");
 		legalRegionItem.setWidth(245);
 
 		ClientUtils.fillCombo(legalRegionItem, "TownDistrictDS",
@@ -267,16 +271,16 @@ public class TabOrganization extends Tab {
 		// orgActsItem.setPickListFields(activity_description);
 		// orgActsItem.setPickListProperties(pickListProperties);
 
-		MyComboboxItemMultiple myComboboxItemMultiple = new MyComboboxItemMultiple();
-		myComboboxItemMultiple.setTitle(CallCenterBK.constants.activity());
-		myComboboxItemMultiple.setWidth(245);
+		orgActivity = new MyComboboxItemMultiple();
+		orgActivity.setTitle(CallCenterBK.constants.activity());
+		orgActivity.setWidth(245);
 		MyComboboxItemMultClass params = new MyComboboxItemMultClass(
 				"OrgActDS", "searchAllBusinesActivitiesForCB",
 				"org_activity_id", new String[] { "activity_description" },
 				new String[] { CallCenterBK.constants.activity() }, null,
 				CallCenterBK.constants.chooseActivity(), 700, 400,
 				CallCenterBK.constants.thisRecordAlreadyChoosen());
-		myComboboxItemMultiple.setParams(params);
+		orgActivity.setParams(params);
 
 		weekDaysItem = new SelectItem();
 		weekDaysItem.setMultiple(true);
@@ -284,7 +288,6 @@ public class TabOrganization extends Tab {
 		weekDaysItem.setName("day_id");
 		weekDaysItem.setWidth(245);
 		weekDaysItem.setValueMap(ClientMapUtil.getInstance().getWeekDays());
-		weekDaysItem.setDefaultToFirstOption(true);
 
 		orgContactPersonItem = new TextItem();
 		orgContactPersonItem.setName("contact_person");
@@ -297,7 +300,6 @@ public class TabOrganization extends Tab {
 		orgStatusItem.setName("status");
 		orgStatusItem.setWidth(245);
 		orgStatusItem.setValueMap(ClientMapUtil.getInstance().getOrgStatuses());
-		orgStatusItem.setDefaultToFirstOption(true);
 
 		searchForm.setFields(orgNameGeoItem, orgCommentItem, orgDepartmentItem,
 				phoneItem, orgDirectorItem, streetItem, regionItem, townItem,
@@ -305,8 +307,7 @@ public class TabOrganization extends Tab {
 				legalTownItem, orgWorkingHoursItem, orgDayOffsItem,
 				orgWebAddressItem, orgEmailItem, orgSocialAddressItem,
 				orgFoundedStartItem, orgFoundedEndItem, partnerBankItem,
-				myComboboxItemMultiple, weekDaysItem, orgStatusItem,
-				orgContactPersonItem);
+				orgActivity, weekDaysItem, orgStatusItem, orgContactPersonItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(1223);
@@ -375,6 +376,14 @@ public class TabOrganization extends Tab {
 		historyBtn.setLayoutAlign(Alignment.LEFT);
 		historyBtn.setWidth(50);
 		toolStrip.addButton(historyBtn);
+
+		toolStrip.addSeparator();
+
+		exportBtn = new ToolStripButton(CallCenterBK.constants.save(),
+				"excel.gif");
+		exportBtn.setLayoutAlign(Alignment.LEFT);
+		exportBtn.setWidth(50);
+		toolStrip.addButton(exportBtn);
 
 		orgTreeGrid = new ListGrid() {
 			protected String getCellCSSText(ListGridRecord record, int rowNum,
@@ -505,7 +514,7 @@ public class TabOrganization extends Tab {
 		findButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				search();
+				search(false);
 			}
 		});
 
@@ -514,19 +523,29 @@ public class TabOrganization extends Tab {
 			public void onClick(ClickEvent event) {
 				orgNameGeoItem.clearValue();
 				orgCommentItem.clearValue();
+				orgDepartmentItem.clearValue();
 				phoneItem.clearValue();
 				orgDirectorItem.clearValue();
 				streetItem.clearValue();
 				regionItem.clearValue();
 				townItem.clearValue();
+				orgIdentCodeItem.clearValue();
+				orgIndItem.clearValue();
+				legalStreetItem.clearValue();
+				legalRegionItem.clearValue();
+				legalTownItem.clearValue();
 				orgWorkingHoursItem.clearValue();
 				orgDayOffsItem.clearValue();
-				orgIdentCodeItem.clearValue();
-				orgDepartmentItem.clearValue();
 				orgWebAddressItem.clearValue();
 				orgEmailItem.clearValue();
+				orgSocialAddressItem.clearValue();
 				orgFoundedEndItem.clearValue();
 				orgFoundedStartItem.clearValue();
+				partnerBankItem.clearValue();
+				orgActivity.clearValues();
+				weekDaysItem.clearValue();
+				orgStatusItem.clearValue();
+				orgContactPersonItem.clearValue();
 				searchForm.focusInItem(orgNameGeoItem);
 			}
 		});
@@ -659,7 +678,7 @@ public class TabOrganization extends Tab {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
-					search();
+					search(false);
 				}
 			}
 		};
@@ -668,12 +687,15 @@ public class TabOrganization extends Tab {
 		orgDepartmentItem.addKeyPressHandler(searchHendler);
 		phoneItem.addKeyPressHandler(searchHendler);
 		orgDirectorItem.addKeyPressHandler(searchHendler);
-		orgIdentCodeItem.addKeyPressHandler(searchHendler);		
-		orgWebAddressItem.addKeyPressHandler(searchHendler);
-		orgEmailItem.addKeyPressHandler(searchHendler);
+		streetItem.addKeyPressHandler(searchHendler);
+		orgIdentCodeItem.addKeyPressHandler(searchHendler);
+		orgIndItem.addKeyPressHandler(searchHendler);
+		legalStreetItem.addKeyPressHandler(searchHendler);
 		orgDayOffsItem.addKeyPressHandler(searchHendler);
 		orgWorkingHoursItem.addKeyPressHandler(searchHendler);
-		streetItem.addKeyPressHandler(searchHendler);
+		orgWebAddressItem.addKeyPressHandler(searchHendler);
+		orgEmailItem.addKeyPressHandler(searchHendler);
+		orgSocialAddressItem.addKeyPressHandler(searchHendler);
 		orgContactPersonItem.addKeyPressHandler(searchHendler);
 
 		supperOrgBtn.addClickHandler(new ClickHandler() {
@@ -696,14 +718,6 @@ public class TabOrganization extends Tab {
 				findBySupperOrg(organization_id);
 			}
 		});
-
-		// advSearch.addChangedHandler(new ChangedHandler() {
-		// @Override
-		// public void onChanged(ChangedEvent event) {
-		// advParamButton.setDisabled(!advSearch.getValueAsBoolean());
-		// }
-		// });
-
 		orgTreeGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
@@ -716,6 +730,13 @@ public class TabOrganization extends Tab {
 				DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
 						null, listGridRecord, orgTreeGrid);
 				dlgAddEditMainOrg.show();
+			}
+		});
+
+		exportBtn.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				search(true);
 			}
 		});
 
@@ -786,7 +807,7 @@ public class TabOrganization extends Tab {
 		}
 	}
 
-	public void search() {
+	public void search(boolean isExport) {
 		try {
 			Criteria criteria = new Criteria();
 			String org_name = orgNameGeoItem.getValueAsString();
@@ -798,27 +819,51 @@ public class TabOrganization extends Tab {
 			if (remark != null && !remark.trim().equals("")) {
 				criteria.setAttribute("remark", remark);
 			}
+			String phone = phoneItem.getValueAsString();
+			if (phone != null && !phone.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("phone", phone);
+			}
 			String chief = orgDirectorItem.getValueAsString();
 			if (chief != null && !chief.trim().equals("")) {
 				criteria.setAttribute("chief", chief);
 			}
 			String street = streetItem.getValueAsString();
 			if (street != null && !street.trim().equalsIgnoreCase("")) {
-				String tmp = street.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("real_address_descr" + i, item);
-					i++;
-				}
+				criteria.setAttribute("real_address_descr", street);
+			}
+			String town_district_id = regionItem.getValueAsString();
+			if (town_district_id != null && !town_district_id.trim().equals("")) {
+				criteria.setAttribute("town_district_id", town_district_id);
 			}
 			String town_id = townItem.getValueAsString();
 			if (town_id != null && !town_id.trim().equalsIgnoreCase("")) {
 				criteria.setAttribute("town_id", new Integer(town_id));
+			}
+			String ident_code = orgIdentCodeItem.getValueAsString();
+			if (ident_code != null && !ident_code.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("ident_code", ident_code);
+			}
+			String organization_index = orgIndItem.getValueAsString();
+			if (organization_index != null
+					&& !organization_index.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("organization_index", organization_index);
+			}
+			String legal_street = legalStreetItem.getValueAsString();
+			if (legal_street != null
+					&& !legal_street.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("legal_real_address_descr", legal_street);
+			}
+			String legal_town_district_id = legalRegionItem.getValueAsString();
+			if (legal_town_district_id != null
+					&& !legal_town_district_id.trim().equals("")) {
+				criteria.setAttribute("legal_town_district_id", new Integer(
+						legal_town_district_id));
+			}
+			String legal_town_id = legalTownItem.getValueAsString();
+			if (legal_town_id != null
+					&& !legal_town_id.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("legal_town_id", new Integer(
+						legal_town_id));
 			}
 			String work_hours = orgWorkingHoursItem.getValueAsString();
 			if (work_hours != null && !work_hours.trim().equalsIgnoreCase("")) {
@@ -826,48 +871,25 @@ public class TabOrganization extends Tab {
 			}
 			String dayoffs = orgDayOffsItem.getValueAsString();
 			if (dayoffs != null && !dayoffs.trim().equals("")) {
-				String tmp = dayoffs.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("day_offs" + i, item);
-					i++;
-				}
+				criteria.setAttribute("day_offs", dayoffs);
 			}
-			String ident_code = orgIdentCodeItem.getValueAsString();
-			if (ident_code != null && !ident_code.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("ident_code", ident_code);
-			}
-
-			String phone = phoneItem.getValueAsString();
-			if (phone != null && !phone.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("phone", phone);
-			}
-
 			String department = orgDepartmentItem.getValueAsString();
 			if (department != null && !department.trim().equalsIgnoreCase("")) {
 				criteria.setAttribute("department", department);
 			}
-
 			String web_address = orgWebAddressItem.getValueAsString();
 			if (web_address != null && !web_address.trim().equalsIgnoreCase("")) {
 				criteria.setAttribute("web_address", web_address);
 			}
-
 			String email_address = orgEmailItem.getValueAsString();
 			if (email_address != null
 					&& !email_address.trim().equalsIgnoreCase("")) {
 				criteria.setAttribute("email_address", email_address);
 			}
-
-			String town_district_id = regionItem.getValueAsString();
-			if (town_district_id != null && !town_district_id.trim().equals("")) {
-				criteria.setAttribute("town_district_id", new Integer(
-						town_district_id));
+			String social_address = orgSocialAddressItem.getValueAsString();
+			if (social_address != null
+					&& !social_address.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("social_address", social_address);
 			}
 			Date org_found_date_start = orgFoundedStartItem.getValueAsDate();
 			Date org_found_date_end = orgFoundedEndItem.getValueAsDate();
@@ -875,6 +897,44 @@ public class TabOrganization extends Tab {
 				criteria.setAttribute("org_found_date_start",
 						org_found_date_start);
 				criteria.setAttribute("org_found_date_end", org_found_date_end);
+			}
+			String org_partner_banks = partnerBankItem.getValueAsString();
+			if (org_partner_banks != null
+					&& !org_partner_banks.trim().equals("")) {
+				criteria.setAttribute("org_partner_banks", org_partner_banks);
+			}
+			MyComboboxItemMultClass orgActivities = orgActivity.getParamClass();
+			if (orgActivities != null
+					&& orgActivities.getValueRecords() != null
+					&& orgActivities.getValueRecords().length > 0) {
+				Record records[] = orgActivities.getValueRecords();
+				String orgActivitiesCrit = "";
+				int i = 0;
+				for (Record record : records) {
+					Integer org_activity_id = record
+							.getAttributeAsInt("org_activity_id");
+					if (i > 0) {
+						orgActivitiesCrit += ",";
+					}
+					orgActivitiesCrit += org_activity_id;
+					i++;
+				}
+				criteria.setAttribute("orgActivitiesCrit", orgActivitiesCrit);
+			}
+
+			String week_daysItem = weekDaysItem.getValueAsString();
+			if (week_daysItem != null && !week_daysItem.trim().equals("")) {
+				criteria.setAttribute("week_daysItemCrit", week_daysItem);
+			}
+
+			String org_statuses = orgStatusItem.getValueAsString();
+			if (org_statuses != null && !org_statuses.trim().equals("")) {
+				criteria.setAttribute("org_statuses", org_statuses);
+			}
+
+			String contact_person = orgContactPersonItem.getValueAsString();
+			if (contact_person != null && !contact_person.trim().equals("")) {
+				criteria.setAttribute("contact_person", contact_person);
 			}
 
 			if ((org_name == null || org_name.trim().equals(""))
@@ -895,16 +955,37 @@ public class TabOrganization extends Tab {
 			}
 
 			DSRequest dsRequest = new DSRequest();
+
 			dsRequest.setAttribute("operationId",
 					"customOrgSearchForCallCenterNew");
+			if (isExport) {
+				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
+						ExportFormat.values(), "xls"));
+				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
+				dsRequest.setExportFields(new String[] { "original_org_name",
+						"full_address_not_hidden", "chief", "contact_person",
+						"legal_full_address_not_hidden", "unique_ident_code",
+						"email_address", "web_address", "social_address" });
+			}
+
 			detailViewer.setData(new Record[0]);
 			orgTreeGrid.invalidateCache();
-			orgTreeGrid.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, dsRequest);
+			if (isExport) {
+				orgTreeGrid.getDataSource().exportData(criteria, dsRequest,
+						new DSCallback() {
+							@Override
+							public void execute(DSResponse response,
+									Object rawData, DSRequest request) {
+							}
+						});
+			} else {
+				orgTreeGrid.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+					}
+				}, dsRequest);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

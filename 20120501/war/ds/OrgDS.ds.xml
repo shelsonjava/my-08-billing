@@ -78,13 +78,15 @@
 		<field name="legal_addr_anumber"			type="text"  		title="legal_addr_anumber"				hidden="true"/>
 		<field name="legal_addr_street_location"	type="text"  		title="legal_addr_street_location"		hidden="true"/>
 		<field name="legal_addr_street_index_text"	type="text"  		title="legal_addr_street_index_text"	hidden="true"/>
+		<field name="legal_full_address_not_hidden"	type="text"  		title="legal_full_address_not_hidden"	hidden="true"/>
 		<field name="orgActivities"					type="any"  		title="orgActivities"					hidden="true"/>
 		<field name="orgPartnerBanks"				type="any"  		title="orgPartnerBanks"					hidden="true"/>
 		<field name="physicalAddrValues"			type="any"  		title="physicalAddrValues"				hidden="true"/>
 		<field name="legalAddrValues"				type="any"  		title="legalAddrValues"					hidden="true"/>
 		<field name="partBankUpdated"				type="integer"  	title="partBankUpdated"					hidden="true"/>
 		<field name="ph_town_id"					type="integer"  	title="ph_town_id"						hidden="true"/>
-		<field name="original_org_name"				type="text"  		title="original_org_name"				/>
+		<field name="unique_ident_code"				type="integer"  	title="unique_ident_code"				hidden="true"/>
+		<field name="original_org_name"				type="text"  		title="original_org_name"/>
 		<field name="mainIdList"					type="any"  		title="mainIdList"						hidden="true"/>
 		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true" />
 		<field name="hist_start_date"   			type="datetime" 	title="hs_hist_start_date"/>
@@ -95,7 +97,7 @@
 		<field name="rdeleted"   					type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
 		<field name="parrent_organization"			type="text"  		title="parrent_organization"/>
 		<field name="cust_order"					type="integer"  	title="cust_order"/>
-		<field name="org_acctivity_name"			type="text"  	title="cust_order"/>
+		<field name="org_acctivity_name"			type="text"  		title="cust_order"/>
 		<field name="org_activity_id"				type="integer"  	title="cust_order"/>
 		
 	</fields>
@@ -164,9 +166,13 @@
 						#else
 							o.organization_name 
 						#end
+						#if($criteria.need_phones)
+							
+						#end
 						as organization_name,
 						o.organization_name as original_org_name,
 						a.concat_address_with_town as full_address_not_hidden,
+						a1.concat_address_with_town as legal_full_address_not_hidden,
 						decode(o.parrent_organization_id,null,null,'home') as tree_org_parrent,
 		                decode((select min(1) from organizations ms1 where ms1.parrent_organization_id = o.organization_id),null,null,'associations') as tree_org_child,
 						a.town_id,
@@ -174,6 +180,7 @@
              			o.super_priority,
 						o.ident_code,
 						o.ident_code_new,
+						decode(o.ident_code_new,null,o.ident_code,o.ident_code_new) as unique_ident_code,
 						o.chief,
 						o.remark,
 						o.work_hours,
@@ -253,12 +260,6 @@
 								#end
 							#end
 						 	
-						 	#if($criteria.full_address_not_hidden) 
-								#foreach($str in $criteria.full_address_not_hidden.split(" "))
-									and (tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) like '%'||'$str'||'%'
-								#end
-							#end
-						 	
 						 #if($criteria.phone)
 						 	and o.organization_id in (
 						 		select 
@@ -303,39 +304,88 @@
 							 	#foreach($str in $criteria.remark.split(" "))
 									and o.chief like '%'||'$str'||'%'
 								#end							 	
-							 #end							 
-							 					 
-							 #if($criteria.real_address_descr1) and a.concat_address like '%'||($criteria.real_address_descr1)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
-							 #if($criteria.real_address_descr2) and a.concat_address like '%'||($criteria.real_address_descr2)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
-							 #if($criteria.real_address_descr3) and a.concat_address like '%'||($criteria.real_address_descr3)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
-							 #if($criteria.real_address_descr4) and a.concat_address like '%'||($criteria.real_address_descr4)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
-							 #if($criteria.real_address_descr5) and a.concat_address like '%'||($criteria.real_address_descr5)||'%' AND a.town_district not like '%'||($criteria.concat_address)||'%' #end
-							 
-							 
-							 #if($criteria.legaladdress) and o.legaladdress like '%'||($criteria.legaladdress)||'%' #end
-							 #if($criteria.legaladdress1) and o.legaladdress like '%'||($criteria.legaladdress1)||'%' #end
-							 #if($criteria.legaladdress2) and o.legaladdress like '%'||($criteria.legaladdress2)||'%' #end
-							 #if($criteria.legaladdress3) and o.legaladdress like '%'||($criteria.legaladdress3)||'%' #end
-							 #if($criteria.legaladdress4) and o.legaladdress like '%'||($criteria.legaladdress4)||'%' #end
-							 #if($criteria.legaladdress5) and mo1.legaladdress like '%'||($criteria.legaladdress5)||'%' #end
-							 
-							 #if($criteria.day_offs1) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs1)||'%' #end
-							 #if($criteria.day_offs2) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs2)||'%' #end
-							 #if($criteria.day_offs3) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs3)||'%' #end
-							 #if($criteria.day_offs4) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs4)||'%' #end
-							 #if($criteria.day_offs5) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs5)||'%' #end
-							 #if($criteria.day_offs6) and getOrgDayoffs(o.day_offs) like '%'||($criteria.day_offs6)||'%' #end
-							 #if($criteria.full_address) and a.full_address||' '||a.block||' '||a.appt||' '||a.descr||' '||a.anumber like '%'||($criteria.full_address)||'%' #end						 
-							 #if($criteria.work_hours) and o.work_hours like '%'||($criteria.work_hours)||'%' #end
-							 #if($criteria.web_address) and o.web_address like '%'||($criteria.web_address)||'%' #end
-							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
-							 #if($criteria.legal_statuse_id) and o.legal_statuse_id = $criteria.legal_statuse_id #end
-							 #if($criteria.ind) and o.ind = $criteria.ind #end
-							 #if($criteria.street_id) and ma.street_id = $criteria.street_id #end
+							 #end	
+							 #if($criteria.real_address_descr) 
+							 	#foreach($str in $criteria.real_address_descr.split(" "))
+							 		and a.concat_address like '%'||'$str'||'%' AND a.town_district not like '%'||'$str'||'%'
+								#end							 	
+							 #end
+							 #if($criteria.town_district_id) 
+							 	and ( 1<>1
+									 	#foreach($str in $criteria.town_district_id.split(","))
+									 		or a.town_district_id =to_number($str)
+										#end
+							 	) 
+							 #end
 							 #if($criteria.town_id) and a.town_id = $criteria.town_id #end
 							 #if($criteria.ident_code) and (o.ident_code = $criteria.ident_code or o.ident_code_new = $criteria.ident_code) #end
-							 #if($criteria.town_district_id) and a.town_district_id = $criteria.town_district_id #end
+							 #if($criteria.organization_index) and o.organization_index = $criteria.organization_index #end						 
+								
+							 #if($criteria.legal_real_address_descr) 
+							 	#foreach($str in $criteria.legal_real_address_descr.split(" "))
+							 		and a1.concat_address like '%'||'$str'||'%' AND a1.town_district not like '%'||'$str'||'%'
+								#end							 	
+							 #end
+							 #if($criteria.legal_town_district_id) 
+							 	and ( 1<>1
+									 	#foreach($str in $criteria.legal_town_district_id.split(","))
+									 		or a1.legal_town_district_id =to_number($str)
+										#end
+							 	) 
+							 #end
+							 #if($criteria.legal_town_id) and a1.legal_town_id = $criteria.legal_town_id #end
+							 #if($criteria.work_hours) and o.work_hours like '%'||($criteria.work_hours)||'%' #end
+							  #if($criteria.day_offs) 
+							 	 #foreach($str in $criteria.day_offs.split(" "))
+									and getOrgDayoffs(o.day_offs) like '%'||'$str'||'%'
+								#end
+							 #end
+							 #if($criteria.web_address) and o.web_address like '%'||($criteria.web_address)||'%' #end
+							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
+							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
+							 #if($criteria.social_address) and o.social_address like '%'||($criteria.social_address)||'%' #end
 							 #if($criteria.org_found_date_start) and trunc(o.found_date)>= trunc($criteria.org_found_date_start) and  trunc(o.found_date)<= trunc($criteria.org_found_date_end) #end
+							 
+							 #if($criteria.org_partner_banks) 
+							 	and o.organization_id in (
+							 		select 
+							 				pb.organization_id from organization_partner_banks pb 
+							 		where 1<>1 
+									 	#foreach($str in $criteria.org_partner_banks.split(","))
+									 		or pb.part_bank_org_id = to_number($str)  
+										#end
+							 	) 
+							 #end
+							 #if($criteria.orgActivitiesCrit)
+							 	and o.organization_id in (
+							 		select 
+							 				oa.organization_id from organization_to_activities oa 
+							 		where 1<>1 
+									 	#foreach($str in $criteria.orgActivitiesCrit.split(","))
+									 		or oa.org_activity_id = to_number($str)  
+										#end
+							 	) 
+							 #end
+							 #if($criteria.week_daysItemCrit)	
+							 		and ( 1<>1
+							 		#foreach($str in $criteria.week_daysItemCrit.split(","))
+									 	or bitand($str, o.day_offs) = $str
+									#end
+							 	)
+							 #end
+							 
+							 #if($criteria.org_statuses) 
+							 	and ( 1<>1
+									 	#foreach($str in $criteria.org_statuses.split(","))
+									 		or o.status =to_number($str)
+										#end
+							 	) 
+							 #end
+							  #if($criteria.contact_person) 
+							 	#foreach($str in $criteria.contact_person.split(" "))
+									and o.contact_person like '%'||'$str'||'%'
+								#end							 	
+							 #end
 						  #end
 				 ]]>
 			</whereClause>

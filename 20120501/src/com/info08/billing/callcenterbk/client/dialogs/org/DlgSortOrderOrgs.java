@@ -176,7 +176,7 @@ public class DlgSortOrderOrgs extends Window {
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
 					destroy();
-					tabOrganization.search();
+					tabOrganization.search(false);
 				}
 			}, req);
 			com.smartgwt.client.rpc.RPCManager.sendQueue();
