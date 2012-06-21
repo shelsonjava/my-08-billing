@@ -1,35 +1,12 @@
 package com.info08.billing.callcenterbk.server.impl.dmi;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import javax.persistence.EntityManager;
 
-import org.apache.commons.collections.map.LinkedMap;
 import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
-import com.info08.billing.callcenterbk.server.common.RCNGenerator;
-import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.entity.contractors.Contract;
-import com.info08.billing.callcenterbk.shared.entity.contractors.ContractPriceItem;
-import com.info08.billing.callcenterbk.shared.entity.contractors.ContractorPhone;
-import com.info08.billing.callcenterbk.shared.entity.main.MainDetail;
-import com.info08.billing.callcenterbk.shared.entity.org.Organization;
-import com.isomorphic.datasource.DSRequest;
-import com.isomorphic.datasource.DataSourceManager;
-import com.isomorphic.jpa.EMF;
-import com.isomorphic.sql.SQLDataSource;
 
 /**
  * ეს კლასი გამოიყენება კონტრაქტორების მონაცემების დასამუშავებლად და შესანახად
@@ -46,7 +23,7 @@ public class ContractorsDMI implements QueryConstants {
 	 * კლასი რომლის მეშვეობითაც ხდება სისტემური ინფორმაციის ლოგირება სერვერზე
 	 * ფაილში.
 	 */
-	private Logger logger = Logger.getLogger(ContractorsDMI.class.getName());
+	protected Logger logger = Logger.getLogger(ContractorsDMI.class.getName());
 
 	/**
 	 * ახალი კონტრაქტორის დამატების ფუნქციონალი.

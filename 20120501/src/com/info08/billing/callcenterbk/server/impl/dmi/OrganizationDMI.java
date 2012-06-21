@@ -19,7 +19,6 @@ import com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartMent;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartToPhone;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationPartnerBank;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationToActivity;
-import com.info08.billing.callcenterbk.shared.entity.transport.TranspSchedule;
 import com.info08.billing.callcenterbk.shared.items.Address;
 import com.info08.billing.callcenterbk.shared.items.PhoneNumber;
 import com.isomorphic.datasource.DSRequest;
@@ -54,7 +53,7 @@ public class OrganizationDMI {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.addOrgActivity.";
+			String log = "Method:OrganizationDMI.addOrgActivity.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -120,7 +119,7 @@ public class OrganizationDMI {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateOrgActivity.";
+			String log = "Method:OrganizationDMI.updateOrgActivity.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -200,7 +199,7 @@ public class OrganizationDMI {
 		Object transaction = null;
 		try {
 
-			String log = "Method:CommonDMI.removeOrgActivity.";
+			String log = "Method:OrganizationDMI.removeOrgActivity.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 			Long org_activity_id = new Long(dsRequest.getOldValues()
@@ -262,7 +261,7 @@ public class OrganizationDMI {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateMainServiceOrg.";
+			String log = "Method:OrganizationDMI.updateMainServiceOrg.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -417,9 +416,8 @@ public class OrganizationDMI {
 
 			oracleManager.flush();
 			oracleManager.createNativeQuery("{call createOrganizationHist(?)}")
-					.setParameter(1, organization_id)
-					.executeUpdate();
-			
+					.setParameter(1, organization_id).executeUpdate();
+
 			EMF.commitTransaction(transaction);
 			log += ". Save Or Update Finished SuccessFully. ";
 			logger.info(log);
@@ -589,11 +587,11 @@ public class OrganizationDMI {
 					oracleManager.persist(orgDepartToPhone);
 				}
 			}
-			
+
 			oracleManager.flush();
-			oracleManager.createNativeQuery("{call createOrgDepartmentHist(?)}")
-					.setParameter(1, org_department_id)
-					.executeUpdate();
+			oracleManager
+					.createNativeQuery("{call createOrgDepartmentHist(?)}")
+					.setParameter(1, org_department_id).executeUpdate();
 			EMF.commitTransaction(transaction);
 			log += ". Save Or Update Finished SuccessFully. ";
 			logger.info(log);
@@ -623,12 +621,12 @@ public class OrganizationDMI {
 	 * @return
 	 * @throws Exception
 	 */
-	public TranspSchedule removeOrganizationDepartment(DSRequest dsRequest)
-			throws Exception {
+	public OrganizationDepartMent removeOrganizationDepartment(
+			DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.removeOrganizationDepartment.";
+			String log = "Method:OrganizationDMI.removeOrganizationDepartment.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -696,12 +694,12 @@ public class OrganizationDMI {
 	 * @return
 	 * @throws Exception
 	 */
-	public TranspSchedule removeOrganization(DSRequest dsRequest)
+	public Organization removeOrganization(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.removeOrganization.";
+			String log = "Method:OrganizationDMI.removeOrganization.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -817,7 +815,7 @@ public class OrganizationDMI {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateOrgDepSortOrder.";
+			String log = "Method:OrganizationDMI.updateOrgDepSortOrder.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 			ArrayList orgDepIdList = (ArrayList) dsRequest.getOldValues().get(
@@ -865,7 +863,7 @@ public class OrganizationDMI {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateOrgSortOrder.";
+			String log = "Method:OrganizationDMI.updateOrgSortOrder.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 			ArrayList mainIdList = (ArrayList) dsRequest.getOldValues().get(
@@ -912,7 +910,7 @@ public class OrganizationDMI {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			String log = "Method:CommonDMI.updateOrgDepPhoneSortOrder.";
+			String log = "Method:OrganizationDMI.updateOrgDepPhoneSortOrder.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 			ArrayList orgDepPhoneIdList = (ArrayList) dsRequest.getOldValues()
@@ -942,6 +940,142 @@ public class OrganizationDMI {
 			return null;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Remove Data From Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წაშლისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public DSResponse addOrUpdateOrgDepPhone(DSRequest dsRequest)
+			throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:OrganizationDMI.addOrUpdateOrgDepPhone.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+			Map<?, ?> values = dsRequest.getValues();
+			Long org_dep_to_ph_id = values.containsKey("org_dep_to_ph_id") ? Long
+					.parseLong(values.get("org_dep_to_ph_id").toString())
+					: null;
+			Long phone_number_id = values.containsKey("phone_number_id") ? Long
+					.parseLong(values.get("phone_number_id").toString()) : null;
+			String loggedUserName = values.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+
+			OrganizationDepartToPhone orgDepartToPhone = null;
+			if (org_dep_to_ph_id != null) {
+				orgDepartToPhone = oracleManager.find(
+						OrganizationDepartToPhone.class, org_dep_to_ph_id);
+			} else {
+				orgDepartToPhone = new OrganizationDepartToPhone();
+			}
+
+			PhoneNumber phoneNumber = null;
+			if (phone_number_id != null) {
+				phoneNumber = oracleManager.find(PhoneNumber.class,
+						phone_number_id);
+			} else {
+				phoneNumber = new PhoneNumber();
+			}
+
+			DataTools.setProperties(values, phoneNumber);
+			String phone = phoneNumber.getPhone();
+
+			ArrayList<PhoneNumber> listPhones = (ArrayList<PhoneNumber>) oracleManager
+					.createNamedQuery("PhoneNumber.getByPhoneNumber")
+					.setParameter("phone", phone).getResultList();
+
+			PhoneNumber phoneNumberByNum = (listPhones != null && !listPhones
+					.isEmpty()) ? listPhones.get(0) : null;
+
+			if (phoneNumberByNum != null
+					&& !phoneNumberByNum.getPhone_number_id().equals(
+							phone_number_id)) {
+				Long id_tmp = phoneNumberByNum.getPhone_type_id();
+				phoneNumber = phoneNumberByNum;
+				DataTools.setProperties(values, phoneNumber);
+				phoneNumber.setPhone_number_id(id_tmp);
+			}
+
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "OrgDepPhone Changes.");
+			if (phoneNumber.getPhone_number_id() == null) {
+				oracleManager.persist(phoneNumber);
+			} else {
+				oracleManager.merge(phoneNumber);
+			}
+			DataTools.setProperties(values, orgDepartToPhone);
+			orgDepartToPhone.setPhone_number_id(phoneNumber
+					.getPhone_number_id());
+			if (orgDepartToPhone.getOrg_dep_to_ph_id() == null) {
+				oracleManager.persist(orgDepartToPhone);
+			} else {
+				oracleManager.merge(orgDepartToPhone);
+			}
+
+			org_dep_to_ph_id = orgDepartToPhone.getOrg_dep_to_ph_id();
+			EMF.commitTransaction(transaction);
+			log += ". Updating Finished SuccessFully. ";
+			logger.info(log);
+
+			values = DMIUtils.findRecordById("OrgDepPhoneDS",
+					"searchOrgDepPhones", org_dep_to_ph_id, "org_dep_to_ph_id");
+			DSResponse dsResponse = new DSResponse();
+			dsResponse.setData(values);
+			dsResponse.setInvalidateCache(true);
+			return dsResponse;
+		} catch (Exception e) {
+			if (transaction != null) {
+				EMF.rollbackTransaction(transaction);
+			}
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("Error While Update Data Into Database : ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წაშლისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
+	public void removeOrgDepPhone(DSRequest dsRequest) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			String log = "Method:OrganizationDMI.removeOrgDepPhone.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+			Map<?, ?> values = dsRequest.getValues();
+			Long org_dep_to_ph_id = Long.parseLong(values.get(
+					"org_dep_to_ph_id").toString());
+			String loggedUserName = values.get("loggedUserName").toString();
+			Timestamp recDate = new Timestamp(System.currentTimeMillis());
+
+			OrganizationDepartToPhone orgDepartToPhone = oracleManager.find(
+					OrganizationDepartToPhone.class, org_dep_to_ph_id);
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
+					loggedUserName, "OrgDepPhone Remove.");
+			oracleManager.remove(orgDepartToPhone);
+
+			EMF.commitTransaction(transaction);
+			log += ". Removing Finished SuccessFully. ";
+			logger.info(log);
+		} catch (Exception e) {
+			if (transaction != null) {
+				EMF.rollbackTransaction(transaction);
+			}
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}

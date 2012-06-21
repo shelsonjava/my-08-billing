@@ -1,9 +1,16 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
+import java.util.Map;
+
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
+import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.smartgwt.client.data.DSCallback;
+import com.smartgwt.client.data.DSRequest;
+import com.smartgwt.client.data.DSResponse;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
@@ -37,12 +44,17 @@ public class DlgAddEditOrgDepPhone extends Window {
 
 	private ListGridRecord listGridRecord;
 	private ListGrid phoneListGrid;
+	private boolean saveOnClientSide;
+	private Record departRecord;
 
-	public DlgAddEditOrgDepPhone(ListGridRecord listGridRecord,
-			ListGrid phoneListGrid) {
+	public DlgAddEditOrgDepPhone(boolean saveOnClientSide,
+			ListGridRecord listGridRecord, ListGrid phoneListGrid,
+			Record departRecord) {
 		try {
 			this.listGridRecord = listGridRecord;
 			this.phoneListGrid = phoneListGrid;
+			this.saveOnClientSide = saveOnClientSide;
+			this.departRecord = departRecord;
 			setTitle(listGridRecord == null ? CallCenterBK.constants
 					.addOrgDepartmentPhone() : CallCenterBK.constants
 					.editOrgDepartmentPhone());
@@ -268,14 +280,52 @@ public class DlgAddEditOrgDepPhone extends Window {
 					phoneTypeItem.getDisplayValue());
 			listGridRecord.setAttribute("is_parallel_descr",
 					isParallelItem.getDisplayValue());
-			if (isNew) {
-				listGridRecord.setAttribute("org_dep_to_ph_id",
-						(HTMLPanel.createUniqueId()));
-				phoneListGrid.addData(listGridRecord);
+			if (saveOnClientSide) {
+				if (isNew) {
+					listGridRecord.setAttribute("org_dep_to_ph_id",
+							(HTMLPanel.createUniqueId()));
+					phoneListGrid.addData(listGridRecord);
+				} else {
+					phoneListGrid.updateData(listGridRecord);
+				}
 			} else {
-				phoneListGrid.updateData(listGridRecord);
+				com.smartgwt.client.rpc.RPCManager.startQueue();
+				Map<?, ?> map = listGridRecord.toMap();
+				map.remove("__ref");
+				map.remove("_ref");
+				Record record = new Record();
+				record.setAttribute("loggedUserName", CommonSingleton
+						.getInstance().getSessionPerson().getUser_name());
+				Integer phone_order = record.getAttributeAsInt("phone_order");
+				if (phone_order == null) {
+					phone_order = new Integer(0);
+				}
+				record.setAttribute("phone_order", phone_order);
+				record.setAttribute("org_department_id",
+						departRecord.getAttributeAsInt("org_department_id"));
+				DSRequest req = new DSRequest();
+				if (listGridRecord == null) {
+					req.setAttribute("operationId", "addOrgDepPhone");
+					phoneListGrid.addData(record, new DSCallback() {
+						@Override
+						public void execute(DSResponse response,
+								Object rawData, DSRequest request) {
+							destroy();
+						}
+					}, req);
+				} else {
+					req.setAttribute("operationId", "updateOrgDepPhone");
+					phoneListGrid.updateData(record, new DSCallback() {
+						@Override
+						public void execute(DSResponse response,
+								Object rawData, DSRequest request) {
+							destroy();
+						}
+					}, req);
+				}
+
+				com.smartgwt.client.rpc.RPCManager.sendQueue();
 			}
-			//phoneListGrid.filterData();
 			destroy();
 		} catch (Exception e) {
 			e.printStackTrace();

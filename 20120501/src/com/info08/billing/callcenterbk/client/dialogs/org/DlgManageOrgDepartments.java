@@ -42,6 +42,7 @@ public class DlgManageOrgDepartments extends Window {
 	private VLayout hLayout;
 
 	private DynamicForm searchForm;
+	private TextItem orgFullNameItem;
 	private TextItem orgDepNameItem;
 	private TextItem orgDepAddrItem;
 	private TextItem orgDepPhoneItem;
@@ -51,17 +52,16 @@ public class DlgManageOrgDepartments extends Window {
 	private ListGrid orgDepPhonesListGrid;
 	private DataSource orgDepDataSource;
 
-	protected ListGridRecord orgListGridRecord;
+	protected Record orgListGridRecord;
 	protected ListGrid orgTreeGrid;
 
 	private ToolStripButton sortBtn;
-	private ToolStripButton addNewOrgBtn;
-	private ToolStripButton editBtn;
-	private ToolStripButton deleteBtn;
+	private ToolStripButton addOrgDepBtn;
+	private ToolStripButton editOrgDepBtn;
+	private ToolStripButton deleteOrgDepBtn;
 	private ToolStripButton sortPhonesBtn;
 
-	public DlgManageOrgDepartments(ListGridRecord listGridRecord,
-			ListGrid orgTreeGrid) {
+	public DlgManageOrgDepartments(Record listGridRecord, ListGrid orgTreeGrid) {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
 			this.orgListGridRecord = listGridRecord;
@@ -100,8 +100,22 @@ public class DlgManageOrgDepartments extends Window {
 			searchForm.setTitleOrientation(TitleOrientation.TOP);
 			searchLayout.addMember(searchForm);
 
+			String fullName = listGridRecord
+					.getAttributeAsString("original_org_name")
+					+ " --- "
+					+ listGridRecord
+							.getAttributeAsString("full_address_not_hidden");
+
+			orgFullNameItem = new TextItem();
+			orgFullNameItem.setTitle(CallCenterBK.constants.department());
+			orgFullNameItem.setWidth("100%");
+			orgFullNameItem.setName("orgFullNameItem");
+			orgFullNameItem.setCanEdit(false);
+			orgFullNameItem.setColSpan(4);
+			orgFullNameItem.setValue(fullName);
+
 			orgDepNameItem = new TextItem();
-			orgDepNameItem.setTitle(CallCenterBK.constants.department());
+			orgDepNameItem.setTitle(CallCenterBK.constants.organization());
 			orgDepNameItem.setWidth(350);
 			orgDepNameItem.setName("department");
 
@@ -118,14 +132,14 @@ public class DlgManageOrgDepartments extends Window {
 			orgDepPhoneContItem = new CheckboxItem();
 			orgDepPhoneContItem.setTitle(CallCenterBK.constants
 					.contPhoneShort());
-			orgDepPhoneContItem.setWidth(138);
+			orgDepPhoneContItem.setWidth(180);
 			orgDepPhoneContItem.setName("phone_contact");
 
-			searchForm.setFields(orgDepNameItem, orgDepAddrItem,
-					orgDepPhoneItem, orgDepPhoneContItem);
+			searchForm.setFields(orgFullNameItem, orgDepNameItem,
+					orgDepAddrItem, orgDepPhoneItem, orgDepPhoneContItem);
 
 			HLayout buttonLayout = new HLayout(5);
-			buttonLayout.setHeight(38);
+			buttonLayout.setHeight(75);
 			buttonLayout.setAlign(Alignment.RIGHT);
 			buttonLayout.setDefaultLayoutAlign(VerticalAlignment.BOTTOM);
 
@@ -143,23 +157,23 @@ public class DlgManageOrgDepartments extends Window {
 			toolStrip.setPadding(5);
 			content.addMember(toolStrip);
 
-			addNewOrgBtn = new ToolStripButton(
+			addOrgDepBtn = new ToolStripButton(
 					CallCenterBK.constants.addNewOrgDepartment(), "addIcon.png");
-			addNewOrgBtn.setLayoutAlign(Alignment.LEFT);
-			addNewOrgBtn.setWidth(50);
-			toolStrip.addButton(addNewOrgBtn);
+			addOrgDepBtn.setLayoutAlign(Alignment.LEFT);
+			addOrgDepBtn.setWidth(50);
+			toolStrip.addButton(addOrgDepBtn);
 
-			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
-					"editIcon.png");
-			editBtn.setLayoutAlign(Alignment.LEFT);
-			editBtn.setWidth(50);
-			toolStrip.addButton(editBtn);
+			editOrgDepBtn = new ToolStripButton(
+					CallCenterBK.constants.modify(), "editIcon.png");
+			editOrgDepBtn.setLayoutAlign(Alignment.LEFT);
+			editOrgDepBtn.setWidth(50);
+			toolStrip.addButton(editOrgDepBtn);
 
-			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
-					"deleteIcon.png");
-			deleteBtn.setLayoutAlign(Alignment.LEFT);
-			deleteBtn.setWidth(50);
-			toolStrip.addButton(deleteBtn);
+			deleteOrgDepBtn = new ToolStripButton(
+					CallCenterBK.constants.disable(), "deleteIcon.png");
+			deleteOrgDepBtn.setLayoutAlign(Alignment.LEFT);
+			deleteOrgDepBtn.setWidth(50);
+			toolStrip.addButton(deleteOrgDepBtn);
 
 			toolStrip.addSeparator();
 
@@ -230,15 +244,38 @@ public class DlgManageOrgDepartments extends Window {
 			tree_org_child.setCanSort(false);
 			tree_org_child.setCanFilter(false);
 
-			TreeGridField organization_name = new TreeGridField("department",
+			TreeGridField department = new TreeGridField("department",
 					CallCenterBK.constants.department());
-			organization_name.setTreeField(true);
+			department.setTreeField(true);
 
 			ListGridField real_address = new ListGridField(
 					"full_address_not_hidden",
 					CallCenterBK.constants.realAddress(), 400);
 			orgDepListGrid.setFields(tree_org_parrent, tree_org_child,
-					organization_name, real_address);
+					department, real_address);
+
+			ToolStrip toolStrip1 = new ToolStrip();
+			toolStrip1.setWidth100();
+			toolStrip1.setPadding(5);
+			content.addMember(toolStrip1);
+
+			ToolStripButton addNewPhone = new ToolStripButton(
+					CallCenterBK.constants.add(), "addIcon.png");
+			addNewPhone.setLayoutAlign(Alignment.LEFT);
+			addNewPhone.setWidth(50);
+			toolStrip1.addButton(addNewPhone);
+
+			ToolStripButton editPhoneBtn = new ToolStripButton(
+					CallCenterBK.constants.modify(), "editIcon.png");
+			editPhoneBtn.setLayoutAlign(Alignment.LEFT);
+			editPhoneBtn.setWidth(50);
+			toolStrip1.addButton(editPhoneBtn);
+
+			ToolStripButton deletePhoneBtn = new ToolStripButton(
+					CallCenterBK.constants.disable(), "deleteIcon.png");
+			deletePhoneBtn.setLayoutAlign(Alignment.LEFT);
+			deletePhoneBtn.setWidth(50);
+			toolStrip1.addButton(deletePhoneBtn);
 
 			orgDepPhonesListGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -407,7 +444,7 @@ public class DlgManageOrgDepartments extends Window {
 						}
 					});
 
-			addNewOrgBtn.addClickHandler(new ClickHandler() {
+			addOrgDepBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					ListGridRecord depListGridRecord = orgDepListGrid
@@ -420,7 +457,7 @@ public class DlgManageOrgDepartments extends Window {
 					dlgAddEditOrgDepartments.show();
 				}
 			});
-			editBtn.addClickHandler(new ClickHandler() {
+			editOrgDepBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					ListGridRecord depListGridRecord = orgDepListGrid
@@ -447,13 +484,7 @@ public class DlgManageOrgDepartments extends Window {
 				}
 			});
 
-			deleteBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-
-				}
-			});
-			deleteBtn.addClickHandler(new ClickHandler() {
+			deleteOrgDepBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					final ListGridRecord listGridRecord = orgDepListGrid
@@ -514,7 +545,112 @@ public class DlgManageOrgDepartments extends Window {
 						}
 					});
 
+			addNewPhone.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					ListGridRecord depListGridRecord = orgDepListGrid
+							.getSelectedRecord();
+					if (depListGridRecord == null) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+
+					DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
+							false, null, orgDepPhonesListGrid,
+							depListGridRecord);
+					addEditOrgDepPhone.show();
+				}
+			});
+			editPhoneBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					ListGridRecord orgDepPhoneListGridRecord = orgDepPhonesListGrid
+							.getSelectedRecord();
+					if (orgDepPhoneListGridRecord == null) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+					ListGridRecord depListGridRecord = orgDepListGrid
+							.getSelectedRecord();
+					DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
+							false, orgDepPhoneListGridRecord,
+							orgDepPhonesListGrid, depListGridRecord);
+					addEditOrgDepPhone.show();
+				}
+			});
+			deletePhoneBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					final ListGridRecord orgDepPhoneListGridRecord = orgDepPhonesListGrid
+							.getSelectedRecord();
+					if (orgDepPhoneListGridRecord == null) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+					SC.ask(CallCenterBK.constants.warning(),
+							CallCenterBK.constants.askForDisable(),
+							new BooleanCallback() {
+								@Override
+								public void execute(Boolean value) {
+									if (value) {
+										deleteOrgDepPhone(orgDepPhoneListGridRecord);
+									}
+								}
+							});
+				}
+			});
+
+			orgDepPhonesListGrid
+					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
+						@Override
+						public void onRecordDoubleClick(
+								RecordDoubleClickEvent event) {
+							ListGridRecord orgDepPhoneListGridRecord = orgDepPhonesListGrid
+									.getSelectedRecord();
+							if (orgDepPhoneListGridRecord == null) {
+								SC.say(CallCenterBK.constants.warning(),
+										CallCenterBK.constants
+												.pleaseSelrecord());
+								return;
+							}
+							ListGridRecord depListGridRecord = orgDepListGrid
+									.getSelectedRecord();
+							DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
+									false, orgDepPhoneListGridRecord,
+									orgDepPhonesListGrid, depListGridRecord);
+							addEditOrgDepPhone.show();
+						}
+					});
+
 			addItem(hLayout);
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void deleteOrgDepPhone(ListGridRecord listGridRecord) {
+		try {
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+			Record record = new Record();
+			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name());
+			record.setAttribute("org_dep_to_ph_id",
+					listGridRecord.getAttributeAsInt("org_dep_to_ph_id"));
+
+			DSRequest req = new DSRequest();
+
+			req.setAttribute("operationId", "removeOrgDepPhone");
+			orgDepPhonesListGrid.removeData(record, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+				}
+			}, req);
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

@@ -37,6 +37,17 @@
 		<operationBinding operationType="update" operationId="updateOrgDepPhoneSortOrder" serverMethod="updateOrgDepPhoneSortOrder">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
         </operationBinding>
+        <!-- Add New Organization -->
+		<operationBinding operationType="add" operationId="addOrgDepPhone" serverMethod="addOrUpdateOrgDepPhone">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+        <operationBinding operationType="update" operationId="updateOrgDepPhone" serverMethod="addOrUpdateOrgDepPhone">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>
+        </operationBinding>
+        <!-- Remove Phone -->
+		<operationBinding operationType="remove" operationId="removeOrgDepPhone" serverMethod="removeOrgDepPhone">
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OrganizationDMI"/>            
+        </operationBinding>
 		
 		<!-- FETCH -->
 		<operationBinding operationId="searchOrgDepPhones" operationType="fetch">			

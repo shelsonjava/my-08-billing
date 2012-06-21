@@ -22,6 +22,7 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.TitleOrientation;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
@@ -992,9 +993,29 @@ public class DlgAddEditOrganization extends Window {
 				req.setAttribute("operationId", "addOrganization");
 				orgTreeGrid.addData(record, new DSCallback() {
 					@Override
-					public void execute(DSResponse response, Object rawData,
-							DSRequest request) {
+					public void execute(final DSResponse response,
+							Object rawData, DSRequest request) {
 						destroy();
+						SC.ask(CallCenterBK.constants.information(),
+								CallCenterBK.constants
+										.doYouWantOrgDepManagement(),
+								new BooleanCallback() {
+									@Override
+									public void execute(Boolean value) {
+										if (value) {
+											try {
+												Record record = response
+														.getData()[0];
+												DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
+														record, orgTreeGrid);
+												addEditOrgDepartments.show();
+											} catch (Exception e) {
+												e.printStackTrace();
+												SC.say(e.toString());
+											}
+										}
+									}
+								});
 					}
 				}, req);
 			} else {

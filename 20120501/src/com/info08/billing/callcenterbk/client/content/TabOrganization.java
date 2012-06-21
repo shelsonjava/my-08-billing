@@ -33,6 +33,7 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -67,7 +68,6 @@ public class TabOrganization extends Tab {
 	private TextItem orgWebAddressItem;
 	private TextItem orgEmailItem;
 	private TextItem orgWorkingHoursItem;
-	private TextItem orgDayOffsItem;
 	private TextItem phoneItem;
 	private DateItem orgFoundedStartItem;
 	private DateItem orgFoundedEndItem;
@@ -84,6 +84,7 @@ public class TabOrganization extends Tab {
 	private SelectItem weekDaysItem;
 	private TextItem orgContactPersonItem;
 	private SelectItem orgStatusItem;
+	private CheckboxItem mainOrganizationItem;
 
 	// actions
 	private IButton findButton;
@@ -163,10 +164,12 @@ public class TabOrganization extends Tab {
 		orgWorkingHoursItem.setWidth(245);
 		orgWorkingHoursItem.setName("orgWorkingHoursItem");
 
-		orgDayOffsItem = new TextItem();
-		orgDayOffsItem.setTitle(CallCenterBK.constants.dayOffs());
-		orgDayOffsItem.setWidth(245);
-		orgDayOffsItem.setName("orgDayOffsItem");
+		mainOrganizationItem = new CheckboxItem();
+		mainOrganizationItem
+				.setTitle(CallCenterBK.constants.mainOrganization());
+		mainOrganizationItem.setWidth(245);
+		mainOrganizationItem.setName("mainOrganizationItem");
+		mainOrganizationItem.setValue(false);
 
 		phoneItem = new TextItem();
 		phoneItem.setTitle(CallCenterBK.constants.phoneNumber());
@@ -303,11 +306,12 @@ public class TabOrganization extends Tab {
 
 		searchForm.setFields(orgNameGeoItem, orgCommentItem, orgDepartmentItem,
 				phoneItem, orgDirectorItem, streetItem, regionItem, townItem,
-				orgIdentCodeItem, orgIndItem, legalStreetItem, legalRegionItem,
-				legalTownItem, orgWorkingHoursItem, orgDayOffsItem,
-				orgWebAddressItem, orgEmailItem, orgSocialAddressItem,
-				orgFoundedStartItem, orgFoundedEndItem, partnerBankItem,
-				orgActivity, weekDaysItem, orgStatusItem, orgContactPersonItem);
+				orgIdentCodeItem, orgContactPersonItem, legalStreetItem,
+				legalRegionItem, legalTownItem, orgIndItem,
+				orgWorkingHoursItem, orgWebAddressItem, orgEmailItem,
+				orgSocialAddressItem, orgFoundedStartItem, orgFoundedEndItem,
+				partnerBankItem, orgActivity, weekDaysItem, orgStatusItem,
+				mainOrganizationItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(1223);
@@ -535,7 +539,7 @@ public class TabOrganization extends Tab {
 				legalRegionItem.clearValue();
 				legalTownItem.clearValue();
 				orgWorkingHoursItem.clearValue();
-				orgDayOffsItem.clearValue();
+				mainOrganizationItem.setValue(false);
 				orgWebAddressItem.clearValue();
 				orgEmailItem.clearValue();
 				orgSocialAddressItem.clearValue();
@@ -617,7 +621,7 @@ public class TabOrganization extends Tab {
 							@Override
 							public void execute(Boolean value) {
 								if (value) {
-									deleteOrganization(listGridRecord, 1);
+									deleteOrganization(listGridRecord);
 								}
 							}
 						});
@@ -657,9 +661,7 @@ public class TabOrganization extends Tab {
 							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
-				DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
-						listGridRecord, orgTreeGrid);
-				addEditOrgDepartments.show();
+				showOrgDepManagementDlg(listGridRecord);
 			}
 		});
 
@@ -691,7 +693,6 @@ public class TabOrganization extends Tab {
 		orgIdentCodeItem.addKeyPressHandler(searchHendler);
 		orgIndItem.addKeyPressHandler(searchHendler);
 		legalStreetItem.addKeyPressHandler(searchHendler);
-		orgDayOffsItem.addKeyPressHandler(searchHendler);
 		orgWorkingHoursItem.addKeyPressHandler(searchHendler);
 		orgWebAddressItem.addKeyPressHandler(searchHendler);
 		orgEmailItem.addKeyPressHandler(searchHendler);
@@ -782,8 +783,7 @@ public class TabOrganization extends Tab {
 		}
 	}
 
-	private void deleteOrganization(ListGridRecord listGridRecord,
-			Integer deleted) {
+	private void deleteOrganization(ListGridRecord listGridRecord) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
@@ -869,9 +869,10 @@ public class TabOrganization extends Tab {
 			if (work_hours != null && !work_hours.trim().equalsIgnoreCase("")) {
 				criteria.setAttribute("work_hours", work_hours);
 			}
-			String dayoffs = orgDayOffsItem.getValueAsString();
-			if (dayoffs != null && !dayoffs.trim().equals("")) {
-				criteria.setAttribute("day_offs", dayoffs);
+			Boolean main_organization = mainOrganizationItem
+					.getValueAsBoolean();
+			if (main_organization != null && main_organization.booleanValue()) {
+				criteria.setAttribute("main_organization", "YES");
 			}
 			String department = orgDepartmentItem.getValueAsString();
 			if (department != null && !department.trim().equalsIgnoreCase("")) {
@@ -941,14 +942,14 @@ public class TabOrganization extends Tab {
 					&& (remark == null || remark.trim().equals(""))
 					&& (chief == null || chief.trim().equals(""))
 					&& (work_hours == null || work_hours.trim().equals(""))
-					&& (dayoffs == null || dayoffs.trim().equals(""))
 					&& (ident_code == null || ident_code.trim().equals(""))
 					&& (department == null || department.trim().equals(""))
 					&& (web_address == null || web_address.trim().equals(""))
 					&& (email_address == null || email_address.trim()
 							.equals(""))
 					&& (street == null || street.trim().equals(""))
-					&& (phone == null || phone.trim().equals(""))) {
+					&& (phone == null || phone.trim().equals(""))
+					&& (org_found_date_start == null && org_found_date_end == null)) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.findOrgEnterAnyParam());
 				return;
@@ -959,18 +960,21 @@ public class TabOrganization extends Tab {
 			dsRequest.setAttribute("operationId",
 					"customOrgSearchForCallCenterNew");
 			if (isExport) {
+				criteria.setAttribute("need_phones", "YES");
 				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
 						ExportFormat.values(), "xls"));
 				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
 				dsRequest.setExportFields(new String[] { "original_org_name",
-						"full_address_not_hidden", "chief", "contact_person",
+						"full_address_not_hidden", "chief",
 						"legal_full_address_not_hidden", "unique_ident_code",
-						"email_address", "web_address", "social_address" });
+						"email_address", "web_address", "concat_phones",
+						"concat_activity_descrs" });
 			}
 
 			detailViewer.setData(new Record[0]);
-			orgTreeGrid.invalidateCache();
+
 			if (isExport) {
+
 				orgTreeGrid.getDataSource().exportData(criteria, dsRequest,
 						new DSCallback() {
 							@Override
@@ -979,6 +983,7 @@ public class TabOrganization extends Tab {
 							}
 						});
 			} else {
+				orgTreeGrid.invalidateCache();
 				orgTreeGrid.fetchData(criteria, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -999,5 +1004,11 @@ public class TabOrganization extends Tab {
 
 	public void setAdvCriteria(Criteria advCriteria) {
 		this.advCriteria = advCriteria;
+	}
+
+	public void showOrgDepManagementDlg(ListGridRecord listGridRecord) {
+		DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
+				listGridRecord, orgTreeGrid);
+		addEditOrgDepartments.show();
 	}
 }

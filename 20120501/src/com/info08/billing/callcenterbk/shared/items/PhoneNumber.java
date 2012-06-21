@@ -14,7 +14,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-@NamedQueries({ @NamedQuery(name = "PhoneNumber.getByPhoneNumber", query = "select e from PhoneNumber e where e.phone=:phone") })
+@NamedQueries({ 
+		@NamedQuery(
+					name = "PhoneNumber.getByPhoneNumber", 
+					query = "select e from PhoneNumber e where e.phone=:phone") 
+})
 @Entity
 @Table(name = "PHONE_NUMBERS", schema = "ccare")
 public class PhoneNumber implements Serializable {

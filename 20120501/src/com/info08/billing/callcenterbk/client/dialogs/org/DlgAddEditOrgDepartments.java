@@ -285,7 +285,7 @@ public class DlgAddEditOrgDepartments extends Window {
 				@Override
 				public void onClick(ClickEvent event) {
 					DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
-							null, orgDepPhonesListGrid);
+							true, null, orgDepPhonesListGrid, null);
 					addEditOrgDepPhone.show();
 				}
 			});
@@ -301,7 +301,7 @@ public class DlgAddEditOrgDepartments extends Window {
 						return;
 					}
 					DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
-							listGridRecord, orgDepPhonesListGrid);
+							true, listGridRecord, orgDepPhonesListGrid, null);
 					addEditOrgDepPhone.show();
 				}
 			});
@@ -337,7 +337,8 @@ public class DlgAddEditOrgDepartments extends Window {
 							ListGridRecord listGridRecord = orgDepPhonesListGrid
 									.getSelectedRecord();
 							DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
-									listGridRecord, orgDepPhonesListGrid);
+									true, listGridRecord, orgDepPhonesListGrid,
+									null);
 							addEditOrgDepPhone.show();
 						}
 					});
