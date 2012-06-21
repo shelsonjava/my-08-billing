@@ -136,6 +136,7 @@ public class InitAppServlet extends HttpServlet {
 			boolean phoneIsMobile = CommonFunctions.isPhoneMobile(realPhone);
 			int callKind = 0;
 
+			String non_charge_remark = "";
 			String phoneDescription = "";
 			String abonentName = "";
 			Long gender = -1L;
@@ -211,7 +212,13 @@ public class InitAppServlet extends HttpServlet {
 						.setParameter(1, realPhone).getSingleResult()
 						.toString());
 				if (nonChargeAbonentCount.longValue() > 0) {
+					String remark = oracleManager
+							.createNativeQuery(
+									QueryConstants.Q_GET_NON_CHARGE_ABONENT_REMARK)
+							.setParameter(1, realPhone).getSingleResult()
+							.toString();
 					callKind = Constants.callTypeNoncharge;
+					non_charge_remark = remark;
 				} else {
 
 					List result = oracleManager
@@ -318,6 +325,7 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setPhoneDescription(phoneDescription);
 			serverSession.setSessionId(sessionId);
 			serverSession.setGender(gender);
+			serverSession.setNon_charge_remark(non_charge_remark);
 			serverSession
 					.setAbonentVisible(abonentVisible.equals(75100L) ? true
 							: false);

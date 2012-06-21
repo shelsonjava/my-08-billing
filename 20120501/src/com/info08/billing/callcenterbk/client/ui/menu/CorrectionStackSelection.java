@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.TabAbonentLastNames;
 import com.info08.billing.callcenterbk.client.content.TabAbonentNames;
+import com.info08.billing.callcenterbk.client.content.TabFreeOfCharge;
 import com.info08.billing.callcenterbk.client.content.TabOrgBusinessActivity;
 import com.info08.billing.callcenterbk.client.content.TabOrganization;
 import com.info08.billing.callcenterbk.client.content.TabSubscriber;
@@ -39,7 +40,8 @@ public class CorrectionStackSelection extends SectionStackSection {
 			new MenuNode("106", "1", CallCenterBK.constants.importedNumbers(),
 					true, "import.png"),
 			new MenuNode("107", "1", "მიმართვები", true, "person.png"),
-			new MenuNode("108", "1", "უცნობი ნომრები", true, "phone.png") };
+			new MenuNode("108", "1", "უცნობი ნომრები", true, "phone.png"),
+			new MenuNode("109", "1", "უფასო ნომრები", true, "phone.png") };
 
 	private TreeGrid menuTreeGrid;
 
@@ -121,6 +123,7 @@ public class CorrectionStackSelection extends SectionStackSection {
 			menuData[6].setAttribute("enabled", hasOrgManPerm);
 			menuData[7].setAttribute("enabled", hasOrgManPerm);
 			menuData[8].setAttribute("enabled", hasOrgManPerm);
+			menuData[9].setAttribute("enabled", hasOrgManPerm);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -156,6 +159,8 @@ public class CorrectionStackSelection extends SectionStackSection {
 			body.addTab(new TabTreatments());
 		} else if (menuId.equals("108")) {
 			body.addTab(new TabUnknownPhones());
+		} else if (menuId.equals("109")) {
+			body.addTab(new TabFreeOfCharge());
 		}
 	}
 

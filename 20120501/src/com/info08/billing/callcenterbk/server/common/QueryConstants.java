@@ -871,6 +871,7 @@ public interface QueryConstants {
 
 	public static final String Q_GET_SPECIAL_TEXT_BY_NUMBER = " select t.note from ALERTS_BY_PHONE t where t.phone_number = ? ";
 	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone_number) from FREE_OF_CHARGE_PHONE t where t.phone_number = ? and trunc(sysdate) between t.start_date and t.end_date ";
+	public static final String Q_GET_NON_CHARGE_ABONENT_REMARK = "select t.remark from FREE_OF_CHARGE_PHONE t where t.phone_number = ? and trunc(sysdate) between t.start_date and t.end_date ";
 	public static final String Q_GET_MOBITEL_NOTE = "select t.description from ccare.descriptions t where t.description_id = 56101 ";
 	public static final String Q_GET_TREATMENT = " select treatment, gender from treatments where phone_number = ? ";
 	public static final String Q_GET_ORG_ABONENT = 

@@ -50,6 +50,8 @@ public class ServerSession implements Serializable {
 	private boolean contractorNeedBlock;
 	private CallSession callSession;
 
+	private String non_charge_remark;
+
 	@SuppressWarnings("deprecation")
 	public ServerSession() {
 		Date date = new Date();
@@ -67,6 +69,14 @@ public class ServerSession implements Serializable {
 
 	public void setAbonentVisible(boolean abonentVisible) {
 		this.abonentVisible = abonentVisible;
+	}
+
+	public String getNon_charge_remark() {
+		return non_charge_remark;
+	}
+
+	public void setNon_charge_remark(String non_charge_remark) {
+		this.non_charge_remark = non_charge_remark;
 	}
 
 	public String getSessionId() {

@@ -4,6 +4,7 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOpRemarks;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -13,6 +14,7 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -83,8 +85,10 @@ public class TabInfoPortal extends Tab {
 						DSRequest request) {
 					Record records[] = response.getData();
 					if (records != null && records.length > 0) {
-						String call_center_news_text = records[0].getAttributeAsString("call_center_news_text");
-						if (call_center_news_text != null && !call_center_news_text.trim().equals("")) {
+						String call_center_news_text = records[0]
+								.getAttributeAsString("call_center_news_text");
+						if (call_center_news_text != null
+								&& !call_center_news_text.trim().equals("")) {
 							commentItem.setValue(call_center_news_text);
 						}
 					}
@@ -126,7 +130,8 @@ public class TabInfoPortal extends Tab {
 									.getUnreadPersNotesCount();
 							if (myPersNotesCount == null
 									|| myPersNotesCount.longValue() <= 0) {
-								SC.say(CallCenterBK.constants.persNotesIsEmpty());
+								SC.say(CallCenterBK.constants
+										.persNotesIsEmpty());
 								return;
 							} else {
 								DlgViewOpRemarks dlgViewOpRemarks = new DlgViewOpRemarks(
@@ -141,9 +146,25 @@ public class TabInfoPortal extends Tab {
 				});
 			}
 
-			String callCenterReqMsg = serverSession.getCallCenterReqMsg();
-			if (callCenterReqMsg != null && !callCenterReqMsg.trim().equals("")) {
-				SC.warn(callCenterReqMsg);
+			if (serverSession.getCallType() == Constants.callTypeNoncharge) {
+				SC.say(serverSession.getNon_charge_remark(),
+						new BooleanCallback() {
+							@Override
+							public void execute(Boolean value) {
+								String callCenterReqMsg = serverSession
+										.getCallCenterReqMsg();
+								if (callCenterReqMsg != null
+										&& !callCenterReqMsg.trim().equals("")) {
+									SC.warn(callCenterReqMsg);
+								}
+							}
+						});
+			} else {
+				String callCenterReqMsg = serverSession.getCallCenterReqMsg();
+				if (callCenterReqMsg != null
+						&& !callCenterReqMsg.trim().equals("")) {
+					SC.warn(callCenterReqMsg);
+				}
 			}
 
 			HLayout hLayout = new HLayout();

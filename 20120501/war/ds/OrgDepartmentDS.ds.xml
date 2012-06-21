@@ -32,7 +32,6 @@
 		<field name="hidden_by_request" 				type="integer" 		title="hidden_by_request"					hidden="true" />
 		<field name="full_address"						type="text"  		title="full_address"						hidden="true"/>
 		<field name="street_name"						type="text"  		title="street_name"							hidden="true"/>
-		<field name="full_address"						type="text"  		title="full_address"						hidden="true"/>
 		<field name="block"								type="text"  		title="block"								hidden="true"/>
 		<field name="appt"								type="text"  		title="appt"								hidden="true"/>
 		<field name="descr"								type="text"  		title="descr"								hidden="true"/>
@@ -144,7 +143,7 @@
 					  t1.organization_id,
 					  t1.remark,
 					  pa.street_id,
-					  decode(pa.hidden_by_request,1,'მისამართი დაფარულია',pa.town_name || ', ' ||pa.town_district_name||', '||pa.street_name||' '||pa.full_address) as real_address_descr,
+					  pa.concat_address_with_town as real_address_descr,
 					  pa.town_name,
 					  pa.town_district_name as town_district,
 					  pa.street_location,

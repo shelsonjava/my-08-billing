@@ -125,7 +125,8 @@ public class DlgViewOrg extends Window {
 			orgNameInfo.setCanEdit(false);
 			orgNameInfo.setTitle(CallCenterBK.constants.orgName());
 			orgNameInfo.setTextBoxStyle("BoldNoBorder");
-			orgNameInfo.setValue(pRecord.getAttributeAsString("org_name"));
+			orgNameInfo.setValue(pRecord
+					.getAttributeAsString("organization_name"));
 			orgNameInfo.setCanFocus(false);
 
 			orgAddressInfo = new TextItem();
@@ -142,8 +143,7 @@ public class DlgViewOrg extends Window {
 			if (address_hide != null && address_hide.equals(1)) {
 				orgAddressInfo.setValue(CallCenterBK.constants.addressHide());
 			} else {
-				String town_name1 = pRecord
-						.getAttributeAsString("town_name");
+				String town_name1 = pRecord.getAttributeAsString("town_name");
 				String real_address1 = pRecord
 						.getAttributeAsString("real_address");
 				String town_district_name1 = pRecord
@@ -165,9 +165,8 @@ public class DlgViewOrg extends Window {
 										: " ")
 								+ town_district_name1
 								+ (town_district_name1 != null
-										&& !town_district_name1.trim()
-												.equals("") ? ", " : " ")
-								+ ind1);
+										&& !town_district_name1.trim().equals(
+												"") ? ", " : " ") + ind1);
 			}
 			mainInfoForm.setFields(orgNameInfo, orgAddressInfo);
 
@@ -192,7 +191,8 @@ public class DlgViewOrg extends Window {
 			toolStrip.addButton(sendAddInfoSMS);
 
 			sendStreetInfoSMS = new ToolStripButton(
-					CallCenterBK.constants.orgSMSStreetInfo1(), "information.png");
+					CallCenterBK.constants.orgSMSStreetInfo1(),
+					"information.png");
 			sendStreetInfoSMS.setLayoutAlign(Alignment.LEFT);
 			toolStrip.addButton(sendStreetInfoSMS);
 
@@ -206,49 +206,53 @@ public class DlgViewOrg extends Window {
 			arr[0] = pRecord;
 			detailViewer.setData(arr);
 
-			DetailViewerField org_name = new DetailViewerField("org_name",
-					CallCenterBK.constants.orgName());
+			DetailViewerField org_name = new DetailViewerField(
+					"organization_name", CallCenterBK.constants.orgName());
 			DetailViewerField org_name_eng = new DetailViewerField(
-					"org_name_eng", CallCenterBK.constants.orgNameEng());
-			DetailViewerField note = new DetailViewerField("note",
+					"organization_name_eng",
+					CallCenterBK.constants.orgNameEng());
+			DetailViewerField note = new DetailViewerField("remark",
 					CallCenterBK.constants.comment());
-			DetailViewerField director = new DetailViewerField("director",
+			DetailViewerField director = new DetailViewerField("chief",
 					CallCenterBK.constants.director());
-			DetailViewerField founded = new DetailViewerField("founded",
+			DetailViewerField founded = new DetailViewerField("found_date",
 					CallCenterBK.constants.founded());
-			DetailViewerField identcode = new DetailViewerField("identcode",
+			DetailViewerField identcode = new DetailViewerField("ident_code",
 					CallCenterBK.constants.identCode());
 			DetailViewerField new_identcode = new DetailViewerField(
-					"new_identcode", CallCenterBK.constants.identCodeNew());
+					"ident_code_new", CallCenterBK.constants.identCodeNew());
 			DetailViewerField legaladdress = new DetailViewerField(
-					"legaladdress", CallCenterBK.constants.legalAddress());
+					"legal_address_descr",
+					CallCenterBK.constants.legalAddress());
 			DetailViewerField workinghours = new DetailViewerField(
-					"workinghours", CallCenterBK.constants.workinghours());
-			DetailViewerField dayoffs = new DetailViewerField("dayoffs",
+					"work_hours", CallCenterBK.constants.workinghours());
+			DetailViewerField dayoffs = new DetailViewerField("day_offs_descr",
 					CallCenterBK.constants.dayOffs());
-			DetailViewerField org_info = new DetailViewerField("org_info",
-					CallCenterBK.constants.orgInfo());
+			DetailViewerField org_info = new DetailViewerField(
+					"additional_info", CallCenterBK.constants.orgInfo());
 			DetailViewerField contactperson = new DetailViewerField(
-					"contactperson", CallCenterBK.constants.contactPerson());
+					"contact_person", CallCenterBK.constants.contactPerson());
 			DetailViewerField workpersoncountity = new DetailViewerField(
-					"workpersoncountity",
-					CallCenterBK.constants.workPersonCountity());
-			DetailViewerField ind = new DetailViewerField("ind",
+					"staff_count", CallCenterBK.constants.workPersonCountity());
+			DetailViewerField ind = new DetailViewerField("organization_index",
 					CallCenterBK.constants.index());
-			DetailViewerField webaddress = new DetailViewerField("webaddress",
+			DetailViewerField webaddress = new DetailViewerField("web_address",
 					CallCenterBK.constants.webaddress());
-			DetailViewerField mail = new DetailViewerField("mail",
+			DetailViewerField mail = new DetailViewerField("email_address",
 					CallCenterBK.constants.eMail());
 			DetailViewerField legal_statuse = new DetailViewerField(
-					"legal_statuse", CallCenterBK.constants.legalStatuse());
+					"legal_form_desc", CallCenterBK.constants.legalStatuse());
 			DetailViewerField partnerbank = new DetailViewerField(
-					"partnerbank", CallCenterBK.constants.partnerBank());
+					"concat_org_partner_banks",
+					CallCenterBK.constants.partnerBank());
 
 			DetailViewerField full_address = new DetailViewerField(
-					"full_address", CallCenterBK.constants.fullOrgAddress());
+					"call_center_address",
+					CallCenterBK.constants.fullOrgAddress());
 
-			Integer note_crit = pRecord.getAttributeAsInt("note_crit");
-			if (note_crit != null && note_crit.intValue() == -1) {
+			Integer important_remark = pRecord
+					.getAttributeAsInt("important_remark");
+			if (important_remark != null && important_remark.intValue() == -1) {
 				note.setCellStyle("fontRedWithBorder");
 			}
 
@@ -307,7 +311,7 @@ public class DlgViewOrg extends Window {
 			formLayOut.setMembers(searchDepsForm, findButton, clearButton);
 			depsContent.addMember(formLayOut);
 
-			depsDataSource = DataSource.get("MainDetDS");
+			depsDataSource = DataSource.get("OrgDepartmentDS");
 			depsTreeGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
@@ -327,11 +331,10 @@ public class DlgViewOrg extends Window {
 			depsTreeGrid.setWidth100();
 			depsTreeGrid.setHeight100();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", new Integer(0));
-			criteria.setAttribute("p_organization_id",
+			criteria.setAttribute("organization_id",
 					pRecord.getAttributeAsInt("organization_id"));
 			depsTreeGrid.setCriteria(criteria);
-			depsTreeGrid.setFetchOperation("mainDetailSearchCustom");
+			depsTreeGrid.setFetchOperation("orgDepartSearch");
 			depsTreeGrid.setDataSource(depsDataSource);
 			depsTreeGrid.setAutoFetchData(true);
 			depsTreeGrid.setCanSort(false);
@@ -343,11 +346,11 @@ public class DlgViewOrg extends Window {
 					.depsNotFoundMessage());
 			depsTreeGrid.setEmptyMessageStyle("redStyle");
 
-			TreeGridField main_detail_geo = new TreeGridField(
-					"main_detail_geo", CallCenterBK.constants.department());
+			TreeGridField main_detail_geo = new TreeGridField("department",
+					CallCenterBK.constants.department());
 
 			TreeGridField main_detail_note_geo = new TreeGridField(
-					"main_detail_note_geo", CallCenterBK.constants.address(), 300);
+					"real_address_descr", CallCenterBK.constants.address(), 300);
 
 			// TreeGridField p_phones = new TreeGridField("p_phones",
 			// CallCenter.constants.phones(), 100);
@@ -377,10 +380,10 @@ public class DlgViewOrg extends Window {
 			orgNoteOnDep.setTitle(CallCenterBK.constants.comment());
 			orgNoteOnDep.setCanEdit(false);
 			orgNoteOnDep.setCanFocus(false);
-			if (note_crit != null && note_crit.intValue() == -1) {
+			if (important_remark != null && important_remark.intValue() == -1) {
 				orgNoteOnDep.setTextBoxStyle("fontRedAndBoldNoBorder");
 			}
-			orgNoteOnDep.setValue(pRecord.getAttributeAsString("note"));
+			orgNoteOnDep.setValue(pRecord.getAttributeAsString("remark"));
 
 			dynamicForm.setFields(orgNoteOnDep);
 
@@ -421,11 +424,11 @@ public class DlgViewOrg extends Window {
 			phonesGrid.setCanSelectText(true);
 			phonesGrid.setCanDragSelectText(true);
 
-			ListGridField dep_phone = new ListGridField("dep_phone",
+			ListGridField dep_phone = new ListGridField("phone",
 					CallCenterBK.constants.phone());
 			dep_phone.setCanFilter(true);
 
-			ListGridField phone_state = new ListGridField("phone_state",
+			ListGridField phone_state = new ListGridField("phone_state_descr",
 					CallCenterBK.constants.phoneState(), 100);
 			phone_state.setCanFilter(false);
 
@@ -477,13 +480,14 @@ public class DlgViewOrg extends Window {
 				};
 			};
 
-			Integer organization_id1 = record.getAttributeAsInt("organization_id");
+			Integer organization_id1 = record
+					.getAttributeAsInt("organization_id");
 			if (organization_id1 == null || organization_id1.equals(0)) {
 				organization_id1 = record.getAttributeAsInt("organization_id");
 			}
 
 			Criteria criteriaInner1 = new Criteria();
-			criteriaInner1.setAttribute("p_organization_id", organization_id1);
+			criteriaInner1.setAttribute("organization_id", organization_id1);
 			listGridOrgTreeParrent.setCriteria(criteriaInner1);
 			listGridOrgTreeParrent.setWidth100();
 			listGridOrgTreeParrent.setHeight(70);
@@ -536,7 +540,8 @@ public class DlgViewOrg extends Window {
 				};
 			};
 
-			Integer organization_id = record.getAttributeAsInt("organization_id");
+			Integer organization_id = record
+					.getAttributeAsInt("organization_id");
 			if (organization_id == null || organization_id.equals(0)) {
 				organization_id = record.getAttributeAsInt("organization_id");
 			}
@@ -660,11 +665,11 @@ public class DlgViewOrg extends Window {
 					.addSelectionChangedHandler(new SelectionChangedHandler() {
 						public void onSelectionChanged(SelectionEvent event) {
 							Record record = event.getRecord();
-							Integer main_detail_id = record
-									.getAttributeAsInt("main_detail_id");
+							Integer org_department_id = record
+									.getAttributeAsInt("org_department_id");
 							Criteria criteria = new Criteria();
-							criteria.setAttribute("main_detail_id",
-									main_detail_id);
+							criteria.setAttribute("org_department_id",
+									org_department_id);
 							DSRequest dsRequest = new DSRequest();
 							dsRequest.setAttribute("operationId",
 									"searchOrgDepPhones");
@@ -746,7 +751,8 @@ public class DlgViewOrg extends Window {
 							}
 							if (cOrganization_id.equals(organization_id)) {
 								SC.say(CallCenterBK.constants.warning(),
-										CallCenterBK.constants.orgAlreadyOpened());
+										CallCenterBK.constants
+												.orgAlreadyOpened());
 								return;
 							}
 
@@ -779,7 +785,8 @@ public class DlgViewOrg extends Window {
 							}
 							if (cOrganization_id.equals(organization_id)) {
 								SC.say(CallCenterBK.constants.warning(),
-										CallCenterBK.constants.orgAlreadyOpened());
+										CallCenterBK.constants
+												.orgAlreadyOpened());
 								return;
 							}
 
@@ -871,7 +878,7 @@ public class DlgViewOrg extends Window {
 	private void logMainHit() {
 		try {
 			boolean flag = true;
-			if(flag){
+			if (flag) {
 				// TODO LOOOOOOOOOOOOOOOGGGGGGGGGGG
 				return;
 			}
@@ -933,37 +940,37 @@ public class DlgViewOrg extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendAddInfoSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String org_name = record.getAttributeAsString("org_name");
+			String org_name = record.getAttributeAsString("organization_name");
 			sms_text.append(org_name).append(". ");
 
-			String director = record.getAttributeAsString("director");
+			String director = record.getAttributeAsString("chief");
 			if (director != null && !director.trim().equalsIgnoreCase("")) {
 				sms_text.append("director: ").append(director).append("; ");
 			}
 
-			String workinghours = record.getAttributeAsString("workinghours");
+			String workinghours = record.getAttributeAsString("work_hours");
 			if (workinghours != null
 					&& !workinghours.trim().equalsIgnoreCase("")) {
 				sms_text.append("saatebi: ").append(workinghours).append(";");
 			}
-			String dayoffs = record.getAttributeAsString("dayoffs");
+			String dayoffs = record.getAttributeAsString("day_offs_descr");
 			if (dayoffs != null && !dayoffs.trim().equalsIgnoreCase("")) {
 				sms_text.append("dasveneba: ").append(dayoffs).append(";");
 			}
-			String mail = record.getAttributeAsString("mail");
+			String mail = record.getAttributeAsString("email_address");
 			if (mail != null && !mail.trim().equalsIgnoreCase("")) {
 				sms_text.append("mail: ");
 				sms_text.append(mail).append("; ");
 			}
-			String webaddress = record.getAttributeAsString("webaddress");
+			String webaddress = record.getAttributeAsString("web_address");
 
 			if (webaddress != null && !webaddress.trim().equals("")) {
 				sms_text.append("web: ").append(webaddress).append("; ");
 			}
 
-			String new_identcode = record.getAttributeAsString("new_identcode");
+			String new_identcode = record.getAttributeAsString("ident_code_new");
 			if (new_identcode == null || new_identcode.trim().equals("")) {
-				new_identcode = record.getAttributeAsString("identcode");
+				new_identcode = record.getAttributeAsString("ident_code");
 			}
 			if (new_identcode != null && !new_identcode.trim().equals("")) {
 				sms_text.append("s/k: ").append(new_identcode);
@@ -1023,16 +1030,16 @@ public class DlgViewOrg extends Window {
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendDepInfoSMS);
 			StringBuilder sms_text = new StringBuilder();
-			String legal_statuse = record.getAttributeAsString("legal_statuse");
+			String legal_statuse = record.getAttributeAsString("legal_form_desc");
 			if (legal_statuse != null
 					&& !legal_statuse.trim().equalsIgnoreCase("")) {
 				sms_text.append(legal_statuse).append(" ");
 			}
-			String org_name = record.getAttributeAsString("org_name");
+			String org_name = record.getAttributeAsString("organization_name");
 			sms_text.append(org_name).append("; ");
 
 			String mainDetail = listGridRecord
-					.getAttributeAsString("main_detail_geo_orig");
+					.getAttributeAsString("department");
 
 			if (mainDetail != null && !mainDetail.trim().equalsIgnoreCase("")) {
 				if (mainDetail.equals(CallCenterBK.constants.common())) {
@@ -1048,7 +1055,7 @@ public class DlgViewOrg extends Window {
 				StringBuilder phones = new StringBuilder("");
 				for (int i = 0; i < length; i++) {
 					Record record = recordList.get(i);
-					String dep_phone = record.getAttributeAsString("dep_phone");
+					String dep_phone = record.getAttributeAsString("phone");
 					if (dep_phone == null
 							|| dep_phone.trim().equalsIgnoreCase("")) {
 						continue;
@@ -1070,20 +1077,20 @@ public class DlgViewOrg extends Window {
 				}
 			}
 
-			String real_address = record.getAttributeAsString("real_address");
+			String real_address = record.getAttributeAsString("call_center_address");
 
 			if (real_address != null
 					&& !real_address.trim().equalsIgnoreCase("")) {
 				sms_text.append("mis:").append(real_address).append("; ");
 			}
 
-			String mail = record.getAttributeAsString("mail");
+			String mail = record.getAttributeAsString("email_address");
 			if (mail != null && !mail.trim().equalsIgnoreCase("")) {
 				sms_text.append("mail: ");
 				sms_text.append(mail).append("; ");
 			}
 
-			String webaddress = record.getAttributeAsString("webaddress");
+			String webaddress = record.getAttributeAsString("web_address");
 
 			if (webaddress != null && !webaddress.trim().equals("")) {
 				sms_text.append("web: ");
@@ -1120,8 +1127,7 @@ public class DlgViewOrg extends Window {
 	private void searchDeps() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", new Integer(0));
-			criteria.setAttribute("p_organization_id",
+			criteria.setAttribute("organization_id",
 					record.getAttributeAsInt("organization_id"));
 			String depName = depNameGeoItem.getValueAsString();
 			if (depName != null && !depName.trim().equalsIgnoreCase("")) {
@@ -1131,12 +1137,12 @@ public class DlgViewOrg extends Window {
 				int i = 1;
 				for (String string : arrStr) {
 					String item = string.trim();
-					criteria.setAttribute("main_detail_geo" + i, item);
+					criteria.setAttribute("department" + i, item);
 					i++;
 				}
 
 			} else {
-				criteria.setAttribute("main_detail_geo", "");
+				criteria.setAttribute("department", "");
 			}
 
 			String main_detail_note_geo = depAddressItem.getValueAsString();
@@ -1146,18 +1152,19 @@ public class DlgViewOrg extends Window {
 						main_detail_note_geo);
 			}
 
-			String p_phones = depPhonesItem.getValueAsString();
-			if (p_phones != null && !p_phones.trim().equals("")) {
-				criteria.setAttribute("p_phones", p_phones);
+			String phone = depPhonesItem.getValueAsString();
+			if (phone != null && !phone.trim().equals("")) {
+				criteria.setAttribute("phone", phone);
 			}
 
-			Boolean p_cont_phones = depContPhonesItem.getValueAsBoolean();
-			if (p_cont_phones != null && p_cont_phones) {
-				criteria.setAttribute("p_cont_phones", p_cont_phones);
+			Boolean for_contact = depContPhonesItem.getValueAsBoolean();
+			if (for_contact != null && for_contact) {
+				criteria.setAttribute("for_contact", for_contact == true ? 1
+						: 0);
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "mainDetailSearchCustom");
+			dsRequest.setAttribute("operationId", "orgDepartSearch");
 			depsTreeGrid.invalidateCache();
 			depsTreeGrid.filterData(criteria, new DSCallback() {
 				@Override

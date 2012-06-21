@@ -220,7 +220,7 @@ public class DlgViewStreet extends Window {
 				sms_text.append(street_name).append(" ");
 			}
 			String streetIndex = listGridRecord
-					.getAttributeAsString("streetIndex");
+					.getAttributeAsString("street_index_text");
 			if (streetIndex != null && !streetIndex.trim().equals("")) {
 				sms_text.append(streetIndex).append(" ");
 			}
