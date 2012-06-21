@@ -318,6 +318,11 @@ public class DlgManageOrgDepartments extends Window {
 					CallCenterBK.constants.phone());
 			phone.setCanFilter(true);
 
+			ListGridField rec_upd_date = new ListGridField("rec_upd_date",
+					CallCenterBK.constants.updDate(), 130);
+			rec_upd_date.setAlign(Alignment.CENTER);
+			rec_upd_date.setCanFilter(false);
+
 			ListGridField phone_state_descr = new ListGridField(
 					"phone_state_descr", CallCenterBK.constants.phoneState(),
 					150);
@@ -352,9 +357,10 @@ public class DlgManageOrgDepartments extends Window {
 			is_parallel_descr.setAlign(Alignment.CENTER);
 			is_parallel_descr.setCanFilter(false);
 
-			orgDepPhonesListGrid.setFields(phone, phone_state_descr,
-					hidden_by_request_descr, phone_contract_type_descr,
-					for_contact_descr, phone_type_descr, is_parallel_descr);
+			orgDepPhonesListGrid.setFields(phone, rec_upd_date,
+					phone_state_descr, hidden_by_request_descr,
+					phone_contract_type_descr, for_contact_descr,
+					phone_type_descr, is_parallel_descr);
 
 			content.addMember(orgDepPhonesListGrid);
 
@@ -452,7 +458,7 @@ public class DlgManageOrgDepartments extends Window {
 					Integer organization_id = orgListGridRecord
 							.getAttributeAsInt("organization_id");
 					DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
-							depListGridRecord, organization_id, null, null,
+							depListGridRecord, organization_id, null,
 							orgDepListGrid, DlgManageOrgDepartments.this);
 					dlgAddEditOrgDepartments.show();
 				}
@@ -472,8 +478,7 @@ public class DlgManageOrgDepartments extends Window {
 
 					DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
 							null, organization_id, depListGridRecord,
-							orgDepPhonesListGrid.getRecords(), orgDepListGrid,
-							DlgManageOrgDepartments.this);
+							orgDepListGrid, DlgManageOrgDepartments.this);
 					dlgAddEditOrgDepartments.show();
 				}
 			});
@@ -538,7 +543,6 @@ public class DlgManageOrgDepartments extends Window {
 
 							DlgAddEditOrgDepartments dlgAddEditOrgDepartments = new DlgAddEditOrgDepartments(
 									null, organization_id, depListGridRecord,
-									orgDepPhonesListGrid.getRecords(),
 									orgDepListGrid,
 									DlgManageOrgDepartments.this);
 							dlgAddEditOrgDepartments.show();
@@ -557,8 +561,7 @@ public class DlgManageOrgDepartments extends Window {
 					}
 
 					DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
-							false, null, orgDepPhonesListGrid,
-							depListGridRecord);
+							null, orgDepPhonesListGrid, depListGridRecord);
 					addEditOrgDepPhone.show();
 				}
 			});
@@ -575,8 +578,8 @@ public class DlgManageOrgDepartments extends Window {
 					ListGridRecord depListGridRecord = orgDepListGrid
 							.getSelectedRecord();
 					DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
-							false, orgDepPhoneListGridRecord,
-							orgDepPhonesListGrid, depListGridRecord);
+							orgDepPhoneListGridRecord, orgDepPhonesListGrid,
+							depListGridRecord);
 					addEditOrgDepPhone.show();
 				}
 			});
@@ -619,7 +622,7 @@ public class DlgManageOrgDepartments extends Window {
 							ListGridRecord depListGridRecord = orgDepListGrid
 									.getSelectedRecord();
 							DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
-									false, orgDepPhoneListGridRecord,
+									orgDepPhoneListGridRecord,
 									orgDepPhonesListGrid, depListGridRecord);
 							addEditOrgDepPhone.show();
 						}

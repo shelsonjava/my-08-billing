@@ -915,7 +915,6 @@ public class ContractorsDMI implements QueryConstants {
 	 * @throws CallCenterException
 	 *             შეცდომის დამუშავება თუ რაიმე პარამეტრი არასწორია
 	 */
-	@SuppressWarnings("rawtypes")
 	public void blockUnblockContractorPhones(Contract contract,
 			EntityManager oracleManager) throws CallCenterException {
 	/*	try {

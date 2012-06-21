@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.shared.entity.org;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -33,23 +34,27 @@ public class OrganizationDepartToPhone implements Serializable {
 	@Basic
 	@Column(name = "PHONE_NUMBER_ID")
 	private Long phone_number_id;
-	
+
 	@Basic
 	@Column(name = "HIDDEN_BY_REQUEST")
 	private Long hidden_by_request;
-	
+
 	@Basic
 	@Column(name = "PHONE_CONTRACT_TYPE")
 	private Long phone_contract_type;
-	
+
 	@Basic
 	@Column(name = "FOR_CONTACT")
 	private Long for_contact;
-	
+
 	@Basic
 	@Column(name = "PHONE_ORDER")
 	private Long phone_order;
-	
+
+	@Basic
+	@Column(name = "REC_UPD_DATE")
+	private Timestamp rec_upd_date;
+
 	public OrganizationDepartToPhone() {
 	}
 
@@ -107,5 +112,13 @@ public class OrganizationDepartToPhone implements Serializable {
 
 	public void setPhone_order(Long phone_order) {
 		this.phone_order = phone_order;
+	}
+
+	public Timestamp getRec_upd_date() {
+		return rec_upd_date;
+	}
+
+	public void setRec_upd_date(Timestamp rec_upd_date) {
+		this.rec_upd_date = rec_upd_date;
 	}
 }

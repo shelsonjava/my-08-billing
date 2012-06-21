@@ -71,7 +71,7 @@ public class TabOrganization extends Tab {
 	private TextItem phoneItem;
 	private DateItem orgFoundedStartItem;
 	private DateItem orgFoundedEndItem;
-	private TextItem orgIndItem;
+	private TextItem phoneUpdDateItem;
 	private TextItem orgSocialAddressItem;
 	private ComboBoxItem townItem;
 	private TextItem streetItem;
@@ -237,11 +237,11 @@ public class TabOrganization extends Tab {
 				"searchCityRegsFromDBForCombos", "town_district_id",
 				"town_district_name", aditionalCriteria);
 
-		orgIndItem = new TextItem();
-		orgIndItem.setName("organization_index");
-		orgIndItem.setWidth(245);
-		orgIndItem.setTitle(CallCenterBK.constants.postIndex());
-		orgIndItem.setKeyPressFilter("[0-9]");
+		phoneUpdDateItem = new TextItem();
+		phoneUpdDateItem.setName("organization_index");
+		phoneUpdDateItem.setWidth(245);
+		phoneUpdDateItem.setTitle(CallCenterBK.constants.yearMonth());
+		phoneUpdDateItem.setMask("####");
 
 		orgSocialAddressItem = new TextItem();
 		orgSocialAddressItem.setName("social_address");
@@ -307,9 +307,9 @@ public class TabOrganization extends Tab {
 		searchForm.setFields(orgNameGeoItem, orgCommentItem, orgDepartmentItem,
 				phoneItem, orgDirectorItem, streetItem, regionItem, townItem,
 				orgIdentCodeItem, orgContactPersonItem, legalStreetItem,
-				legalRegionItem, legalTownItem, orgIndItem,
-				orgWorkingHoursItem, orgWebAddressItem, orgEmailItem,
-				orgSocialAddressItem, orgFoundedStartItem, orgFoundedEndItem,
+				legalRegionItem, legalTownItem, orgWorkingHoursItem,
+				orgSocialAddressItem, orgWebAddressItem, orgEmailItem,
+				orgFoundedStartItem, orgFoundedEndItem, phoneUpdDateItem,
 				partnerBankItem, orgActivity, weekDaysItem, orgStatusItem,
 				mainOrganizationItem);
 
@@ -534,7 +534,7 @@ public class TabOrganization extends Tab {
 				regionItem.clearValue();
 				townItem.clearValue();
 				orgIdentCodeItem.clearValue();
-				orgIndItem.clearValue();
+				phoneUpdDateItem.clearValue();
 				legalStreetItem.clearValue();
 				legalRegionItem.clearValue();
 				legalTownItem.clearValue();
@@ -691,7 +691,7 @@ public class TabOrganization extends Tab {
 		orgDirectorItem.addKeyPressHandler(searchHendler);
 		streetItem.addKeyPressHandler(searchHendler);
 		orgIdentCodeItem.addKeyPressHandler(searchHendler);
-		orgIndItem.addKeyPressHandler(searchHendler);
+		phoneUpdDateItem.addKeyPressHandler(searchHendler);
 		legalStreetItem.addKeyPressHandler(searchHendler);
 		orgWorkingHoursItem.addKeyPressHandler(searchHendler);
 		orgWebAddressItem.addKeyPressHandler(searchHendler);
@@ -843,10 +843,11 @@ public class TabOrganization extends Tab {
 			if (ident_code != null && !ident_code.trim().equalsIgnoreCase("")) {
 				criteria.setAttribute("ident_code", ident_code);
 			}
-			String organization_index = orgIndItem.getValueAsString();
-			if (organization_index != null
-					&& !organization_index.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("organization_index", organization_index);
+			String phone_upd_date = phoneUpdDateItem.getValueAsString();
+			if (phone_upd_date != null
+					&& !phone_upd_date.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("phone_upd_date", new Integer(
+						phone_upd_date));
 			}
 			String legal_street = legalStreetItem.getValueAsString();
 			if (legal_street != null
@@ -949,7 +950,9 @@ public class TabOrganization extends Tab {
 							.equals(""))
 					&& (street == null || street.trim().equals(""))
 					&& (phone == null || phone.trim().equals(""))
-					&& (org_found_date_start == null && org_found_date_end == null)) {
+					&& (org_found_date_start == null && org_found_date_end == null)
+					&& (phone_upd_date == null || phone_upd_date.trim().equals(
+							""))) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.findOrgEnterAnyParam());
 				return;

@@ -475,7 +475,6 @@ public class OrganizationDMI {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map<?, ?> addOrUpdateOrganizationDepartment(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
@@ -527,7 +526,6 @@ public class OrganizationDMI {
 					.setPhysical_address_id(deletePhysicalAddress ? null
 							: physical_address_id);
 
-			boolean isPersist = (org_department_id == null);
 			if (org_department_id == null) {
 				oracleManager.persist(organizationDepartMent);
 			} else {
@@ -542,53 +540,6 @@ public class OrganizationDMI {
 
 			oracleManager.flush();
 
-			if (!isPersist) {
-				oracleManager.createNativeQuery(Q_DELETE_ORG_DEP_PHONES)
-						.setParameter(1, org_department_id).executeUpdate();
-				oracleManager.flush();
-			}
-
-			Map<?, ?> phones = (Map<?, ?>) values.get("phones");
-			if (phones != null && !phones.isEmpty()) {
-				Set<?> phoneKeys = phones.keySet();
-				for (Object phoneKey : phoneKeys) {
-					Map value = (Map) phones.get(phoneKey);
-					String phone = value.get("phone").toString();
-					ArrayList<PhoneNumber> phoneNumbers = (ArrayList<PhoneNumber>) oracleManager
-							.createNamedQuery("PhoneNumber.getByPhoneNumber")
-							.setParameter("phone", phone).getResultList();
-					PhoneNumber phoneNumber = null;
-					if (phoneNumbers == null || phoneNumbers.isEmpty()) {
-						phoneNumber = new PhoneNumber();
-						phoneNumber.setIs_parallel(new Long(value.get(
-								"is_parallel").toString()));
-						phoneNumber.setPhone(phone);
-						phoneNumber.setPhone_state_id(new Long(value.get(
-								"phone_state_id").toString()));
-						phoneNumber.setPhone_type_id(new Long(value.get(
-								"phone_type_id").toString()));
-						oracleManager.persist(phoneNumber);
-					} else {
-						phoneNumber = phoneNumbers.get(0);
-					}
-					OrganizationDepartToPhone orgDepartToPhone = new OrganizationDepartToPhone();
-					orgDepartToPhone.setFor_contact(new Long(value.get(
-							"for_contact").toString()));
-					orgDepartToPhone.setHidden_by_request(new Long(value.get(
-							"hidden_by_request").toString()));
-					orgDepartToPhone.setOrg_department_id(org_department_id);
-					orgDepartToPhone.setPhone_contract_type(new Long(value.get(
-							"phone_contract_type").toString()));
-					orgDepartToPhone.setPhone_number_id(phoneNumber
-							.getPhone_number_id());
-					orgDepartToPhone.setPhone_order(new Long(value
-							.get("phone_order") == null ? "0" : value.get(
-							"phone_order").toString()));
-					oracleManager.persist(orgDepartToPhone);
-				}
-			}
-
-			oracleManager.flush();
 			oracleManager
 					.createNativeQuery("{call createOrgDepartmentHist(?)}")
 					.setParameter(1, org_department_id).executeUpdate();
@@ -1016,6 +967,7 @@ public class OrganizationDMI {
 			DataTools.setProperties(values, orgDepartToPhone);
 			orgDepartToPhone.setPhone_number_id(phoneNumber
 					.getPhone_number_id());
+			orgDepartToPhone.setRec_upd_date(recDate);
 			if (orgDepartToPhone.getOrg_dep_to_ph_id() == null) {
 				oracleManager.persist(orgDepartToPhone);
 			} else {
@@ -1057,7 +1009,7 @@ public class OrganizationDMI {
 			String log = "Method:OrganizationDMI.removeOrgDepPhone.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			Map<?, ?> values = dsRequest.getValues();
+			Map<?, ?> values = dsRequest.getOldValues();
 			Long org_dep_to_ph_id = Long.parseLong(values.get(
 					"org_dep_to_ph_id").toString());
 			String loggedUserName = values.get("loggedUserName").toString();

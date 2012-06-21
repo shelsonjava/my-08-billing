@@ -1,15 +1,14 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
-import java.util.Map;
-
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
+import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
@@ -44,16 +43,13 @@ public class DlgAddEditOrgDepPhone extends Window {
 
 	private ListGridRecord listGridRecord;
 	private ListGrid phoneListGrid;
-	private boolean saveOnClientSide;
 	private Record departRecord;
 
-	public DlgAddEditOrgDepPhone(boolean saveOnClientSide,
-			ListGridRecord listGridRecord, ListGrid phoneListGrid,
-			Record departRecord) {
+	public DlgAddEditOrgDepPhone(ListGridRecord listGridRecord,
+			ListGrid phoneListGrid, Record departRecord) {
 		try {
 			this.listGridRecord = listGridRecord;
 			this.phoneListGrid = phoneListGrid;
-			this.saveOnClientSide = saveOnClientSide;
 			this.departRecord = departRecord;
 			setTitle(listGridRecord == null ? CallCenterBK.constants
 					.addOrgDepartmentPhone() : CallCenterBK.constants
@@ -212,9 +208,7 @@ public class DlgAddEditOrgDepPhone extends Window {
 
 	private void saveData() {
 		try {
-			String phone = phoneItem.getValueAsString();
-			String unique_id = (listGridRecord == null) ? null : listGridRecord
-					.getAttribute("org_dep_to_ph_id");
+			final String phone = phoneItem.getValueAsString();
 			if (phone == null || phone.trim().equals("")) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.invalidPhone());
@@ -227,105 +221,102 @@ public class DlgAddEditOrgDepPhone extends Window {
 						CallCenterBK.constants.invalidPhone());
 				return;
 			}
-			ListGridRecord phones[] = phoneListGrid.getRecords();
-			if (phones != null && phones.length > 0) {
-				for (ListGridRecord listGridRecordItem : phones) {
-					String phoneItem = listGridRecordItem
-							.getAttributeAsString("phone");
-					if (phoneItem == null || phoneItem.trim().equals("")) {
-						continue;
-					}
-					String cur_id = listGridRecordItem
-							.getAttribute("org_dep_to_ph_id");
 
-					if (phoneItem.equals(phone) && unique_id == null) {
-						SC.say(CallCenterBK.constants.warning(),
-								CallCenterBK.constants.phoneAlreadyExists());
+			DataSource phoneViewDS = DataSource.get("PhoneViewDS");
+			Criteria criteria = new Criteria();
+			criteria.setAttribute("reall_address", "YES");
+			criteria.setAttribute("phone", phone);
+
+			DSRequest dsRequest = new DSRequest();
+			dsRequest.setOperationId("customSearch");
+
+			phoneViewDS.fetchData(criteria, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record records[] = response.getData();
+					if (records == null || records.length <= 0) {
+						checkedAndSave(phone);
 						return;
 					}
-					if (phoneItem.equals(phone) && unique_id != null
-							&& !unique_id.equals(cur_id)) {
-						SC.say(CallCenterBK.constants.warning(),
-								CallCenterBK.constants.phoneAlreadyExists());
-						return;
-					}
+
+					DlgAddPhoneOrgs dlgAddPhoneOrgs = new DlgAddPhoneOrgs(
+							phone, DlgAddEditOrgDepPhone.this, records);
+					dlgAddPhoneOrgs.show();
 				}
-			}
-			boolean isNew = false;
-			if (isNew = (listGridRecord == null)) {
-				listGridRecord = new ListGridRecord();
-			}
-			listGridRecord.setAttribute("hidden_by_request",
-					Integer.parseInt(hidByReqItem.getValueAsString()));
-			listGridRecord.setAttribute("phone_contract_type",
-					Integer.parseInt(contrTypeItem.getValueAsString()));
-			listGridRecord.setAttribute("for_contact",
-					Integer.parseInt(isContactItem.getValueAsString()));
-			listGridRecord.setAttribute("phone_state_id",
-					Integer.parseInt(phoneStateItem.getValueAsString()));
-			listGridRecord.setAttribute("phone_type_id",
-					Integer.parseInt(phoneTypeItem.getValueAsString()));
-			listGridRecord.setAttribute("is_parallel",
-					Integer.parseInt(isParallelItem.getValueAsString()));
-			listGridRecord.setAttribute("phone", phone);
-			listGridRecord.setAttribute("hidden_by_request_descr",
-					hidByReqItem.getDisplayValue());
-			listGridRecord.setAttribute("phone_contract_type_descr",
-					contrTypeItem.getDisplayValue());
-			listGridRecord.setAttribute("for_contact_descr",
-					isContactItem.getDisplayValue());
-			listGridRecord.setAttribute("phone_state_descr",
-					phoneStateItem.getDisplayValue());
-			listGridRecord.setAttribute("phone_type_descr",
-					phoneTypeItem.getDisplayValue());
-			listGridRecord.setAttribute("is_parallel_descr",
-					isParallelItem.getDisplayValue());
-			if (saveOnClientSide) {
-				if (isNew) {
-					listGridRecord.setAttribute("org_dep_to_ph_id",
-							(HTMLPanel.createUniqueId()));
-					phoneListGrid.addData(listGridRecord);
-				} else {
-					phoneListGrid.updateData(listGridRecord);
-				}
+			}, dsRequest);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	public void checkedAndSave(String phone) {
+		try {
+			Record record = new Record();
+			if (listGridRecord != null) {
+				record.setAttribute("org_dep_to_ph_id",
+						listGridRecord.getAttributeAsInt("org_dep_to_ph_id"));
+				record.setAttribute("phone_order",
+						listGridRecord.getAttributeAsInt("phone_order"));
 			} else {
-				com.smartgwt.client.rpc.RPCManager.startQueue();
-				Map<?, ?> map = listGridRecord.toMap();
-				map.remove("__ref");
-				map.remove("_ref");
-				Record record = new Record();
-				record.setAttribute("loggedUserName", CommonSingleton
-						.getInstance().getSessionPerson().getUser_name());
-				Integer phone_order = record.getAttributeAsInt("phone_order");
-				if (phone_order == null) {
-					phone_order = new Integer(0);
-				}
-				record.setAttribute("phone_order", phone_order);
-				record.setAttribute("org_department_id",
-						departRecord.getAttributeAsInt("org_department_id"));
-				DSRequest req = new DSRequest();
-				if (listGridRecord == null) {
-					req.setAttribute("operationId", "addOrgDepPhone");
-					phoneListGrid.addData(record, new DSCallback() {
-						@Override
-						public void execute(DSResponse response,
-								Object rawData, DSRequest request) {
-							destroy();
-						}
-					}, req);
-				} else {
-					req.setAttribute("operationId", "updateOrgDepPhone");
-					phoneListGrid.updateData(record, new DSCallback() {
-						@Override
-						public void execute(DSResponse response,
-								Object rawData, DSRequest request) {
-							destroy();
-						}
-					}, req);
-				}
-
-				com.smartgwt.client.rpc.RPCManager.sendQueue();
+				record.setAttribute("phone_order", new Integer(0));
 			}
+			record.setAttribute("hidden_by_request",
+					Integer.parseInt(hidByReqItem.getValueAsString()));
+			record.setAttribute("phone_contract_type",
+					Integer.parseInt(contrTypeItem.getValueAsString()));
+			record.setAttribute("for_contact",
+					Integer.parseInt(isContactItem.getValueAsString()));
+			record.setAttribute("phone_state_id",
+					Integer.parseInt(phoneStateItem.getValueAsString()));
+			record.setAttribute("phone_type_id",
+					Integer.parseInt(phoneTypeItem.getValueAsString()));
+			record.setAttribute("is_parallel",
+					Integer.parseInt(isParallelItem.getValueAsString()));
+			record.setAttribute("phone", phone);
+			record.setAttribute("hidden_by_request_descr",
+					hidByReqItem.getDisplayValue());
+			record.setAttribute("phone_contract_type_descr",
+					contrTypeItem.getDisplayValue());
+			record.setAttribute("for_contact_descr",
+					isContactItem.getDisplayValue());
+			record.setAttribute("phone_state_descr",
+					phoneStateItem.getDisplayValue());
+			record.setAttribute("phone_type_descr",
+					phoneTypeItem.getDisplayValue());
+			record.setAttribute("is_parallel_descr",
+					isParallelItem.getDisplayValue());
+			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name());
+
+			record.setAttribute("org_department_id",
+					departRecord.getAttributeAsInt("org_department_id"));
+
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+
+			DSRequest req = new DSRequest();
+			if (listGridRecord == null) {
+				req.setAttribute("operationId", "addOrgDepPhone");
+				phoneListGrid.addData(record, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						destroy();
+					}
+				}, req);
+			} else {
+				req.setAttribute("operationId", "updateOrgDepPhone");
+				phoneListGrid.updateData(record, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						destroy();
+					}
+				}, req);
+			}
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
 			destroy();
 		} catch (Exception e) {
 			e.printStackTrace();

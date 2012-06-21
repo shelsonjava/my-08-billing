@@ -144,7 +144,7 @@ public class InitAppServlet extends HttpServlet {
 			Double bid = new Double(-1);
 			Treatments treatment = null;
 			Long organization_id = -1L;
-			boolean checkContractor = false;
+			// boolean checkContractor = false;
 
 			boolean isUnknownPhoneNumber = false;
 
@@ -236,7 +236,7 @@ public class InitAppServlet extends HttpServlet {
 					} else {
 						callKind = Constants.callTypeAbonent;
 					}
-					checkContractor = true;
+					// checkContractor = true;
 				}
 			}
 

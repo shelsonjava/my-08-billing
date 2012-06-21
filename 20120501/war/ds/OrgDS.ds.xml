@@ -366,6 +366,20 @@
 									and getOrgDayoffs(o.day_offs) like '%'||'$str'||'%'
 								#end
 							 #end
+							 
+							 #if($criteria.phone_upd_date) 
+							 	 and o.organization_id in (
+							 		select 
+							 			distinct od.organization_id
+							  		from ccare.organization_department od
+							 		where od.org_department_id in
+							       		  (select 
+							       		  		  distinct dp.org_department_id
+							          	   from organization_depart_to_phones dp
+							          	   where dp.rec_upd_date is null or to_number(to_char(dp.rec_upd_date,'yymm')) = $criteria.phone_upd_date 							         	   
+							              ) 
+							       ) 
+							 #end
 							 #if($criteria.main_organization) and o.parrent_organization_id is null #end
 							 #if($criteria.web_address) and o.web_address like '%'||($criteria.web_address)||'%' #end
 							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end

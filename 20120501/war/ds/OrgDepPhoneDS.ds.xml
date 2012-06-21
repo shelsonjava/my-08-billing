@@ -15,6 +15,7 @@
 		<field name="phone_type_id"				type="integer"  	title="phone_type_id"			hidden="true"/>
 		<field name="is_parallel"				type="integer"  	title="is_parallel"				hidden="true"/>
 		<field name="phone_order"				type="integer"  	title="phone_order"				hidden="true"/>
+		<field name="rec_upd_date"				type="date"  		title="rec_upd_date"			hidden="true"/>
 		<field name="phone"						type="text"  		title="phone"/>
 		<field name="hidden_by_request_descr"	type="text"  		title="hidden_by_request_descr"/>
 		<field name="phone_contract_type_descr"	type="text"  		title="phone_contract_type_descr"/>
@@ -27,7 +28,7 @@
 		<field name="hist_end_date"   			type="datetime" 	title="hs_hist_end_date"/>
 		<field name="on_user"  					type="text"  		title="hs_on_user"/>
 		<field name="off_user"		   			type="text"  		title="hs_off_user"/>
-		<field name="rdeleted"   				type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
+		<field name="rdeleted"   				type="boolean"  	title="hph_rcn" 				sqlStorageStrategy="integer"/>
 		
 	</fields>
 	
@@ -58,6 +59,7 @@
 				  t.hidden_by_request, 
 				  t.phone_contract_type, 
 				  t.for_contact,
+				  t.rec_upd_date,
 				  p.phone,
 				  p.phone_state_id,
 				  p.phone_type_id,

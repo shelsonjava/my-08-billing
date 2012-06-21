@@ -1,7 +1,6 @@
 package com.info08.billing.callcenterbk.shared.entity.contractors;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;

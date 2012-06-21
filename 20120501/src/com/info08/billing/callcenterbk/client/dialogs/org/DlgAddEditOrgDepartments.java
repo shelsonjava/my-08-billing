@@ -16,10 +16,8 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
-import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
@@ -28,14 +26,9 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
-import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class DlgAddEditOrgDepartments extends Window {
 
@@ -46,11 +39,9 @@ public class DlgAddEditOrgDepartments extends Window {
 	private TextItem orgDepartmentNameItem;
 	private MyComboBoxItem parrentOrgDepItem;
 
-	private ListGrid orgDepPhonesListGrid;
 	private MyAddressPanel1 myAddressPanel1;
 
 	private ListGridRecord listGridRecord;
-	private ListGridRecord listGridRecordPhones[];
 	private ListGrid listGrid;
 	private Integer organization_id;
 	private DlgManageOrgDepartments dlgManageOrgDepartments;
@@ -58,21 +49,19 @@ public class DlgAddEditOrgDepartments extends Window {
 
 	public DlgAddEditOrgDepartments(ListGridRecord parrentListGridRecord,
 			Integer organization_id, ListGridRecord listGridRecord,
-			ListGridRecord listGridRecordPhones[], ListGrid listGrid,
-			DlgManageOrgDepartments dlgManageOrgDepartments) {
+			ListGrid listGrid, DlgManageOrgDepartments dlgManageOrgDepartments) {
 		try {
 			this.parrentListGridRecord = parrentListGridRecord;
 			this.listGrid = listGrid;
 			this.listGridRecord = listGridRecord;
 			this.organization_id = organization_id;
 			this.dlgManageOrgDepartments = dlgManageOrgDepartments;
-			this.listGridRecordPhones = listGridRecordPhones;
 			setTitle(listGridRecord == null ? CallCenterBK.constants
 					.addOrgDepartment() : CallCenterBK.constants
 					.editOrgDepartment());
 
-			setHeight(555);
-			setWidth(1272);
+			setHeight(325);
+			setWidth(1263);
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);
@@ -141,118 +130,6 @@ public class DlgAddEditOrgDepartments extends Window {
 					CallCenterBK.constants.address(), 615, 0);
 			vLayout.addMember(myAddressPanel1);
 
-			ToolStrip toolStrip = new ToolStrip();
-			toolStrip.setWidth100();
-			toolStrip.setPadding(5);
-			vLayout.addMember(toolStrip);
-
-			ToolStripButton addNewOrgBtn = new ToolStripButton(
-					CallCenterBK.constants.add(), "addIcon.png");
-			addNewOrgBtn.setLayoutAlign(Alignment.LEFT);
-			addNewOrgBtn.setWidth(50);
-			toolStrip.addButton(addNewOrgBtn);
-
-			ToolStripButton editBtn = new ToolStripButton(
-					CallCenterBK.constants.modify(), "editIcon.png");
-			editBtn.setLayoutAlign(Alignment.LEFT);
-			editBtn.setWidth(50);
-			toolStrip.addButton(editBtn);
-
-			ToolStripButton deleteBtn = new ToolStripButton(
-					CallCenterBK.constants.disable(), "deleteIcon.png");
-			deleteBtn.setLayoutAlign(Alignment.LEFT);
-			deleteBtn.setWidth(50);
-			toolStrip.addButton(deleteBtn);
-
-			orgDepPhonesListGrid = new ListGrid() {
-				protected String getCellCSSText(ListGridRecord record,
-						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					if (countryRecord == null) {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-					Integer for_contact = countryRecord
-							.getAttributeAsInt("for_contact");
-					if (for_contact != null && for_contact.equals(1)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-				};
-			};
-
-			OrgDepPhoneClientDS phoneDS = OrgDepPhoneClientDS.getInstance();
-
-			orgDepPhonesListGrid.setAlternateRecordStyles(true);
-			orgDepPhonesListGrid.setWidth100();
-			orgDepPhonesListGrid.setHeight100();
-			orgDepPhonesListGrid.setDataSource(phoneDS);
-			orgDepPhonesListGrid.setCriteria(new Criteria());
-			orgDepPhonesListGrid.setAutoFetchData(true);
-			orgDepPhonesListGrid.setCanEdit(false);
-			orgDepPhonesListGrid.setCanRemoveRecords(false);
-			orgDepPhonesListGrid.setCanSort(false);
-			orgDepPhonesListGrid.setCanResizeFields(false);
-			orgDepPhonesListGrid.setShowFilterEditor(true);
-			orgDepPhonesListGrid.setFilterOnKeypress(true);
-			orgDepPhonesListGrid.setWrapCells(true);
-			orgDepPhonesListGrid.setFixedRecordHeights(false);
-			orgDepPhonesListGrid.setCanSelectText(true);
-			orgDepPhonesListGrid.setCanDragSelectText(true);
-
-			ListGridField phone = new ListGridField("phone",
-					CallCenterBK.constants.phone());
-			phone.setCanFilter(true);
-
-			ListGridField phone_state_descr = new ListGridField(
-					"phone_state_descr", CallCenterBK.constants.phoneState(),
-					150);
-			// ClientUtils.createDescrFilterField("phone_state_id",CallCenterBK.constants.phoneState(),
-			// 150, 52000,false);
-			phone_state_descr.setAlign(Alignment.CENTER);
-			phone_state_descr.setCanFilter(false);
-
-			ListGridField hidden_by_request_descr = new ListGridField(
-					"hidden_by_request_descr",
-					CallCenterBK.constants.openClose(), 150);
-			hidden_by_request_descr.setAlign(Alignment.CENTER);
-			hidden_by_request_descr.setCanFilter(false);
-			// hidden_by_request_descr.setValueMap(ClientMapUtil.getInstance().getMapOpClose());
-
-			ListGridField phone_contract_type_descr = new ListGridField(
-					"phone_contract_type_descr",
-					CallCenterBK.constants.phoneStatus(), 150);
-			// ClientUtils.createDescrFilterField("phone_contract_type",CallCenterBK.constants.phoneStatus(),
-			// 150, 53000,false);
-			phone_contract_type_descr.setAlign(Alignment.CENTER);
-			phone_contract_type_descr.setCanFilter(false);
-
-			ListGridField for_contact_descr = new ListGridField(
-					"for_contact_descr", CallCenterBK.constants.contactPhone(),
-					150);
-			for_contact_descr.setAlign(Alignment.CENTER);
-			for_contact_descr.setCanFilter(false);
-			// for_contact_descr.setValueMap(ClientMapUtil.getInstance().getYesAndNo());
-
-			ListGridField phone_type_descr = new ListGridField(
-					"phone_type_descr", CallCenterBK.constants.type(), 150);
-			// ClientUtils.createDescrFilterField("phone_type_id",CallCenterBK.constants.type(),
-			// 150, 54000, false);
-			phone_type_descr.setAlign(Alignment.CENTER);
-			phone_type_descr.setCanFilter(false);
-
-			ListGridField is_parallel_descr = new ListGridField(
-					"is_parallel_descr", CallCenterBK.constants.paraller(), 150);
-			is_parallel_descr.setAlign(Alignment.CENTER);
-			is_parallel_descr.setCanFilter(false);
-			// is_parallel_descr.setValueMap(ClientMapUtil.getInstance().getMapParall());
-
-			orgDepPhonesListGrid.setFields(phone, phone_state_descr,
-					hidden_by_request_descr, phone_contract_type_descr,
-					for_contact_descr, phone_type_descr, is_parallel_descr);
-
-			vLayout.addMember(orgDepPhonesListGrid);
-
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
 			hLayoutItem.setAlign(Alignment.RIGHT);
@@ -280,68 +157,6 @@ public class DlgAddEditOrgDepartments extends Window {
 					saveData();
 				}
 			});
-
-			addNewOrgBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
-							true, null, orgDepPhonesListGrid, null);
-					addEditOrgDepPhone.show();
-				}
-			});
-
-			editBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = orgDepPhonesListGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.warning(),
-								CallCenterBK.constants.pleaseSelrecord());
-						return;
-					}
-					DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
-							true, listGridRecord, orgDepPhonesListGrid, null);
-					addEditOrgDepPhone.show();
-				}
-			});
-
-			deleteBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = orgDepPhonesListGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.warning(),
-								CallCenterBK.constants.pleaseSelrecord());
-						return;
-					}
-					SC.ask(CallCenterBK.constants.warning(),
-							CallCenterBK.constants.askForDisable(),
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										orgDepPhonesListGrid
-												.removeSelectedData();
-									}
-								}
-							});
-				}
-			});
-			orgDepPhonesListGrid
-					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-						@Override
-						public void onRecordDoubleClick(
-								RecordDoubleClickEvent event) {
-							ListGridRecord listGridRecord = orgDepPhonesListGrid
-									.getSelectedRecord();
-							DlgAddEditOrgDepPhone addEditOrgDepPhone = new DlgAddEditOrgDepPhone(
-									true, listGridRecord, orgDepPhonesListGrid,
-									null);
-							addEditOrgDepPhone.show();
-						}
-					});
 			addItem(vLayout);
 			fillData();
 		} catch (Exception e) {
@@ -369,42 +184,6 @@ public class DlgAddEditOrgDepartments extends Window {
 			Object physical_address_id = map.get("physical_address_id");
 			myAddressPanel1.setValue(physical_address_id == null ? null
 					: new Integer(physical_address_id.toString()));
-			if (listGridRecordPhones != null && listGridRecordPhones.length > 0) {
-				for (ListGridRecord record : listGridRecordPhones) {
-					ListGridRecord recordPhone = new ListGridRecord();
-					recordPhone.setAttribute("phone",
-							record.getAttributeAsString("phone"));
-					recordPhone.setAttribute("phone_state_descr",
-							record.getAttributeAsString("phone_state_descr"));
-					recordPhone.setAttribute("hidden_by_request_descr", record
-							.getAttributeAsString("hidden_by_request_descr"));
-					recordPhone
-							.setAttribute(
-									"phone_contract_type_descr",
-									record.getAttributeAsString("phone_contract_type_descr"));
-					recordPhone.setAttribute("for_contact_descr",
-							record.getAttributeAsString("for_contact_descr"));
-					recordPhone.setAttribute("is_parallel_descr",
-							record.getAttributeAsString("is_parallel_descr"));
-					recordPhone.setAttribute("phone_type_descr",
-							record.getAttributeAsString("phone_type_descr"));
-					recordPhone.setAttribute("org_dep_to_ph_id",
-							record.getAttributeAsString("org_dep_to_ph_id"));
-					recordPhone.setAttribute("hidden_by_request",
-							record.getAttributeAsInt("hidden_by_request"));
-					recordPhone.setAttribute("phone_contract_type",
-							record.getAttributeAsInt("phone_contract_type"));
-					recordPhone.setAttribute("for_contact",
-							record.getAttributeAsInt("for_contact"));
-					recordPhone.setAttribute("phone_state_id",
-							record.getAttributeAsInt("phone_state_id"));
-					recordPhone.setAttribute("phone_type_id",
-							record.getAttributeAsInt("phone_type_id"));
-					recordPhone.setAttribute("is_parallel",
-							record.getAttributeAsInt("is_parallel"));
-					orgDepPhonesListGrid.addData(recordPhone);
-				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -473,22 +252,6 @@ public class DlgAddEditOrgDepartments extends Window {
 			fromMaps.put("parrent_department_id", parrent_department_id);
 			fromMaps.put("organization_id", organization_id);
 			fromMaps.put("department_original", department_original);
-
-			RecordList phonesRecordList = orgDepPhonesListGrid
-					.getDataAsRecordList();
-			if (phonesRecordList != null && !phonesRecordList.isEmpty()) {
-				LinkedHashMap<String, Object> phones = new LinkedHashMap<String, Object>();
-				for (int i = 0; i < phonesRecordList.getLength(); i++) {
-					Record rec = phonesRecordList.get(i);
-					String org_dep_to_ph_id = rec
-							.getAttributeAsString("org_dep_to_ph_id");
-					Map<?, ?> mapData = rec.toMap();
-					mapData.remove("_ref");
-					mapData.remove("__ref");
-					phones.put(org_dep_to_ph_id, mapData);
-				}
-				fromMaps.put("phones", phones);
-			}
 
 			if (listGridRecord != null) {
 				fromMaps.put("org_department_id",

@@ -269,7 +269,7 @@ public class DlgContractorPhones extends Window {
 			orgPhonesGrid.scrollToRow(lastIndex - 3);
 	}
 
-	private void findAllPhonesByID(String id, ArrayList<String> phones) {
+	protected void findAllPhonesByID(String id, ArrayList<String> phones) {
 		Record record = orgPhonesGrid.getRecordList().find("id", id);
 		if (record == null)
 			return;
@@ -301,7 +301,7 @@ public class DlgContractorPhones extends Window {
 
 	}
 
-	private ArrayList<String> getAllPhones() {
+	protected ArrayList<String> getAllPhones() {
 		ArrayList<String> phones = new ArrayList<String>();
 		Record[] records = orgPhonesGrid.getRecords();
 		for (Record record : records) {
@@ -313,7 +313,7 @@ public class DlgContractorPhones extends Window {
 		return phones;
 	}
 
-	private ArrayList<String> getSelectedPhones() {
+	protected ArrayList<String> getSelectedPhones() {
 		ArrayList<String> phones = new ArrayList<String>();
 		Record[] records = orgPhonesGrid.getRecords();
 		for (Record record : records) {
