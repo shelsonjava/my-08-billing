@@ -715,9 +715,9 @@ public class DlgHistOrganization extends Window {
 			hLayout.addMember(searchForm);
 			hLayout.addMember(buttonLayout);
 
-			if (abonentRecord != null) {
-				searchBySubscriber(abonentRecord);
-			}
+//			if (abonentRecord != null) {
+//				searchBySubscriber(abonentRecord);
+//			}
 			hLayout.addMember(histOrganizaionListGrid);
 			hLayout.addMember(topTabSet);
 			addItem(hLayout);
