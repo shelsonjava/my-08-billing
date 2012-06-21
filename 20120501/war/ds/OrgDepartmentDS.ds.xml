@@ -350,7 +350,7 @@
 				 	#if($criteria.organization_id) organization_id = $criteria.organization_id #end
 				 ]]>
 			</whereClause>
-			<orderClause>org_department_id, start_rcn desc</orderClause>
+			<orderClause>department, start_rcn desc</orderClause>
 		</operationBinding>
 
 	</operationBindings>

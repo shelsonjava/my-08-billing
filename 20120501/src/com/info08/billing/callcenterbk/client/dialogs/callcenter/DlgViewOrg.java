@@ -453,7 +453,7 @@ public class DlgViewOrg extends Window {
 			orgTreeLayOut.setWidth100();
 			orgTreeLayOut.setHeight100();
 
-			DataSource dataSourceTree = DataSource.get("OrgParrAndChildByIdDS");
+			DataSource dataSourceTree = DataSource.get("OrgDS");
 
 			listGridOrgTreeParrent = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -462,10 +462,9 @@ public class DlgViewOrg extends Window {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer statuse = countryRecord
-							.getAttributeAsInt("statuse");
+					Integer statuse = countryRecord.getAttributeAsInt("status");
 					Integer extra_priority = countryRecord
-							.getAttributeAsInt("extra_priority");
+							.getAttributeAsInt("super_priority");
 					if (extra_priority != null && extra_priority.equals(-1)) {
 						return "color:red;";
 					} else if (statuse != null && statuse.equals(2)) {
@@ -480,14 +479,18 @@ public class DlgViewOrg extends Window {
 				};
 			};
 
-			Integer organization_id1 = record
-					.getAttributeAsInt("organization_id");
-			if (organization_id1 == null || organization_id1.equals(0)) {
-				organization_id1 = record.getAttributeAsInt("organization_id");
+			Integer parrent_organization_id = record
+					.getAttributeAsInt("parrent_organization_id");
+			if (parrent_organization_id == null
+					|| parrent_organization_id.equals(0)) {
+				// parrent_organization_id = record
+				// .getAttributeAsInt("parrent_organization_id");
+				parrent_organization_id = -1;
 			}
 
 			Criteria criteriaInner1 = new Criteria();
-			criteriaInner1.setAttribute("organization_id", organization_id1);
+			criteriaInner1.setAttribute("organization_id",
+					parrent_organization_id);
 			listGridOrgTreeParrent.setCriteria(criteriaInner1);
 			listGridOrgTreeParrent.setWidth100();
 			listGridOrgTreeParrent.setHeight(70);
@@ -497,7 +500,7 @@ public class DlgViewOrg extends Window {
 			listGridOrgTreeParrent.setCanEdit(false);
 			listGridOrgTreeParrent.setCanRemoveRecords(false);
 			listGridOrgTreeParrent
-					.setFetchOperation("customOrgTreeSearchParrent");
+					.setFetchOperation("customOrgSearchForCallCenterNew");
 			listGridOrgTreeParrent.setCanSort(false);
 			listGridOrgTreeParrent.setCanResizeFields(false);
 			listGridOrgTreeParrent.setWrapCells(true);
@@ -507,9 +510,10 @@ public class DlgViewOrg extends Window {
 					.orgParrentsNotFound());
 
 			ListGridField org_nameTree1 = new ListGridField(
-					"org_name_tree_like", CallCenterBK.constants.orgName());
+					"organization_name", CallCenterBK.constants.orgName());
 
-			ListGridField real_addressTree1 = new ListGridField("full_address",
+			ListGridField real_addressTree1 = new ListGridField(
+					"call_center_address",
 					CallCenterBK.constants.realAddress(), 400);
 
 			listGridOrgTreeParrent.setFields(org_nameTree1, real_addressTree1);
@@ -522,8 +526,7 @@ public class DlgViewOrg extends Window {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer statuse = countryRecord
-							.getAttributeAsInt("statuse");
+					Integer statuse = countryRecord.getAttributeAsInt("status");
 					Integer extra_priority = countryRecord
 							.getAttributeAsInt("extra_priority");
 					if (extra_priority != null && extra_priority.equals(-1)) {
@@ -543,11 +546,14 @@ public class DlgViewOrg extends Window {
 			Integer organization_id = record
 					.getAttributeAsInt("organization_id");
 			if (organization_id == null || organization_id.equals(0)) {
-				organization_id = record.getAttributeAsInt("organization_id");
+				// organization_id =
+				// record.getAttributeAsInt("organization_id");
+				organization_id = -1;
 			}
 
 			Criteria criteriaInner = new Criteria();
-			criteriaInner.setAttribute("p_organization_id", organization_id);
+			criteriaInner.setAttribute("parrent_organization_id",
+					organization_id);
 			listGridOrgTreeChilds.setCriteria(criteriaInner);
 			listGridOrgTreeChilds.setWidth100();
 			listGridOrgTreeChilds.setHeight100();
@@ -556,7 +562,8 @@ public class DlgViewOrg extends Window {
 			listGridOrgTreeChilds.setAutoFetchData(true);
 			listGridOrgTreeChilds.setCanEdit(false);
 			listGridOrgTreeChilds.setCanRemoveRecords(false);
-			listGridOrgTreeChilds.setFetchOperation("customOrgTreeSearch");
+			listGridOrgTreeChilds
+					.setFetchOperation("customOrgSearchForCallCenterNew");
 			listGridOrgTreeChilds.setCanSort(false);
 			listGridOrgTreeChilds.setCanResizeFields(false);
 			listGridOrgTreeChilds.setWrapCells(true);
@@ -567,11 +574,12 @@ public class DlgViewOrg extends Window {
 			listGridOrgTreeChilds.setEmptyMessage(CallCenterBK.constants
 					.orgChildsNotFound());
 
-			ListGridField org_nameTree = new ListGridField(
-					"org_name_tree_like", CallCenterBK.constants.orgName());
+			ListGridField org_nameTree = new ListGridField("organization_name",
+					CallCenterBK.constants.orgName());
 			org_nameTree.setCanFilter(true);
 
-			ListGridField real_addressTree = new ListGridField("full_address",
+			ListGridField real_addressTree = new ListGridField(
+					"call_center_address",
 					CallCenterBK.constants.realAddress(), 400);
 			real_addressTree.setCanFilter(true);
 
@@ -968,7 +976,8 @@ public class DlgViewOrg extends Window {
 				sms_text.append("web: ").append(webaddress).append("; ");
 			}
 
-			String new_identcode = record.getAttributeAsString("ident_code_new");
+			String new_identcode = record
+					.getAttributeAsString("ident_code_new");
 			if (new_identcode == null || new_identcode.trim().equals("")) {
 				new_identcode = record.getAttributeAsString("ident_code");
 			}
@@ -1030,7 +1039,8 @@ public class DlgViewOrg extends Window {
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendDepInfoSMS);
 			StringBuilder sms_text = new StringBuilder();
-			String legal_statuse = record.getAttributeAsString("legal_form_desc");
+			String legal_statuse = record
+					.getAttributeAsString("legal_form_desc");
 			if (legal_statuse != null
 					&& !legal_statuse.trim().equalsIgnoreCase("")) {
 				sms_text.append(legal_statuse).append(" ");
@@ -1077,7 +1087,8 @@ public class DlgViewOrg extends Window {
 				}
 			}
 
-			String real_address = record.getAttributeAsString("call_center_address");
+			String real_address = record
+					.getAttributeAsString("call_center_address");
 
 			if (real_address != null
 					&& !real_address.trim().equalsIgnoreCase("")) {
