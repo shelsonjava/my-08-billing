@@ -262,11 +262,11 @@ public class TabFindOrg extends Tab {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
 					Integer statuse = countryRecord
-							.getAttributeAsInt("statuse");
+							.getAttributeAsInt("status");
 					Integer extra_priority = countryRecord
-							.getAttributeAsInt("extra_priority");
+							.getAttributeAsInt("super_priority");
 					Integer note_crit = countryRecord
-							.getAttributeAsInt("note_crit");
+							.getAttributeAsInt("priority");
 
 					if (extra_priority != null && extra_priority < 0) {
 						return "color:red;";
