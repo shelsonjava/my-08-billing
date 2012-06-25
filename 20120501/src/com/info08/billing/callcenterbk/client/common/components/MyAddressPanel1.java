@@ -67,7 +67,7 @@ public class MyAddressPanel1 extends HLayout {
 		setMargin(0);
 
 		dynamicForm = new DynamicForm();
-		dynamicForm.setAutoFocus(true);
+		dynamicForm.setAutoFocus(false);
 		dynamicForm.setWidth100();
 		dynamicForm.setNumCols(4);
 		dynamicForm.setTitleOrientation(TitleOrientation.TOP);

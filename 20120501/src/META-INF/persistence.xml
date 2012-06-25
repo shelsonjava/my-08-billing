@@ -50,7 +50,6 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationToActivity</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartMent</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartToPhone</class>
-		<class>com.info08.billing.callcenterbk.shared.entity.org.LegalStatus</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationActivity</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.BusinessSector</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.org.BusinessUnion</class>

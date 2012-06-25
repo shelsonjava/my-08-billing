@@ -736,5 +736,7 @@ public interface AppConstants extends Constants {
 	String mainOrganization();
 	String doYouWantOrgDepManagement();
 	String phoneOrgs();
-	
+	String wdayUnknown();
+	String recordsCount();
+	String hrManagement();
 }

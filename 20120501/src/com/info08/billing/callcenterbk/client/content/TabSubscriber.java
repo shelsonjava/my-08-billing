@@ -349,12 +349,19 @@ public class TabSubscriber extends Tab {
 			exportButton.setLayoutAlign(Alignment.LEFT);
 			exportButton.setWidth(50);
 			toolStrip.addButton(exportButton);
+			final boolean hasExcelExpPerm = CommonSingleton.getInstance()
+					.hasPermission("106000");
+			exportButton.setDisabled(!hasExcelExpPerm);
 
 			historyButton = new ToolStripButton(
 					CallCenterBK.constants.history(), "date.png");
 			historyButton.setLayoutAlign(Alignment.LEFT);
 			historyButton.setWidth(50);
 			toolStrip.addButton(historyButton);
+
+			boolean hasHistPerm = CommonSingleton.getInstance().hasPermission(
+					"106500");
+			historyButton.setDisabled(!hasHistPerm);
 
 			ListGridField firstName = new ListGridField("name", "სახელი", 70);
 			ListGridField lastName = new ListGridField("family_name", "გვარი",
@@ -453,9 +460,6 @@ public class TabSubscriber extends Tab {
 					clearItems();
 				}
 			});
-
-			final boolean hasExcelExpPerm = CommonSingleton.getInstance()
-					.hasPermission("106000");
 
 			exportButton.addClickHandler(new ClickHandler() {
 				@Override
@@ -556,7 +560,7 @@ public class TabSubscriber extends Tab {
 							String field_name = event.getField().getName();
 							if (field_name == null)
 								return;
-							
+
 							String formItemName = columnMap.get(field_name);
 							if (formItemName == null)
 								return;
@@ -568,28 +572,30 @@ public class TabSubscriber extends Tab {
 								fmItem = searchFormPhone.getField(formItemName);
 							if (fmItem == null)
 								return;
-							Object value=record.getAttribute(formItemName);
-							if(value==null)
+							Object value = record.getAttribute(formItemName);
+							if (value == null)
 								return;
-							if(fmItem instanceof ComboBoxItem||fmItem instanceof SelectItem){
+							if (fmItem instanceof ComboBoxItem
+									|| fmItem instanceof SelectItem) {
 								fmItem.setOptionCriteria(new Criteria());
 								fmItem.invalidateDisplayValueCache();
 							}
 							fmItem.setValue(value);
-//							fmItem.setOptionCriteria(fmItem.getOptionCriteria());
-//							if (fmItem instanceof ComboBoxItem) {
-//								ComboBoxItem cItem = (ComboBoxItem) fmItem;
-//								cItem.setAutoFetchData(true);
-//								cItem.setAutoFetchData(false);
-//								// cItem.setTextMatchStyle(TextMatchStyle.SUBSTRING);
-//
-//							} else if (fmItem instanceof SelectItem) {
-//								SelectItem sItem = (SelectItem) fmItem;
-//								sItem.setAutoFetchData(true);
-//								sItem.setAutoFetchData(false);
-//
-//							}
-//							fmItem.getForm().setValues(fmItem.getForm().getValues());
+							// fmItem.setOptionCriteria(fmItem.getOptionCriteria());
+							// if (fmItem instanceof ComboBoxItem) {
+							// ComboBoxItem cItem = (ComboBoxItem) fmItem;
+							// cItem.setAutoFetchData(true);
+							// cItem.setAutoFetchData(false);
+							// //
+							// cItem.setTextMatchStyle(TextMatchStyle.SUBSTRING);
+							//
+							// } else if (fmItem instanceof SelectItem) {
+							// SelectItem sItem = (SelectItem) fmItem;
+							// sItem.setAutoFetchData(true);
+							// sItem.setAutoFetchData(false);
+							//
+							// }
+							// fmItem.getForm().setValues(fmItem.getForm().getValues());
 
 						}
 					});

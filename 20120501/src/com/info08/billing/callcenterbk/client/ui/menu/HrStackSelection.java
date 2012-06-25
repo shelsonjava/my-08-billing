@@ -26,7 +26,7 @@ public class HrStackSelection extends SectionStackSection {
 
 	public HrStackSelection(Body body) {
 		this.body = body;
-		setTitle("HR");
+		setTitle(CallCenterBK.constants.hrManagement());
 		setExpanded(false);
 		setCanCollapse(true);
 

@@ -161,99 +161,104 @@
 		<!-- FETCH -->
 		<operationBinding operationId="customOrgSearchForCallCenterNew" operationType="fetch">			
 			<selectClause><![CDATA[
-						o.organization_id,
-						o.parrent_organization_id,
-						o.parrent_organization_id as parrent_organization_id1,
-						#if($criteria.pp_organization_id)
-							hr.my_rownum,
-							lpad(' ', (hr.mylevel - 1) * 4, '.') || o.organization_name 
-						#else
-							o.organization_name 
-						#end
-						as organization_name,
-						#if($criteria.need_phones)
-							 (select 
-							 		wm_concat(pn.phone) as concat_phones
-							 from organization_depart_to_phones tt
-							 inner join phone_numbers pn on pn.phone_number_id = tt.phone_number_id
-							 where tt.org_department_id in
-							       (select t.org_department_id
-							          from ccare.organization_department t
-							         where t.organization_id = o.organization_id)
-							  and tt.for_contact = 1 ) as concat_phones,
-							  
-							  (select 
-							  		wm_concat(tt.activity_description) as concat_activity_descrs 
-							  from organization_to_activities t 
-       								inner join organization_activities tt on tt.org_activity_id = t.org_activity_id
-							  where t.organization_id = o.organization_id ) as concat_activity_descrs,
-						#end
-						#if($criteria.isCallCenter)
-							(select 
-								 wm_concat(oo.organization_name) as concat_org_partner_banks 
-							from organization_partner_banks t
-       						inner join organizations oo on oo.organization_id = t.part_bank_org_id
-							where t.organization_id = o.organization_id) as concat_org_partner_banks,
-						#end
-						o.organization_name as original_org_name,
-						a.concat_address_with_town as full_address_not_hidden,
-						a1.concat_address_with_town as legal_full_address_not_hidden,
-						decode(o.parrent_organization_id,null,null,'home') as tree_org_parrent,
-		                decode((select min(1) from organizations ms1 where ms1.parrent_organization_id = o.organization_id),null,null,'associations') as tree_org_child,
-						a.town_id,
-						o.priority,
-             			o.super_priority,
-						o.ident_code,
-						o.ident_code_new,
-						decode(o.ident_code_new,null,o.ident_code,o.ident_code_new) as unique_ident_code,
-						o.chief,
-						o.remark,
-						o.work_hours,
-						o.found_date,
-						o.email_address,
-						o.additional_info,
-						o.web_address,
-						o.contact_person,
-						o.day_offs,
-						getdaysdescription(o.day_offs) as day_offs_descr,
-						o.staff_count,
-						o.organization_index,
-						o.organization_name_eng,						
-						o.legal_form_desc_id,
-						getdaysdescription(o.legal_form_desc_id) as legal_form_desc,
-						o.status,
-						a.street_id,
-						a.town_name,
-						a.town_district_name as town_district,
-						a.street_location,
-						a.street_index_text,
-						o.important_remark,						
-             			a.town_district_id,
-             		    getTbilisiOrder(a.town_id) as cust_order,
-		                a.street_name,
-		                a.hidden_by_request,
-		                decode(a.hidden_by_request, 1, 'მისამართი დაფარულია', a.concat_address_with_town) as call_center_address,		                		                
-		                a.full_address,
-						a.block,
-						a.appt,
-						a.descr,
-						a.anumber,
-						o.super_priority,						
-						getorgbusiness_alerts(o.organization_id) as org_allert_by_buss_det,
-						o.legal_address_id,
-						o.physical_address_id,
-						o.social_address,
-						a1.town_id as legal_addr_town_id,
-						a1.street_id as legal_addr_street_id,
-						a1.town_district_id as legal_addr_town_district_id,
-						a1.hidden_by_request as legal_addr_hidden_by_request,
-						o.old_legal_address as legal_addr_full_address,
-						a1.block as legal_addr_block,
-						a1.appt as legal_addr_appt,
-						a1.anumber as legal_addr_anumber,
-						a1.street_location as legal_addr_street_location,
-						a1.street_index_text as legal_addr_street_index_text,
-						a1.descr						
+						
+						#if($criteria.only_count)
+							count(1) as recCount
+						#else						
+							o.organization_id,
+							o.parrent_organization_id,
+							o.parrent_organization_id as parrent_organization_id1,
+							#if($criteria.pp_organization_id)
+								hr.my_rownum,
+								lpad(' ', (hr.mylevel - 1) * 4, '.') || o.organization_name 
+							#else
+								o.organization_name 
+							#end
+							as organization_name,
+							#if($criteria.need_phones)
+								 (select 
+								 		wm_concat(pn.phone) as concat_phones
+								 from organization_depart_to_phones tt
+								 inner join phone_numbers pn on pn.phone_number_id = tt.phone_number_id
+								 where tt.org_department_id in
+								       (select t.org_department_id
+								          from ccare.organization_department t
+								         where t.organization_id = o.organization_id)
+								  and tt.for_contact = 1 ) as concat_phones,
+								  
+								  (select 
+								  		wm_concat(tt.activity_description) as concat_activity_descrs 
+								  from organization_to_activities t 
+	       								inner join organization_activities tt on tt.org_activity_id = t.org_activity_id
+								  where t.organization_id = o.organization_id ) as concat_activity_descrs,
+							#end
+							#if($criteria.isCallCenter)
+								(select 
+									 wm_concat(oo.organization_name) as concat_org_partner_banks 
+								from organization_partner_banks t
+	       						inner join organizations oo on oo.organization_id = t.part_bank_org_id
+								where t.organization_id = o.organization_id) as concat_org_partner_banks,
+							#end
+							o.organization_name as original_org_name,
+							a.concat_address_with_town as full_address_not_hidden,
+							a1.concat_address_with_town as legal_full_address_not_hidden,
+							decode(o.parrent_organization_id,null,null,'home') as tree_org_parrent,
+			                decode((select min(1) from organizations ms1 where ms1.parrent_organization_id = o.organization_id),null,null,'associations') as tree_org_child,
+							a.town_id,
+							o.priority,
+	             			o.super_priority,
+							o.ident_code,
+							o.ident_code_new,
+							decode(o.ident_code_new,null,o.ident_code,o.ident_code_new) as unique_ident_code,
+							o.chief,
+							o.remark,
+							o.work_hours,
+							o.found_date,
+							o.email_address,
+							o.additional_info,
+							o.web_address,
+							o.contact_person,
+							o.day_offs,
+							getdaysdescription(o.day_offs) as day_offs_descr,
+							o.staff_count,
+							o.organization_index,
+							o.organization_name_eng,						
+							o.legal_form_desc_id,
+							getdaysdescription(o.legal_form_desc_id) as legal_form_desc,
+							o.status,
+							a.street_id,
+							a.town_name,
+							a.town_district_name as town_district,
+							a.street_location,
+							a.street_index_text,
+							o.important_remark,						
+	             			a.town_district_id,
+	             		    getTbilisiOrder(a.town_id) as cust_order,
+			                a.street_name,
+			                a.hidden_by_request,
+			                decode(a.hidden_by_request, 1, 'მისამართი დაფარულია', a.concat_address_with_town) as call_center_address,		                		                
+			                a.full_address,
+							a.block,
+							a.appt,
+							a.descr,
+							a.anumber,
+							o.super_priority,						
+							getorgbusiness_alerts(o.organization_id) as org_allert_by_buss_det,
+							o.legal_address_id,
+							o.physical_address_id,
+							o.social_address,
+							a1.town_id as legal_addr_town_id,
+							a1.street_id as legal_addr_street_id,
+							a1.town_district_id as legal_addr_town_district_id,
+							a1.hidden_by_request as legal_addr_hidden_by_request,
+							o.old_legal_address as legal_addr_full_address,
+							a1.block as legal_addr_block,
+							a1.appt as legal_addr_appt,
+							a1.anumber as legal_addr_anumber,
+							a1.street_location as legal_addr_street_location,
+							a1.street_index_text as legal_addr_street_index_text,
+							a1.descr
+					#end						
 				 ]]>
 			</selectClause>
 			<tableClause>organizations o,

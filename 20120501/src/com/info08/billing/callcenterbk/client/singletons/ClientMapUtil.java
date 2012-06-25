@@ -203,6 +203,7 @@ public class ClientMapUtil {
 		weekDays.put("16", CallCenterBK.constants.wdayFriday());
 		weekDays.put("32", CallCenterBK.constants.wdaySaturday());
 		weekDays.put("64", CallCenterBK.constants.wdaySunday());
+		weekDays.put("128", CallCenterBK.constants.wdayUnknown());
 
 		contractorTypes.put("-1", CallCenterBK.constants.all());
 		contractorTypes.put("0", CallCenterBK.constants.budget());
