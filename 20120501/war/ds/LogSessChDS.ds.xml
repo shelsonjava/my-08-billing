@@ -17,6 +17,7 @@
         <field name="amount"  			type="float"  	title="amount"/>
         <field name="aprice"  			type="float"  	title="aprice"/>
         <field name="cnt"  				type="float"  	title="cnt"/>
+        <field name="organization_id"  	type="integer"  title="cnt"/>
     </fields>
     
      <operationBindings>
@@ -62,7 +63,11 @@
 		<operationBinding operationId="LogSMS" operationType="add">
             <customSQL>
             	 <![CDATA[
-            	 	{call send_sms_to_reciptent_new($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user)}
+            	    #if($values.organization_id)
+            	    	{call send_sms_to_reciptent_new_org($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.organization_id, $values.rec_user)}
+            	    #else
+            	 		{call send_sms_to_reciptent_new($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user)}
+            	 	#end
             	 ]]>
             </customSQL> 
         </operationBinding>
