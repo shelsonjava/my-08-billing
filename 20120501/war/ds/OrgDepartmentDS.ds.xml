@@ -30,6 +30,7 @@
 		<field name="legal_addr_town_district_id" 		type="integer" 		title="legal_addr_town_district_id" 		hidden="true" />
 		<field name="legal_addr_hidden_by_request"		type="integer" 		title="legal_addr_hidden_by_request" 		hidden="true" />
 		<field name="hidden_by_request" 				type="integer" 		title="hidden_by_request"					hidden="true" />
+		<field name="phone_count" 						type="integer" 		title="phone_count"							hidden="true" />
 		<field name="full_address"						type="text"  		title="full_address"						hidden="true"/>
 		<field name="street_name"						type="text"  		title="street_name"							hidden="true"/>
 		<field name="block"								type="text"  		title="block"								hidden="true"/>
@@ -160,6 +161,7 @@
 					  pa.appt,
 					  pa.descr,
 					  pa.anumber,
+					  #if($criteria.with_phone_count) (select count(1) from organization_depart_to_phones odp where odp.org_department_id=t1.org_department_id) phone_count, #end
 					  pa.concat_address as full_address_not_hidden,
 					  la.town_id as legal_addr_town_id,
 					  la.street_id as legal_addr_street_id,
@@ -171,6 +173,7 @@
 					  la.anumber as legal_addr_anumber,
 					  la.street_location as legal_addr_street_location,
 					  getindex(la.street_id) as legal_addr_street_index_text
+					  
 					from (
 					select 
 					     decode(LEVEL,1,1,0) isBold,

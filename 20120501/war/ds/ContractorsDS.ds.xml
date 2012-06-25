@@ -9,7 +9,7 @@
 		<field name="block"					type="integer"		title="block"				hidden="true"/>
 		<field name="critical_number"		type="integer"		title="critical_number"		hidden="true"/>
 		<field name="deleted"				type="integer"		title="deleted"				hidden="true"/>
-		<field name="orgName"				type="text"			title="orgName"/>
+		<field name="organization_name"		type="text"			title="organization_name"/>
 		<field name="orgDepName"			type="text"			title="orgDepName"/>
 		<field name="start_date"			type="date"			title="start_date"/>
 		<field name="end_date"				type="date"			title="end_date"/>
@@ -19,7 +19,7 @@
 		<field name="upd_user"				type="text"			title="upd_user"/>
 		<field name="is_budget"				type="integer"		title="is_budget"			hidden="true"/>
 		<field name="main_detail_id"		type="integer"		title="main_detail_id"		hidden="true"/>
-		<field name="organization_id"				type="integer"		title="organization_id"				hidden="true"/>
+		<field name="organization_id"		type="integer"		title="organization_id"				hidden="true"/>
 		<field name="price_type"			type="integer"		title="price_type"			hidden="true"/>
 		<field name="rec_date"				type="datetime"		title="rec_date"			hidden="true"/>		
 		<field name="sms_warning"			type="integer"		title="sms_warning"			hidden="true"/>
@@ -109,29 +109,22 @@
 				  t.upd_user,
 				  t.phone_list_type,
 				  t.range_curr_price,
-				  mo1.org_name as orgName,
-				  md.main_detail_geo as orgDepName,
+				  mo1.organization_name,
 				  decode(t.price_type,0,'მარტ.','რთული') as price_type_descr
 			</selectClause> 
-			<tableClause>ccare.contracts t, ccare.main_orgs mo1, ccare.main_details md</tableClause>
+			<tableClause>ccare.contracts t, ccare.organizations mo1</tableClause>
 			<whereClause><![CDATA[
-				 t.organization_id = mo1.organization_id and t.main_detail_id = md.main_detail_id (+) and t.deleted = 0
-				 #if($criteria.org_name1) and mo1.org_name like '%'||($criteria.org_name1)||'%' #end
-				 #if($criteria.org_name2) and mo1.org_name like '%'||($criteria.org_name2)||'%' #end
-				 #if($criteria.org_name3) and mo1.org_name like '%'||($criteria.org_name3)||'%' #end
-				 #if($criteria.org_name4) and mo1.org_name like '%'||($criteria.org_name4)||'%' #end
-				 #if($criteria.org_name5) and mo1.org_name like '%'||($criteria.org_name5)||'%' #end
-				 #if($criteria.org_name6) and mo1.org_name like '%'||($criteria.org_name6)||'%' #end
-				 #if($criteria.org_name7) and mo1.org_name like '%'||($criteria.org_name7)||'%' #end
-				 #if($criteria.org_name8) and mo1.org_name like '%'||($criteria.org_name8)||'%' #end
-				 #if($criteria.org_name9) and mo1.org_name like '%'||($criteria.org_name9)||'%' #end
-				 #if($criteria.orgDepName1) and md.main_detail_geo like '%'||($criteria.orgDepName1)||'%' #end
-				 #if($criteria.orgDepName2) and md.main_detail_geo like '%'||($criteria.orgDepName2)||'%' #end
-				 #if($criteria.orgDepName3) and md.main_detail_geo like '%'||($criteria.orgDepName3)||'%' #end
-				 #if($criteria.orgDepName4) and md.main_detail_geo like '%'||($criteria.orgDepName4)||'%' #end
-				 #if($criteria.orgDepName5) and md.main_detail_geo like '%'||($criteria.orgDepName5)||'%' #end
+				 t.organization_id = mo1.organization_id
+				 #if($criteria.org_name1) and mo1.organization_name like '%'||($criteria.org_name1)||'%' #end
+				 #if($criteria.org_name2) and mo1.organization_name like '%'||($criteria.org_name2)||'%' #end
+				 #if($criteria.org_name3) and mo1.organization_name like '%'||($criteria.org_name3)||'%' #end
+				 #if($criteria.org_name4) and mo1.organization_name like '%'||($criteria.org_name4)||'%' #end
+				 #if($criteria.org_name5) and mo1.organization_name like '%'||($criteria.org_name5)||'%' #end
+				 #if($criteria.org_name6) and mo1.organization_name like '%'||($criteria.org_name6)||'%' #end
+				 #if($criteria.org_name7) and mo1.organization_name like '%'||($criteria.org_name7)||'%' #end
+				 #if($criteria.org_name8) and mo1.organization_name like '%'||($criteria.org_name8)||'%' #end
+				 #if($criteria.org_name9) and mo1.organization_name like '%'||($criteria.org_name9)||'%' #end
 				 #if($criteria.is_budget) and t.is_budget = $criteria.is_budget #end
-				 #if($criteria.deleted) and t.deleted = $criteria.deleted #end
 				 #if($criteria.price_type) and t.price_type = $criteria.price_type #end
 				 #if($criteria.phone)
 				 	and t.contract_id in (select tt.contract_id from ccare.contractor_phones tt where tt.phone = $criteria.phone) 				 	
