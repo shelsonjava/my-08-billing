@@ -948,10 +948,8 @@ public class OrganizationDMI {
 			PhoneNumber phoneNumberByNum = (listPhones != null && !listPhones
 					.isEmpty()) ? listPhones.get(0) : null;
 
-			if (phoneNumberByNum != null
-					&& !phoneNumberByNum.getPhone_number_id().equals(
-							phone_number_id)) {
-				Long id_tmp = phoneNumberByNum.getPhone_type_id();
+			if (phoneNumberByNum != null && !phoneNumberByNum.getPhone_number_id().equals(phone_number_id)) {
+				Long id_tmp = phoneNumberByNum.getPhone_number_id();
 				phoneNumber = phoneNumberByNum;
 				DataTools.setProperties(values, phoneNumber);
 				phoneNumber.setPhone_number_id(id_tmp);
