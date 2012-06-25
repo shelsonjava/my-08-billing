@@ -1115,6 +1115,7 @@ public class DlgViewOrg extends Window {
 			record.setAttribute("session_id", serverSession.getSessionId());
 			record.setAttribute("sms_text", sms_text.toString());
 			record.setAttribute("phone", phone);
+			record.setAttribute("organization_id", record.getAttributeAsInt("organization_id"));
 			record.setAttribute("rec_user", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 
