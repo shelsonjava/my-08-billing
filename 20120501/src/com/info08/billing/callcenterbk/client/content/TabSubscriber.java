@@ -393,6 +393,8 @@ public class TabSubscriber extends Tab {
 			// phone type field
 			ListGridField phoneTypeField = new ListGridField("phone_type",
 					"ტიპი", 119);
+			ListGridField update_date = new ListGridField("upt_date",
+					CallCenterBK.constants.updDate(), 100);
 
 			addr_number.setAlign(Alignment.CENTER);
 			addr_block.setAlign(Alignment.CENTER);
@@ -419,7 +421,7 @@ public class TabSubscriber extends Tab {
 			abonentsGrid.setFields(firstName, lastName, street, addr_number,
 					addr_block, addr_appt, addr_descr, phone, opCloseField,
 					parallelUsualField, phoneStatusField, phoneStateField,
-					phoneTypeField);
+					phoneTypeField,update_date);
 
 			mainLayout.addMember(abonentsGrid);
 
