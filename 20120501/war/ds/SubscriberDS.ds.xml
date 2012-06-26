@@ -42,10 +42,11 @@
 		<field name="ph_hidden_by_request"			type="integer"	title="Is Parallel Descr"/>
 		<field name="hist_start_date"   			type="datetime" title="hs_hist_start_date"/>
 		<field name="hist_end_date"   				type="datetime" title="hs_hist_end_date"/>
+		<field name="upt_date"   					type="datetime" title="upt_date"/>
 		<field name="on_user"  						type="text"  	title="hs_on_user"/>
 		<field name="off_user"		   				type="text"  	title="hs_off_user"/>
 		<field name="off_user"		   				type="text"  	title="hs_off_user"/>
-		<field name="rdeleted"   				type="boolean"  	title="hph_rcn" 			sqlStorageStrategy="integer"/>
+		<field name="rdeleted"   					type="boolean"  title="hph_rcn" 			sqlStorageStrategy="integer"/>
 	</fields>
 	
 	
@@ -103,6 +104,7 @@
 				       pnm.phone_type_id,
 				       spm.phone_contract_type,
 				       spm.hidden_by_request ph_hidden_by_request,
+				       t.upt_date,
 				       decode(pnm.is_parallel,
 			              0,
 			              'ჩვეულებრივი',
