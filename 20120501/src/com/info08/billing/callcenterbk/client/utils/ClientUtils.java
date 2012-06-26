@@ -1,19 +1,30 @@
 package com.info08.billing.callcenterbk.client.utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.bramosystems.oss.player.core.client.LoadException;
+import com.bramosystems.oss.player.core.client.PluginNotFoundException;
+import com.bramosystems.oss.player.core.client.PluginVersionException;
+import com.bramosystems.oss.player.core.client.ui.FlashMediaPlayer;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Window;
+import com.smartgwt.client.widgets.events.CloseClickEvent;
+import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
+import com.smartgwt.client.widgets.form.fields.LinkItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
@@ -23,6 +34,7 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.layout.HLayout;
 
 public class ClientUtils {
 
@@ -347,7 +359,133 @@ public class ClientUtils {
 
 		return contains;
 	}
-	
-	
-	
+
+	public static void getURL(String sessionId, Date date) {
+		try {
+			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onSuccess(String result) {
+							if (result == null || result.trim().equals("")) {
+								SC.say("სესიის მისამართი ვერ მოიძებნა : "
+										+ result);
+								return;
+							}
+							playSessionRecord(result);
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							SC.say(caught.toString());
+						}
+					});
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
+
+	public static void getDownloadFile(String url) {
+		try {
+			Window window = new Window();
+			window.setWidth(350);
+			window.setHeight(70);
+			window.setTitle("ფაილის გადმოწერა");
+			window.setIsModal(true);
+			window.setShowCloseButton(true);
+			window.setCanDrag(false);
+			window.setCanDragReposition(false);
+			window.setCanDragResize(false);
+			window.setCanDragScroll(false);
+			window.centerInPage();
+
+			HLayout hLayout = new HLayout();
+			hLayout.setWidth100();
+			hLayout.setHeight100();
+			hLayout.setPadding(10);
+
+			DynamicForm dynamicForm = new DynamicForm();
+			dynamicForm.setWidth100();
+			dynamicForm.setHeight100();
+			dynamicForm.setTitleWidth(150);
+
+			LinkItem linkItem = new LinkItem();
+			linkItem.setTitle("ფაილის მისამართი");
+			linkItem.setLinkTitle("გადმოწერეთ ფაილი");
+			linkItem.setValue(url);
+
+			dynamicForm.setFields(linkItem);
+
+			hLayout.addMember(dynamicForm);
+
+			window.addItem(hLayout);
+			window.show();
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
+
+	public static void playSessionRecord(String url) {
+		try {
+			final Window winModal = new Window();
+			winModal.setWidth(500);
+			winModal.setHeight(80);
+			winModal.setTitle("ჩანაწერის მოსმენა");
+			winModal.setShowMinimizeButton(false);
+			winModal.setIsModal(true);
+			winModal.setShowModalMask(true);
+			winModal.centerInPage();
+			winModal.addCloseClickHandler(new CloseClickHandler() {
+				@Override
+				public void onCloseClick(CloseClickEvent event) {
+					winModal.destroy();
+				}
+			});
+			FlashMediaPlayer player = null;
+			HLayout hLayout = new HLayout();
+			hLayout.setWidth100();
+			hLayout.setHeight100();
+			player = new FlashMediaPlayer(url);
+
+			hLayout.addMember(player);
+			winModal.addItem(hLayout);
+			winModal.show();
+			// player.setVolume(1d);
+		} catch (LoadException e) {
+			SC.say(e.getMessage());
+			return;
+		} catch (PluginVersionException e) {
+			SC.say(e.getMessage());
+			return;
+		} catch (PluginNotFoundException e) {
+			SC.say(e.getMessage());
+			return;
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
+	public static void downloadFile(String sessionId, Date date) {
+		try {
+			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onSuccess(String result) {
+							if (result == null || result.trim().equals("")) {
+								SC.say("სესიის მისამართი ვერ მოიძებნა : "
+										+ result);
+								return;
+							}
+							getDownloadFile(result);
+						}
+
+						@Override
+						public void onFailure(Throwable caught) {
+							SC.say(caught.toString());
+						}
+					});
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
 }
