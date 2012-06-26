@@ -64,9 +64,9 @@
             <customSQL>
             	 <![CDATA[
             	    #if($values.organization_id)
-            	    	{call send_sms_to_reciptent_new_org($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.organization_id, $values.rec_user)}
+            	    	call send_sms_to_reciptent_new_org($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.organization_id, $values.rec_user)
             	    #else
-            	 		{call send_sms_to_reciptent_new($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user)}
+            	 		call send_sms_to_reciptent_new($values.sms_text,$values.phone,$values.session_id,$values.service_id, $values.rec_user)
             	 	#end
             	 ]]>
             </customSQL> 
