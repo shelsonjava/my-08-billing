@@ -1,0 +1,61 @@
+<DataSource ID="OrgPrioritiesStatisticsDS" serverType="sql"
+	tableName="v_org_priorities" qualifyColumnNames="false">
+	<fields>
+		<field name="org_id"   				 	type="text"  			title="org_id"/>
+		<field name="org_name"   				type="text"  			title="org_name"/>
+		<field name="real_name"   				type="text"  			title="real_name"/>
+		<field name="cnt"   					type="integer"  		title="cnt"/>
+		<field name="ym"   						type="integer"  		title="ym"/>
+		<field name="real_org_id"   			type="integer"  		title="real_org_id"/>
+		<field name="session_id"   				type="text"  			title="session_id"/>
+		<field name="call_start_date"   		type="datetime"  		title="call_start_date"/>
+		<field name="call_end_date"   			type="datetime"  		title="call_end_date"/>
+		<field name="call_phone"   				type="text"  			title="call_phone"/>
+		<field name="uname"   					type="text"  			title="uname"/>
+		
+	</fields>
+	<operationBindings>
+		<operationBinding operationId="getStatisticsGroup" operationType="fetch">
+    		<selectClause>   			
+    			/*+ index(t,IDX_ORG_PRIORITY_STATIST_YMR)*/
+ 				op.organization_name org_name, opr.organization_name real_name, count(1) cnt,ym, org_id, real_org_id
+			</selectClause> 
+			<tableClause>ORG_PRIORITY_STATISTICS t,
+					     ccare.organizations     opr,
+					     ccare.organizations     op</tableClause>
+			<whereClause><![CDATA[ 
+					   ym = to_number(to_char($criteria.time, 'YYYYMM'))
+					   and opr.organization_id = t.real_org_id
+					   and op.organization_id = t.org_id
+				]]>  
+			</whereClause> 
+			<groupClause>
+						op.organization_name, opr.organization_name, org_id, real_org_id,ym
+			</groupClause>
+			<orderClause>
+						op.organization_name, opr.organization_name
+			</orderClause>
+    	</operationBinding>
+    	<operationBinding operationId="getStatistics" operationType="fetch">
+    		<selectClause>   			
+    			/*+ index(t,IDX_ORG_PRIORITY_STATIST_YMR)*/
+ 				cs.session_id, cs.call_start_date,cs.call_end_date, cs.call_phone, cs.uname
+			</selectClause> 
+			<tableClause>ORG_PRIORITY_STATISTICS t,
+       					 ccare.call_sessions     cs</tableClause>
+			<whereClause><![CDATA[ 
+					   #if(!$criteria.real_org_id) 
+					   	   1!=1 
+					   #else
+						   ym = $criteria.ym
+						   and t.real_org_id=$criteria.real_org_id
+					   #end
+					   and t.session_call_id = cs.session_id
+				]]>  
+			</whereClause> 
+			<orderClause>
+						cs.call_start_date, cs.call_end_date
+			</orderClause>
+    	</operationBinding>
+	</operationBindings>
+</DataSource>
