@@ -22,6 +22,7 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.DateDisplayFormat;
 import com.smartgwt.client.types.ExportDisplay;
 import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -185,6 +186,9 @@ public class TabOrganization extends Tab {
 			orgFoundedStartItem.setWidth(245);
 			orgFoundedStartItem.setName("orgFoundedStartItem");
 			orgFoundedStartItem.setUseTextField(true);
+			orgFoundedStartItem
+					.setDateFormatter(DateDisplayFormat.TOEUROPEANSHORTDATE);
+			orgFoundedStartItem.setUseMask(true);
 
 			orgFoundedEndItem = new DateItem();
 			orgFoundedEndItem
@@ -192,6 +196,9 @@ public class TabOrganization extends Tab {
 			orgFoundedEndItem.setWidth(245);
 			orgFoundedEndItem.setName("orgFoundedEndItem");
 			orgFoundedEndItem.setUseTextField(true);
+			orgFoundedEndItem
+					.setDateFormatter(DateDisplayFormat.TOEUROPEANSHORTDATE);
+			orgFoundedEndItem.setUseMask(true);
 
 			streetItem = new TextItem();
 			streetItem.setTitle(CallCenterBK.constants.street());

@@ -42,19 +42,26 @@ public class SessQualityDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			String loggedUserName = dsRequest.getValues().get("loggedUserName").toString();
-			String call_phone = dsRequest.getValues().get("call_phone").toString();
-			Long service_id = new Long(dsRequest.getValues().get("service_id").toString());
-			Long chargeCount = new Long(dsRequest.getValues().get("chargeCount").toString());
-			Long virt_call_type = new Long(dsRequest.getValues().get("virt_call_type").toString());
+			String loggedUserName = dsRequest.getValues().get("loggedUserName")
+					.toString();
+			String call_phone = dsRequest.getValues().get("call_phone")
+					.toString();
+			Long service_id = new Long(dsRequest.getValues().get("service_id")
+					.toString());
+			Long chargeCount = new Long(dsRequest.getValues()
+					.get("chargeCount").toString());
+			Long virt_call_type = new Long(dsRequest.getValues()
+					.get("virt_call_type").toString());
 			Timestamp currDate = new Timestamp(System.currentTimeMillis());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyMM");
 			Long ym = new Long(dateFormat.format(currDate));
-			
+
 			Service service = oracleManager.find(Service.class, service_id);
 
 			CallSession logSession = new CallSession();
-			String session_id = oracleManager.createNativeQuery(QueryConstants.Q_GET_VIRTUAL_SESSION_ID).getSingleResult().toString();
+			String session_id = oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_VIRTUAL_SESSION_ID)
+					.getSingleResult().toString();
 			logSession.setSession_id(session_id);
 			logSession.setCall_kind(virt_call_type);
 			logSession.setCall_duration(0L);
@@ -68,7 +75,7 @@ public class SessQualityDMI implements QueryConstants {
 			logSession.setYear_month(ym);
 
 			oracleManager.persist(logSession);
-			
+
 			for (int i = 0; i < chargeCount.intValue(); i++) {
 				CallSessionExpense item = new CallSessionExpense();
 				item.setService_id(service_id);
@@ -126,7 +133,8 @@ public class SessQualityDMI implements QueryConstants {
 
 			updateStmt.executeUpdate();
 			updateStmt.close();
-			CallSessionItem sessionItem = getLogSessionItem(new Long(call_session_id.toString()));
+			CallSessionItem sessionItem = getLogSessionItem(new Long(
+					call_session_id.toString()));
 			DSResponse resp = new DSResponse();
 			resp.setData(sessionItem);
 			resp.setStatus(DSResponse.STATUS_SUCCESS);
@@ -167,17 +175,20 @@ public class SessQualityDMI implements QueryConstants {
 		}
 	}
 
-	private CallSessionItem getLogSessionItem(Long call_session_id) throws CallCenterException {
+	private CallSessionItem getLogSessionItem(Long call_session_id)
+			throws CallCenterException {
 		PreparedStatement selectNote = null;
 		try {
-			String log = "Method:SessQualityDMI.getLogSessionItem. Params : 1. call_session_id = " + call_session_id;
+			String log = "Method:SessQualityDMI.getLogSessionItem. Params : 1. call_session_id = "
+					+ call_session_id;
 			log += ". Result : getLogSessionItem Finished Successfully.";
 			CallSessionItem existingRecord = new CallSessionItem();
-			DMIUtils.findRecordById("CallSessDS", "customSearch", call_session_id, "call_session_id", existingRecord);
+			DMIUtils.findRecordById("CallSessDS", "customSearch",
+					call_session_id, "call_session_id", existingRecord);
 			logger.info(log);
 			return existingRecord;
 		} catch (Exception e) {
-			logger.error("Error While Retrieving LogPersNoteItem : ", e);
+			logger.error("Error While Retrieving : ", e);
 			throw new CallCenterException(
 					"შეცდომა მონაცემების წამოღებისას მონაცემთა ბაზიდან: "
 							+ e.toString());

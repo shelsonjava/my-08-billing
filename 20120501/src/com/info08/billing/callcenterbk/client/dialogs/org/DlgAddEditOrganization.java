@@ -20,6 +20,7 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.DateDisplayFormat;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
@@ -272,7 +273,7 @@ public class DlgAddEditOrganization extends Window {
 			orgIndItem.setName("organization_index");
 			orgIndItem.setWidth(284);
 			orgIndItem.setTitle(CallCenterBK.constants.postIndex());
-			orgIndItem.setKeyPressFilter("[0-9]");
+			orgIndItem.setMask("####");
 
 			orgStaffCountItem = new TextItem();
 			orgStaffCountItem.setName("staff_count");
@@ -293,6 +294,9 @@ public class DlgAddEditOrganization extends Window {
 			orgFoundedItem.setWidth(284);
 			orgFoundedItem.setName("found_date");
 			orgFoundedItem.setUseTextField(true);
+			orgFoundedItem
+					.setDateFormatter(DateDisplayFormat.TOEUROPEANSHORTDATE);
+			orgFoundedItem.setUseMask(true);
 
 			superPriorityItem = new SelectItem();
 			superPriorityItem.setTitle(CallCenterBK.constants.extraPriority());
@@ -796,6 +800,16 @@ public class DlgAddEditOrganization extends Window {
 					dynamicFormMainInfo1.focusInItem(orgIdentCodeNewItem);
 					return;
 				}
+			}
+
+			String organization_index = orgIndItem.getValueAsString();
+			if (organization_index == null
+					|| organization_index.trim().equals("")) {
+				SC.say(CallCenterBK.constants.warning(),
+						CallCenterBK.constants.orgIndIsInvalid());
+				topTabSet.selectTab(0);
+				dynamicFormMainInfo1.focusInItem(orgIndItem);
+				return;
 			}
 
 			ListGridRecord orgActivityList[] = orgActivityGrid.getRecords();

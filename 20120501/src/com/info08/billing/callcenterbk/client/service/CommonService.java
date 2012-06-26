@@ -6,7 +6,6 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
-import com.info08.billing.callcenterbk.shared.entity.Users;
 
 /**
  * The client side stub for the RPC service.
@@ -19,13 +18,6 @@ public interface CommonService extends RemoteService {
 
 	String findSessionMp3ById(String sessionId, Date sessionDate)
 			throws CallCenterException;
-
-	// Log Personal Notes
-	void saveOrUpdateLogPersNote(Integer noteId, String sessionId,
-			Integer visOpt, String note, Integer particular, Users person)
-			throws CallCenterException;
-
-	void deleteLogPersNote(Integer noteId) throws CallCenterException;
 
 	void getBillingCompBillByMonth(Integer billing_company_id, Integer ym)
 			throws CallCenterException;

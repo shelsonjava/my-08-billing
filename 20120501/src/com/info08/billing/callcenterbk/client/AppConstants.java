@@ -739,4 +739,5 @@ public interface AppConstants extends Constants {
 	String wdayUnknown();
 	String recordsCount();
 	String hrManagement();
+	String orgIndIsInvalid();
 }

@@ -40,7 +40,7 @@ public class DlgViewOpRemarks extends Window {
 
 	private VLayout hLayout;
 	private ListGrid listGrid;
-	private DataSource logPersNotesDS = DataSource.get("LogPersNotesDS");
+	private DataSource logPersNotesDS = DataSource.get("OperatorWarnsDS");
 	private ToolStripButton remarksBtn;
 
 	public DlgViewOpRemarks(ToolStripButton remarksBtn) {
@@ -109,33 +109,28 @@ public class DlgViewOpRemarks extends Window {
 			listGrid.setFixedRecordHeights(false);
 			listGrid.setCanDragSelectText(true);
 			listGrid.setDataSource(logPersNotesDS);
-			listGrid.setFetchOperation("notesCustSearchByOpCustom");
+			listGrid.setFetchOperation("operatorWarnsSeach");
 			String user_name = CommonSingleton.getInstance().getSessionPerson()
 					.getUser_name();
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("user_name", user_name);
-			criteria.setAttribute("received", 0);
+			criteria.setAttribute("delivered", 0);
 			listGrid.setCriteria(criteria);
 			listGrid.setAutoFetchData(true);
 
-			ListGridField note = new ListGridField("note",
-					CallCenterBK.constants.remark());
+			ListGridField note = new ListGridField("warning",CallCenterBK.constants.remark());
 			note.setAlign(Alignment.LEFT);
 
-			ListGridField sender = new ListGridField("sender",
-					CallCenterBK.constants.sender(), 150);
+			ListGridField sender = new ListGridField("warn_sender",CallCenterBK.constants.sender(), 150);
 			sender.setAlign(Alignment.LEFT);
-			ListGridField receiver = new ListGridField("receiver",
-					CallCenterBK.constants.receiver(), 150);
+			ListGridField receiver = new ListGridField("operator",CallCenterBK.constants.receiver(), 150);
 			receiver.setAlign(Alignment.LEFT);
 
-			ListGridField rec_date = new ListGridField("rec_date",
-					CallCenterBK.constants.sendDate(), 130);
+			ListGridField rec_date = new ListGridField("warn_send_date",CallCenterBK.constants.sendDate(), 130);
 			rec_date.setAlign(Alignment.CENTER);
 			rec_date.setDateFormatter(DateDisplayFormat.TOUSSHORTDATETIME);
 
-			ListGridField phone = new ListGridField("phone",
-					CallCenterBK.constants.phone(), 80);
+			ListGridField phone = new ListGridField("phone_number", CallCenterBK.constants.phone(), 80);
 			phone.setAlign(Alignment.LEFT);
 
 			listGrid.setFields(sender, rec_date, receiver, phone, note);
@@ -188,21 +183,20 @@ public class DlgViewOpRemarks extends Window {
 						return;
 					}
 
-					String sessionId = editRecord
-							.getAttributeAsString("sessionId");
-					Date date = editRecord.getAttributeAsDate("start_date");
+					String call_session_id = editRecord.getAttributeAsString("call_session_id");
+					Date call_start_date = editRecord.getAttributeAsDate("call_start_date");
 
-					if (sessionId == null || sessionId.trim().equals("")) {
+					if (call_session_id == null || call_session_id.trim().equals("")) {
 						SC.say(CallCenterBK.constants.warning(),
 								CallCenterBK.constants.invalidSession());
 						return;
 					}
-					if (date == null) {
+					if (call_start_date == null) {
 						SC.say(CallCenterBK.constants.warning(),
 								CallCenterBK.constants.invalidSessionDate());
 						return;
 					}
-					getURL(sessionId, date);
+					getURL(call_session_id, call_start_date);
 				}
 			});
 
@@ -240,14 +234,13 @@ public class DlgViewOpRemarks extends Window {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("note_id",
-					listGridRecord.getAttributeAsInt("note_id"));
-			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name();
-			record.setAttribute("upd_user", loggedUser);
+			record.setAttribute("oper_warn_id", listGridRecord.getAttributeAsInt("oper_warn_id"));
+			String loggedUser = CommonSingleton.getInstance().getSessionPerson().getUser_name();
+			record.setAttribute("update_user", loggedUser);
+			record.setAttribute("loggedUserName", loggedUser);
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updatePersNote");
+			req.setAttribute("operationId", "updateOperatorWarn");
 			listGrid.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

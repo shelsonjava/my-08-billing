@@ -1,0 +1,74 @@
+<DataSource
+    ID="OperatorWarnsDS"
+    serverType="sql"
+    tableName="operator_warns"      
+    qualifyColumnNames="false"
+    dropExtraFields = "false">
+    
+    <fields>
+    	<field name="oper_warn_id"		type="integer" 		title="oper_warn_id"		hidden="true"	primaryKey="true" />
+    	<field name="call_session_id"	type="text" 		title="call_session_id" 	hidden="true"/>
+    	<field name="operator"			type="text" 		title="operator"/>    	    	
+        <field name="warn_sender"		type="text" 		title="warn_sender"/>
+        <field name="phone_number"  	type="integer"  	title="phone_number"/>
+        <field name="warning" 			type="text" 		title="warning"/>
+        <field name="warn_send_date" 	type="datetime" 	title="warn_send_date" />
+        <field name="update_date" 		type="datetime" 	title="update_date" />
+        <field name="hidden"			type="integer"  	title="hidden"/>
+        <field name="hiddenDescr"		type="text"  		title="hiddenDescr"/>
+        <field name="update_user"		type="text"  		title="update_user"/>
+        <field name="important"			type="integer"  	title="importan"			hidden="true"/>
+        <field name="importantDescr"	type="text"  		title="importantDescr"  	hidden="true"/>
+        <field name="delivered"			type="integer"  	title="delivered"  			hidden="true"/>
+		<field name="loggedUserName"	type="text"  		title="loggedUserName" 		hidden="true"/>
+		<field name="call_start_date" 	type="datetime" 	title="call_start_date" 	hidden="true"/>
+    </fields>
+     <operationBindings>
+
+     	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OperatorWarnsDMI"/>
+	    
+	    <operationBinding operationType="add" operationId="addOperatorWarn" serverMethod="addOrUpdateOperatorWarn">
+	           <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OperatorWarnsDMI"/>
+	    </operationBinding>
+	    
+	    <operationBinding operationType="update" operationId="updateOperatorWarn" serverMethod="addOrUpdateOperatorWarn">
+	           <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OperatorWarnsDMI"/>
+	    </operationBinding>
+	    
+	    <operationBinding operationType="remove" operationId="deleteOperatorWarn" serverMethod="deleteLogPersNoteItem">
+	           <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OperatorWarnsDMI"/>
+	    </operationBinding>
+     
+    	<operationBinding operationId="operatorWarnsSeach" operationType="fetch">
+    		<selectClause>  
+    			t.oper_warn_id,
+    			t.call_session_id,
+      			rec.user_name||' ( '||rec.user_firstname||' '||rec.user_lastname||' ) ' as operator,      
+      			send.user_name||' ( '||send.user_firstname||' '||send.user_lastname||' ) ' as warn_sender,
+      			t.phone_number,
+      			t.warning,
+      			t.warn_send_date,
+      			decode(t.hidden,0,'ღია','დაფარული') as hiddenDescr,
+      			t.hidden,
+      			decode(t.important,0,'ჩვეულებრივი','მნიშვნელოვანი') as importantDescr,
+      			t.important,
+      			cs.call_start_date
+			</selectClause> 
+			<tableClause>
+				operator_warns t , 
+				users rec, 
+				users  send,
+				call_sessions cs
+			</tableClause>
+			<whereClause><![CDATA[ 
+				cs.call_session_id = t.call_session_id and t.user_name = r.user_name(+) and t.rec_user = s.user_name(+)
+				#if($criteria.sessionId) and t.session_id = $criteria.sessionId #end
+				#if($criteria.user_name) and t.operator = $criteria.user_name #end
+				#if($criteria.delivered) and t.delivered = $criteria.delivered #end
+				#if($criteria.user_id) and rec.user_id = $criteria.user_id #end
+				]]>  
+			</whereClause> 
+    	</operationBinding>
+    </operationBindings>
+    
+</DataSource>

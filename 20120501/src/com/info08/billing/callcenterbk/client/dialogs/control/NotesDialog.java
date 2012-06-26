@@ -8,6 +8,7 @@ import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.bramosystems.oss.player.core.client.ui.FlashMediaPlayer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -36,7 +37,7 @@ import com.smartgwt.client.widgets.viewer.DetailViewer;
 public class NotesDialog extends Window {
 
 	private VLayout hLayout;
-	private DataSource notesDS = null;
+	private DataSource operatorWarnsDS = null;
 	private ListGrid notesGrid = null;
 	private String mySessionId;
 	private DetailViewer detailViewer;
@@ -60,27 +61,30 @@ public class NotesDialog extends Window {
 		setCanDragScroll(false);
 		centerInPage();
 
-		notesDS = DataSource.get("LogPersNotesDS");
+		operatorWarnsDS = DataSource.get("OperatorWarnsDS");
 
-		notesDS.getField("note_id").setTitle("ID");
-		notesDS.getField("sessionId").setTitle("SID");
-		notesDS.getField("receiver").setTitle("მიმღები");
-		notesDS.getField("sender").setTitle("გამგზავნი");
-		notesDS.getField("phone").setTitle("ნომერი");
-		notesDS.getField("note").setTitle("შენიშვნის დასახელება");
-		notesDS.getField("rec_date").setTitle("თარიღი");
-		notesDS.getField("visibility").setTitle("ხილვადობა");
-		notesDS.getField("particular").setTitle("მნიშვნელოვანი");
-		notesDS.getField("visibilityInt").setTitle("VINT");
-		notesDS.getField("particularInt").setTitle("PINT");
+		operatorWarnsDS.getField("oper_warn_id").setTitle("ID");
+		operatorWarnsDS.getField("call_session_id").setTitle("SID");
+		operatorWarnsDS.getField("operator").setTitle("მიმღები");
+		operatorWarnsDS.getField("warn_sender").setTitle("გამგზავნი");
+		operatorWarnsDS.getField("phone_number").setTitle("ნომერი");
+		operatorWarnsDS.getField("warning").setTitle("შენიშვნის დასახელება");
+		operatorWarnsDS.getField("warn_send_date").setTitle("თარიღი");
+		operatorWarnsDS.getField("hiddenDescr").setTitle("ხილვადობა");
+		operatorWarnsDS.getField("importantDescr").setTitle("მნიშვნელოვანი");
+		operatorWarnsDS.getField("hidden").setTitle("VINT");
+		operatorWarnsDS.getField("important").setTitle("PINT");
 
-		ListGridField receiver = new ListGridField("receiver", "მიმღები", 200);
-		ListGridField sender = new ListGridField("sender", "გამგზავნი", 200);
-		ListGridField phone = new ListGridField("phone", "ნომერი", 80);
-		ListGridField note = new ListGridField("note", "შენიშვნის დასახელება");
-		ListGridField recDate = new ListGridField("rec_date", "თარიღი", 120);
-		ListGridField visibility = new ListGridField("visibility", "ხილვადობა",
-				90);
+		ListGridField receiver = new ListGridField("operator", "მიმღები", 200);
+		ListGridField sender = new ListGridField("warn_sender", "გამგზავნი",
+				200);
+		ListGridField phone = new ListGridField("phone_number", "ნომერი", 80);
+		ListGridField note = new ListGridField("warning",
+				"შენიშვნის დასახელება");
+		ListGridField recDate = new ListGridField("warn_send_date", "თარიღი",
+				120);
+		ListGridField visibility = new ListGridField("hiddenDescr",
+				"ხილვადობა", 90);
 
 		hLayout = new VLayout(5);
 		hLayout.setWidth100();
@@ -122,7 +126,7 @@ public class NotesDialog extends Window {
 		notesGrid.setHeight(250);
 		notesGrid.setAutoFetchData(false);
 		notesGrid.setAlternateRecordStyles(true);
-		notesGrid.setDataSource(notesDS);
+		notesGrid.setDataSource(operatorWarnsDS);
 		notesGrid.setShowFilterEditor(false);
 		notesGrid.setCanEdit(false);
 		notesGrid.setCanRemoveRecords(false);
@@ -130,19 +134,17 @@ public class NotesDialog extends Window {
 		notesGrid.setFixedRecordHeights(false);
 		notesGrid.setWrapCells(true);
 		notesGrid.setFields(receiver, sender, phone, note, recDate, visibility);
-
+		notesGrid.setFetchOperation("operatorWarnsSeach");
 		Criteria criteria = new Criteria();
 		if (sessionId != null) {
-			notesGrid.setFetchOperation("notesCustSearch");
 			criteria.addCriteria("sessionId", sessionId);
 		} else {
-			notesGrid.setFetchOperation("notesCustSearchByOp");
-			criteria.addCriteria("operId", operId);
+			criteria.addCriteria("user_id", operId);
 		}
 		notesGrid.filterData(criteria);
 
 		detailViewer = new DetailViewer();
-		detailViewer.setDataSource(notesDS);
+		detailViewer.setDataSource(operatorWarnsDS);
 
 		hLayout.setMembers(toolStrip, notesGrid, detailViewer);
 
@@ -157,14 +159,15 @@ public class NotesDialog extends Window {
 			newNote.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					saveOrUpdateNote(false, notesGrid, notesDS, mySessionId);
+					saveOrUpdateNote(false, notesGrid, operatorWarnsDS,
+							mySessionId);
 				}
 			});
 		}
 		editNote.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				saveOrUpdateNote(true, notesGrid, notesDS, mySessionId);
+				saveOrUpdateNote(true, notesGrid, operatorWarnsDS, mySessionId);
 			}
 		});
 		deleteNote.addClickHandler(new ClickHandler() {
@@ -183,14 +186,14 @@ public class NotesDialog extends Window {
 							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
-				String sessionId = record.getAttributeAsString("sessionId");
-				if (sessionId == null || sessionId.trim().equals("")) {
+				String call_session_id = record.getAttributeAsString("call_session_id");
+				if (call_session_id == null || call_session_id.trim().equals("")) {
 					SC.say(CallCenterBK.constants.warning(),
 							CallCenterBK.constants.invalidSession());
 					return;
 				}
-				Date date = record.getAttributeAsDate("start_date");
-				getURL(sessionId, date);
+				Date call_start_date = record.getAttributeAsDate("call_start_date");
+				getURL(call_session_id, call_start_date);
 
 			}
 		});
@@ -276,24 +279,27 @@ public class NotesDialog extends Window {
 						@Override
 						public void execute(Boolean value) {
 							if (value) {
+								try {
+									com.smartgwt.client.rpc.RPCManager.startQueue();
+									Record record = new Record();
+									record.setAttribute("oper_warn_id", listGridRecord.getAttributeAsInt("oper_warn_id"));
+									record.setAttribute("loggedUserName", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 
-								com.smartgwt.client.rpc.RPCManager.startQueue();
-								Record record = new Record();
-								record.setAttribute("note_id", listGridRecord
-										.getAttributeAsInt("note_id"));
+									DSRequest req = new DSRequest();
 
-								DSRequest req = new DSRequest();
-
-								req.setAttribute("operationId",
-										"deleteLogPersNoteItem");
-								notesGrid.removeData(record, new DSCallback() {
-									@Override
-									public void execute(DSResponse response,
-											Object rawData, DSRequest request) {
-									}
-								}, req);
-								com.smartgwt.client.rpc.RPCManager.sendQueue();
-								detailViewer.clear();
+									req.setAttribute("operationId","deleteOperatorWarn");
+									notesGrid.removeData(record, new DSCallback() {
+										@Override
+										public void execute(DSResponse response,
+												Object rawData, DSRequest request) {
+											detailViewer.clear();
+										}
+									}, req);
+									com.smartgwt.client.rpc.RPCManager.sendQueue();									
+								} catch (Exception e) {
+									e.printStackTrace();
+									SC.say(e.toString());
+								}
 							}
 						}
 					});
@@ -306,24 +312,23 @@ public class NotesDialog extends Window {
 	private void saveOrUpdateNote(boolean isEdit, ListGrid notesGrid,
 			DataSource notesDS, String sessionId) {
 		try {
-			Integer noteId = null;
-			Integer pVisibOption = null;
-			Integer pParticular = null;
-			String note = "";
+			Integer oper_warn_id = null;
+			Integer hidden = null;
+			Integer important = null;
+			String warning = "";
 			if (isEdit) {
 				ListGridRecord listGridRecord = notesGrid.getSelectedRecord();
 				if (listGridRecord == null) {
 					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
 					return;
 				}
-				noteId = listGridRecord.getAttributeAsInt("note_id");
-				pVisibOption = listGridRecord
-						.getAttributeAsInt("visibilityInt");
-				pParticular = listGridRecord.getAttributeAsInt("particularInt");
-				note = listGridRecord.getAttributeAsString("note");
+				oper_warn_id = listGridRecord.getAttributeAsInt("oper_warn_id");
+				hidden = listGridRecord.getAttributeAsInt("hidden");
+				important = listGridRecord.getAttributeAsInt("important");
+				warning = listGridRecord.getAttributeAsString("warning");
 			}
 			DlgAddEditSessNote addEditNoteDialog = new DlgAddEditSessNote(
-					noteId, sessionId, pVisibOption, pParticular, note,
+					oper_warn_id, sessionId, hidden, important, warning,
 					notesDS, notesGrid);
 			addEditNoteDialog.show();
 		} catch (Exception e) {
@@ -332,6 +337,6 @@ public class NotesDialog extends Window {
 	}
 
 	public DataSource getNotesDS() {
-		return notesDS;
+		return operatorWarnsDS;
 	}
 }

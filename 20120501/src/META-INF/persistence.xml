@@ -60,7 +60,7 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.CallCenterNews</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.session.CallSessionExpense</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.session.CallSession</class>
-		<class>com.info08.billing.callcenterbk.shared.entity.control.LogPersonellNote</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.control.OperatorWarn</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.contractors.Contract</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.contractors.ContractPriceItem</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.contractors.ContractorPhone</class>

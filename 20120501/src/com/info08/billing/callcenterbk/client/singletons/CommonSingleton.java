@@ -64,6 +64,7 @@ public class CommonSingleton {
 				}
 			}, dsRequest);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CallCenterException(e.toString());
 		}
 	}

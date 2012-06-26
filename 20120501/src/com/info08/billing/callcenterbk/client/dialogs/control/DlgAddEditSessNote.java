@@ -30,14 +30,14 @@ public class DlgAddEditSessNote extends Window {
 	private SelectItem particItem;
 	private DynamicForm form;
 
-	public DlgAddEditSessNote(final Integer noteId, final String sessionId,
+	public DlgAddEditSessNote(final Integer oper_warn_id, final String call_session_id,
 			Integer pVisibOption, Integer pParticular, String note,
 			DataSource notesDS, final ListGrid listGrid) {
 		try {
 
 			setWidth(500);
 			setHeight(260);
-			setTitle(noteId == null ? "ახალი შენიშვნა" : "შენიშვნის შესწორება");
+			setTitle(oper_warn_id == null ? "ახალი შენიშვნა" : "შენიშვნის შესწორება");
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);
@@ -63,7 +63,7 @@ public class DlgAddEditSessNote extends Window {
 			visOptItem = new SelectItem();
 			visOptItem.setTitle("ხილვადობა");
 			visOptItem.setType("comboBox");
-			visOptItem.setName("visibilityInt");
+			visOptItem.setName("hidden");
 
 			LinkedHashMap<String, String> mapCallTypes = new LinkedHashMap<String, String>();
 			mapCallTypes.put("0", "ღია");
@@ -75,7 +75,7 @@ public class DlgAddEditSessNote extends Window {
 			particItem = new SelectItem();
 			particItem.setTitle("მნიშვნელოვანი");
 			particItem.setType("comboBox");
-			particItem.setName("particularInt");
+			particItem.setName("important");
 
 			LinkedHashMap<String, String> mapParticTypes = new LinkedHashMap<String, String>();
 			mapParticTypes.put("0", "ჩვეულებრივი");
@@ -88,7 +88,7 @@ public class DlgAddEditSessNote extends Window {
 			noteItem.setTitle("შენიშვნა");
 			noteItem.setWidth(373);
 			noteItem.setValue(note);
-			noteItem.setName("note");
+			noteItem.setName("warning");
 
 			HiddenItem textItem = new HiddenItem();
 			textItem.setValue(CommonSingleton.getInstance().getSessionPerson()
@@ -97,18 +97,18 @@ public class DlgAddEditSessNote extends Window {
 			textItem.setVisible(false);
 
 			HiddenItem textItemSID = new HiddenItem();
-			textItemSID.setValue(sessionId);
-			textItemSID.setName("sessionId");
+			textItemSID.setValue(call_session_id);
+			textItemSID.setName("call_session_id");
 			textItemSID.setVisible(false);
 
 			HiddenItem notIdItem = null;
-			if (noteId != null) {
+			if (oper_warn_id != null) {
 				notIdItem = new HiddenItem();
-				notIdItem.setValue(noteId);
-				notIdItem.setName("note_id");
+				notIdItem.setValue(oper_warn_id);
+				notIdItem.setName("oper_warn_id");
 				notIdItem.setVisible(false);
 			}
-			if (noteId == null) {
+			if (oper_warn_id == null) {
 				form.setFields(visOptItem, particItem, noteItem, textItem,
 						textItemSID);
 			} else {
@@ -151,19 +151,17 @@ public class DlgAddEditSessNote extends Window {
 						}
 						com.smartgwt.client.rpc.RPCManager.startQueue();
 						Record record = new Record();
-						record.setAttribute("note_id", noteId);
-						record.setAttribute("sessionId", sessionId);
-						record.setAttribute("visibilityInt", new Integer(
-								visOptItem.getValueAsString()));
-						record.setAttribute("note", noteItem.getValueAsString());
-						record.setAttribute("particularInt", new Integer(
-								particItem.getValueAsString()));
+						record.setAttribute("oper_warn_id", oper_warn_id);
+						record.setAttribute("call_session_id", call_session_id);
+						record.setAttribute("hidden", new Integer(visOptItem.getValueAsString()));
+						record.setAttribute("warning", noteItem.getValueAsString());
+						record.setAttribute("important", new Integer(particItem.getValueAsString()));
 						record.setAttribute("loggedUserName", CommonSingleton
 								.getInstance().getSessionPerson().getUser_name());
 
 						DSRequest req = new DSRequest();
-						if (noteId == null) {
-							req.setAttribute("operationId", "add");
+						if (oper_warn_id == null) {
+							req.setAttribute("operationId", "addOperatorWarn");
 							listGrid.addData(record, new DSCallback() {
 								@Override
 								public void execute(DSResponse response,
@@ -172,7 +170,7 @@ public class DlgAddEditSessNote extends Window {
 								}
 							}, req);
 						} else {
-							req.setAttribute("operationId", "update");
+							req.setAttribute("operationId", "updateOperatorWarn");
 							listGrid.updateData(record, new DSCallback() {
 								@Override
 								public void execute(DSResponse response,
@@ -182,14 +180,7 @@ public class DlgAddEditSessNote extends Window {
 							}, req);
 						}
 
-						com.smartgwt.client.rpc.RPCManager.sendQueue();
-						// form.saveData(new DSCallback() {
-						// @Override
-						// public void execute(DSResponse response,
-						// Object rawData, DSRequest request) {
-						// destroy();
-						// }
-						// });
+						com.smartgwt.client.rpc.RPCManager.sendQueue();						
 					} catch (Exception e) {
 						e.printStackTrace();
 						SC.say(e.toString());
