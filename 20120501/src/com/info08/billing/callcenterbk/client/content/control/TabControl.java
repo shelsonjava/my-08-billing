@@ -3,17 +3,12 @@ package com.info08.billing.callcenterbk.client.content.control;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
-import com.bramosystems.oss.player.core.client.LoadException;
-import com.bramosystems.oss.player.core.client.PluginNotFoundException;
-import com.bramosystems.oss.player.core.client.PluginVersionException;
-import com.bramosystems.oss.player.core.client.ui.FlashMediaPlayer;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.control.DlgAddEditSessQuality;
 import com.info08.billing.callcenterbk.client.dialogs.control.LogSMSDialog;
 import com.info08.billing.callcenterbk.client.dialogs.control.NotesDialog;
 import com.info08.billing.callcenterbk.client.dialogs.control.SessDiscHistDialog;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
@@ -24,15 +19,11 @@ import com.smartgwt.client.types.TimeDisplayFormat;
 import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.CloseClickEvent;
-import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
-import com.smartgwt.client.widgets.form.fields.LinkItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.SpinnerItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -303,14 +294,21 @@ public class TabControl extends Tab {
 
 			vLayout.addMember(toolStrip);
 
-			ListGridField phone = new ListGridField("call_phone", "ტელეფონი", 80);
+			ListGridField phone = new ListGridField("call_phone", "ტელეფონი",
+					80);
 			ListGridField operator = new ListGridField("uname", "ოპ.", 40);
-			ListGridField person_name = new ListGridField("full_user_name", "ოპერატორი", 230);
-			ListGridField date = new ListGridField("call_start_date", "თარიღი/დრო", 130);
-			ListGridField duration = new ListGridField("call_duration", "ხანგრძლ.", 80);
-			ListGridField chargeCount = new ListGridField("chargeCount", "რაოდ.", 50);
-			ListGridField hangUp = new ListGridField("reject_type", "ვინ გათიშა", 90);
-			ListGridField session_quality_desc = new ListGridField("call_quality_desc", "ხარისხი");
+			ListGridField person_name = new ListGridField("full_user_name",
+					"ოპერატორი", 230);
+			ListGridField date = new ListGridField("call_start_date",
+					"თარიღი/დრო", 130);
+			ListGridField duration = new ListGridField("call_duration",
+					"ხანგრძლ.", 80);
+			ListGridField chargeCount = new ListGridField("chargeCount",
+					"რაოდ.", 50);
+			ListGridField hangUp = new ListGridField("reject_type",
+					"ვინ გათიშა", 90);
+			ListGridField session_quality_desc = new ListGridField(
+					"call_quality_desc", "ხარისხი");
 
 			date.setAlign(Alignment.CENTER);
 			phone.setAlign(Alignment.CENTER);
@@ -364,14 +362,20 @@ public class TabControl extends Tab {
 
 			vLayout.addMember(hLayout);
 
-			ListGridField sChFieldSrvName = new ListGridField("service_name_geo", "სერვისის დასახელება", 150);
-			ListGridField sChFieldPrice = new ListGridField("price", "ხარჯი",40);
-			ListGridField sChFieldOrgName = new ListGridField("org_name", "ორგანიზაციის დასახელება", 210);
+			ListGridField sChFieldSrvName = new ListGridField(
+					"service_name_geo", "სერვისის დასახელება", 150);
+			ListGridField sChFieldPrice = new ListGridField("price", "ხარჯი",
+					40);
+			ListGridField sChFieldOrgName = new ListGridField("org_name",
+					"ორგანიზაციის დასახელება", 210);
 
-			sessionChargesGrid.setFields(sChFieldSrvName, sChFieldPrice, sChFieldOrgName);
+			sessionChargesGrid.setFields(sChFieldSrvName, sChFieldPrice,
+					sChFieldOrgName);
 
-			ListGridField sChFieldSrvName1 = new ListGridField("service_name_geo", "სერვისის დასახელება", 150);
-			ListGridField sChFieldOrgName1 = new ListGridField("org_name", "ორგანიზაციის დასახელება", 250);
+			ListGridField sChFieldSrvName1 = new ListGridField(
+					"service_name_geo", "სერვისის დასახელება", 150);
+			ListGridField sChFieldOrgName1 = new ListGridField("org_name",
+					"ორგანიზაციის დასახელება", 250);
 
 			sessionNavigGrid.setFields(sChFieldSrvName1, sChFieldOrgName1);
 
@@ -437,7 +441,7 @@ public class TabControl extends Tab {
 										.getAttributeAsString("session_id");
 								Date date = listGridRecord
 										.getAttributeAsDate("start_date");
-								getURL(sessionId, date);
+								ClientUtils.getURL(sessionId, date);
 							} catch (Exception e) {
 								SC.say(e.toString());
 							}
@@ -460,7 +464,7 @@ public class TabControl extends Tab {
 										.getAttributeAsString("session_id");
 								Date date = listGridRecord
 										.getAttributeAsDate("start_date");
-								downloadFile(sessionId, date);
+								ClientUtils.downloadFile(sessionId, date);
 							} catch (Exception e) {
 								SC.say(e.toString());
 							}
@@ -628,136 +632,6 @@ public class TabControl extends Tab {
 		try {
 			NotesDialog notesDialog = new NotesDialog(sessionId, operatorId);
 			notesDialog.show();
-		} catch (Exception e) {
-			SC.say(e.toString());
-		}
-	}
-
-	private void downloadFile(String sessionId, Date date) {
-		try {
-			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
-					new AsyncCallback<String>() {
-
-						@Override
-						public void onSuccess(String result) {
-							if (result == null || result.trim().equals("")) {
-								SC.say("სესიის მისამართი ვერ მოიძებნა : "
-										+ result);
-								return;
-							}
-							getDownloadFile(result);
-						}
-
-						@Override
-						public void onFailure(Throwable caught) {
-							SC.say(caught.toString());
-						}
-					});
-		} catch (Exception e) {
-			SC.say(e.toString());
-		}
-	}
-
-	private void getURL(String sessionId, Date date) {
-		try {
-			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
-					new AsyncCallback<String>() {
-
-						@Override
-						public void onSuccess(String result) {
-							if (result == null || result.trim().equals("")) {
-								SC.say("სესიის მისამართი ვერ მოიძებნა : "
-										+ result);
-								return;
-							}
-							playSessionRecord(result);
-						}
-
-						@Override
-						public void onFailure(Throwable caught) {
-							SC.say(caught.toString());
-						}
-					});
-		} catch (Exception e) {
-			SC.say(e.toString());
-		}
-	}
-
-	private void getDownloadFile(String url) {
-		try {
-			Window window = new Window();
-			window.setWidth(350);
-			window.setHeight(70);
-			window.setTitle("ფაილის გადმოწერა");
-			window.setIsModal(true);
-			window.setShowCloseButton(true);
-			window.setCanDrag(false);
-			window.setCanDragReposition(false);
-			window.setCanDragResize(false);
-			window.setCanDragScroll(false);
-			window.centerInPage();
-
-			HLayout hLayout = new HLayout();
-			hLayout.setWidth100();
-			hLayout.setHeight100();
-			hLayout.setPadding(10);
-
-			DynamicForm dynamicForm = new DynamicForm();
-			dynamicForm.setWidth100();
-			dynamicForm.setHeight100();
-			dynamicForm.setTitleWidth(150);
-
-			LinkItem linkItem = new LinkItem();
-			linkItem.setTitle("ფაილის მისამართი");
-			linkItem.setLinkTitle("გადმოწერეთ ფაილი");
-			linkItem.setValue(url);
-
-			dynamicForm.setFields(linkItem);
-
-			hLayout.addMember(dynamicForm);
-
-			window.addItem(hLayout);
-			window.show();
-		} catch (Exception e) {
-			SC.say(e.toString());
-		}
-	}
-
-	private void playSessionRecord(String url) {
-		try {
-			final Window winModal = new Window();
-			winModal.setWidth(500);
-			winModal.setHeight(80);
-			winModal.setTitle("ჩანაწერის მოსმენა");
-			winModal.setShowMinimizeButton(false);
-			winModal.setIsModal(true);
-			winModal.setShowModalMask(true);
-			winModal.centerInPage();
-			winModal.addCloseClickHandler(new CloseClickHandler() {
-				@Override
-				public void onCloseClick(CloseClickEvent event) {
-					winModal.destroy();
-				}
-			});
-			FlashMediaPlayer player = null;
-			HLayout hLayout = new HLayout();
-			hLayout.setWidth100();
-			hLayout.setHeight100();
-			player = new FlashMediaPlayer(url);
-
-			hLayout.addMember(player);
-			winModal.addItem(hLayout);
-			winModal.show();
-			// player.setVolume(1d);
-		} catch (LoadException e) {
-			SC.say(e.getMessage());
-			return;
-		} catch (PluginVersionException e) {
-			SC.say(e.getMessage());
-			return;
-		} catch (PluginNotFoundException e) {
-			SC.say(e.getMessage());
-			return;
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}

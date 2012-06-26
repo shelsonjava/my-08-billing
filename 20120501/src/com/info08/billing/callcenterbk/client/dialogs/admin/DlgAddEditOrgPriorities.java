@@ -51,7 +51,7 @@ public class DlgAddEditOrgPriorities extends Window {
 			this.saveResult = saveResult;
 			setTitle(CallCenterBK.constants.extraPriority());
 
-			setHeight(295);
+			setHeight(300);
 			setWidth(715);
 			setShowMinimizeButton(false);
 			setIsModal(true);

@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.content.admin;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditOrgPriorities;
+import com.info08.billing.callcenterbk.client.dialogs.admin.DlgHistOrgPriority;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ISaveResult;
@@ -38,6 +39,7 @@ public class TabOrgPriorityList extends Tab implements ISaveResult {
 	private ToolStripButton addPriorityBtn;
 	private ToolStripButton editPriorityBtn;
 	private ToolStripButton deletePriorityBtn;
+	private ToolStripButton histPriorityBtn;
 
 	public TabOrgPriorityList() {
 		try {
@@ -122,6 +124,8 @@ public class TabOrgPriorityList extends Tab implements ISaveResult {
 						editRecord();
 					if (deletePriorityBtn.equals(event.getSource()))
 						removeRecord();
+					if (histPriorityBtn.equals(event.getSource()))
+						new DlgHistOrgPriority().show();
 
 				}
 			};
@@ -147,6 +151,14 @@ public class TabOrgPriorityList extends Tab implements ISaveResult {
 			deletePriorityBtn.setWidth(50);
 			toolStrip.addButton(deletePriorityBtn);
 
+			histPriorityBtn = new ToolStripButton(
+					CallCenterBK.constants.history(),
+					"moneySmall.png");
+			histPriorityBtn.addClickHandler(ch);
+			histPriorityBtn.setLayoutAlign(Alignment.LEFT);
+			histPriorityBtn.setWidth(50);
+			toolStrip.addButton(histPriorityBtn);
+
 			mainLayout.addMember(lgOrgPriorities);
 
 			lgOrgPriorityType.addRecordClickHandler(new RecordClickHandler() {
@@ -155,11 +167,11 @@ public class TabOrgPriorityList extends Tab implements ISaveResult {
 				}
 			});
 			lgOrgPriorityType.addDoubleClickHandler(new DoubleClickHandler() {
-				
+
 				@Override
 				public void onDoubleClick(DoubleClickEvent event) {
 					editRecord();
-					
+
 				}
 			});
 			setPane(mainLayout);
