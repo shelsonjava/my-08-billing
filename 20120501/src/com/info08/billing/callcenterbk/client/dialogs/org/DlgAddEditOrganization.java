@@ -91,7 +91,7 @@ public class DlgAddEditOrganization extends Window {
 	private IButton copyItem;
 	// private int selectedTabIndex = 0;
 
-	private ListGrid orgTreeGrid;
+	private ListGrid organizationsGrid;
 	private ListGridRecord listGridRecord;
 	private ListGrid orgDayOffsGrid;
 	private ListGrid orgActivityGrid;
@@ -99,9 +99,9 @@ public class DlgAddEditOrganization extends Window {
 	private ListGridRecord parrentRecord;
 
 	public DlgAddEditOrganization(ListGridRecord parrentRecord,
-			ListGridRecord listGridRecord, ListGrid orgTreeGrid) {
+			ListGridRecord listGridRecord, ListGrid organizationsGrid) {
 		try {
-			this.orgTreeGrid = orgTreeGrid;
+			this.organizationsGrid = organizationsGrid;
 			this.listGridRecord = listGridRecord;
 			this.parrentRecord = parrentRecord;
 			setTitle(CallCenterBK.constants.manageOrgs());
@@ -1005,7 +1005,7 @@ public class DlgAddEditOrganization extends Window {
 
 			if (listGridRecord == null) {
 				req.setAttribute("operationId", "addOrganization");
-				orgTreeGrid.addData(record, new DSCallback() {
+				organizationsGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(final DSResponse response,
 							Object rawData, DSRequest request) {
@@ -1021,7 +1021,7 @@ public class DlgAddEditOrganization extends Window {
 												Record record = response
 														.getData()[0];
 												DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
-														record, orgTreeGrid);
+														record, organizationsGrid);
 												addEditOrgDepartments.show();
 											} catch (Exception e) {
 												e.printStackTrace();
@@ -1034,7 +1034,7 @@ public class DlgAddEditOrganization extends Window {
 				}, req);
 			} else {
 				req.setAttribute("operationId", "updateOrganization");
-				orgTreeGrid.updateData(record, new DSCallback() {
+				organizationsGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
 							DSRequest request) {

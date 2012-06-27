@@ -137,7 +137,7 @@ public class NotesDialog extends Window {
 		notesGrid.setFetchOperation("operatorWarnsSeach");
 		Criteria criteria = new Criteria();
 		if (sessionId != null) {
-			criteria.addCriteria("sessionId", sessionId);
+			criteria.addCriteria("call_session_id", sessionId);
 		} else {
 			criteria.addCriteria("user_id", operId);
 		}

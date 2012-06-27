@@ -740,4 +740,6 @@ public interface AppConstants extends Constants {
 	String recordsCount();
 	String hrManagement();
 	String orgIndIsInvalid();
+	String parrentOrganization();
+	String orgDoesNotHaveParrent();
 }

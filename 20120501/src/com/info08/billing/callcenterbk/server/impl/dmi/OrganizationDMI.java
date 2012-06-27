@@ -426,7 +426,7 @@ public class OrganizationDMI {
 					"organization_id");
 			DSResponse dsResponse = new DSResponse();
 			dsResponse.setData(values);
-			dsResponse.setInvalidateCache(true);
+			//dsResponse.setInvalidateCache(true);
 			return dsResponse;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
@@ -981,7 +981,7 @@ public class OrganizationDMI {
 					"searchOrgDepPhones", org_dep_to_ph_id, "org_dep_to_ph_id");
 			DSResponse dsResponse = new DSResponse();
 			dsResponse.setData(values);
-			dsResponse.setInvalidateCache(true);
+			//dsResponse.setInvalidateCache(true);
 			return dsResponse;
 		} catch (Exception e) {
 			if (transaction != null) {

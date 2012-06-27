@@ -96,12 +96,13 @@ public class TabOrganization extends Tab {
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
 	private ToolStripButton supperOrgBtn;
+	private ToolStripButton parrentOrgBtn;
 	private ToolStripButton orgDepartmentsBtn;
 	private ToolStripButton historyBtn;
 	private ToolStripButton exportBtn;
 	private ToolStripButton exportCountBtn;
 
-	private ListGrid orgTreeGrid;
+	private ListGrid organizationsGrid;
 	private DetailViewer detailViewer;
 	private VLayout mainLayout;
 
@@ -381,6 +382,13 @@ public class TabOrganization extends Tab {
 			supperOrgBtn.setWidth(50);
 			toolStrip.addButton(supperOrgBtn);
 
+			parrentOrgBtn = new ToolStripButton(
+					CallCenterBK.constants.parrentOrganization(),
+					"folder_classic_up.png");
+			parrentOrgBtn.setLayoutAlign(Alignment.LEFT);
+			parrentOrgBtn.setWidth(50);
+			toolStrip.addButton(parrentOrgBtn);
+
 			toolStrip.addSeparator();
 
 			orgDepartmentsBtn = new ToolStripButton(
@@ -419,7 +427,7 @@ public class TabOrganization extends Tab {
 			toolStrip.addButton(exportCountBtn);
 			exportCountBtn.setDisabled(!hasExcelExpPerm);
 
-			orgTreeGrid = new ListGrid() {
+			organizationsGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
 					ListGridRecord countryRecord = (ListGridRecord) record;
@@ -467,25 +475,26 @@ public class TabOrganization extends Tab {
 					}
 				};
 			};
-			orgTreeGrid.setLeft(50);
-			orgTreeGrid.setTop(50);
-			orgTreeGrid.setWidth100();
-			orgTreeGrid.setHeight100();
-			orgTreeGrid.setFetchOperation("customOrgSearchForCallCenterNew");
-			orgTreeGrid.setDataSource(orgDS);
-			orgTreeGrid.setAutoFetchData(false);
-			orgTreeGrid.setAutoSaveEdits(false);
-			orgTreeGrid.setCanSelectAll(false);
-			orgTreeGrid.setWrapCells(true);
-			orgTreeGrid.setFixedRecordHeights(false);
-			orgTreeGrid.setCanSort(false);
-			orgTreeGrid.setCanSelectText(true);
-			orgTreeGrid.setWrapCells(true);
-			orgTreeGrid.setCanDragSelectText(true);
-			orgTreeGrid.setShowFilterEditor(true);
-			orgTreeGrid.setFilterOnKeypress(true);
+			organizationsGrid.setLeft(50);
+			organizationsGrid.setTop(50);
+			organizationsGrid.setWidth100();
+			organizationsGrid.setHeight100();
+			organizationsGrid
+					.setFetchOperation("customOrgSearchForCallCenterNew");
+			organizationsGrid.setDataSource(orgDS);
+			organizationsGrid.setAutoFetchData(false);
+			organizationsGrid.setAutoSaveEdits(false);
+			organizationsGrid.setCanSelectAll(false);
+			organizationsGrid.setWrapCells(true);
+			organizationsGrid.setFixedRecordHeights(false);
+			organizationsGrid.setCanSort(false);
+			organizationsGrid.setCanSelectText(true);
+			organizationsGrid.setWrapCells(true);
+			organizationsGrid.setCanDragSelectText(true);
+			organizationsGrid.setShowFilterEditor(true);
+			organizationsGrid.setFilterOnKeypress(true);
 
-			mainLayout.addMember(orgTreeGrid);
+			mainLayout.addMember(organizationsGrid);
 			ListGridField tree_org_parrent = new ListGridField(
 					"tree_org_parrent", " ", 30);
 			tree_org_parrent.setAlign(Alignment.CENTER);
@@ -511,7 +520,7 @@ public class TabOrganization extends Tab {
 					CallCenterBK.constants.realAddress(), 400);
 			real_address.setCanFilter(false);
 
-			orgTreeGrid.setFields(tree_org_parrent, tree_org_child,
+			organizationsGrid.setFields(tree_org_parrent, tree_org_child,
 					organization_name, real_address);
 
 			detailViewer = new DetailViewer();
@@ -540,9 +549,9 @@ public class TabOrganization extends Tab {
 
 			mainLayout.addMember(detailViewer);
 
-			orgTreeGrid.addRecordClickHandler(new RecordClickHandler() {
+			organizationsGrid.addRecordClickHandler(new RecordClickHandler() {
 				public void onRecordClick(RecordClickEvent event) {
-					detailViewer.viewSelectedData(orgTreeGrid);
+					detailViewer.viewSelectedData(organizationsGrid);
 				}
 			});
 
@@ -588,7 +597,8 @@ public class TabOrganization extends Tab {
 			sortBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord records[] = orgTreeGrid.getSelectedRecords();
+					ListGridRecord records[] = organizationsGrid
+							.getSelectedRecords();
 					if (records == null || records.length <= 0) {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
@@ -641,7 +651,7 @@ public class TabOrganization extends Tab {
 			deleteBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = orgTreeGrid
+					final ListGridRecord listGridRecord = organizationsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
@@ -661,10 +671,10 @@ public class TabOrganization extends Tab {
 			addNewOrgBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = orgTreeGrid
+					ListGridRecord listGridRecord = organizationsGrid
 							.getSelectedRecord();
 					DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
-							listGridRecord, null, orgTreeGrid);
+							listGridRecord, null, organizationsGrid);
 					dlgAddEditMainOrg.show();
 				}
 			});
@@ -672,7 +682,7 @@ public class TabOrganization extends Tab {
 			editBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = orgTreeGrid
+					ListGridRecord listGridRecord = organizationsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.warning(),
@@ -680,7 +690,7 @@ public class TabOrganization extends Tab {
 						return;
 					}
 					DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
-							null, listGridRecord, orgTreeGrid);
+							null, listGridRecord, organizationsGrid);
 					dlgAddEditMainOrg.show();
 				}
 			});
@@ -688,7 +698,7 @@ public class TabOrganization extends Tab {
 			orgDepartmentsBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = orgTreeGrid
+					ListGridRecord listGridRecord = organizationsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.warning(),
@@ -703,7 +713,7 @@ public class TabOrganization extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 
-					ListGridRecord listGridRecord = orgTreeGrid
+					ListGridRecord listGridRecord = organizationsGrid
 							.getSelectedRecord();
 					DlgHistOrganization dlgHistOrganization = new DlgHistOrganization(
 							listGridRecord);
@@ -737,7 +747,7 @@ public class TabOrganization extends Tab {
 			supperOrgBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = orgTreeGrid
+					ListGridRecord listGridRecord = organizationsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.warning(),
@@ -755,12 +765,35 @@ public class TabOrganization extends Tab {
 					findBySupperOrg(organization_id);
 				}
 			});
-			orgTreeGrid
+
+			parrentOrgBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					ListGridRecord listGridRecord = organizationsGrid
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+					Integer parrent_organization_id = listGridRecord
+							.getAttributeAsInt("parrent_organization_id");
+					if (parrent_organization_id == null
+							|| parrent_organization_id.intValue() <= 0) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.orgDoesNotHaveParrent());
+						return;
+					}
+					fingOrgById(parrent_organization_id);
+				}
+			});
+
+			organizationsGrid
 					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 						@Override
 						public void onRecordDoubleClick(
 								RecordDoubleClickEvent event) {
-							ListGridRecord listGridRecord = orgTreeGrid
+							ListGridRecord listGridRecord = organizationsGrid
 									.getSelectedRecord();
 							if (listGridRecord == null) {
 								SC.say(CallCenterBK.constants.warning(),
@@ -769,7 +802,7 @@ public class TabOrganization extends Tab {
 								return;
 							}
 							DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
-									null, listGridRecord, orgTreeGrid);
+									null, listGridRecord, organizationsGrid);
 							dlgAddEditMainOrg.show();
 						}
 					});
@@ -828,7 +861,7 @@ public class TabOrganization extends Tab {
 		try {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("pp_organization_id", organization_id);
-			orgTreeGrid.setCriteria(criteria);
+			organizationsGrid.setCriteria(criteria);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -847,7 +880,7 @@ public class TabOrganization extends Tab {
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeOrganization");
-			orgTreeGrid.removeData(record, new DSCallback() {
+			organizationsGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -1028,8 +1061,8 @@ public class TabOrganization extends Tab {
 
 			detailViewer.setData(new Record[0]);
 			if (isExport && !count) {
-				orgTreeGrid.getDataSource().exportData(criteria, dsRequest,
-						new DSCallback() {
+				organizationsGrid.getDataSource().exportData(criteria,
+						dsRequest, new DSCallback() {
 							@Override
 							public void execute(DSResponse response,
 									Object rawData, DSRequest request) {
@@ -1038,7 +1071,7 @@ public class TabOrganization extends Tab {
 			} else {
 				if (count) {
 					criteria.setAttribute("only_count", "YES");
-					orgTreeGrid.getDataSource().fetchData(criteria,
+					organizationsGrid.getDataSource().fetchData(criteria,
 							new DSCallback() {
 								@Override
 								public void execute(DSResponse response,
@@ -1057,8 +1090,8 @@ public class TabOrganization extends Tab {
 								}
 							}, dsRequest);
 				} else {
-					orgTreeGrid.invalidateCache();
-					orgTreeGrid.fetchData(criteria, new DSCallback() {
+					organizationsGrid.invalidateCache();
+					organizationsGrid.fetchData(criteria, new DSCallback() {
 						@Override
 						public void execute(DSResponse response,
 								Object rawData, DSRequest request) {
@@ -1083,7 +1116,7 @@ public class TabOrganization extends Tab {
 
 	public void showOrgDepManagementDlg(ListGridRecord listGridRecord) {
 		DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
-				listGridRecord, orgTreeGrid);
+				listGridRecord, organizationsGrid);
 		addEditOrgDepartments.show();
 	}
 }
