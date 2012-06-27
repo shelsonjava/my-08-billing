@@ -862,12 +862,13 @@ public interface QueryConstants {
 
 	public static final String Q_GET_CALL_CENTER_REQ_MSG = "select t.description from ccare.descriptions t where t.description_id = 57100 ";
 
-	public static final String Q_GET_OPERATOR_REMARKS = " select count(1)\n"
-			+ "  from ccare.log_personell_notes t\n"
-			+ " where t.ym = to_char(sysdate, 'YYmm')\n"
-			+ "   and trunc(t.rec_date) >= trunc(sysdate - 10)\n"
-			+ "   and t.visible_options = 0\n" + "   and t.user_name = ? \n"
-			+ "   and t.received = 0\n" + " order by t.rec_user desc";
+	public static final String Q_GET_OPERATOR_REMARKS = 
+					"select count(1)\n" +
+					"  from ccare.operator_warns t\n" + 
+					" where t.operator = ? \n" + 
+					"   and trunc(t.warn_send_date) >= trunc(sysdate - 10)\n" + 
+					"   and t.hidden = 0\n" + 
+					"   and t.delivered = 0";
 
 	public static final String Q_GET_SPECIAL_TEXT_BY_NUMBER = " select t.note from ALERTS_BY_PHONE t where t.phone_number = ? ";
 	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone_number) from FREE_OF_CHARGE_PHONE t where t.phone_number = ? and trunc(sysdate) between t.start_date and t.end_date ";

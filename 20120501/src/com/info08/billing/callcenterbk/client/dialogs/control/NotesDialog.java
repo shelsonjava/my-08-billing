@@ -72,8 +72,10 @@ public class NotesDialog extends Window {
 		operatorWarnsDS.getField("warn_send_date").setTitle("თარიღი");
 		operatorWarnsDS.getField("hiddenDescr").setTitle("ხილვადობა");
 		operatorWarnsDS.getField("importantDescr").setTitle("მნიშვნელოვანი");
-		operatorWarnsDS.getField("hidden").setTitle("VINT");
-		operatorWarnsDS.getField("important").setTitle("PINT");
+		operatorWarnsDS.getField("update_date").setTitle(
+				CallCenterBK.constants.updDate());
+		operatorWarnsDS.getField("update_user").setTitle(
+				CallCenterBK.constants.updUser());
 
 		ListGridField receiver = new ListGridField("operator", "მიმღები", 200);
 		ListGridField sender = new ListGridField("warn_sender", "გამგზავნი",
@@ -186,13 +188,16 @@ public class NotesDialog extends Window {
 							CallCenterBK.constants.pleaseSelrecord());
 					return;
 				}
-				String call_session_id = record.getAttributeAsString("call_session_id");
-				if (call_session_id == null || call_session_id.trim().equals("")) {
+				String call_session_id = record
+						.getAttributeAsString("call_session_id");
+				if (call_session_id == null
+						|| call_session_id.trim().equals("")) {
 					SC.say(CallCenterBK.constants.warning(),
 							CallCenterBK.constants.invalidSession());
 					return;
 				}
-				Date call_start_date = record.getAttributeAsDate("call_start_date");
+				Date call_start_date = record
+						.getAttributeAsDate("call_start_date");
 				getURL(call_session_id, call_start_date);
 
 			}
@@ -280,22 +285,34 @@ public class NotesDialog extends Window {
 						public void execute(Boolean value) {
 							if (value) {
 								try {
-									com.smartgwt.client.rpc.RPCManager.startQueue();
+									com.smartgwt.client.rpc.RPCManager
+											.startQueue();
 									Record record = new Record();
-									record.setAttribute("oper_warn_id", listGridRecord.getAttributeAsInt("oper_warn_id"));
-									record.setAttribute("loggedUserName", CommonSingleton.getInstance().getSessionPerson().getUser_name());
+									record.setAttribute(
+											"oper_warn_id",
+											listGridRecord
+													.getAttributeAsInt("oper_warn_id"));
+									record.setAttribute("loggedUserName",
+											CommonSingleton.getInstance()
+													.getSessionPerson()
+													.getUser_name());
 
 									DSRequest req = new DSRequest();
 
-									req.setAttribute("operationId","deleteOperatorWarn");
-									notesGrid.removeData(record, new DSCallback() {
-										@Override
-										public void execute(DSResponse response,
-												Object rawData, DSRequest request) {
-											detailViewer.clear();
-										}
-									}, req);
-									com.smartgwt.client.rpc.RPCManager.sendQueue();									
+									req.setAttribute("operationId",
+											"deleteOperatorWarn");
+									notesGrid.removeData(record,
+											new DSCallback() {
+												@Override
+												public void execute(
+														DSResponse response,
+														Object rawData,
+														DSRequest request) {
+													detailViewer.clear();
+												}
+											}, req);
+									com.smartgwt.client.rpc.RPCManager
+											.sendQueue();
 								} catch (Exception e) {
 									e.printStackTrace();
 									SC.say(e.toString());

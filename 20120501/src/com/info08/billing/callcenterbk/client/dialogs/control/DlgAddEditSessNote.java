@@ -1,5 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.control;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -30,14 +31,16 @@ public class DlgAddEditSessNote extends Window {
 	private SelectItem particItem;
 	private DynamicForm form;
 
-	public DlgAddEditSessNote(final Integer oper_warn_id, final String call_session_id,
-			Integer pVisibOption, Integer pParticular, String note,
-			DataSource notesDS, final ListGrid listGrid) {
+	public DlgAddEditSessNote(final Integer oper_warn_id,
+			final String call_session_id, Integer pVisibOption,
+			Integer pParticular, String note, DataSource notesDS,
+			final ListGrid listGrid) {
 		try {
 
 			setWidth(500);
 			setHeight(260);
-			setTitle(oper_warn_id == null ? "ახალი შენიშვნა" : "შენიშვნის შესწორება");
+			setTitle(oper_warn_id == null ? "ახალი შენიშვნა"
+					: "შენიშვნის შესწორება");
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);
@@ -153,11 +156,24 @@ public class DlgAddEditSessNote extends Window {
 						Record record = new Record();
 						record.setAttribute("oper_warn_id", oper_warn_id);
 						record.setAttribute("call_session_id", call_session_id);
-						record.setAttribute("hidden", new Integer(visOptItem.getValueAsString()));
-						record.setAttribute("warning", noteItem.getValueAsString());
-						record.setAttribute("important", new Integer(particItem.getValueAsString()));
-						record.setAttribute("loggedUserName", CommonSingleton
-								.getInstance().getSessionPerson().getUser_name());
+						record.setAttribute("hidden",
+								new Integer(visOptItem.getValueAsString()));
+						record.setAttribute("warning",
+								noteItem.getValueAsString());
+						record.setAttribute("important",
+								new Integer(particItem.getValueAsString()));
+						String sender = CommonSingleton.getInstance()
+								.getSessionPerson().getUser_name();
+						record.setAttribute("loggedUserName", sender);
+						record.setAttribute("delivered", new Integer(0));
+						record.setAttribute("warn_sender", sender);
+						Date date = new Date();
+						if (oper_warn_id != null) {
+							record.setAttribute("update_user", sender);
+							record.setAttribute("update_date", date);
+						} else {
+							record.setAttribute("warn_send_date", date);
+						}
 
 						DSRequest req = new DSRequest();
 						if (oper_warn_id == null) {
@@ -170,7 +186,8 @@ public class DlgAddEditSessNote extends Window {
 								}
 							}, req);
 						} else {
-							req.setAttribute("operationId", "updateOperatorWarn");
+							req.setAttribute("operationId",
+									"updateOperatorWarn");
 							listGrid.updateData(record, new DSCallback() {
 								@Override
 								public void execute(DSResponse response,
@@ -180,7 +197,7 @@ public class DlgAddEditSessNote extends Window {
 							}, req);
 						}
 
-						com.smartgwt.client.rpc.RPCManager.sendQueue();						
+						com.smartgwt.client.rpc.RPCManager.sendQueue();
 					} catch (Exception e) {
 						e.printStackTrace();
 						SC.say(e.toString());

@@ -146,7 +146,7 @@ public class West extends VLayout {
 
 			callCenter.setMenuPersmission();
 			if (personelTypeId.equals(Constants.OperatorDepartmentID)) {
-
+				callCenter.setExpanded(true);
 				ServerSession serverSession = CommonSingleton.getInstance()
 						.getServerSession();
 				if (serverSession == null || !serverSession.isWebSession()) {

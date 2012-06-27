@@ -14,7 +14,7 @@
         <field name="warning" 			type="text" 		title="warning"/>
         <field name="warn_send_date" 	type="datetime" 	title="warn_send_date" />
         <field name="update_date" 		type="datetime" 	title="update_date" />
-        <field name="hidden"			type="integer"  	title="hidden"/>
+        <field name="hidden"			type="integer"  	title="hidden"				hidden="true"/>
         <field name="hiddenDescr"		type="text"  		title="hiddenDescr"/>
         <field name="update_user"		type="text"  		title="update_user"/>
         <field name="important"			type="integer"  	title="importan"			hidden="true"/>
@@ -35,7 +35,7 @@
 	           <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OperatorWarnsDMI"/>
 	    </operationBinding>
 	    
-	    <operationBinding operationType="remove" operationId="deleteOperatorWarn" serverMethod="deleteLogPersNoteItem">
+	    <operationBinding operationType="remove" operationId="deleteOperatorWarn" serverMethod="deleteOperatorWarn">
 	           <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.OperatorWarnsDMI"/>
 	    </operationBinding>
      
@@ -52,7 +52,9 @@
       			t.hidden,
       			decode(t.important,0,'ჩვეულებრივი','მნიშვნელოვანი') as importantDescr,
       			t.important,
-      			cs.call_start_date
+      			cs.call_start_date,
+      			t.update_user,
+      			t.update_date
 			</selectClause> 
 			<tableClause>
 				operator_warns t , 
@@ -61,8 +63,9 @@
 				call_sessions cs
 			</tableClause>
 			<whereClause><![CDATA[ 
-				cs.call_session_id = t.call_session_id and t.operator = rec.user_name(+) and t.warn_sender = send.user_name(+)
-				#if($criteria.call_session_id) and t.call_session_id = $criteria.call_session_id #end
+				cs.session_id = t.call_session_id and t.operator = rec.user_name(+) and t.warn_sender = send.user_name(+)
+				#if($criteria.oper_warn_id) and t.oper_warn_id = $criteria.oper_warn_id #end
+				#if($criteria.call_session_id) and cs.session_id = $criteria.call_session_id #end
 				#if($criteria.user_name) and t.operator = $criteria.user_name #end
 				#if($criteria.delivered) and t.delivered = $criteria.delivered #end
 				#if($criteria.user_id) and rec.user_id = $criteria.user_id #end

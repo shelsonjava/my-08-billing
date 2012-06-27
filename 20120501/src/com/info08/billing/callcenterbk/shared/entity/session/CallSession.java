@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -17,6 +19,13 @@ import javax.persistence.Table;
  * The persistent class for the LOG_SESSIONS database table.
  * 
  */
+
+@NamedQueries({
+	@NamedQuery(
+				name="CallSession.getByCallSessionId",
+				query="select e from CallSession e where e.session_id = :callSessId")
+})
+
 @Entity
 @Table(name="CALL_SESSIONS")
 public class CallSession implements Serializable {

@@ -261,20 +261,37 @@
 					#end						
 				 ]]>
 			</selectClause>
-			<tableClause>organizations o,
-				#if($criteria.pp_organization_id)(
-							select t.organization_id, level mylevel, rownum as my_rownum
-			  from organizations t
-			 start with t.organization_id =(select tt.organization_id
-								            from (select t.organization_id, t.parrent_organization_id
-								                    from organizations t
-								                   start with t.organization_id = $criteria.pp_organization_id
-								                  connect by prior t.parrent_organization_id = t.organization_id) tt
-								           where tt.parrent_organization_id is null)
-			connect by prior t.organization_id = t.parrent_organization_id
-			order siblings by getTbilisiOrder(t.ph_town_id), t.super_priority, nvl(t.parrent_organization_id,0), t.priority
-			) hr, #end
-				v_full_address a, v_full_address a1</tableClause>
+			<tableClause>
+				organizations o,
+				#if($criteria.pp_organization_id)
+						(
+							select 
+									t.organization_id, 
+									level mylevel, 
+									rownum as my_rownum
+			  				from organizations t
+			 				start with t.organization_id = 
+			 				  #if($criteria.only_parrent)
+			 				  	  	$criteria.pp_organization_id
+			 				  #else 
+			 					(
+				 					  select 
+				 					  			tt.organization_id
+									  from (select 
+									  				t.organization_id, 
+									  				t.parrent_organization_id
+									  		from organizations t
+									        start with t.organization_id = $criteria.pp_organization_id
+									        connect by prior t.parrent_organization_id = t.organization_id
+									       ) tt
+									  where tt.parrent_organization_id is null
+								)
+							  #end
+							connect by prior t.organization_id = t.parrent_organization_id
+							order siblings by getTbilisiOrder(t.ph_town_id), t.super_priority, nvl(t.parrent_organization_id,0), t.priority
+						) hr, #end
+				v_full_address a, v_full_address a1
+			</tableClause>
 			<whereClause>
 				 <![CDATA[
 						 o.physical_address_id = a.addr_id(+) and 

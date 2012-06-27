@@ -78,12 +78,12 @@ public class DlgViewOpRemarks extends Window {
 			listenRecord.setWidth(50);
 			toolStrip.addButton(listenRecord);
 
-			ToolStripButton remarks = new ToolStripButton(
+			ToolStripButton agreeBtn = new ToolStripButton(
 					CallCenterBK.constants.agree(), "yes.png");
 
-			remarks.setLayoutAlign(Alignment.LEFT);
-			remarks.setWidth(50);
-			toolStrip.addButton(remarks);
+			agreeBtn.setLayoutAlign(Alignment.LEFT);
+			agreeBtn.setWidth(50);
+			toolStrip.addButton(agreeBtn);
 
 			listGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -118,19 +118,24 @@ public class DlgViewOpRemarks extends Window {
 			listGrid.setCriteria(criteria);
 			listGrid.setAutoFetchData(true);
 
-			ListGridField note = new ListGridField("warning",CallCenterBK.constants.remark());
+			ListGridField note = new ListGridField("warning",
+					CallCenterBK.constants.remark());
 			note.setAlign(Alignment.LEFT);
 
-			ListGridField sender = new ListGridField("warn_sender",CallCenterBK.constants.sender(), 150);
+			ListGridField sender = new ListGridField("warn_sender",
+					CallCenterBK.constants.sender(), 150);
 			sender.setAlign(Alignment.LEFT);
-			ListGridField receiver = new ListGridField("operator",CallCenterBK.constants.receiver(), 150);
+			ListGridField receiver = new ListGridField("operator",
+					CallCenterBK.constants.receiver(), 150);
 			receiver.setAlign(Alignment.LEFT);
 
-			ListGridField rec_date = new ListGridField("warn_send_date",CallCenterBK.constants.sendDate(), 130);
+			ListGridField rec_date = new ListGridField("warn_send_date",
+					CallCenterBK.constants.sendDate(), 130);
 			rec_date.setAlign(Alignment.CENTER);
 			rec_date.setDateFormatter(DateDisplayFormat.TOUSSHORTDATETIME);
 
-			ListGridField phone = new ListGridField("phone_number", CallCenterBK.constants.phone(), 80);
+			ListGridField phone = new ListGridField("phone_number",
+					CallCenterBK.constants.phone(), 80);
 			phone.setAlign(Alignment.LEFT);
 
 			listGrid.setFields(sender, rec_date, receiver, phone, note);
@@ -158,7 +163,7 @@ public class DlgViewOpRemarks extends Window {
 				}
 			});
 
-			remarks.addClickHandler(new ClickHandler() {
+			agreeBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					ListGridRecord listGridRecord = listGrid
@@ -183,10 +188,13 @@ public class DlgViewOpRemarks extends Window {
 						return;
 					}
 
-					String call_session_id = editRecord.getAttributeAsString("call_session_id");
-					Date call_start_date = editRecord.getAttributeAsDate("call_start_date");
+					String call_session_id = editRecord
+							.getAttributeAsString("call_session_id");
+					Date call_start_date = editRecord
+							.getAttributeAsDate("call_start_date");
 
-					if (call_session_id == null || call_session_id.trim().equals("")) {
+					if (call_session_id == null
+							|| call_session_id.trim().equals("")) {
 						SC.say(CallCenterBK.constants.warning(),
 								CallCenterBK.constants.invalidSession());
 						return;
@@ -234,10 +242,17 @@ public class DlgViewOpRemarks extends Window {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("oper_warn_id", listGridRecord.getAttributeAsInt("oper_warn_id"));
-			String loggedUser = CommonSingleton.getInstance().getSessionPerson().getUser_name();
+			record.setAttribute("oper_warn_id",
+					listGridRecord.getAttributeAsInt("oper_warn_id"));
+			String loggedUser = CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name();
 			record.setAttribute("update_user", loggedUser);
 			record.setAttribute("loggedUserName", loggedUser);
+			record.setAttribute("call_session_id",
+					listGridRecord.getAttributeAsString("call_session_id"));
+			record.setAttribute("delivered", new Integer(1));
+			record.setAttribute("update_date", new Date());
+			record.setAttribute("update_user", loggedUser);
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "updateOperatorWarn");

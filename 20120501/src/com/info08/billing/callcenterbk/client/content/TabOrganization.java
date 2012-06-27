@@ -784,7 +784,7 @@ public class TabOrganization extends Tab {
 								CallCenterBK.constants.orgDoesNotHaveParrent());
 						return;
 					}
-					fingOrgById(parrent_organization_id);
+					fingOrgById(parrent_organization_id, true);
 				}
 			});
 
@@ -848,7 +848,7 @@ public class TabOrganization extends Tab {
 					Record record = records[0];
 					Integer ret_organization_id = record
 							.getAttributeAsInt("organization_id");
-					fingOrgById(ret_organization_id);
+					fingOrgById(ret_organization_id, false);
 				}
 			}, dsRequest);
 		} catch (Exception e) {
@@ -857,10 +857,13 @@ public class TabOrganization extends Tab {
 		}
 	}
 
-	private void fingOrgById(Integer organization_id) {
+	private void fingOrgById(Integer organization_id, boolean onlyParrent) {
 		try {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("pp_organization_id", organization_id);
+			if (onlyParrent) {
+				criteria.setAttribute("only_parrent", "only_parrent");
+			}
 			organizationsGrid.setCriteria(criteria);
 		} catch (Exception e) {
 			e.printStackTrace();
