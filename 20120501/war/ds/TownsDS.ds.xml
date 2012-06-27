@@ -25,14 +25,14 @@
 		<field name="ctm"						type="text"			title="ctm"					hidden="true"/>
 		<field name="capital"					type="integer"		title="capital"				hidden="true"/>
 		<field name="code"						type="text"			title="code"				hidden="true"/>
-		<field name="countrycode"				type="text"			title="countrycode"			hidden="true"/>
-		<field name="countryid"					type="integer"		title="countryid"			hidden="true"/>
-		<field name="seasonid"					type="integer"		title="seasonid"			hidden="true"/>
-		<field name="countryregion"				type="text"			title="countryregion"		hidden="true"/>
+		<field name="phone_code"				type="text"			title="countrycode"			hidden="true"/>
+		<field name="country_id"				type="integer"		title="countryid"			hidden="true"/>
+		<field name="season"					type="integer"		title="season"				hidden="true"/>
+		<field name="country_region"			type="text"			title="countryregion"		hidden="true"/>
 		<field name="stringOne"					type="text"			title="stringOne"			hidden="true"/>
 		<field name="stringTwo"					type="text"			title="stringTwo"			hidden="true"/>
 		<field name="country_id"				type="integer"		title="country_id"			hidden="true"/>
-		<field name="country_detail_id"			type="integer"		title="country_detail_id"	hidden="true"/>
+		<field name="country_index_id"			type="integer"		title="country_index_id"	hidden="true"/>
 		
 	</fields>
 
@@ -172,25 +172,25 @@
         <!-- Search From DB For CallCenter -->
         <operationBinding operationId="searchCitiesFromDBForCallCenter" operationType="fetch">
     		<selectClause>   			
-    			t.cityName,
+    			t.town_name,
     			t.gmtoff,
     			t.gmtoffwinter,
     			t.ctm,
     			t.capital,
     			trim(t.town_code) as code,
-    			trim(t.countrycode) as countrycode,
-    			t.countryid,
-    			t.seasonid,
-    			t.countryregion,
+    			trim(t.phone_code) as phone_code,
+    			t.country_id,
+    			t.season,
+    			t.country_region,
     			t.town_id,
     			t.country_name,
     			t.town_new_code,
     			t.town_name			
 			</selectClause> 
-			<tableClause>ccare.v_countrycitycodes t</tableClause>
+			<tableClause>v_countrycitycodes t</tableClause>
 			<whereClause><![CDATA[ 
-				 1 = 1 and t.deleted = 0
-				 #if($criteria.countryid) and t.countryid = $criteria.countryid #end
+				 1 = 1 
+				 #if($criteria.country_id) and t.country_id = $criteria.country_id #end
 				 #if($criteria.town_id) and t.town_id = $criteria.town_id #end
 				 #if($criteria.codeSearchType && $criteria.p_code && $criteria.codeSearchType == 1)
 				 	AND  trim(t.countrycode) like '%'||$criteria.p_code||'%'
@@ -199,8 +199,8 @@
 				 	AND  trim(t.town_code||' '||t.town_new_code) like '%'||$criteria.p_code||'%'
 				 #end
 				 #if($criteria.countryregion) and t.countryregion like '%'||$criteria.countryregion||'%' #end
-				 #if($criteria.cityName) and t.cityName like '%'||$criteria.cityName||'%' #end
-				 #if($criteria.p_town_name) and t.cityName like '%'||$criteria.p_town_name||'%' #end
+				 #if($criteria.cityName) and t.town_name like '%'||$criteria.cityName||'%' #end
+				 #if($criteria.p_town_name) and t.town_name like '%'||$criteria.p_town_name||'%' #end
 				 #if($criteria.code) and trim(t.town_code) like '%'||$criteria.code||'%' #end
 				 #if($criteria.town_new_code) and trim(t.town_new_code) like '%'||$criteria.town_new_code||'%' #end
 				]]>  
@@ -213,7 +213,7 @@
     			t.stringOne,
     			t.stringTwo,
     			t.country_id,
-    			t.country_detail_id
+    			t.country_index_id
 			</selectClause> 
 			<tableClause>ccare.v_countrymobilecodes t</tableClause>
 			<whereClause><![CDATA[ 

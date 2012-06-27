@@ -62,13 +62,13 @@ public class TabFindIndexes extends Tab {
 	private TabSet tabSet;
 
 	// DataSource
-	private DataSource localTownsDS;
+	private DataSource TownsDS;
 
 	public TabFindIndexes() {
 		setTitle(CallCenterBK.constants.findCodes());
 		setCanClose(true);
 
-		localTownsDS = DataSource.get("TownsDS");
+		TownsDS = DataSource.get("TownsDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -120,8 +120,7 @@ public class TabFindIndexes extends Tab {
 				if (record == null) {
 					return;
 				}
-				String phone_code = record
-						.getAttributeAsString("phone_code");
+				String phone_code = record.getAttributeAsString("phone_code");
 				if (phone_code != null && !phone_code.trim().equals("")) {
 					countyCodeItem.setValue(phone_code);
 				}
@@ -199,7 +198,7 @@ public class TabFindIndexes extends Tab {
 				if (capital != null && !capital.equals(0) && colNum == 0) {
 					return "color:red;";
 				} else {
-					Integer seasonid = iRecord.getAttributeAsInt("seasonid");
+					Integer seasonid = iRecord.getAttributeAsInt("season");
 					if (seasonid != null && seasonid.equals(0) && colNum == 5) {
 						// return "background-color: red; color:blue;";
 						return "color:red;";
@@ -215,7 +214,7 @@ public class TabFindIndexes extends Tab {
 		listGrid.setWidth100();
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(localTownsDS);
+		listGrid.setDataSource(TownsDS);
 		listGrid.setAutoFetchData(false);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
@@ -227,11 +226,11 @@ public class TabFindIndexes extends Tab {
 		listGrid.setFilterOnKeypress(true);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField townName = new ListGridField("cityName",
+		ListGridField townName = new ListGridField("town_name",
 				CallCenterBK.constants.town(), 200);
-		ListGridField countrycode = new ListGridField("countrycode",
+		ListGridField countrycode = new ListGridField("phone_code",
 				CallCenterBK.constants.countryCodeShort(), 80);
-		ListGridField countryregion = new ListGridField("countryregion",
+		ListGridField countryregion = new ListGridField("country_region",
 				CallCenterBK.constants.region());
 		ListGridField code = new ListGridField("code",
 				CallCenterBK.constants.oldCode(), 230);
@@ -271,7 +270,7 @@ public class TabFindIndexes extends Tab {
 		listGridOperators.setWidth100();
 		listGridOperators.setHeight100();
 		listGridOperators.setAlternateRecordStyles(true);
-		listGridOperators.setDataSource(localTownsDS);
+		listGridOperators.setDataSource(TownsDS);
 		listGridOperators.setAutoFetchData(false);
 		listGridOperators.setShowFilterEditor(false);
 		listGridOperators.setCanEdit(false);
@@ -333,7 +332,7 @@ public class TabFindIndexes extends Tab {
 						return;
 					}
 					Integer countryid = gridRecord
-							.getAttributeAsInt("countryid");
+							.getAttributeAsInt("country_id");
 					if (countryid == null) {
 						return;
 					}
@@ -345,7 +344,7 @@ public class TabFindIndexes extends Tab {
 
 				} else {
 					DlgViewIndex dlgViewIndex = new DlgViewIndex(listGrid,
-							localTownsDS, listGrid.getSelectedRecord());
+							TownsDS, listGrid.getSelectedRecord());
 					dlgViewIndex.show();
 				}
 			}
@@ -356,8 +355,8 @@ public class TabFindIndexes extends Tab {
 					@Override
 					public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 						DlgViewCountryOpers dlgViewCountryOpers = new DlgViewCountryOpers(
-								listGridOperators, localTownsDS,
-								listGridOperators.getSelectedRecord());
+								listGridOperators, TownsDS, listGridOperators
+										.getSelectedRecord());
 						dlgViewCountryOpers.show();
 					}
 				});
@@ -397,8 +396,7 @@ public class TabFindIndexes extends Tab {
 			String code = codeItem.getValueAsString();
 
 			if ((countryid_str == null || countryid_str.trim().equals(""))
-					&& (town_name == null || town_name.trim()
-							.equals(""))
+					&& (town_name == null || town_name.trim().equals(""))
 					&& (code == null || code.trim().equals(""))) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.enterIndexSearchParams());
@@ -434,7 +432,7 @@ public class TabFindIndexes extends Tab {
 			Criteria criteria = new Criteria();
 			if (searchType == 1 && countryid_str != null
 					&& !countryid_str.trim().equals("")) {
-				criteria.setAttribute("countryid", new Integer(countryid_str));
+				criteria.setAttribute("country_id", new Integer(countryid_str));
 			}
 			if (town_name != null && !town_name.trim().equals("")) {
 				criteria.setAttribute("p_town_name", town_name.trim());

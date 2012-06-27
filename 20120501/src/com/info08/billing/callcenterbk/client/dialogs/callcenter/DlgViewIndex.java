@@ -87,21 +87,21 @@ public class DlgViewIndex extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		dataSource.getField("cityName").setHidden(false);
-		dataSource.getField("countrycode").setHidden(false);
-		dataSource.getField("countryregion").setHidden(false);
+		dataSource.getField("town_name").setHidden(false);
+		dataSource.getField("phone_code").setHidden(false);
+		dataSource.getField("country_region").setHidden(false);
 		dataSource.getField("code").setHidden(false);
 		dataSource.getField("gmtoff").setHidden(false);
 		dataSource.getField("gmtoffwinter").setHidden(false);
 		dataSource.getField("ctm").setHidden(false);
 		dataSource.getField("country_name").setHidden(false);
 
-		DetailViewerField cityName = new DetailViewerField("cityName",
+		DetailViewerField town_name = new DetailViewerField("town_name",
 				CallCenterBK.constants.town());
-		DetailViewerField countrycode = new DetailViewerField("countrycode",
+		DetailViewerField phone_code = new DetailViewerField("phone_code",
 				CallCenterBK.constants.countryCode());
-		DetailViewerField countryregion = new DetailViewerField(
-				"countryregion", CallCenterBK.constants.region());
+		DetailViewerField country_region = new DetailViewerField(
+				"country_region", CallCenterBK.constants.region());
 		DetailViewerField code = new DetailViewerField("code",
 				CallCenterBK.constants.oldCode());
 		DetailViewerField town_new_code = new DetailViewerField(
@@ -116,7 +116,7 @@ public class DlgViewIndex extends Window {
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(cityName, countrycode, countryregion,
+		detailViewer.setFields(town_name, phone_code, country_region,
 				town_new_code, code, gmtoff, gmtoffwinter, ctm);
 		mainLayout.addMember(detailViewer);
 
@@ -242,7 +242,7 @@ public class DlgViewIndex extends Window {
 			}
 
 			String countrycode = listGridRecord
-					.getAttributeAsString("countrycode");
+					.getAttributeAsString("phone_code");
 			if (countrycode != null && !countrycode.trim().equals("")) {
 				sms_text.append(countrycode).append(";");
 			}
@@ -257,7 +257,7 @@ public class DlgViewIndex extends Window {
 			if (town_new_code != null && !town_new_code.trim().equals("")) {
 				sms_text.append(town_new_code);
 			}
-			Integer seasonid = listGridRecord.getAttributeAsInt("seasonid");
+			Integer seasonid = listGridRecord.getAttributeAsInt("season");
 
 			if (seasonid != null) {
 				if (seasonid.equals(0)) {
@@ -343,7 +343,7 @@ public class DlgViewIndex extends Window {
 				sms_text.append(cityName).append(";");
 			}
 			
-			Integer seasonid = listGridRecord.getAttributeAsInt("seasonid");
+			Integer seasonid = listGridRecord.getAttributeAsInt("season");
 
 			if (seasonid != null) {
 				if (seasonid.equals(0)) {
