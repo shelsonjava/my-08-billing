@@ -10,6 +10,7 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.FieldType;
 import com.smartgwt.client.types.ListGridFieldType;
@@ -25,6 +26,8 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -59,16 +62,15 @@ public class DlgContractorPhones extends Window {
 
 	private ListGrid contractPhonesGrid;
 
+	private ListGrid listGridPhones;
+
 	private DataSource OrgDS;
 	private DataSource OrgDepartmentDS;
 	private DataSource ContractorsPhonesDS;
 
-	private String findPhone = null;
-	private int lastIndex = 0;
-
-	public DlgContractorPhones() {
+	public DlgContractorPhones(Integer organization_id, ListGrid listGridPhones) {
 		try {
-
+			this.listGridPhones = listGridPhones;
 			OrgDS = DataSource.get("OrgDS");
 			OrgDepartmentDS = DataSource.get("OrgDepartmentDS");
 			ContractorsPhonesDS = DataSource.get("ContractorsPhonesDS");
@@ -128,6 +130,46 @@ public class DlgContractorPhones extends Window {
 			clearItem.setStartRow(false);
 			clearItem.setEndRow(true);
 
+			KeyPressHandler enterKey = new KeyPressHandler() {
+
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			};
+
+			organizationNameItem.addKeyPressHandler(enterKey);
+			departmentNameItem.addKeyPressHandler(enterKey);
+			phoneItem.addKeyPressHandler(enterKey);
+
+			findItem.addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+				@Override
+				public void onClick(
+						com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+					search();
+				}
+			});
+
+			clearItem
+					.addClickHandler(new com.smartgwt.client.widgets.form.fields.events.ClickHandler() {
+
+						@Override
+						public void onClick(
+								com.smartgwt.client.widgets.form.fields.events.ClickEvent event) {
+							organizationNameItem.setValue("");
+							departmentNameItem.setValue("");
+							phoneItem.setValue("");
+
+							Criteria orgGridCriteria = new Criteria();
+							orgGridCriteria.setAttribute("pp_organization_id",
+									80353);
+							organizationGrid.fetchData(orgGridCriteria);
+						}
+					});
+
 			searchForm.setFields(organizationNameItem, departmentNameItem,
 					phoneItem, findItem, clearItem);
 
@@ -152,27 +194,15 @@ public class DlgContractorPhones extends Window {
 			organizationGrid.setFields(organizationName);
 
 			Criteria orgGridCriteria = new Criteria();
-			orgGridCriteria.setAttribute("pp_organization_id", 80353);
+			orgGridCriteria.setAttribute("pp_organization_id", organization_id);
 			organizationGrid.fetchData(orgGridCriteria);
 
 			organizationGrid.addRecordClickHandler(new RecordClickHandler() {
 
 				@Override
 				public void onRecordClick(RecordClickEvent event) {
-					// TODO Auto-generated method stub
-					Criteria depGridCriteria = new Criteria();
-					depGridCriteria.setAttribute(
-							"organization_id",
-							organizationGrid.getSelectedRecord().getAttribute(
-									"organization_id"));
-					departmentGrid.fetchData(depGridCriteria);
-
-					Criteria phoneCriteria = new Criteria();
-					phoneCriteria.setAttribute(
-							"organization_id",
-							organizationGrid.getSelectedRecord().getAttribute(
-									"organization_id"));
-					phoneGrid.fetchData(phoneCriteria);
+					Record record = organizationGrid.getSelectedRecord();
+					fetchDepartmentAndPhones(record);
 				}
 			});
 
@@ -227,12 +257,10 @@ public class DlgContractorPhones extends Window {
 
 				@Override
 				public void onRecordClick(RecordClickEvent event) {
-					Criteria phoneCriteria = new Criteria();
-					phoneCriteria.setAttribute(
-							"org_department_id",
-							departmentGrid.getSelectedRecord().getAttribute(
-									"org_department_id"));
-					phoneGrid.fetchData(phoneCriteria);
+
+					Record record = departmentGrid.getSelectedRecord();
+
+					fetchPhones(record);
 
 				}
 			});
@@ -329,6 +357,7 @@ public class DlgContractorPhones extends Window {
 			contractPhonesGrid = new ListGrid();
 			contractPhonesGrid.setWidth("17%");
 			contractPhonesGrid.setHeight100();
+			contractPhonesGrid.setCanRemoveRecords(true);
 			contractPhonesGrid.setPreventDuplicates(true);
 			contractPhonesGrid.setDuplicateDragMessage(CallCenterBK.constants
 					.thisOrgActAlreadyChoosen());
@@ -358,29 +387,14 @@ public class DlgContractorPhones extends Window {
 			contractPhonesGrid.setFields(phone, remove);
 			contractPhonesGrid.setShowFilterEditor(true);
 			contractPhonesGrid.setFilterOnKeypress(true);
-			contractPhonesGrid.addCellClickHandler(new CellClickHandler() {
 
-				@Override
-				public void onCellClick(CellClickEvent event) {
-					String field_name = contractPhonesGrid.getField(
-							event.getColNum()).getName();
-					if (field_name.equals("remove")) {
-						removePhone(event.getRecord().getAttribute("phone"));
-						orgPhonesGrid.redraw();
-					}
+			RecordList phoneList = listGridPhones.getRecordList();
+
+			if (phoneList != null && !phoneList.isEmpty()) {
+				for (int i = 0; i < phoneList.getLength(); i++) {
+					contractPhonesGrid.addData(phoneList.get(i));
 				}
-			});
-
-			contractPhonesGrid
-					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-
-						@Override
-						public void onRecordDoubleClick(
-								RecordDoubleClickEvent event) {
-							findNext(event.getRecord());
-
-						}
-					});
+			}
 
 			/****************************************************/
 
@@ -437,85 +451,49 @@ public class DlgContractorPhones extends Window {
 		}
 	}
 
-	protected void findNext(Record record) {
-		if (record == null)
-			return;
-		String phone = record.getAttribute("phone");
-		if (phone == null)
-			return;
-		if (!phone.equals(findPhone))
-			lastIndex = -1;
-		else
-			lastIndex++;
-		findPhone = phone;
-		lastIndex = orgPhonesGrid.getRecordList().findNextIndex(lastIndex,
-				"phone", phone, orgPhonesGrid.getRecordList().getLength());
-		orgPhonesGrid.deselectAllRecords();
-		orgPhonesGrid.selectRecord(lastIndex);
-		Integer[] rowVisible = orgPhonesGrid.getVisibleRows();
-		if (!(rowVisible[0] + 3 < lastIndex && rowVisible[1] - 5 > lastIndex))
-			orgPhonesGrid.scrollToRow(lastIndex - 3);
-	}
-
-	protected void findAllPhonesByID(String id, ArrayList<String> phones) {
-		Record record = orgPhonesGrid.getRecordList().find("id", id);
-		if (record == null)
-			return;
-		String tp = record.getAttribute("pr");
-		if (tp == null)
-			return;
-		if ("3".equals(tp)) {
-			String phone = record.getAttribute("phone");
-			if (phone != null)
-				phones.add(phone);
-			return;
+	private void search() {
+		Criteria orgGridCriteria = new Criteria();
+		orgGridCriteria.setAttribute("parrent_organization_id", 80353);
+		if (organizationNameItem.getValueAsString() != null
+				&& !organizationNameItem.getValueAsString().equals("")) {
+			orgGridCriteria.setAttribute("organization_name",
+					organizationNameItem.getValueAsString());
 		}
-		int len = orgPhonesGrid.getRecordList().getLength();
-		int index = orgPhonesGrid.getRecordList().indexOf(record);
-		for (int i = index + 1; i < len; i++) {
-			record = orgPhonesGrid.getRecordList().get(i);
-			if (record == null)
-				continue;
-			String pid = record.getAttribute("pid");
-			if (pid == null)
-				continue;
-			if (pid.equals(id)) {
-				String nid = record.getAttribute("id");
-				if (nid == null)
-					continue;
-				findAllPhonesByID(nid, phones);
+
+		if (departmentNameItem.getValueAsString() != null
+				&& !departmentNameItem.getValueAsString().equals("")) {
+			orgGridCriteria.setAttribute("department",
+					departmentNameItem.getValueAsString());
+		}
+
+		if (phoneItem.getValueAsString() != null
+				&& !phoneItem.getValueAsString().equals("")) {
+			orgGridCriteria.setAttribute("phone", phoneItem.getValueAsString());
+		}
+		organizationGrid.fetchData(orgGridCriteria, new DSCallback() {
+
+			@Override
+			public void execute(DSResponse response, Object rawData,
+					DSRequest request) {
+				Record r[] = response.getData();
+				if (r != null && r.length > 0)
+					organizationGrid.selectRecord(r[0]);
+				Record record = organizationGrid.getSelectedRecord();
+				record = record == null ? new Record() : record;
+				fetchDepartmentAndPhones(record);
+
+				// Record r[]= response.getData();
+				// if(r==null||r.length==0)
+				// fetchDepartmentAndPhones(new Record());
+				// else
+				// {
+				//
+				//
+				// }
+
 			}
-		}
+		});
 
-	}
-
-	protected ArrayList<String> getAllPhones() {
-		ArrayList<String> phones = new ArrayList<String>();
-		Record[] records = orgPhonesGrid.getRecords();
-		for (Record record : records) {
-			String phone = record.getAttribute("phone");
-			if (phone == null)
-				continue;
-			phones.add(phone);
-		}
-		return phones;
-	}
-
-	protected ArrayList<String> getSelectedPhones() {
-		ArrayList<String> phones = new ArrayList<String>();
-		Record[] records = orgPhonesGrid.getRecords();
-		for (Record record : records) {
-			String phone = record.getAttribute("phone");
-			if (phone == null)
-				continue;
-			String tp = record.getAttribute("pr");
-			if (tp == null)
-				continue;
-			if ("3".equals(tp)) {
-				phones.add(phone);
-			}
-		}
-		return phones;
 	}
 
 	protected void addPhones(ListGridRecord record) {
@@ -577,20 +555,26 @@ public class DlgContractorPhones extends Window {
 
 	}
 
-	private void removePhone(String phone) {
+	private void fetchPhones(Record record) {
+		String org_department_id = record.getAttribute("org_department_id");
+		String organization_id = record.getAttribute("organization_id");
+		Criteria phoneCriteria = new Criteria();
+		if (org_department_id != null)
+			phoneCriteria.setAttribute("org_department_id", org_department_id);
+		else if (organization_id != null)
+			phoneCriteria.setAttribute("organization_id", organization_id);
+		else
+			phoneCriteria.setAttribute("organization_id", -1);
 
-		Record record = contractPhonesGrid.getRecordList().find("phone", phone);
-		if (record != null) {
-			contractPhonesGrid.getDataSource().removeData(record);
+		phoneGrid.fetchData(phoneCriteria);
+	}
 
-		}
-		Record[] records = orgPhonesGrid.getRecordList()
-				.findAll("phone", phone);
-		if (records != null) {
-			for (Record record2 : records) {
-				record2.setAttribute("cp_id", (String) null);
-			}
-
-		}
+	private void fetchDepartmentAndPhones(Record record) {
+		String organization_id = record.getAttribute("organization_id");
+		organization_id = organization_id == null ? "-1" : organization_id;
+		Criteria depGridCriteria = new Criteria();
+		depGridCriteria.setAttribute("organization_id", organization_id);
+		departmentGrid.fetchData(depGridCriteria);
+		fetchPhones(record);
 	}
 }

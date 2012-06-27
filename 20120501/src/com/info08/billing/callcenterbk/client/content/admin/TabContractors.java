@@ -319,10 +319,10 @@ public class TabContractors extends Tab {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-				/*	DlgAddEditContractor dlgAddEditContractor = new DlgAddEditContractor(
+					DlgAddEditContractor dlgAddEditContractor = new DlgAddEditContractor(
 							contractorsGrid, null);
-					dlgAddEditContractor.show();*/
-					new DlgContractorPhones().show();
+					dlgAddEditContractor.show();
+					// new DlgContractorPhones().show();
 				}
 			});
 
