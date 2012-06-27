@@ -19,7 +19,7 @@ public class DlgViewCallRules extends Window {
 	public DlgViewCallRules() {
 		setTitle(CallCenterBK.constants.info());
 
-		setHeight(160);
+		setHeight(175);
 		setWidth(500);
 		setShowMinimizeButton(false);
 		setIsModal(true);
@@ -44,7 +44,7 @@ public class DlgViewCallRules extends Window {
 		TextAreaItem infoItem = new TextAreaItem();
 		infoItem.setTitle(CallCenterBK.constants.callInfo());
 		infoItem.setWidth("100%");
-		infoItem.setHeight(65);
+		infoItem.setHeight(75);
 		infoItem.setName("infoItem");
 		infoItem.setColSpan(3);
 		infoItem.setCanEdit(false);

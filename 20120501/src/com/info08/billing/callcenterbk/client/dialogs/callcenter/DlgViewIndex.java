@@ -45,7 +45,7 @@ public class DlgViewIndex extends Window {
 
 		setTitle(CallCenterBK.constants.codes());
 
-		setHeight(430);
+		setHeight(450);
 		setWidth(950);
 		setShowMinimizeButton(false);
 		setIsModal(true);
