@@ -67,21 +67,21 @@ public class DlgViewChargesByPhone extends Window {
 			nmItem.setName("phoneItem");
 			nmItem.setWidth(250);
 			nmItem.setCanEdit(false);
-			String phone = serverSession.getPhone();
-			nmItem.setValue(phone);
+			String call_phone = serverSession.getPhone();
+			nmItem.setValue(call_phone);
 
 			dynamicForm.setFields(nmItem);
 
-			DataSource logSessChDSNew = DataSource.get("LogSessChDSNew");
+			DataSource callSessDS = DataSource.get("CallSessDS");
 
 			listGrid = new ListGrid();
 			listGrid.setWidth100();
 			listGrid.setHeight100();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("phone", phone);
+			criteria.setAttribute("call_phone", call_phone);
 			listGrid.setCriteria(criteria);
 			listGrid.setFetchOperation("selectChargesByPhoneInCurrMonth");
-			listGrid.setDataSource(logSessChDSNew);
+			listGrid.setDataSource(callSessDS);
 			listGrid.setAutoFetchData(true);
 			listGrid.setCanSort(false);
 			listGrid.setCanResizeFields(false);
@@ -100,7 +100,7 @@ public class DlgViewChargesByPhone extends Window {
 			aprice.setAlign(Alignment.CENTER);
 			aprice.setShowGroupSummary(false);
 			aprice.setShowGridSummary(false);
-			
+
 			ListGridField amount = new ListGridField("amount",
 					CallCenterBK.constants.amount(), 100);
 			amount.setSummaryFunction(SummaryFunctionType.SUM);
