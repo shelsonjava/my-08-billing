@@ -76,7 +76,7 @@
 		      ,getDescription(t.town_type_id) as town_type_name
 		      ,c.country_name
 			</selectClause> 
-			<tableClause>ccare.towns t, ccare.countries c</tableClause>
+			<tableClause>towns t, countries c</tableClause>
 			<whereClause><![CDATA[ 
 				c.country_id = t.country_id
 				#if($criteria.capital_town) and t.capital_town = $criteria.capital_town #end
@@ -215,7 +215,7 @@
     			t.country_id,
     			t.country_index_id
 			</selectClause> 
-			<tableClause>ccare.v_mobile_indexes t</tableClause>
+			<tableClause>v_mobile_indexes t</tableClause>
 			<whereClause><![CDATA[ 
 				 1 = 1
 				 #if($criteria.country_id) and t.country_id = $criteria.country_id #end
