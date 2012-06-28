@@ -1,7 +1,7 @@
 <DataSource
 	ID="CountryDS"
 	serverType="sql"
-	tableName="ccare.countries"
+	tableName="countries"
 	qualifyColumnNames="false">
 	<fields>
 		<field name="country_id"		type="integer"	title="ID"				hidden="true" primaryKey="true" />

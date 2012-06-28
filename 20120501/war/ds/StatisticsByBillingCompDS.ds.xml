@@ -1,7 +1,7 @@
 <DataSource
 	ID="StatisticsByBillingCompDS"
 	serverType="sql"
-	tableName="ccare.STATISTIC_BY_BILLING_COMPANY"
+	tableName="STATISTIC_BY_BILLING_COMPANY"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 
@@ -26,7 +26,7 @@
 					tc.billing_company_name,
 					tc.billing_company_id
 			</selectClause> 
-			<tableClause>ccare.STATISTIC_BY_BILLING_COMPANY t, ccare.BILLING_COMPANIES tc</tableClause>
+			<tableClause>STATISTIC_BY_BILLING_COMPANY t, BILLING_COMPANIES tc</tableClause>
 			<whereClause><![CDATA[
 				 t.billing_company_id = tc.billing_company_id
 				 #if($criteria.ym) and t.ym = $criteria.ym #end			 				

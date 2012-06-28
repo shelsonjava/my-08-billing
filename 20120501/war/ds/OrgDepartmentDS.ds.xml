@@ -189,7 +189,7 @@
 					        FROM organization_department o
 					       start with o.org_department_id in
 					                  (select kk.org_department_id
-					                     from ccare.organization_department kk
+					                     from organization_department kk
 					                    where 1=1
 					                    	#if($criteria.organization_id) and kk.organization_id = $criteria.organization_id #end
 					                    	#if($criteria.org_department_id) and kk.org_department_id = $criteria.org_department_id #end
@@ -206,8 +206,8 @@
 					                        	and exists (
 					                        		select 
 					                        			1 
-					                        		from ccare.organization_depart_to_phones p
-                     									inner join ccare.phone_numbers pn on pn.phone_number_id = p.phone_number_id
+					                        		from organization_depart_to_phones p
+                     									inner join phone_numbers pn on pn.phone_number_id = p.phone_number_id
               										where 
               											kk.org_department_id = p.org_department_id and pn.phone = $criteria.phone
               											#if($criteria.for_contact)
@@ -222,7 +222,7 @@
 					        FROM organization_department o
 					       start with o.org_department_id in
 					                  (select kk.org_department_id
-					                     from ccare.organization_department kk
+					                     from organization_department kk
 					                    where 1=1
 					                    	#if($criteria.organization_id) and kk.organization_id = $criteria.organization_id #end
 					                    	#if($criteria.org_department_id) and kk.org_department_id = $criteria.org_department_id #end
@@ -239,8 +239,8 @@
 					                        	and exists (
 					                        		select 
 					                        			1 
-					                        		from ccare.organization_depart_to_phones p
-                     									inner join ccare.phone_numbers pn on pn.phone_number_id = p.phone_number_id
+					                        		from organization_depart_to_phones p
+                     									inner join phone_numbers pn on pn.phone_number_id = p.phone_number_id
               										where 
               											kk.org_department_id = p.org_department_id and pn.phone = $criteria.phone
               											#if($criteria.for_contact)
@@ -250,7 +250,7 @@
 					                        #end
 					                   )
 					      connect by prior o.org_department_id = o.parrent_department_id) f
-					inner join ccare.organization_department dd on dd.org_department_id = f.org_department_id
+					inner join organization_department dd on dd.org_department_id = f.org_department_id
 					start with f.parrent_department_id is null
 					connect by prior f.org_department_id = f.parrent_department_id
 					order siblings by dd.inner_order ) t1

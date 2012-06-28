@@ -1,7 +1,7 @@
 <DataSource
 	ID="SurveyKindDS"
 	serverType="sql"
-	tableName="ccare.survey_kind"
+	tableName="survey_kind"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>

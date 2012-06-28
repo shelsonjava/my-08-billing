@@ -1,7 +1,7 @@
 <DataSource
 	ID="SurveyReplyTypeDS"
 	serverType="sql"
-	tableName="ccare.survey_reply_type"
+	tableName="survey_reply_type"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

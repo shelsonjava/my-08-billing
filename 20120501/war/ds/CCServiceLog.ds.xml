@@ -1,7 +1,7 @@
 <DataSource
 	ID="CCServiceLog"
 	serverType="sql"
-	tableName="ccare.ent_types"
+	tableName="ent_types"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	

@@ -1,7 +1,7 @@
 <DataSource
 	ID="SentSMSHist"
 	serverType="sql"
-	tableName="ccare.SENT_SMS_HIST"
+	tableName="SENT_SMS_HIST"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -44,7 +44,7 @@
 				decode(t.message_type, 1, 'გარკვევა', 'ჩვეულებრივი') as message_type_descr,
 				decode(t.hist_status_id, 1, 'მიწოდებულია', 'მიუწოდებელია') as hist_status_descr
 			</selectClause> 
-			<tableClause>SENT_SMS_HIST t,ccare.services s, users tt</tableClause>
+			<tableClause>SENT_SMS_HIST t,services s, users tt</tableClause>
 			<whereClause><![CDATA[			 
 				t.service_id = s.service_id(+) and t.creator_user = tt.user_name(+)
 				#if($criteria.reciever_number) and t.reciever_number like '%'||$criteria.reciever_number||'%' #end

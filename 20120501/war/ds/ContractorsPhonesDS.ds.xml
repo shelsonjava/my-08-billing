@@ -1,7 +1,7 @@
 <DataSource
 	ID="ContractorsPhonesDS"
 	serverType="sql"
-	tableName="ccare.contractor_phones"
+	tableName="contractor_phones"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -19,7 +19,7 @@
     		<selectClause>
     			   phone
 			</selectClause> 
-			<tableClause>ccare.contractor_phones t</tableClause>
+			<tableClause>contractor_phones t</tableClause>
 			<whereClause><![CDATA[
 				 t.contract_id = $criteria.contract_id 
 				]]>  
@@ -139,7 +139,7 @@
 				         start with pr = 1
 				        connect by prior id = pid
 				         order siblings by t.pr, t.lev, t.rn) phns
-				  left join ccare.contractor_phones t
+				  left join contractor_phones t
 				    on t.contract_id = $criteria.contract_id
 				   and phns.pr = 3
 				   and phns.phone = t.phone

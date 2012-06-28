@@ -226,8 +226,8 @@
 				   	#if($criteria.concat_address) AND t.concat_address like '%'||($criteria.concat_address)||'%' #end
 				   	#if($criteria.phone_number)
 				   	and exists (select 1
-				          from ccare.hist_subscriber_to_phones htp
-				              ,ccare.hist_phone_numbers        hph
+				          from hist_subscriber_to_phones htp
+				              ,hist_phone_numbers        hph
 				         where htp.subscriber_id = t.subscriber_id
 				           and htp.phone_number_id = hph.phone_number_id
 				           and hph.phone = ($criteria.phone_number) )				   	

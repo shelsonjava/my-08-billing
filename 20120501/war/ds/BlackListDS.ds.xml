@@ -1,7 +1,7 @@
 <DataSource
 	ID="BlackListDS"
 	serverType="sql"
-	tableName="ccare.block_list"
+	tableName="block_list"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	
@@ -40,13 +40,13 @@
 						,(select wm_concat(PHONE_NUMBER) from BLACK_LIST_PHONES tt where tt.black_list_id=t.black_list_id ) blackListPhones
 					#end
 			</selectClause> 
-			<tableClause>ccare.black_list t</tableClause>
+			<tableClause>black_list t</tableClause>
 			<whereClause><![CDATA[
 					 1=1
 					 #if($criteria.black_list_id) and t.black_list_id = $criteria.black_list_id #end
 					 #if($criteria.title_descr) and t.title_descr like '%'||($criteria.title_descr)||'%' #end
 					 #if($criteria.phone)
-					 	and t.id in (exists (select tt.black_list_id from ccare.block_list_phones tt where tt.PHONE_NUMBER = $criteria.phone) 				 	
+					 	and t.id in (exists (select tt.black_list_id from block_list_phones tt where tt.PHONE_NUMBER = $criteria.phone) 				 	
 					 #end
 				]]>  
 			</whereClause> 

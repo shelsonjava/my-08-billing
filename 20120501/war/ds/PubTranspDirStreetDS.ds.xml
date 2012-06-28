@@ -1,5 +1,5 @@
 <DataSource ID="PubTranspDirStreetDS" serverType="sql"
-	tableName="ccare.PUBLIC_TRANSP_DIR_STREET" qualifyColumnNames="false"
+	tableName="PUBLIC_TRANSP_DIR_STREET" qualifyColumnNames="false"
 	dropExtraFields="false">
 	<fields>
 		<field name="pts_id" 			type="integer" title="ID" hidden="true" 			primaryKey="true" />

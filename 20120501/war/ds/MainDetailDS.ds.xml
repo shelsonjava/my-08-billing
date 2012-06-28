@@ -1,7 +1,7 @@
 <DataSource
 	ID="MainDetailDS"
 	serverType="sql"
-	tableName="ccare.main_details"
+	tableName="main_details"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -121,7 +121,7 @@
     			md.main_detail_id,
     			md.main_detail_geo 
 			</selectClause> 
-			<tableClause>ccare.main_details md</tableClause>	
+			<tableClause>main_details md</tableClause>	
 			<whereClause>
 					md.main_detail_type_id in (5,30,59,60,61) and md.deleted = 0	    
 				    #if($criteria.organization_id) and md.organization_id = $criteria.organization_id #end

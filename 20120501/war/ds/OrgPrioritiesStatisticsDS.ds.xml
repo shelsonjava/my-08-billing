@@ -21,8 +21,8 @@
  				op.organization_name org_name, opr.organization_name real_name, count(1) cnt,ym, org_id, real_org_id
 			</selectClause> 
 			<tableClause>ORG_PRIORITY_STATISTICS t,
-					     ccare.organizations     opr,
-					     ccare.organizations     op</tableClause>
+					     organizations     opr,
+					     organizations     op</tableClause>
 			<whereClause><![CDATA[ 
 					   ym = to_number(to_char($criteria.time, 'YYYYMM'))
 					   and opr.organization_id = t.real_org_id
@@ -42,7 +42,7 @@
  				cs.session_id, cs.call_start_date,cs.call_end_date, cs.call_phone, cs.uname
 			</selectClause> 
 			<tableClause>ORG_PRIORITY_STATISTICS t,
-       					 ccare.call_sessions     cs</tableClause>
+       					 call_sessions     cs</tableClause>
 			<whereClause><![CDATA[ 
 					   #if(!$criteria.real_org_id) 
 					   	   1!=1 

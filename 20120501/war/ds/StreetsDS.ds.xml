@@ -103,7 +103,7 @@
 				t.hide_for_call_center,
 				t.hide_for_correction								
 			</selectClause> 
-			<tableClause>ccare.streets t,ccare.towns c,street_to_town_districts sd,town_district sr</tableClause>
+			<tableClause>streets t,towns c,street_to_town_districts sd,town_district sr</tableClause>
 			<whereClause><![CDATA[ 
 				 t.town_id = c.town_id and
 				 t.street_id = sd.street_id(+) and
@@ -149,7 +149,7 @@
 			   		, getStreetIdxs(t.street_id) as street_index 
 			   #end
 			</selectClause> 
-			<tableClause>ccare.streets t</tableClause>
+			<tableClause>streets t</tableClause>
 			<whereClause><![CDATA[ 
 				1=1 and t.hide_for_correction = 0
 				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
@@ -165,7 +165,7 @@
     			t.street_id,
     			t.street_name				
 			</selectClause> 
-			<tableClause>ccare.streets t</tableClause>
+			<tableClause>streets t</tableClause>
 			<whereClause><![CDATA[ 
 				($defaultWhereClause)  and t.hide_for_correction = 0
 				]]>  

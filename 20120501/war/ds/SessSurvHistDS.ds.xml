@@ -1,7 +1,7 @@
 <DataSource
 	ID="SessSurvHistDS"
 	serverType="sql"
-	tableName="ccare.survey"
+	tableName="survey"
 	qualifyColumnNames="false">
 	<fields>
 		<field name="survey_id"					type="integer"	title="ID"	hidden="true" primaryKey="true" />

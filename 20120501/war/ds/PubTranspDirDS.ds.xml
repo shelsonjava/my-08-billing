@@ -1,7 +1,7 @@
 <DataSource
 	ID="PubTranspDirDS"
 	serverType="sql"
-	tableName="ccare.PUBLIC_TRANSP_DIR"
+	tableName="PUBLIC_TRANSP_DIR"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -95,7 +95,7 @@
 			       t.CYCLED_ID direction,
 			       decode(t.CYCLED_ID,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as cycle_descr
 			</selectClause> 
-			<tableClause>incity_transport_view_new t, ccare.transp_types tt</tableClause>
+			<tableClause>incity_transport_view_new t, transp_types tt</tableClause>
 			<whereClause><![CDATA[
 					t.transport_type_id = tt.transp_type_id
 					#if($criteria.transp_type_id) and t.transport_type_id = $criteria.transp_type_id #end
@@ -103,13 +103,13 @@
 					#if($criteria.transportno) and (t.transportno = $criteria.transportno) #end
 					
 					#if($criteria.start_place_id) 
-							and t.transportid in (select tt1.dir_id from ccare.public_transp_dir_street tt1 , ccare.streets str
+							and t.transportid in (select tt1.dir_id from public_transp_dir_street tt1 , streets str
 								where str.hide_for_call_center = 0 and tt1.street_id = str.street_id
 										#foreach($str in $criteria.start_place_id.split(" "))
 											and trim(str.street_name ||' '||tt1.remarks) like '%'||'$str'||'%'
 										#end
 										#if($criteria.end_place_id) 
-												and exists (select 1 from ccare.public_transp_dir_street tt2 , ccare.streets str1
+												and exists (select 1 from public_transp_dir_street tt2 , streets str1
 																   where tt2.dir_id =tt1.dir_id and tt1.dir=tt2.dir 
 																   and 
 																   		 tt2.dir_order>tt1.dir_order
