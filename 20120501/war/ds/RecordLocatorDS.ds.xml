@@ -1,0 +1,20 @@
+<DataSource
+	ID="RecordLocatorDS"
+	serverType="generic" dropExtraFields="false">
+	<fields>
+		<field name="start_index"				type="integer"		title="ID"/>
+		<field name="end_index"					type="integer"		title="ID"/>
+		<field name="record_index"					type="integer"		title="ID"/>
+	</fields>
+
+	<operationBindings>
+
+
+	<binding operationType="fetch" operationId="locateRecord"
+		serverMethod="locateRecord">
+		<serverObject lookupStyle="new"
+			className="com.info08.billing.callcenterbk.server.impl.dmi.DefaultDMI" />
+	</binding>
+
+</operationBindings>	
+</DataSource>

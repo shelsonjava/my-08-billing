@@ -15,6 +15,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
+import com.smartgwt.client.data.DSCallback;
+import com.smartgwt.client.data.DSRequest;
+import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.util.SC;
@@ -464,6 +467,7 @@ public class ClientUtils {
 			SC.say(e.toString());
 		}
 	}
+
 	public static void downloadFile(String sessionId, Date date) {
 		try {
 			CallCenterBK.commonService.findSessionMp3ById(sessionId, date,
@@ -487,5 +491,26 @@ public class ClientUtils {
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
+	}
+
+	public static void locateRecord(String dataSource, String operationId,
+			String fieldName, Object fieldValue) {
+		DataSource recordLocatorDS = DataSource.get("RecordLocatorDS");
+		DSRequest req = new DSRequest();
+		req.setOperationId("locateRecord");
+		Criteria cr = new Criteria();
+		cr.setAttribute("DataSourceName", dataSource);
+		cr.setAttribute("OperationId", operationId);
+		cr.setAttribute("FieldName", fieldName);
+		cr.setAttribute("FieldValue", fieldValue);
+		recordLocatorDS.fetchData(cr, new DSCallback() {
+
+			@Override
+			public void execute(DSResponse response, Object rawData,
+					DSRequest request) {
+				// TODO Auto-generated method stub
+
+			}
+		}, req);
 	}
 }

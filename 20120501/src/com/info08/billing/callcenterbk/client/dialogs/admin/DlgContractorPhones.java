@@ -1,7 +1,5 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import java.util.ArrayList;
-
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -13,30 +11,21 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.FieldType;
-import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.CloseClickEvent;
-import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
-import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.CellClickEvent;
-import com.smartgwt.client.widgets.grid.events.CellClickHandler;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -58,8 +47,6 @@ public class DlgContractorPhones extends Window {
 	private ListGrid departmentGrid;
 	private ListGrid phoneGrid;
 
-	private ListGrid orgPhonesGrid;
-
 	private ListGrid contractPhonesGrid;
 
 	private ListGrid listGridPhones;
@@ -67,6 +54,7 @@ public class DlgContractorPhones extends Window {
 	private DataSource OrgDS;
 	private DataSource OrgDepartmentDS;
 	private DataSource ContractorsPhonesDS;
+	private Criteria lastPhoneCriteria;
 
 	public DlgContractorPhones(Integer organization_id, ListGrid listGridPhones) {
 		try {
@@ -185,8 +173,6 @@ public class DlgContractorPhones extends Window {
 			organizationGrid.setHeight(200);
 			organizationGrid.setAlternateRecordStyles(true);
 			organizationGrid.setAutoFetchData(false);
-			// organizationGrid.setShowFilterEditor(true);
-			// organizationGrid.setFilterOnKeypress(true);
 
 			ListGridField organizationName = new ListGridField(
 					"organization_name", CallCenterBK.constants.organization());
@@ -195,7 +181,15 @@ public class DlgContractorPhones extends Window {
 
 			Criteria orgGridCriteria = new Criteria();
 			orgGridCriteria.setAttribute("pp_organization_id", organization_id);
-			organizationGrid.fetchData(orgGridCriteria);
+			organizationGrid.fetchData(orgGridCriteria, new DSCallback() {
+
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					setOrgFetchResult(response);
+
+				}
+			});
 
 			organizationGrid.addRecordClickHandler(new RecordClickHandler() {
 
@@ -220,14 +214,7 @@ public class DlgContractorPhones extends Window {
 
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord gridRecord[] = phoneGrid.getRecords();
-					for (ListGridRecord listGridRecord : gridRecord) {
-						if (listGridRecord != null
-								&& listGridRecord.getAttribute("phone") != null) {
-							addPhone(listGridRecord.getAttribute("phone"),
-									false);
-						}
-					}
+					addPhones();
 
 				}
 			});
@@ -245,8 +232,6 @@ public class DlgContractorPhones extends Window {
 			departmentGrid.setHeight100();
 			departmentGrid.setAlternateRecordStyles(true);
 			departmentGrid.setAutoFetchData(false);
-			// departmentGrid.setShowFilterEditor(true);
-			// departmentGrid.setFilterOnKeypress(true);
 
 			ListGridField departmentName = new ListGridField("department",
 					CallCenterBK.constants.department());
@@ -284,76 +269,6 @@ public class DlgContractorPhones extends Window {
 
 			phoneGrid.setFields(phoneCol);
 
-			/*******************/
-
-			orgPhonesGrid = new ListGrid() {
-				@Override
-				protected String getCellCSSText(ListGridRecord record,
-						int rowNum, int colNum) {
-					if (record == null)
-						return super.getCellCSSText(record, rowNum, colNum);
-					String field = orgPhonesGrid.getField(colNum).getName();
-					if ("name".equals(field)) {
-						String tp = record.getAttribute("pr");
-						if ("1".equals(tp)) {
-							return "font-weight:bold;";
-						} else if ("2".equals(tp)) {
-							return "color:blue;";
-						} else if ("3".equals(tp)) {
-							String cp_id = record.getAttribute("cp_id");
-							if (cp_id != null)
-								return "color:red;";
-						}
-					}
-					return super.getCellCSSText(record, rowNum, colNum);
-				}
-			};
-
-			DataSource dsSource = DataSource.get("ContractorsPhonesDS");
-			orgPhonesGrid.setDataSource(dsSource);
-
-			Criteria cr = new Criteria();
-			cr.setAttribute("organization_id", 80353);
-			cr.setAttribute("contract_id", 5);
-
-			orgPhonesGrid.setFetchOperation("organisationPhones");
-
-			orgPhonesGrid.setWidth("83%");
-			orgPhonesGrid.setHeight100();
-			orgPhonesGrid.setAlternateRecordStyles(true);
-			orgPhonesGrid.setAutoFetchData(false);
-			orgPhonesGrid.setShowFilterEditor(true);
-			orgPhonesGrid.setFilterOnKeypress(true);
-
-			orgPhonesGrid.fetchData(cr);
-
-			ListGridField name = new ListGridField("name",
-					CallCenterBK.constants.name());
-			name.setAlign(Alignment.LEFT);
-
-			ListGridField add = new ListGridField("add", "", 20);
-			add.setAlign(Alignment.LEFT);
-			add.setType(ListGridFieldType.ICON);
-			add.setCellIcon("restore.png");
-			add.setCanEdit(false);
-			add.setCanFilter(true);
-			add.setFilterEditorType(new SpacerItem());
-			add.setCanGroupBy(false);
-			add.setCanSort(false);
-
-			orgPhonesGrid.addCellClickHandler(new CellClickHandler() {
-
-				@Override
-				public void onCellClick(CellClickEvent event) {
-					String field_name = orgPhonesGrid.getField(
-							event.getColNum()).getName();
-					if (field_name.equals("add"))
-						addPhones(event.getRecord());
-				}
-			});
-
-			orgPhonesGrid.setFields(name, add);
-
 			contractPhonesGrid = new ListGrid();
 			contractPhonesGrid.setWidth("17%");
 			contractPhonesGrid.setHeight100();
@@ -366,16 +281,6 @@ public class DlgContractorPhones extends Window {
 					CallCenterBK.constants.phone());
 			phone.setAlign(Alignment.LEFT);
 
-			ListGridField remove = new ListGridField("remove", "", 20);
-			remove.setAlign(Alignment.LEFT);
-			remove.setType(ListGridFieldType.ICON);
-			remove.setCellIcon("[SKINIMG]/actions/remove.png");
-			remove.setCanEdit(false);
-			remove.setCanFilter(true);
-			remove.setFilterEditorType(new SpacerItem());
-			remove.setCanGroupBy(false);
-			remove.setCanSort(false);
-
 			DataSource dsDest = new DataSource();
 			DataSourceField dsPhone = new DataSourceField("phone",
 					FieldType.TEXT);
@@ -383,18 +288,19 @@ public class DlgContractorPhones extends Window {
 			dsDest.setFields(dsPhone);
 			dsDest.setClientOnly(true);
 
-			contractPhonesGrid.setDataSource(dsDest);
-			contractPhonesGrid.setFields(phone, remove);
-			contractPhonesGrid.setShowFilterEditor(true);
-			contractPhonesGrid.setFilterOnKeypress(true);
-
 			RecordList phoneList = listGridPhones.getRecordList();
 
 			if (phoneList != null && !phoneList.isEmpty()) {
 				for (int i = 0; i < phoneList.getLength(); i++) {
-					contractPhonesGrid.addData(phoneList.get(i));
+					dsDest.addData(phoneList.get(i));
 				}
 			}
+
+			contractPhonesGrid.setDataSource(dsDest);
+			contractPhonesGrid.setFields(phone);
+			contractPhonesGrid.setShowFilterEditor(true);
+			contractPhonesGrid.setFilterOnKeypress(true);
+			contractPhonesGrid.fetchData();
 
 			/****************************************************/
 
@@ -439,16 +345,41 @@ public class DlgContractorPhones extends Window {
 					destroy();
 				}
 			});
-			addCloseClickHandler(new CloseClickHandler() {
+
+			okButton.addClickHandler(new ClickHandler() {
 				@Override
-				public void onCloseClick(CloseClickEvent event) {
+				public void onClick(ClickEvent event) {
+					save();
 				}
 			});
+
 			addItem(mainLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
+	}
+
+	private void save() {
+		contractPhonesGrid.clearCriteria(new DSCallback() {
+			
+			@Override
+			public void execute(DSResponse response, Object rawData, DSRequest request) {
+				RecordList phoneList = contractPhonesGrid.getRecordList();
+				if (phoneList == null || phoneList.isEmpty()) {
+					SC.say(CallCenterBK.constants.phonesListIsEmpty());
+					return;
+				}
+				listGridPhones.selectAllRecords();
+				listGridPhones.removeSelectedData();
+				for (int i = 0; i < phoneList.getLength(); i++) {
+					listGridPhones.addData(phoneList.get(i));
+				}
+				destroy();
+				
+			}
+		}, new DSRequest());
+		
 	}
 
 	private void search() {
@@ -475,54 +406,24 @@ public class DlgContractorPhones extends Window {
 			@Override
 			public void execute(DSResponse response, Object rawData,
 					DSRequest request) {
-				Record r[] = response.getData();
-				if (r != null && r.length > 0)
-					organizationGrid.selectRecord(r[0]);
-				Record record = organizationGrid.getSelectedRecord();
-				record = record == null ? new Record() : record;
-				fetchDepartmentAndPhones(record);
-
-				// Record r[]= response.getData();
-				// if(r==null||r.length==0)
-				// fetchDepartmentAndPhones(new Record());
-				// else
-				// {
-				//
-				//
-				// }
+				setOrgFetchResult(response);
 
 			}
 		});
 
 	}
 
-	protected void addPhones(ListGridRecord record) {
-		if (record == null)
-			return;
+	protected void addPhones() {
 
-		String tp = record.getAttribute("pr");
-		if (tp == null)
-			return;
-		if ("3".equals(tp)) {
-			String phone = record.getAttribute("phone");
-			if (phone != null)
-				addPhone(phone, true);
-			orgPhonesGrid.redraw();
-			return;
-		}
-		String id = record.getAttribute("rid");
-		if (id == null)
-			return;
 		DataSource ds = DataSource.get("ContractorsPhonesDS");
-		Criteria cr = new Criteria();
+		Criteria cr = lastPhoneCriteria;
+		if (cr == null) {
+			cr = new Criteria();
+			cr.setAttribute("organization_id", -1);
+		}
 		DSRequest req = new DSRequest();
 		req.setOperationId("searchPhones");
-		if ("1".equals(tp)) {
-			cr.setAttribute("organization_id", id);
-		}
-		if ("2".equals(tp)) {
-			cr.setAttribute("org_department_id", id);
-		}
+
 		ds.fetchData(cr, new DSCallback() {
 
 			@Override
@@ -535,8 +436,6 @@ public class DlgContractorPhones extends Window {
 						if (phone != null)
 							addPhone(phone, true);
 					}
-					orgPhonesGrid.redraw();
-
 				}
 
 			}
@@ -565,7 +464,7 @@ public class DlgContractorPhones extends Window {
 			phoneCriteria.setAttribute("organization_id", organization_id);
 		else
 			phoneCriteria.setAttribute("organization_id", -1);
-
+		lastPhoneCriteria = phoneCriteria;
 		phoneGrid.fetchData(phoneCriteria);
 	}
 
@@ -576,5 +475,14 @@ public class DlgContractorPhones extends Window {
 		depGridCriteria.setAttribute("organization_id", organization_id);
 		departmentGrid.fetchData(depGridCriteria);
 		fetchPhones(record);
+	}
+
+	protected void setOrgFetchResult(DSResponse response) {
+		Record r[] = response.getData();
+		if (r != null && r.length > 0)
+			organizationGrid.selectRecord(r[0]);
+		Record record = organizationGrid.getSelectedRecord();
+		record = record == null ? new Record() : record;
+		fetchDepartmentAndPhones(record);
 	}
 }

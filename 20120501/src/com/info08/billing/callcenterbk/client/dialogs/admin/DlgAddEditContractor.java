@@ -33,7 +33,6 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
-import com.smartgwt.client.widgets.form.fields.RadioGroupItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.SpinnerItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
@@ -62,7 +61,7 @@ public class DlgAddEditContractor extends Window {
 	private DateItem endDateItem;
 	private CheckboxItem blockItem;
 	private CheckboxItem smsWarnItem;
-	private TextAreaItem noteItem;
+	private TextItem noteItem;
 	private SelectItem contractorType;
 	private SpinnerItem critNumberItem;
 	private CheckboxItem priceTypeItem;
@@ -188,10 +187,10 @@ public class DlgAddEditContractor extends Window {
 			smsWarnItem.setWidth(200);
 			smsWarnItem.setName("smsWarnItem");
 
-			noteItem = new TextAreaItem();
+			noteItem = new TextItem();
 			noteItem.setTitle(CallCenterBK.constants.comment());
 			noteItem.setWidth(600);
-			noteItem.setHeight(50);
+
 			noteItem.setName("noteItem");
 			noteItem.setColSpan(4);
 
@@ -520,10 +519,10 @@ public class DlgAddEditContractor extends Window {
 		}
 	}
 
-	protected void setUpPhones(Integer tmp_organization_id) {
+	protected void setUpPhones(final Integer tmp_organization_id) {
 		if (tmp_organization_id == null) {
 			if (organization_id == null) {
-				SC.warn("აუცილებლადდდ");
+				SC.warn("ორგანიზაცია აუცილებლად უნდა იყოს არჩეული!!!");
 				disableEnablePhoneButtons(true);
 				return;
 			}
@@ -532,23 +531,39 @@ public class DlgAddEditContractor extends Window {
 			return;
 		}
 		disableEnablePhoneButtons(false);
-		if (organization_id == null
-				|| (organization_id != null && !tmp_organization_id
-						.equals(organization_id))) {
-			SC.ask("aaaa", new BooleanCallback() {
-
-				@Override
-				public void execute(Boolean value) {
-					if (value.booleanValue()) {
-						listGridPhones.selectAllRecords();
-						listGridPhones.removeSelectedData();
-					} else {
-						myComboBoxItemOrg.setDataValue(organization_id);
-					}
-				}
-			});
+		if (listGridPhones.getRecordList().isEmpty()) {
+			organization_id = tmp_organization_id;
+			return;
 		}
 
+		listGridPhones.clearCriteria(new DSCallback() {
+
+			@Override
+			public void execute(DSResponse response, Object rawData,
+					DSRequest request) {
+
+			}
+		}, new DSRequest());
+		if ((organization_id != null && !tmp_organization_id
+				.equals(organization_id))) {
+			SC.ask("შეიცვალა ორგანიზაცია, ხოლო ნომრების სია ცარიელი არაა, ამიტომ სია დაცარიელდება. განვაგრძოთ?",
+					new BooleanCallback() {
+						@Override
+						public void execute(Boolean value) {
+							if (value.booleanValue()) {
+								organization_id = tmp_organization_id;
+								listGridPhones.selectAllRecords();
+								listGridPhones.removeSelectedData();
+							} else {
+								myComboBoxItemOrg.setDataValue(organization_id);
+							}
+						}
+					});
+			return;
+		}
+		if (organization_id == null) {
+			organization_id = tmp_organization_id;
+		}
 	}
 
 	protected void getCallCountByOrgOrDep(Integer organization_id,
@@ -663,18 +678,15 @@ public class DlgAddEditContractor extends Window {
 						}
 					}
 				}
-			}, dsRequest);
+			}, dsRequest1);
 
-			Integer main_detail_id = editRecord
-					.getAttributeAsInt("main_detail_id");
-
-			if (main_detail_id != null && main_detail_id.intValue() > 0) {
-				// String orgDepName = editRecord
-				// .getAttributeAsString("orgDepName");
-				// myComboBoxItemOrgDetails.setMyId(main_detail_id);
-				// myComboBoxItemOrgDetails.setMyValue(orgDepName);
+			Integer organization_id = editRecord
+					.getAttributeAsInt("organization_id");
+			if (organization_id != null) {
+				myComboBoxItemOrg.setDataValue(organization_id);
+				this.organization_id = organization_id;
+				disableEnablePhoneButtons(false);
 			}
-
 			String note = editRecord.getAttributeAsString("note");
 			if (note != null && !note.trim().equals("")) {
 				noteItem.setValue(note);
@@ -709,8 +721,6 @@ public class DlgAddEditContractor extends Window {
 				priceTypeItem.setValue(true);
 				drawByPriceType(true);
 			}
-			Integer phone_list_type = editRecord
-					.getAttributeAsInt("phone_list_type");
 
 			String price = editRecord.getAttributeAsString("price");
 			if (price != null && !price.trim().equals("")) {
@@ -927,8 +937,8 @@ public class DlgAddEditContractor extends Window {
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("upd_user", loggedUser);
 			record.setAttribute("deleted", 0);
-			// record.setAttribute("organization_id", organization_id);
-			// record.setAttribute("main_detail_id", main_detail_id);
+			record.setAttribute("organization_id", organization_id);
+
 			record.setAttribute("note", note);
 			record.setAttribute("is_budget", is_budget);
 			record.setAttribute("start_date", start_date);
@@ -950,11 +960,13 @@ public class DlgAddEditContractor extends Window {
 				record.setAttribute("checkContractor", 0);
 			}
 
-			if (contractorAdvPhones != null && !contractorAdvPhones.isEmpty()) {
-				checkContractPhones(record);
-			} else {
-				saveContract(record);
-			}
+			// if (contractorAdvPhones != null &&
+			// !contractorAdvPhones.isEmpty()) {
+			// checkContractPhones(record);
+			// } else {
+			//
+			// }
+			saveContract(record);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

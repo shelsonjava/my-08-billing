@@ -7,28 +7,20 @@
 	<fields>
 		<field name="contract_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
 		<field name="block"					type="integer"		title="block"				hidden="true"/>
-		<field name="critical_number"		type="integer"		title="critical_number"		hidden="true"/>
-		<field name="deleted"				type="integer"		title="deleted"				hidden="true"/>
+		<field name="organization_id"		type="integer"		title="organization_id"				hidden="true"/>
 		<field name="organization_name"		type="text"			title="organization_name"/>
-		<field name="orgDepName"			type="text"			title="orgDepName"/>
 		<field name="start_date"			type="date"			title="start_date"/>
 		<field name="end_date"				type="date"			title="end_date"/>
-		<field name="note"					type="text"			title="note"/>
+		<field name="critical_number"		type="integer"		title="critical_number"		hidden="true"/>
 		<field name="price"					type="any"			title="price"/>
-		<field name="rec_user"				type="text"			title="rec_user"/>
-		<field name="upd_user"				type="text"			title="upd_user"/>
+		<field name="note"					type="text"			title="note"/>
 		<field name="is_budget"				type="integer"		title="is_budget"			hidden="true"/>
-		<field name="main_detail_id"		type="integer"		title="main_detail_id"		hidden="true"/>
-		<field name="organization_id"		type="integer"		title="organization_id"				hidden="true"/>
 		<field name="price_type"			type="integer"		title="price_type"			hidden="true"/>
-		<field name="rec_date"				type="datetime"		title="rec_date"			hidden="true"/>		
 		<field name="sms_warning"			type="integer"		title="sms_warning"			hidden="true"/>
-		<field name="upd_date"				type="datetime"		title="upd_date"			hidden="true"/>
 		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
 		<field name="contractorAdvPrices"	type="any"			title="contractorAdvPrices" hidden="true"/>
 		<field name="contractorAdvPhones"	type="any"			title="contractorAdvPhones" hidden="true"/>
 		<field name="block_type"			type="integer"		title="block_type"			hidden="true"/>
-		<field name="phone_list_type"		type="integer"		title="phone_list_type"		hidden="true"/>
 		<field name="contractor_call_cnt"	type="integer"		title="contractor_call_cnt"	hidden="true"/>
 		<field name="phone"					type="text"			title="phone"				hidden="true"/>
 		<field name="price_type_descr"		type="text"			title="price_type_descr"	hidden="true"/>
@@ -43,18 +35,17 @@
 		<field name="limitType"				type="integer"		title="limitType"			hidden="true"/>
 		<field name="contractor_type"		type="integer"		title="contractor_type"		hidden="true"/>
 	</fields>
-
 	<operationBindings>		
 
 		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
 
 		<!-- Add Contractor -->
-		<operationBinding operationType="add" operationId="addContractor" serverMethod="addContractor">
+		<operationBinding operationType="add" operationId="addContractor" serverMethod="addEditContractor">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
 		<!-- Contractor Update -->
-		<operationBinding operationType="update" operationId="updateContractor" serverMethod="updateContractor">
+		<operationBinding operationType="update" operationId="updateContractor" serverMethod="addEditContractor">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
@@ -90,40 +81,29 @@
         
     	<operationBinding operationId="searchAllContractors" operationType="fetch">
     		<selectClause>   			
-    			  t.contract_id,
-				  t.block,
-				  t.critical_number,
-				  t.deleted,
-				  t.end_date,
-				  t.is_budget,
-				  t.main_detail_id,
-				  t.organization_id,
-				  t.note,
-				  t.price,
-				  t.price_type,
-				  t.rec_date,
-				  t.rec_user,
-				  t.sms_warning,
-				  t.start_date,
-				  t.upd_date,
-				  t.upd_user,
-				  t.phone_list_type,
-				  t.range_curr_price,
-				  mo1.organization_name,
-				  decode(t.price_type,0,'მარტ.','რთული') as price_type_descr
+	    			t.contract_id, 
+					t.organization_id, 
+					t.start_date, 
+					t.end_date, 
+					t.critical_number, 
+					t.price, 
+					t.note, 
+					t.is_budget, 
+					t.price_type, 
+					t.block, 
+					t.sms_warning, 
+					t.range_curr_price,
+				  	mo1.organization_name,
+				  	decode(t.price_type,0,'მარტ.','რთული') as price_type_descr
 			</selectClause> 
 			<tableClause>ccare.contracts t, ccare.organizations mo1</tableClause>
 			<whereClause><![CDATA[
 				 t.organization_id = mo1.organization_id
-				 #if($criteria.org_name1) and mo1.organization_name like '%'||($criteria.org_name1)||'%' #end
-				 #if($criteria.org_name2) and mo1.organization_name like '%'||($criteria.org_name2)||'%' #end
-				 #if($criteria.org_name3) and mo1.organization_name like '%'||($criteria.org_name3)||'%' #end
-				 #if($criteria.org_name4) and mo1.organization_name like '%'||($criteria.org_name4)||'%' #end
-				 #if($criteria.org_name5) and mo1.organization_name like '%'||($criteria.org_name5)||'%' #end
-				 #if($criteria.org_name6) and mo1.organization_name like '%'||($criteria.org_name6)||'%' #end
-				 #if($criteria.org_name7) and mo1.organization_name like '%'||($criteria.org_name7)||'%' #end
-				 #if($criteria.org_name8) and mo1.organization_name like '%'||($criteria.org_name8)||'%' #end
-				 #if($criteria.org_name9) and mo1.organization_name like '%'||($criteria.org_name9)||'%' #end
+				 #if($criteria.org_name) 
+							#foreach($str in $criteria.org_name.split(" "))
+								and mo1.organization_name like '%'||'$str'||'%'
+							#end
+				 #end
 				 #if($criteria.is_budget) and t.is_budget = $criteria.is_budget #end
 				 #if($criteria.price_type) and t.price_type = $criteria.price_type #end
 				 #if($criteria.phone)
@@ -131,6 +111,7 @@
 				 #end
 				 #if($criteria.limitType && $criteria.limitType == 0 ) and t.critical_number <> -999999999 #end
 				 #if($criteria.limitType && $criteria.limitType == 1 ) and t.critical_number =  -999999999 #end
+				 #if($criteria.contract_id) and t.contract_id =  $criteria.contract_id #end
 				]]>  
 			</whereClause> 
 			<orderClause>t.contract_id</orderClause>

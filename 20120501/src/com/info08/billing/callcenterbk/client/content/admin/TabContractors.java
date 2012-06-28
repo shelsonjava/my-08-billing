@@ -3,7 +3,6 @@ package com.info08.billing.callcenterbk.client.content.admin;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgAddEditContractor;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgBlackPhoneList;
-import com.info08.billing.callcenterbk.client.dialogs.admin.DlgContractorPhones;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetContractorsBilling;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgUpdateContrCurrRangePrice;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
@@ -41,7 +40,6 @@ public class TabContractors extends Tab {
 	private DynamicForm searchForm;
 	private VLayout mainLayout;
 	private TextItem orgNameItem;
-	private TextItem orgDepItem;
 	private TextItem phoneItem;
 	private SelectItem contractorType;
 	private SelectItem limitItem;
@@ -92,11 +90,6 @@ public class TabContractors extends Tab {
 			orgNameItem.setWidth(250);
 			orgNameItem.setName("orgNameItem");
 
-			orgDepItem = new TextItem();
-			orgDepItem.setTitle(CallCenterBK.constants.department());
-			orgDepItem.setWidth(250);
-			orgDepItem.setName("orgDepItem");
-
 			phoneItem = new TextItem();
 			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setWidth(250);
@@ -125,8 +118,8 @@ public class TabContractors extends Tab {
 			priceTypeItem.setValueMap(ClientMapUtil.getInstance()
 					.getContractorPriceTypes());
 
-			searchForm.setFields(orgNameItem, contractorType, orgDepItem,
-					limitItem, phoneItem, priceTypeItem);
+			searchForm.setFields(orgNameItem, contractorType, limitItem,
+					phoneItem, priceTypeItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(830);
@@ -254,10 +247,10 @@ public class TabContractors extends Tab {
 			contractorsGrid.setFixedRecordHeights(false);
 			contractorsGrid.setCanDragSelectText(true);
 
-			ListGridField orgName = new ListGridField("orgName",
+			ListGridField orgName = new ListGridField("organization_name",
 					CallCenterBK.constants.orgNameFull());
-			ListGridField orgDepName = new ListGridField("orgDepName",
-					CallCenterBK.constants.department(), 300);
+			ListGridField orgDepName = new ListGridField("note",
+					CallCenterBK.constants.comment(), 300);
 			ListGridField start_date = new ListGridField("start_date",
 					CallCenterBK.constants.startDate(), 120);
 			ListGridField end_date = new ListGridField("end_date",
@@ -292,15 +285,6 @@ public class TabContractors extends Tab {
 			});
 
 			orgNameItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					if (event.getKeyName().equals("Enter")) {
-						search();
-					}
-				}
-			});
-
-			orgDepItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
@@ -613,33 +597,8 @@ public class TabContractors extends Tab {
 			Criteria criteria = new Criteria();
 			String org_name = orgNameItem.getValueAsString();
 			if (org_name != null && !org_name.trim().equals("")) {
-				String tmp = org_name.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("org_name" + i, item);
-					i++;
-				}
+				criteria.setAttribute("org_name", org_name.trim());
 			}
-			String orgDepName = orgDepItem.getValueAsString();
-			if (orgDepName != null && !orgDepName.trim().equals("")) {
-				String tmp = orgDepName.trim();
-				String arrStr[] = tmp.split(" ");
-				int i = 1;
-				for (String string : arrStr) {
-					String item = string.trim();
-					if (item.equals("")) {
-						continue;
-					}
-					criteria.setAttribute("orgDepName" + i, item);
-					i++;
-				}
-			}
-
 			String is_budget_str = contractorType.getValueAsString();
 			if (is_budget_str != null && !is_budget_str.trim().equals("")
 					&& !is_budget_str.trim().equals("-1")) {

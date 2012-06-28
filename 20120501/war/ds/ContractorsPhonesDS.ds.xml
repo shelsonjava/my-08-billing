@@ -17,7 +17,7 @@
 	<operationBindings>		
     	<operationBinding operationId="searchContractorPhones" operationType="fetch">
     		<selectClause>
-    			   *
+    			   phone
 			</selectClause> 
 			<tableClause>ccare.contractor_phones t</tableClause>
 			<whereClause><![CDATA[
