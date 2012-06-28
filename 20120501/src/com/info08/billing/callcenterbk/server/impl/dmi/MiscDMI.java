@@ -524,7 +524,7 @@ public class MiscDMI implements QueryConstants {
 
 			// save or update main detail
 			insertStatement = connection
-					.prepareCall("{ call ccare.newBillSupport2.saveOrUpdateMainDetail( ?,?,?,?,?,?,?,?,?,?,?,?,?,? ) }");
+					.prepareCall("{ call newBillSupport2.saveOrUpdateMainDetail( ?,?,?,?,?,?,?,?,?,?,?,?,?,? ) }");
 
 			insertStatement.setInt(1, pOrganization_id);
 			insertStatement.setInt(2, pMainDetailId);
@@ -1170,14 +1170,14 @@ public class MiscDMI implements QueryConstants {
 
 			if (service_id.equals(-3) || service_id.equals(3)) {
 				insertStatement = connection
-						.prepareCall("{ call ccare.insert_orgsession_charge( ?,?,?,? ) }");
+						.prepareCall("{ call insert_orgsession_charge( ?,?,?,? ) }");
 				insertStatement.setInt(1, service_id);
 				insertStatement.setString(2, session_id);
 				insertStatement.setInt(3, ym);
 				insertStatement.setInt(4, organization_id);
 			} else {
 				insertStatement = connection
-						.prepareCall("{ call ccare.insert_session_charge( ?,?,? ) }");
+						.prepareCall("{ call insert_session_charge( ?,?,? ) }");
 				insertStatement.setInt(1, service_id);
 				insertStatement.setString(2, session_id);
 				insertStatement.setInt(3, ym);

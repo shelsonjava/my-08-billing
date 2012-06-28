@@ -2690,7 +2690,7 @@ public class CommonDMI implements QueryConstants {
 	// connection.setAutoCommit(false);
 	//
 	// insertStatement = connection
-	// .prepareCall("{ call ccare.newBillSupport2.saveOrUpdateFirstName( ?,?,?,?,?,? ) }");
+	// .prepareCall("{ call newBillSupport2.saveOrUpdateFirstName( ?,?,?,?,?,? ) }");
 	// insertStatement.setInt(1, -100);
 	// insertStatement.setString(2, firstName);
 	// insertStatement.setTimestamp(3, recDate);
