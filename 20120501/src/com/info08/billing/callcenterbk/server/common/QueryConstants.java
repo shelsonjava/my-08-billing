@@ -1296,4 +1296,6 @@ public interface QueryConstants {
 	public static final String Q_DELETE_STAFF_FAMOUS_PEOPLE = "delete from staff_famous_people t \n "
 			+ "where t.staff_id = ?";
 
+	public static final String Q_GET_CONTRACTOR_PHONES = "select phone from contractor_phones cp where cp.contract_id=?";
+
 }
