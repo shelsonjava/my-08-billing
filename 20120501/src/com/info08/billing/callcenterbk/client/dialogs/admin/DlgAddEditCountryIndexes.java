@@ -37,7 +37,8 @@ public class DlgAddEditCountryIndexes extends Window {
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditCountryIndexes(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditCountryIndexes(ListGrid listGrid, ListGridRecord pRecord,
+			String country_id) {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
@@ -142,11 +143,20 @@ public class DlgAddEditCountryIndexes extends Window {
 
 			addItem(hLayout);
 			fillFields();
-			fillCountryCombo();
-			Integer country_id = editRecord.getAttributeAsInt("country_id");
-			if (country_id != null) {
-				countryItem.setValue(country_id);
+
+			Integer edit_country_id = null;
+			if (editRecord != null) {
+				edit_country_id = editRecord.getAttributeAsInt("country_id");
+			} else {
+				if (country_id != null) {
+					edit_country_id = new Integer(country_id);
+				}
 			}
+			if (edit_country_id != null) {
+				countryItem.setValue(edit_country_id);
+			}
+
+			fillCountryCombo();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,8 +182,10 @@ public class DlgAddEditCountryIndexes extends Window {
 									.getAttributeAsInt("country_id");
 							if (country_id != null) {
 								countryItem.setValue(country_id);
+
 							}
 						}
+						countryItem.invalidateDisplayValueCache();
 					}
 				});
 			}

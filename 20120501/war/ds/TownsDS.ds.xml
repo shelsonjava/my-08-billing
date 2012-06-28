@@ -187,7 +187,7 @@
     			t.town_new_code,
     			t.town_name			
 			</selectClause> 
-			<tableClause>v_countrycitycodes t</tableClause>
+			<tableClause>v_country_indexes t</tableClause>
 			<whereClause><![CDATA[ 
 				 1 = 1 
 				 #if($criteria.country_id) and t.country_id = $criteria.country_id #end
@@ -215,7 +215,7 @@
     			t.country_id,
     			t.country_index_id
 			</selectClause> 
-			<tableClause>ccare.v_countrymobilecodes t</tableClause>
+			<tableClause>ccare.v_mobile_indexes t</tableClause>
 			<whereClause><![CDATA[ 
 				 1 = 1
 				 #if($criteria.country_id) and t.country_id = $criteria.country_id #end

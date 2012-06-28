@@ -156,6 +156,7 @@ public class TabCountryIndexes extends Tab {
 			countryIndexesGrid.setShowHover(true);
 			countryIndexesGrid.setShowHoverComponents(true);
 
+			countryIndexesDS.getField("country_id").setTitle("");
 			countryIndexesDS.getField("country_name").setTitle(
 					CallCenterBK.constants.country());
 			countryIndexesDS.getField("country_index_value").setTitle(
@@ -200,7 +201,8 @@ public class TabCountryIndexes extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					DlgAddEditCountryIndexes dlgAddEditCountryIndexes = new DlgAddEditCountryIndexes(
-							countryIndexesGrid, null);
+							countryIndexesGrid, null, countryItem
+									.getValueAsString());
 					dlgAddEditCountryIndexes.show();
 				}
 			});
@@ -211,7 +213,8 @@ public class TabCountryIndexes extends Tab {
 					ListGridRecord listGridRecord = countryIndexesGrid
 							.getSelectedRecord();
 					DlgAddEditCountryIndexes dlgAddEditCountryIndexes = new DlgAddEditCountryIndexes(
-							countryIndexesGrid, listGridRecord);
+							countryIndexesGrid, listGridRecord, countryItem
+									.getValueAsString());
 					dlgAddEditCountryIndexes.show();
 				}
 			});
@@ -245,7 +248,8 @@ public class TabCountryIndexes extends Tab {
 							ListGridRecord listGridRecord = countryIndexesGrid
 									.getSelectedRecord();
 							DlgAddEditCountryIndexes dlgAddEditCountryIndexes = new DlgAddEditCountryIndexes(
-									countryIndexesGrid, listGridRecord);
+									countryIndexesGrid, listGridRecord,
+									countryItem.getValueAsString());
 							dlgAddEditCountryIndexes.show();
 						}
 					});
