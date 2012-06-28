@@ -905,7 +905,7 @@ public class TabOrganization extends Tab {
 
 			String remark = orgCommentItem.getValueAsString();
 			if (remark != null && !remark.trim().equals("")) {
-				criteria.setAttribute("remark", remark);
+				criteria.setAttribute("remark_param", remark);
 			}
 			String phone = phoneItem.getValueAsString();
 			if (phone != null && !phone.trim().equalsIgnoreCase("")) {
@@ -913,7 +913,7 @@ public class TabOrganization extends Tab {
 			}
 			String chief = orgDirectorItem.getValueAsString();
 			if (chief != null && !chief.trim().equals("")) {
-				criteria.setAttribute("chief", chief);
+				criteria.setAttribute("chief_param", chief);
 			}
 			String street = streetItem.getValueAsString();
 			if (street != null && !street.trim().equalsIgnoreCase("")) {
@@ -965,7 +965,7 @@ public class TabOrganization extends Tab {
 			}
 			String department = orgDepartmentItem.getValueAsString();
 			if (department != null && !department.trim().equalsIgnoreCase("")) {
-				criteria.setAttribute("department", department);
+				criteria.setAttribute("department_param", department);
 			}
 			String web_address = orgWebAddressItem.getValueAsString();
 			if (web_address != null && !web_address.trim().equalsIgnoreCase("")) {

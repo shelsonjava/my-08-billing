@@ -1,7 +1,7 @@
 <DataSource
 	ID="BillingCompsDS"
 	serverType="sql"
-	tableName="ccare.BILLING_COMPANIES"
+	tableName="BILLING_COMPANIES"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	
@@ -70,12 +70,12 @@
 					decode(t.has_calculation,1,'დიახ',0,'არა','ყველა') as has_calculation_descr,
 					t.call_price					
 			</selectClause> 
-			<tableClause>ccare.BILLING_COMPANIES t</tableClause>
+			<tableClause>BILLING_COMPANIES t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				 #if($criteria.billing_company_name) and t.billing_company_name like '%'||($criteria.billing_company_name)||'%' #end
 				 #if($criteria.phoneIndex)
-				 	and t.billing_company_id in (select tt.billing_company_id from ccare.BILLING_COMPANIES_IND tt where $criteria.phoneIndex between tt.bill_index_start and bill_index_end) 				 	
+				 	and t.billing_company_id in (select tt.billing_company_id from BILLING_COMPANIES_IND tt where $criteria.phoneIndex between tt.bill_index_start and bill_index_end) 				 	
 				 #end
 				 #if($criteria.has_calculation) and t.has_calculation = $criteria.has_calculation #end
 				]]>  
@@ -94,7 +94,7 @@
 				        ch.price/100 as rate,
 				        ch.price/100 as price
 			</selectClause> 
-			<tableClause>ccare.log_sessions t, ccare.log_session_charges ch</tableClause>
+			<tableClause>log_sessions t, log_session_charges ch</tableClause>
 			<whereClause><![CDATA[
 				 t.session_id  = ch.session_id and 
 				 trunc(t.start_date) = trunc($criteria.date_param) and
@@ -103,13 +103,13 @@
 					  select 
 					    to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start)),
 					    to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_start,i.bill_index_end))
-					  from ccare.BILLING_COMPANIES tc 
-					         inner join ccare.BILLING_COMPANIES_ind i on i.billing_company_id = tc.billing_company_id
+					  from BILLING_COMPANIES tc 
+					         inner join BILLING_COMPANIES_ind i on i.billing_company_id = tc.billing_company_id
 					  where tc.billing_company_id = $criteria.billing_company_id
 					        and to_number(t.phone) >= to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
 					        and to_number(t.phone) <= to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
 					) 
-					and ccare.getcontractorpricenew(t.phone)=-999999999
+					and getcontractorpricenew(t.phone)=-999999999
 				]]>  
 			</whereClause> 
     	</operationBinding>
@@ -124,7 +124,7 @@
 				        ch.price/100 as rate,
 				        ch.price/100 as price
 			</selectClause> 
-			<tableClause>ccare.log_sessions t, ccare.log_session_charges ch</tableClause>
+			<tableClause>log_sessions t, log_session_charges ch</tableClause>
 			<whereClause><![CDATA[
 				 t.session_id  = ch.session_id and 
 				 t.ym = $criteria.ym and ch.ym = $criteria.ym and
@@ -132,13 +132,13 @@
 					  select 
 					    to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start)),
 					    to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_start,i.bill_index_end))
-					  from ccare.BILLING_COMPANIES tc 
-					         inner join ccare.BILLING_COMPANIES_ind i on i.billing_company_id = tc.billing_company_id
+					  from BILLING_COMPANIES tc 
+					         inner join BILLING_COMPANIES_ind i on i.billing_company_id = tc.billing_company_id
 					  where tc.billing_company_id = $criteria.billing_company_id
 					        and to_number(t.phone) >= to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
 					        and to_number(t.phone) <= to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
 					) 
-					and ccare.getcontractorpricenew(t.phone)=-999999999
+					and getcontractorpricenew(t.phone)=-999999999
 				]]>  
 			</whereClause> 
     	</operationBinding>

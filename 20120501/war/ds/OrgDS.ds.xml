@@ -337,6 +337,16 @@
 						 	)						 	
 						 #end
 						 
+						  #if($criteria.department_param)
+						 	and o.organization_id in (
+						 		select od.organization_id from organization_department od
+						 		where 1 = 1
+						 		#foreach($str in $criteria.department_param.split(" "))
+									and od.department like '%'||'$str'||'%'
+								#end
+						 	)						 	
+						 #end						 
+						 
 						 #if($criteria.pp_organization_id)
 						 	and hr.organization_id=o.organization_id
 						 #else
@@ -348,11 +358,21 @@
 									and o.remark like '%'||'$str'||'%'
 								#end
 							 #end		
+							  #if($criteria.remark_param) 
+							 	 #foreach($str in $criteria.remark_param.split(" "))
+									and o.remark like '%'||'$str'||'%'
+								#end
+							 #end
 							 #if($criteria.chief) 
 							 	#foreach($str in $criteria.chief.split(" "))
 									and o.chief like '%'||'$str'||'%'
 								#end							 	
 							 #end	
+							 #if($criteria.chief_param) 
+							 	#foreach($str in $criteria.chief_param.split(" "))
+									and o.chief like '%'||'$str'||'%'
+								#end
+							 #end
 							 #if($criteria.real_address_descr) 
 							 	#foreach($str in $criteria.real_address_descr.split(" "))
 							 		and a.concat_address like '%'||'$str'||'%' AND a.town_district_name not like '%'||'$str'||'%'

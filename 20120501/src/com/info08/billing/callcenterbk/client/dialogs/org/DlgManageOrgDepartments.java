@@ -300,7 +300,7 @@ public class DlgManageOrgDepartments extends Window {
 			orgDepPhonesListGrid.setWidth100();
 			orgDepPhonesListGrid.setHeight(200);
 			orgDepPhonesListGrid.setDataSource(phoneDS);
-			orgDepPhonesListGrid.setAutoFetchData(true);
+			orgDepPhonesListGrid.setAutoFetchData(false);
 			orgDepPhonesListGrid.setCanEdit(false);
 			orgDepPhonesListGrid.setCanRemoveRecords(false);
 			orgDepPhonesListGrid.setFetchOperation("searchOrgDepPhones");

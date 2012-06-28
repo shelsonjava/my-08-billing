@@ -76,7 +76,8 @@
 			<whereClause>
 				 <![CDATA[				 	 
 					 t.phone_number_id = p.phone_number_id					 
-					 #if($criteria.org_department_id) and t.org_department_id = $criteria.org_department_id #else and 1=0 #end
+					 #if($criteria.org_dep_to_ph_id) and t.org_dep_to_ph_id = $criteria.org_dep_to_ph_id #end
+					 #if($criteria.org_department_id) and t.org_department_id = $criteria.org_department_id #end
 					 #if($criteria.phone) and p.phone like '%'||$criteria.phone||'%' #end
 				 ]]>
 			</whereClause>

@@ -1,7 +1,7 @@
 <DataSource
 	ID="BillingCompsIndDS"
 	serverType="sql"
-	tableName="ccare.BILLING_COMPANIES_IND"
+	tableName="BILLING_COMPANIES_IND"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
@@ -29,7 +29,7 @@
 					t.calcul_type,
 					decode(t.calcul_type, 1, 'ზარებით', 'დარიცხვებით') as calcul_type_descr
 			</selectClause> 
-			<tableClause>ccare.BILLING_COMPANIES_IND t</tableClause>
+			<tableClause>BILLING_COMPANIES_IND t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				 #if($criteria.billing_company_id) and t.billing_company_id = $criteria.billing_company_id #end				 

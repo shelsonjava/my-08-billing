@@ -1,7 +1,7 @@
 <DataSource
 	ID="AbPhonesDS"
 	serverType="sql"
-	tableName="ccare.phone_numbers"
+	tableName="phone_numbers"
 	qualifyColumnNames="false">
 	<fields>
 		<field name="phone_number_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
