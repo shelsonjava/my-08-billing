@@ -27,7 +27,7 @@ public interface Constants {
 	public static final int serviceCurrDateTimeInfo = 44;
 	public static final int serviceCityDistInfo = 31;
 	public static final int serviceGeoIndInfo = 35;
-	public static final int serviceWebSiteInfo = 63;
+	public static final int serviceWebSiteInfo = 50000;
 	public static final int serviceNonStandartInfo = 32;
 	public static final int serviceOrthCalendarInfo = 22;
 	public static final int serviceCalendarInfo = 42;
