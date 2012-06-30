@@ -28,8 +28,8 @@ public class Street implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "STREETS_STREETID_GENERATOR", sequenceName = "street_id_seq")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STREETS_STREETID_GENERATOR")
+	@SequenceGenerator(name = "SEQ_STREET_ID_GENERATOR", sequenceName = "SEQ_STREET_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STREET_ID_GENERATOR")
 	@Column(name = "STREET_ID")
 	private Long street_id;
 
