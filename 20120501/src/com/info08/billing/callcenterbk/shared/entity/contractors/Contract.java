@@ -25,8 +25,8 @@ public class Contract implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "CONTRACTS_CONTRACTID_GENERATOR", sequenceName = "CONTRACT_ID_SEQ")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTRACTS_CONTRACTID_GENERATOR")
+	@SequenceGenerator(name = "SEQ_CONTRACT_GENERATOR", sequenceName = "SEQ_CONTRACT")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CONTRACT_GENERATOR")
 	@Column(name = "CONTRACT_ID")
 	private Long contract_id;
 
