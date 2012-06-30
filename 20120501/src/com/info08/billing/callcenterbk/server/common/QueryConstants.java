@@ -58,7 +58,9 @@ public interface QueryConstants {
 			+ "      and getcontractorpricenew(t.phone)=-999999999\n"
 			+ "      and t.phone like '322%'";
 
-	public static final String Q_GET_ORG_CALL_CNT_BY_YM = "select getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
+	public static final String Q_GET_ORG_CALL_CNT_BY_YM = "select get_contractor_calls_count(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
+	public static final String Q_GET_ORG_CALL_CNT_BY_ALL = "select get_contractor_calls_count(null,?) as depCallsCnt from dual";
+	public static final String Q_GET_ORG_CALL_CNT_BY_ALL_SUM = "select get_contractor_calls_count(null,?,2) as depCallsCnt from dual";
 
 	public static final String Q_GET_DEP_CALL_CNT_BY_YM = "select getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
 

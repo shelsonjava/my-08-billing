@@ -29,7 +29,7 @@
 		<field name="call_count"			type="integer"		title="call_count"			hidden="true"/>
 		<field name="amount"				type="any"			title="amount"				hidden="true"/>
 		<field name="billing_company_name"	type="text"			title="billing_company_name"	hidden="true"/>
-		<field name="service_name_geo"		type="text"			title="service_name_geo"	hidden="true"/>
+		<field name="service_description"		type="text"			title="service_name_geo"	hidden="true"/>
 		<field name="call_date"				type="datetime"		title="call_date"			hidden="true"/>
 		<field name="charge_date"			type="datetime"		title="charge_date"			hidden="true"/>
 		<field name="limitType"				type="integer"		title="limitType"			hidden="true"/>
@@ -118,405 +118,16 @@
     	</operationBinding>
     	
     	
-    	<operationBinding operationId="selectByDepAll" operationType="fetch">
-			<selectClause> 
-				tt.phone
-			</selectClause> 
-			<tableClause>
-				<![CDATA[
-				 (select /*+ index(p PHN_PRY_KS001)*/
-					distinct p.phone 
-				      from abonents a 
-					    inner join phones p on p.phone_id = a.phone_id 
-				      where a.main_detail_id in 
-					      ( 
-						select 
-						      t.main_detail_id 
-						from main_details t 
-						  start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
-						  connect by prior t.main_detail_id = t.main_detail_master_id 
-						) 
-				      and p.deleted = 0 and a.deleted = 0 and p.phone not in ( 
-					      select 
-						    /*+ index(p PHN_PRY_KS001)*/ p.phone 
-					      from abonents a 
-						  inner join phones p on p.phone_id = a.phone_id 
-					      where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in ( 
-						select 
-						      c.main_detail_id 
-						from contracts c 
-						where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate) < trunc(c.end_date) and c.main_detail_id in 
-						  ( 
-						    select 
-							  t.main_detail_id 
-						    from main_details t 
-						    where level>1 
-						    start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
-						    connect by prior t.main_detail_id = t.main_detail_master_id 
-						  ) 
-					      ) 
-						) and isPhoneChargeable(p.phone) = 1
-				      ) tt
-			       ]]>
-			</tableClause>
-			<whereClause><![CDATA[
-				1 = 1
-				#if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
-			]]>  
-			</whereClause> 			
-		</operationBinding>
     	
-    	
-		<operationBinding operationId="selectByDepExceptList" operationType="fetch">
-    		<selectClause> 
-    			tt.phone     
-			</selectClause> 
-			<tableClause>
-				<![CDATA[
-    				 ( select
-					        /*+ index(p PHN_PRY_KS001)*/ distinct p.phone 
-					  from abonents a 
-					       inner join phones p on p.phone_id = a.phone_id 
-					  where a.main_detail_id in 
-					         ( 
-					           select 
-					                 t.main_detail_id 
-					           from main_details t 
-					             start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
-					             connect by prior t.main_detail_id = t.main_detail_master_id 
-					           ) 
-					    and p.deleted = 0 and a.deleted = 0 and p.phone not in ( 
-					         select 
-					               /*+ index(p PHN_PRY_KS001)*/ p.phone 
-					         from abonents a 
-					              inner join phones p on p.phone_id = a.phone_id 
-					         where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in ( 
-					            select 
-					                  c.main_detail_id 
-					            from contracts c 
-					            where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_detail_id in 
-					              ( 
-					                select 
-					                      t.main_detail_id 
-					                from main_details t 
-					                where level>1 
-					                start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
-					                connect by prior t.main_detail_id = t.main_detail_master_id 
-					              ) 
-					          ) 
-					    ) 
-					    and p.phone not in ( 
-					        select tt.phone from contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
-					    )
-					    and isPhoneChargeable(p.phone) = 1
-					) tt
-					]]>   
-			</tableClause>
-			<whereClause><![CDATA[
-				 1 = 1
-			     #if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
-				]]>  
-			</whereClause> 			
-    	</operationBinding>
-    	
-    	
-    	<operationBinding operationId="selectByDepOnlyList" operationType="fetch">
-    		<selectClause>
-    			tt.phone
-			</selectClause> 
-			<tableClause>
-				 <![CDATA[
-    				 ( select
-					        /*+ index(p PHN_PRY_KS001)*/ distinct p.phone 
-					  from abonents a 
-					       inner join phones p on p.phone_id = a.phone_id 
-					  where a.main_detail_id in 
-					         ( 
-					           select 
-					                 t.main_detail_id 
-					           from main_details t 
-					             start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
-					             connect by prior t.main_detail_id = t.main_detail_master_id 
-					           ) 
-					    and p.deleted = 0 and a.deleted = 0 and p.phone not in ( 
-					         select 
-					               /*+ index(p PHN_PRY_KS001)*/ p.phone 
-					         from abonents a 
-					              inner join phones p on p.phone_id = a.phone_id 
-					         where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in ( 
-					            select 
-					                  c.main_detail_id 
-					            from contracts c 
-					            where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.main_detail_id in 
-					              ( 
-					                select 
-					                      t.main_detail_id 
-					                from main_details t 
-					                where level>1 
-					                start with t.main_detail_id = $criteria.main_detail_id and t.deleted = 0 
-					                connect by prior t.main_detail_id = t.main_detail_master_id 
-					              ) 
-					          ) 
-					    ) 
-					    and p.phone in ( 
-					        select tt.phone from contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
-					    )
-					    and isPhoneChargeable(p.phone) = 1
-					) tt      
-					]]>  
-			</tableClause>
-			<whereClause><![CDATA[
-				 1 = 1
-				 #if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
-				]]>  
-			</whereClause> 			
-    	</operationBinding>
-    	
-    	
-    	
-    	<operationBinding operationId="selectByOrganizationAll" operationType="fetch">
-			<selectClause> 
-				tt.phone
-			</selectClause> 
-			<tableClause>
-				<![CDATA[
-					(select distinct p.phone from (
-						       select ms.organization_id from main_services ms 
-						       start with ms.organization_id = $criteria.organization_id and ms.service_id = 3 
-						       connect by prior ms.organization_id = ms.main_master_id) r 
-						inner join abonents a on a.organization_id = r.organization_id 
-						inner join phones p on p.phone_id = a.phone_id 
-						where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
-						    select p.phone from ( 
-						    select 
-						      t.organization_id 
-						    from main_services t 
-						    start with t.organization_id in ( 
-						          select 
-						               c.organization_id 
-						          from contracts c 
-						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in ( 
-						                select 
-						                      t.organization_id 
-						                from main_services t 
-						                where level>1 
-						          start with t.organization_id = $criteria.organization_id and t.service_id = 3 
-						          connect by prior t.organization_id = t.main_master_id 
-						          ) and (c.main_detail_id is null or c.main_detail_id = 0) 
-						    ) and t.service_id = 3 
-						    connect by prior t.organization_id = t.main_master_id 
-						    ) a1 
-						    inner join abonents a on a.organization_id = a1.organization_id 
-						    inner join phones p on p.phone_id = a.phone_id 
-						    where a.deleted = 0 and p.deleted = 0 
-						) and p.phone not in ( 
-						    select 
-						      /*+ index(p PHN_PRY_KS001)*/ p.phone 
-						    from abonents a 
-						         inner join phones p on p.phone_id = a.phone_id 
-						    where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in 
-						          (select 
-						                 t.main_detail_id 
-						           from main_details t 
-						           start with t.main_detail_id in 
-						                 (select 
-						                        c.main_detail_id 
-						                  from contracts c 
-						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in 
-						                        (select 
-						                               t.organization_id 
-						                         from main_services t 
-						                         where level>1 
-						                         start with t.organization_id = $criteria.organization_id and t.service_id = 3 
-						                         connect by prior t.organization_id = t.main_master_id 
-						                         ) 
-						                         and (c.main_detail_id is not null and c.main_detail_id <> 0) 
-						                  ) and t.deleted = 0 
-						           connect by prior t.main_detail_id = t.main_detail_master_id) 
-						)
-						and isPhoneChargeable(p.phone) = 1
-					) tt
-			       ]]>
-			</tableClause>
-			<whereClause><![CDATA[
-				1 = 1
-				#if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
-			]]>  
-			</whereClause> 			
-		</operationBinding>
-    	
-    	
-    	
-    	<operationBinding operationId="selectByOrganizationExceptList" operationType="fetch">
-			<selectClause> 
-				tt.phone
-			</selectClause> 
-			<tableClause>
-				<![CDATA[
-					 	(select distinct p.phone from (
-						       select ms.organization_id from main_services ms 
-						       start with ms.organization_id = $criteria.organization_id and ms.service_id = 3 
-						       connect by prior ms.organization_id = ms.main_master_id) r 
-						inner join abonents a on a.organization_id = r.organization_id 
-						inner join phones p on p.phone_id = a.phone_id 
-						where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
-						    select p.phone from ( 
-						    select 
-						      t.organization_id 
-						    from main_services t 
-						    start with t.organization_id in ( 
-						          select 
-						               c.organization_id 
-						          from contracts c 
-						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in ( 
-						                select 
-						                      t.organization_id 
-						                from main_services t 
-						                where level>1 
-						          start with t.organization_id = $criteria.organization_id and t.service_id = 3 
-						          connect by prior t.organization_id = t.main_master_id 
-						          ) and (c.main_detail_id is null or c.main_detail_id = 0) 
-						    ) and t.service_id = 3 
-						    connect by prior t.organization_id = t.main_master_id 
-						    ) a1 
-						    inner join abonents a on a.organization_id = a1.organization_id 
-						    inner join phones p on p.phone_id = a.phone_id 
-						    where a.deleted = 0 and p.deleted = 0 
-						) and p.phone not in ( 
-						    select 
-						      /*+ index(p PHN_PRY_KS001)*/ p.phone 
-						    from abonents a 
-						         inner join phones p on p.phone_id = a.phone_id 
-						    where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in 
-						          (select 
-						                 t.main_detail_id 
-						           from main_details t 
-						           start with t.main_detail_id in 
-						                 (select 
-						                        c.main_detail_id 
-						                  from contracts c 
-						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in 
-						                        (select 
-						                               t.organization_id 
-						                         from main_services t 
-						                         where level>1 
-						                         start with t.organization_id = $criteria.organization_id and t.service_id = 3 
-						                         connect by prior t.organization_id = t.main_master_id 
-						                         ) 
-						                         and (c.main_detail_id is not null and c.main_detail_id <> 0) 
-						                  ) and t.deleted = 0 
-						           connect by prior t.main_detail_id = t.main_detail_master_id) 
-						) 
-						and p.phone not in ( 
-						      select tt.phone from contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0 
-						)
-						and isPhoneChargeable(p.phone) = 1
-						) tt
-			       ]]>
-			</tableClause>
-			<whereClause><![CDATA[
-				1 = 1
-				#if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
-			]]>  
-			</whereClause> 			
-		</operationBinding>
-    	
-    	
-    	
-    	<operationBinding operationId="selectByOrganizationOnlyList" operationType="fetch">
-			<selectClause> 
-				tt.phone
-			</selectClause> 
-			<tableClause>
-				<![CDATA[
-					 	(select distinct p.phone from (
-						       select ms.organization_id from main_services ms 
-						       start with ms.organization_id = $criteria.organization_id and ms.service_id = 3 
-						       connect by prior ms.organization_id = ms.main_master_id) r 
-						inner join abonents a on a.organization_id = r.organization_id 
-						inner join phones p on p.phone_id = a.phone_id 
-						where p. deleted = 0 and a.deleted = 0 and p.phone not in ( 
-						    select p.phone from ( 
-						    select 
-						      t.organization_id 
-						    from main_services t 
-						    start with t.organization_id in ( 
-						          select 
-						               c.organization_id 
-						          from contracts c 
-						          where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in ( 
-						                select 
-						                      t.organization_id 
-						                from main_services t 
-						                where level>1 
-						          start with t.organization_id = $criteria.organization_id and t.service_id = 3 
-						          connect by prior t.organization_id = t.main_master_id 
-						          ) and (c.main_detail_id is null or c.main_detail_id = 0) 
-						    ) and t.service_id = 3 
-						    connect by prior t.organization_id = t.main_master_id 
-						    ) a1 
-						    inner join abonents a on a.organization_id = a1.organization_id 
-						    inner join phones p on p.phone_id = a.phone_id 
-						    where a.deleted = 0 and p.deleted = 0 
-						) and p.phone not in ( 
-						    select 
-						      /*+ index(p PHN_PRY_KS001)*/ p.phone 
-						    from abonents a 
-						         inner join phones p on p.phone_id = a.phone_id 
-						    where p.deleted = 0 and a.deleted = 0 and a.main_detail_id in 
-						          (select 
-						                 t.main_detail_id 
-						           from main_details t 
-						           start with t.main_detail_id in 
-						                 (select 
-						                        c.main_detail_id 
-						                  from contracts c 
-						                  where c.deleted = 0 and trunc(sysdate)>=trunc(c.start_date) and trunc(sysdate)<trunc(c.end_date) and c.organization_id in 
-						                        (select 
-						                               t.organization_id 
-						                         from main_services t 
-						                         where level>1 
-						                         start with t.organization_id = $criteria.organization_id and t.service_id = 3 
-						                         connect by prior t.organization_id = t.main_master_id 
-						                         ) 
-						                         and (c.main_detail_id is not null and c.main_detail_id <> 0) 
-						                  ) and t.deleted = 0 
-						           connect by prior t.main_detail_id = t.main_detail_master_id) 
-						) 
-						and p.phone in ( 
-							  select tt.phone from contractor_phones tt where tt.contract_id = $criteria.contract_id and tt.deleted = 0
-						)
-						and isPhoneChargeable(p.phone) = 1
-						) tt
-			       ]]>
-			</tableClause>
-			<whereClause><![CDATA[
-				1 = 1
-				#if($criteria.phone) and tt.phone like '%'||($criteria.phone)||'%' #end
-			]]>  
-			</whereClause> 			
-		</operationBinding>
-    	
-    	
-    	<operationBinding operationId="getCallsCountByMainDetAndYM" operationType="fetch">
-    		<selectClause>   		
-    			  getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.main_detail_id)	as contractor_call_cnt 			  
-			</selectClause> 
-			<tableClause>dual</tableClause>
-			<whereClause><![CDATA[
-				 1 = 1
-				]]>  
-			</whereClause> 
-    	</operationBinding>
     	
     	
     	<operationBinding operationId="getCallsCountByMainAndYM" operationType="fetch">
     		<selectClause>   		
-    			  getCallsByMainAndYM(to_number(to_char(sysdate,'YYMM')),$criteria.organization_id)	as contractor_call_cnt 			  
+    			  get_contractor_calls_count(to_number(to_char(sysdate,'YYMM')),t.contract_id)	as contractor_call_cnt 			  
 			</selectClause> 
-			<tableClause>dual</tableClause>
+			<tableClause>contracts t</tableClause>
 			<whereClause><![CDATA[
-				 1 = 1
+				 t.organization_id=$criteria.organization_id
 				]]>  
 			</whereClause> 			
     	</operationBinding>
@@ -532,43 +143,41 @@
 
 		<operationBinding operationId="getFullContrBillMain1" operationType="fetch">
     		<selectClause>
-    			  mo.org_name as orgName,
-			      md.main_detail_geo as orgDepName,
+    			  mo.organization_name,
 			      t.call_count,
 			      t.price,
 			      t.amount
 			</selectClause> 
-			<tableClause>contractor_bill t, contracts c, main_orgs mo, main_details md </tableClause>
+			<tableClause>contractor_bill t, contracts c, organizations mo </tableClause>
 			<whereClause><![CDATA[
-				 t.contractor_id = c.contract_id and c.organization_id = mo.organization_id and c.main_detail_id = md.main_detail_id(+) 
+				 t.contractor_id = c.contract_id and c.organization_id = mo.organization_id
 				 and t.ym = $criteria.ym
 				 #if($criteria.contract_id) and c.contract_id = $criteria.contract_id #end	
 				 #if($criteria.is_budget) and c.is_budget = $criteria.is_budget #end			 
 				]]>  
 			</whereClause> 
-			<orderClause>mo.org_name, md.main_detail_geo</orderClause>
+			<orderClause>mo.organization_name</orderClause>
     	</operationBinding>
     	
     	<operationBinding operationId="getFullContrBillMain2" operationType="fetch">
     		<selectClause>
     			          tc.billing_company_name,
-					      mo.org_name as orgName,
-					      md.main_detail_geo as orgDepName,
-					      s.service_name_geo, 
+					      mo.organization_name,
+					      s.service_description, 
 					      bi.phone,
 					      bi.call_date,
 					      bi.charge_date,
 					      bi.price
 			</selectClause> 
-			<tableClause> contractor_bill_items bi, contracts c, main_orgs mo, main_details md, tel_comps tc, services s </tableClause>
+			<tableClause> contractor_bill_items bi, contracts c, organizations mo, BILLING_COMPANIES tc, service_prices s </tableClause>
 			<whereClause><![CDATA[
-				 bi.contractor_id = c.contract_id and c.organization_id = mo.organization_id and c.main_detail_id = md.main_detail_id(+) and 
-				 bi.billing_company_id = tc.billing_company_id and  bi.service_id = s.service_id  and bi.ym = $criteria.ym
+				 bi.contractor_id = c.contract_id and c.organization_id = mo.organization_id and 
+				 bi.billing_company_id = tc.billing_company_id and  bi.service_id = s.service_price_id  and bi.ym = $criteria.ym
 				 #if($criteria.contract_id) and c.contract_id = $criteria.contract_id #end				 
 				 #if($criteria.is_budget) and c.is_budget = $criteria.is_budget #end
 				]]>  
 			</whereClause> 
-			<orderClause>tc.billing_company_name, mo.org_name, md.main_detail_geo, bi.phone, s.service_name_geo, bi.call_date, bi.charge_date </orderClause>
+			<orderClause>tc.billing_company_name, mo.organization_name, bi.phone, s.service_description, bi.call_date, bi.charge_date </orderClause>
     	</operationBinding>
     	
     </operationBindings>	

@@ -35,7 +35,6 @@ import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.SpinnerItem;
-import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
@@ -467,46 +466,18 @@ public class DlgAddEditContractor extends Window {
 				}
 			});
 
-			myComboBoxItemOrg
-					.addDataChangedHandler(new MyComboBoxItemDataChangedHandler() {
-						@Override
-						public void onDataChanged(MyComboBoxEvent event) {
-							// Integer organization_id = event.getSelectedId();
-							// myComboBoxItemOrgDetails.setMyId(-1);
-							// myComboBoxItemOrgDetails.setMyValue("");
-							// if (organization_id != null &&
-							// organization_id.intValue() > 0) {
-							// Criteria myCriteria = new Criteria();
-							// myCriteria.setAttribute("organization_id",
-							// organization_id);
-							// myComboBoxItemOrgDetails
-							// .setMyCriteria(myCriteria);
-							// }
-						}
-					});
-
 			checkOrgCallsBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					// Integer organization_id = myComboBoxItemOrg.getMyId();
-					// Integer main_detail_id =
-					// myComboBoxItemOrgDetails.getMyId();
-					// if (organization_id == null && main_detail_id == null) {
-					// SC.say(CallCenterBK.constants.noOrgOrDepSelected());
-					// return;
-					// }
-					// if (organization_id == null) {
-					// organization_id = 0;
-					// }
-					// if (main_detail_id == null) {
-					// main_detail_id = 0;
-					// }
-					// if (organization_id == 0 && main_detail_id == 0) {
-					// SC.say(CallCenterBK.constants.noOrgOrDepSelected());
-					// return;
-					// }
+					Object organization_id = myComboBoxItemOrg
+							.getCurrentValue();
 
-					// getCallCountByOrgOrDep(organization_id, main_detail_id);
+					if (organization_id == null) {
+						SC.say(CallCenterBK.constants.noOrgOrDepSelected());
+						return;
+					}
+
+					getCallCountByOrgOrDep(organization_id);
 				}
 			});
 
@@ -566,21 +537,15 @@ public class DlgAddEditContractor extends Window {
 		}
 	}
 
-	protected void getCallCountByOrgOrDep(Integer organization_id,
-			Integer main_detail_id) {
+	protected void getCallCountByOrgOrDep(Object organization_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Criteria record = new Criteria();
 			record.setAttribute("organization_id", organization_id);
-			record.setAttribute("main_detail_id", main_detail_id);
-
 			DSRequest req = new DSRequest();
 			DataSource dataSource = DataSource.get("ContractorsDS");
-			if (main_detail_id > 0) {
-				req.setAttribute("operationId", "getCallsCountByMainDetAndYM");
-			} else {
-				req.setAttribute("operationId", "getCallsCountByMainAndYM");
-			}
+
+			req.setAttribute("operationId", "getCallsCountByMainAndYM");
 
 			dataSource.fetchData(record, new DSCallback() {
 				@Override
@@ -589,10 +554,10 @@ public class DlgAddEditContractor extends Window {
 					Record records[] = response.getData();
 					if (records != null && records.length > 0) {
 						Record record = records[0];
-						Integer contractor_call_cnt = record
-								.getAttributeAsInt("contractor_call_cnt");
+						String contractor_call_cnt = record
+								.getAttribute("contractor_call_cnt");
 						if (contractor_call_cnt == null) {
-							contractor_call_cnt = 0;
+							contractor_call_cnt = "0";
 						}
 						SC.say((CallCenterBK.constants.contractorCallCnt() + contractor_call_cnt));
 					}
@@ -973,24 +938,24 @@ public class DlgAddEditContractor extends Window {
 		}
 	}
 
-	private void checkContractPhones(final Record record) {
-		try {
-			com.smartgwt.client.rpc.RPCManager.startQueue();
-			DSRequest req = new DSRequest();
-			req.setAttribute("operationId", "checkContractorNumbers");
-			listGrid.updateData(record, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-					saveContract(record);
-				}
-			}, req);
-			com.smartgwt.client.rpc.RPCManager.sendQueue();
-		} catch (Exception e) {
-			e.printStackTrace();
-			SC.say(e.toString());
-		}
-	}
+	// private void checkContractPhones(final Record record) {
+	// try {
+	// com.smartgwt.client.rpc.RPCManager.startQueue();
+	// DSRequest req = new DSRequest();
+	// req.setAttribute("operationId", "checkContractorNumbers");
+	// listGrid.updateData(record, new DSCallback() {
+	// @Override
+	// public void execute(DSResponse response, Object rawData,
+	// DSRequest request) {
+	// saveContract(record);
+	// }
+	// }, req);
+	// com.smartgwt.client.rpc.RPCManager.sendQueue();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// SC.say(e.toString());
+	// }
+	// }
 
 	private void saveContract(Record record) {
 		try {
