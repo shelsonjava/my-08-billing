@@ -7,6 +7,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -632,7 +633,7 @@ public class TabBillCallsBySrvBK extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemWebSites.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId18", new Integer(63));
+				criteria.setAttribute("servicesId18", new Integer(Constants.serviceWebSiteInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemIdxsInfo.getValueAsBoolean()) {
