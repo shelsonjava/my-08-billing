@@ -90,7 +90,7 @@ public class DlgViewCurrentDateTime extends Window {
 		infoItem.setTextBoxStyle("fontRedAndBold");
 		infoItem.setCanFocus(false);
 
-		DataSource dataSource = DataSource.get("TransportDS");
+		DataSource dataSource = DataSource.get("TranspScheduleDS");
 		DSRequest dsRequest = new DSRequest();
 		dsRequest.setOperationId("getExactTime");
 		dataSource.fetchData(new Criteria(), new DSCallback() {
