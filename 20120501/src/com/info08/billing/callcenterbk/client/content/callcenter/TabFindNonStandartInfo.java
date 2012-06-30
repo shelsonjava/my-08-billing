@@ -2,7 +2,6 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewNonStandInfo;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -47,14 +46,14 @@ public class TabFindNonStandartInfo extends Tab {
 	private ListGrid listGrid;
 
 	// DataSource
-	private DataSource mainDetailDS;
+	private DataSource NonStandartInfosDS;
 
 	public TabFindNonStandartInfo() {
 
 		setTitle(CallCenterBK.constants.wiki());
 		setCanClose(true);
 
-		mainDetailDS = DataSource.get("MainDetailDS");
+		NonStandartInfosDS = DataSource.get("NonStandartInfosDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -71,17 +70,19 @@ public class TabFindNonStandartInfo extends Tab {
 		infoGroupItem = new ComboBoxItem();
 		infoGroupItem.setTitle(CallCenterBK.constants.group());
 		infoGroupItem.setWidth(250);
-		infoGroupItem.setName("main_detail_type_name_geo");
+		infoGroupItem.setName("infoGroupItem");
 		infoGroupItem.setFetchMissingValues(true);
 		infoGroupItem.setFilterLocally(false);
 		infoGroupItem.setAddUnknownValues(false);
 		infoGroupItem.setCompleteOnTab(true);
 
-		DataSource mainDetTypeDS = DataSource.get("MainDetTypeDS");
-		infoGroupItem.setOptionOperationId("searchMainDetailTypesForNonStInfo");
-		infoGroupItem.setOptionDataSource(mainDetTypeDS);
-		infoGroupItem.setValueField("main_detail_type_id");
-		infoGroupItem.setDisplayField("main_detail_type_name_geo");
+		DataSource NoneStandartInfoGroupsDS = DataSource
+				.get("NoneStandartInfoGroupsDS");
+		infoGroupItem
+				.setOptionOperationId("searchAllNoneStandartInfoGroupsForCB");
+		infoGroupItem.setOptionDataSource(NoneStandartInfoGroupsDS);
+		infoGroupItem.setValueField("info_group_id");
+		infoGroupItem.setDisplayField("info_group_name");
 
 		infoGroupItem.setOptionCriteria(new Criteria());
 		infoGroupItem.setAutoFetchData(false);
@@ -91,11 +92,10 @@ public class TabFindNonStandartInfo extends Tab {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = infoGroupItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria
-							.getAttribute("main_detail_type_id");
+					String oldAttr = criteria.getAttribute("info_group_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("main_detail_type_id", nullO);
+						criteria.setAttribute("info_group_id", nullO);
 					}
 				}
 			}
@@ -126,28 +126,27 @@ public class TabFindNonStandartInfo extends Tab {
 		listGrid.setWidth(750);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(mainDetailDS);
+		listGrid.setDataSource(NonStandartInfosDS);
 		listGrid.setAutoFetchData(false);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
 		listGrid.setCanRemoveRecords(false);
-		listGrid.setFetchOperation("searchMainDetailsSplitedBySpace");
+		listGrid.setFetchOperation("searchAllNoneStandartInfo");
 		listGrid.setCanSort(false);
 		listGrid.setCanResizeFields(false);
 		listGrid.setWrapCells(true);
 		listGrid.setFixedRecordHeights(false);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField main_detail_type_name_geo = new ListGridField(
-				"main_detail_type_name_geo", CallCenterBK.constants.category(),
-				150);
-		main_detail_type_name_geo.setAlign(Alignment.LEFT);
+		ListGridField info_group_name = new ListGridField("info_group_name",
+				CallCenterBK.constants.category(), 150);
+		info_group_name.setAlign(Alignment.LEFT);
 
-		ListGridField main_detail_geo = new ListGridField("main_detail_geo",
+		ListGridField info_name = new ListGridField("info_name",
 				CallCenterBK.constants.information());
-		main_detail_geo.setAlign(Alignment.LEFT);
+		info_name.setAlign(Alignment.LEFT);
 
-		listGrid.setFields(main_detail_type_name_geo, main_detail_geo);
+		listGrid.setFields(info_group_name, info_name);
 
 		mainLayout.addMember(listGrid);
 
@@ -178,7 +177,8 @@ public class TabFindNonStandartInfo extends Tab {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 				DlgViewNonStandInfo dlgViewNonStandInfo = new DlgViewNonStandInfo(
-						listGrid, mainDetailDS, listGrid.getSelectedRecord());
+						listGrid, NonStandartInfosDS, listGrid
+								.getSelectedRecord());
 				dlgViewNonStandInfo.show();
 			}
 		});
@@ -188,19 +188,15 @@ public class TabFindNonStandartInfo extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", 0);
-			criteria.setAttribute("service_id",
-					Constants.serviceNonStandartInfo);
 
-			String main_detail_type_id = infoGroupItem.getValueAsString();
-			if (main_detail_type_id != null
-					&& !main_detail_type_id.trim().equals("")) {
-				criteria.setAttribute("main_detail_type_id", new Integer(
-						main_detail_type_id));
+			String info_group_id = infoGroupItem.getValueAsString();
+			if (info_group_id != null && !info_group_id.trim().equals("")) {
+				criteria.setAttribute("info_group_id", new Integer(
+						info_group_id));
 			}
-			String main_detail_geo = infoDescrItem.getValueAsString();
-			if (main_detail_geo != null && !main_detail_geo.trim().equals("")) {
-				String tmp = main_detail_geo.trim();
+			String info_name = infoDescrItem.getValueAsString();
+			if (info_name != null && !info_name.trim().equals("")) {
+				String tmp = info_name.trim();
 				String arrStr[] = tmp.split(" ");
 				int i = 1;
 				for (String string : arrStr) {
@@ -208,14 +204,14 @@ public class TabFindNonStandartInfo extends Tab {
 					if (item.equals("")) {
 						continue;
 					}
-					criteria.setAttribute("main_detail_geo" + i, item);
+					criteria.setAttribute("info_name" + i, item);
 					i++;
 				}
-				
+
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchMainDetailsSplitedBySpace");
+			dsRequest.setAttribute("operationId", "searchAllNoneStandartInfo");
 			listGrid.invalidateCache();
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override

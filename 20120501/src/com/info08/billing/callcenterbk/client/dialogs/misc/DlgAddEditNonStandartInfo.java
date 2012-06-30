@@ -1,6 +1,5 @@
 package com.info08.billing.callcenterbk.client.dialogs.misc;
 
-import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -16,7 +15,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
-import com.smartgwt.client.widgets.form.fields.TextAreaItem;
+import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -29,119 +28,115 @@ public class DlgAddEditNonStandartInfo extends Window {
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private ComboBoxItem mainDetTypeItem;
-	private TextAreaItem mainDetailGeoItem;
+	private ComboBoxItem infoGroupNameItem;
+	private TextItem infoNameItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
 	public DlgAddEditNonStandartInfo(ListGrid listGrid, ListGridRecord pRecord) {
-		try {
-			this.editRecord = pRecord;
-			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenterBK.constants
-					.addNonStandInfoTitle() : CallCenterBK.constants
-					.editNonStandInfoTitle());
+		this.editRecord = pRecord;
+		this.listGrid = listGrid;
 
-			setHeight(235);
-			setWidth(430);
-			setShowMinimizeButton(false);
-			setIsModal(true);
-			setShowModalMask(true);
-			setCanDrag(false);
-			setCanDragReposition(false);
-			setCanDragResize(false);
-			setCanDragScroll(false);
-			centerInPage();
+		setTitle(pRecord == null ? "არასტანდარტული ინფორმაციის დამატება"
+				: "არასტანდარტული ინფორმაციის მოდიფიცირება");
 
-			hLayout = new VLayout(5);
-			hLayout.setWidth100();
-			hLayout.setHeight100();
-			hLayout.setPadding(10);
+		setHeight(140);
+		setWidth(590);
+		setShowMinimizeButton(false);
+		setIsModal(true);
+		setShowModalMask(true);
+		setCanDrag(false);
+		setCanDragReposition(false);
+		setCanDragResize(false);
+		setCanDragScroll(false);
+		centerInPage();
 
-			dynamicForm = new DynamicForm();
-			dynamicForm.setAutoFocus(true);
-			dynamicForm.setWidth100();
-			dynamicForm.setTitleWidth(100);
-			dynamicForm.setNumCols(2);
-			hLayout.addMember(dynamicForm);
+		hLayout = new VLayout(5);
+		hLayout.setWidth100();
+		hLayout.setHeight100();
+		hLayout.setPadding(10);
 
-			mainDetTypeItem = new ComboBoxItem();
-			mainDetTypeItem.setTitle(CallCenterBK.constants.group());
-			mainDetTypeItem.setWidth(300);
-			mainDetTypeItem.setName("main_detail_type_name_geo");
-			mainDetTypeItem.setFetchMissingValues(true);
-			mainDetTypeItem.setFilterLocally(false);
-			mainDetTypeItem.setAddUnknownValues(false);
+		dynamicForm = new DynamicForm();
+		dynamicForm.setAutoFocus(true);
+		dynamicForm.setWidth100();
+		dynamicForm.setTitleWidth(180);
+		dynamicForm.setNumCols(2);
+		hLayout.addMember(dynamicForm);
 
-			DataSource mainDetTypeDS = DataSource.get("MainDetTypeDS");
-			mainDetTypeItem.setOptionOperationId("searchMainDetailTypesForNonStInfo");
-			mainDetTypeItem.setOptionDataSource(mainDetTypeDS);
-			mainDetTypeItem.setValueField("main_detail_type_id");
-			mainDetTypeItem.setDisplayField("main_detail_type_name_geo");
+		infoGroupNameItem = new ComboBoxItem();
+		infoGroupNameItem.setTitle("ჯგუფი");
+		infoGroupNameItem.setWidth(400);
+		infoGroupNameItem.setName("info_group_id");
+		infoGroupNameItem.setFetchMissingValues(true);
+		infoGroupNameItem.setFilterLocally(false);
+		infoGroupNameItem.setAddUnknownValues(false);
 
-			mainDetTypeItem.setOptionCriteria(new Criteria());
-			mainDetTypeItem.setAutoFetchData(false);
+		DataSource NoneStandartInfoGroupsDS = DataSource
+				.get("NoneStandartInfoGroupsDS");
+		infoGroupNameItem
+				.setOptionOperationId("searchAllNoneStandartInfoGroupsForCB");
+		infoGroupNameItem.setOptionDataSource(NoneStandartInfoGroupsDS);
+		infoGroupNameItem.setValueField("info_group_id");
+		infoGroupNameItem.setDisplayField("info_group_name");
 
-			mainDetTypeItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = mainDetTypeItem.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("main_detail_type_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("main_detail_type_id", nullO);
-						}
+		Criteria criteria = new Criteria();
+
+		infoGroupNameItem.setOptionCriteria(criteria);
+		infoGroupNameItem.setAutoFetchData(false);
+
+		infoGroupNameItem.addKeyPressHandler(new KeyPressHandler() {
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				Criteria criteria = infoGroupNameItem.getOptionCriteria();
+				if (criteria != null) {
+					String oldAttr = criteria.getAttribute("info_group_id");
+					if (oldAttr != null) {
+						Object nullO = null;
+						criteria.setAttribute("info_group_id", nullO);
 					}
 				}
-			});
+			}
+		});
 
-			mainDetailGeoItem = new TextAreaItem();
-			mainDetailGeoItem.setTitle(CallCenterBK.constants.description());
-			mainDetailGeoItem.setName("main_detail_geo");
-			mainDetailGeoItem.setWidth(300);
-			mainDetailGeoItem.setHeight(130);
+		infoNameItem = new TextItem();
+		infoNameItem.setTitle("აღწერა");
+		infoNameItem.setName("infoNameItem");
+		infoNameItem.setWidth(400);
 
-			dynamicForm.setFields(mainDetTypeItem, mainDetailGeoItem);
+		dynamicForm.setFields(infoGroupNameItem, infoNameItem);
 
-			HLayout hLayoutItem = new HLayout(5);
-			hLayoutItem.setWidth100();
-			hLayoutItem.setAlign(Alignment.RIGHT);
+		HLayout hLayoutItem = new HLayout(5);
+		hLayoutItem.setWidth100();
+		hLayoutItem.setAlign(Alignment.RIGHT);
 
-			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenterBK.constants.save());
-			saveItem.setWidth(100);
+		IButton saveItem = new IButton();
+		saveItem.setTitle("შენახვა");
+		saveItem.setWidth(100);
 
-			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenterBK.constants.close());
-			cancItem.setWidth(100);
+		IButton cancItem = new IButton();
+		cancItem.setTitle("დახურვა");
+		cancItem.setWidth(100);
 
-			hLayoutItem.setMembers(saveItem, cancItem);
+		hLayoutItem.setMembers(saveItem, cancItem);
 
-			hLayout.addMember(hLayoutItem);
+		hLayout.addMember(hLayoutItem);
 
-			cancItem.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					destroy();
-				}
-			});
-			saveItem.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					save();
-				}
-			});
+		cancItem.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				destroy();
+			}
+		});
+		saveItem.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				save();
+			}
+		});
 
-			addItem(hLayout);
-			fillFields();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			SC.say(e.toString());
-		}
+		addItem(hLayout);
+		fillFields();
 	}
 
 	private void fillFields() {
@@ -149,10 +144,18 @@ public class DlgAddEditNonStandartInfo extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			mainDetTypeItem.setValue(editRecord
-					.getAttributeAsInt("main_detail_type_id"));
-			mainDetailGeoItem.setValue(editRecord
-					.getAttributeAsString("main_detail_geo"));
+
+			Integer info_group_id = editRecord
+					.getAttributeAsInt("info_group_id");
+			if (info_group_id != null) {
+				infoGroupNameItem.setValue(info_group_id);
+			}
+
+			String info_name = editRecord.getAttributeAsString("info_name");
+			if (info_name != null) {
+				infoNameItem.setValue(info_name);
+			}
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -160,44 +163,38 @@ public class DlgAddEditNonStandartInfo extends Window {
 
 	private void save() {
 		try {
-			String main_detail_type_id_str = mainDetTypeItem.getValueAsString();
-			if (main_detail_type_id_str == null
-					|| main_detail_type_id_str.trim().equals("")) {
-				SC.say(CallCenterBK.constants.chooseSiteGroup());
+			String info_group = infoGroupNameItem.getValueAsString();
+			if (info_group == null || info_group.trim().equals("")) {
+				SC.say("გთხოვთ აირჩიოთ კატეგორია");
 				return;
 			}
-			String main_detail_geo = mainDetailGeoItem.getValueAsString();
-			if (main_detail_geo == null || main_detail_geo.trim().equals("")) {
-				SC.say(CallCenterBK.constants.enterDescription());
+			Integer info_group_id = new Integer(info_group);
+
+			String info_name = infoNameItem.getValueAsString();
+
+			if (info_name == null || info_name.trim().equals("")) {
+				SC.say("გთხოვთ შეიყვანოთ მიოსამართი");
 				return;
 			}
+
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("service_id", 32);
-			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("main_detail_type_id", new Integer(
-					main_detail_type_id_str));
-			record.setAttribute("main_detail_geo", main_detail_geo);
-			record.setAttribute("fields_order", 0);
-			record.setAttribute("main_detail_master_id", 0);
-			record.setAttribute("organization_id", -100);
-			record.setAttribute("old_id", 0);
+			record.setAttribute("info_group_id", info_group_id);
+			record.setAttribute("info_name", info_name);
 
 			if (editRecord != null) {
-				record.setAttribute("main_detail_id",
-						editRecord.getAttributeAsInt("main_detail_id"));
-				record.setAttribute("organization_id",
-						editRecord.getAttributeAsInt("organization_id"));
+				record.setAttribute("info_id",
+						editRecord.getAttributeAsInt("info_id"));
 			}
 
 			DSRequest req = new DSRequest();
+
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addMainDetail");
+				req.setAttribute("operationId", "addNoneStandartInfo");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -206,7 +203,7 @@ public class DlgAddEditNonStandartInfo extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateMainDetail");
+				req.setAttribute("operationId", "updateNoneStandartInfo");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

@@ -879,7 +879,7 @@ public interface QueryConstants {
 			+ "   and o.parrent_organization_id is null\n"
 			+ "   and pn.phone = ? \n" + "   and rownum < 2";
 
-	public static final String Q_GET_WEB_SESSION_ID = " select (to_number(to_char(sysdate,'YYMM'))*1000000 + log_calls_seq.nextval) AS sessionID from dual ";
+	public static final String Q_GET_WEB_SESSION_ID = " select (to_number(to_char(sysdate,'YYMM'))*1000000 + SEQ_LOG_CALLS.nextval) AS sessionID from dual ";
 
 	public static final String Q_GET_DISCOVERY_LIST = "select\n"
 			+ "  tt.survey_kind_name,\n"

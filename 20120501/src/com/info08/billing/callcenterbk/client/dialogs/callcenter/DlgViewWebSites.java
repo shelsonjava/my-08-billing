@@ -80,19 +80,18 @@ public class DlgViewWebSites extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		DetailViewerField main_detail_type_name_geo = new DetailViewerField(
-				"main_detail_type_name_geo", CallCenterBK.constants.group());
+		DetailViewerField web_site_group_name = new DetailViewerField(
+				"web_site_group_name", CallCenterBK.constants.group());
 
-		DetailViewerField main_detail_eng = new DetailViewerField(
-				"main_detail_eng", CallCenterBK.constants.webSite());
+		DetailViewerField address = new DetailViewerField("address",
+				CallCenterBK.constants.webSite());
 
-		DetailViewerField main_detail_geo = new DetailViewerField(
-				"main_detail_geo", CallCenterBK.constants.information());
+		DetailViewerField remark = new DetailViewerField("remark",
+				CallCenterBK.constants.information());
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(main_detail_type_name_geo, main_detail_eng,
-				main_detail_geo);
+		detailViewer.setFields(web_site_group_name, address, remark);
 
 		mainLayout.addMember(detailViewer);
 
@@ -203,16 +202,14 @@ public class DlgViewWebSites extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String main_detail_eng = listGridRecord
-					.getAttributeAsString("main_detail_eng");
-			if (main_detail_eng != null && !main_detail_eng.trim().equals("")) {
-				sms_text.append(main_detail_eng).append("-");
+			String address = listGridRecord.getAttributeAsString("address");
+			if (address != null && !address.trim().equals("")) {
+				sms_text.append(address).append("-");
 			}
 
-			String main_detail_geo = listGridRecord
-					.getAttributeAsString("main_detail_geo");
-			if (main_detail_geo != null && !main_detail_geo.trim().equals("")) {
-				sms_text.append(main_detail_geo).append(" ");
+			String remark = listGridRecord.getAttributeAsString("remark");
+			if (remark != null && !remark.trim().equals("")) {
+				sms_text.append(remark).append(" ");
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();

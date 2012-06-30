@@ -1,0 +1,59 @@
+<DataSource
+	ID="NoneStandartInfoGroupsDS"
+	serverType="sql"
+	tableName="non_standart_info_groups"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="info_group_id"		type="integer"		title="info_group_id"		hidden="true" primaryKey="true" />
+		<field name="info_group_name"	type="text"			title="info_group_name"/>
+		<field name="loggedUserName"	type="text"			title="Logged UserName" 	hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.NoneStandartInfoDMI"/>
+
+		<!-- Add -->
+		<operationBinding operationType="add" operationId="addNoneStandartInfoGroups" serverMethod="addNoneStandartInfoGroups">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.NoneStandartInfoDMI"/>
+        </operationBinding>
+        
+		<!-- Update -->
+		<operationBinding operationType="update" operationId="updateNoneStandartInfoGroups" serverMethod="updateNoneStandartInfoGroups">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.NoneStandartInfoDMI"/>
+        </operationBinding>
+        
+        <!-- Remove -->
+		<operationBinding operationType="remove" operationId="removeNoneStandartInfoGroups" serverMethod="removeNoneStandartInfoGroups">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.NoneStandartInfoDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllNoneStandartInfoGroups" operationType="fetch">
+    		<selectClause>   			
+    			t.info_group_id,
+				t.info_group_name
+			</selectClause> 
+			<tableClause>non_standart_info_groups t</tableClause>
+			<whereClause><![CDATA[
+				1=1
+				#if($criteria.info_group_name) and t.info_group_name like ($criteria.info_group_name)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.info_group_name</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllNoneStandartInfoGroupsForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.info_group_id,
+    			t.info_group_name 
+			</selectClause> 
+			<tableClause>non_standart_info_groups t</tableClause>	
+			<whereClause>
+				($defaultWhereClause)
+			</whereClause>	
+			<orderClause>t.info_group_name</orderClause>		
+    	</operationBinding>
+
+    </operationBindings>	
+</DataSource>

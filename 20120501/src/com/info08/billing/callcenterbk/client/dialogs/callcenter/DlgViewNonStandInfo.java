@@ -80,15 +80,15 @@ public class DlgViewNonStandInfo extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 
-		DetailViewerField main_detail_type_name_geo = new DetailViewerField(
-				"main_detail_type_name_geo", CallCenterBK.constants.category());
+		DetailViewerField info_group_name = new DetailViewerField(
+				"info_group_name", CallCenterBK.constants.category());
 
-		DetailViewerField main_detail_geo = new DetailViewerField(
-				"main_detail_geo", CallCenterBK.constants.information());
+		DetailViewerField info_name = new DetailViewerField("info_name",
+				CallCenterBK.constants.information());
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(main_detail_type_name_geo, main_detail_geo);
+		detailViewer.setFields(info_group_name, info_name);
 
 		mainLayout.addMember(detailViewer);
 
@@ -199,17 +199,15 @@ public class DlgViewNonStandInfo extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String main_detail_type_name_geo = listGridRecord
-					.getAttributeAsString("main_detail_type_name_geo");
-			if (main_detail_type_name_geo != null
-					&& !main_detail_type_name_geo.trim().equals("")) {
-				sms_text.append(main_detail_type_name_geo).append("-");
+			String info_group_name = listGridRecord
+					.getAttributeAsString("info_group_name");
+			if (info_group_name != null && !info_group_name.trim().equals("")) {
+				sms_text.append(info_group_name).append("-");
 			}
 
-			String main_detail_geo = listGridRecord
-					.getAttributeAsString("main_detail_geo");
-			if (main_detail_geo != null && !main_detail_geo.trim().equals("")) {
-				sms_text.append(main_detail_geo).append(" ");
+			String info_name = listGridRecord.getAttributeAsString("info_name");
+			if (info_name != null && !info_name.trim().equals("")) {
+				sms_text.append(info_name).append(" ");
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();

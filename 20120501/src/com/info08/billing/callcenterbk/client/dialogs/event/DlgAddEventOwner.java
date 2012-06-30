@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditEventOwner extends Window {
+public class DlgAddEventOwner extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -42,7 +42,7 @@ public class DlgAddEditEventOwner extends Window {
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditEventOwner(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEventOwner(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 

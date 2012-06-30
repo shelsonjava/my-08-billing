@@ -1,6 +1,5 @@
 package com.info08.billing.callcenterbk.client.content.misc;
 
-import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.misc.DlgAddEditNonStandartInfoGroup;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -38,28 +37,28 @@ public class TabNonStandartGroup extends Tab {
 	private VLayout mainLayout;
 
 	// form fields
-	private TextItem mainDetTypeNameGeoItem;
+	private TextItem infoGroupNameItem;
 
 	// actions
 	private IButton findButton;
 	private IButton clearButton;
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
-	private ToolStripButton disableBtn;
-	private ToolStripButton activateBtn;
+	private ToolStripButton deleteBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
 
 	// DataSource
-	private DataSource datasource;
+	private DataSource NoneStandartInfoGroupsDS;
 
 	public TabNonStandartGroup() {
 		try {
-			setTitle(CallCenterBK.constants.menuMiscCateg());
+			setTitle("არასტ. ინფ. კატ.");
 			setCanClose(true);
 
-			datasource = DataSource.get("MainDetTypeDS");
+			NoneStandartInfoGroupsDS = DataSource
+					.get("NoneStandartInfoGroupsDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -69,114 +68,76 @@ public class TabNonStandartGroup extends Tab {
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth(500);
-			searchForm.setTitleWidth(300);
-			searchForm.setNumCols(4);
+			searchForm.setTitleWidth(200);
+			searchForm.setNumCols(2);
 			mainLayout.addMember(searchForm);
 
-			mainDetTypeNameGeoItem = new TextItem();
-			mainDetTypeNameGeoItem.setTitle(CallCenterBK.constants.description());
-			mainDetTypeNameGeoItem.setName("main_detail_type_name_geo");
-			mainDetTypeNameGeoItem.setWidth(300);
+			infoGroupNameItem = new TextItem();
+			infoGroupNameItem.setTitle("ჯგუფი");
+			infoGroupNameItem.setWidth(300);
+			infoGroupNameItem.setName("info_group_name");
 
-			searchForm.setFields(mainDetTypeNameGeoItem);
+			searchForm.setFields(infoGroupNameItem);
 
 			HLayout buttonLayout = new HLayout(5);
-			buttonLayout.setWidth(415);
+			buttonLayout.setWidth(500);
 			buttonLayout.setHeight(30);
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenterBK.constants.clear());
+			clearButton.setTitle("გასუფთავება");
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenterBK.constants.find());
+			findButton.setTitle("ძებნა");
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
 
 			ToolStrip toolStrip = new ToolStrip();
-			toolStrip.setWidth(780);
+			toolStrip.setWidth(730);
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
-					"addIcon.png");
+			addBtn = new ToolStripButton("დამატება", "addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
-					"editIcon.png");
+			editBtn = new ToolStripButton("შეცვლა", "editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			disableBtn = new ToolStripButton(CallCenterBK.constants.disable(),
-					"deleteIcon.png");
-			disableBtn.setLayoutAlign(Alignment.LEFT);
-			disableBtn.setWidth(50);
-			toolStrip.addButton(disableBtn);
-
-			activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
-					"restoreIcon.gif");
-			activateBtn.setLayoutAlign(Alignment.LEFT);
-			activateBtn.setWidth(50);
-			toolStrip.addButton(activateBtn);
+			deleteBtn = new ToolStripButton("გაუქმება", "deleteIcon.png");
+			deleteBtn.setLayoutAlign(Alignment.LEFT);
+			deleteBtn.setWidth(50);
+			toolStrip.addButton(deleteBtn);
 
 			toolStrip.addSeparator();
 
-			listGrid = new ListGrid() {
-				protected String getCellCSSText(ListGridRecord record,
-						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					if (countryRecord == null) {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-				};
-			};
+			listGrid = new ListGrid();
 
-			listGrid.setWidth(780);
-			listGrid.setHeight(400);
+			listGrid.setWidth(730);
+			listGrid.setHeight(430);
 			listGrid.setAlternateRecordStyles(true);
-			listGrid.setDataSource(datasource);
+			listGrid.setDataSource(NoneStandartInfoGroupsDS);
 			listGrid.setAutoFetchData(false);
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchMainDetailTypes");
+			listGrid.setFetchOperation("searchAllNoneStandartInfoGroups");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("main_detail_type_name_geo").setTitle(CallCenterBK.constants.description());
-			datasource.getField("service_name_geo").setTitle(CallCenterBK.constants.service());
-			datasource.getField("rec_date").setTitle(CallCenterBK.constants.recDate());
-			datasource.getField("rec_user").setTitle(CallCenterBK.constants.recUser());
-			datasource.getField("upd_date").setTitle(CallCenterBK.constants.updDate());
-			datasource.getField("upd_user").setTitle(CallCenterBK.constants.updUser());
+			NoneStandartInfoGroupsDS.getField("info_group_name").setTitle(
+					"ჯგუფი");
 
-			ListGridField main_detail_type_name_geo = new ListGridField("main_detail_type_name_geo",CallCenterBK.constants.description(), 210);
-			ListGridField rec_date = new ListGridField("rec_date",CallCenterBK.constants.recDate(), 150);
-			ListGridField rec_user = new ListGridField("rec_user",CallCenterBK.constants.recUser(), 100);
-			ListGridField upd_date = new ListGridField("upd_date",CallCenterBK.constants.updDate(), 150);
-			ListGridField upd_user = new ListGridField("upd_user",CallCenterBK.constants.updUser(), 120);
-			
+			ListGridField event_category_name = new ListGridField(
+					"info_group_name", "ჯგუფი");
 
-			main_detail_type_name_geo.setAlign(Alignment.LEFT);
-			rec_date.setAlign(Alignment.CENTER);
-			rec_user.setAlign(Alignment.CENTER);
-			upd_date.setAlign(Alignment.CENTER);
-			upd_user.setAlign(Alignment.CENTER);
-
-			listGrid.setFields(main_detail_type_name_geo, rec_date,rec_user,upd_date,upd_user);
+			listGrid.setFields(event_category_name);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -188,15 +149,15 @@ public class TabNonStandartGroup extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					mainDetTypeNameGeoItem.clearValue();
+					infoGroupNameItem.clearValue();
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditNonStandartInfoGroup dlgAddEditNonStandartInfo = new DlgAddEditNonStandartInfoGroup(
+					DlgAddEditNonStandartInfoGroup dlgAddEditNonStandartInfoGroup = new DlgAddEditNonStandartInfoGroup(
 							listGrid, null);
-					dlgAddEditNonStandartInfo.show();
+					dlgAddEditNonStandartInfoGroup.show();
 				}
 			});
 
@@ -206,65 +167,38 @@ public class TabNonStandartGroup extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
+						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditNonStandartInfoGroup dlgAddEditNonStandartInfo = new DlgAddEditNonStandartInfoGroup(
+
+					DlgAddEditNonStandartInfoGroup dlgAddEditNonStandartInfoGroup = new DlgAddEditNonStandartInfoGroup(
 							listGrid, listGridRecord);
-					dlgAddEditNonStandartInfo.show();
+					dlgAddEditNonStandartInfoGroup.show();
 				}
 			});
-			disableBtn.addClickHandler(new ClickHandler() {
+			deleteBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
+						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrDisabled());
+
+					final Integer web_site_group_id = listGridRecord
+							.getAttributeAsInt("info_group_id");
+					if (web_site_group_id == null) {
+						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
-					final Integer main_detail_type_id = listGridRecord
-							.getAttributeAsInt("main_detail_type_id");
-					SC.ask(CallCenterBK.constants.askForDisable(),
+
+					SC.ask("დარწმუნებული ხართ რომ გნებავთ ჩანაწერის გაუქმება ?",
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(main_detail_type_id, 1);
-									}
-								}
-							});
-				}
-			});
-			activateBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrEnabled());
-						return;
-					}
-					final Integer main_detail_type_id = listGridRecord
-							.getAttributeAsInt("main_detail_type_id");
-					SC.ask(CallCenterBK.constants.askForEnable(),
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(main_detail_type_id, 0);
+										delete(web_site_group_id);
 									}
 								}
 							});
@@ -272,11 +206,11 @@ public class TabNonStandartGroup extends Tab {
 			});
 
 			TabSet tabSet = new TabSet();
-			tabSet.setWidth(780);
-			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
+			tabSet.setWidth(730);
+			Tab tabDetViewer = new Tab("დათვალიერება");
 			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(datasource);
-			detailViewer.setWidth(750);
+			detailViewer.setDataSource(NoneStandartInfoGroupsDS);
+			detailViewer.setWidth(710);
 			tabDetViewer.setPane(detailViewer);
 
 			listGrid.addRecordClickHandler(new RecordClickHandler() {
@@ -284,19 +218,19 @@ public class TabNonStandartGroup extends Tab {
 					detailViewer.viewSelectedData(listGrid);
 				}
 			});
-
 			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 				@Override
 				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
+						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditNonStandartInfoGroup dlgAddEditNonStandartInfo = new DlgAddEditNonStandartInfoGroup(
+
+					DlgAddEditNonStandartInfoGroup dlgAddEditNonStandartInfoGroup = new DlgAddEditNonStandartInfoGroup(
 							listGrid, listGridRecord);
-					dlgAddEditNonStandartInfo.show();
+					dlgAddEditNonStandartInfoGroup.show();
 				}
 			});
 
@@ -311,17 +245,14 @@ public class TabNonStandartGroup extends Tab {
 
 	private void search() {
 		try {
+			String info_group_name = infoGroupNameItem.getValueAsString();
+
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("service_id", 32);
-			String main_detail_type_name_geo = mainDetTypeNameGeoItem.getValueAsString();
-			if (main_detail_type_name_geo != null
-					&& !main_detail_type_name_geo.trim().equals("")) {
-				criteria.setAttribute("main_detail_type_name_geo",
-						main_detail_type_name_geo);
-			}
+			criteria.setAttribute("info_group_name", info_group_name);
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchMainDetailTypes");
+			dsRequest.setAttribute("operationId",
+					"searchAllNoneStandartInfoGroups");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -334,18 +265,18 @@ public class TabNonStandartGroup extends Tab {
 		}
 	}
 
-	private void changeStatus(Integer main_detail_type_id, Integer deleted) {
+	private void delete(Integer info_group_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("main_detail_type_id", main_detail_type_id);
+
+			record.setAttribute("info_group_id", info_group_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateMainDetailTypeStatus");
-			listGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "removeNoneStandartInfoGroups");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

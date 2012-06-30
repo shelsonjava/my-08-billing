@@ -1,0 +1,55 @@
+<DataSource
+	ID="WebSitesDS"
+	serverType="sql"
+	tableName="web_sites"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="web_site_id"			type="integer"		title="ID"						hidden="true" primaryKey="true" />
+		<field name="address"				type="text"			title="address"/>
+		<field name="remark"				type="text"			title="remark"/>
+		<field name="web_site_group_name"	type="text"			title="web_site_group_name"/>
+		<field name="web_site_group_id"		type="integer"		title="web_site_group_id" 		hidden="true"/>
+		<field name="loggedUserName"		type="text"			title="Logged UserName" 		hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.WebSitesDMI"/>
+
+		<!-- Add -->	
+		<operationBinding operationType="add" operationId="addWebSites" serverMethod="addWebSites">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.WebSitesDMI"/>
+        </operationBinding>
+        
+		<!-- Update -->
+		<operationBinding operationType="update" operationId="updateWebSites" serverMethod="updateWebSites">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.WebSitesDMI"/>
+        </operationBinding>
+        
+        <!-- Remove -->
+		<operationBinding operationType="remove" operationId="removeWebSites" serverMethod="removeWebSites">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.WebSitesDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllWebSites" operationType="fetch">
+    		<selectClause>   			
+    			ws.web_site_id,
+    			ws.address,
+    			ws.remark,
+    			wsg.web_site_group_id,
+    			wsg.web_site_group_name
+			</selectClause> 
+			<tableClause>web_sites ws, web_site_groups wsg</tableClause>
+			<whereClause><![CDATA[
+				ws.web_site_group_id = wsg.web_site_group_id 
+				#if($criteria.address) and ws.address like '%'||($criteria.address)||'%' #end
+				#if($criteria.remark) and ws.remark like '%'||($criteria.remark)||'%' #end
+				#if($criteria.web_site_group_id) and ws.web_site_group_id = ($criteria.web_site_group_id) #end
+				]]>  
+			</whereClause> 
+			<orderClause>ws.address</orderClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>

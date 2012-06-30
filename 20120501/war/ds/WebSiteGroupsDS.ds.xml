@@ -1,0 +1,59 @@
+<DataSource
+	ID="WebSiteGroupsDS"
+	serverType="sql"
+	tableName="web_site_groups"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="web_site_group_id"		type="integer"		title="web_site_group_id"			hidden="true" primaryKey="true" />
+		<field name="web_site_group_name"	type="text"			title="web_site_group_name"/>
+		<field name="loggedUserName"		type="text"			title="Logged UserName" 			hidden="true" />		
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.WebSitesDMI"/>
+
+		<!-- Add -->
+		<operationBinding operationType="add" operationId="addWebSiteGroup" serverMethod="addWebSiteGroup">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.WebSitesDMI"/>
+        </operationBinding>
+        
+		<!-- Update -->
+		<operationBinding operationType="update" operationId="updateWebSiteGroup" serverMethod="updateWebSiteGroup">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.WebSitesDMI"/>
+        </operationBinding>
+        
+        <!-- Remove -->
+		<operationBinding operationType="remove" operationId="removeWebSiteGroup" serverMethod="removeWebSiteGroup">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.WebSitesDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllWebSiteGroups" operationType="fetch">
+    		<selectClause>   			
+    			t.web_site_group_id,
+				t.web_site_group_name
+			</selectClause> 
+			<tableClause>web_site_groups t</tableClause>
+			<whereClause><![CDATA[
+				1=1
+				#if($criteria.web_site_group_name) and t.web_site_group_name like ($criteria.web_site_group_name)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>t.web_site_group_name</orderClause>
+    	</operationBinding>
+    	
+    	<operationBinding operationId="searchAllWebSiteGroupsForCB" operationType="fetch">
+    		<selectClause>   			
+    			t.web_site_group_id,
+    			t.web_site_group_name 
+			</selectClause> 
+			<tableClause>web_site_groups t</tableClause>	
+			<whereClause>
+				($defaultWhereClause)
+			</whereClause>	
+			<orderClause>t.web_site_group_name</orderClause>		
+    	</operationBinding>
+
+    </operationBindings>	
+</DataSource>

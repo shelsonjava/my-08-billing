@@ -78,13 +78,15 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.StaffComputerSkill</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.StaffLanguages</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.StaffPhones</class>
-		<class>com.info08.billing.callcenterbk.shared.entity.StaffWorks</class>		
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffWorks</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.StaffRelative09</class>
-		<class>com.info08.billing.callcenterbk.shared.entity.StaffFamousPeople</class>	
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffFamousPeople</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.callcenter.FreeOfChargePhone</class>
-		
-		
-		
+		<class>com.info08.billing.callcenterbk.shared.entity.websites.WebSiteGroups</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.websites.WebSites</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.nonstandartinfo.NonStandartInfoGroups</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.nonstandartinfo.NonStandartInfo</class>
+
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
 			<property name="hibernate.connection.username" value="ccare" />

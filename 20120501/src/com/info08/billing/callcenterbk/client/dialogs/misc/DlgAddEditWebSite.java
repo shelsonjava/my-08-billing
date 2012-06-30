@@ -1,8 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.misc;
 
-import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -30,125 +28,118 @@ public class DlgAddEditWebSite extends Window {
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
-	private ComboBoxItem mainDetTypeItem;
-	private TextItem mainDetailGeoItem;
-	private TextItem mainDetailEngItem;
+	private ComboBoxItem webSiteGroupsItem;
+	private TextItem addressItem;
+	private TextItem remarkItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
 	public DlgAddEditWebSite(ListGrid listGrid, ListGridRecord pRecord) {
-		try {
-			this.editRecord = pRecord;
-			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenterBK.constants.addSiteTitle()
-					: CallCenterBK.constants.editSiteTitle());
+		this.editRecord = pRecord;
+		this.listGrid = listGrid;
 
-			setHeight(160);
-			setWidth(430);
-			setShowMinimizeButton(false);
-			setIsModal(true);
-			setShowModalMask(true);
-			setCanDrag(false);
-			setCanDragReposition(false);
-			setCanDragResize(false);
-			setCanDragScroll(false);
-			centerInPage();
+		setTitle(pRecord == null ? "საიტის დამატება" : "საიტის მოდიფიცირება");
 
-			hLayout = new VLayout(5);
-			hLayout.setWidth100();
-			hLayout.setHeight100();
-			hLayout.setPadding(10);
+		setHeight(160);
+		setWidth(590);
+		setShowMinimizeButton(false);
+		setIsModal(true);
+		setShowModalMask(true);
+		setCanDrag(false);
+		setCanDragReposition(false);
+		setCanDragResize(false);
+		setCanDragScroll(false);
+		centerInPage();
 
-			dynamicForm = new DynamicForm();
-			dynamicForm.setAutoFocus(true);
-			dynamicForm.setWidth100();
-			dynamicForm.setTitleWidth(100);
-			dynamicForm.setNumCols(2);
-			hLayout.addMember(dynamicForm);
+		hLayout = new VLayout(5);
+		hLayout.setWidth100();
+		hLayout.setHeight100();
+		hLayout.setPadding(10);
 
-			mainDetTypeItem = new ComboBoxItem();
-			mainDetTypeItem.setTitle(CallCenterBK.constants.group());
-			mainDetTypeItem.setWidth(300);
-			mainDetTypeItem.setName("main_detail_type_name_geo");
-			mainDetTypeItem.setFetchMissingValues(true);
-			mainDetTypeItem.setFilterLocally(false);
-			mainDetTypeItem.setAddUnknownValues(false);
+		dynamicForm = new DynamicForm();
+		dynamicForm.setAutoFocus(true);
+		dynamicForm.setWidth100();
+		dynamicForm.setTitleWidth(180);
+		dynamicForm.setNumCols(2);
+		hLayout.addMember(dynamicForm);
 
-			DataSource mainDetTypeDS = DataSource.get("MainDetTypeDS");
-			mainDetTypeItem
-					.setOptionOperationId("searchMainDetailTypesFirWebSites");
-			mainDetTypeItem.setOptionDataSource(mainDetTypeDS);
-			mainDetTypeItem.setValueField("main_detail_type_id");
-			mainDetTypeItem.setDisplayField("main_detail_type_name_geo");
+		webSiteGroupsItem = new ComboBoxItem();
+		webSiteGroupsItem.setTitle("საიტის ჯგუფი");
+		webSiteGroupsItem.setWidth(400);
+		webSiteGroupsItem.setName("web_site_group_id");
+		webSiteGroupsItem.setFetchMissingValues(true);
+		webSiteGroupsItem.setFilterLocally(false);
+		webSiteGroupsItem.setAddUnknownValues(false);
 
-			mainDetTypeItem.setOptionCriteria(new Criteria());
-			mainDetTypeItem.setAutoFetchData(false);
+		DataSource WebSiteGroupsDS = DataSource.get("WebSiteGroupsDS");
+		webSiteGroupsItem.setOptionOperationId("searchAllWebSiteGroupsForCB");
+		webSiteGroupsItem.setOptionDataSource(WebSiteGroupsDS);
+		webSiteGroupsItem.setValueField("web_site_group_id");
+		webSiteGroupsItem.setDisplayField("web_site_group_name");
 
-			mainDetTypeItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = mainDetTypeItem.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("main_detail_type_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("main_detail_type_id", nullO);
-						}
+		Criteria criteria = new Criteria();
+
+		webSiteGroupsItem.setOptionCriteria(criteria);
+		webSiteGroupsItem.setAutoFetchData(false);
+
+		webSiteGroupsItem.addKeyPressHandler(new KeyPressHandler() {
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				Criteria criteria = webSiteGroupsItem.getOptionCriteria();
+				if (criteria != null) {
+					String oldAttr = criteria.getAttribute("web_site_group_id");
+					if (oldAttr != null) {
+						Object nullO = null;
+						criteria.setAttribute("web_site_group_id", nullO);
 					}
 				}
-			});
+			}
+		});
 
-			mainDetailGeoItem = new TextItem();
-			mainDetailGeoItem.setTitle(CallCenterBK.constants.description());
-			mainDetailGeoItem.setName("main_detail_geo");
-			mainDetailGeoItem.setWidth(300);
+		addressItem = new TextItem();
+		addressItem.setTitle("მისამართი");
+		addressItem.setName("address");
+		addressItem.setWidth(400);
 
-			mainDetailEngItem = new TextItem();
-			mainDetailEngItem.setTitle(CallCenterBK.constants.webSite());
-			mainDetailEngItem.setName("main_detail_eng");
-			mainDetailEngItem.setWidth(300);
+		remarkItem = new TextItem();
+		remarkItem.setTitle("კომენტარი");
+		remarkItem.setName("remark");
+		remarkItem.setWidth(400);
 
-			dynamicForm.setFields(mainDetTypeItem, mainDetailGeoItem,
-					mainDetailEngItem);
+		dynamicForm.setFields(webSiteGroupsItem, addressItem, remarkItem);
 
-			HLayout hLayoutItem = new HLayout(5);
-			hLayoutItem.setWidth100();
-			hLayoutItem.setAlign(Alignment.RIGHT);
+		HLayout hLayoutItem = new HLayout(5);
+		hLayoutItem.setWidth100();
+		hLayoutItem.setAlign(Alignment.RIGHT);
 
-			IButton saveItem = new IButton();
-			saveItem.setTitle(CallCenterBK.constants.save());
-			saveItem.setWidth(100);
+		IButton saveItem = new IButton();
+		saveItem.setTitle("შენახვა");
+		saveItem.setWidth(100);
 
-			IButton cancItem = new IButton();
-			cancItem.setTitle(CallCenterBK.constants.close());
-			cancItem.setWidth(100);
+		IButton cancItem = new IButton();
+		cancItem.setTitle("დახურვა");
+		cancItem.setWidth(100);
 
-			hLayoutItem.setMembers(saveItem, cancItem);
+		hLayoutItem.setMembers(saveItem, cancItem);
 
-			hLayout.addMember(hLayoutItem);
+		hLayout.addMember(hLayoutItem);
 
-			cancItem.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					destroy();
-				}
-			});
-			saveItem.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					save();
-				}
-			});
+		cancItem.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				destroy();
+			}
+		});
+		saveItem.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				save();
+			}
+		});
 
-			addItem(hLayout);
-			fillFields();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			SC.say(e.toString());
-		}
+		addItem(hLayout);
+		fillFields();
 	}
 
 	private void fillFields() {
@@ -156,9 +147,23 @@ public class DlgAddEditWebSite extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			mainDetTypeItem.setValue(editRecord.getAttributeAsInt("main_detail_type_id"));
-			mainDetailGeoItem.setValue(editRecord.getAttributeAsString("main_detail_geo"));
-			mainDetailEngItem.setValue(editRecord.getAttributeAsString("main_detail_eng"));
+
+			Integer web_site_group_id = editRecord
+					.getAttributeAsInt("web_site_group_id");
+			if (web_site_group_id != null) {
+				webSiteGroupsItem.setValue(web_site_group_id);
+			}
+
+			String address = editRecord.getAttributeAsString("address");
+			if (address != null) {
+				addressItem.setValue(address);
+			}
+
+			String remark = editRecord.getAttributeAsString("remark");
+			if (remark != null) {
+				remarkItem.setValue(remark);
+			}
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -166,19 +171,17 @@ public class DlgAddEditWebSite extends Window {
 
 	private void save() {
 		try {
-			String main_detail_type_id_str = mainDetTypeItem.getValueAsString();
-			if (main_detail_type_id_str == null || main_detail_type_id_str.trim().equals("")) {
-				SC.say(CallCenterBK.constants.chooseSiteGroup());
+			String web_site_group = webSiteGroupsItem.getValueAsString();
+			if (web_site_group == null || web_site_group.trim().equals("")) {
+				SC.say("გთხოვთ აირჩიოთ კატეგორია");
 				return;
 			}
-			String main_detail_geo = mainDetailGeoItem.getValueAsString();
-			if (main_detail_geo == null || main_detail_geo.trim().equals("")) {
-				SC.say(CallCenterBK.constants.enterDescription());
-				return;
-			}
-			String main_detail_eng = mainDetailEngItem.getValueAsString();
-			if (main_detail_eng == null || main_detail_eng.trim().equals("")) {
-				SC.say(CallCenterBK.constants.enterWebSite());
+			Integer web_site_group_id = new Integer(web_site_group);
+			String address = addressItem.getValueAsString();
+			String remark = remarkItem.getValueAsString();
+
+			if (address == null || address.trim().equals("")) {
+				SC.say("გთხოვთ შეიყვანოთ მიოსამართი");
 				return;
 			}
 
@@ -188,25 +191,19 @@ public class DlgAddEditWebSite extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("deleted", 0);
-			record.setAttribute("service_id", Constants.serviceWebSiteInfo);
-			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("main_detail_type_id",new Integer(main_detail_type_id_str));
-			record.setAttribute("main_detail_geo", main_detail_geo);
-			record.setAttribute("main_detail_eng", main_detail_eng);
-			record.setAttribute("fields_order", 0);
-			record.setAttribute("main_detail_master_id", 0);
-			record.setAttribute("organization_id", -100);
-			record.setAttribute("old_id", 0);
+			record.setAttribute("web_site_group_id", web_site_group_id);
+			record.setAttribute("address", address);
+			record.setAttribute("remark", remark);
 
 			if (editRecord != null) {
-				record.setAttribute("main_detail_id",editRecord.getAttributeAsInt("main_detail_id"));
-				record.setAttribute("organization_id",editRecord.getAttributeAsInt("organization_id"));
+				record.setAttribute("web_site_id",
+						editRecord.getAttributeAsInt("web_site_id"));
 			}
 
 			DSRequest req = new DSRequest();
+
 			if (editRecord == null) {
-				req.setAttribute("operationId", "addMainDetail");
+				req.setAttribute("operationId", "addWebSites");
 				listGrid.addData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -215,7 +212,7 @@ public class DlgAddEditWebSite extends Window {
 					}
 				}, req);
 			} else {
-				req.setAttribute("operationId", "updateMainDetail");
+				req.setAttribute("operationId", "updateWebSites");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,

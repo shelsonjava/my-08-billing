@@ -1,6 +1,6 @@
 package com.info08.billing.callcenterbk.client.content.event;
 
-import com.info08.billing.callcenterbk.client.dialogs.event.DlgAddEditEventOwner;
+import com.info08.billing.callcenterbk.client.dialogs.event.DlgAddEventOwner;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -213,7 +213,7 @@ public class TabEventOwner extends Tab {
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditEventOwner dlgAddEditEventOwner = new DlgAddEditEventOwner(
+					DlgAddEventOwner dlgAddEditEventOwner = new DlgAddEventOwner(
 							listGrid, null);
 					dlgAddEditEventOwner.show();
 				}
@@ -229,7 +229,7 @@ public class TabEventOwner extends Tab {
 						return;
 					}
 
-					DlgAddEditEventOwner dlgAddEditEventOwner = new DlgAddEditEventOwner(
+					DlgAddEventOwner dlgAddEditEventOwner = new DlgAddEventOwner(
 							listGrid, listGridRecord);
 					dlgAddEditEventOwner.show();
 				}
@@ -284,7 +284,7 @@ public class TabEventOwner extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditEventOwner dlgAddEditEventOwner = new DlgAddEditEventOwner(
+					DlgAddEventOwner dlgAddEditEventOwner = new DlgAddEventOwner(
 							listGrid, listGridRecord);
 					dlgAddEditEventOwner.show();
 				}

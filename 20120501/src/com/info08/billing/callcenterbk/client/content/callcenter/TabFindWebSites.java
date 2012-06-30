@@ -2,7 +2,6 @@ package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewWebSites;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -33,9 +32,9 @@ public class TabFindWebSites extends Tab {
 	private DynamicForm searchForm;
 
 	// fields
-	private ComboBoxItem siteGroupItem;
-	private TextItem webSiteItem;
-	private TextItem siteDescrItem;
+	private ComboBoxItem webSiteGroupItem;
+	private TextItem addressItem;
+	private TextItem remarkItem;
 
 	// main content layout
 	private VLayout mainLayout;
@@ -48,13 +47,13 @@ public class TabFindWebSites extends Tab {
 	private ListGrid listGrid;
 
 	// DataSource
-	private DataSource mainDetailDS;
+	private DataSource WebSitesDS;
 
 	public TabFindWebSites() {
 		setTitle(CallCenterBK.constants.findSites());
 		setCanClose(true);
 
-		mainDetailDS = DataSource.get("MainDetailDS");
+		WebSitesDS = DataSource.get("WebSitesDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -68,50 +67,49 @@ public class TabFindWebSites extends Tab {
 		searchForm.setTitleOrientation(TitleOrientation.TOP);
 		mainLayout.addMember(searchForm);
 
-		siteGroupItem = new ComboBoxItem();
-		siteGroupItem.setTitle(CallCenterBK.constants.group());
-		siteGroupItem.setWidth(250);
-		siteGroupItem.setName("main_detail_type_name_geo");
-		siteGroupItem.setFetchMissingValues(true);
-		siteGroupItem.setFilterLocally(false);
-		siteGroupItem.setAddUnknownValues(false);
-		siteGroupItem.setCompleteOnTab(true);
+		webSiteGroupItem = new ComboBoxItem();
+		webSiteGroupItem.setTitle(CallCenterBK.constants.group());
+		webSiteGroupItem.setWidth(250);
+		webSiteGroupItem.setName("web_site_group");
+		webSiteGroupItem.setFetchMissingValues(true);
+		webSiteGroupItem.setFilterLocally(false);
+		webSiteGroupItem.setAddUnknownValues(false);
+		webSiteGroupItem.setCompleteOnTab(true);
 
-		DataSource mainDetTypeDS = DataSource.get("MainDetTypeDS");
-		siteGroupItem.setOptionOperationId("searchMainDetailTypesFirWebSites");
-		siteGroupItem.setOptionDataSource(mainDetTypeDS);
-		siteGroupItem.setValueField("main_detail_type_id");
-		siteGroupItem.setDisplayField("main_detail_type_name_geo");
+		DataSource WebSiteGroupsDS = DataSource.get("WebSiteGroupsDS");
+		webSiteGroupItem.setOptionOperationId("searchAllWebSiteGroupsForCB");
+		webSiteGroupItem.setOptionDataSource(WebSiteGroupsDS);
+		webSiteGroupItem.setValueField("web_site_group_id");
+		webSiteGroupItem.setDisplayField("web_site_group_name");
 
-		siteGroupItem.setOptionCriteria(new Criteria());
-		siteGroupItem.setAutoFetchData(false);
+		webSiteGroupItem.setOptionCriteria(new Criteria());
+		webSiteGroupItem.setAutoFetchData(false);
 
-		siteGroupItem.addKeyPressHandler(new KeyPressHandler() {
+		webSiteGroupItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = siteGroupItem.getOptionCriteria();
+				Criteria criteria = webSiteGroupItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria
-							.getAttribute("main_detail_type_id");
+					String oldAttr = criteria.getAttribute("web_site_group_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("main_detail_type_id", nullO);
+						criteria.setAttribute("web_site_group_id", nullO);
 					}
 				}
 			}
 		});
 
-		webSiteItem = new TextItem();
-		webSiteItem.setTitle(CallCenterBK.constants.webSite());
-		webSiteItem.setName("webSiteItem");
-		webSiteItem.setWidth(250);
+		addressItem = new TextItem();
+		addressItem.setTitle(CallCenterBK.constants.webSite());
+		addressItem.setName("addressItem");
+		addressItem.setWidth(250);
 
-		siteDescrItem = new TextItem();
-		siteDescrItem.setTitle(CallCenterBK.constants.comment());
-		siteDescrItem.setName("siteDescrItem");
-		siteDescrItem.setWidth(250);
+		remarkItem = new TextItem();
+		remarkItem.setTitle(CallCenterBK.constants.comment());
+		remarkItem.setName("remarkItem");
+		remarkItem.setWidth(250);
 
-		searchForm.setFields(siteGroupItem, webSiteItem, siteDescrItem);
+		searchForm.setFields(webSiteGroupItem, addressItem, remarkItem);
 
 		HLayout buttonLayout = new HLayout(5);
 		buttonLayout.setWidth(750);
@@ -131,30 +129,29 @@ public class TabFindWebSites extends Tab {
 		listGrid.setWidth(750);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(mainDetailDS);
+		listGrid.setDataSource(WebSitesDS);
 		listGrid.setAutoFetchData(false);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
 		listGrid.setCanRemoveRecords(false);
-		listGrid.setFetchOperation("searchGeoIndRegCountry");
+		listGrid.setFetchOperation("searchAllWebSites");
 		listGrid.setCanSort(false);
 		listGrid.setCanResizeFields(false);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField main_detail_type_name_geo = new ListGridField(
-				"main_detail_type_name_geo", CallCenterBK.constants.group());
-		main_detail_type_name_geo.setAlign(Alignment.LEFT);
+		ListGridField web_site_group_name = new ListGridField(
+				"web_site_group_name", CallCenterBK.constants.group());
+		web_site_group_name.setAlign(Alignment.LEFT);
 
-		ListGridField main_detail_eng = new ListGridField("main_detail_eng",
+		ListGridField address = new ListGridField("address",
 				CallCenterBK.constants.webSite());
-		main_detail_eng.setAlign(Alignment.LEFT);
+		address.setAlign(Alignment.LEFT);
 
-		ListGridField main_detail_geo = new ListGridField("main_detail_geo",
+		ListGridField remark = new ListGridField("remark",
 				CallCenterBK.constants.information());
-		main_detail_geo.setAlign(Alignment.LEFT);
+		remark.setAlign(Alignment.LEFT);
 
-		listGrid.setFields(main_detail_type_name_geo, main_detail_eng,
-				main_detail_geo);
+		listGrid.setFields(web_site_group_name, address, remark);
 
 		mainLayout.addMember(listGrid);
 
@@ -167,13 +164,13 @@ public class TabFindWebSites extends Tab {
 		clearButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				siteGroupItem.clearValue();
-				webSiteItem.clearValue();
-				siteDescrItem.clearValue();
+				webSiteGroupItem.clearValue();
+				addressItem.clearValue();
+				remarkItem.clearValue();
 			}
 		});
 
-		webSiteItem.addKeyPressHandler(new KeyPressHandler() {
+		addressItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
@@ -181,7 +178,7 @@ public class TabFindWebSites extends Tab {
 				}
 			}
 		});
-		siteDescrItem.addKeyPressHandler(new KeyPressHandler() {
+		remarkItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {
 				if (event.getKeyName().equals("Enter")) {
@@ -194,7 +191,7 @@ public class TabFindWebSites extends Tab {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 				DlgViewWebSites dlgViewGeoInd = new DlgViewWebSites(listGrid,
-						mainDetailDS, listGrid.getSelectedRecord());
+						WebSitesDS, listGrid.getSelectedRecord());
 				dlgViewGeoInd.show();
 			}
 		});
@@ -204,26 +201,26 @@ public class TabFindWebSites extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", 0);
-			criteria.setAttribute("service_id", Constants.serviceWebSiteInfo);
 
-			String main_detail_type_id = siteGroupItem.getValueAsString();
-			if (main_detail_type_id != null
-					&& !main_detail_type_id.trim().equals("")) {
-				criteria.setAttribute("main_detail_type_id", new Integer(
-						main_detail_type_id));
+			String web_site_group_id = webSiteGroupItem.getValueAsString();
+			if (web_site_group_id != null
+					&& !web_site_group_id.trim().equals("")) {
+				criteria.setAttribute("web_site_group_id", new Integer(
+						web_site_group_id));
 			}
-			String main_detail_eng = webSiteItem.getValueAsString();
-			if (main_detail_eng != null && !main_detail_eng.trim().equals("")) {
-				criteria.setAttribute("main_detail_eng", main_detail_eng);
+
+			String address = addressItem.getValueAsString();
+			if (address != null && !address.trim().equals("")) {
+				criteria.setAttribute("address", address);
 			}
-			String main_detail_geo = siteDescrItem.getValueAsString();
-			if (main_detail_geo != null && !main_detail_geo.trim().equals("")) {
-				criteria.setAttribute("main_detail_geo", main_detail_geo);
+
+			String remark = remarkItem.getValueAsString();
+			if (remark != null && !remark.trim().equals("")) {
+				criteria.setAttribute("remark", remark);
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchMainDetails");
+			dsRequest.setAttribute("operationId", "searchAllWebSites");
 			listGrid.invalidateCache();
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override

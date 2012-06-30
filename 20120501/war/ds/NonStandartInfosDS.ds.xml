@@ -1,0 +1,60 @@
+<DataSource
+	ID="NonStandartInfosDS"
+	serverType="sql"
+	tableName="non_standart_info"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="info_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
+		<field name="info_name"			type="text"			title="info_name"/>
+		<field name="info_group_name"	type="text"			title="info_group_name"/>
+		<field name="info_group_id"		type="integer"		title="info_group_id" 		hidden="true"/>
+		<field name="loggedUserName"	type="text"			title="Logged UserName" 	hidden="true" />
+	</fields>
+
+	<operationBindings>		
+
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.NoneStandartInfoDMI"/>
+
+		<!-- Add -->	
+		<operationBinding operationType="add" operationId="addNoneStandartInfo" serverMethod="addNoneStandartInfo">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.NoneStandartInfoDMI"/>
+        </operationBinding>
+        
+		<!-- Update -->
+		<operationBinding operationType="update" operationId="updateNoneStandartInfo" serverMethod="updateNoneStandartInfo">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.NoneStandartInfoDMI"/>
+        </operationBinding>
+        
+        <!-- Remove -->
+		<operationBinding operationType="remove" operationId="removeNoneStandartInfo" serverMethod="removeNoneStandartInfo">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.NoneStandartInfoDMI"/>
+        </operationBinding>
+	
+    	<operationBinding operationId="searchAllNoneStandartInfo" operationType="fetch">
+    		<selectClause>   			
+    			nsi.info_id,
+    			nsi.info_name,
+    			nsig.info_group_id,
+    			nsig.info_group_name
+			</selectClause> 
+			<tableClause>non_standart_info nsi, non_standart_info_groups nsig</tableClause>
+			<whereClause><![CDATA[
+				nsi.info_group_id = nsig.info_group_id 
+				#if($criteria.info_name) and nsi.info_name like '%'||($criteria.info_name)||'%' #end
+				#if($criteria.info_group_id) and nsi.info_group_id = ($criteria.info_group_id) #end
+				#if($criteria.info_name1) and nsi.info_name like '%'||($criteria.info_name1)||'%' #end
+				#if($criteria.info_name2) and nsi.info_name like '%'||($criteria.info_name2)||'%' #end
+				#if($criteria.info_name3) and nsi.info_name like '%'||($criteria.info_name3)||'%' #end
+				#if($criteria.info_name4) and nsi.info_name like '%'||($criteria.info_name4)||'%' #end
+				#if($criteria.info_name5) and nsi.info_name like '%'||($criteria.info_name5)||'%' #end
+				#if($criteria.info_name6) and nsi.info_name like '%'||($criteria.info_name6)||'%' #end
+				#if($criteria.info_name7) and nsi.info_name like '%'||($criteria.info_name7)||'%' #end
+				]]>  
+			</whereClause> 
+			<orderClause>nsi.info_name</orderClause>
+    	</operationBinding>
+    	
+    	
+    </operationBindings>	
+</DataSource>

@@ -1,9 +1,7 @@
 package com.info08.billing.callcenterbk.client.content.misc;
 
-import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.misc.DlgAddEditWebSite;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -42,30 +40,29 @@ public class TabWebSite extends Tab {
 	private VLayout mainLayout;
 
 	// form fields
-	private ComboBoxItem mainDetTypeItem;
-	private TextItem mainDetailGeoItem;
-	private TextItem mainDetailEngItem;
+	private ComboBoxItem webSiteGroupsItem;
+	private TextItem webSiteAddressItem;
+	private TextItem webSiteRemarkItem;
 
 	// actions
 	private IButton findButton;
 	private IButton clearButton;
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
-	private ToolStripButton disableBtn;
-	private ToolStripButton activateBtn;
+	private ToolStripButton deleteBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
 
 	// DataSource
-	private DataSource datasource;
+	private DataSource WebSitesDS;
 
 	public TabWebSite() {
 		try {
-			setTitle(CallCenterBK.constants.menuWebSites());
+			setTitle("საიტების მართვა");
 			setCanClose(true);
 
-			datasource = DataSource.get("MainDetailDS");
+			WebSitesDS = DataSource.get("WebSitesDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -76,51 +73,58 @@ public class TabWebSite extends Tab {
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth(500);
 			searchForm.setTitleWidth(200);
-			searchForm.setNumCols(2);
+			searchForm.setNumCols(3);
 			mainLayout.addMember(searchForm);
-			
-			mainDetTypeItem = new ComboBoxItem();
-			mainDetTypeItem.setTitle(CallCenterBK.constants.group());
-			mainDetTypeItem.setWidth(300);
-			mainDetTypeItem.setName("main_detail_type_name_geo");
-			mainDetTypeItem.setFetchMissingValues(true);
-			mainDetTypeItem.setFilterLocally(false);
-			mainDetTypeItem.setAddUnknownValues(false);
 
-			DataSource mainDetTypeDS = DataSource.get("MainDetTypeDS");
-			mainDetTypeItem.setOptionOperationId("searchMainDetailTypesFirWebSites");
-			mainDetTypeItem.setOptionDataSource(mainDetTypeDS);
-			mainDetTypeItem.setValueField("main_detail_type_id");
-			mainDetTypeItem.setDisplayField("main_detail_type_name_geo");
+			Criteria criteria = new Criteria();
 
-			mainDetTypeItem.setOptionCriteria(new Criteria());
-			mainDetTypeItem.setAutoFetchData(false);
+			webSiteGroupsItem = new ComboBoxItem();
+			webSiteGroupsItem.setTitle("საიტების ჯგუფები");
+			webSiteGroupsItem.setWidth(300);
+			webSiteGroupsItem.setName("web_site_group_name");
+			webSiteGroupsItem.setFetchMissingValues(true);
+			webSiteGroupsItem.setFilterLocally(false);
+			webSiteGroupsItem.setAddUnknownValues(false);
 
-			mainDetTypeItem.addKeyPressHandler(new KeyPressHandler() {
+			DataSource WebSiteGroupsDS = DataSource.get("WebSiteGroupsDS");
+			webSiteGroupsItem
+					.setOptionOperationId("searchAllWebSiteGroupsForCB");
+			webSiteGroupsItem.setOptionDataSource(WebSiteGroupsDS);
+			webSiteGroupsItem.setValueField("web_site_group_id");
+			webSiteGroupsItem.setDisplayField("web_site_group_name");
+
+			webSiteGroupsItem.setOptionCriteria(criteria);
+			webSiteGroupsItem.setAutoFetchData(false);
+
+			webSiteGroupsItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = mainDetTypeItem.getOptionCriteria();
+					Criteria criteria = webSiteGroupsItem.getOptionCriteria();
 					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("main_detail_type_id");
+						String oldAttr = criteria
+								.getAttribute("web_site_group_id");
 						if (oldAttr != null) {
 							Object nullO = null;
-							criteria.setAttribute("main_detail_type_id", nullO);
+							criteria.setAttribute("web_site_group_id", nullO);
 						}
 					}
 				}
 			});
-			
-			mainDetailGeoItem = new TextItem();
-			mainDetailGeoItem.setTitle(CallCenterBK.constants.description());
-			mainDetailGeoItem.setName("main_detail_geo");
-			mainDetailGeoItem.setWidth(300);
-			
-			mainDetailEngItem = new TextItem();
-			mainDetailEngItem.setTitle(CallCenterBK.constants.webSite());
-			mainDetailEngItem.setName("main_detail_eng");
-			mainDetailEngItem.setWidth(300);
 
-			searchForm.setFields(mainDetTypeItem, mainDetailGeoItem,mainDetailEngItem);
+			webSiteAddressItem = new TextItem();
+			webSiteAddressItem.setTitle("მისამართი");
+			webSiteAddressItem.setName("address");
+			webSiteAddressItem.setWidth(300);
+
+			webSiteRemarkItem = new TextItem();
+			webSiteRemarkItem.setTitle("კომენტარი");
+			webSiteRemarkItem.setName("remark");
+			webSiteRemarkItem.setWidth(300);
+
+			searchForm.setFields(webSiteGroupsItem, webSiteAddressItem,
+					webSiteRemarkItem);
+
+			searchForm.focusInItem(webSiteAddressItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -128,94 +132,66 @@ public class TabWebSite extends Tab {
 			buttonLayout.setAlign(Alignment.RIGHT);
 
 			clearButton = new IButton();
-			clearButton.setTitle(CallCenterBK.constants.clear());
+			clearButton.setTitle("გასუფთავება");
 
 			findButton = new IButton();
-			findButton.setTitle(CallCenterBK.constants.find());
+			findButton.setTitle("ძებნა");
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
 
 			ToolStrip toolStrip = new ToolStrip();
-			toolStrip.setWidth(780);
+			toolStrip.setWidth(930);
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
-					"addIcon.png");
+			addBtn = new ToolStripButton("დამატება", "addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
-					"editIcon.png");
+			editBtn = new ToolStripButton("შეცვლა", "editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			disableBtn = new ToolStripButton(CallCenterBK.constants.disable(),
-					"deleteIcon.png");
-			disableBtn.setLayoutAlign(Alignment.LEFT);
-			disableBtn.setWidth(50);
-			toolStrip.addButton(disableBtn);
-
-			activateBtn = new ToolStripButton(CallCenterBK.constants.enable(),
-					"restoreIcon.gif");
-			activateBtn.setLayoutAlign(Alignment.LEFT);
-			activateBtn.setWidth(50);
-			toolStrip.addButton(activateBtn);
+			deleteBtn = new ToolStripButton("გაუქმება", "deleteIcon.png");
+			deleteBtn.setLayoutAlign(Alignment.LEFT);
+			deleteBtn.setWidth(50);
+			toolStrip.addButton(deleteBtn);
 
 			toolStrip.addSeparator();
 
-			listGrid = new ListGrid() {
-				protected String getCellCSSText(ListGridRecord record,
-						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					if (countryRecord == null) {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
-				};
-			};
+			listGrid = new ListGrid();
 
-			listGrid.setWidth(780);
-			listGrid.setHeight(320);
+			listGrid.setWidth(930);
+			listGrid.setHeight(380);
 			listGrid.setAlternateRecordStyles(true);
-			listGrid.setDataSource(datasource);
+			listGrid.setDataSource(WebSitesDS);
 			listGrid.setAutoFetchData(false);
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("searchMainDetails");
+			listGrid.setFetchOperation("searchAllWebSites");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("main_detail_type_name_geo").setTitle(CallCenterBK.constants.group());
-			datasource.getField("main_detail_geo").setTitle(CallCenterBK.constants.description());
-			datasource.getField("main_detail_eng").setTitle(CallCenterBK.constants.webSite());
-			datasource.getField("rec_date").setTitle(CallCenterBK.constants.recDate());
-			datasource.getField("rec_user").setTitle(CallCenterBK.constants.recUser());
-			datasource.getField("upd_date").setTitle(CallCenterBK.constants.updDate());
-			datasource.getField("upd_user").setTitle(CallCenterBK.constants.updUser());
-			datasource.getField("main_detail_note_geo").setHidden(true);
-			datasource.getField("main_detail_note_eng").setHidden(true);
+			WebSitesDS.getField("address").setTitle("მისამართი");
+			WebSitesDS.getField("web_site_group_id").setTitle(
+					"საიტების ჯგუფის იდენტიფიკატორი");
+			WebSitesDS.getField("web_site_group_name").setTitle(
+					"საიტების ჯგუფი");
+			WebSitesDS.getField("remark").setTitle("კომენტარი");
 
-			ListGridField main_detail_type_name_geo = new ListGridField("main_detail_type_name_geo",CallCenterBK.constants.group(), 180);
-			ListGridField main_detail_geo = new ListGridField("main_detail_geo",CallCenterBK.constants.description(), 300);
-			ListGridField main_detail_eng = new ListGridField("main_detail_eng",CallCenterBK.constants.webSite(), 250);
+			ListGridField address = new ListGridField("address", "მისამართი",
+					450);
+			ListGridField web_site_group_name = new ListGridField(
+					"web_site_group_name", "საიტების ჯგუფი", 180);
+			ListGridField remark = new ListGridField("remark", "კომენტარი");
 
-			main_detail_type_name_geo.setAlign(Alignment.LEFT);
-			main_detail_geo.setAlign(Alignment.LEFT);
-
-			listGrid.setFields(main_detail_type_name_geo, main_detail_geo, main_detail_eng);
+			listGrid.setFields(address, web_site_group_name, remark);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -227,17 +203,16 @@ public class TabWebSite extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					mainDetTypeItem.clearValue();
-					mainDetailGeoItem.clearValue();
-					mainDetailEngItem.clearValue();
+					webSiteGroupsItem.clearValue();
+					webSiteAddressItem.clearValue();
 				}
 			});
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditWebSite dlgEditDlgAddEditWebSite = new DlgAddEditWebSite(
+					DlgAddEditWebSite dlgAddEditWebSite = new DlgAddEditWebSite(
 							listGrid, null);
-					dlgEditDlgAddEditWebSite.show();
+					dlgAddEditWebSite.show();
 				}
 			});
 
@@ -247,61 +222,37 @@ public class TabWebSite extends Tab {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
+						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditWebSite dlgEditDlgAddEditWebSite = new DlgAddEditWebSite(
+
+					DlgAddEditWebSite dlgAddEditWebSite = new DlgAddEditWebSite(
 							listGrid, listGridRecord);
-					dlgEditDlgAddEditWebSite.show();
+					dlgAddEditWebSite.show();
 				}
 			});
-			disableBtn.addClickHandler(new ClickHandler() {
+			deleteBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = listGrid
+					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
+						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrDisabled());
+					final Integer web_site_id = listGridRecord
+							.getAttributeAsInt("web_site_id");
+					if (web_site_id == null) {
+						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
-					SC.ask(CallCenterBK.constants.askForDisable(),
+
+					SC.ask("დარწმუნებული ხართ რომ გნებავთ ჩანაწერის გაუქმება ?",
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(listGridRecord, 1);
-									}
-								}
-							});
-				}
-			});
-			activateBtn.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = listGrid
-							.getSelectedRecord();
-					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
-						return;
-					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrEnabled());
-						return;
-					}
-					SC.ask(CallCenterBK.constants.askForEnable(),
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										changeStatus(listGridRecord, 0);
+										delete(web_site_id);
 									}
 								}
 							});
@@ -309,11 +260,11 @@ public class TabWebSite extends Tab {
 			});
 
 			TabSet tabSet = new TabSet();
-			tabSet.setWidth(780);
-			Tab tabDetViewer = new Tab(CallCenterBK.constants.view());
+			tabSet.setWidth(930);
+			Tab tabDetViewer = new Tab("დათვალიერება");
 			final DetailViewer detailViewer = new DetailViewer();
-			detailViewer.setDataSource(datasource);
-			detailViewer.setWidth(750);
+			detailViewer.setDataSource(WebSitesDS);
+			detailViewer.setWidth(910);
 			tabDetViewer.setPane(detailViewer);
 
 			listGrid.addRecordClickHandler(new RecordClickHandler() {
@@ -321,19 +272,27 @@ public class TabWebSite extends Tab {
 					detailViewer.viewSelectedData(listGrid);
 				}
 			});
-
 			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 				@Override
 				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
 					ListGridRecord listGridRecord = listGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
-						SC.say(CallCenterBK.constants.pleaseSelrecord());
+						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					DlgAddEditWebSite dlgEditDlgAddEditWebSite = new DlgAddEditWebSite(
+					DlgAddEditWebSite dlgAddEditWebSite = new DlgAddEditWebSite(
 							listGrid, listGridRecord);
-					dlgEditDlgAddEditWebSite.show();
+					dlgAddEditWebSite.show();
+				}
+			});
+
+			webSiteAddressItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
 				}
 			});
 
@@ -348,23 +307,26 @@ public class TabWebSite extends Tab {
 
 	private void search() {
 		try {
+			String webSiteGroupId = webSiteGroupsItem.getValueAsString();
+			String address = webSiteAddressItem.getValueAsString();
+			String remark = webSiteRemarkItem.getValueAsString();
+
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("service_id", Constants.serviceWebSiteInfo);
-			String main_detail_type_id = mainDetTypeItem.getValueAsString();
-			if (main_detail_type_id != null && !main_detail_type_id.trim().equals("")) {
-				criteria.setAttribute("main_detail_type_id", new Integer(main_detail_type_id));
+			if (webSiteGroupId != null) {
+				criteria.setAttribute("web_site_group_id", new Integer(
+						webSiteGroupId));
 			}
-			String main_detail_geo = mainDetailGeoItem.getValueAsString();
-			if (main_detail_geo != null && !main_detail_geo.trim().equals("")) {
-				criteria.setAttribute("main_detail_geo", main_detail_geo);
+
+			if (address != null && !address.trim().equals("")) {
+				criteria.setAttribute("address", address);
 			}
-			String main_detail_eng = mainDetailEngItem.getValueAsString();
-			if (main_detail_eng != null && !main_detail_eng.trim().equals("")) {
-				criteria.setAttribute("main_detail_eng", main_detail_eng);
+
+			if (remark != null && !remark.trim().equals("")) {
+				criteria.setAttribute("remark", remark);
 			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "searchMainDetails");
+			dsRequest.setAttribute("operationId", "searchAllWebSites");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -377,28 +339,17 @@ public class TabWebSite extends Tab {
 		}
 	}
 
-	private void changeStatus(ListGridRecord listGridRecord, Integer deleted) {
+	private void delete(Integer web_site_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("loggedUserName", CommonSingleton.getInstance().getSessionPerson().getUser_name());
-			record.setAttribute("deleted", deleted);
-			record.setAttribute("service_id", Constants.serviceWebSiteInfo);
-			record.setAttribute("rec_user", CommonSingleton.getInstance().getSessionPerson().getUser_name());
-			record.setAttribute("main_detail_type_id",listGridRecord.getAttributeAsInt("main_detail_type_id"));
-			record.setAttribute("main_detail_geo", listGridRecord.getAttributeAsString("main_detail_geo"));
-			record.setAttribute("main_detail_eng", listGridRecord.getAttributeAsString("main_detail_eng"));
-			record.setAttribute("fields_order", 0);
-			record.setAttribute("main_detail_master_id", 0);
-			record.setAttribute("organization_id", -100);
-			record.setAttribute("old_id", 0);
-			record.setAttribute("main_detail_id",listGridRecord.getAttributeAsInt("main_detail_id"));
-			record.setAttribute("organization_id",listGridRecord.getAttributeAsInt("organization_id"));
-			
+			record.setAttribute("web_site_id", web_site_id);
+			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();
 
-			req.setAttribute("operationId", "updateMainDetailStatus");
-			listGrid.updateData(record, new DSCallback() {
+			req.setAttribute("operationId", "removeWebSites");
+			listGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
