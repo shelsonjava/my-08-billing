@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.content.misc;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.misc.DlgAddEditWebSiteGroup;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -312,7 +313,7 @@ public class TabWebSiteGroup extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("service_id", 63);
+			criteria.setAttribute("service_id", Constants.serviceWebSiteInfo);
 			String main_detail_type_name_geo = mainDetTypeNameGeoItem.getValueAsString();
 			if (main_detail_type_name_geo != null
 					&& !main_detail_type_name_geo.trim().equals("")) {

@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.content.misc;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.misc.DlgAddEditWebSite;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -348,7 +349,7 @@ public class TabWebSite extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("service_id", 63);
+			criteria.setAttribute("service_id", Constants.serviceWebSiteInfo);
 			String main_detail_type_id = mainDetTypeItem.getValueAsString();
 			if (main_detail_type_id != null && !main_detail_type_id.trim().equals("")) {
 				criteria.setAttribute("main_detail_type_id", new Integer(main_detail_type_id));
@@ -382,7 +383,7 @@ public class TabWebSite extends Tab {
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 			record.setAttribute("deleted", deleted);
-			record.setAttribute("service_id", 63);
+			record.setAttribute("service_id", Constants.serviceWebSiteInfo);
 			record.setAttribute("rec_user", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 			record.setAttribute("main_detail_type_id",listGridRecord.getAttributeAsInt("main_detail_type_id"));
 			record.setAttribute("main_detail_geo", listGridRecord.getAttributeAsString("main_detail_geo"));

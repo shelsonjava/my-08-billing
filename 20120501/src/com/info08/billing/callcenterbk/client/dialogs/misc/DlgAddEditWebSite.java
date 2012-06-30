@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.misc;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -188,7 +189,7 @@ public class DlgAddEditWebSite extends Window {
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("deleted", 0);
-			record.setAttribute("service_id", 63);
+			record.setAttribute("service_id", Constants.serviceWebSiteInfo);
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("main_detail_type_id",new Integer(main_detail_type_id_str));
 			record.setAttribute("main_detail_geo", main_detail_geo);

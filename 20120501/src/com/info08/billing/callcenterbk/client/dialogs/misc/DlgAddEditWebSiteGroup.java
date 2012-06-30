@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.misc;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -137,7 +138,7 @@ public class DlgAddEditWebSiteGroup extends Window {
 			record.setAttribute("searcher_zone", 0);
 			record.setAttribute("criteria_type", 0);
 			record.setAttribute("deleted", 0);
-			record.setAttribute("service_id", 63);
+			record.setAttribute("service_id", Constants.serviceWebSiteInfo);
 			record.setAttribute("rec_user", loggedUser);
 
 			if (editRecord != null) {
