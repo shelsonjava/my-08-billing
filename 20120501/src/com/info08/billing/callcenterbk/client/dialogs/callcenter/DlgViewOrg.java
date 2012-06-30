@@ -14,6 +14,7 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.DateDisplayFormat;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
@@ -143,30 +144,9 @@ public class DlgViewOrg extends Window {
 			if (address_hide != null && address_hide.equals(1)) {
 				orgAddressInfo.setValue(CallCenterBK.constants.addressHide());
 			} else {
-				String town_name1 = pRecord.getAttributeAsString("town_name");
-				String real_address1 = pRecord
-						.getAttributeAsString("real_address");
-				String town_district_name1 = pRecord
-						.getAttributeAsString("town_district_name");
-				String ind1 = pRecord.getAttributeAsString("ind");
-				ind1 = (ind1 == null ? "" : ind1);
-				town_district_name1 = (town_district_name1 == null ? ""
-						: town_district_name1);
-				real_address1 = (real_address1 == null ? "" : real_address1);
-
-				orgAddressInfo
-						.setValue(town_name1
-								+ (town_name1 != null
-										&& !town_name1.trim().equals("") ? ", "
-										: " ")
-								+ real_address1
-								+ (real_address1 != null
-										&& !real_address1.trim().equals("") ? ", "
-										: " ")
-								+ town_district_name1
-								+ (town_district_name1 != null
-										&& !town_district_name1.trim().equals(
-												"") ? ", " : " ") + ind1);
+				String full_address_not_hidden = pRecord
+						.getAttributeAsString("full_address_not_hidden");
+				orgAddressInfo.setValue(full_address_not_hidden);
 			}
 			mainInfoForm.setFields(orgNameInfo, orgAddressInfo);
 
@@ -217,6 +197,8 @@ public class DlgViewOrg extends Window {
 					CallCenterBK.constants.director());
 			DetailViewerField founded = new DetailViewerField("found_date",
 					CallCenterBK.constants.founded());
+			founded.setDateFormatter(DateDisplayFormat.TOEUROPEANSHORTDATE);
+
 			DetailViewerField identcode = new DetailViewerField("ident_code",
 					CallCenterBK.constants.identCode());
 			DetailViewerField new_identcode = new DetailViewerField(
@@ -319,9 +301,10 @@ public class DlgViewOrg extends Window {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("main_detail_master_id");
-					if (deleted == null || deleted.equals(0)) {
+					Integer parrent_department_id = countryRecord
+							.getAttributeAsInt("parrent_department_id");
+					if (parrent_department_id == null
+							|| parrent_department_id.intValue() < 0) {
 						return "font-weight: bold;";
 					} else {
 						return super.getCellCSSText(record, rowNum, colNum);
@@ -395,7 +378,7 @@ public class DlgViewOrg extends Window {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
 					Integer contact_phones = countryRecord
-							.getAttributeAsInt("contact_phones");
+							.getAttributeAsInt("for_contact");
 					if (contact_phones != null && contact_phones.equals(1)) {
 						return "color:red;";
 					} else {
@@ -424,7 +407,7 @@ public class DlgViewOrg extends Window {
 			phonesGrid.setCanSelectText(true);
 			phonesGrid.setCanDragSelectText(true);
 
-			ListGridField dep_phone = new ListGridField("phone",
+			ListGridField dep_phone = new ListGridField("hid_phone",
 					CallCenterBK.constants.phone());
 			dep_phone.setCanFilter(true);
 
@@ -1065,7 +1048,7 @@ public class DlgViewOrg extends Window {
 				StringBuilder phones = new StringBuilder("");
 				for (int i = 0; i < length; i++) {
 					Record record = recordList.get(i);
-					String dep_phone = record.getAttributeAsString("phone");
+					String dep_phone = record.getAttributeAsString("hid_phone");
 					if (dep_phone == null
 							|| dep_phone.trim().equalsIgnoreCase("")) {
 						continue;
@@ -1115,7 +1098,8 @@ public class DlgViewOrg extends Window {
 			record.setAttribute("session_id", serverSession.getSessionId());
 			record.setAttribute("sms_text", sms_text.toString());
 			record.setAttribute("phone", phone);
-			record.setAttribute("organization_id", this.record.getAttributeAsInt("organization_id"));
+			record.setAttribute("organization_id",
+					this.record.getAttributeAsInt("organization_id"));
 			record.setAttribute("rec_user", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 

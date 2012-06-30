@@ -53,7 +53,7 @@ public class DlgViewInCityTransport extends Window {
 
 		setTitle(CallCenterBK.constants.tbilisiTransport());
 
-		setHeight(800);
+		setHeight(700);
 		setWidth(950);
 		setShowMinimizeButton(false);
 		setIsModal(true);

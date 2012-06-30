@@ -4,7 +4,6 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -60,8 +59,7 @@ public class DlgViewOrthCalendar extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
-		chargePanel = new ChargePanel(950, true, true,
-				Constants.serviceOrthCalendarInfo, null);
+		chargePanel = new ChargePanel(950, true, true, -1111, null);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -230,8 +228,7 @@ public class DlgViewOrthCalendar extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record recordParam = new Record();
 
-			recordParam.setAttribute("service_id",
-					Constants.serviceOrthCalendarInfo);
+			recordParam.setAttribute("service_id", -1111);
 			recordParam
 					.setAttribute("session_id", serverSession.getSessionId());
 			recordParam.setAttribute("sms_text", sms_text.toString());

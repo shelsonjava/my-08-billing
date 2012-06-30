@@ -78,27 +78,6 @@ public class TabFindDistBetweenTowns extends Tab {
 		ClientUtils.fillCombo(townFromItem, "TownsDS",
 				"searchCitiesFromDBForCombos", "town_id", "town_name");
 
-		// DataSource TownsDS = DataSource.get("TownsDS");
-		// townFromItem.setOptionOperationId("searchFromDB");
-		// townFromItem.setOptionDataSource(TownsDS);
-		// townFromItem.setValueField("town_id");
-		// townFromItem.setDisplayField("town_name");
-		// townFromItem.setAutoFetchData(false);
-
-		townFromItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = townFromItem.getOptionCriteria();
-				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("town_id");
-					if (oldAttr != null) {
-						Object nullO = null;
-						criteria.setAttribute("town_id", nullO);
-					}
-				}
-			}
-		});
-
 		townToItem = new ComboBoxItem();
 		townToItem.setTitle(CallCenterBK.constants.townTo());
 		townToItem.setName("townToItem");
@@ -110,25 +89,6 @@ public class TabFindDistBetweenTowns extends Tab {
 
 		ClientUtils.fillCombo(townToItem, "TownsDS",
 				"searchCitiesFromDBForCombos", "town_id", "town_name");
-		// townToItem.setOptionOperationId("searchFromDB");
-		// townToItem.setOptionDataSource(TownsDS);
-		// townToItem.setValueField("town_id");
-		// townToItem.setDisplayField("town_name");
-		// townToItem.setAutoFetchData(false);
-
-		townToItem.addKeyPressHandler(new KeyPressHandler() {
-			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				Criteria criteria = townToItem.getOptionCriteria();
-				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("town_id");
-					if (oldAttr != null) {
-						Object nullO = null;
-						criteria.setAttribute("town_id", nullO);
-					}
-				}
-			}
-		});
 
 		searchForm.setFields(townFromItem, townToItem);
 

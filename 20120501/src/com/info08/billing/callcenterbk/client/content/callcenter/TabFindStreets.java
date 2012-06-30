@@ -259,7 +259,7 @@ public class TabFindStreets extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", 0);
+			
 
 			String town_id = townsItem.getValueAsString();
 			String streetIndex = indexItem.getValueAsString();

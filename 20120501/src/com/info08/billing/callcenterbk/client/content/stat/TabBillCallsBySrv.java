@@ -32,7 +32,7 @@ import com.smartgwt.client.widgets.tab.Tab;
 public class TabBillCallsBySrv extends Tab {
 
 	private VLayout mainLayout;
-	//protected FacetChart chart;
+	// protected FacetChart chart;
 	private CubeGrid cubeGrid;
 
 	private DateItem dateItemStart;
@@ -253,7 +253,8 @@ public class TabBillCallsBySrv extends Tab {
 			chbItemHourDateAndOther.setWidth(100);
 
 			chbItemAviaScheduler = new CheckboxItem();
-			chbItemAviaScheduler.setTitle(CallCenterBK.constants.aviaScheduler());
+			chbItemAviaScheduler.setTitle(CallCenterBK.constants
+					.aviaScheduler());
 			chbItemAviaScheduler.setName("chbItemAviaScheduler");
 			chbItemAviaScheduler.setValue(true);
 			chbItemAviaScheduler.setWidth(100);
@@ -277,7 +278,8 @@ public class TabBillCallsBySrv extends Tab {
 			chbItemCallRules.setWidth(100);
 
 			chbItemRailScheduler = new CheckboxItem();
-			chbItemRailScheduler.setTitle(CallCenterBK.constants.railScheduler());
+			chbItemRailScheduler.setTitle(CallCenterBK.constants
+					.railScheduler());
 			chbItemRailScheduler.setName("chbItemRailScheduler");
 			chbItemRailScheduler.setValue(true);
 			chbItemRailScheduler.setWidth(100);
@@ -358,54 +360,62 @@ public class TabBillCallsBySrv extends Tab {
 			buttonLayout.setMembers(findButton, clearButton, searchForm2);
 			mainLayout.addMember(buttonLayout);
 
-			
 			cubeGrid = new CubeGrid();
 			cubeGrid.setData(new CellRecord[0]);
-			cubeGrid.setEnableCharting(true);  
-			cubeGrid.setAutoFetchData(false);  
-            cubeGrid.setWidth100();  
-            cubeGrid.setHeight100();  
-            //cubeGrid.setHideEmptyFacetValues(true);  
-            //cubeGrid.setShowCellContextMenus(true); 
-//            final NumberFormat numberFormat = NumberFormat.getFormat("0,000");  
-//            
-//            cubeGrid.setCellFormatter(new CellFormatter() {  
-//                public String format(Object value, ListGridRecord record, int rowNum, int colNum) {  
-//                    if (value == null) return null;  
-//                    try {  
-//                        return numberFormat.format(((Number) value).longValue());  
-//                    } catch (Exception e) {  
-//                        return value.toString();  
-//                    }  
-//                }  
-//            });  
-  
-            cubeGrid.setColumnFacets("bill_date_str");  
-            cubeGrid.setRowFacets("service_name_geo");
-            cubeGrid.setValueProperty("_value");
-            cubeGrid.setCellIdProperty("id");  
-            //cubeGrid.setHiliteProperty("_hilite");
-            
-            mainLayout.addMember(cubeGrid);
-            
-//			chart = new FacetChart();
-//			chart.setFacets(new Facet("bill_date_str", "bill_date_str"),
-//					new Facet("service_name_geo", "service_name_geo"));
-//			chart.setValueProperty("value");
-//			chart.setChartType(ChartType.LINE);
-//			chart.setTitle(CallCenter.constants.callsTotalBySrvTitle());
-//			chart.setValueTitle(CallCenter.constants.callsCount());
-//			chart.setShowDataPoints(true);
-//			chart.setPointHoverCustomizer(new ChartPointHoverCustomizer() {				
-//				@Override
-//				public String hoverHTML(Float value, Record record) {
-//					return ("<b>" + CallCenter.constants.service() + " : </b> " + record.getAttribute("service_name_geo")+ "<br />"+ 
-//							"<b>" + CallCenter.constants.date()+ " : </b> " + record.getAttribute("bill_date_str") + "<br />" + 
-//							"<b>" + CallCenter.constants.weekDay()+ " : </b> " + record.getAttribute("week_day") + "<br />" +
-//							"<b>" + ((record.getAttribute("count_type")!=null && record.getAttributeAsInt("count_type").equals(0)) ?CallCenter.constants.callsCount():CallCenter.constants.percentShort()) + " : </b> " + record.getAttribute("value") + "<br /><hr width=250 >");
-//				}
-//			});
-//			mainLayout.addMember(chart);
+			cubeGrid.setEnableCharting(true);
+			cubeGrid.setAutoFetchData(false);
+			cubeGrid.setWidth100();
+			cubeGrid.setHeight100();
+			// cubeGrid.setHideEmptyFacetValues(true);
+			// cubeGrid.setShowCellContextMenus(true);
+			// final NumberFormat numberFormat =
+			// NumberFormat.getFormat("0,000");
+			//
+			// cubeGrid.setCellFormatter(new CellFormatter() {
+			// public String format(Object value, ListGridRecord record, int
+			// rowNum, int colNum) {
+			// if (value == null) return null;
+			// try {
+			// return numberFormat.format(((Number) value).longValue());
+			// } catch (Exception e) {
+			// return value.toString();
+			// }
+			// }
+			// });
+
+			cubeGrid.setColumnFacets("bill_date_str");
+			cubeGrid.setRowFacets("service_name_geo");
+			cubeGrid.setValueProperty("_value");
+			cubeGrid.setCellIdProperty("id");
+			// cubeGrid.setHiliteProperty("_hilite");
+
+			mainLayout.addMember(cubeGrid);
+
+			// chart = new FacetChart();
+			// chart.setFacets(new Facet("bill_date_str", "bill_date_str"),
+			// new Facet("service_name_geo", "service_name_geo"));
+			// chart.setValueProperty("value");
+			// chart.setChartType(ChartType.LINE);
+			// chart.setTitle(CallCenter.constants.callsTotalBySrvTitle());
+			// chart.setValueTitle(CallCenter.constants.callsCount());
+			// chart.setShowDataPoints(true);
+			// chart.setPointHoverCustomizer(new ChartPointHoverCustomizer() {
+			// @Override
+			// public String hoverHTML(Float value, Record record) {
+			// return ("<b>" + CallCenter.constants.service() + " : </b> " +
+			// record.getAttribute("service_name_geo")+ "<br />"+
+			// "<b>" + CallCenter.constants.date()+ " : </b> " +
+			// record.getAttribute("bill_date_str") + "<br />" +
+			// "<b>" + CallCenter.constants.weekDay()+ " : </b> " +
+			// record.getAttribute("week_day") + "<br />" +
+			// "<b>" + ((record.getAttribute("count_type")!=null &&
+			// record.getAttributeAsInt("count_type").equals(0))
+			// ?CallCenter.constants.callsCount():CallCenter.constants.percentShort())
+			// + " : </b> " + record.getAttribute("value") +
+			// "<br /><hr width=250 >");
+			// }
+			// });
+			// mainLayout.addMember(chart);
 			setPane(mainLayout);
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
@@ -498,11 +508,12 @@ public class TabBillCallsBySrv extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemAbon.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId2", new Integer(7));
+				criteria.setAttribute("servicesId2", new Integer(Constants.serviceAbonentInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemFindByNum.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId3", new Integer(46));
+				criteria.setAttribute("servicesId3", new Integer(
+						Constants.serviceFindByNumberInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemCodesInfo.getValueAsBoolean()) {
@@ -510,11 +521,13 @@ public class TabBillCallsBySrv extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemGadartva.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId5", new Integer(60));
+				criteria.setAttribute("servicesId5", new Integer(
+						Constants.serviceCallTransfer));
 				isSelMin1 = true;
 			}
 			if (chbItemExactTime.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId6", new Integer(44));
+				criteria.setAttribute("servicesId6", new Integer(
+						Constants.serviceCurrDateTimeInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemTickReserv.getValueAsBoolean()) {
@@ -522,15 +535,17 @@ public class TabBillCallsBySrv extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemSportInfo.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId8", new Integer(24));
+				criteria.setAttribute("servicesId8", new Integer(
+						Constants.serviceSportInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemCityTransp.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId9", new Integer(26));
+				criteria.setAttribute("servicesId9", new Integer(
+						Constants.serviceInCityTransportInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemTransp.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId10", new Integer(13));
+				criteria.setAttribute("servicesId10", new Integer(Constants.serviceTransportInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemAlarmClock.getValueAsBoolean()) {
@@ -538,31 +553,36 @@ public class TabBillCallsBySrv extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemCurrRate.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId12", new Integer(11));
+				criteria.setAttribute("servicesId12", new Integer(
+						Constants.serviceCurrencyInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemEntPoster.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId13", new Integer(10));
+				criteria.setAttribute("servicesId13", new Integer(Constants.servicePosterInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemStreetInfo.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId14", new Integer(4));
+				criteria.setAttribute("servicesId14", new Integer(
+						Constants.serviceAddressInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemEmail.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId15", new Integer(53));
+				criteria.setAttribute("servicesId15", new Integer(
+						Constants.serviceEmail));
 				isSelMin1 = true;
 			}
 			if (chbItemGeorgPostIdx.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId16", new Integer(35));
+				criteria.setAttribute("servicesId16", new Integer(
+						Constants.serviceGeoIndInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemWeather.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId17", new Integer(12));
+				criteria.setAttribute("servicesId17", new Integer(Constants.serviceWeatherInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemWebSites.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId18", new Integer(Constants.serviceWebSiteInfo));
+				criteria.setAttribute("servicesId18", new Integer(
+						Constants.serviceWebSiteInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemIdxsInfo.getValueAsBoolean()) {
@@ -570,7 +590,8 @@ public class TabBillCallsBySrv extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemCalendar.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId20", new Integer(42));
+				criteria.setAttribute("servicesId20", new Integer(
+						Constants.serviceCalendarInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemNonStandartInfo.getValueAsBoolean()) {
@@ -578,7 +599,8 @@ public class TabBillCallsBySrv extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemDistBetwCities.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId22", new Integer(31));
+				criteria.setAttribute("servicesId22", new Integer(
+						Constants.serviceCityDistInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemOrthCalendar.getValueAsBoolean()) {
@@ -619,8 +641,8 @@ public class TabBillCallsBySrv extends Tab {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
-					  cubeGrid.setData(response.getData());  
-					//chart.setData(response.getData());
+					cubeGrid.setData(response.getData());
+					// chart.setData(response.getData());
 				}
 			}, dsRequest);
 		} catch (Exception e) {

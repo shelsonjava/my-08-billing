@@ -341,7 +341,7 @@ public class TabNonStandartInfo extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("service_id", 32);
+			criteria.setAttribute("service_id", Constants.serviceNonStandartInfo);
 			String main_detail_type_id = mainDetTypeItem.getValueAsString();
 			if (main_detail_type_id != null && !main_detail_type_id.trim().equals("")) {
 				criteria.setAttribute("main_detail_type_id", new Integer(main_detail_type_id));

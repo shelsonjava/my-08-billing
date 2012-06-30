@@ -90,7 +90,6 @@ public class TabFindFacts extends Tab {
 		factStatusItem.setValueField("fact_status_id");
 		factStatusItem.setDisplayField("fact_status_name");
 		factStatusItem.setAddUnknownValues(false);
-		
 
 		DataSource factsDescriptorDS = DataSource.get("FactsDescriptorDS");
 		factDescriptorItem = new SelectItem();
@@ -225,7 +224,7 @@ public class TabFindFacts extends Tab {
 		clearButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				
+
 				calendarDayItem.clearValue();
 				descriptionItem.clearValue();
 				factStatusItem.clearValue();
@@ -255,7 +254,7 @@ public class TabFindFacts extends Tab {
 	}
 
 	private void descriptorChanged(Object value) {
-		factTypeItem.setValue((Object)null);
+		factTypeItem.setValue((Object) null);
 		Criteria cr = new Criteria();
 		cr.setAttribute("PKuni_", HTMLPanel.createUniqueId());
 		cr.setAttribute("facts_descriptor_id", value);
@@ -265,6 +264,14 @@ public class TabFindFacts extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
+
+			String facts_descriptor_id = factDescriptorItem.getValueAsString();
+			if (facts_descriptor_id != null
+					&& !facts_descriptor_id.trim().equals("")) {
+				criteria.setAttribute("facts_descriptor_id", new Integer(
+						facts_descriptor_id));
+			}
+
 			String fact_status_id = factStatusItem.getValueAsString();
 			if (fact_status_id != null && !fact_status_id.trim().equals("")) {
 				criteria.setAttribute("fact_status_id", new Integer(

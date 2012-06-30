@@ -19,24 +19,25 @@ public interface Constants {
 	public static final int callTypeVirtualDirect = 11;
 	public static final int callTypeVirtualNonDirect = 12;
 
-	public static final int serviceOrganization = 3;
-	public static final int serviceAddressInfo = 4;
-	public static final int serviceAbonentInfo = 7;
-	public static final int serviceCodesInfo = 5;
-	public static final int serviceTransportInfo = 13;
-	public static final int serviceCurrDateTimeInfo = 44;
-	public static final int serviceCityDistInfo = 31;
-	public static final int serviceGeoIndInfo = 35;
+	public static final int serviceOrganization = 50004;
+	public static final int serviceAddressInfo = 50007;
+	public static final int serviceAbonentInfo = 50014;
+	public static final int serviceCodesInfo = 50016;
+	public static final int serviceTransportInfo = 50017;
+	public static final int serviceCurrDateTimeInfo = 50006;
+	public static final int serviceCityDistInfo = 50013;
+	public static final int serviceGeoIndInfo = 50002;
 	public static final int serviceWebSiteInfo = 50000;
-	public static final int serviceNonStandartInfo = 32;
-	public static final int serviceOrthCalendarInfo = 22;
-	public static final int serviceCalendarInfo = 42;
-	public static final int serviceFindByNumberInfo = 46;
-	public static final int serviceWeatherInfo = 12;
-	public static final int serviceSportInfo = 24;
-	public static final int servicePosterInfo = 10;
-	public static final int serviceInCityTransportInfo = 26;
-	public static final int serviceCurrencyInfo = 11;
+	public static final int serviceNonStandartInfo = 50012;
+	public static final int serviceCalendarInfo = 50009;
+	public static final int serviceFindByNumberInfo = 50008;
+	public static final int serviceWeatherInfo = 50015;
+	public static final int serviceSportInfo = 50001;
+	public static final int servicePosterInfo = 50018;
+	public static final int serviceInCityTransportInfo = 50003;
+	public static final int serviceCurrencyInfo = 50005;
+	public static final int serviceEmail = 50010;
+	public static final int serviceCallTransfer = 50011;
 
 	public static final int criticalNumberIgnore = -999999999;
 

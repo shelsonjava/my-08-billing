@@ -393,11 +393,9 @@ public class TabFindEvent extends Tab {
 			ListGridRecord listGridRecordPl = listGridEntPlace
 					.getSelectedRecord();
 			if (listGridRecordPl != null) {
-				Integer event_owner_id = listGridRecordPl
-						.getAttributeAsInt("event_owner_id");
+				Integer event_owner_id = listGridRecordPl.getAttributeAsInt("event_owner_id");
 				if (event_owner_id != null) {
-					criteria.setAttribute("scheduleplaceid", new Integer(
-							event_owner_id));
+					criteria.setAttribute("event_owner_id", new Integer(event_owner_id));
 				}
 			}
 
