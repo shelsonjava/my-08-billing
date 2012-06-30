@@ -36,6 +36,7 @@
 		<field name="town_district_name"			type="text"  		title="town_district_name"/>	
 		<field name="street_location"				type="text"  		title="street_location"/>
 		<field name="street_index_text"				type="text"  		title="street_index_text"/>		
+		<field name="index_text"					type="text"  		title="index_text"/>
 		<field name="legal_form_desc"				type="text"  		title="legal_form_desc"/>		
 		<field name="town_id"						type="integer"  	title="town_id"							hidden="true"/>		
 		<field name="priority"						type="integer"  	title="priority"						hidden="true"/>
@@ -224,13 +225,16 @@
 							o.organization_index,
 							o.organization_name_eng,						
 							o.legal_form_desc_id,
-							getdaysdescription(o.legal_form_desc_id) as legal_form_desc,
+							getdescription(o.legal_form_desc_id) as legal_form_desc,
 							o.status,
 							a.street_id,
 							a.town_name,
 							a.town_district_name as town_district,
+							a.town_district_name as town_district_name,
 							a.street_location,
 							a.street_index_text,
+							a.street_index_text as index_text,
+							getsreetoldnames(a.street_id) as street_old_name,
 							o.important_remark,						
 	             			a.town_district_id,
 	             		    getTbilisiOrder(a.town_id) as cust_order,
@@ -495,19 +499,6 @@
             </customSQL> 
         </operationBinding>
         
-		<operationBinding operationId="searchMainOrgsForCB" operationType="fetch">
-    		<selectClause>   			
-    			mo.organization_id,
-    			mo.organization_name 
-			</selectClause> 
-			<tableClause>main_orgs mo, main_services ms</tableClause>	
-			<whereClause>
-				    ms.service_id = 3 and ms.deleted = 0 and ms.organization_id = mo.organization_id and
-				    ($defaultWhereClause)
-			</whereClause>	
-			<orderClause>mo.organization_name</orderClause>		
-    	</operationBinding>
-    	
     	<operationBinding operationId="searchMainOrgsForCBDoubleLike" operationType="fetch">
     		<selectClause>   			
     			o.organization_id,

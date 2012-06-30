@@ -1,12 +1,7 @@
 package com.info08.billing.callcenterbk.server.impl.dmi;
 
-import java.util.List;
-import java.util.Map;
-
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DSResponse;
-import com.isomorphic.datasource.DataSource;
-import com.isomorphic.sql.SQLDataSource;
 
 public class DefaultDMI {
 

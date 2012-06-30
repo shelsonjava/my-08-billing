@@ -28,7 +28,7 @@
 		<field name="event_list_price"			type="text"			title="event_list_price"/>
 		<field name="event_list_info"			type="text"			title="event_list_info"/>
 		<field name="event_list_date_m_y"		type="text"			title="event_list_date_m_y"			hidden="true"/>
-		<field name="organization_id"					type="integer"		title="organization_id" 					hidden="true"/>
+		<field name="organization_id"			type="integer"		title="organization_id" 			hidden="true"/>
 		<field name="event_list_n_date"			type="text"			title="event_list_n_date"/>
 		<field name="event_list_n_time"			type="text"			title="event_list_n_time"/>
 	</fields>
@@ -191,12 +191,12 @@
 						  (t.event_name || ' ' || t.remark) like '%'||$criteria.entPostGeoAndCom5||'%'
 						) 
 				#end
-				
-				
-				
 				]]>  
 			</whereClause> 
-			<orderClause>to_char(t.event_date, 'mm/yy'), decode(t.date_visibility, 0, TO_CHAR(t.event_date, 'dd-mm-yy') || ' ' || t.event_time, '--------------'), nvl(t.event_name, '_')</orderClause>
+			<orderClause>
+							to_char(t.event_date, 'mm/yy'), 
+							decode(t.date_visibility, 0, TO_CHAR(t.event_date, 'dd-mm-yy') || ' ' || t.event_time, '--------------'), nvl(t.event_name, '_')
+			</orderClause>
     	</operationBinding>
     	
     	

@@ -17,6 +17,7 @@
 		<field name="phone_order"				type="integer"  	title="phone_order"				hidden="true"/>
 		<field name="rec_upd_date"				type="date"  		title="rec_upd_date"			hidden="true"/>
 		<field name="phone"						type="text"  		title="phone"/>
+		<field name="hid_phone"					type="text"  		title="hid_phone"/>
 		<field name="hidden_by_request_descr"	type="text"  		title="hidden_by_request_descr"/>
 		<field name="phone_contract_type_descr"	type="text"  		title="phone_contract_type_descr"/>
 		<field name="for_contact_descr"			type="text"  		title="for_contact_descr"/>
@@ -61,6 +62,7 @@
 				  t.for_contact,
 				  t.rec_upd_date,
 				  p.phone,
+				  decode(hidden_by_request,1,'დაფ.',p.phone) as hid_phone,
 				  p.phone_state_id,
 				  p.phone_type_id,
 				  p.is_parallel,

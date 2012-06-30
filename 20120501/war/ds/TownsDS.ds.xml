@@ -25,7 +25,7 @@
 		<field name="ctm"						type="text"			title="ctm"					hidden="true"/>
 		<field name="capital"					type="integer"		title="capital"				hidden="true"/>
 		<field name="code"						type="text"			title="code"				hidden="true"/>
-		<field name="phone_code"				type="text"			title="countrycode"			hidden="true"/>
+		<field name="phone_code"				type="text"			title="phone_code"			hidden="true"/>
 		<field name="country_id"				type="integer"		title="countryid"			hidden="true"/>
 		<field name="season"					type="integer"		title="season"				hidden="true"/>
 		<field name="country_region"			type="text"			title="countryregion"		hidden="true"/>
@@ -193,7 +193,7 @@
 				 #if($criteria.country_id) and t.country_id = $criteria.country_id #end
 				 #if($criteria.town_id) and t.town_id = $criteria.town_id #end
 				 #if($criteria.codeSearchType && $criteria.p_code && $criteria.codeSearchType == 1)
-				 	AND  trim(t.countrycode) like '%'||$criteria.p_code||'%'
+				 	AND  trim(t.code) like '%'||$criteria.p_code||'%'
 				 #end
 				 #if($criteria.codeSearchType && $criteria.p_code && $criteria.codeSearchType == 2)
 				 	AND  trim(t.town_code||' '||t.town_new_code) like '%'||$criteria.p_code||'%'

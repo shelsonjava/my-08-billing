@@ -73,7 +73,7 @@
 			</selectClause> 
 			<tableClause>main_detail_types t</tableClause>
 			<whereClause><![CDATA[
-				($defaultWhereClause) AND t.deleted = 0 AND t.service_id = 63
+				($defaultWhereClause) AND t.deleted = 0 AND t.service_id = 50000
 				]]>  
 			</whereClause> 
 			<orderClause>t.main_detail_type_name_geo</orderClause>

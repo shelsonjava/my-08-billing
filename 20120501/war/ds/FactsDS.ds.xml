@@ -55,6 +55,7 @@
 			<tableClause>facts t, v_facts_type ce, v_FACTS_STATUSES cs</tableClause>
 			<whereClause><![CDATA[
 				t.fact_type_id = ce.fact_type_id(+) and t.fact_status_id = cs.fact_status_id(+)
+				#if($criteria.facts_descriptor_id) AND ce.facts_descriptor_id = $criteria.facts_descriptor_id #end
 				#if($criteria.fact_status_id) AND t.fact_status_id = $criteria.fact_status_id #end
 				#if($criteria.fact_type_id) AND t.fact_type_id = $criteria.fact_type_id #end
 				#if($criteria.fact_date && $criteria.byMonth && $criteria.byMonth == 1) 

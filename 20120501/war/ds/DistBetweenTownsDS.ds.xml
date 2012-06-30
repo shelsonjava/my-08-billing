@@ -68,7 +68,7 @@
     	<operationBinding operationId="searchFromDBForCC" operationType="fetch">
     		<selectClause>   			
     			t.dist_between_towns_id,
-    			t.dist_between_towns_value,
+    			t.dist_between_towns_value||map_char_codes_geo(' km') as dist_between_towns_value,
     			t.town_distance_type,
     			t.town_id_end,
     			t.town_id_start,
@@ -92,8 +92,6 @@
 			</whereClause> 
 			<orderClause>t.dist_between_towns_id</orderClause>
     	</operationBinding>
-    	
-    	
     	
     </operationBindings>	
 </DataSource>
