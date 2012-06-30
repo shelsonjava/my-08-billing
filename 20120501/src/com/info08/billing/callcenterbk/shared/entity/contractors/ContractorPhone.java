@@ -23,8 +23,8 @@ public class ContractorPhone implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "CONTRACTOR_PHONES_CPID_GENERATOR", sequenceName = "CPID_SEQ")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTRACTOR_PHONES_CPID_GENERATOR")
+	@SequenceGenerator(name = "SEQ_CONTRACTOR_PHONES_GENERATOR", sequenceName = "SEQ_CONTRACTOR_PHONES")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CONTRACTOR_PHONES_GENERATOR")
 	@Column(name = "CP_ID")
 	private Long cp_id;
 
