@@ -47,7 +47,7 @@
 			<arg value="${gwt.module.id}" />
 		</java>
 	</target>
-	<target name="default" depends="buildwarNoGWT">
+	<target name="default" depends="buildwar">
 	</target>
 
 	<target name="buildwar" depends="gwt-compile">
