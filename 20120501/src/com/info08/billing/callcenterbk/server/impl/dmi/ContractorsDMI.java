@@ -128,9 +128,8 @@ public class ContractorsDMI implements QueryConstants {
 							.intValue() == 1);
 
 			if (needCalc) {
-				range_curr_price = getRangeCurrPrice(
-						contract.getContract_id(), oracleManager,
-						contractAdvPrices);
+				range_curr_price = getRangeCurrPrice(contract.getContract_id(),
+						oracleManager, contractAdvPrices);
 			}
 			contract.setRange_curr_price(range_curr_price);
 			if (contract.getContract_id() == null)
@@ -172,8 +171,9 @@ public class ContractorsDMI implements QueryConstants {
 					contract.getContract_id());
 			contract.setLoggedUserName(loggedUserName);
 			oracleManager.flush();
-			blockUnblockContractorPhones(contract, oracleManager);
+
 			EMF.commitTransaction(transaction);
+			blockUnblockContractorPhones(contract, oracleManager);
 			map = DMIUtils.findRecordById("ContractorsDS",
 					"searchAllContractors", contract.getContract_id(),
 					"contract_id");
@@ -228,8 +228,7 @@ public class ContractorsDMI implements QueryConstants {
 
 			callCnt = new Long(oracleManager
 					.createNativeQuery(QueryConstants.Q_GET_ORG_CALL_CNT_BY_YM)
-					.setParameter(1, contract_id).getSingleResult()
-					.toString());
+					.setParameter(1, contract_id).getSingleResult().toString());
 			for (ContractPriceItem priceItem : contractAdvPrices) {
 				Long start = priceItem.getCall_count_start();
 				Long end = priceItem.getCall_count_end();
@@ -327,7 +326,8 @@ public class ContractorsDMI implements QueryConstants {
 			String loggedUserName = record.get("loggedUserName").toString();
 			BigDecimal range_curr_price = new BigDecimal(record.get(
 					"range_curr_price").toString());
-//			getRangeCurrPrice(organization_id, oracleManager, contractAdvPrices)
+			// getRangeCurrPrice(organization_id, oracleManager,
+			// contractAdvPrices)
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 
 			Contract contract = oracleManager.find(Contract.class, contract_id);
@@ -534,9 +534,9 @@ public class ContractorsDMI implements QueryConstants {
 			Map map = DMIUtils.findRecordById("ContractorsDS",
 					"searchAllContractors", contract.getContract_id(),
 					"contract_id");
-			
+
 			map.put("contractor_call_cnt", contrCallCnt);
-			
+
 			return map;
 		} catch (Exception e) {
 			if (e instanceof CallCenterException) {
@@ -688,40 +688,41 @@ public class ContractorsDMI implements QueryConstants {
 					.getSingleResult().toString().equals("1");
 
 			log.append(", 8. blockedByCondition : ").append(blockedByCondition);
+			if (blockedByCondition) {
+				List<?> list = resultList;
 
-			List<?> list = resultList;
-
-			if (list == null || list.isEmpty()) {
-				log.append(", 8. blockedByCondition : ");
-				log.append("\nResult : list is empty. \n");
-				logger.info(log.toString());
-				return;
-			}
-
-			log.append(", 9. List Size For Block : ").append(list.size());
-
-			PreparedStatement statement1 = mySQLConnection
-					.prepareStatement(QueryConstants.Q_MYSQL_INSERT_BLOCK_PHONE);
-
-			for (Object oPhone : list) {
-				String phone = oPhone.toString().trim();
-				if (phone.length() == 0)
-					continue;
-				;
-				if (!CommonFunctions.isPhoneChargeable(phone)) {
-					continue;
+				if (list == null || list.isEmpty()) {
+					log.append(", 8. blockedByCondition : ");
+					log.append("\nResult : list is empty. \n");
+					logger.info(log.toString());
+					return;
 				}
-				int phoneLength = phone.length();
-				statement1.setString(1, phone);
-				statement1.setInt(2, phone.length());
-				statement1.setInt(3, phone.length());
-				statement1.executeUpdate();
 
-				if (phoneLength == 7) {
-					statement1.setString(1, ("32" + phone));
-					statement1.setInt(2, (phone.length() + 2));
-					statement1.setInt(3, (phone.length() + 2));
+				log.append(", 9. List Size For Block : ").append(list.size());
+
+				PreparedStatement statement1 = mySQLConnection
+						.prepareStatement(QueryConstants.Q_MYSQL_INSERT_BLOCK_PHONE);
+
+				for (Object oPhone : list) {
+					String phone = oPhone.toString().trim();
+					if (phone.length() == 0)
+						continue;
+					;
+					if (!CommonFunctions.isPhoneChargeable(phone)) {
+						continue;
+					}
+					int phoneLength = phone.length();
+					statement1.setString(1, phone);
+					statement1.setInt(2, phone.length());
+					statement1.setInt(3, phone.length());
 					statement1.executeUpdate();
+
+					if (phoneLength == 7) {
+						statement1.setString(1, ("32" + phone));
+						statement1.setInt(2, (phone.length() + 2));
+						statement1.setInt(3, (phone.length() + 2));
+						statement1.executeUpdate();
+					}
 				}
 			}
 			log.append("\nResult : Contractor Blocking Finished Successfully. \n");
