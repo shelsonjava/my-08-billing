@@ -52,12 +52,16 @@ public class Facts implements Serializable {
 	private Long fact_status_id;
 
 	@Basic
+	@Column(name = "PRIORITY")
+	private Long priority;
+
+	@Basic
 	@Column(name = "SUNUP")
 	private String sunup;
 
 	@Transient
 	private String fact_type_name;
-	
+
 	@Transient
 	private Long facts_descriptor_id;
 
@@ -156,5 +160,13 @@ public class Facts implements Serializable {
 
 	public void setFacts_descriptor_id(Long facts_descriptor_id) {
 		this.facts_descriptor_id = facts_descriptor_id;
+	}
+
+	public Long getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Long priority) {
+		this.priority = priority;
 	}
 }
