@@ -12,11 +12,12 @@
 		<field name="fact_date"					type="datetime"		title="fact_date"/>
 		<field name="additional_comment"		type="text"			title="additional_comment"/>
 		<field name="sunup"						type="text"			title="sunup"/>
-		<field name="fact_type_id"				type="integer"		title="fact_type_id"			hidden="true"/>
-		<field name="fact_status_id"			type="integer"		title="fact_status_id"			hidden="true"/>
+		<field name="fact_type_id"				type="integer"		title="fact_type_id"				hidden="true"/>
+		<field name="fact_status_id"			type="integer"		title="fact_status_id"				hidden="true"/>
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 			hidden="true"/>	
 		<field name="ffact_date"				type="text"			title="ffact_date" hidden="true"/>
-		<field name="facts_descriptor_id"		type="integer" 	title="City Type Geo" hidden="true"/>		
+		<field name="facts_descriptor_id"		type="integer" 		title="facts_descriptor_id"			hidden="true"/>		
+		<field name="priority"					type="integer" 		title="priority" 					hidden="true"/>
 	</fields>
 
 	<operationBindings>		
@@ -50,7 +51,8 @@
 				ce.fact_type_name,
 				cs.fact_status_name,
 				to_char(t.fact_date,'DD/MM/YYYY') as ffact_date,
-				ce.facts_descriptor_id
+				ce.facts_descriptor_id,
+				t.priority
 			</selectClause> 
 			<tableClause>facts t, v_facts_type ce, v_FACTS_STATUSES cs</tableClause>
 			<whereClause><![CDATA[
@@ -78,7 +80,7 @@
 				#if($criteria.critRemarc10)  AND t.additional_comment || ' '|| t.remark like '%'||$criteria.critRemarc10 ||'%' #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.fact_id</orderClause>
+			<orderClause>t.fact_date asc, t.priority desc</orderClause>
     	</operationBinding>
     </operationBindings>	
 </DataSource>
