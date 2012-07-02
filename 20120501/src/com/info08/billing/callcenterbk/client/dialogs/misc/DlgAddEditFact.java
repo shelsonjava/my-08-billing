@@ -18,6 +18,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
@@ -42,6 +43,7 @@ public class DlgAddEditFact extends Window {
 	private TextItem sunRiseItem;
 	private TextAreaItem descriptionItem;
 	private TextAreaItem commentItem;
+	private CheckboxItem priorityItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
@@ -57,7 +59,7 @@ public class DlgAddEditFact extends Window {
 					: (pRecord == null ? CallCenterBK.constants.addFact()
 							: CallCenterBK.constants.editFact()));
 
-			setHeight(490);
+			setHeight(510);
 			setWidth(510);
 			setShowMinimizeButton(false);
 			setIsModal(true);
@@ -150,9 +152,15 @@ public class DlgAddEditFact extends Window {
 			sunRiseItem.setValidators(regExpValidator);
 			sunRiseItem.setHint("07:00/18:00");
 
+			priorityItem = new CheckboxItem();
+			priorityItem.setTitle(CallCenterBK.constants.priority());
+			priorityItem.setWidth(300);
+			priorityItem.setName("priority");
+			priorityItem.setValue(false);
+
 			dynamicForm.setFields(factStatusItem, factDescriptorItem,
 					factTypeItem, sunRiseItem, calendarDayItem,
-					descriptionItem, commentItem);
+					descriptionItem, commentItem, priorityItem);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -219,6 +227,7 @@ public class DlgAddEditFact extends Window {
 			descriptionItem.setValue(editRecord.getAttributeAsString("remark"));
 			commentItem.setValue(editRecord
 					.getAttributeAsString("additional_comment"));
+			priorityItem.setValue(editRecord.getAttributeAsString("priority").equals("1")?true:false);
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -251,6 +260,11 @@ public class DlgAddEditFact extends Window {
 				return;
 			}
 			String sun_rise = sunRiseItem.getValueAsString();
+			String priority = priorityItem.getValue().toString();
+			String priorityString = "0";
+			if (priority == "true") {
+				priorityString = "1";
+			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
@@ -265,7 +279,7 @@ public class DlgAddEditFact extends Window {
 			record.setAttribute("remark", calendar_description);
 			record.setAttribute("additional_comment", calendar_comment);
 			record.setAttribute("sunup", sun_rise);
-			record.setAttribute("deleted", 0);
+			record.setAttribute("priority", priorityString);
 			record.setAttribute("rec_user", loggedUser);
 
 			if (editRecord != null && !isCopy) {
