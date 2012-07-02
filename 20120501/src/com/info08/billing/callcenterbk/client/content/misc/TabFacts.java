@@ -13,6 +13,7 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
@@ -256,17 +257,22 @@ public class TabFacts extends Tab {
 
 			datasource.getField("additional_comment").setTitle(
 					CallCenterBK.constants.comment());
+			datasource.getField("priority").setTitle(
+					CallCenterBK.constants.priority());
 
 			ListGridField calendar_day = new ListGridField("fact_date",
-					CallCenterBK.constants.date(), 150);
+					CallCenterBK.constants.date(), 100);
 			ListGridField event = new ListGridField("fact_type_name",
-					CallCenterBK.constants.moonPhase(), 150);
+					CallCenterBK.constants.moonPhase(), 110);
 			ListGridField state = new ListGridField("fact_status_name",
-					CallCenterBK.constants.type(), 80);
+					CallCenterBK.constants.type(), 60);
 			ListGridField sun_rise = new ListGridField("sunup",
-					CallCenterBK.constants.sunRise(), 100);
+					CallCenterBK.constants.sunRise(), 90);
 			ListGridField calendar_description = new ListGridField("remark",
-					CallCenterBK.constants.description(), 250);
+					CallCenterBK.constants.description());
+			ListGridField priority = new ListGridField("priority",
+					CallCenterBK.constants.priority(), 40);
+			priority.setType(ListGridFieldType.BOOLEAN);
 
 			calendar_day.setAlign(Alignment.LEFT);
 			event.setAlign(Alignment.LEFT);
@@ -274,7 +280,7 @@ public class TabFacts extends Tab {
 			sun_rise.setAlign(Alignment.CENTER);
 
 			listGrid.setFields(calendar_day, event, state, sun_rise,
-					calendar_description);
+					calendar_description, priority);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {

@@ -155,6 +155,8 @@ public class MiscDMI implements QueryConstants {
 					: new Timestamp(((Date) record.get("fact_date")).getTime());
 			String calendar_description = record.get("remark") == null ? null
 					: record.get("remark").toString();
+			String priority = record.get("priority") == null ? null : record
+					.get("priority").toString();
 			String sun_rise = record.get("sunup") == null ? null : record.get(
 					"sunup").toString();
 
@@ -165,6 +167,7 @@ public class MiscDMI implements QueryConstants {
 			fact.setFact_type_id(calendar_event_id);
 			fact.setFact_status_id(calendar_state_id);
 			fact.setSunup(sun_rise);
+			fact.setPriority(new Long(priority));
 			fact.setLoggedUserName(loggedUserName);
 
 			if (calendar_day != null) {
