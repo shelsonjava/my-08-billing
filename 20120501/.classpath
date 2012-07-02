@@ -7,7 +7,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-log4j12-1.5.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/smartgwt.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/smartgwtee.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/smartgwt-skins.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/messaging.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/isomorphic_jpa.jar"/>
@@ -20,7 +19,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/isomorphic_tools.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/isomorphic_web_services.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-httpclient-3.1.jar" sourcepath="/home/paata/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1-sources.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-jpa-2.0-api-1.0.0.Final.jar" sourcepath="/home/paata/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-4.1.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/isomorphic_realtime_messaging.jar"/>
@@ -54,7 +53,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/isomorphic_js_parser.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jdbc2_0-stdext.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mail.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/ojdbc6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-3.6-20091214.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-3.6-20091214.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-schemas-3.6-20091214.jar"/>
@@ -94,6 +92,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stax-api-1.0-2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xbean-spring-3.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/activeio-core-3.1.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/smartgwtee.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

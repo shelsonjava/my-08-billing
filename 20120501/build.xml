@@ -47,7 +47,7 @@
 			<arg value="${gwt.module.id}" />
 		</java>
 	</target>
-	<target name="default" depends="buildwar">
+	<target name="default" depends="buildwarNoGWT">
 	</target>
 
 	<target name="buildwar" depends="gwt-compile">
@@ -63,5 +63,16 @@
 		<delete dir="tmpLib" />
 	</target>
 
-
+	<target name="buildwarNoGWT" depends="compileClasses">
+			<delete dir="tmpLib" />
+			<delete file="${war_name}" />
+			<mkdir dir="tmpLib" />
+			<copydir dest="tmpLib" src="war" excludes="**/*.jar" />
+			<delete file="tmpLib/WEB-INF/classes/log4j.isc.config.xml" />
+			<copy file="pl/log4j.isc.config.xml.live" tofile="tmpLib/WEB-INF/classes/log4j.isc.config.xml" />
+			<delete file="tmpLib/WEB-INF/activemq.xml" />
+			<copy file="pl/activemq.xml" tofile="tmpLib/WEB-INF/activemq.xml" />
+			<war basedir="tmpLib" destfile="${war_name}" webxml="tmpLib/WEB-INF/web.xml" />
+			<delete dir="tmpLib" />
+		</target>
 </project>
