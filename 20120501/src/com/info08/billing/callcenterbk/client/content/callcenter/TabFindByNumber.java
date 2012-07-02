@@ -51,6 +51,7 @@ public class TabFindByNumber extends Tab {
 
 	// DataSource
 	private DataSource phoneViewDS;
+	private DataSource OrgDS;
 
 	public TabFindByNumber() {
 
@@ -58,6 +59,7 @@ public class TabFindByNumber extends Tab {
 		setCanClose(true);
 
 		phoneViewDS = DataSource.get("PhoneViewDS");
+		OrgDS = DataSource.get("OrgDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -263,7 +265,7 @@ public class TabFindByNumber extends Tab {
 				return;
 			}
 
-			Integer mainID = record.getAttributeAsInt("mainID");
+			Integer mainID = record.getAttributeAsInt("organization_id");
 			if (mainID == null) {
 				SC.say(CallCenterBK.constants.invalidOrganization());
 				return;
@@ -271,8 +273,8 @@ public class TabFindByNumber extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("organization_id", mainID);
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("customOrgSearchForCallCenterByMainId");
-			phoneViewDS.fetchData(criteria, new DSCallback() {
+			dsRequest.setOperationId("customOrgSearchForCallCenterNew");
+			OrgDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -286,42 +288,40 @@ public class TabFindByNumber extends Tab {
 						ListGridRecord pRecord = new ListGridRecord();
 						pRecord.setAttribute("organization_id",
 								record.getAttributeAsInt("organization_id"));
-						pRecord.setAttribute("note_crit",
-								record.getAttributeAsInt("note_crit"));
-						pRecord.setAttribute("org_name",
-								record.getAttributeAsString("org_name"));
-						pRecord.setAttribute("org_name_eng",
-								record.getAttributeAsString("org_name_eng"));
-						pRecord.setAttribute("note",
-								record.getAttributeAsString("note"));
-						pRecord.setAttribute("director",
-								record.getAttributeAsString("director"));
-						pRecord.setAttribute("founded",
-								record.getAttributeAsString("founded"));
-						pRecord.setAttribute("identcode",
-								record.getAttributeAsString("identcode"));
-						pRecord.setAttribute("new_identcode",
-								record.getAttributeAsString("new_identcode"));
-						pRecord.setAttribute("legaladdress",
-								record.getAttributeAsString("legaladdress"));
-						pRecord.setAttribute("real_address",
-								record.getAttributeAsString("real_address"));
-						pRecord.setAttribute("workinghours",
-								record.getAttributeAsString("workinghours"));
-						pRecord.setAttribute("dayoffs",
-								record.getAttributeAsString("dayoffs"));
-						pRecord.setAttribute("org_info",
-								record.getAttributeAsString("org_info"));
-						pRecord.setAttribute("contactperson",
-								record.getAttributeAsString("contactperson"));
-						pRecord.setAttribute("workpersoncountity", record
-								.getAttributeAsString("workpersoncountity"));
-						pRecord.setAttribute("ind",
-								record.getAttributeAsString("ind"));
-						pRecord.setAttribute("webaddress",
-								record.getAttributeAsString("webaddress"));
-						pRecord.setAttribute("mail",
-								record.getAttributeAsString("mail"));
+						pRecord.setAttribute("priority",
+								record.getAttributeAsInt("priority"));
+						pRecord.setAttribute("organization_name", record
+								.getAttributeAsString("organization_name"));
+						pRecord.setAttribute("remark",
+								record.getAttributeAsString("remark"));
+						pRecord.setAttribute("chief",
+								record.getAttributeAsString("chief"));
+						pRecord.setAttribute("found_date",
+								record.getAttributeAsString("found_date"));
+						pRecord.setAttribute("ident_code",
+								record.getAttributeAsString("ident_code"));
+						pRecord.setAttribute("ident_code_new",
+								record.getAttributeAsString("ident_code_new"));
+						pRecord.setAttribute("call_center_address", record
+								.getAttributeAsString("call_center_address"));
+						pRecord.setAttribute("real_address_descr", record
+								.getAttributeAsString("real_address_descr"));
+						pRecord.setAttribute("work_hours",
+								record.getAttributeAsString("work_hours"));
+						pRecord.setAttribute("day_offs_descr",
+								record.getAttributeAsString("day_offs_descr"));
+						pRecord.setAttribute("additional_info",
+								record.getAttributeAsString("additional_info"));
+						pRecord.setAttribute("contact_person",
+								record.getAttributeAsString("contact_person"));
+						pRecord.setAttribute("staff_count",
+								record.getAttributeAsString("staff_count"));
+						pRecord.setAttribute("organization_index", record
+								.getAttributeAsString("organization_index"));
+						pRecord.setAttribute("web_address",
+								record.getAttributeAsString("web_address"));
+						pRecord.setAttribute("email_address",
+								record.getAttributeAsString("email_address"));
 						pRecord.setAttribute("town_name",
 								record.getAttributeAsString("town_name"));
 						pRecord.setAttribute("town_district_name", record
@@ -330,8 +330,8 @@ public class TabFindByNumber extends Tab {
 								record.getAttributeAsString("street_location"));
 						pRecord.setAttribute("index_text",
 								record.getAttributeAsString("index_text"));
-						pRecord.setAttribute("legal_statuse",
-								record.getAttributeAsString("legal_statuse"));
+						pRecord.setAttribute("status",
+								record.getAttributeAsString("status"));
 						pRecord.setAttribute("town_id",
 								record.getAttributeAsInt("town_id"));
 						pRecord.setAttribute("org_allert_by_buss_det", record
@@ -378,7 +378,7 @@ public class TabFindByNumber extends Tab {
 
 	private void showOrgDialog(ListGridRecord pRecord) {
 		try {
-			DlgViewOrg dlgViewOrg = new DlgViewOrg(phoneViewDS, pRecord);
+			DlgViewOrg dlgViewOrg = new DlgViewOrg(OrgDS, pRecord);
 			dlgViewOrg.show();
 
 			String org_allert_by_buss_det = pRecord
