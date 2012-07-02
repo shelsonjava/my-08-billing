@@ -193,7 +193,7 @@
 				 #if($criteria.country_id) and t.country_id = $criteria.country_id #end
 				 #if($criteria.town_id) and t.town_id = $criteria.town_id #end
 				 #if($criteria.codeSearchType && $criteria.p_code && $criteria.codeSearchType == 1)
-				 	AND  trim(t.code) like '%'||$criteria.p_code||'%'
+				 	AND  trim(t.phone_code) like '%'||$criteria.p_code||'%'
 				 #end
 				 #if($criteria.codeSearchType && $criteria.p_code && $criteria.codeSearchType == 2)
 				 	AND  trim(t.town_code||' '||t.town_new_code) like '%'||$criteria.p_code||'%'
