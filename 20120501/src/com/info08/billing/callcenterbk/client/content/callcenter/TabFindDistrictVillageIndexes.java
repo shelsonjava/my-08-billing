@@ -101,7 +101,9 @@ public class TabFindDistrictVillageIndexes extends Tab {
 				}
 				Integer district_center = countryRecord
 						.getAttributeAsInt("district_center");
-				if (district_center != null && district_center.equals(-1) && colNum == 1) {
+				if (district_center != null
+						&& (district_center.equals(-1) || district_center
+								.equals(1)) && colNum == 1) {
 					return "color:red;";
 				} else {
 					return super.getCellCSSText(record, rowNum, colNum);
@@ -123,13 +125,13 @@ public class TabFindDistrictVillageIndexes extends Tab {
 		listGrid.setFilterOnKeypress(true);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField district_index_name = new ListGridField("district_index_name",
-				CallCenterBK.constants.region());
+		ListGridField district_index_name = new ListGridField(
+				"district_index_name", CallCenterBK.constants.region());
 		district_index_name.setAlign(Alignment.LEFT);
 		district_index_name.setCanFilter(false);
 
-		ListGridField village_index_name = new ListGridField("village_index_name",
-				CallCenterBK.constants.townCountry());
+		ListGridField village_index_name = new ListGridField(
+				"village_index_name", CallCenterBK.constants.townCountry());
 		village_index_name.setAlign(Alignment.LEFT);
 		village_index_name.setCanFilter(true);
 
@@ -138,7 +140,8 @@ public class TabFindDistrictVillageIndexes extends Tab {
 		village_index.setAlign(Alignment.LEFT);
 		village_index.setCanFilter(true);
 
-		listGrid.setFields(district_index_name, village_index_name, village_index);
+		listGrid.setFields(district_index_name, village_index_name,
+				village_index);
 
 		mainLayout.addMember(listGrid);
 
@@ -176,8 +179,9 @@ public class TabFindDistrictVillageIndexes extends Tab {
 		listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
 			@Override
 			public void onRecordDoubleClick(RecordDoubleClickEvent event) {
-				DlgViewDistrictVillageIndexes dlgViewGeoInd = new DlgViewDistrictVillageIndexes(listGrid,
-						villageIndexesDS, listGrid.getSelectedRecord());
+				DlgViewDistrictVillageIndexes dlgViewGeoInd = new DlgViewDistrictVillageIndexes(
+						listGrid, villageIndexesDS, listGrid
+								.getSelectedRecord());
 				dlgViewGeoInd.show();
 			}
 		});
@@ -190,8 +194,7 @@ public class TabFindDistrictVillageIndexes extends Tab {
 
 			String regionName = regCountryNameItem.getValueAsString();
 			if (regionName != null && !regionName.trim().equals("")) {
-				
-				
+
 				String tmp = regionName.trim();
 				String arrStr[] = tmp.split(" ");
 				int i = 1;
@@ -203,8 +206,7 @@ public class TabFindDistrictVillageIndexes extends Tab {
 					criteria.setAttribute("full_text" + i, item);
 					i++;
 				}
-				
-				
+
 			}
 			String village_index = indexItem.getValueAsString();
 			if (village_index != null && !village_index.trim().equals("")) {
