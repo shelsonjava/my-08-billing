@@ -236,10 +236,10 @@ public class DlgAddEditTown extends Window {
 			}
 
 			String town_code = cityCodeItem.getValueAsString();
-			if (town_code == null || town_code.trim().equalsIgnoreCase("")) {
-				SC.say("შეიყვანეთ ქალაქის კოდი !");
-				return;
-			}
+//			if (town_code == null || town_code.trim().equalsIgnoreCase("")) {
+//				SC.say("შეიყვანეთ ქალაქის კოდი !");
+//				return;
+//			}
 			String town_code_new = cityNewCodeItem.getValueAsString();
 
 			ListGridRecord country_record = countryItem.getSelectedRecord();
@@ -254,14 +254,14 @@ public class DlgAddEditTown extends Window {
 				SC.say("ქართული დასახელება შედგება მაქსიმუმ 155 სიმბოლოსაგან !");
 				return;
 			}
-			if (town_code.length() > 180) {
-				SC.say("ქალაქის კოდი შედგება მაქსიმუმ 90 სიმბოლოსაგან !");
-				return;
-			}
-			if (town_code_new != null && town_code_new.length() > 180) {
-				SC.say("ქალაქის ახალი კოდი შედგება მაქსიმუმ 90 სიმბოლოსაგან !");
-				return;
-			}
+//			if (town_code.length() > 180) {
+//				SC.say("ქალაქის კოდი შედგება მაქსიმუმ 90 სიმბოლოსაგან !");
+//				return;
+//			}
+//			if (town_code_new != null && town_code_new.length() > 180) {
+//				SC.say("ქალაქის ახალი კოდი შედგება მაქსიმუმ 90 სიმბოლოსაგან !");
+//				return;
+//			}
 
 			ListGridRecord city_type_record = townTypeItem.getSelectedRecord();
 			if (city_type_record == null
@@ -280,20 +280,20 @@ public class DlgAddEditTown extends Window {
 			}
 			Integer capital_town = Integer.parseInt(capital_town_record);
 
-			try {
-				Integer.parseInt(town_code);
-			} catch (NumberFormatException e) {
-				SC.say("ქალაქის კოდის შედგება მხოლოდ ციფრებისაგან !");
-				return;
-			}
-			if (town_code_new != null && !town_code_new.equals("")) {
-				try {
-					Integer.parseInt(town_code_new);
-				} catch (NumberFormatException e) {
-					SC.say("ქალაქის ახალი კოდის შედგება მხოლოდ ციფრებისაგან !");
-					return;
-				}
-			}
+//			try {
+//				Integer.parseInt(town_code);
+//			} catch (NumberFormatException e) {
+//				SC.say("ქალაქის კოდის შედგება მხოლოდ ციფრებისაგან !");
+//				return;
+//			}
+//			if (town_code_new != null && !town_code_new.equals("")) {
+//				try {
+//					Integer.parseInt(town_code_new);
+//				} catch (NumberFormatException e) {
+//					SC.say("ქალაქის ახალი კოდის შედგება მხოლოდ ციფრებისაგან !");
+//					return;
+//				}
+//			}
 			String normal_gmt = ofGmtItem.getValueAsString();
 			if (normal_gmt == null || normal_gmt.trim().equals("")) {
 				SC.say("გთხოვთ შეიყვანოთ დრო !");
