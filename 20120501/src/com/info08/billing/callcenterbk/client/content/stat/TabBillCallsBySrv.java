@@ -504,7 +504,7 @@ public class TabBillCallsBySrv extends Tab {
 			criteria.setAttribute("bill_date_end", endDate);
 			boolean isSelMin1 = false;
 			if (chbItemOrg.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId1", new Integer(3));
+				criteria.setAttribute("servicesId1", new Integer(50004));
 				isSelMin1 = true;
 			}
 			if (chbItemAbon.getValueAsBoolean()) {
