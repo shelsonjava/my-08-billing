@@ -156,7 +156,8 @@ public class TabBillCallsBySrvBK extends Tab {
 			chbItemTickReserv = new CheckboxItem();
 			chbItemTickReserv.setTitle(CallCenterBK.constants.ticketReserv());
 			chbItemTickReserv.setName("chbItemTickReserv");
-			chbItemTickReserv.setValue(true);
+			chbItemTickReserv.setValue(false);
+			chbItemTickReserv.setDisabled(true);
 			chbItemTickReserv.setWidth(100);
 
 			chbItemSportInfo = new CheckboxItem();
@@ -180,7 +181,8 @@ public class TabBillCallsBySrvBK extends Tab {
 			chbItemAlarmClock = new CheckboxItem();
 			chbItemAlarmClock.setTitle(CallCenterBK.constants.alarmClock());
 			chbItemAlarmClock.setName("chbItemAlarmClock");
-			chbItemAlarmClock.setValue(true);
+			chbItemAlarmClock.setValue(false);
+			chbItemAlarmClock.setDisabled(true);
 			chbItemAlarmClock.setWidth(100);
 
 			chbItemCurrRate = new CheckboxItem();
@@ -269,7 +271,8 @@ public class TabBillCallsBySrvBK extends Tab {
 			chbItemAviaScheduler.setTitle(CallCenterBK.constants
 					.aviaScheduler());
 			chbItemAviaScheduler.setName("chbItemAviaScheduler");
-			chbItemAviaScheduler.setValue(true);
+			chbItemAviaScheduler.setValue(false);
+			chbItemAviaScheduler.setDisabled(true);
 			chbItemAviaScheduler.setWidth(100);
 
 			chbItemMonumGard = new CheckboxItem();
@@ -281,20 +284,23 @@ public class TabBillCallsBySrvBK extends Tab {
 			chbItemSMSInfo = new CheckboxItem();
 			chbItemSMSInfo.setTitle(CallCenterBK.constants.smsInfo());
 			chbItemSMSInfo.setName("chbItemSMSInfo");
-			chbItemSMSInfo.setValue(true);
+			chbItemSMSInfo.setValue(false);
+			chbItemSMSInfo.setDisabled(true);
 			chbItemSMSInfo.setWidth(100);
 
 			chbItemCallRules = new CheckboxItem();
 			chbItemCallRules.setTitle(CallCenterBK.constants.callRules());
 			chbItemCallRules.setName("chbItemCallRules");
-			chbItemCallRules.setValue(true);
+			chbItemCallRules.setValue(false);
+			chbItemCallRules.setDisabled(true);
 			chbItemCallRules.setWidth(100);
 
 			chbItemRailScheduler = new CheckboxItem();
 			chbItemRailScheduler.setTitle(CallCenterBK.constants
 					.railScheduler());
 			chbItemRailScheduler.setName("chbItemRailScheduler");
-			chbItemRailScheduler.setValue(true);
+			chbItemRailScheduler.setValue(false);
+			chbItemRailScheduler.setDisabled(true);
 			chbItemRailScheduler.setWidth(100);
 
 			searchForm1.setFields(chbItemOrg, chbItemAbon, chbItemFindByNum,
@@ -567,11 +573,11 @@ public class TabBillCallsBySrvBK extends Tab {
 			criteria.setAttribute("bill_date_end", endDate);
 			boolean isSelMin1 = false;
 			if (chbItemOrg.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId1", new Integer(3));
+				criteria.setAttribute("servicesId1", new Integer(50004));
 				isSelMin1 = true;
 			}
 			if (chbItemAbon.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId2", new Integer(7));
+				criteria.setAttribute("servicesId2", new Integer(50014));
 				isSelMin1 = true;
 			}
 			if (chbItemFindByNum.getValueAsBoolean()) {
@@ -584,7 +590,7 @@ public class TabBillCallsBySrvBK extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemGadartva.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId5", new Integer(60));
+				criteria.setAttribute("servicesId5", new Integer(50011));
 				isSelMin1 = true;
 			}
 			if (chbItemExactTime.getValueAsBoolean()) {
@@ -592,10 +598,10 @@ public class TabBillCallsBySrvBK extends Tab {
 						Constants.serviceCurrDateTimeInfo));
 				isSelMin1 = true;
 			}
-			if (chbItemTickReserv.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId7", new Integer(27));
-				isSelMin1 = true;
-			}
+//			if (chbItemTickReserv.getValueAsBoolean()) {
+//				criteria.setAttribute("servicesId7", new Integer(27));
+//				isSelMin1 = true;
+//			}
 			if (chbItemSportInfo.getValueAsBoolean()) {
 				criteria.setAttribute("servicesId8", new Integer(
 						Constants.serviceSportInfo));
@@ -610,21 +616,21 @@ public class TabBillCallsBySrvBK extends Tab {
 				criteria.setAttribute("servicesId10", new Integer(Constants.serviceTransportInfo));
 				isSelMin1 = true;
 			}
-			if (chbItemAlarmClock.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId11", new Integer(18));
-				isSelMin1 = true;
-			}
+//			if (chbItemAlarmClock.getValueAsBoolean()) {
+//				criteria.setAttribute("servicesId11", new Integer(18));
+//				isSelMin1 = true;
+//			}
 			if (chbItemCurrRate.getValueAsBoolean()) {
 				criteria.setAttribute("servicesId12", new Integer(
 						Constants.serviceCurrencyInfo));
 				isSelMin1 = true;
 			}
 			if (chbItemEntPoster.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId13", new Integer(10));
+				criteria.setAttribute("servicesId13", new Integer(50018));
 				isSelMin1 = true;
 			}
 			if (chbItemStreetInfo.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId14", new Integer(4));
+				criteria.setAttribute("servicesId14", new Integer(50007));
 				isSelMin1 = true;
 			}
 			if (chbItemEmail.getValueAsBoolean()) {
@@ -648,7 +654,7 @@ public class TabBillCallsBySrvBK extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemIdxsInfo.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId19", new Integer(48));
+				criteria.setAttribute("servicesId19", new Integer(50016));
 				isSelMin1 = true;
 			}
 			if (chbItemCalendar.getValueAsBoolean()) {
@@ -657,7 +663,7 @@ public class TabBillCallsBySrvBK extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemNonStandartInfo.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId21", new Integer(32));
+				criteria.setAttribute("servicesId21", new Integer(50012));
 				isSelMin1 = true;
 			}
 			if (chbItemDistBetwCities.getValueAsBoolean()) {
@@ -666,33 +672,33 @@ public class TabBillCallsBySrvBK extends Tab {
 				isSelMin1 = true;
 			}
 			if (chbItemOrthCalendar.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId23", new Integer(22));
+				criteria.setAttribute("servicesId23", new Integer(50009));
 				isSelMin1 = true;
 			}
 			if (chbItemHourDateAndOther.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId24", new Integer(6));
+				criteria.setAttribute("servicesId24", new Integer(50006));
 				isSelMin1 = true;
 			}
-			if (chbItemAviaScheduler.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId25", new Integer(19));
-				isSelMin1 = true;
-			}
+//			if (chbItemAviaScheduler.getValueAsBoolean()) {
+//				criteria.setAttribute("servicesId25", new Integer(50017));
+//				isSelMin1 = true;
+//			}
 			if (chbItemMonumGard.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId26", new Integer(51));
+				criteria.setAttribute("servicesId26", new Integer(50012));
 				isSelMin1 = true;
 			}
-			if (chbItemSMSInfo.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId27", new Integer(34));
-				isSelMin1 = true;
-			}
-			if (chbItemCallRules.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId28", new Integer(49));
-				isSelMin1 = true;
-			}
-			if (chbItemRailScheduler.getValueAsBoolean()) {
-				criteria.setAttribute("servicesId29", new Integer(20));
-				isSelMin1 = true;
-			}
+//			if (chbItemSMSInfo.getValueAsBoolean()) {
+//				criteria.setAttribute("servicesId27", new Integer(34));
+//				isSelMin1 = true;
+//			}
+//			if (chbItemCallRules.getValueAsBoolean()) {
+//				criteria.setAttribute("servicesId28", new Integer(49));
+//				isSelMin1 = true;
+//			}
+//			if (chbItemRailScheduler.getValueAsBoolean()) {
+//				criteria.setAttribute("servicesId29", new Integer(20));
+//				isSelMin1 = true;
+//			}
 			if (!isSelMin1) {
 				if (value == null || !value.booleanValue()) {
 					SC.say(CallCenterBK.constants.warning(),
