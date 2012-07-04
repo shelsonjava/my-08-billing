@@ -95,7 +95,7 @@
 			       t.CYCLED_ID direction,
 			       decode(t.CYCLED_ID,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as cycle_descr
 			</selectClause> 
-			<tableClause>incity_transport_view_new t, transp_types tt</tableClause>
+			<tableClause>pub_transport_view t, transp_types tt</tableClause>
 			<whereClause><![CDATA[
 					t.transport_type_id = tt.transp_type_id
 					#if($criteria.transp_type_id) and t.transport_type_id = $criteria.transp_type_id #end

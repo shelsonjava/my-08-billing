@@ -202,7 +202,7 @@
 			       t.hide_for_correction,
 			       c.town_name		
 			</selectClause> 
-			<tableClause>streets_v t, towns c </tableClause>
+			<tableClause>streets_view t, towns c </tableClause>
 			<whereClause><![CDATA[ 
 				 c.town_id = t.town_id and t.hide_for_call_center = 0
 				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
