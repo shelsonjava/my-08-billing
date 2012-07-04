@@ -91,7 +91,7 @@
 					  pa.town_name,
 					  pa.town_district_name as town_district,
 					  pa.street_location,
-					  getindex(pa.street_id) as street_index_text,
+					  getStreetIndex(pa.street_id) as street_index_text,
 					  pa.town_id,
 					  pa.town_district_id,
 					  decode(pa.hidden_by_request,1,'მისამართი დაფარულია',(pa.town_name||' / '|| pa.town_district_name||' / '||pa.street_name||' '||pa.full_address)) as full_address,
@@ -114,7 +114,7 @@
 					  la.appt as legal_addr_appt,
 					  la.anumber as legal_addr_anumber,
 					  la.street_location as legal_addr_street_location,
-					  getindex(la.street_id) as legal_addr_street_index_text
+					  getStreetIndex(la.street_id) as legal_addr_street_index_text
 			</selectClause>
 			<tableClause>organization_department t1, V_FULL_ADDRESS pa, V_FULL_ADDRESS la</tableClause>
 			<whereClause>
@@ -148,7 +148,7 @@
 					  pa.town_name,
 					  pa.town_district_name as town_district,
 					  pa.street_location,
-					  getindex(pa.street_id) as street_index_text,
+					  getStreetIndex(pa.street_id) as street_index_text,
 					  pa.town_id,
 					  pa.town_district_id,
 					  decode(pa.hidden_by_request,1,'მისამართი დაფარულია',(pa.town_name||' / '|| pa.town_district_name||' / '||pa.street_name||' '||pa.full_address)) as full_address,
@@ -172,7 +172,7 @@
 					  la.appt as legal_addr_appt,
 					  la.anumber as legal_addr_anumber,
 					  la.street_location as legal_addr_street_location,
-					  getindex(la.street_id) as legal_addr_street_index_text
+					  getStreetIndex(la.street_id) as legal_addr_street_index_text
 					  
 					from (
 					select 
