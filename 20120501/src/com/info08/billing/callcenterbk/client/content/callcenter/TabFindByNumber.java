@@ -162,7 +162,7 @@ public class TabFindByNumber extends Tab {
 					}
 				} else if (contact_phones == null || contact_phones.equals(1)
 						&& (isphoneColumns)) {
-					return "color: yellow;";
+					return "color: red;";
 				} else {
 					return super.getCellCSSText(record, rowNum, colNum);
 				}
