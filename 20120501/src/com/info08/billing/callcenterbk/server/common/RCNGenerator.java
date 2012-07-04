@@ -27,7 +27,7 @@ public class RCNGenerator {
 		try {
 			long time = System.currentTimeMillis();
 			Query query = oracleManager
-					.createNativeQuery("select Rcnpackage.CREATE_RCN(?,?,?) from dual");
+					.createNativeQuery("select RandomGenerator.CREATE_RANDOM_NUMBER(?,?,?) from dual");
 			query.setParameter(1, userName);
 			query.setParameter(2, date);
 			query.setParameter(3, operation);
