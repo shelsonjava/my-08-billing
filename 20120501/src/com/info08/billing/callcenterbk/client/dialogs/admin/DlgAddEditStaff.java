@@ -27,13 +27,13 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.DoubleClickEvent;
 import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CanvasItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.ViewFileItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -43,6 +43,7 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
 import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
+import com.smartgwt.client.widgets.tile.TileGrid;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
@@ -67,7 +68,7 @@ public class DlgAddEditStaff extends Window {
 	private ComboBoxItem departmentItem;
 	private TextItem docNumberItem;
 	private TextAreaItem remarkItem;
-	private ViewFileItem photoItem;
+	private CanvasItem photoItem;
 	private DateItem dobItem;
 	private DateItem startDateItem;
 	private SelectItem genderItem;
@@ -463,20 +464,31 @@ public class DlgAddEditStaff extends Window {
 		remarkItem.setColSpan(3);
 		remarkItem.setName("remark");
 		remarkItem.setHeight(70);
-		
-		HLayout hLayout = new HLayout();
-		hLayout.setWidth(120);
-		hLayout.setHeight(70);
 
-		photoItem = new ViewFileItem();
+		photoItem = new CanvasItem();
+		photoItem.setTitle("");
 		photoItem.setWidth(120);
+		photoItem.setName("photo");
 		photoItem.setHeight(70);
-		photoItem.setAttribute("style", "border: 1px solid red;");
-		photoItem.setShowFileInline(true);
-		photoItem.setName("photo");		
-		photoItem.setName("ფოტო");
 		photoItem.setRowSpan(5);
-				
+
+		TileGrid tileGrid = new TileGrid();
+		tileGrid.setHeight(180);
+		tileGrid.setWidth(144);
+
+		tileGrid.addDoubleClickHandler(new DoubleClickHandler() {
+
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+
+				DlgStaffUploadPicture dlgStaffUploadPicture = new DlgStaffUploadPicture(
+						0);
+				dlgStaffUploadPicture.show();
+			}
+		});
+
+		photoItem.setCanvas(tileGrid);
+
 		dobItem = new DateItem();
 		dobItem.setTitle("დაბადების თარიღი");
 		dobItem.setWidth(150);
@@ -996,10 +1008,10 @@ public class DlgAddEditStaff extends Window {
 				staffEducationGrid, vLayoutSpace, toolComputerSkills,
 				staffComputerSkillsGrid);
 
-		dynamicFormStaffLeftMainInfo.setFields(photoItem, firstNameItem, lastNameItem,
-				departmentItem, docNumberItem, genderItem, nationalityItem,
-				familyStatusItem, dobItem, startDateItem, remarkItem,
-				spacerItem);
+		dynamicFormStaffLeftMainInfo.setFields(photoItem, firstNameItem,
+				lastNameItem, departmentItem, docNumberItem, genderItem,
+				nationalityItem, familyStatusItem, dobItem, startDateItem,
+				remarkItem, spacerItem);
 
 		// leftLayOut.addMember(gridsLayout);
 
