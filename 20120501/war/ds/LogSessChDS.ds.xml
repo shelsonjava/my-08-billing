@@ -1,14 +1,14 @@
 <DataSource
     ID="LogSessChDS"
     serverType="sql"
-    tableName="log_session_charges"      
+    tableName="call_session_expense"      
     qualifyColumnNames="false"
     >
     <fields>
-    	<field name="id"				type="integer" 	title="ID" primaryKey="true" hidden="true"/>
-    	<field name="session_id" 		type="text" 	title="Session ID"  hidden="true"/>
-        <field name="ym"		 		type="integer" 	title="Year/Month"	hidden="true"/>
-        <field name="service_id"  		type="integer"  title="Service Id"	hidden="true"/>        
+    	<field name="cse_id"			type="integer" 	title="cse_id" 			hidden="true"		primaryKey="true" />
+    	<field name="session_id" 		type="text" 	title="Session ID"  	hidden="true"/>
+        <field name="ym"		 		type="integer" 	title="Year/Month"		hidden="true"/>
+        <field name="service_id"  		type="integer"  title="Service Id"		hidden="true"/>        
         <field name="service_name_geo"	type="text"  	title="Service Name"/>
         <field name="price"  			type="integer"  title="Price"/>
         <field name="org_name"			type="text"  	title="Org. Name"/>

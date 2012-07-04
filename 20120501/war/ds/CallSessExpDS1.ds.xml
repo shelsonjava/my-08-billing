@@ -1,0 +1,119 @@
+<DataSource
+    ID="CallSessExpDS1"
+    serverType="sql"
+    tableName="call_session_expense"      
+    qualifyColumnNames="false"
+    >
+    <fields>
+    	<field name="cse_id"				type="integer" 	title="cse_id"				hidden="true"	primaryKey="true" />
+    	<field name="session_id" 			type="text" 	title="session_id"  		hidden="true"/>
+        <field name="year_month"			type="integer" 	title="year_month"			hidden="true"/>
+        <field name="service_id"  			type="integer"  title="service_id"			hidden="true"/>    
+        <field name="call_session_id"		type="integer"  title="call_session_id"		hidden="true"/>    
+        <field name="service_description"	type="text"  	title="service_description"/>
+        <field name="charge"  				type="integer"  title="charge"/>
+        <field name="rec_date_time"			type="datetime" title="rec_date_time"/>
+		<field name="charge_date"			type="date" 	title="charge_date"/>
+        <field name="organization_name"		type="text"  	title="organization_name"/>
+        <field name="amount"  				type="float"  	title="amount"/>
+        <field name="aprice"  				type="float"  	title="aprice"/>
+        <field name="cnt"  					type="float"  	title="cnt"/>
+        <field name="user_name"				type="text"  	title="user_name"/>
+        <field name="upd_user"				type="text"  	title="upd_user"/>
+        <field name="start_date"			type="datetime" title="start_date"/>
+        <field name="phone"					type="text"  	title="phone"/>
+        <field name="duration"  			type="integer"  title="duration"/>
+        <field name="chargeCount"  			type="integer"  title="chargeCount"/>
+        <field name="loggedUser"			type="text"  	title="loggedUser"/>        	
+    </fields>
+    <operationBindings>
+    
+    	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+    	
+    	<!-- Add New Charges -->
+		<operationBinding operationType="add" operationId="addChargesBySurvey" serverMethod="addChargesBySurvey">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+        
+        <!-- Add New Charges -->
+		<operationBinding operationType="add" operationId="addChargesWithoutCall" serverMethod="addChargesWithoutCall">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+        <operationBinding operationType="remove" operationId="deleteSessionCharge" serverMethod="deleteSessionCharge">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
+        </operationBinding>
+    
+    
+    	<!-- select log session charges by phone in current month -->
+		<operationBinding operationId="selectChargesByPhoneInCurrMonth" operationType="fetch">
+            <customSQL>
+            	 <![CDATA[
+            	 	select 
+					    min(s.year_month) as ym, 
+					    trunc(t.charge_date) as rec_date, 
+					    min(t.charge / 100) as aprice,
+					    sum(t.charge / 100) as amount, 
+					    ss.service_description,
+					    count(1) as cnt
+					from call_session_expense t
+					     inner join call_sessions s on s.call_session_id = t.call_session_id
+					     inner join service_prices ss on ss.service_price_id = t.service_id
+					where s.call_phone = $criteria.phone and s.year_month = to_char(sysdate, 'YYmm')
+					   and t.year_month = to_char(sysdate, 'YYmm')   
+					group by trunc(t.charge_date), ss.service_description
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
+        
+        <operationBinding operationId="selectChargesByPhoneInCurrMonthNoGrouped" operationType="fetch">
+    		<selectClause> 
+    			   t.cse_id,  			
+    			   s.year_month,
+			       t.charge_date as rec_date_time,
+			       t.charge,
+			       ss.service_description,
+			       s.uname,
+			       s.session_id
+			</selectClause> 
+			<tableClause>
+				call_session_expense t
+					 inner join call_sessions s on s.call_session_id = t.call_session_id
+ 					 inner join service_prices ss on ss.service_price_id = t.service_id
+			</tableClause>
+			<whereClause><![CDATA[ 
+					(s.year_month = to_char(sysdate, 'YYmm') or (s.year_month+1) = to_char(sysdate, 'YYmm') ) and 
+					(t.year_month = to_char(sysdate, 'YYmm') or (t.year_month+1) = to_char(sysdate, 'YYmm') ) 
+					#if($criteria.service_description) and ss.service_description like '%'||($criteria.service_description)||'%' #end
+					#if($criteria.service_price_id) and ss.service_price_id = $criteria.service_price_id #end
+					#if($criteria.uname) and s.uname like '%'||($criteria.uname)||'%' #end 
+					#if($criteria.call_phone) and s.call_phone = $criteria.call_phone #end
+					#if($criteria.charge_date) and trunc(t.charge_date) = trunc($criteria.charge_date) #end 
+				]]>  
+			</whereClause>
+			<orderClause>t.charge_date desc</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="selectCallsByPhoneInCurrMonthNoGrouped" operationType="fetch">
+    		<selectClause> 
+    			   s.year_month, 
+			       s.call_start_date, 
+			       s.uname, 
+			       s.session_id,
+			       s.call_duration,
+			       s.call_phone
+			</selectClause> 
+			<tableClause>call_sessions s </tableClause>
+			<whereClause><![CDATA[ 
+					(s.year_month = to_char(sysdate, 'YYmm') or (s.year_month+1) = to_char(sysdate, 'YYmm')  ) and 
+					s.call_phone = $criteria.call_phone
+					#if($criteria.call_start_date) and trunc(s.call_start_date) = trunc($criteria.call_start_date) #end
+					#if($criteria.uname) and s.uname like '%'||($criteria.uname)||'%' #end
+				]]>  
+			</whereClause>
+			<orderClause>s.call_start_date desc</orderClause>
+    	</operationBinding>
+        
+    </operationBindings>
+</DataSource>

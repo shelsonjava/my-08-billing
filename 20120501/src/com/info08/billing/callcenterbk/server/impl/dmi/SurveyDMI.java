@@ -591,4 +591,55 @@ public class SurveyDMI implements QueryConstants {
 		}
 	}
 
+	/**
+	 * Remove OrganizationActivity
+	 * 
+	 * @param record
+	 * @return
+	 * @throws Exception
+	 */
+	public void deleteSessionCharge(DSRequest dsRequest) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+
+			String log = "Method:SurveyDMI.deleteSessionCharge.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+			Long cse_id = new Long(dsRequest.getOldValues().get("cse_id")
+					.toString());
+
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Removing EventCategory.");
+
+			CallSessionExpense callSessionExpense = oracleManager.find(
+					CallSessionExpense.class, cse_id);
+
+			oracleManager.remove(callSessionExpense);
+			oracleManager.flush();
+
+			EMF.commitTransaction(transaction);
+			log += ". Removing Finished SuccessFully. ";
+			logger.info(log);
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error(
+					"Error While remove organizationActivity from Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
 }

@@ -37,7 +37,7 @@ public class DlgAddCharge extends Window {
 	private TextItem operatorItem;
 
 	private ListGrid listGrid;
-	private DataSource logSessChDSNew;
+	private DataSource callSessExpDS1;
 
 	private IButton findButton;
 	private IButton clearButton;
@@ -101,14 +101,14 @@ public class DlgAddCharge extends Window {
 			chargeButton.setTitle(CallCenterBK.constants.charge());
 			chargeButton.setIcon("moneySmall.png");
 			chargeButton.setWidth(150);
-			
+
 			chargeButton1 = new IButton();
 			chargeButton1.setTitle(CallCenterBK.constants.charge1());
 			chargeButton1.setIcon("moneySmall.png");
 			chargeButton1.setWidth(150);
 
 			buttonLayout.addMember(chargeButton);
-			//buttonLayout.addMember(chargeButton1);
+			// buttonLayout.addMember(chargeButton1);
 			buttonLayout.addMember(new LayoutSpacer());
 
 			findButton = new IButton();
@@ -121,42 +121,34 @@ public class DlgAddCharge extends Window {
 			buttonLayout.addMember(clearButton);
 			hLayout.addMember(buttonLayout);
 
-			logSessChDSNew = DataSource.get("LogSessChDSNew");
+			callSessExpDS1 = DataSource.get("CallSessExpDS1");
 
 			listGrid = new ListGrid();
 			listGrid.setWidth100();
 			listGrid.setHeight100();
-			// Criteria criteria = new Criteria();
-			// criteria.setAttribute("phone", phone);
-			// listGrid.setCriteria(criteria);
 			listGrid.setFetchOperation("selectCallsByPhoneInCurrMonthNoGrouped");
-			listGrid.setDataSource(logSessChDSNew);
+			listGrid.setDataSource(callSessExpDS1);
 			listGrid.setAutoFetchData(false);
 			listGrid.setCanSort(false);
 			listGrid.setCanResizeFields(false);
-			// listGrid.setShowFilterEditor(true);
-			// listGrid.setFilterOnKeypress(true);
 			listGrid.setWrapCells(true);
 			listGrid.setFixedRecordHeights(false);
 			listGrid.setCanDragSelectText(true);
 
 			hLayout.addMember(listGrid);
 
-			ListGridField phone_record = new ListGridField("phone",
+			ListGridField phone_record = new ListGridField("call_phone",
 					CallCenterBK.constants.phone());
-			// phone_record.setCanFilter(false);
 
-			ListGridField start_date = new ListGridField("start_date",
+			ListGridField start_date = new ListGridField("call_start_date",
 					CallCenterBK.constants.recDate(), 150);
 			start_date.setAlign(Alignment.CENTER);
-			// start_date.setCanFilter(false);
 
-			ListGridField operator = new ListGridField("user_name",
+			ListGridField operator = new ListGridField("uname",
 					CallCenterBK.constants.operator(), 100);
 			operator.setAlign(Alignment.CENTER);
-			// operator.setCanFilter(true);
 
-			ListGridField duration = new ListGridField("duration",
+			ListGridField duration = new ListGridField("call_duration",
 					CallCenterBK.constants.durationShort(), 130);
 			duration.setAlign(Alignment.CENTER);
 			// duration.setCanFilter(false);
@@ -239,22 +231,23 @@ public class DlgAddCharge extends Window {
 			}
 			String session_id = listGridRecord
 					.getAttributeAsString("session_id");
-			Integer ym = listGridRecord.getAttributeAsInt("ym");
-			String phone = listGridRecord.getAttributeAsString("phone");
+			Integer ym = listGridRecord.getAttributeAsInt("year_month");
+			String phone = listGridRecord.getAttributeAsString("call_phone");
 			if (session_id == null || ym == null || phone == null) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.invalidRecord());
 				return;
 			}
-			
-			if (!phone.startsWith("570") && CommonFunctions.isPhoneMobile(phone)) {
+
+			if (!phone.startsWith("570")
+					&& CommonFunctions.isPhoneMobile(phone)) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.phoneIsMobileShort());
 				return;
 			}
 
 			DlgAddChargeItem addChargeItem = new DlgAddChargeItem(this,
-					listGrid, logSessChDSNew, listGridRecord);
+					listGrid, callSessExpDS1, listGridRecord);
 			addChargeItem.show();
 
 		} catch (Exception e) {
@@ -266,8 +259,6 @@ public class DlgAddCharge extends Window {
 	public void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", 0);
-
 			String phone = nmItem.getValueAsString();
 			if (phone == null || phone.trim().equals("")) {
 				SC.say(CallCenterBK.constants.pleaseEnterPhone());
@@ -281,15 +272,15 @@ public class DlgAddCharge extends Window {
 
 			}
 			if (start_date != null) {
-				criteria.setAttribute("start_date", start_date);
+				criteria.setAttribute("call_start_date", start_date);
 			}
 
 			String user_name = operatorItem.getValueAsString();
 			if (user_name != null && !user_name.trim().equals("")) {
-				criteria.setAttribute("user_name", user_name);
+				criteria.setAttribute("uname", user_name);
 			}
 
-			criteria.setAttribute("phone", phone);
+			criteria.setAttribute("call_phone", phone);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId",
 					"selectCallsByPhoneInCurrMonthNoGrouped");
