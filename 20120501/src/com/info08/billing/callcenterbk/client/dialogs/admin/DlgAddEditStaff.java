@@ -33,6 +33,7 @@ import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.ViewFileItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -66,6 +67,7 @@ public class DlgAddEditStaff extends Window {
 	private ComboBoxItem departmentItem;
 	private TextItem docNumberItem;
 	private TextAreaItem remarkItem;
+	private ViewFileItem photoItem;
 	private DateItem dobItem;
 	private DateItem startDateItem;
 	private SelectItem genderItem;
@@ -146,11 +148,11 @@ public class DlgAddEditStaff extends Window {
 
 		dynamicFormStaffLeftMainInfo = new DynamicForm();
 		dynamicFormStaffLeftMainInfo.setAutoFocus(true);
-		dynamicFormStaffLeftMainInfo.setWidth100();
-		dynamicFormStaffLeftMainInfo.setNumCols(2);
+		dynamicFormStaffLeftMainInfo.setWidth(500);
+		dynamicFormStaffLeftMainInfo.setNumCols(3);
 		dynamicFormStaffLeftMainInfo.setTitleWidth(150);
 		dynamicFormStaffLeftMainInfo.setTitleOrientation(TitleOrientation.TOP);
-		dynamicFormStaffLeftMainInfo.setColWidths("50%", "50%");
+		// dynamicFormStaffLeftMainInfo.setColWidths("33%", "33%", "33%");
 		dynamicFormStaffLeftMainInfo.setLayoutAlign(Alignment.CENTER);
 		dynamicFormStaffLeftMainInfo.setAlign(Alignment.CENTER);
 
@@ -226,7 +228,7 @@ public class DlgAddEditStaff extends Window {
 		toolRelative09.setWidth100();
 		toolRelative09.setPadding(5);
 
-		Label toolRelative09Label = new Label("კავშირი 09-თან");
+		Label toolRelative09Label = new Label("კავშირი");
 		toolRelative09Label.setWidth(150);
 		toolRelative09Label.setStyleName("staffGridTitle");
 		toolRelative09.addMember(toolRelative09Label);
@@ -409,18 +411,18 @@ public class DlgAddEditStaff extends Window {
 
 		firstNameItem = new TextItem();
 		firstNameItem.setName("first_name");
-		firstNameItem.setWidth(300);
+		firstNameItem.setWidth(150);
 		firstNameItem.setTitle("სახელი");
 		// 650
 		lastNameItem = new TextItem();
 		lastNameItem.setName("last_name");
-		lastNameItem.setWidth(300);
+		lastNameItem.setWidth(150);
 		lastNameItem.setTitle("გვარი");
 
 		departmentItem = new ComboBoxItem();
 		departmentItem.setTitle("განყოფილება");
 		departmentItem.setName("department_id");
-		departmentItem.setWidth(300);
+		departmentItem.setWidth(150);
 		departmentItem.setFetchMissingValues(false);
 
 		ClientUtils.fillCombo(departmentItem, "StaffDS", "getAllDepartments",
@@ -429,7 +431,7 @@ public class DlgAddEditStaff extends Window {
 		genderItem = new SelectItem();
 		genderItem.setTitle("სქესი");
 		genderItem.setName("genderItem");
-		genderItem.setWidth(300);
+		genderItem.setWidth(150);
 		genderItem.setFetchMissingValues(false);
 
 		ClientUtils.fillDescriptionCombo(genderItem, 64000);
@@ -437,7 +439,7 @@ public class DlgAddEditStaff extends Window {
 		nationalityItem = new SelectItem();
 		nationalityItem.setTitle("ეროვნება");
 		nationalityItem.setName("nationalityItem");
-		nationalityItem.setWidth(300);
+		nationalityItem.setWidth(150);
 		nationalityItem.setFetchMissingValues(false);
 
 		ClientUtils.fillDescriptionCombo(nationalityItem, 65000);
@@ -445,32 +447,45 @@ public class DlgAddEditStaff extends Window {
 		familyStatusItem = new SelectItem();
 		familyStatusItem.setTitle("ოჯახური მდგომარეობა");
 		familyStatusItem.setName("familyStatusItem");
-		familyStatusItem.setWidth(300);
+		familyStatusItem.setWidth(150);
 		familyStatusItem.setFetchMissingValues(false);
 
 		ClientUtils.fillDescriptionCombo(familyStatusItem, 66000);
 
 		docNumberItem = new TextItem();
 		docNumberItem.setTitle("პირადობა");
-		docNumberItem.setWidth(300);
+		docNumberItem.setWidth(150);
 		docNumberItem.setName("doc_num");
 
 		remarkItem = new TextAreaItem();
 		remarkItem.setTitle("კომენტარი");
 		remarkItem.setWidth(650);
-		remarkItem.setColSpan(2);
+		remarkItem.setColSpan(3);
 		remarkItem.setName("remark");
 		remarkItem.setHeight(70);
+		
+		HLayout hLayout = new HLayout();
+		hLayout.setWidth(120);
+		hLayout.setHeight(70);
 
+		photoItem = new ViewFileItem();
+		photoItem.setWidth(120);
+		photoItem.setHeight(70);
+		photoItem.setAttribute("style", "border: 1px solid red;");
+		photoItem.setShowFileInline(true);
+		photoItem.setName("photo");		
+		photoItem.setName("ფოტო");
+		photoItem.setRowSpan(5);
+				
 		dobItem = new DateItem();
 		dobItem.setTitle("დაბადების თარიღი");
-		dobItem.setWidth(300);
+		dobItem.setWidth(150);
 		dobItem.setName("dobItem");
 		dobItem.setUseTextField(true);
 
 		startDateItem = new DateItem();
 		startDateItem.setTitle("დაწყების თარიღი");
-		startDateItem.setWidth(300);
+		startDateItem.setWidth(150);
 		startDateItem.setName("startDateItem");
 		startDateItem.setUseTextField(true);
 
@@ -981,7 +996,7 @@ public class DlgAddEditStaff extends Window {
 				staffEducationGrid, vLayoutSpace, toolComputerSkills,
 				staffComputerSkillsGrid);
 
-		dynamicFormStaffLeftMainInfo.setFields(firstNameItem, lastNameItem,
+		dynamicFormStaffLeftMainInfo.setFields(photoItem, firstNameItem, lastNameItem,
 				departmentItem, docNumberItem, genderItem, nationalityItem,
 				familyStatusItem, dobItem, startDateItem, remarkItem,
 				spacerItem);
