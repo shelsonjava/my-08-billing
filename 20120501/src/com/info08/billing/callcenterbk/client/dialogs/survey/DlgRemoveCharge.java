@@ -128,21 +128,16 @@ public class DlgRemoveCharge extends Window {
 			buttonLayout.addMember(clearButton);
 			hLayout.addMember(buttonLayout);
 
-			final DataSource logSessChDSNew = DataSource.get("LogSessChDSNew");
+			final DataSource callSessExpDS1 = DataSource.get("CallSessExpDS1");
 
 			listGrid = new ListGrid();
 			listGrid.setWidth100();
 			listGrid.setHeight100();
-			listGrid.setDataSource(logSessChDSNew);
+			listGrid.setDataSource(callSessExpDS1);
 			listGrid.setFetchOperation("selectChargesByPhoneInCurrMonthNoGrouped");
-			//Criteria criteria = new Criteria();
-			//criteria.setAttribute("phone", phone);
-			//listGrid.setCriteria(criteria);
 			listGrid.setAutoFetchData(false);
 			listGrid.setCanSort(false);
 			listGrid.setCanResizeFields(false);
-			// listGrid.setShowFilterEditor(true);
-			// listGrid.setFilterOnKeypress(true);
 			listGrid.setWrapCells(true);
 			listGrid.setFixedRecordHeights(false);
 			listGrid.setCanDragSelectText(true);
@@ -150,31 +145,21 @@ public class DlgRemoveCharge extends Window {
 			hLayout.addMember(listGrid);
 
 			ListGridField service_name_geo = new ListGridField(
-					"service_name_geo", CallCenterBK.constants.service());
-			// service_name_geo.setCanFilter(true);
+					"service_description", CallCenterBK.constants.service());
 
 			ListGridField rec_date = new ListGridField("rec_date_time",
 					CallCenterBK.constants.recDate(), 150);
 			rec_date.setAlign(Alignment.CENTER);
-			// rec_date.setCanFilter(false);
 
-			ListGridField price = new ListGridField("price",
+			ListGridField price = new ListGridField("charge",
 					CallCenterBK.constants.price(), 70);
 			price.setAlign(Alignment.CENTER);
-			// price.setCanFilter(false);
 
-			ListGridField operator = new ListGridField("user_name",
+			ListGridField operator = new ListGridField("uname",
 					CallCenterBK.constants.operator(), 100);
 			operator.setAlign(Alignment.CENTER);
-			// operator.setCanFilter(true);
 
-			ListGridField upd_user = new ListGridField("upd_user",
-					CallCenterBK.constants.updUser(), 100);
-			upd_user.setAlign(Alignment.CENTER);
-			// upd_user.setCanFilter(true);
-
-			listGrid.setFields(service_name_geo, rec_date, price, operator,
-					upd_user);
+			listGrid.setFields(service_name_geo, rec_date, price, operator);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -206,8 +191,9 @@ public class DlgRemoveCharge extends Window {
 									CallCenterBK.constants.pleaseSelrecord());
 							return;
 						}
-						Integer id = listGridRecord.getAttributeAsInt("id");
-						if (id == null) {
+						Integer cse_id = listGridRecord
+								.getAttributeAsInt("cse_id");
+						if (cse_id == null) {
 							SC.say(CallCenterBK.constants.warning(),
 									CallCenterBK.constants.invalidRecord());
 							return;
@@ -215,13 +201,14 @@ public class DlgRemoveCharge extends Window {
 
 						com.smartgwt.client.rpc.RPCManager.startQueue();
 						Record record = new Record();
-						record.setAttribute("id", id);
+						record.setAttribute("cse_id", cse_id);
 						record.setAttribute("upd_user", CommonSingleton
-								.getInstance().getSessionPerson().getUser_name());
+								.getInstance().getSessionPerson()
+								.getUser_name());
 
 						DSRequest req = new DSRequest();
 						req.setAttribute("operationId", "deleteSessionCharge");
-						logSessChDSNew.updateData(record, new DSCallback() {
+						callSessExpDS1.updateData(record, new DSCallback() {
 							@Override
 							public void execute(DSResponse response,
 									Object rawData, DSRequest request) {
@@ -280,8 +267,8 @@ public class DlgRemoveCharge extends Window {
 		try {
 			Criteria criteria = new Criteria();
 
-			String phone = nmItem.getValueAsString();
-			if (phone == null || phone.trim().equals("")) {
+			String call_phone = nmItem.getValueAsString();
+			if (call_phone == null || call_phone.trim().equals("")) {
 				SC.say(CallCenterBK.constants.pleaseEnterPhone());
 				return;
 			}
@@ -298,7 +285,7 @@ public class DlgRemoveCharge extends Window {
 
 			String user_name = operatorItem.getValueAsString();
 			if (user_name != null && !user_name.trim().equals("")) {
-				criteria.setAttribute("user_name", user_name);
+				criteria.setAttribute("uname", user_name);
 			}
 
 			String service_id_str = serviceItem.getValueAsString();
@@ -306,7 +293,7 @@ public class DlgRemoveCharge extends Window {
 				criteria.setAttribute("service_id", new Integer(service_id_str));
 			}
 
-			criteria.setAttribute("phone", phone);
+			criteria.setAttribute("call_phone", call_phone);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId",
 					"selectChargesByPhoneInCurrMonthNoGrouped");
