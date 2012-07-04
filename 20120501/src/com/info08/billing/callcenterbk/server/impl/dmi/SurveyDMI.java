@@ -15,7 +15,7 @@ import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.common.Constants;
-import com.info08.billing.callcenterbk.shared.entity.Service;
+import com.info08.billing.callcenterbk.shared.entity.ServicePrice;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSessionExpense;
 import com.info08.billing.callcenterbk.shared.entity.survey.Survey;
@@ -65,7 +65,8 @@ public class SurveyDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Insert SurveyReplyType Into Database : ", e);
+			logger.error("Error While Insert SurveyReplyType Into Database : ",
+					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -120,7 +121,8 @@ public class SurveyDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update SurveyReplyType Into Database : ", e);
+			logger.error("Error While Update SurveyReplyType Into Database : ",
+					e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -369,8 +371,7 @@ public class SurveyDMI implements QueryConstants {
 			}
 			Survey survey = surveyList.get(0);
 			oracleManager.lock(survey, LockModeType.OPTIMISTIC);
-			if (survey.getBblocked() != null
-					&& survey.getBblocked().equals(1L)
+			if (survey.getBblocked() != null && survey.getBblocked().equals(1L)
 					&& !loggedUserName.equals(survey.getLoked_user())) {
 				throw new CallCenterException(
 						"გარკვევის ეს ჩანაწერი უკვე აღებულია სხვის მიერ. გთხოვთ სცადოთ სხვა !");
@@ -382,8 +383,8 @@ public class SurveyDMI implements QueryConstants {
 			oracleManager.flush();
 			EMF.commitTransaction(transaction);
 
-			Map result = DMIUtils.findRecordById("SurveyDS",
-					"searchAllSurvey", survey_id, "mysurvey_id");
+			Map result = DMIUtils.findRecordById("SurveyDS", "searchAllSurvey",
+					survey_id, "mysurvey_id");
 			log += ". Status Updating Finished SuccessFully. ";
 			logger.info(log);
 			return result;
@@ -393,8 +394,7 @@ public class SurveyDMI implements QueryConstants {
 				throw (CallCenterException) e;
 			}
 			logger.error(
-					"Error While Update Status for Survey Into Database : ",
-					e);
+					"Error While Update Status for Survey Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების განახლებისას : "
 					+ e.toString());
 		} finally {
@@ -420,30 +420,21 @@ public class SurveyDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long call_session_id = callSessionExpense.getCall_session_id();
 			Long service_id = callSessionExpense.getService_id();
 			String call_phone = callSessionExpense.getCall_phone();
 
-			CallSession callSession = oracleManager.find(CallSession.class,
-					call_session_id);
-			Service service = oracleManager.find(Service.class, service_id);
+			ServicePrice service = oracleManager.find(ServicePrice.class,
+					service_id);
 
-			Long call_kind = callSession.getCall_kind();
-
-			Double charge = new Double(0);
-
-			if (call_kind.longValue() > -1
-					|| (call_phone != null && call_phone.startsWith("570"))) {
-				if (call_kind.equals(new Long(Constants.callTypeOrganization))) {
-					charge = service.getPriceSpecial();
-				} else {
-					charge = service.getPrice();
-				}
-			}
+			Double charge = new Double(oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE)
+					.setParameter(1, call_phone)
+					.setParameter(2, service.getService_price_id())
+					.getSingleResult().toString());
 
 			for (int i = 0; i < callSessionExpense.getChargeCount(); i++) {
 				CallSessionExpense item = new CallSessionExpense();
-				item.setService_id(service.getServiceId());
+				item.setService_id(service.getService_price_id());
 				item.setSession_id(callSessionExpense.getSession_id());
 				item.setYear_month(callSessionExpense.getYear_month());
 				item.setCharge_date(new Timestamp(System.currentTimeMillis()));
@@ -486,10 +477,13 @@ public class SurveyDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			String loggedUserName = dsRequest.getAttribute("loggedUserName").toString();
+			String loggedUserName = dsRequest.getAttribute("loggedUserName")
+					.toString();
 			String phone = dsRequest.getAttribute("phone").toString();
-			Long service_id = new Long(dsRequest.getAttribute("service_id").toString());
-			Long chargeCount = new Long(dsRequest.getAttribute("chargeCount").toString());
+			Long service_id = new Long(dsRequest.getAttribute("service_id")
+					.toString());
+			Long chargeCount = new Long(dsRequest.getAttribute("chargeCount")
+					.toString());
 
 			Timestamp currDate = new Timestamp(System.currentTimeMillis());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyMM");
@@ -577,8 +571,8 @@ public class SurveyDMI implements QueryConstants {
 			oracleManager.merge(survey);
 			oracleManager.flush();
 			EMF.commitTransaction(transaction);
-			Map result = DMIUtils.findRecordById("SurveyDS",
-					"searchAllSurvey", survey_id, "mysurvey_id");
+			Map result = DMIUtils.findRecordById("SurveyDS", "searchAllSurvey",
+					survey_id, "mysurvey_id");
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
 			return result;

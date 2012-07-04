@@ -1,7 +1,9 @@
 package com.info08.billing.callcenterbk.server.common;
 
 public interface QueryConstants {
-
+	
+	public static final String Q_GET_CALL_PRICE = "select getchargeprice(?,?) as price from dual";
+	
 	public static final String Q_GET_VIRTUAL_SESSION_ID = " select 'VIRT.'||seq_virtual_session_id.nextval as session_id from dual ";
 
 	public static final String Q_GET_BILLING_COMP_IND = " select count(1) from BILLING_COMPANIES_IND t where ? between t.bill_index_start and t.bill_index_end ";

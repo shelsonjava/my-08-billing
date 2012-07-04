@@ -92,14 +92,14 @@ public class DlgAddEditOrganization extends Window {
 	// private int selectedTabIndex = 0;
 
 	private ListGrid organizationsGrid;
-	private ListGridRecord listGridRecord;
+	private Record listGridRecord;
 	private ListGrid orgDayOffsGrid;
 	private ListGrid orgActivityGrid;
 	private ListGrid orgPartBankOrgsGrid;
 	private ListGridRecord parrentRecord;
 
 	public DlgAddEditOrganization(ListGridRecord parrentRecord,
-			ListGridRecord listGridRecord, ListGrid organizationsGrid) {
+			Record listGridRecord, ListGrid organizationsGrid) {
 		try {
 			this.organizationsGrid = organizationsGrid;
 			this.listGridRecord = listGridRecord;
@@ -1021,7 +1021,8 @@ public class DlgAddEditOrganization extends Window {
 												Record record = response
 														.getData()[0];
 												DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
-														record, organizationsGrid);
+														record,
+														organizationsGrid);
 												addEditOrgDepartments.show();
 											} catch (Exception e) {
 												e.printStackTrace();

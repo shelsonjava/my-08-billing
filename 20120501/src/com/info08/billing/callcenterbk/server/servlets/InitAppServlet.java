@@ -354,6 +354,9 @@ public class InitAppServlet extends HttpServlet {
 			callSession.setUname(userName);
 			callSession.setYear_month(new Long(serverSession.getYearMonth()));
 			callSession.setCall_quality(0L);
+			callSession.setSwitch_ower_type(0L);
+			callSession.setReject_type(0L);
+			callSession.setCall_duration(0L);
 
 			oracleManager.persist(callSession);
 			serverSession.setCallSession(callSession);
@@ -374,7 +377,7 @@ public class InitAppServlet extends HttpServlet {
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
 			response.sendRedirect(response
-					.encodeRedirectURL("http://192.168.1.20:8888/CallCenterBK.html?gwt.codesvr=192.168.1.20:9997&sessionId="
+					.encodeRedirectURL("http://192.168.1.3:8888/CallCenterBK.html?gwt.codesvr=192.168.1.3:9997&sessionId="
 							+ sessionId));
 			// } else {
 			// Live

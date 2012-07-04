@@ -60,8 +60,10 @@ public class DlgManageOrgDepartments extends Window {
 	private ToolStripButton editOrgDepBtn;
 	private ToolStripButton deleteOrgDepBtn;
 	private ToolStripButton sortPhonesBtn;
+	private ToolStripButton openOrgBtn;
 
-	public DlgManageOrgDepartments(Record listGridRecord, ListGrid orgTreeGrid) {
+	public DlgManageOrgDepartments(final Record listGridRecord,
+			ListGrid orgTreeGrid) {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
 			this.orgListGridRecord = listGridRecord;
@@ -182,6 +184,12 @@ public class DlgManageOrgDepartments extends Window {
 			sortBtn.setLayoutAlign(Alignment.LEFT);
 			sortBtn.setWidth(50);
 			toolStrip.addButton(sortBtn);
+
+			openOrgBtn = new ToolStripButton(
+					CallCenterBK.constants.organization(), "organization.gif");
+			openOrgBtn.setLayoutAlign(Alignment.LEFT);
+			openOrgBtn.setWidth(50);
+			toolStrip.addButton(openOrgBtn);
 
 			toolStrip.addFill();
 
@@ -628,7 +636,51 @@ public class DlgManageOrgDepartments extends Window {
 						}
 					});
 
+			openOrgBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					Integer organization_id = listGridRecord
+							.getAttributeAsInt("organization_id");
+					openOrganization(organization_id);
+				}
+			});
+
 			addItem(hLayout);
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	private void openOrganization(Integer organization_id) {
+		try {
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+			DataSource dataSource = DataSource.get("OrgDS");
+
+			DSRequest req = new DSRequest();
+			req.setAttribute("operationId", "customOrgSearchForCallCenterNew");
+
+			Criteria criteria = new Criteria();
+			criteria.setAttribute("organization_id", organization_id);
+
+			dataSource.fetchData(criteria, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record[] records = response.getData();
+					if (records == null || records.length != 1) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.orgNotFound());
+						return;
+					} else {
+						DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
+								null, records[0], orgTreeGrid);
+						dlgAddEditMainOrg.show();
+					}
+				}
+			}, req);
+
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

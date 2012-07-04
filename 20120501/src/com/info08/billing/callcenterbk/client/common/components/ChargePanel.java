@@ -10,6 +10,7 @@ import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments;
+import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -438,6 +439,9 @@ public class ChargePanel extends HLayout {
 				SC.say(CallCenterBK.constants.invalidService());
 				return;
 			}
+			CallSession callSession = serverSession.getCallSession();
+			Long call_session_id = callSession.getCall_session_id();
+			Long call_kind = callSession.getCall_kind();
 
 			CanvasDisableTimer.addCanvasClickTimer(chargeBtn);
 
@@ -451,6 +455,9 @@ public class ChargePanel extends HLayout {
 			record.setAttribute("ym", serverSession.getYearMonth());
 			record.setAttribute("organization_id", organization_id);
 			record.setAttribute("loggedUserName", serverSession.getUser_name());
+			record.setAttribute("call_session_id", call_session_id);
+			record.setAttribute("call_kind", call_kind);
+			record.setAttribute("call_phone", phone);
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");

@@ -21,7 +21,7 @@ import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.server.common.ServerSingleton;
 import com.info08.billing.callcenterbk.shared.entity.Country;
 import com.info08.billing.callcenterbk.shared.entity.OperatorBreaks;
-import com.info08.billing.callcenterbk.shared.entity.Service;
+import com.info08.billing.callcenterbk.shared.entity.ServicePrice;
 import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.info08.billing.callcenterbk.shared.entity.admin.CountryIndexes;
 import com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes;
@@ -31,6 +31,7 @@ import com.info08.billing.callcenterbk.shared.entity.facts.FactType;
 import com.info08.billing.callcenterbk.shared.entity.facts.Facts;
 import com.info08.billing.callcenterbk.shared.entity.main.MainDetail;
 import com.info08.billing.callcenterbk.shared.entity.main.MainDetailType;
+import com.info08.billing.callcenterbk.shared.entity.session.CallSessionExpense;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSource;
 import com.isomorphic.datasource.DataSourceManager;
@@ -290,10 +291,11 @@ public class MiscDMI implements QueryConstants {
 
 			Long service_id = mainDetailType.getService_id();
 			if (service_id != null) {
-				Service service = oracleManager.find(Service.class, service_id);
+				ServicePrice service = oracleManager.find(ServicePrice.class,
+						service_id);
 				if (service != null) {
 					mainDetailType.setService_name_geo(service
-							.getServiceNameGeo());
+							.getService_description());
 				}
 			}
 
@@ -366,10 +368,11 @@ public class MiscDMI implements QueryConstants {
 					main_detail_type_id);
 			mainDetailType.setLoggedUserName(loggedUserName);
 			if (service_id != null) {
-				Service service = oracleManager.find(Service.class, service_id);
+				ServicePrice service = oracleManager.find(ServicePrice.class,
+						service_id);
 				if (service != null) {
 					mainDetailType.setService_name_geo(service
-							.getServiceNameGeo());
+							.getService_description());
 				}
 			}
 
@@ -432,10 +435,11 @@ public class MiscDMI implements QueryConstants {
 
 			Long service_id = mainDetailType.getService_id();
 			if (service_id != null) {
-				Service service = oracleManager.find(Service.class, service_id);
+				ServicePrice service = oracleManager.find(ServicePrice.class,
+						service_id);
 				if (service != null) {
 					mainDetailType.setService_name_geo(service
-							.getServiceNameGeo());
+							.getService_description());
 				}
 			}
 
@@ -1129,80 +1133,62 @@ public class MiscDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings({ "unused" })
 	public Object addLogSessionCharge(DSRequest dsRequest)
 			throws CallCenterException {
-		CallableStatement insertStatement = null;
-		Connection connection = null;
+		EntityManager oracleManager = null;
+		Object transaction = null;
 		try {
-			Integer service_id = Integer.parseInt(dsRequest
-					.getFieldValue("service_id") == null ? "-1000" : dsRequest
-					.getFieldValue("service_id").toString());
-			if (service_id.equals(-1000)) {
-				throw new CallCenterException(
-						"არასწორი სერვისის იდენტიფიკატორი !");
-			}
-			String session_id = dsRequest.getFieldValue("session_id") == null ? "-1000"
-					: dsRequest.getFieldValue("session_id").toString();
-			if (session_id.equals("-1000")) {
-				throw new CallCenterException(
-						"არასწორი სესიის იდენტიფიკატორი !");
-			}
-			Integer ym = Integer
-					.parseInt(dsRequest.getFieldValue("ym") == null ? "-1000"
-							: dsRequest.getFieldValue("ym").toString());
-			if (ym.equals(-1000)) {
-				throw new CallCenterException("არასწორი თარიღი !");
-			}
+			Long service_id = Long.parseLong(dsRequest.getFieldValue(
+					"service_id").toString());
+			String session_id = dsRequest.getFieldValue("session_id")
+					.toString();
+			String call_phone = dsRequest.getFieldValue("call_phone")
+					.toString();
+			Long ym = Long.parseLong(dsRequest.getFieldValue("ym").toString());
+			Long call_kind = Long.parseLong(dsRequest
+					.getFieldValue("call_kind").toString());
+			Long call_session_id = new Long(dsRequest.getFieldValue(
+					"call_session_id").toString());
+
 			Integer organization_id = Integer.parseInt(dsRequest
 					.getFieldValue("organization_id") == null ? "-1"
 					: dsRequest.getFieldValue("organization_id").toString());
-			String loggedUserName = dsRequest.getFieldValue("loggedUserName")
-					.toString();
-
 			String log = "Method:MiscDMI.addLogSessionCharge. service_id = "
 					+ service_id + ", session_id = " + session_id + ", ym = "
-					+ ym + ", organization_id = " + organization_id;
+					+ ym + ", organization_id = " + organization_id
+					+ ", call_kind = " + call_kind + ", call_phone = "
+					+ call_phone;
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			DataSource ds = DataSourceManager.get("CallSessDS");
-			SQLDataSource sqlDS = (SQLDataSource) ds;
-			connection = sqlDS.getConnection();
-			connection.setAutoCommit(false);
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
 
-			if (service_id.equals(-3) || service_id.equals(3)) {
-				insertStatement = connection
-						.prepareCall("{ call insert_orgsession_charge( ?,?,?,? ) }");
-				insertStatement.setInt(1, service_id);
-				insertStatement.setString(2, session_id);
-				insertStatement.setInt(3, ym);
-				insertStatement.setInt(4, organization_id);
-			} else {
-				insertStatement = connection
-						.prepareCall("{ call insert_session_charge( ?,?,? ) }");
-				insertStatement.setInt(1, service_id);
-				insertStatement.setString(2, session_id);
-				insertStatement.setInt(3, ym);
-			}
+			ServicePrice service = oracleManager.find(ServicePrice.class,
+					service_id);
+			Double charge = new Double(oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE)
+					.setParameter(1, call_phone)
+					.setParameter(2, service.getService_price_id())
+					.getSingleResult().toString());
 
-			insertStatement.executeUpdate();
+			CallSessionExpense callSessionExpense = new CallSessionExpense();
+			callSessionExpense.setCall_session_id(call_session_id);
+			callSessionExpense.setYear_month(ym);
+			callSessionExpense.setSession_id(session_id);
+			callSessionExpense.setService_id(service.getService_price_id());
+			callSessionExpense.setCharge_date(recDate);
+			callSessionExpense.setCharge(charge);
+
+			oracleManager.persist(callSessionExpense);
 
 			log += ". Inserting Log Session Charge Finished Successfully. ";
 			logger.info(log);
-			connection.commit();
+			EMF.commitTransaction(transaction);
+
 			return "OK";
 		} catch (Exception e) {
-			try {
-				if (connection != null) {
-					connection.rollback();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Rollback Database : ", e);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex1: " + e.toString());
-			}
-
+			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
@@ -1211,17 +1197,8 @@ public class MiscDMI implements QueryConstants {
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
-			try {
-				if (insertStatement != null) {
-					insertStatement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (Exception e2) {
-				logger.error("Error While Closing Connection : ", e2);
-				throw new CallCenterException(
-						"შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
 			}
 		}
 	}

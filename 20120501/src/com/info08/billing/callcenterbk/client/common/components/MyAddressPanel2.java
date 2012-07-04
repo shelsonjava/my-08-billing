@@ -110,7 +110,7 @@ public class MyAddressPanel2 extends HLayout {
 		addrStreetIdxItem.setName("street_index_text");
 		addrStreetIdxItem.setWidth(270);
 		addrStreetIdxItem.setColSpan(2);
-		addrStreetIdxItem.setCanEdit(false);
+		addrStreetIdxItem.setCanEdit(true);
 
 		adressOpCloseItem = new SelectItem();
 		adressOpCloseItem.setValueMap(ClientMapUtil.getInstance()

@@ -14,7 +14,7 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.SentSMSHist</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.Users</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.UserPermission</class>
-		<class>com.info08.billing.callcenterbk.shared.entity.Service</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.ServicePrice</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.StreetNames</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.StreetToTownDistricts</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.Street</class>

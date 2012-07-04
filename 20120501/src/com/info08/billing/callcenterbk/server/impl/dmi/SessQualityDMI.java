@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
-import com.info08.billing.callcenterbk.shared.entity.Service;
+import com.info08.billing.callcenterbk.shared.entity.ServicePrice;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSessionExpense;
 import com.info08.billing.callcenterbk.shared.items.CallSessionItem;
@@ -56,7 +56,14 @@ public class SessQualityDMI implements QueryConstants {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyMM");
 			Long ym = new Long(dateFormat.format(currDate));
 
-			Service service = oracleManager.find(Service.class, service_id);
+			ServicePrice service = oracleManager.find(ServicePrice.class,
+					service_id);
+
+			Double charge = new Double(oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE)
+					.setParameter(1, call_phone)
+					.setParameter(2, service.getService_price_id())
+					.getSingleResult().toString());
 
 			CallSession logSession = new CallSession();
 			String session_id = oracleManager
@@ -82,7 +89,7 @@ public class SessQualityDMI implements QueryConstants {
 				item.setSession_id(session_id);
 				item.setYear_month(ym);
 				item.setCharge_date(currDate);
-				item.setCharge(service.getPrice());
+				item.setCharge(charge);
 				oracleManager.persist(item);
 			}
 
