@@ -214,14 +214,6 @@ public class DlgAddEditOrgDepPhone extends Window {
 						CallCenterBK.constants.invalidPhone());
 				return;
 			}
-			try {
-				Integer.parseInt(phone);
-			} catch (NumberFormatException e) {
-				SC.say(CallCenterBK.constants.warning(),
-						CallCenterBK.constants.invalidPhone());
-				return;
-			}
-
 			DataSource phoneViewDS = DataSource.get("PhoneViewDS");
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("reall_address", "YES");
