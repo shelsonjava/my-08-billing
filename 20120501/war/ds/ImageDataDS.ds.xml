@@ -5,7 +5,7 @@
 	qualifyColumnNames="false"
 	dropExtraFields = "true">
 	<fields>
-		<field name="tbl_image_id"				type="integer"		title="tbl_image_id"		hidden="true" primaryKey="true" />
+		<field name="tbl_image_id"				type="sequence"		title="tbl_image_id"	sequenceName="SEQ_TBL_IMAGE"	hidden="true" primaryKey="true" />
 		<field name="image_data"				type="imageFile" 	title="image_data"/>		
 	</fields>	
 	

@@ -25,6 +25,7 @@
 		<field name="loggedUserName"			type="text"			title="Logged UserName" 	hidden="true" />
 		<field name="address_id"				type="integer"		title="address_id" 			hidden="true"/>
 		<field name="document_address_id"		type="integer"		title="document_address_id" hidden="true"/>
+		<field name="image_id"					type="integer"		title="preStaffFamousPeople" 	hidden="true" />
 		<field name="preStaffEducation"			type="any"			title="preStaffEducation" 	hidden="true" />
 		<field name="preStaffCompSkills"		type="any"			title="preStaffCompSkills" 	hidden="true" />
 		<field name="preStaffLanguages"			type="any"			title="preStaffLanguages" 	hidden="true" />
@@ -33,6 +34,7 @@
 		<field name="physicalAddress"			type="any"			title="physicalAddress" 	hidden="true" />
 		<field name="preStaffRaltive09"			type="any"			title="preStaffRaltive09" 	hidden="true" />
 		<field name="preStaffFamousPeople"		type="any"			title="preStaffFamousPeople" 	hidden="true" />
+		
 		
 		
 	</fields>
@@ -76,7 +78,8 @@
 		      ,d.department_name
 		      ,to_char(s.start_date, 'mm/dd/yyyy') as start_date_descr
 		      ,s.address_id
-		      ,s.document_address_id
+		      ,s.document_address_id,
+		      s.image_id
 			</selectClause> 
 			<tableClause>staff s, departments d</tableClause>
 			<whereClause><![CDATA[

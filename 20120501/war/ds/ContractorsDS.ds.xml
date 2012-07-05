@@ -50,7 +50,7 @@
         </operationBinding>
         
         <!-- Delete Contractor -->
-		<operationBinding operationType="update" operationId="removeContractor" serverMethod="removeContractor">
+		<operationBinding operationType="remove" operationId="removeContractor" serverMethod="removeContractor">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
         </operationBinding>
         
