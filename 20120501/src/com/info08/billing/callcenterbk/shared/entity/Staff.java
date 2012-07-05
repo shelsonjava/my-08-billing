@@ -71,6 +71,10 @@ public class Staff implements java.io.Serializable {
 	@Basic
 	@Column(name = "DOCUMENT_ADDRESS_ID")
 	private Long document_address_id;
+	
+	@Basic
+	@Column(name = "IMAGE_ID")
+	private Long image_id;
 
 	@Transient
 	private String loggedUserName;
@@ -254,6 +258,14 @@ public class Staff implements java.io.Serializable {
 
 	public void setDocument_address_id(Long document_address_id) {
 		this.document_address_id = document_address_id;
+	}
+
+	public Long getImage_id() {
+		return image_id;
+	}
+
+	public void setImage_id(Long image_id) {
+		this.image_id = image_id;
 	}
 
 }

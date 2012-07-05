@@ -173,7 +173,7 @@ public class ContractorsDMI implements QueryConstants {
 			oracleManager.flush();
 
 			EMF.commitTransaction(transaction);
-			blockUnblockContractorPhones(contract, oracleManager);
+			blockUnblockContractorPhones(contract, false, oracleManager);
 			map = DMIUtils.findRecordById("ContractorsDS",
 					"searchAllContractors", contract.getContract_id(),
 					"contract_id");
@@ -269,40 +269,58 @@ public class ContractorsDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	/*
-	 * @SuppressWarnings("rawtypes") public Contract removeContractor(Map
-	 * record) throws Exception { EntityManager oracleManager = null; Object
-	 * transaction = null; try { String log =
-	 * "Method:CommonDMI.removeContractor."; oracleManager =
-	 * EMF.getEntityManager(); transaction = EMF.getTransaction(oracleManager);
-	 * 
-	 * Long contract_id = new Long(record.get("contract_id").toString()); String
-	 * loggedUserName = record.get("loggedUserName").toString(); Timestamp
-	 * updDate = new Timestamp(System.currentTimeMillis());
-	 * 
-	 * Contract contract = oracleManager.find(Contract.class, contract_id);
-	 * 
-	 * RCNGenerator.getInstance().initRcn(oracleManager, updDate,
-	 * loggedUserName, "Updating Contract Status.");
-	 * 
-	 * oracleManager .createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PRICES)
-	 * .setParameter(1, contract.getContract_id()).executeUpdate();
-	 * 
-	 * oracleManager .createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PHONES)
-	 * .setParameter(1, contract.getContract_id()).executeUpdate();
-	 * 
-	 * oracleManager.remove(contract); oracleManager.flush();
-	 * 
-	 * blockUnblockContractorPhones(contract, oracleManager);
-	 * EMF.commitTransaction(transaction); log +=
-	 * ". Status Updating Finished SuccessFully. "; logger.info(log); return
-	 * null; } catch (Exception e) { EMF.rollbackTransaction(transaction); if (e
-	 * instanceof CallCenterException) { throw (CallCenterException) e; }
-	 * logger.error( "Error While Update Status for Contract Into Database : ",
-	 * e); throw new CallCenterException("შეცდომა მონაცემების შენახვისას : " +
-	 * e.toString()); } finally { if (oracleManager != null) {
-	 * EMF.returnEntityManager(oracleManager); } } }
-	 */
+
+	@SuppressWarnings("rawtypes")
+	public Contract removeContractor(DSRequest dsRequest) throws Exception {
+		EntityManager oracleManager = null;
+		Object transaction = null;
+		try {
+			Map record = dsRequest.getOldValues();
+			String log = "Method:CommonDMI.removeContractor.";
+			oracleManager = EMF.getEntityManager();
+			transaction = EMF.getTransaction(oracleManager);
+
+			Long contract_id = new Long(record.get("contract_id").toString());
+			String loggedUserName = record.get("loggedUserName").toString();
+			Timestamp updDate = new Timestamp(System.currentTimeMillis());
+
+			Contract contract = oracleManager.find(Contract.class, contract_id);
+			blockUnblockContractorPhones(contract, true, oracleManager);
+			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
+					loggedUserName, "Updating Contract Status.");
+
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PRICES)
+					.setParameter(1, contract.getContract_id()).executeUpdate();
+
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PHONES)
+					.setParameter(1, contract.getContract_id()).executeUpdate();
+
+			oracleManager.remove(contract);
+			oracleManager.flush();
+
+			EMF.commitTransaction(transaction);
+			log += ". Status Updating Finished SuccessFully. ";
+			logger.info(log);
+			return null;
+		} catch (Exception e) {
+			EMF.rollbackTransaction(transaction);
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error(
+					"Error While Update Status for Contract Into Database : ",
+					e);
+			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
+					+ e.toString());
+		} finally {
+			if (oracleManager != null) {
+				EMF.returnEntityManager(oracleManager);
+			}
+		}
+	}
+
 	/**
 	 * მიმდინარე ფუნქცია გამოიყენება იმისათვის რომ მოხდეს ზღვრული ფასების მქონე
 	 * კონტრაქტორის მიმდინარე ფასის ცვლილება.
@@ -631,7 +649,9 @@ public class ContractorsDMI implements QueryConstants {
 	 *             შეცდომის დამუშავება თუ რაიმე პარამეტრი არასწორია
 	 */
 	public void blockUnblockContractorPhones(Contract contract,
-			EntityManager oracleManager) throws CallCenterException {
+			boolean onlyRemove, EntityManager oracleManager)
+			throws CallCenterException {
+		Connection mySQLConnection = null;
 		try {
 			StringBuilder log = new StringBuilder(
 					"Checking Contractor Blocking ... \n");
@@ -663,7 +683,7 @@ public class ContractorsDMI implements QueryConstants {
 			}
 			SQLDataSource mySqlDS = (SQLDataSource) DataSourceManager
 					.get("MySQLSubsDS");
-			Connection mySQLConnection = mySqlDS.getConnection();
+			mySQLConnection = mySqlDS.getConnection();
 			PreparedStatement statement = mySQLConnection
 					.prepareStatement(QueryConstants.Q_MYSQL_DELETE_BLOCK_PHONE);
 
@@ -677,6 +697,8 @@ public class ContractorsDMI implements QueryConstants {
 				statement.executeUpdate();
 
 			}
+			if (onlyRemove)
+				return;
 
 			boolean blockedByCondition = oracleManager
 					.createNativeQuery(
@@ -727,6 +749,11 @@ public class ContractorsDMI implements QueryConstants {
 			}
 			log.append("\nResult : Contractor Blocking Finished Successfully. \n");
 		} catch (Exception e) {
+			try {
+				mySQLConnection.rollback();
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
@@ -735,6 +762,15 @@ public class ContractorsDMI implements QueryConstants {
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების ცვლილებისას : "
 					+ e.toString());
+		} finally {
+			try {
+				mySQLConnection.commit();
+			} catch (Exception e2) {
+			}
+			try {
+				mySQLConnection.close();
+			} catch (Exception e2) {
+			}
 		}
 	}
 }

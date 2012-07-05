@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.ImageViewerItem;
 import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
@@ -27,7 +28,6 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.DoubleClickEvent;
 import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.CanvasItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -43,7 +43,6 @@ import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
 import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
-import com.smartgwt.client.widgets.tile.TileGrid;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
@@ -68,7 +67,7 @@ public class DlgAddEditStaff extends Window {
 	private ComboBoxItem departmentItem;
 	private TextItem docNumberItem;
 	private TextAreaItem remarkItem;
-	private CanvasItem photoItem;
+	private ImageViewerItem photoItem;
 	private DateItem dobItem;
 	private DateItem startDateItem;
 	private SelectItem genderItem;
@@ -465,29 +464,8 @@ public class DlgAddEditStaff extends Window {
 		remarkItem.setName("remark");
 		remarkItem.setHeight(70);
 
-		photoItem = new CanvasItem();
-		photoItem.setTitle("");
-		photoItem.setWidth(120);
-		photoItem.setName("photo");
-		photoItem.setHeight(70);
-		photoItem.setRowSpan(5);
-
-		TileGrid tileGrid = new TileGrid();
-		tileGrid.setHeight(180);
-		tileGrid.setWidth(144);
-
-		tileGrid.addDoubleClickHandler(new DoubleClickHandler() {
-
-			@Override
-			public void onDoubleClick(DoubleClickEvent event) {
-
-				DlgStaffUploadPicture dlgStaffUploadPicture = new DlgStaffUploadPicture(
-						0);
-				dlgStaffUploadPicture.show();
-			}
-		});
-
-		photoItem.setCanvas(tileGrid);
+		photoItem = new ImageViewerItem("image_id", "ფოტო");
+		photoItem.setChoosable();
 
 		dobItem = new DateItem();
 		dobItem.setTitle("დაბადების თარიღი");
@@ -1098,6 +1076,8 @@ public class DlgAddEditStaff extends Window {
 					.getAttribute("family_status_id"));
 			startDateItem.setValue(listGridRecord
 					.getAttribute("start_date_descr"));
+			photoItem
+					.setValue((Object) listGridRecord.getAttribute("image_id"));
 
 			dobItem.setValue(listGridRecord.getAttribute("dob_descr"));
 			remarkItem.setValue(listGridRecord.getAttribute("remark"));
@@ -1484,6 +1464,7 @@ public class DlgAddEditStaff extends Window {
 
 			record.setAttribute("first_name", firstName);
 			record.setAttribute("last_name", lastName);
+			record.setAttribute("image_id", photoItem.getValue());
 			record.setAttribute("department_id",
 					departmentItem.getValueAsString());
 			record.setAttribute("doc_num", docNumberItem.getValueAsString());

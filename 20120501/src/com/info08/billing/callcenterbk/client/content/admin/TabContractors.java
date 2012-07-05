@@ -335,18 +335,12 @@ public class TabContractors extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say(CallCenterBK.constants.recordAlrDisabled());
-						return;
-					}
 					SC.ask(CallCenterBK.constants.askForDisable(),
 							new BooleanCallback() {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										changeStatus(listGridRecord, 1);
+										removeRecord(listGridRecord);
 									}
 								}
 							});
@@ -636,7 +630,7 @@ public class TabContractors extends Tab {
 		}
 	}
 
-	private void changeStatus(ListGridRecord listGridRecord, Integer deleted) {
+	private void removeRecord(ListGridRecord listGridRecord) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
@@ -649,7 +643,7 @@ public class TabContractors extends Tab {
 			DSRequest req = new DSRequest();
 
 			req.setAttribute("operationId", "removeContractor");
-			contractorsGrid.updateData(record, new DSCallback() {
+			contractorsGrid.removeData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

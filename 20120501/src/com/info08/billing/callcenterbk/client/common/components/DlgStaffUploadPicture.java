@@ -109,6 +109,7 @@ public class DlgStaffUploadPicture extends Window {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				
 				photoUploadForm.saveData(new DSCallback() {
 					@Override
 					public void execute(DSResponse response, Object rawData,
@@ -148,36 +149,36 @@ public class DlgStaffUploadPicture extends Window {
 		addItem(hLayout);
 
 		photoUploadForm.editNewRecord();
-		if (parentItem != null) {
-			parentItem.tileGrid.invalidateCache();
-		}
+//		if (parentItem != null) {
+//			parentItem.tileGrid.invalidateCache();
+//		}
 		setResult(photoId);
 		cancItem.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 
 			@Override
 			public void onClick(
 					com.smartgwt.client.widgets.events.ClickEvent event) {
-				if (DlgStaffUploadPicture.this.parentItem != null) {
-					DlgStaffUploadPicture.this.parentItem.tileGrid.invalidateCache();
-				}
+//				if (DlgStaffUploadPicture.this.parentItem != null) {
+//					DlgStaffUploadPicture.this.parentItem.tileGrid.invalidateCache();
+//				}
 				destroy();
 
-			}
+			} 
 		});
 		
-		addVisibilityChangedHandler(new VisibilityChangedHandler() {
-			
-			@Override
-			public void onVisibilityChanged(VisibilityChangedEvent event) {
-				if(!event.getIsVisible())
-				{
-					if (DlgStaffUploadPicture.this.parentItem != null) {
-						DlgStaffUploadPicture.this.parentItem.tileGrid.invalidateCache();
-					}
-				}
-				
-			}
-		});
+//		addVisibilityChangedHandler(new VisibilityChangedHandler() {
+//			
+//			@Override
+//			public void onVisibilityChanged(VisibilityChangedEvent event) {
+//				if(!event.getIsVisible())
+//				{
+//					if (DlgStaffUploadPicture.this.parentItem != null) {
+//						DlgStaffUploadPicture.this.parentItem.tileGrid.invalidateCache();
+//					}
+//				}
+//				
+//			}
+//		});
 		saveItem.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 
 			@Override
@@ -207,10 +208,11 @@ public class DlgStaffUploadPicture extends Window {
 	}
 
 	private void setResult(Object image_id) {
+		photoUploadForm.editNewRecord();
 		photoItem.setValue(image_id);
-		if (parentItem != null) {
-			parentItem.tileGrid.invalidateCache();
-		}
+//		if (parentItem != null) {
+//			parentItem.tileGrid.invalidateCache();
+//		}
 	}
 
 }

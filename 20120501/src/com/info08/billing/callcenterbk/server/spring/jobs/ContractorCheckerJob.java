@@ -64,7 +64,7 @@ public class ContractorCheckerJob extends TimerTask {
 					}
 
 					contractorsDMI.blockUnblockContractorPhones(contract,
-							oracleManager);
+							false, oracleManager);
 
 					blockChecker.setUpdDate(currDate);
 					blockChecker.setStatus(1L);

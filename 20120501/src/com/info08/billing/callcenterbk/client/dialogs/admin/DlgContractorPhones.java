@@ -56,7 +56,8 @@ public class DlgContractorPhones extends Window {
 	private DataSource ContractorsPhonesDS;
 	private Criteria lastPhoneCriteria;
 
-	public DlgContractorPhones(Integer organization_id, ListGrid listGridPhones) {
+	public DlgContractorPhones(final Integer organization_id,
+			ListGrid listGridPhones) {
 		try {
 			this.listGridPhones = listGridPhones;
 			OrgDS = DataSource.get("OrgDS");
@@ -153,7 +154,8 @@ public class DlgContractorPhones extends Window {
 
 							Criteria orgGridCriteria = new Criteria();
 							orgGridCriteria.setAttribute("pp_organization_id",
-									80353);
+									organization_id);
+							orgGridCriteria.setAttribute("only_parrent", 1);
 							organizationGrid.fetchData(orgGridCriteria);
 						}
 					});
@@ -181,6 +183,7 @@ public class DlgContractorPhones extends Window {
 
 			Criteria orgGridCriteria = new Criteria();
 			orgGridCriteria.setAttribute("pp_organization_id", organization_id);
+			orgGridCriteria.setAttribute("only_parrent", 1);
 			organizationGrid.fetchData(orgGridCriteria, new DSCallback() {
 
 				@Override
@@ -362,9 +365,10 @@ public class DlgContractorPhones extends Window {
 
 	private void save() {
 		contractPhonesGrid.clearCriteria(new DSCallback() {
-			
+
 			@Override
-			public void execute(DSResponse response, Object rawData, DSRequest request) {
+			public void execute(DSResponse response, Object rawData,
+					DSRequest request) {
 				RecordList phoneList = contractPhonesGrid.getRecordList();
 				if (phoneList == null || phoneList.isEmpty()) {
 					SC.say(CallCenterBK.constants.phonesListIsEmpty());
@@ -376,10 +380,10 @@ public class DlgContractorPhones extends Window {
 					listGridPhones.addData(phoneList.get(i));
 				}
 				destroy();
-				
+
 			}
 		}, new DSRequest());
-		
+
 	}
 
 	private void search() {

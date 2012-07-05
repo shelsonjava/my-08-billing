@@ -22,6 +22,7 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.data.RecordList;
+import com.smartgwt.client.data.fields.DataSourceImageField;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.BooleanCallback;
@@ -434,7 +435,7 @@ public class DlgAddEditContractor extends Window {
 							});
 				}
 			});
-
+			
 			deleteBtnPhones.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
