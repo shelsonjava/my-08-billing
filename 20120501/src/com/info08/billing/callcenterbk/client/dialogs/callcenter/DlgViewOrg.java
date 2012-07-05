@@ -204,7 +204,7 @@ public class DlgViewOrg extends Window {
 			DetailViewerField new_identcode = new DetailViewerField(
 					"ident_code_new", CallCenterBK.constants.identCodeNew());
 			DetailViewerField legaladdress = new DetailViewerField(
-					"legal_address_descr",
+					"call_center_legal_address",
 					CallCenterBK.constants.legalAddress());
 			DetailViewerField workinghours = new DetailViewerField(
 					"work_hours", CallCenterBK.constants.workinghours());
@@ -227,6 +227,8 @@ public class DlgViewOrg extends Window {
 			DetailViewerField partnerbank = new DetailViewerField(
 					"concat_org_partner_banks",
 					CallCenterBK.constants.partnerBank());
+			DetailViewerField social_address = new DetailViewerField(
+					"social_address", CallCenterBK.constants.socialAddress());
 
 			DetailViewerField full_address = new DetailViewerField(
 					"call_center_address",
@@ -241,7 +243,7 @@ public class DlgViewOrg extends Window {
 			detailViewer.setFields(org_name, org_name_eng, full_address, note,
 					workinghours, dayoffs, director, contactperson,
 					legal_statuse, org_info, identcode, new_identcode,
-					webaddress, mail, ind, legaladdress, founded, partnerbank,
+					webaddress, mail, social_address, ind, legaladdress, founded, partnerbank,
 					workpersoncountity);
 
 			addInfoLayout.addMember(detailViewer);

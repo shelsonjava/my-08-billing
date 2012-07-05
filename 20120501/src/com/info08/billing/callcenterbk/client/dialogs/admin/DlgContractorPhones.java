@@ -222,7 +222,21 @@ public class DlgContractorPhones extends Window {
 				}
 			});
 
+			ToolStripButton clearPhones = new ToolStripButton();
+			clearPhones.setIcon("delete.png");
+			clearPhones.setTitle("გასუფთავება");
+
+			clearPhones.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					clearPhones();
+
+				}
+			});
+
 			toolStrip.addButton(addPhones);
+			toolStrip.addButton(clearPhones);
 
 			/*--------------------------------------------*/
 
@@ -489,4 +503,10 @@ public class DlgContractorPhones extends Window {
 		record = record == null ? new Record() : record;
 		fetchDepartmentAndPhones(record);
 	}
+
+	private void clearPhones() {
+		contractPhonesGrid.selectAllRecords();
+		contractPhonesGrid.removeSelectedData();
+	}
+
 }
