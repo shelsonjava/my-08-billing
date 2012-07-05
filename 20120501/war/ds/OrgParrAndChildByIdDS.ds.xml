@@ -88,7 +88,7 @@
 			        t.extra_priority,
 			        p.partnerbank,
 			        t.partnerbank_id,
-			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.town_name||' / '|| getDistrict(t.street_id)||' / '||t.street_name||' '||t.address_suffix_geo)) as full_address
+			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.town_name||' / '|| getTownDistrict(t.street_id)||' / '||t.street_name||' '||t.address_suffix_geo)) as full_address
 			</selectClause>
 			<tableClause>nb_org_search t, org_partnerbank_lists p</tableClause>
 			<whereClause>
@@ -150,7 +150,7 @@
 			        t.extra_priority,
 			        p.partnerbank,
 			        t.partnerbank_id,
-			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.town_name||' / '|| getDistrict(t.street_id)||' / '||t.street_name||' '||t.address_suffix_geo)) as full_address
+			        decode(t.address_hide,1,'მისამართი დაფარულია',(t.town_name||' / '|| getTownDistrict(t.street_id)||' / '||t.street_name||' '||t.address_suffix_geo)) as full_address
 			</selectClause>
 			<tableClause>nb_org_search t, org_partnerbank_lists p</tableClause>
 			<whereClause>

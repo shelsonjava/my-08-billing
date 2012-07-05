@@ -29,6 +29,7 @@
 		<field name="legal_address_descr"			type="text"  		title="legal_address_descr"/>
 		<field name="full_address_not_hidden"		type="text"  		title="full_address_not_hidden"/>
 		<field name="call_center_address"			type="text"  		title="call_center_address"/>
+		<field name="call_center_legal_address"		type="text"  		title="call_center_legal_address"/>
 		<field name="legal_form_desc_id"			type="integer"  	title="legal_form_desc_id"				hidden="true"/>
 		<field name="status"						type="integer"  	title="status"							hidden="true"/>		
 		<field name="important_remark"				type="integer"  	title="important_remark"				hidden="true"/>		
@@ -240,14 +241,15 @@
 	             		    getTbilisiOrder(a.town_id) as cust_order,
 			                a.street_name,
 			                a.hidden_by_request,
-			                decode(a.hidden_by_request, 1, 'მისამართი დაფარულია', a.concat_address_with_town) as call_center_address,		                		                
+			                decode(a.hidden_by_request, 1, 'მისამართი დაფარულია', a.concat_address_with_town) as call_center_address,
+			                decode(a1.hidden_by_request, 1, 'მისამართი დაფარულია', a1.concat_address_with_town) as call_center_legal_address,		                		                
 			                a.full_address,
 							a.block,
 							a.appt,
 							a.descr,
 							a.anumber,
 							o.super_priority,						
-							getorgbusiness_alerts(o.organization_id) as org_allert_by_buss_det,
+							GETORGACTIVITY_ALERTS(o.organization_id) as org_allert_by_buss_det,
 							o.legal_address_id,
 							o.physical_address_id,
 							o.social_address,
