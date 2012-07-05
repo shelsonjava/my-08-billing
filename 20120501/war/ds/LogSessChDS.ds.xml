@@ -5,29 +5,32 @@
     qualifyColumnNames="false"
     >
     <fields>
-    	<field name="cse_id"			type="integer" 	title="cse_id" 			hidden="true"		primaryKey="true" />
-    	<field name="session_id" 		type="text" 	title="Session ID"  	hidden="true"/>
-        <field name="ym"		 		type="integer" 	title="Year/Month"		hidden="true"/>
-        <field name="service_id"  		type="integer"  title="Service Id"		hidden="true"/>        
-        <field name="service_name_geo"	type="text"  	title="Service Name"/>
-        <field name="price"  			type="integer"  title="Price"/>
-        <field name="org_name"			type="text"  	title="Org. Name"/>
-        <field name="rec_date"			type="date" 	title="rec_date"/>
-        <field name="ym"  				type="integer"  title="ym"/>
-        <field name="amount"  			type="float"  	title="amount"/>
-        <field name="aprice"  			type="float"  	title="aprice"/>
-        <field name="cnt"  				type="float"  	title="cnt"/>
-        <field name="organization_id"  	type="integer"  title="cnt"/>
-        <field name="call_phone"  		type="text"  	title="call_phone"/>
+    	<field name="cse_id"				type="integer" 	title="cse_id" 				hidden="true"		primaryKey="true" />
+    	<field name="session_id" 			type="text" 	title="session_id"  		hidden="true"/>
+        <field name="year_month"			type="integer" 	title="year_month"			hidden="true"/>
+        <field name="service_id"  			type="integer"  title="service_id"			hidden="true"/>        
+        <field name="service_description"	type="text"  	title="service_description"/>
+        <field name="charge"  				type="integer"  title="charge"/>
+        <field name="organization_name"		type="text"  	title="organization_name"/>
+        <field name="charge_date"			type="date" 	title="charge_date"/>
+        <field name="amount"  				type="float"  	title="amount"/>
+        <field name="aprice"  				type="float"  	title="aprice"/>
+        <field name="cnt"  					type="float"  	title="cnt"/>
+        <field name="organization_id"  		type="integer"  title="organization_id"/>
+        <field name="call_phone"  			type="text"  	title="call_phone"/>
     </fields>
     
+    <!-- Add Log Session Charge -->
+	<operationBinding operationType="add" operationId="addLogSessionCharge" serverMethod="addLogSessionCharge">
+    	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+    </operationBinding>
+    
      <operationBindings>
-    	<operationBinding operationId="custSessCharges" operationType="fetch" 
-    		customFields="ch.session_id, s.service_name_geo , ch.price, o.org_name">
+    	<operationBinding operationId="custSessCharges" operationType="fetch">
     		<selectClause>   			
     			ch.session_id,	
-				s.service_name_geo,
-				ch.price,
+				s.service_description,
+				ch.charge,
 				o.org_name
 			</selectClause> 
 			<tableClause>log_session_charges ch, services s, main_orgs o</tableClause>
@@ -39,8 +42,7 @@
 				]]>  
 			</whereClause> 
     	</operationBinding>
-    	<operationBinding operationId="custSessNavig" operationType="fetch" 
-    		customFields="h.session_id s.service_name_geo o.org_name">
+    	<operationBinding operationId="custSessNavig" operationType="fetch">
     		<selectClause>   			
     			h.session_id,	
 				s.service_name_geo,
@@ -55,11 +57,6 @@
 			</whereClause> 
     	</operationBinding>
     	
-        <!-- Add Log Session Charge -->
-		<operationBinding operationType="add" operationId="addLogSessionCharge" serverMethod="addLogSessionCharge">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
-        </operationBinding>
-        
         <!-- Log SMS -->
 		<operationBinding operationId="LogSMS" operationType="add">
             <customSQL>
