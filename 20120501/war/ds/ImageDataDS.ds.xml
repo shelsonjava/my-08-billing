@@ -1,0 +1,13 @@
+<DataSource
+	ID="ImageDataDS"
+	serverType="sql"
+	tableName="TBL_IMAGE"
+	qualifyColumnNames="false"
+	dropExtraFields = "true">
+	<fields>
+		<field name="tbl_image_id"				type="integer"		title="tbl_image_id"		hidden="true" primaryKey="true" />
+		<field name="image_data"				type="imageFile" 	title="image_data"/>		
+	</fields>	
+	
+	
+</DataSource>
