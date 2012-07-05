@@ -232,9 +232,64 @@ public class ChargePanel extends HLayout {
 
 	public ChargePanel(int width, boolean enableChargeButton,
 			boolean enableSurveyButton, Integer service_id,
-			Integer organization_id) {
+			Integer organization_id, String event_describtion) {
 		this(width, enableChargeButton, enableSurveyButton, service_id,
 				organization_id, null, null);
+
+		logSessionEvent(event_describtion);
+	}
+
+	private void logSessionEvent(String event_describtion) {
+		try {
+
+			final ServerSession serverSession = CommonSingleton.getInstance()
+					.getServerSession();
+			if (serverSession == null || serverSession.isWebSession()) {
+				SC.say(CallCenterBK.constants.notCallCenterUser());
+				return;
+			}
+			String phone = serverSession.getPhone();
+			if (phone == null || phone.trim().equalsIgnoreCase("")) {
+				SC.say(CallCenterBK.constants.notCallCenterUser());
+				return;
+			}
+
+			if (service_id == null || service_id.intValue() < 0) {
+				SC.say(CallCenterBK.constants.invalidService());
+				return;
+			}
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+			Record record = new Record();
+
+			record.setAttribute("service_id", service_id);
+			record.setAttribute("session_id", serverSession.getSessionId());
+			record.setAttribute("loggedUserName", serverSession.getUser_name());
+			record.setAttribute("event_describtion", event_describtion);
+
+			DSRequest req = new DSRequest();
+			DataSource logSessChDS = DataSource.get("LogSessChDS");
+			req.setAttribute("operationId", "LogSessionEvent");
+			logSessChDS.addData(record, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					int chCount = serverSession.getChcount();
+					chCount++;
+					serverSession.setChcount(chCount);
+					chargeCounter.setContents(CallCenterBK.constants.charges()
+							+ " : " + chCount);
+
+					int lChargeCounter = getChrgCounter();
+					lChargeCounter++;
+					setChrgCounter(lChargeCounter);
+				}
+			}, req);
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
+		} catch (Exception e) {
+			SC.say(e.toString());
+		} finally {
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
+		}
 	}
 
 	private void drawDynamicPanel(boolean isOperator) {
