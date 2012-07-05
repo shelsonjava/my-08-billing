@@ -504,11 +504,11 @@
     			o.organization_id,
     			o.organization_name,
     			o.remark,
-    			(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden
+    			a.concat_address_with_town as full_address_not_hidden
 			</selectClause> 
-			<tableClause>organizations o, addresses a, streets str, towns tw</tableClause>	
+			<tableClause>organizations o, V_FULL_ADDRESS a</tableClause>	
 			<whereClause>
-					o.physical_address_id = a.addr_id and str.street_id = a.street_id and tw.town_id = a.town_id
+					o.physical_address_id = a.addr_id
 				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
 					#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end				    
 					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
