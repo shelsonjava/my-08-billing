@@ -512,7 +512,7 @@
 				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
 					#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end				    
 					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
-					#if($criteria.full_address_not_hidden) and (tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) like '%'||$criteria.full_address_not_hidden||'%' #end					
+					#if($criteria.full_address_not_hidden) and concat_address_with_town like '%'||$criteria.full_address_not_hidden||'%' #end					
 			</whereClause>				
     	</operationBinding>
     	
@@ -522,15 +522,15 @@
     			o.organization_id,
     			o.organization_name,
     			o.remark,
-    			(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden
+    			a.concat_address_with_town as full_address_not_hidden
 			</selectClause> 
-			<tableClause>organization_partner_banks t,organizations o, addresses a, streets str, towns tw</tableClause>	
+			<tableClause>organization_partner_banks t,organizations o, V_FULL_ADDRESS a</tableClause>	
 			<whereClause>
-					t.part_bank_org_id = o.organization_id and o.physical_address_id = a.addr_id and str.street_id = a.street_id and tw.town_id = a.town_id
+					t.part_bank_org_id = o.organization_id and o.physical_address_id = a.addr_id
 				    #if($criteria.organization_id) and t.organization_id = $criteria.organization_id #end
 					#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end				    
 					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
-					#if($criteria.full_address_not_hidden) and (tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) like '%'||$criteria.full_address_not_hidden||'%' #end					
+					#if($criteria.full_address_not_hidden) and concat_address_with_town like '%'||$criteria.full_address_not_hidden||'%' #end					
 			</whereClause>				
     	</operationBinding>
     	
@@ -541,16 +541,16 @@
     			o.organization_id,
     			o.organization_name,
     			o.remark,
-    			(tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) as full_address_not_hidden
+    			concat_address_with_town as full_address_not_hidden
 			</selectClause> 
-			<tableClause>organizations o, organization_to_activities oa, organization_activities aa, addresses a, streets str, towns tw</tableClause>	
+			<tableClause>organizations o, organization_to_activities oa, organization_activities aa, V_FULL_ADDRESS a</tableClause>	
 			<whereClause>
 					o.organization_id = oa.organization_id and oa.org_activity_id = aa.org_activity_id and aa.is_bank_activity = 1 and 
-					o.physical_address_id = a.addr_id and str.street_id = a.street_id and tw.town_id = a.town_id
+					o.physical_address_id = a.addr_id 
 				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
 					#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end				    
 					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
-					#if($criteria.full_address_not_hidden) and (tw.town_name||' / '|| getDistrict(str.street_id)||' / '||str.street_name||' '||a.full_address) like '%'||$criteria.full_address_not_hidden||'%' #end					
+					#if($criteria.full_address_not_hidden) and concat_address_with_town like '%'||$criteria.full_address_not_hidden||'%' #end					
 			</whereClause>				
 			<orderClause>gettbilisiorder(tw.town_id),o.organization_name</orderClause>	
     	</operationBinding>
