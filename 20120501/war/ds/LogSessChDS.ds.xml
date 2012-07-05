@@ -18,6 +18,7 @@
         <field name="cnt"  					type="float"  	title="cnt"/>
         <field name="organization_id"  		type="integer"  title="organization_id"/>
         <field name="call_phone"  			type="text"  	title="call_phone"/>
+        <field name="event_describtion"		type="text"  	title="event_describtion"/>
     </fields>
     
     <!-- Add Log Session Charge -->
@@ -95,6 +96,18 @@
             	 		(YM, SESSION_ID,  organization_id, SERVICE_ID) 
 					values
                         ($values.ym, $values.session_id, $values.organization_id, $values.service_id)            		
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
+        
+        <operationBinding operationId="LogSessionEvent" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	insert into CALL_SESSION_EVENT 
+            	 		(SESSION_ID,  EVENT_DESCRIPTION, SERVICE_ID,USER_NAME) 
+					values
+                        ($values.session_id, $values.event_describtion, $values.service_id,$values.loggedUserName)            		
             	 ]]>
             </customSQL> 
         </operationBinding>
