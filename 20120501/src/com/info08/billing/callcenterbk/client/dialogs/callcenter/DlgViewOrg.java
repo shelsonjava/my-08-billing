@@ -110,7 +110,8 @@ public class DlgViewOrg extends Window {
 
 			chargePanel = new ChargePanel(1100, true, true,
 					Constants.serviceOrganization,
-					pRecord.getAttributeAsInt("organization_id"));
+					pRecord.getAttributeAsInt("organization_id"),
+					pRecord.getAttributeAsString("organization_name"));
 			hLayout.addMember(chargePanel);
 
 			mainInfoForm = new DynamicForm();
