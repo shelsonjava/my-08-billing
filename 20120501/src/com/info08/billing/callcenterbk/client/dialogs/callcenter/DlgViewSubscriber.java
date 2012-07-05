@@ -62,7 +62,9 @@ public class DlgViewSubscriber extends Window {
 
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceAbonentInfo,
-				listGridRecord.getAttributeAsInt("organization_id"));
+				listGridRecord.getAttributeAsInt("organization_id"),
+				listGridRecord.getAttributeAsString("family_name") + " "
+						+ listGridRecord.getAttributeAsString("name"));
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
