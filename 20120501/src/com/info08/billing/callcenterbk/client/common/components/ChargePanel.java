@@ -232,6 +232,14 @@ public class ChargePanel extends HLayout {
 
 	public ChargePanel(int width, boolean enableChargeButton,
 			boolean enableSurveyButton, Integer service_id,
+			Integer organization_id) {
+		this(width, enableChargeButton, enableSurveyButton, service_id,
+				organization_id, null, null);
+
+	}
+
+	public ChargePanel(int width, boolean enableChargeButton,
+			boolean enableSurveyButton, Integer service_id,
 			Integer organization_id, String event_describtion) {
 		this(width, enableChargeButton, enableSurveyButton, service_id,
 				organization_id, null, null);
