@@ -591,6 +591,7 @@ public class TabOrganization extends Tab {
 					orgStatusItem.clearValue();
 					orgContactPersonItem.clearValue();
 					searchForm.focusInItem(orgNameGeoItem);
+					organizationsGrid.deselectAllRecords();
 				}
 			});
 

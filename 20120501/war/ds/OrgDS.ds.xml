@@ -381,7 +381,8 @@
 							 #end
 							 #if($criteria.real_address_descr) 
 							 	#foreach($str in $criteria.real_address_descr.split(" "))
-							 		and a.concat_address like '%'||'$str'||'%' AND a.town_district_name not like '%'||'$str'||'%'
+							 		and a.concat_address like '%'||'$str'||'%' AND 
+							 		(a.town_district_name is null or a.town_district_name not like '%'||'$str'||'%')
 								#end							 	
 							 #end
 							 #if($criteria.town_district_id) 
