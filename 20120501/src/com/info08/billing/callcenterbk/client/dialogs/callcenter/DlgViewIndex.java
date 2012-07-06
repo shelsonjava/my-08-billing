@@ -61,9 +61,14 @@ public class DlgViewIndex extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = listGridRecord.getAttribute("country_region") + " / "
+				+ listGridRecord.getAttribute("town_name") + " / "
+				+ listGridRecord.getAttribute("phone_code") + " / "
+				+ listGridRecord.getAttribute("code");
+
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceCodesInfo,
-				listGridRecord.getAttributeAsInt("organization_id"));
+				listGridRecord.getAttributeAsInt("organization_id"), logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -247,8 +252,7 @@ public class DlgViewIndex extends Window {
 				sms_text.append(countrycode).append(";");
 			}
 
-			String cityName = listGridRecord
-					.getAttributeAsString("town_name");
+			String cityName = listGridRecord.getAttributeAsString("town_name");
 			if (cityName != null && !cityName.trim().equals("")) {
 				sms_text.append(cityName).append(" ");
 			}
@@ -333,16 +337,17 @@ public class DlgViewIndex extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendCountryInfoSMS1);
 			StringBuilder sms_text = new StringBuilder();
 
-			String country_name = listGridRecord.getAttributeAsString("country_name");
+			String country_name = listGridRecord
+					.getAttributeAsString("country_name");
 			if (country_name != null && !country_name.trim().equals("")) {
 				sms_text.append(country_name).append("-");
 			}
-			
+
 			String cityName = listGridRecord.getAttributeAsString("town_name");
 			if (cityName != null && !cityName.trim().equals("")) {
 				sms_text.append(cityName).append(";");
 			}
-			
+
 			Integer seasonid = listGridRecord.getAttributeAsInt("season");
 
 			if (seasonid != null) {

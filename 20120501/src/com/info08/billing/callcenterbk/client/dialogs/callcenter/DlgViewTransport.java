@@ -63,9 +63,21 @@ public class DlgViewTransport extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = listGridRecord
+				.getAttributeAsString("transport_company_geo")
+				+ " / "
+				+ listGridRecord
+						.getAttributeAsString("transport_place_geo_out")
+				+ " / "
+				+ listGridRecord.getAttributeAsString("transport_plane_geo")
+				+ " / "
+				+ listGridRecord.getAttributeAsString("transport_place_geo_in")
+				+ " / "
+				+ listGridRecord.getAttributeAsString("transport_price_geo");
+
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceTransportInfo,
-				listGridRecord.getAttributeAsInt("organization_id"));
+				listGridRecord.getAttributeAsInt("organization_id"), logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -101,12 +113,12 @@ public class DlgViewTransport extends Window {
 		DetailViewerField trip_criteria = new DetailViewerField(
 				"trip_criteria", CallCenterBK.constants.routeNumber());
 
-		DetailViewerField otown_name = new DetailViewerField(
-				"otown_name", CallCenterBK.constants.stationFrom());
+		DetailViewerField otown_name = new DetailViewerField("otown_name",
+				CallCenterBK.constants.stationFrom());
 		otown_name.setCellStyle("fontRedWithBorder");
 
-		DetailViewerField itown_name = new DetailViewerField(
-				"itown_name", CallCenterBK.constants.stationTo());
+		DetailViewerField itown_name = new DetailViewerField("itown_name",
+				CallCenterBK.constants.stationTo());
 		itown_name.setCellStyle("fontGreenWithBorder");
 
 		DetailViewerField ostation = new DetailViewerField("ostation",
@@ -148,10 +160,9 @@ public class DlgViewTransport extends Window {
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(trip_criteria, otown_name, ostation,
-				out_time, itown_name, istation, in_time, cmt,
-				transport_company_geo, transport_plane_geo, note_geo,
-				days_descr, transport_price_geo);
+		detailViewer.setFields(trip_criteria, otown_name, ostation, out_time,
+				itown_name, istation, in_time, cmt, transport_company_geo,
+				transport_plane_geo, note_geo, days_descr, transport_price_geo);
 
 		mainLayout.addMember(detailViewer);
 

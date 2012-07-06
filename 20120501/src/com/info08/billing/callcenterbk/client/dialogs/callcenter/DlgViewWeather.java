@@ -61,7 +61,7 @@ public class DlgViewWeather extends Window {
 		mainLayout.setPadding(10);
 
 		chargePanel = new ChargePanel(950, true, true,
-				Constants.serviceWeatherInfo, null);
+				Constants.serviceWeatherInfo, null, "ამინდის ინფორმაცია");
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();

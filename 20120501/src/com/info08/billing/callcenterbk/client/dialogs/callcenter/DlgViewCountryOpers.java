@@ -60,9 +60,12 @@ public class DlgViewCountryOpers extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = listGridRecord.getAttribute("stringOne") + " / "
+				+ listGridRecord.getAttribute("stringTwo");
+
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceCodesInfo,
-				listGridRecord.getAttributeAsInt("organization_id"));
+				listGridRecord.getAttributeAsInt("organization_id"), logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();

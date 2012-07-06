@@ -69,9 +69,15 @@ public class DlgViewInCityTransport extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = listGridRecord.getAttribute("service_descr") + " / "
+				+ listGridRecord.getAttribute("dir_num") + " / "
+				+ listGridRecord.getAttribute("start_place") + " / "
+				+ listGridRecord.getAttribute("end_place") + " / "
+				+ listGridRecord.getAttribute("cycle_descr");
+
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceInCityTransportInfo,
-				listGridRecord.getAttributeAsInt("organization_id"));
+				listGridRecord.getAttributeAsInt("organization_id"), logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();

@@ -59,9 +59,13 @@ public class DlgViewStreetInfo extends Window {
 		hLayout.setHeight100();
 		hLayout.setPadding(10);
 
+		String logText = pRecord.getAttributeAsString("town_district_name")
+				+ " / " + pRecord.getAttributeAsString("index_text") + " / "
+				+ pRecord.getAttributeAsString("call_center_address");
+
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceAddressInfo,
-				pRecord.getAttributeAsInt("organization_id"));
+				pRecord.getAttributeAsInt("organization_id"), logText);
 		hLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -158,7 +162,8 @@ public class DlgViewStreetInfo extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendAddressInfoSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String real_address = pRecord.getAttributeAsString("call_center_address");
+			String real_address = pRecord
+					.getAttributeAsString("call_center_address");
 			sms_text.append(real_address).append(" ");
 
 			String index_text = pRecord.getAttributeAsString("index_text");

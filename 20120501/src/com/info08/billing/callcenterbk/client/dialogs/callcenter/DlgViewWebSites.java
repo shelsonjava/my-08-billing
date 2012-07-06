@@ -60,8 +60,12 @@ public class DlgViewWebSites extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = listGridRecord.getAttribute("web_site_group_name")
+				+ " / " + listGridRecord.getAttribute("address") + " / "
+				+ listGridRecord.getAttribute("remark");
+
 		chargePanel = new ChargePanel(950, true, true,
-				Constants.serviceWebSiteInfo, null);
+				Constants.serviceWebSiteInfo, null, logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();

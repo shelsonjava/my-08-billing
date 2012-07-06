@@ -61,7 +61,7 @@ public class DlgViewSport extends Window {
 		mainLayout.setPadding(10);
 
 		chargePanel = new ChargePanel(950, true, true,
-				Constants.serviceSportInfo, null);
+				Constants.serviceSportInfo, null, "სპორტული ინფორმაცია");
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -205,7 +205,8 @@ public class DlgViewSport extends Window {
 				SC.say(CallCenterBK.constants.errorInvalidSystemTime());
 				return;
 			}
-			sms_text.append(CallCenterBK.constants.currTimeIs()).append(currTime);
+			sms_text.append(CallCenterBK.constants.currTimeIs()).append(
+					currTime);
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record recordParam = new Record();

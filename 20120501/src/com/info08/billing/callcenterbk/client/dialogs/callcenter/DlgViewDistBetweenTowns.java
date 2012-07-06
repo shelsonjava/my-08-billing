@@ -60,9 +60,18 @@ public class DlgViewDistBetweenTowns extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = listGridRecord
+				.getAttribute("town_distance_type_descr")
+				+ " / "
+				+ listGridRecord.getAttribute("town_start")
+				+ " / "
+				+ listGridRecord.getAttribute("town_end")
+				+ " / "
+				+ listGridRecord.getAttribute("dist_between_towns_value");
+
 		chargePanel = new ChargePanel(950, true, true,
 				Constants.serviceCityDistInfo,
-				listGridRecord.getAttributeAsInt("organization_id"));
+				listGridRecord.getAttributeAsInt("organization_id"), logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -93,8 +102,8 @@ public class DlgViewDistBetweenTowns extends Window {
 		DetailViewerField dist_between_towns_value = new DetailViewerField(
 				"dist_between_towns_value", CallCenterBK.constants.distance());
 
-		DetailViewerField dist_between_towns_remark = new DetailViewerField("dist_between_towns_remark",
-				CallCenterBK.constants.comment());
+		DetailViewerField dist_between_towns_remark = new DetailViewerField(
+				"dist_between_towns_remark", CallCenterBK.constants.comment());
 
 		detailViewer.viewSelectedData(listGrid);
 
@@ -210,7 +219,8 @@ public class DlgViewDistBetweenTowns extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS);
 			StringBuilder sms_text = new StringBuilder();
 
-			String town_start = listGridRecord.getAttributeAsString("town_start");
+			String town_start = listGridRecord
+					.getAttributeAsString("town_start");
 			if (town_start != null && !town_start.trim().equals("")) {
 				sms_text.append(town_start).append("-");
 			}
@@ -225,8 +235,10 @@ public class DlgViewDistBetweenTowns extends Window {
 				sms_text.append(dist_between_towns_value).append("km.; ");
 			}
 
-			String dist_between_towns_remark = listGridRecord.getAttributeAsString("dist_between_towns_remark");
-			if (dist_between_towns_remark != null && !dist_between_towns_remark.trim().equals("")) {
+			String dist_between_towns_remark = listGridRecord
+					.getAttributeAsString("dist_between_towns_remark");
+			if (dist_between_towns_remark != null
+					&& !dist_between_towns_remark.trim().equals("")) {
 				sms_text.append(dist_between_towns_remark).append(";");
 			}
 
