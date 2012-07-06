@@ -61,7 +61,8 @@ public class DlgViewCalendar extends Window {
 		mainLayout.setPadding(10);
 
 		chargePanel = new ChargePanel(950, true, true,
-				Constants.serviceCalendarInfo, null);
+				Constants.serviceCalendarInfo, null,
+				listGridRecord.getAttribute("remark"));
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -217,11 +218,13 @@ public class DlgViewCalendar extends Window {
 			if (calendar_day != null && !calendar_day.trim().equals("")) {
 				sms_text.append(calendar_day).append(" - ");
 			}
-			String event = listGridRecord.getAttributeAsString("fact_type_name");
+			String event = listGridRecord
+					.getAttributeAsString("fact_type_name");
 			if (event != null && !event.trim().equals("")) {
 				sms_text.append(event).append(".");
 			}
-			String state = listGridRecord.getAttributeAsString("fact_status_name");
+			String state = listGridRecord
+					.getAttributeAsString("fact_status_name");
 			if (state != null && !state.trim().equals("")) {
 				sms_text.append(state).append(".");
 			}
