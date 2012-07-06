@@ -1144,6 +1144,10 @@ public class MiscDMI implements QueryConstants {
 					.toString();
 			String call_phone = dsRequest.getFieldValue("call_phone")
 					.toString();
+
+			String event_describtion = dsRequest
+					.getFieldValue("event_describtion") != null ? dsRequest
+					.getFieldValue("event_describtion").toString() : null;
 			Long ym = Long.parseLong(dsRequest.getFieldValue("ym").toString());
 			Long call_kind = Long.parseLong(dsRequest
 					.getFieldValue("call_kind").toString());
@@ -1179,6 +1183,7 @@ public class MiscDMI implements QueryConstants {
 			callSessionExpense.setService_id(service.getService_price_id());
 			callSessionExpense.setCharge_date(recDate);
 			callSessionExpense.setCharge(charge);
+			callSessionExpense.setEvent_describtion(event_describtion);
 
 			oracleManager.persist(callSessionExpense);
 
