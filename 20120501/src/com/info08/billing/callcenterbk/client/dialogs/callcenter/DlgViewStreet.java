@@ -58,8 +58,12 @@ public class DlgViewStreet extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = listGridRecord.getAttribute("town_name") + " / "
+				+ listGridRecord.getAttribute("street_name") + " / "
+				+ listGridRecord.getAttribute("street_index");
+
 		chargePanel = new ChargePanel(950, true, true,
-				Constants.serviceAddressInfo, null);
+				Constants.serviceAddressInfo, null, logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -84,8 +88,8 @@ public class DlgViewStreet extends Window {
 		DetailViewerField street_name = new DetailViewerField("street_name",
 				CallCenterBK.constants.street());
 
-		DetailViewerField oldName = new DetailViewerField("street_old_name_descr",
-				CallCenterBK.constants.oldStreetName());
+		DetailViewerField oldName = new DetailViewerField(
+				"street_old_name_descr", CallCenterBK.constants.oldStreetName());
 
 		DetailViewerField streetIndex = new DetailViewerField("street_index",
 				CallCenterBK.constants.indexes());

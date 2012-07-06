@@ -88,8 +88,15 @@ public class DlgViewCurrencyRate extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = "From: " + recordFrom.getAttribute("name_descr")
+				+ " / " + recordFrom.getAttribute("bank_buy_course") + " / "
+				+ recordFrom.getAttribute("national_course") + "To: "
+				+ recordFrom.getAttribute("name_descr") + " / "
+				+ recordFrom.getAttribute("bank_buy_course") + " / "
+				+ recordFrom.getAttribute("national_course");
+
 		chargePanel = new ChargePanel(950, true, true,
-				Constants.serviceCurrencyInfo, null);
+				Constants.serviceCurrencyInfo, null, logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -136,8 +143,8 @@ public class DlgViewCurrencyRate extends Window {
 		detailViewer.setDataSource(dataSource);
 		detailViewer.setWidth100();
 
-		DetailViewerField country_name = new DetailViewerField(
-				"country_name", CallCenterBK.constants.country());
+		DetailViewerField country_name = new DetailViewerField("country_name",
+				CallCenterBK.constants.country());
 
 		DetailViewerField name_descr = new DetailViewerField("name_descr",
 				CallCenterBK.constants.currencyName());
@@ -165,8 +172,8 @@ public class DlgViewCurrencyRate extends Window {
 		detailViewer1.setDataSource(dataSource);
 		detailViewer1.setWidth100();
 
-		DetailViewerField country_name1 = new DetailViewerField(
-				"country_name", CallCenterBK.constants.country());
+		DetailViewerField country_name1 = new DetailViewerField("country_name",
+				CallCenterBK.constants.country());
 
 		DetailViewerField name_descr1 = new DetailViewerField("name_descr",
 				CallCenterBK.constants.currencyName());
@@ -364,13 +371,11 @@ public class DlgViewCurrencyRate extends Window {
 			Integer curr_id_from = recordFrom.getAttributeAsInt("currency_id");
 			String curr_name_from = recordFrom
 					.getAttributeAsString("name_descr");
-			String curr_abbrev_from = recordFrom
-					.getAttributeAsString("code");
+			String curr_abbrev_from = recordFrom.getAttributeAsString("code");
 
 			Integer curr_id_to = recordTo.getAttributeAsInt("currency_id");
 			String curr_name_to = recordTo.getAttributeAsString("name_descr");
-			String curr_abbrev_to = recordTo
-					.getAttributeAsString("code");
+			String curr_abbrev_to = recordTo.getAttributeAsString("code");
 
 			// find
 			for (Record recItem : rates) {
@@ -404,8 +409,10 @@ public class DlgViewCurrencyRate extends Window {
 
 				// Calculate National Rate - START
 
-				Double nationalCourseFrom = rateFromRecord.getAttributeAsDouble("national_course");
-				Double nationalCourseTo = rateToRecord.getAttributeAsDouble("national_course");
+				Double nationalCourseFrom = rateFromRecord
+						.getAttributeAsDouble("national_course");
+				Double nationalCourseTo = rateToRecord
+						.getAttributeAsDouble("national_course");
 				if (nationalCourseFrom == null || nationalCourseTo == null) {
 					unitRateNatStr = "-";
 					amountRateNatStr = "-";
@@ -417,9 +424,10 @@ public class DlgViewCurrencyRate extends Window {
 					amountRateNatStr = "-";
 				} else {
 
-					double resultUnitCalcAmNat = nationalCourseFrom.doubleValue()
-							* coefficient_to / nationalCourseTo.doubleValue()
-							/ coefficient_from;
+					double resultUnitCalcAmNat = nationalCourseFrom
+							.doubleValue()
+							* coefficient_to
+							/ nationalCourseTo.doubleValue() / coefficient_from;
 					unitRateNatStr = nf.format(((Number) resultUnitCalcAmNat)
 							.doubleValue());
 					if (amount > 0.0) {
@@ -451,7 +459,8 @@ public class DlgViewCurrencyRate extends Window {
 					double resultUnitMarkRate = dUnitMarketRateFrom
 							.doubleValue()
 							* coefficient_to
-							/ dUnitMarketRateTo.doubleValue() / coefficient_from;
+							/ dUnitMarketRateTo.doubleValue()
+							/ coefficient_from;
 
 					unitRateBankMStr = nf.format(((Number) resultUnitMarkRate)
 							.doubleValue());

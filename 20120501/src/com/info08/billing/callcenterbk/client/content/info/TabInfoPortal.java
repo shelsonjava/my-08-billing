@@ -48,7 +48,8 @@ public class TabInfoPortal extends Tab {
 
 	public static void draw() {
 		try {
-			ChargePanel chargePanel = new ChargePanel(800, false, true, -1, -1);
+			ChargePanel chargePanel = new ChargePanel(800, false, true, -1, -1,
+					"");
 			mainLayout.addMember(chargePanel);
 
 			DynamicForm searchFormComm = new DynamicForm();

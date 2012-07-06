@@ -60,8 +60,13 @@ public class DlgViewDistrictVillageIndexes extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = listGridRecord.getAttribute("district_center_descr")
+				+ " / " + listGridRecord.getAttribute("village_index_name")
+				+ " / " + listGridRecord.getAttribute("district_index_name")
+				+ " / " + listGridRecord.getAttribute("village_index");
+
 		chargePanel = new ChargePanel(950, true, true,
-				Constants.serviceGeoIndInfo, null);
+				Constants.serviceGeoIndInfo, null, logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -205,17 +210,20 @@ public class DlgViewDistrictVillageIndexes extends Window {
 
 			String district_index_name = listGridRecord
 					.getAttributeAsString("district_index_name");
-			if (district_index_name != null && !district_index_name.trim().equals("")) {
+			if (district_index_name != null
+					&& !district_index_name.trim().equals("")) {
 				sms_text.append(district_index_name).append(" ");
 			}
 
 			String village_index_name = listGridRecord
 					.getAttributeAsString("village_index_name");
-			if (village_index_name != null && !village_index_name.trim().equals("")) {
+			if (village_index_name != null
+					&& !village_index_name.trim().equals("")) {
 				sms_text.append(village_index_name).append(" ");
 			}
 
-			String village_index = listGridRecord.getAttributeAsString("village_index");
+			String village_index = listGridRecord
+					.getAttributeAsString("village_index");
 			if (village_index != null && !village_index.trim().equals("")) {
 				sms_text.append(village_index).append(" ");
 			}

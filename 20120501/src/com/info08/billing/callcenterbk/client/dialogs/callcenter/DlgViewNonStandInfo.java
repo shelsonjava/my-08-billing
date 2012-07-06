@@ -60,8 +60,11 @@ public class DlgViewNonStandInfo extends Window {
 		mainLayout.setHeight100();
 		mainLayout.setPadding(10);
 
+		String logText = listGridRecord.getAttribute("info_group_name") + " / "
+				+ listGridRecord.getAttribute("info_name");
+
 		chargePanel = new ChargePanel(950, true, true,
-				Constants.serviceNonStandartInfo, null);
+				Constants.serviceNonStandartInfo, null, logText);
 		mainLayout.addMember(chargePanel);
 
 		ToolStrip toolStrip = new ToolStrip();
