@@ -47,11 +47,14 @@ public class CallSessionExpense implements Serializable {
 	@Basic
 	@Column(name = "YEAR_MONTH")
 	private Long year_month;
-	
+
 	@Basic
 	@Column(name = "CALL_SESSION_ID")
 	private Long call_session_id;
-	
+
+	@Basic
+	@Column(name = "EVENT_DESCRIPTION")
+	private String event_describtion;
 
 	@Transient
 	private Long chargeCount;
@@ -176,5 +179,13 @@ public class CallSessionExpense implements Serializable {
 
 	public void setCall_session_id(Long call_session_id) {
 		this.call_session_id = call_session_id;
+	}
+
+	public String getEvent_describtion() {
+		return event_describtion;
+	}
+
+	public void setEvent_describtion(String event_describtion) {
+		this.event_describtion = event_describtion;
 	}
 }
