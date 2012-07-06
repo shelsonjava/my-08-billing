@@ -52,6 +52,8 @@ public class ChargePanel extends HLayout {
 	private Integer organization_id;
 	private int chrgCounter = 0;
 
+	private String event_describtion;
+
 	public ChargePanel(int width, boolean enableChargeButton,
 			boolean enableSurveyButton, Integer service_id,
 			Integer organization_id, final Integer surveyKindId,
@@ -243,8 +245,9 @@ public class ChargePanel extends HLayout {
 			Integer organization_id, String event_describtion) {
 		this(width, enableChargeButton, enableSurveyButton, service_id,
 				organization_id, null, null);
-
+		this.event_describtion = event_describtion;
 		logSessionEvent(event_describtion);
+
 	}
 
 	private void logSessionEvent(String event_describtion) {
@@ -521,6 +524,7 @@ public class ChargePanel extends HLayout {
 			record.setAttribute("call_session_id", call_session_id);
 			record.setAttribute("call_kind", call_kind);
 			record.setAttribute("call_phone", phone);
+			record.setAttribute("event_describtion", event_describtion);
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");

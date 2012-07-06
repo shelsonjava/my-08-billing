@@ -152,8 +152,7 @@ public class TabOrgPriorityList extends Tab implements ISaveResult {
 			toolStrip.addButton(deletePriorityBtn);
 
 			histPriorityBtn = new ToolStripButton(
-					CallCenterBK.constants.history(),
-					"moneySmall.png");
+					CallCenterBK.constants.history(), "moneySmall.png");
 			histPriorityBtn.addClickHandler(ch);
 			histPriorityBtn.setLayoutAlign(Alignment.LEFT);
 			histPriorityBtn.setWidth(50);
@@ -200,7 +199,15 @@ public class TabOrgPriorityList extends Tab implements ISaveResult {
 		if (record != null)
 			org_priority_type_id = record.getAttribute("org_priority_type_id")
 					.toString();
-		Criteria cr = new Criteria("org_priority_type_id", org_priority_type_id);
+		Integer iOrg_priority_type_id = null;
+		try {
+			iOrg_priority_type_id = Integer.parseInt(org_priority_type_id);
+		} catch (Exception e) {
+			iOrg_priority_type_id = -100000;
+		}
+		Criteria cr = new Criteria();
+		cr.setAttribute("org_priority_type_id", iOrg_priority_type_id);
+
 		cr.setAttribute("_UUUUUUUIDUUU", HTMLPanel.createUniqueId());
 		lgOrgPriorities.filterData(cr);
 	}

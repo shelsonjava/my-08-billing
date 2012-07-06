@@ -75,14 +75,6 @@
 					 inner join (select d.org_department_id, d.organization_id
 					               from organization_department d
 					               #if($criteria.organization_id)
-					               /*
-					                inner join (select o.organization_id
-					                           from organizations o
-					                          start with o.organization_id = $criteria.organization_id
-					                         connect by prior o.organization_id =
-					                                     o.parrent_organization_id) k
-					                 on k.organization_id = d.organization_id
-					                 start with parrent_department_id is null*/
 					                 where d.organization_id=$criteria.organization_id
 					               #end
 					              #if($criteria.org_department_id)

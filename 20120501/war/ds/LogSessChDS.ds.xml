@@ -21,21 +21,28 @@
         <field name="event_describtion"		type="text"  	title="event_describtion"/>
     </fields>
     
-    <!-- Add Log Session Charge -->
-	<operationBinding operationType="add" operationId="addLogSessionCharge" serverMethod="addLogSessionCharge">
-    	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
-    </operationBinding>
+  
     
      <operationBindings>
+     
+       <!-- Add Log Session Charge -->
+		<operationBinding operationType="add" operationId="addLogSessionCharge" serverMethod="addLogSessionCharge">
+	    	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.MiscDMI"/>
+	    </operationBinding>
+    
     	<operationBinding operationId="custSessCharges" operationType="fetch">
     		<selectClause>   			
-    			1
+    			o.session_id,
+    			o.CHARGE aprice,
+				s.SERVICE_DESCRIPTION as service_description ,
+				EVENT_DESCRIPTION as organization_name
 			</selectClause> 
-			<tableClause>dual</tableClause>
+			<tableClause>service_prices s, CALL_SESSION_EXPENSE o</tableClause>
 			<whereClause><![CDATA[ 
-				1=1
+				o.SERVICE_ID = s.service_price_id and				
+				o.session_id=$criteria.sessionId
 				]]>  
-			</whereClause> 
+			</whereClause>
     	</operationBinding>
     	<operationBinding operationId="custSessNavig" operationType="fetch">
     		<selectClause>   			

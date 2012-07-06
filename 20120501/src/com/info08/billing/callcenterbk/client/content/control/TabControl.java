@@ -363,19 +363,19 @@ public class TabControl extends Tab {
 			vLayout.addMember(hLayout);
 
 			ListGridField sChFieldSrvName = new ListGridField(
-					"service_name_geo", "სერვისის დასახელება", 150);
-			ListGridField sChFieldPrice = new ListGridField("price", "ხარჯი",
+					"service_description", "სერვისის დასახელება", 150);
+			ListGridField sChFieldPrice = new ListGridField("aprice", "ხარჯი",
 					40);
-			ListGridField sChFieldOrgName = new ListGridField("org_name",
-					"ორგანიზაციის დასახელება", 210);
+			ListGridField sChFieldOrgName = new ListGridField(
+					"organization_name", "გაცემული ინფორმაცია", 210);
 
 			sessionChargesGrid.setFields(sChFieldSrvName, sChFieldPrice,
 					sChFieldOrgName);
 
 			ListGridField sChFieldSrvName1 = new ListGridField(
-					"service_name_geo", "სერვისის დასახელება", 150);
-			ListGridField sChFieldOrgName1 = new ListGridField("org_name",
-					"ორგანიზაციის დასახელება", 250);
+					"service_description", "სერვისის დასახელება", 150);
+			ListGridField sChFieldOrgName1 = new ListGridField(
+					"organization_name", "გაცემული ინფორმაცია", 250);
 
 			sessionNavigGrid.setFields(sChFieldSrvName1, sChFieldOrgName1);
 
