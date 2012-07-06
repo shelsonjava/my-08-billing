@@ -29,31 +29,24 @@
      <operationBindings>
     	<operationBinding operationId="custSessCharges" operationType="fetch">
     		<selectClause>   			
-    			ch.session_id,	
-				s.service_description,
-				ch.charge,
-				o.org_name
+    			1
 			</selectClause> 
-			<tableClause>log_session_charges ch, services s, main_orgs o</tableClause>
+			<tableClause>dual</tableClause>
 			<whereClause><![CDATA[ 
-				ch.service_id = s.service_id(+) and
-				h.organization_id = o.organization_id(+) and				
-				ch.session_id=$criteria.sessionId and
-				ch.deleted = 0
+				1=1
 				]]>  
 			</whereClause> 
     	</operationBinding>
     	<operationBinding operationId="custSessNavig" operationType="fetch">
     		<selectClause>   			
-    			h.session_id,	
-				s.service_name_geo,
-				o.org_name
+    			o.session_id,	
+				s.SERVICE_DESCRIPTION as service_description ,
+				EVENT_DESCRIPTION as organization_name
 			</selectClause> 
-			<tableClause>log_main_hits h, services s, main_orgs o</tableClause>
+			<tableClause>service_prices s, CALL_SESSION_EVENT o</tableClause>
 			<whereClause><![CDATA[ 
-				h.service_id = s.service_id and				
-				h.organization_id = o.organization_id(+) and				
-				h.session_id=$criteria.sessionId
+				o.service_id = s.service_price_id and				
+				o.session_id=$criteria.sessionId
 				]]>  
 			</whereClause> 
     	</operationBinding>
