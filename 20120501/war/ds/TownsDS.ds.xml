@@ -199,7 +199,7 @@
 				 	AND  trim(t.town_code||' '||t.town_new_code) like '%'||$criteria.p_code||'%'
 				 #end
 				 #if($criteria.countryregion) and t.countryregion like '%'||$criteria.countryregion||'%' #end
-				 #if($criteria.cityName) and t.town_name like '%'||$criteria.cityName||'%' #end
+				 #if($criteria.town_name) and t.town_name like '%'||$criteria.town_name||'%' #end
 				 #if($criteria.p_town_name) and t.town_name like '%'||$criteria.p_town_name||'%' #end
 				 #if($criteria.code) and trim(t.town_code) like '%'||$criteria.code||'%' #end
 				 #if($criteria.town_new_code) and trim(t.town_new_code) like '%'||$criteria.town_new_code||'%' #end

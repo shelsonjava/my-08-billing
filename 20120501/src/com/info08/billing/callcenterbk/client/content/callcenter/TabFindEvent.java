@@ -417,7 +417,7 @@ public class TabFindEvent extends Tab {
 			try {
 				poster_date_p = eventDateStartItem.getValueAsDate();
 				if (poster_date_p != null) {
-					criteria.setAttribute("poster_date_p", poster_date_p);
+					criteria.setAttribute("event_date_p", poster_date_p);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

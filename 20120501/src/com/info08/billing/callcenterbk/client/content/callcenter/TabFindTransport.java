@@ -435,7 +435,7 @@ public class TabFindTransport extends Tab {
 		name_descr.setCanFilter(true);
 
 		ListGridField transport_plane_geo = new ListGridField(
-				"transport_plane_geo",
+				"transport_company_geo",
 				CallCenterBK.constants.transportTypeShort(), 100);
 		transport_plane_geo.setAlign(Alignment.CENTER);
 		transport_plane_geo.setCanFilter(true);
