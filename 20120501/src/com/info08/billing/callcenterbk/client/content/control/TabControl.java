@@ -1,4 +1,4 @@
-package com.info08.billing.callcenterbk.client.content.control;
+	package com.info08.billing.callcenterbk.client.content.control;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -432,7 +432,7 @@ public class TabControl extends Tab {
 									return;
 								}
 								Integer duration = listGridRecord
-										.getAttributeAsInt("duration");
+										.getAttributeAsInt("call_duration");
 								if (duration == null) {
 									SC.say("არასწორი ზარის ხანგრძლივობა");
 									return;
@@ -440,7 +440,7 @@ public class TabControl extends Tab {
 								String sessionId = listGridRecord
 										.getAttributeAsString("session_id");
 								Date date = listGridRecord
-										.getAttributeAsDate("start_date");
+										.getAttributeAsDate("call_start_date");
 								ClientUtils.getURL(sessionId, date);
 							} catch (Exception e) {
 								SC.say(e.toString());
@@ -463,7 +463,7 @@ public class TabControl extends Tab {
 								String sessionId = listGridRecord
 										.getAttributeAsString("session_id");
 								Date date = listGridRecord
-										.getAttributeAsDate("start_date");
+										.getAttributeAsDate("call_start_date");
 								ClientUtils.downloadFile(sessionId, date);
 							} catch (Exception e) {
 								SC.say(e.toString());
