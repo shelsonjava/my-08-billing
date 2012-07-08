@@ -109,7 +109,10 @@
 				s.call_quality,
 				decode(s.call_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი'),
 				p.user_firstname||' '||p.user_lastname
-			</groupClause>			
+			</groupClause>	
+			<orderClause>
+				s.call_start_date desc
+			</orderClause>		
 		</operationBinding>
 		
 		
