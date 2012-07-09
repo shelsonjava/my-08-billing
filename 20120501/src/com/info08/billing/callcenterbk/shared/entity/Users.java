@@ -51,7 +51,6 @@ public class Users implements java.io.Serializable {
 	@Column(name = "USER_PASSWORD", nullable = false, length = 6)
 	private String user_password;
 
-	@SuppressWarnings("unused")
 	@Transient
 	private String fullPersonName;
 
