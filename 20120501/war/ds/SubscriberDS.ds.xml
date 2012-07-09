@@ -172,9 +172,13 @@
 							
 			        #end
 					#if($criteria.street_name_param) 
-							#foreach($str in $criteria.street_name_param.split(" "))
-								and t.concat_address like '%'||'$str'||'%'
+						and  t.addr_id in (
+							select /*+ index(t1,IDX_ADDR_CONCAT_ADDRESS)*/ t1.addr_id
+          						from addresses t1 where 1=1 #foreach($str in $criteria.street_name_param.split(" "))
+								and instr(t1.concat_address, '$str')>0
 							#end
+						)
+							
 					#end
 				]]>
 			</whereClause>	
