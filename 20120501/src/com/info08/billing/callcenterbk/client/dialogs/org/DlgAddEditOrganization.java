@@ -697,6 +697,7 @@ public class DlgAddEditOrganization extends Window {
 
 	private void copyAddress() {
 		try {
+			legalAddress.clearValues();
 			Map<?, ?> valuesCopy = physicalAddress.getValues();
 			String oldAddress = legalAddress.getOldAddItem().getValueAsString();
 			legalAddress.setValues(valuesCopy);

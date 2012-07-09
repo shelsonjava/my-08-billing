@@ -20,7 +20,6 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -34,10 +33,10 @@ public class DlgViewStreetInfo extends Window {
 	private ToolStripButton sendAddressInfoSMS;
 	private ChargePanel chargePanel;
 	private boolean smsSend = false;
-	private ListGridRecord pRecord;
+	private Record pRecord;
 	private ChargePanel paramChargePanel;
 
-	public DlgViewStreetInfo(ListGridRecord pRecord, DataSource dataSource,
+	public DlgViewStreetInfo(Record pRecord, DataSource dataSource,
 			ChargePanel paramChargePanel) {
 		this.pRecord = pRecord;
 		this.paramChargePanel = paramChargePanel;
@@ -84,7 +83,7 @@ public class DlgViewStreetInfo extends Window {
 		detailViewer.setWidth100();
 		detailViewer.setHeight100();
 		detailViewer.selectRecord(pRecord);
-		ListGridRecord arr[] = new ListGridRecord[1];
+		Record arr[] = new Record[1];
 		arr[0] = pRecord;
 		detailViewer.setData(arr);
 

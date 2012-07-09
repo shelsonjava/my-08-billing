@@ -50,7 +50,7 @@ public class DlgViewOrg extends Window {
 
 	private VLayout hLayout;
 
-	protected ListGridRecord record;
+	protected Record record;
 	// protected ListGrid listGrid;
 	protected DataSource dataSource;
 	protected DataSource depsDataSource;
@@ -78,12 +78,12 @@ public class DlgViewOrg extends Window {
 	private ListGrid listGridOrgTreeChilds;
 	private ListGrid listGridOrgTreeParrent;
 
-	public DlgViewOrg(final DataSource dataSource, ListGridRecord pRecord) {
+	public DlgViewOrg(final DataSource dataSource, Record pRecord) {
 		this(dataSource, pRecord, false);
 	}
 
-	public DlgViewOrg(final DataSource dataSource,
-			final ListGridRecord pRecord, boolean viewMainInfoFirst) {
+	public DlgViewOrg(final DataSource dataSource, final Record pRecord,
+			boolean viewMainInfoFirst) {
 
 		try {
 
@@ -183,7 +183,7 @@ public class DlgViewOrg extends Window {
 			detailViewer.setWidth100();
 			detailViewer.setHeight100();
 			detailViewer.selectRecord(pRecord);
-			ListGridRecord arr[] = new ListGridRecord[1];
+			Record arr[] = new Record[1];
 			arr[0] = pRecord;
 			detailViewer.setData(arr);
 
@@ -244,8 +244,8 @@ public class DlgViewOrg extends Window {
 			detailViewer.setFields(org_name, org_name_eng, full_address, note,
 					workinghours, dayoffs, director, contactperson,
 					legal_statuse, org_info, identcode, new_identcode,
-					webaddress, mail, social_address, ind, legaladdress, founded, partnerbank,
-					workpersoncountity);
+					webaddress, mail, social_address, ind, legaladdress,
+					founded, partnerbank, workpersoncountity);
 
 			addInfoLayout.addMember(detailViewer);
 			tabDetViewer.setPane(addInfoLayout);

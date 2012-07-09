@@ -4,7 +4,6 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddVirtualCharge;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
-import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -296,80 +295,24 @@ public class TabVirtualCharge extends Tab {
 				SC.say(CallCenterBK.constants.invalidOrganization());
 				return;
 			}
+
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("organization_id", organization_id);
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("customOrgSearchForCallCenterByMainId");
-			phoneViewDS.fetchData(criteria, new DSCallback() {
+			dsRequest.setOperationId("customOrgSearchForCallCenterNew");
+
+			DataSource orgDS = DataSource.get("OrgDS");
+			orgDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
-					try {
-						Record[] records = response.getData();
-						if (records == null || records.length <= 0) {
-							SC.say(CallCenterBK.constants.orgNotFound());
-							return;
-						}
-						Record record = records[0];
-						ListGridRecord pRecord = new ListGridRecord();
-						pRecord.setAttribute("organization_id",
-								record.getAttributeAsInt("organization_id"));
-						pRecord.setAttribute("note_crit",
-								record.getAttributeAsInt("note_crit"));
-						pRecord.setAttribute("org_name",
-								record.getAttributeAsString("org_name"));
-						pRecord.setAttribute("org_name_eng",
-								record.getAttributeAsString("org_name_eng"));
-						pRecord.setAttribute("note",
-								record.getAttributeAsString("note"));
-						pRecord.setAttribute("director",
-								record.getAttributeAsString("director"));
-						pRecord.setAttribute("founded",
-								record.getAttributeAsString("founded"));
-						pRecord.setAttribute("identcode",
-								record.getAttributeAsString("identcode"));
-						pRecord.setAttribute("new_identcode",
-								record.getAttributeAsString("new_identcode"));
-						pRecord.setAttribute("legaladdress",
-								record.getAttributeAsString("legaladdress"));
-						pRecord.setAttribute("real_address",
-								record.getAttributeAsString("real_address"));
-						pRecord.setAttribute("workinghours",
-								record.getAttributeAsString("workinghours"));
-						pRecord.setAttribute("dayoffs",
-								record.getAttributeAsString("dayoffs"));
-						pRecord.setAttribute("org_info",
-								record.getAttributeAsString("org_info"));
-						pRecord.setAttribute("contactperson",
-								record.getAttributeAsString("contactperson"));
-						pRecord.setAttribute("workpersoncountity", record
-								.getAttributeAsString("workpersoncountity"));
-						pRecord.setAttribute("ind",
-								record.getAttributeAsString("ind"));
-						pRecord.setAttribute("webaddress",
-								record.getAttributeAsString("webaddress"));
-						pRecord.setAttribute("mail",
-								record.getAttributeAsString("mail"));
-						pRecord.setAttribute("town_name",
-								record.getAttributeAsString("town_name"));
-						pRecord.setAttribute("town_district_name", record
-								.getAttributeAsString("town_district_name"));
-						pRecord.setAttribute("street_location",
-								record.getAttributeAsString("street_location"));
-						pRecord.setAttribute("index_text",
-								record.getAttributeAsString("index_text"));
-						pRecord.setAttribute("legal_statuse",
-								record.getAttributeAsString("legal_statuse"));
-						pRecord.setAttribute("town_id",
-								record.getAttributeAsInt("town_id"));
-						pRecord.setAttribute("org_allert_by_buss_det", record
-								.getAttributeAsString("org_allert_by_buss_det"));
-
-						showOrgDialog(pRecord);
-					} catch (Exception e) {
-						e.printStackTrace();
-						SC.say(e.toString());
+					Record[] records = response.getData();
+					if (records == null || records.length != 1) {
+						SC.say(CallCenterBK.constants.orgNotFound());
+						return;
 					}
+					Record record = records[0];
+					showOrgDialog(record);
 				}
 			}, dsRequest);
 
@@ -404,7 +347,7 @@ public class TabVirtualCharge extends Tab {
 		}
 	}
 
-	private void showOrgDialog(ListGridRecord pRecord) {
+	private void showOrgDialog(Record pRecord) {
 		try {
 			DlgViewOrg dlgViewOrg = new DlgViewOrg(phoneViewDS, pRecord);
 			dlgViewOrg.show();

@@ -68,23 +68,24 @@ public class DlgAddVirtualCharge extends Window {
 			DetailViewerField phone = new DetailViewerField("phone",
 					CallCenterBK.constants.phone());
 
-			DetailViewerField fullName = new DetailViewerField("fullName",
+			DetailViewerField fullName = new DetailViewerField("full_name",
 					CallCenterBK.constants.dasaxeleba());
 
 			DetailViewerField orgOrAbonent = new DetailViewerField(
-					"orgOrAbonent", CallCenterBK.constants.type());
+					"owner_type_descr", CallCenterBK.constants.type());
 
-			DetailViewerField town_name = new DetailViewerField(
-					"town_name", CallCenterBK.constants.town());
+			DetailViewerField town_name = new DetailViewerField("town_name",
+					CallCenterBK.constants.town());
 
-			DetailViewerField streetName = new DetailViewerField("streetName",
-					CallCenterBK.constants.street());
+			DetailViewerField streetName = new DetailViewerField(
+					"concat_address", CallCenterBK.constants.street());
 
 			DetailViewerField phone_status = new DetailViewerField(
-					"phone_status", CallCenterBK.constants.phoneStatus());
+					"phone_contract_type_desc",
+					CallCenterBK.constants.phoneStatus());
 
-			detailViewer.setFields(phone, fullName, orgOrAbonent,
-					town_name, streetName, phone_status);
+			detailViewer.setFields(phone, fullName, orgOrAbonent, town_name,
+					streetName, phone_status);
 
 			hLayout.addMember(detailViewer);
 
@@ -106,8 +107,8 @@ public class DlgAddVirtualCharge extends Window {
 			serviceItem.setWidth(230);
 			DataSource services = CommonSingleton.getInstance().getServicesDS();
 			serviceItem.setOptionDataSource(services);
-			serviceItem.setDisplayField("serviceNameGeo");
-			serviceItem.setValueField("serviceId");
+			serviceItem.setDisplayField("service_description");
+			serviceItem.setValueField("service_price_id");
 
 			typeItem = new SelectItem();
 			typeItem.setTitle(CallCenterBK.constants.type());
@@ -229,7 +230,7 @@ public class DlgAddVirtualCharge extends Window {
 			record.setAttribute("upd_user", loggedUser);
 			record.setAttribute("service_id", serviceId);
 			record.setAttribute("chargeCount", chargeCount);
-			record.setAttribute("phone", phone);
+			record.setAttribute("call_phone", phone);
 			record.setAttribute("virt_call_type", virt_call_type);
 
 			DSRequest req = new DSRequest();

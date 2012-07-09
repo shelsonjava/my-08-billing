@@ -250,6 +250,13 @@ public class MyAddressPanel2 extends HLayout {
 
 	}
 
+	public void clearValues() {
+		dynamicForm.clearValues();
+		addrTownItem.clearValue();
+		addrRegionItem.clearValue();
+		addrStreetItem.clearValue();
+	}
+
 	public void setValues(Map<?, ?> values) {
 		boolean checkBoxValue = (turnOffItem == null) ? false : turnOffItem
 				.getValueAsBoolean();

@@ -270,24 +270,6 @@ public class TabOrganization extends Tab {
 					"searchPartnerBanks", "organization_id",
 					"organization_name");
 
-			// ListGrid pickListProperties = new ListGrid();
-			// pickListProperties.setShowFilterEditor(true);
-			//
-			// ListGridField activity_description = new ListGridField(
-			// "activity_description", CallCenterBK.constants.activity());
-
-			// orgActsItem = new SelectItem();
-			// orgActsItem.setMultiple(true);
-			// orgActsItem.setTitle(CallCenterBK.constants.activity());
-			// orgActsItem.setName("org_activity_id");
-			// orgActsItem.setWidth(245);
-			// orgActsItem.setTitleAlign(Alignment.LEFT);
-			// ClientUtils.fillCombo(orgActsItem, "OrgActDS",
-			// "searchAllBusinesActivitiesForCB", "org_activity_id",
-			// "activity_description");
-			// orgActsItem.setPickListFields(activity_description);
-			// orgActsItem.setPickListProperties(pickListProperties);
-
 			orgActivity = new MyComboboxItemMultiple();
 			orgActivity.setTitle(CallCenterBK.constants.activity());
 			orgActivity.setWidth(245);

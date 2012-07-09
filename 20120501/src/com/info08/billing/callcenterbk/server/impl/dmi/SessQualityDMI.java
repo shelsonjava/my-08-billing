@@ -52,6 +52,7 @@ public class SessQualityDMI implements QueryConstants {
 					.get("chargeCount").toString());
 			Long virt_call_type = new Long(dsRequest.getValues()
 					.get("virt_call_type").toString());
+
 			Timestamp currDate = new Timestamp(System.currentTimeMillis());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyMM");
 			Long ym = new Long(dateFormat.format(currDate));
@@ -90,6 +91,8 @@ public class SessQualityDMI implements QueryConstants {
 				item.setYear_month(ym);
 				item.setCharge_date(currDate);
 				item.setCharge(charge);
+				item.setCall_session_id(logSession.getCall_session_id());
+				item.setEvent_describtion("დარიცხვა (Email სერვისი)");
 				oracleManager.persist(item);
 			}
 
