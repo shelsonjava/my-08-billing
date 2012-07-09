@@ -17,7 +17,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "survey_reply_type", schema = "ccare")
+@Table(name = "survey_reply_type")
 public class SurveyReplyType implements Serializable {
 	private static final long serialVersionUID = 1L;
 

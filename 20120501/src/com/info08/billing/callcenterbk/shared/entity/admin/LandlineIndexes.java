@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @NamedQueries({ @NamedQuery(name = "LandlineIndexes.getAll", query = "select e from LandlineIndexes e") })
 @Entity
-@Table(name = "LANDLINE_INDEXES", schema = "ccare")
+@Table(name = "LANDLINE_INDEXES")
 public class LandlineIndexes implements Serializable {
 	private static final long serialVersionUID = 1L;
 

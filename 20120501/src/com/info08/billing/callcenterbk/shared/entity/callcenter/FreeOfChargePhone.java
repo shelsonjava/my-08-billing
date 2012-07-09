@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "FREE_OF_CHARGE_PHONE", schema = "ccare")
+@Table(name = "FREE_OF_CHARGE_PHONE")
 public class FreeOfChargePhone implements Serializable {
 	private static final long serialVersionUID = 1001L;
 

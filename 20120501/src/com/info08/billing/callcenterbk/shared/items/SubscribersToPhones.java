@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "SUBSCRIBER_TO_PHONES", schema = "ccare")
+@Table(name = "SUBSCRIBER_TO_PHONES")
 public class SubscribersToPhones implements Serializable {
 
 	private static final long serialVersionUID = 7026086622425435823L;

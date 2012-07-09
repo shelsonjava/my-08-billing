@@ -17,7 +17,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "BLACK_LIST", schema = "ccare")
+@Table(name = "BLACK_LIST")
 public class BlackList implements Serializable {
 	private static final long serialVersionUID = 1L;
 

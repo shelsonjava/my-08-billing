@@ -17,7 +17,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "VILLAGE_INDEXES", schema = "ccare")
+@Table(name = "VILLAGE_INDEXES")
 public class VillageIndexes implements Serializable {
 	private static final long serialVersionUID = 1L;
 

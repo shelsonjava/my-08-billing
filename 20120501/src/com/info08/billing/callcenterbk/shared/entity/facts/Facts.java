@@ -21,7 +21,7 @@ import javax.persistence.Transient;
  */
 @NamedQueries({ @NamedQuery(name = "Facts.getAllFacts", query = "select e from Facts e") })
 @Entity
-@Table(name = "FACTS", schema = "ccare")
+@Table(name = "FACTS")
 public class Facts implements Serializable {
 	private static final long serialVersionUID = 1L;
 

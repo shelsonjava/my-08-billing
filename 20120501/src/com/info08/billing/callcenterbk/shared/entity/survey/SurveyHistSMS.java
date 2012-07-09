@@ -18,7 +18,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="SURVEY_HIST_SMS", schema="ccare")
+@Table(name="SURVEY_HIST_SMS")
 public class SurveyHistSMS implements Serializable {
 	private static final long serialVersionUID = 1L;
 

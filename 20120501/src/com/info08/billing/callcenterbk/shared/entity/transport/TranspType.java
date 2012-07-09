@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name="TRANSP_TYPES",schema="ccare")
+@Table(name="TRANSP_TYPES")
 public class TranspType implements Serializable {
 	private static final long serialVersionUID = 1L;
 

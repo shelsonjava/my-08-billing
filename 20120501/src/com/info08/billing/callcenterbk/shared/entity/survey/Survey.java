@@ -22,7 +22,7 @@ import javax.persistence.Transient;
  */
 @NamedQueries({ @NamedQuery(name = "Survey.getLocked", query = "select e from Survey e where e.survey_id = :survId and trunc(e.survey_created) >= trunc(sysdate-14) and e.survery_responce_status = 0 ") })
 @Entity
-@Table(name = "Survey", schema = "ccare")
+@Table(name = "Survey")
 public class Survey implements Serializable {
 	private static final long serialVersionUID = 1L;
 

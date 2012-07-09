@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name = "v_facts_type", schema = "ccare")
+@Table(name = "v_facts_type")
 public class FactType implements Serializable {
 	private static final long serialVersionUID = 1L;
 

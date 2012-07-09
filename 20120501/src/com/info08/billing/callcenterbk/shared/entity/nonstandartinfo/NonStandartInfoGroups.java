@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "NON_STANDART_INFO_GROUPS", schema = "ccare")
+@Table(name = "NON_STANDART_INFO_GROUPS")
 public class NonStandartInfoGroups implements Serializable {
 	private static final long serialVersionUID = 1L;
 

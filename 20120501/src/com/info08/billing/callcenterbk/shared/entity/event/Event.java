@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "EVENT", schema = "ccare")
+@Table(name = "EVENT")
 public class Event implements Serializable {
 	private static final long serialVersionUID = 1L;
 

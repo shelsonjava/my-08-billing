@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "WEB_SITE_GROUPS", schema = "ccare")
+@Table(name = "WEB_SITE_GROUPS")
 public class WebSiteGroups implements Serializable {
 	private static final long serialVersionUID = 1L;
 

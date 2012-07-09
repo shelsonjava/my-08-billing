@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 })
 @Entity
-@Table(name = "continents", schema = "ccare")
+@Table(name = "continents")
 public class Continents implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;

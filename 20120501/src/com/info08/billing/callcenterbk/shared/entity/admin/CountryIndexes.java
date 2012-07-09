@@ -20,7 +20,7 @@ import javax.persistence.Transient;
  */
 @NamedQueries({ @NamedQuery(name = "CountryIndexes.getAllIndexes", query = "select e from CountryIndexes e") })
 @Entity
-@Table(name = "COUNTRY_INDEXES", schema = "ccare")
+@Table(name = "COUNTRY_INDEXES")
 public class CountryIndexes implements Serializable {
 	private static final long serialVersionUID = 1L;
 

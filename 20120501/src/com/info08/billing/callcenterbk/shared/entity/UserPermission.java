@@ -17,7 +17,7 @@ import javax.persistence.Table;
 
 })
 @Entity
-@Table(name = "USER_PERMISSION", schema = "ccare")
+@Table(name = "USER_PERMISSION")
 public class UserPermission implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4653314952773716984L;

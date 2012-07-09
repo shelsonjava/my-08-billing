@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 
 })
 @Entity
-@Table(name = "USERS", schema = "ccare")
+@Table(name = "USERS")
 public class Users implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4653314952773716984L;

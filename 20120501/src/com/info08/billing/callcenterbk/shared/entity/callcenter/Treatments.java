@@ -21,7 +21,7 @@ import javax.persistence.Transient;
 
 @NamedQueries({ @NamedQuery(name = "Treatments.getTreatmentByPhoneNumber", query = "select e from Treatments e where e.phone_number = :phone_number ") })
 @Entity
-@Table(name = "TREATMENTS", schema = "ccare")
+@Table(name = "TREATMENTS")
 public class Treatments implements Serializable {
 	private static final long serialVersionUID = 1000L;
 

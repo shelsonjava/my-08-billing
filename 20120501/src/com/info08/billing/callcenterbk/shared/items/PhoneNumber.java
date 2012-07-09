@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 					query = "select e from PhoneNumber e where e.phone=:phone") 
 })
 @Entity
-@Table(name = "PHONE_NUMBERS", schema = "ccare")
+@Table(name = "PHONE_NUMBERS")
 public class PhoneNumber implements Serializable {
 	/**
 	 * 

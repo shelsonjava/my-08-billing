@@ -17,7 +17,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "NON_STANDART_INFO", schema = "ccare")
+@Table(name = "NON_STANDART_INFO")
 public class NonStandartInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 

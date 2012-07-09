@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "MAIN_DETAILS", schema = "ccare")
+@Table(name = "MAIN_DETAILS")
 public class MainDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 

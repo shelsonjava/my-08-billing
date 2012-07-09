@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name = "OPERATOR_WARNS", schema = "ccare")
+@Table(name = "OPERATOR_WARNS")
 public class OperatorWarn implements Serializable {
 	private static final long serialVersionUID = 1L;
 

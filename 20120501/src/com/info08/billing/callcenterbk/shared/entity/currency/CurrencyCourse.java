@@ -22,7 +22,7 @@ import javax.persistence.Transient;
 
 @NamedQueries({ @NamedQuery(name = "CurrencyCourse.getCurrencyCourseByCurrency", query = "select e from CurrencyCourse e where e.currency_id = :currency_id") })
 @Entity
-@Table(name = "CURRENCY_COURSE", schema = "ccare")
+@Table(name = "CURRENCY_COURSE")
 public class CurrencyCourse implements Serializable {
 	private static final long serialVersionUID = 1L;
 

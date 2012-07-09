@@ -29,7 +29,7 @@ import javax.persistence.Transient;
 					query = "select count(e) from SentSMSHist e where e.session_call_id = :sessId")
 })
 @Entity
-@Table(name = "SENT_SMS_HIST", schema = "ccare")
+@Table(name = "SENT_SMS_HIST")
 public class SentSMSHist implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4653314952773716984L;

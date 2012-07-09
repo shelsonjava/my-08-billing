@@ -17,7 +17,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "PUBLIC_TRANSP_DIR", schema = "ccare")
+@Table(name = "PUBLIC_TRANSP_DIR")
 public class PublicTranspDirection implements Serializable {
 
 	private static final long serialVersionUID = 1L;

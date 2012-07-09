@@ -20,7 +20,7 @@ import javax.persistence.Transient;
  */
 @NamedQueries({ @NamedQuery(name = "GSMIndexes.getAllGSMIndexes", query = "select e from GSMIndexes e") })
 @Entity
-@Table(name = "GSM_INDEXES", schema = "ccare")
+@Table(name = "GSM_INDEXES")
 public class GSMIndexes implements Serializable {
 	private static final long serialVersionUID = 1L;
 

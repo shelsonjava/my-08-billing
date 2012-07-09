@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  * 
  */
 @Entity
-@Table(name = "CALL_CENTER_NEWS", schema = "ccare")
+@Table(name = "CALL_CENTER_NEWS")
 public class CallCenterNews implements Serializable {
 	private static final long serialVersionUID = 1L;
 
