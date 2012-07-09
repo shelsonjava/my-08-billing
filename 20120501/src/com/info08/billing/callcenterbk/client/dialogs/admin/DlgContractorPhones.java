@@ -19,6 +19,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
@@ -55,11 +56,15 @@ public class DlgContractorPhones extends Window {
 	private DataSource OrgDepartmentDS;
 	private DataSource ContractorsPhonesDS;
 	private Criteria lastPhoneCriteria;
+	private CheckboxItem cbiByHirarchy;
+
+	private Integer organization_id;
 
 	public DlgContractorPhones(final Integer organization_id,
 			ListGrid listGridPhones) {
 		try {
 			this.listGridPhones = listGridPhones;
+			this.organization_id = organization_id;
 			OrgDS = DataSource.get("OrgDS");
 			OrgDepartmentDS = DataSource.get("OrgDepartmentDS");
 			ContractorsPhonesDS = DataSource.get("ContractorsPhonesDS");
@@ -238,6 +243,39 @@ public class DlgContractorPhones extends Window {
 			toolStrip.addButton(addPhones);
 			toolStrip.addButton(clearPhones);
 
+			cbiByHirarchy = new CheckboxItem("byHirarchy", "ყველა ნომერი");
+			cbiByHirarchy.setValue(false);
+			toolStrip.addFormItem(cbiByHirarchy);
+
+			ToolStripButton addPhonesH = new ToolStripButton();
+			addPhonesH.setIcon("restore.png");
+			addPhonesH.setTitle("გადატანა მხოლოდ მონიშნულის");
+
+			addPhonesH.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					addSelectefPhones();
+
+				}
+			});
+			toolStrip.addButton(addPhonesH);
+
+			ToolStripButton addPhonesTextH = new ToolStripButton();
+			addPhonesTextH.setIcon("add.png");
+			addPhonesTextH.setTitle("ტექსტით არჩევა");
+
+			addPhonesTextH.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					new DlgAddTextPhones(DlgContractorPhones.this,
+							organization_id).show();
+
+				}
+			});
+			toolStrip.addButton(addPhonesTextH);
+
 			/*--------------------------------------------*/
 
 			departmentGrid = new ListGrid();
@@ -278,6 +316,8 @@ public class DlgContractorPhones extends Window {
 			phoneGrid.setHeight100();
 			phoneGrid.setAlternateRecordStyles(true);
 			phoneGrid.setAutoFetchData(false);
+			phoneGrid.setCanSelectText(true);
+			phoneGrid.setCanDragSelectText(true);
 			// phoneGrid.setShowFilterEditor(true);
 			// phoneGrid.setFilterOnKeypress(true);
 
@@ -377,6 +417,16 @@ public class DlgContractorPhones extends Window {
 		}
 	}
 
+	protected void addSelectefPhones() {
+		Record records[] = phoneGrid.getSelectedRecords();
+		for (Record record2 : records) {
+			String phone = record2.getAttribute("phone");
+			if (phone != null)
+				addPhone(phone);
+		}
+
+	}
+
 	private void save() {
 		contractPhonesGrid.clearCriteria(new DSCallback() {
 
@@ -402,7 +452,9 @@ public class DlgContractorPhones extends Window {
 
 	private void search() {
 		Criteria orgGridCriteria = new Criteria();
-		orgGridCriteria.setAttribute("parrent_organization_id", 80353);
+		orgGridCriteria.setAttribute("pp_organization_id", organization_id);
+		orgGridCriteria.setAttribute("only_parrent", 1);
+
 		if (organizationNameItem.getValueAsString() != null
 				&& !organizationNameItem.getValueAsString().equals("")) {
 			orgGridCriteria.setAttribute("organization_name",
@@ -439,9 +491,14 @@ public class DlgContractorPhones extends Window {
 			cr = new Criteria();
 			cr.setAttribute("organization_id", -1);
 		}
-		DSRequest req = new DSRequest();
-		req.setOperationId("searchPhones");
 
+		boolean hirarchy = cbiByHirarchy.getValueAsBoolean();
+		DSRequest req = new DSRequest();
+		if (!hirarchy)
+			req.setOperationId("searchPhones");
+		else
+			req.setOperationId("searchPhonesHirarchy");
+		cbiByHirarchy.setValue(false);
 		ds.fetchData(cr, new DSCallback() {
 
 			@Override
@@ -452,7 +509,7 @@ public class DlgContractorPhones extends Window {
 					for (Record record2 : records) {
 						String phone = record2.getAttribute("phone");
 						if (phone != null)
-							addPhone(phone, true);
+							addPhone(phone);
 					}
 				}
 
@@ -461,7 +518,7 @@ public class DlgContractorPhones extends Window {
 
 	}
 
-	private void addPhone(String phone, boolean setSource) {
+	void addPhone(String phone) {
 		Record record = contractPhonesGrid.getRecordList().find("phone", phone);
 		if (record == null) {
 			record = new Record();

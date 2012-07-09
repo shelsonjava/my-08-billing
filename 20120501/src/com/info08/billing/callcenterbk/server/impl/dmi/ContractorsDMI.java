@@ -5,9 +5,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
@@ -24,7 +26,9 @@ import com.info08.billing.callcenterbk.shared.entity.contractors.Contract;
 import com.info08.billing.callcenterbk.shared.entity.contractors.ContractPriceItem;
 import com.info08.billing.callcenterbk.shared.entity.contractors.ContractorPhone;
 import com.info08.billing.callcenterbk.shared.entity.org.Organization;
+import com.info08.billing.callcenterbk.shared.items.PhoneNumber;
 import com.isomorphic.datasource.DSRequest;
+import com.isomorphic.datasource.DSResponse;
 import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
 import com.isomorphic.sql.SQLDataSource;
@@ -771,6 +775,52 @@ public class ContractorsDMI implements QueryConstants {
 				mySQLConnection.close();
 			} catch (Exception e2) {
 			}
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<PhoneNumber> checkPhones(Map record) throws Exception {
+
+		try {
+			String log = "Method:CommonDMI.checkPhones";
+
+			Long organization_id = new Long(record.get("organization_id")
+					.toString());
+			Object o = record.get("contractorAdvPhones");
+			LinkedMap phones = (LinkedMap) o;
+
+			Map<String, Long> criteria = new TreeMap<String, Long>();
+			criteria.put("organization_id", organization_id);
+			List<PhoneNumber> list = DMIUtils.findObjectsdByCriteria(
+					"ContractorsPhonesDS", "searchPhonesHirarchy", criteria,
+					PhoneNumber.class);
+
+			List<PhoneNumber> result = new ArrayList<PhoneNumber>();
+			Set<String> keys = phones.keySet();
+			for (String phone : keys) {
+				PhoneNumber pn = new PhoneNumber();
+				pn.setPhone_number_id(0L);
+				pn.setPhone(phone);
+				result.add(pn);
+				for (PhoneNumber phoneNumber : list) {
+					if (phoneNumber.getPhone().equals(phone)) {
+						pn.setPhone_number_id(1L);
+						break;
+					}
+				}
+				
+			}
+
+			logger.info(log);
+			return result;
+		} catch (Exception e) {
+
+			if (e instanceof CallCenterException) {
+				throw (CallCenterException) e;
+			}
+			logger.error("checkPhones: ", e);
+			throw new CallCenterException("შეცდომა მონაცემების წამოღებისას : "
+					+ e.toString());
 		}
 	}
 }
