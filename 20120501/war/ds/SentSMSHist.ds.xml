@@ -40,19 +40,19 @@
 				t.message_done,
 				t.unsuccess_count,
 				t.gsm_operator_msg_id,
-				s.service_name_geo,
+				s.service_description service_name_geo,
 				decode(t.message_type, 1, 'გარკვევა', 'ჩვეულებრივი') as message_type_descr,
 				decode(t.hist_status_id, 1, 'მიწოდებულია', 'მიუწოდებელია') as hist_status_descr
 			</selectClause> 
-			<tableClause>SENT_SMS_HIST t,services s, users tt</tableClause>
+			<tableClause>SENT_SMS_HIST t,service_prices s, users tt</tableClause>
 			<whereClause><![CDATA[			 
-				t.service_id = s.service_id(+) and t.creator_user = tt.user_name(+)
+				t.service_id = s.service_price_id(+) and t.creator_user = tt.user_name(+)
 				#if($criteria.reciever_number) and t.reciever_number like '%'||$criteria.reciever_number||'%' #end
 				#if($criteria.session_call_id) and t.session_call_id = $criteria.session_call_id #end
 				#if($criteria.message_sent_time) and trunc(t.message_sent_time) = trunc($criteria.message_sent_time) #end
 				#if($criteria.pStatDelivered) and t.hist_status_id = 1 #end
 				#if($criteria.pStatNotDelivered) and t.hist_status_id <> 1 #end
-				#if($criteria.creator_user) and tt.creator_user = $criteria.creator_user #end
+				#if($criteria.creator_user) and tt.user_id = $criteria.creator_user #end
 				]]>				 
 			</whereClause> 
 			<orderClause>t.message_sent_time desc</orderClause>
