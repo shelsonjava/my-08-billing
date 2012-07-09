@@ -22,6 +22,7 @@ import com.info08.billing.callcenterbk.shared.entity.survey.Survey;
 import com.info08.billing.callcenterbk.shared.entity.survey.SurveyKind;
 import com.info08.billing.callcenterbk.shared.entity.survey.SurveyReplyType;
 import com.isomorphic.datasource.DSRequest;
+import com.isomorphic.datasource.DSResponse;
 import com.isomorphic.jpa.EMF;
 
 public class SurveyDMI implements QueryConstants {
@@ -411,20 +412,27 @@ public class SurveyDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public CallSessionExpense addChargesBySurvey(
-			CallSessionExpense callSessionExpense) throws Exception {
+	public DSResponse addChargesBySurvey(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
 			String log = "Method:CommonDMI.addChargesBySurvey.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
+			Map<?, ?> values = dsRequest.getValues();
 
-			Long service_id = callSessionExpense.getService_id();
-			String call_phone = callSessionExpense.getCall_phone();
-
+			Long service_id = Long.parseLong(values.get("service_price_id")
+					.toString());
+			Long chargeCount = Long.parseLong(values.get("chargeCount")
+					.toString());
+			String call_phone = values.get("call_phone").toString();
+			String session_id = values.get("session_id").toString();
 			ServicePrice service = oracleManager.find(ServicePrice.class,
 					service_id);
+			Long year_month = Long.parseLong(values.get("year_month")
+					.toString());
+			Long call_session_id = Long.parseLong(values.get("call_session_id")
+					.toString());
 
 			Double charge = new Double(oracleManager
 					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE)
@@ -432,20 +440,25 @@ public class SurveyDMI implements QueryConstants {
 					.setParameter(2, service.getService_price_id())
 					.getSingleResult().toString());
 
-			for (int i = 0; i < callSessionExpense.getChargeCount(); i++) {
+			for (int i = 0; i < chargeCount; i++) {
 				CallSessionExpense item = new CallSessionExpense();
+				item.setCall_session_id(call_session_id);
 				item.setService_id(service.getService_price_id());
-				item.setSession_id(callSessionExpense.getSession_id());
-				item.setYear_month(callSessionExpense.getYear_month());
+				item.setSession_id(session_id);
+				item.setYear_month(year_month);
 				item.setCharge_date(new Timestamp(System.currentTimeMillis()));
 				item.setCharge(charge);
+				item.setEvent_describtion("გარკვევა : "
+						+ service.getService_description());
 				oracleManager.persist(item);
 			}
 
 			EMF.commitTransaction(transaction);
 			log += ". Adding Charges Finished SuccessFully. ";
 			logger.info(log);
-			return callSessionExpense;
+
+			DSResponse dsResponse = new DSResponse();
+			return dsResponse;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -606,11 +619,10 @@ public class SurveyDMI implements QueryConstants {
 			String log = "Method:SurveyDMI.deleteSessionCharge.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			Long cse_id = new Long(dsRequest.getOldValues().get("cse_id")
-					.toString());
-
-			String loggedUserName = dsRequest.getOldValues()
-					.get("loggedUserName").toString();
+			
+			Long cse_id = new Long(dsRequest.getOldValues().get("cse_id").toString());
+			String loggedUserName = dsRequest.getOldValues().get("loggedUserName").toString();
+			
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,

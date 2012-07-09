@@ -68,17 +68,17 @@ public class DlgAddChargeItem extends Window {
 			detailViewer.setWidth100();
 			detailViewer.selectRecord(listGridRecord);
 
-			DetailViewerField phone = new DetailViewerField("phone",
+			DetailViewerField phone = new DetailViewerField("call_phone",
 					CallCenterBK.constants.phone());
 
-			DetailViewerField start_date = new DetailViewerField("start_date",
-					CallCenterBK.constants.time());
+			DetailViewerField start_date = new DetailViewerField(
+					"call_start_date", CallCenterBK.constants.time());
 			start_date.setDateFormatter(DateDisplayFormat.TOSERIALIZEABLEDATE);
 
-			DetailViewerField operator = new DetailViewerField("operator",
+			DetailViewerField operator = new DetailViewerField("uname",
 					CallCenterBK.constants.operator());
 
-			DetailViewerField duration = new DetailViewerField("duration",
+			DetailViewerField duration = new DetailViewerField("call_duration",
 					CallCenterBK.constants.durationShort());
 
 			detailViewer.setFields(phone, start_date, operator, duration);
@@ -103,8 +103,8 @@ public class DlgAddChargeItem extends Window {
 			serviceItem.setWidth(300);
 			DataSource services = CommonSingleton.getInstance().getServicesDS();
 			serviceItem.setOptionDataSource(services);
-			serviceItem.setDisplayField("serviceNameGeo");
-			serviceItem.setValueField("serviceId");
+			serviceItem.setDisplayField("service_description");
+			serviceItem.setValueField("service_price_id");
 
 			chargeCountItem = new TextItem();
 			chargeCountItem.setTitle(CallCenterBK.constants.chargeCount());
@@ -188,7 +188,7 @@ public class DlgAddChargeItem extends Window {
 
 			String session_id = listGridRecord
 					.getAttributeAsString("session_id");
-			Integer ym = listGridRecord.getAttributeAsInt("ym");
+			Integer year_month = listGridRecord.getAttributeAsInt("year_month");
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 
@@ -197,18 +197,20 @@ public class DlgAddChargeItem extends Window {
 
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("upd_user", loggedUser);
-			record.setAttribute("service_id", serviceId);
+			record.setAttribute("service_price_id", serviceId);
 			record.setAttribute("chargeCount", chargeCount);
 			record.setAttribute("session_id", session_id);
-			record.setAttribute("ym", ym);
-			record.setAttribute("phone",
-					listGridRecord.getAttributeAsString("phone"));
-			record.setAttribute("operator",
-					listGridRecord.getAttributeAsString("operator"));
-			record.setAttribute("duration",
-					listGridRecord.getAttributeAsInt("duration"));
-			record.setAttribute("start_date",
-					listGridRecord.getAttributeAsDate("start_date"));
+			record.setAttribute("year_month", year_month);
+			record.setAttribute("call_phone",
+					listGridRecord.getAttributeAsString("call_phone"));
+			record.setAttribute("uname",
+					listGridRecord.getAttributeAsString("uname"));
+			record.setAttribute("call_duration",
+					listGridRecord.getAttributeAsInt("call_duration"));
+			record.setAttribute("call_start_date",
+					listGridRecord.getAttributeAsDate("call_start_date"));
+			record.setAttribute("call_session_id",
+					listGridRecord.getAttributeAsInt("call_session_id"));
 
 			DSRequest req = new DSRequest();
 

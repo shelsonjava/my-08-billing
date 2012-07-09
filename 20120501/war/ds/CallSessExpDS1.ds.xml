@@ -13,6 +13,7 @@
         <field name="service_description"	type="text"  	title="service_description"/>
         <field name="charge"  				type="integer"  title="charge"/>
         <field name="rec_date_time"			type="datetime" title="rec_date_time"/>
+        <field name="call_start_date"		type="datetime" title="call_start_date"/>
 		<field name="charge_date"			type="date" 	title="charge_date"/>
         <field name="organization_name"		type="text"  	title="organization_name"/>
         <field name="amount"  				type="float"  	title="amount"/>
@@ -24,7 +25,11 @@
         <field name="phone"					type="text"  	title="phone"/>
         <field name="duration"  			type="integer"  title="duration"/>
         <field name="chargeCount"  			type="integer"  title="chargeCount"/>
-        <field name="loggedUser"			type="text"  	title="loggedUser"/>        	
+        <field name="call_duration"  		type="integer"  title="call_duration"/>
+        <field name="loggedUser"			type="text"  	title="loggedUser"/>
+        <field name="loggedUserName"		type="text"  	title="loggedUserName"/> 
+        <field name="call_phone"			type="text"  	title="call_phone"/> 
+        <field name="uname"					type="text"  	title="uname"/>      	
     </fields>
     <operationBindings>
     
@@ -39,6 +44,7 @@
 		<operationBinding operationType="add" operationId="addChargesWithoutCall" serverMethod="addChargesWithoutCall">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
         </operationBinding>
+        
         <operationBinding operationType="remove" operationId="deleteSessionCharge" serverMethod="deleteSessionCharge">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.SurveyDMI"/>
         </operationBinding>
@@ -97,6 +103,7 @@
     	
     	<operationBinding operationId="selectCallsByPhoneInCurrMonthNoGrouped" operationType="fetch">
     		<selectClause> 
+    			   s.call_session_id,
     			   s.year_month, 
 			       s.call_start_date, 
 			       s.uname, 

@@ -184,31 +184,26 @@ public class DlgRemoveCharge extends Window {
 				@Override
 				public void onClick(ClickEvent event) {
 					try {
-						ListGridRecord listGridRecord = listGrid
-								.getSelectedRecord();
+						ListGridRecord listGridRecord = listGrid.getSelectedRecord();
 						if (listGridRecord == null) {
-							SC.say(CallCenterBK.constants.warning(),
-									CallCenterBK.constants.pleaseSelrecord());
+							SC.say(CallCenterBK.constants.warning(), CallCenterBK.constants.pleaseSelrecord());
 							return;
 						}
-						Integer cse_id = listGridRecord
-								.getAttributeAsInt("cse_id");
+						Integer cse_id = listGridRecord.getAttributeAsInt("cse_id");
 						if (cse_id == null) {
-							SC.say(CallCenterBK.constants.warning(),
-									CallCenterBK.constants.invalidRecord());
+							SC.say(CallCenterBK.constants.warning(), CallCenterBK.constants.invalidRecord());
 							return;
 						}
 
 						com.smartgwt.client.rpc.RPCManager.startQueue();
 						Record record = new Record();
 						record.setAttribute("cse_id", cse_id);
-						record.setAttribute("upd_user", CommonSingleton
-								.getInstance().getSessionPerson()
-								.getUser_name());
+						record.setAttribute("loggedUserName", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 
 						DSRequest req = new DSRequest();
 						req.setAttribute("operationId", "deleteSessionCharge");
-						callSessExpDS1.updateData(record, new DSCallback() {
+						
+						listGrid.removeData(record, new DSCallback() {
 							@Override
 							public void execute(DSResponse response,
 									Object rawData, DSRequest request) {
