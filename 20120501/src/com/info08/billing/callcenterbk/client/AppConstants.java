@@ -742,4 +742,5 @@ public interface AppConstants extends Constants {
 	String orgIndIsInvalid();
 	String parrentOrganization();
 	String orgDoesNotHaveParrent();
+	String noDayOff();
 }

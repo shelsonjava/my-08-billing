@@ -41,6 +41,7 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> callStatChargeTypes;
 	private LinkedHashMap<String, String> callStatChargeTypes1;
 	private LinkedHashMap<String, String> weekDays;
+	private LinkedHashMap<String, String> dayOffs;
 	private LinkedHashMap<String, String> contractorTypes;
 	private LinkedHashMap<String, String> contractorTypes1;
 	private LinkedHashMap<String, String> billingCompIndTypes;
@@ -100,6 +101,7 @@ public class ClientMapUtil {
 		yesAndNo = new LinkedHashMap<String, String>();
 		gender = new LinkedHashMap<String, String>();
 		visible = new LinkedHashMap<String, String>();
+		dayOffs = new LinkedHashMap<String, String>();
 
 		mapOpClose.put("0", "ღია");
 		mapOpClose.put("1", "დაფარულია");
@@ -204,6 +206,16 @@ public class ClientMapUtil {
 		weekDays.put("32", CallCenterBK.constants.wdaySaturday());
 		weekDays.put("64", CallCenterBK.constants.wdaySunday());
 		weekDays.put("128", CallCenterBK.constants.wdayUnknown());
+		
+		dayOffs.put("0", CallCenterBK.constants.noDayOff());
+		dayOffs.put("1", CallCenterBK.constants.wdayMonday());
+		dayOffs.put("2", CallCenterBK.constants.wdayTuesday());
+		dayOffs.put("4", CallCenterBK.constants.wdayWednesday());
+		dayOffs.put("8", CallCenterBK.constants.wdayThursday());
+		dayOffs.put("16", CallCenterBK.constants.wdayFriday());
+		dayOffs.put("32", CallCenterBK.constants.wdaySaturday());
+		dayOffs.put("64", CallCenterBK.constants.wdaySunday());
+		dayOffs.put("128", CallCenterBK.constants.wdayUnknown());
 
 		contractorTypes.put("-1", CallCenterBK.constants.all());
 		contractorTypes.put("0", CallCenterBK.constants.budget());

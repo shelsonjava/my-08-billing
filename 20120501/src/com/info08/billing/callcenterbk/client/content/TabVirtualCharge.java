@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.content;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddVirtualCharge;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -50,14 +51,14 @@ public class TabVirtualCharge extends Tab {
 	private ListGrid listGrid;
 
 	// DataSource
-	private DataSource orgDS;
+	private DataSource phoneViewDS;
 
 	public TabVirtualCharge() {
 
 		setTitle(CallCenterBK.constants.virtualCharge());
 		setCanClose(true);
 
-		orgDS = DataSource.get("OrgDS");
+		phoneViewDS = DataSource.get("PhoneViewDS");
 
 		mainLayout = new VLayout(5);
 		mainLayout.setWidth100();
@@ -111,54 +112,60 @@ public class TabVirtualCharge extends Tab {
 
 			protected String getCellCSSText(ListGridRecord record, int rowNum,
 					int colNum) {
-				ListGridRecord countryRecord = (ListGridRecord) record;
-				if (countryRecord == null) {
+				ListGridRecord gridRecord = (ListGridRecord) record;
+				if (gridRecord == null) {
 					return super.getCellCSSText(record, rowNum, colNum);
 				}
-				Integer is_abonent = countryRecord
-						.getAttributeAsInt("is_abonent");
-				if (is_abonent == null || is_abonent.equals(1)) {
+				Integer owner_type = gridRecord.getAttributeAsInt("owner_type");
+				if (owner_type == null || owner_type.equals(0)) {
 					return super.getCellCSSText(record, rowNum, colNum);
 				}
 
-				Integer contact_phones = countryRecord
-						.getAttributeAsInt("contact_phones");
-				Integer statuse = countryRecord.getAttributeAsInt("statuse");
-				Integer extra_priority = countryRecord
-						.getAttributeAsInt("extra_priority");
-				Integer note_crit = countryRecord
-						.getAttributeAsInt("note_crit");
+				Integer contact_phones = gridRecord
+						.getAttributeAsInt("for_contact");
 
-				if (extra_priority != null && extra_priority < 0
-						&& (colNum != 4 && colNum != 5)) {
+				Integer status = gridRecord.getAttributeAsInt("status");
+				Integer super_priority = gridRecord
+						.getAttributeAsInt("super_priority");
+				Integer important_remark = gridRecord
+						.getAttributeAsInt("important_remark");
+				String columnName = listGrid.getFieldName(colNum);
+
+				boolean isphoneColumns = ClientUtils.containsOneOfString(
+						columnName, "phone_shown", "phone_contract_type_desc");
+				if (super_priority != null && super_priority < 0
+						&& (!isphoneColumns)) {
 					return "color:red;";
-				} else if (statuse != null && statuse.equals(2)
-						&& (colNum != 4 && colNum != 5)) {
-					if (note_crit != null && note_crit.intValue() == -1
-							&& (colNum != 4 && colNum != 5)) {
+				} else if (status != null && status.equals(2)
+						&& (!isphoneColumns)) {
+					if (important_remark != null
+							&& important_remark.intValue() == -1
+							&& (!isphoneColumns)) {
 						return "color:red;";
 					} else {
 						return "color:gray;";
 					}
-				} else if (statuse != null && statuse.equals(1)
-						&& (colNum != 4 && colNum != 5)) {
-					if (note_crit != null && note_crit.intValue() == -1
-							&& (colNum != 4 && colNum != 5)) {
+				} else if (status != null && status.equals(1)
+						&& (!isphoneColumns)) {
+					if (important_remark != null
+							&& important_remark.intValue() == -1
+							&& (!isphoneColumns)) {
 						return "color:red;";
 					} else {
 						return "color:blue;";
 					}
 
-				} else if (statuse != null && statuse.equals(3)
-						&& (colNum != 4 && colNum != 5)) {
-					if (note_crit != null && note_crit.intValue() == -1
-							&& (colNum != 4 && colNum != 5)) {
+				} else if (status != null && status.equals(3)
+						&& (!isphoneColumns)) {
+					if (important_remark != null
+							&& important_remark.intValue() == -1
+							&& (!isphoneColumns)) {
 						return "color:red;";
 					} else {
 						return "color:green;";
 					}
 				} else if (contact_phones == null || contact_phones.equals(1)
-						&& (colNum == 4 || colNum == 5)) {
+						&& (isphoneColumns)) {
 					return "color: red;";
 				} else {
 					return super.getCellCSSText(record, rowNum, colNum);
@@ -169,42 +176,43 @@ public class TabVirtualCharge extends Tab {
 		listGrid.setWidth(1100);
 		listGrid.setHeight100();
 		listGrid.setAlternateRecordStyles(true);
-		listGrid.setDataSource(orgDS);
+		listGrid.setDataSource(phoneViewDS);
 		listGrid.setAutoFetchData(false);
 		listGrid.setShowFilterEditor(false);
 		listGrid.setCanEdit(false);
 		listGrid.setCanRemoveRecords(false);
-		listGrid.setFetchOperation("customOrgAndAbonentSearchForCallCenter");
+		listGrid.setFetchOperation("customSearch");
 		listGrid.setCanSort(false);
 		listGrid.setCanResizeFields(false);
 		listGrid.setWrapCells(true);
 		listGrid.setFixedRecordHeights(false);
 		listGrid.setCanDragSelectText(true);
 
-		ListGridField fullName = new ListGridField("fullName",
+		ListGridField full_name = new ListGridField("full_name",
 				CallCenterBK.constants.dasaxeleba());
-		fullName.setAlign(Alignment.LEFT);
+		full_name.setAlign(Alignment.LEFT);
 
-		ListGridField orgOrAbonent = new ListGridField("orgOrAbonent",
+		ListGridField owner_type = new ListGridField("owner_type_descr",
 				CallCenterBK.constants.type(), 50);
-		orgOrAbonent.setAlign(Alignment.CENTER);
+		owner_type.setAlign(Alignment.CENTER);
 
 		ListGridField town_name = new ListGridField("town_name",
 				CallCenterBK.constants.town(), 100);
 		town_name.setAlign(Alignment.LEFT);
 
-		ListGridField streetName = new ListGridField("streetName",
+		ListGridField address = new ListGridField("concat_address",
 				CallCenterBK.constants.street(), 350);
-		streetName.setAlign(Alignment.LEFT);
+		address.setAlign(Alignment.LEFT);
 
-		ListGridField phone = new ListGridField("phone",
+		ListGridField phone = new ListGridField("phone_shown",
 				CallCenterBK.constants.phone(), 80);
 
-		ListGridField phone_status = new ListGridField("phone_status",
+		ListGridField phone_contract_type_desc = new ListGridField(
+				"phone_contract_type_desc",
 				CallCenterBK.constants.phoneStatus(), 100);
 
-		listGrid.setFields(fullName, orgOrAbonent, town_name, streetName,
-				phone, phone_status);
+		listGrid.setFields(full_name, owner_type, town_name, address, phone,
+				phone_contract_type_desc);
 
 		mainLayout.addMember(listGrid);
 
@@ -261,7 +269,7 @@ public class TabVirtualCharge extends Tab {
 				return;
 			}
 			DlgAddVirtualCharge addVirtualCharge = new DlgAddVirtualCharge(
-					orgDS, record);
+					phoneViewDS, record);
 			addVirtualCharge.show();
 
 		} catch (Exception e) {
@@ -276,23 +284,23 @@ public class TabVirtualCharge extends Tab {
 				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
-			Integer service_id = record.getAttributeAsInt("service_id");
-			if (service_id == null
-					|| !service_id.equals(Constants.serviceOrganization)) {
+			Integer owner_type = record.getAttributeAsInt("owner_type");
+			if (owner_type == null || !owner_type.equals(1)) {
 				SC.say(CallCenterBK.constants.selRecordIsNotOrg());
 				return;
 			}
 
-			Integer mainID = record.getAttributeAsInt("mainID");
-			if (mainID == null) {
+			Integer organization_id = record
+					.getAttributeAsInt("organization_id");
+			if (organization_id == null) {
 				SC.say(CallCenterBK.constants.invalidOrganization());
 				return;
 			}
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("organization_id", mainID);
+			criteria.setAttribute("organization_id", organization_id);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("customOrgSearchForCallCenterByMainId");
-			orgDS.fetchData(criteria, new DSCallback() {
+			phoneViewDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -346,8 +354,8 @@ public class TabVirtualCharge extends Tab {
 								record.getAttributeAsString("town_name"));
 						pRecord.setAttribute("town_district_name", record
 								.getAttributeAsString("town_district_name"));
-						pRecord.setAttribute("street_location", record
-								.getAttributeAsString("street_location"));
+						pRecord.setAttribute("street_location",
+								record.getAttributeAsString("street_location"));
 						pRecord.setAttribute("index_text",
 								record.getAttributeAsString("index_text"));
 						pRecord.setAttribute("legal_statuse",
@@ -374,7 +382,6 @@ public class TabVirtualCharge extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("deleted", 0);
 
 			String phone = phoneItem.getValueAsString();
 			if (phone == null || phone.trim().equals("")) {
@@ -383,8 +390,7 @@ public class TabVirtualCharge extends Tab {
 			}
 			criteria.setAttribute("phone", phone);
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId",
-					"customOrgAndAbonentSearchForCallCenter");
+			dsRequest.setAttribute("operationId", "customSearch");
 			listGrid.invalidateCache();
 			listGrid.filterData(criteria, new DSCallback() {
 				@Override
@@ -400,7 +406,7 @@ public class TabVirtualCharge extends Tab {
 
 	private void showOrgDialog(ListGridRecord pRecord) {
 		try {
-			DlgViewOrg dlgViewOrg = new DlgViewOrg(orgDS, pRecord);
+			DlgViewOrg dlgViewOrg = new DlgViewOrg(phoneViewDS, pRecord);
 			dlgViewOrg.show();
 
 			String org_allert_by_buss_det = pRecord

@@ -426,7 +426,7 @@ public class OrganizationDMI {
 					"organization_id");
 			DSResponse dsResponse = new DSResponse();
 			dsResponse.setData(values);
-			//dsResponse.setInvalidateCache(true);
+			// dsResponse.setInvalidateCache(true);
 			return dsResponse;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
@@ -505,7 +505,9 @@ public class OrganizationDMI {
 			DataTools.setProperties(values, organizationDepartMent);
 			organizationDepartMent.setDepartment(values.get(
 					"department_original").toString());
-			organizationDepartMent.setInner_order(0L);
+			if (organizationDepartMent.getInner_order() == null) {
+				organizationDepartMent.setInner_order(0L);
+			}
 
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
 					loggedUserName, log);
@@ -948,7 +950,9 @@ public class OrganizationDMI {
 			PhoneNumber phoneNumberByNum = (listPhones != null && !listPhones
 					.isEmpty()) ? listPhones.get(0) : null;
 
-			if (phoneNumberByNum != null && !phoneNumberByNum.getPhone_number_id().equals(phone_number_id)) {
+			if (phoneNumberByNum != null
+					&& !phoneNumberByNum.getPhone_number_id().equals(
+							phone_number_id)) {
 				Long id_tmp = phoneNumberByNum.getPhone_number_id();
 				phoneNumber = phoneNumberByNum;
 				DataTools.setProperties(values, phoneNumber);
@@ -981,7 +985,7 @@ public class OrganizationDMI {
 					"searchOrgDepPhones", org_dep_to_ph_id, "org_dep_to_ph_id");
 			DSResponse dsResponse = new DSResponse();
 			dsResponse.setData(values);
-			//dsResponse.setInvalidateCache(true);
+			// dsResponse.setInvalidateCache(true);
 			return dsResponse;
 		} catch (Exception e) {
 			if (transaction != null) {

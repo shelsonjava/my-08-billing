@@ -260,6 +260,8 @@ public class DlgAddEditOrgDepartments extends Window {
 						listGridRecord.getAttributeAsInt("legal_address_id"));
 				fromMaps.put("physical_address_id",
 						listGridRecord.getAttributeAsInt("physical_address_id"));
+				fromMaps.put("inner_order",
+						listGridRecord.getAttributeAsInt("inner_order"));
 			}
 			fromMaps.remove("_ref");
 			fromMaps.remove("__ref");

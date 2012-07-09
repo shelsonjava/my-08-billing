@@ -837,7 +837,7 @@ public interface QueryConstants {
 			+ "  from (select /*+ use_nl(pn, sp, dp) */\n"
 			+ "         count(8) as cnt\n"
 			+ "          from phone_numbers pn\n"
-			+ "         where pn.phone = ? \n"
+			+ "         where pn.phone = ? and pn.phone_state_id <> 52102 \n"
 			+ "           and (exists\n"
 			+ "                (select 1\n"
 			+ "                   from subscriber_to_phones sp\n"

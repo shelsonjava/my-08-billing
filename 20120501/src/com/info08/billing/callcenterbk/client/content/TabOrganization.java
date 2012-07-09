@@ -362,14 +362,6 @@ public class TabOrganization extends Tab {
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
-					"deleteIcon.png");
-			deleteBtn.setLayoutAlign(Alignment.LEFT);
-			deleteBtn.setWidth(50);
-			toolStrip.addButton(deleteBtn);
-
-			toolStrip.addSeparator();
-
 			sortBtn = new ToolStripButton(CallCenterBK.constants.sort(),
 					"sort.png");
 			sortBtn.setLayoutAlign(Alignment.LEFT);
@@ -426,6 +418,14 @@ public class TabOrganization extends Tab {
 			exportCountBtn.setWidth(50);
 			toolStrip.addButton(exportCountBtn);
 			exportCountBtn.setDisabled(!hasExcelExpPerm);
+
+			toolStrip.addFill();
+
+			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
+					"deleteIcon.png");
+			deleteBtn.setLayoutAlign(Alignment.LEFT);
+			deleteBtn.setWidth(50);
+			toolStrip.addButton(deleteBtn);
 
 			organizationsGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,

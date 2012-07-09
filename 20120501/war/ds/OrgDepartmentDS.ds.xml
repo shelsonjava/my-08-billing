@@ -143,6 +143,7 @@
 					  t1.org_department_id,
 					  t1.organization_id,
 					  t1.remark,
+					  t1.inner_order,
 					  pa.street_id,
 					  pa.concat_address_with_town as real_address_descr,
 					  pa.town_name,
@@ -184,7 +185,8 @@
 					     dd.physical_address_id,
 					     dd.parrent_department_id,
 					     dd.org_department_id,
-					     dd.organization_id
+					     dd.organization_id,
+					     dd.inner_order
 					from (SELECT o.org_department_id, o.parrent_department_id
 					        FROM organization_department o
 					       start with o.org_department_id in
