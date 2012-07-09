@@ -77,7 +77,13 @@
         <!-- Contractor Range Price Update Manually -->
         <operationBinding operationType="update" operationId="updateContractorRangePrice" serverMethod="updateContractorRangePrice">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
-        </operationBinding>        
+        </operationBinding>
+        
+        
+         <!-- Contractor Range Price Update Manually -->
+        <operationBinding operationType="fetch" operationId="checkPhones" serverMethod="checkPhones">
+            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI"/>
+        </operationBinding>           
         
     	<operationBinding operationId="searchAllContractors" operationType="fetch">
     		<selectClause>   			
