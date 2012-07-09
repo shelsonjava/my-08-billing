@@ -252,7 +252,6 @@ public class ChargePanel extends HLayout {
 
 	private void logSessionEvent(String event_describtion) {
 		try {
-
 			final ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {
@@ -282,15 +281,15 @@ public class ChargePanel extends HLayout {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
-//					int chCount = serverSession.getChcount();
-//					chCount++;
-//					serverSession.setChcount(chCount);
-//					chargeCounter.setContents(CallCenterBK.constants.charges()
-//							+ " : " + chCount);
-//
-//					int lChargeCounter = getChrgCounter();
-//					lChargeCounter++;
-//					setChrgCounter(lChargeCounter);
+					// int chCount = serverSession.getChcount();
+					// chCount++;
+					// serverSession.setChcount(chCount);
+					// chargeCounter.setContents(CallCenterBK.constants.charges()
+					// + " : " + chCount);
+					//
+					// int lChargeCounter = getChrgCounter();
+					// lChargeCounter++;
+					// setChrgCounter(lChargeCounter);
 				}
 			}, req);
 			com.smartgwt.client.rpc.RPCManager.sendQueue();
