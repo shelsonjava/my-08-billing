@@ -129,9 +129,9 @@ public class TabSurveyHist extends Tab {
 			operatorItem.setName("operatorItem");
 			DataSource usersDS = CommonSingleton.getInstance().getUsersDS();
 			if (usersDS != null) {
-				operatorItem.setOptionOperationId("customPersSearch");
+				operatorItem.setOptionOperationId("searchUser");
 				operatorItem.setOptionDataSource(usersDS);
-				operatorItem.setValueField("personelId");
+				operatorItem.setValueField("user_id");
 				operatorItem.setDisplayField("fullPersonName");
 			}
 
@@ -142,9 +142,9 @@ public class TabSurveyHist extends Tab {
 			updateUserItem.setName("updateUserItem");
 			DataSource persons1 = CommonSingleton.getInstance().getUsersDS();
 			if (persons1 != null) {
-				updateUserItem.setOptionOperationId("customPersSearch");
+				updateUserItem.setOptionOperationId("searchUser");
 				updateUserItem.setOptionDataSource(persons1);
-				updateUserItem.setValueField("personelId");
+				updateUserItem.setValueField("user_id");
 				updateUserItem.setDisplayField("fullPersonName");
 			}
 
