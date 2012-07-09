@@ -430,7 +430,7 @@ public class DlgAddEditOrganization extends Window {
 			weekDaysItem.setName("day_id");
 			weekDaysItem.setWidth(220 - (minus / 2));
 			weekDaysItem.setTitleAlign(Alignment.LEFT);
-			weekDaysItem.setValueMap(ClientMapUtil.getInstance().getWeekDays());
+			weekDaysItem.setValueMap(ClientMapUtil.getInstance().getDayOffs());
 			weekDaysItem.setDefaultToFirstOption(true);
 			PickerIcon addWeekDay = new PickerIcon(new PickerIcon.Picker(
 					"addIcon.png"), new FormItemClickHandler() {
@@ -498,7 +498,7 @@ public class DlgAddEditOrganization extends Window {
 
 			final ComboBoxItem partnerBankItem = new ComboBoxItem();
 			partnerBankItem.setTitle(CallCenterBK.constants.partnerBank());
-			partnerBankItem.setName("organization_id");
+			partnerBankItem.setName("organization_id_111");
 			partnerBankItem.setWidth(419);
 			partnerBankItem.setTitleAlign(Alignment.LEFT);
 			ClientUtils.fillCombo(partnerBankItem, "OrgDS",
@@ -583,21 +583,6 @@ public class DlgAddEditOrganization extends Window {
 					copyAddress();
 				}
 			});
-
-			// topTabSet.addTabSelectedHandler(new TabSelectedHandler() {
-			// @Override
-			// public void onTabSelected(TabSelectedEvent event) {
-			// selectedTabIndex = event.getTabNum();
-			// if (selectedTabIndex == 0) {
-			// saveItem.setTitle(CallCenterBK.constants.next());
-			// copyItem.show();
-			// } else {
-			// copyItem.hide();
-			// saveItem.setTitle(CallCenterBK.constants.save());
-			// }
-			// }
-			// });
-
 			fillFields();
 			addItem(hLayout);
 		} catch (Exception e) {

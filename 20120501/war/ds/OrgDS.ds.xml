@@ -555,7 +555,7 @@
 					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
 					#if($criteria.full_address_not_hidden) and concat_address_with_town like '%'||$criteria.full_address_not_hidden||'%' #end					
 			</whereClause>				
-			<orderClause>gettbilisiorder(tw.town_id),o.organization_name</orderClause>	
+			<orderClause>gettbilisiorder(o.ph_town_id),o.organization_name</orderClause>	
     	</operationBinding>
     	
     	
