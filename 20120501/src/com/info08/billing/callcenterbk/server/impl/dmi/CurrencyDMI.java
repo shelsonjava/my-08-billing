@@ -230,7 +230,10 @@ public class CurrencyDMI implements QueryConstants {
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Updating Currency Course.");
-
+			oracleManager.createNativeQuery(
+					"delete from CURRENCY_COURSE where currency_id="
+							+ currency_id).executeUpdate();
+			oracleManager.flush();
 			oracleManager.persist(currencyCourseObject);
 			oracleManager.flush();
 

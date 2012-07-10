@@ -185,7 +185,7 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 			lgPhones.setCanDragSelectText(true);
 			lgPhones.setShowRowNumbers(true);
 
-			ListGridField full_name = new ListGridField("full_name_reverse",
+			ListGridField full_name = new ListGridField("full_name",
 					CallCenterBK.constants.dasaxeleba(), 350);
 			full_name.setAlign(Alignment.LEFT);
 

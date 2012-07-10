@@ -246,6 +246,8 @@ public class TabContractors extends Tab {
 			contractorsGrid.setWrapCells(true);
 			contractorsGrid.setFixedRecordHeights(false);
 			contractorsGrid.setCanDragSelectText(true);
+			
+			
 
 			ListGridField orgName = new ListGridField("organization_name",
 					CallCenterBK.constants.orgNameFull());

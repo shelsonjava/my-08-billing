@@ -49,7 +49,7 @@ public class DlgAddEventOwner extends Window {
 		setTitle(pRecord == null ? "აფიშა-რესურსის დამატება"
 				: "აფიშა-რესურსის მოდიფიცირება");
 
-		setHeight(200);
+		setHeight(202);
 		setWidth(590);
 		setShowMinimizeButton(false);
 		setIsModal(true);
@@ -120,34 +120,37 @@ public class DlgAddEventOwner extends Window {
 				.getReservations());
 
 		dynamicForm.setFields(entTypeItem, entPlaceGeo, reservableItem);
-		
-		
-		
-		String arrCapt[] = new String[2];
-		arrCapt[0] = CallCenterBK.constants.orgNameFull();		
-		arrCapt[1] = CallCenterBK.constants.remark();
-		organizationItem = new MyComboBoxItem("organization_name",CallCenterBK.constants.orgName(), 168, 380);
+
+		organizationItem = new MyComboBoxItem("organization_name",
+				CallCenterBK.constants.orgName(), 168, 543);
 		organizationItem.setMyDlgHeight(400);
 		organizationItem.setMyDlgWidth(600);
-		DataSource orgDS = DataSource.get("EventOwnerDS");
+		DataSource orgDS = DataSource.get("OrgDS");
 		organizationItem.setMyDataSource(orgDS);
-		organizationItem.setMyDataSourceOperation("searchOrganizationsForCBDoubleLike");
+		organizationItem
+				.setMyDataSourceOperation("searchMainOrgsForCBDoubleLike");
 		organizationItem.setMyIdField("organization_id");
-		
-		ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>(); 
-		MyComboBoxRecord organization_name = new MyComboBoxRecord("organization_name", CallCenterBK.constants.parrentOrgName(), true);
-		MyComboBoxRecord remark = new MyComboBoxRecord("remark", CallCenterBK.constants.comment(), false);
-		MyComboBoxRecord full_address_not_hidden = new MyComboBoxRecord("full_address_not_hidden", CallCenterBK.constants.address(), true);
-		
+
+		ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>();
+		MyComboBoxRecord organization_name = new MyComboBoxRecord(
+				"organization_name", CallCenterBK.constants.parrentOrgName(),
+				true);
+		MyComboBoxRecord remark = new MyComboBoxRecord("remark",
+				CallCenterBK.constants.comment(), false);
+		MyComboBoxRecord full_address_not_hidden = new MyComboBoxRecord(
+				"full_address_not_hidden", CallCenterBK.constants.address(),
+				true);
+
 		fieldRecords.add(organization_name);
 		fieldRecords.add(full_address_not_hidden);
 		fieldRecords.add(remark);
-		
-		organizationItem.setMyFields(fieldRecords);		
-		organizationItem.setMyChooserTitle(CallCenterBK.constants.organization());
-		
+
+		organizationItem.setMyFields(fieldRecords);
+		organizationItem.setMyChooserTitle(CallCenterBK.constants
+				.organization());
+		organizationItem.setNameField("organization_id");
 		hLayout.addMember(organizationItem);
-		
+
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
 		hLayoutItem.setAlign(Alignment.RIGHT);
@@ -200,9 +203,9 @@ public class DlgAddEventOwner extends Window {
 			if (reservable != null) {
 				reservableItem.setValue(reservable);
 			}
-			
-			organizationItem.setSelectedRecord(editRecord);
-			
+
+			organizationItem.setDataValue(editRecord);
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -227,7 +230,8 @@ public class DlgAddEventOwner extends Window {
 			Integer organization_id = null;
 			Record organization_record = organizationItem.getSelectedRecord();
 			if (organization_record != null) {
-				organization_id = organization_record.getAttributeAsInt("organization_id");				
+				organization_id = organization_record
+						.getAttributeAsInt("organization_id");
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();

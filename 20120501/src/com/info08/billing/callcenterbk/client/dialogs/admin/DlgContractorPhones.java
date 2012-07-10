@@ -287,6 +287,9 @@ public class DlgContractorPhones extends Window {
 			departmentGrid.setHeight100();
 			departmentGrid.setAlternateRecordStyles(true);
 			departmentGrid.setAutoFetchData(false);
+			
+			departmentGrid.setShowFilterEditor(true);
+			departmentGrid.setFilterOnKeypress(true);
 
 			ListGridField departmentName = new ListGridField("department",
 					CallCenterBK.constants.department());
