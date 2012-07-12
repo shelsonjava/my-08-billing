@@ -36,9 +36,5 @@
 	    <day_id>128</day_id>
 	    <day_name>უცნობია</day_name>
 	</weekday>
-	<weekday>
-	    <day_id>256</day_id>
-	    <day_name>ყოველდღიური</day_name>
-	</weekday>	
 </List>
 

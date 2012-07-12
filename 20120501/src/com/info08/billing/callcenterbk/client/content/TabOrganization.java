@@ -212,6 +212,7 @@ public class TabOrganization extends Tab {
 			townItem.setWidth(245);
 			ClientUtils.fillCombo(townItem, "TownsDS",
 					"searchCitiesFromDBForCombos", "town_id", "town_name");
+			townItem.setValue(Constants.defCityTbilisiId);
 
 			regionItem = new SelectItem();
 			regionItem.setMultiple(true);

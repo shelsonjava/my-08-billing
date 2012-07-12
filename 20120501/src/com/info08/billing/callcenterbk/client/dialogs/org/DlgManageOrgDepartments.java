@@ -117,7 +117,7 @@ public class DlgManageOrgDepartments extends Window {
 			orgFullNameItem.setValue(fullName);
 
 			orgDepNameItem = new TextItem();
-			orgDepNameItem.setTitle(CallCenterBK.constants.organization());
+			orgDepNameItem.setTitle(CallCenterBK.constants.department());
 			orgDepNameItem.setWidth(350);
 			orgDepNameItem.setName("department");
 

@@ -43,7 +43,6 @@ public class DlgAddPhoneOrgs extends Window {
 			hLayout.setPadding(10);
 
 			listGrid = new ListGrid() {
-
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
 					ListGridRecord gridRecord = (ListGridRecord) record;

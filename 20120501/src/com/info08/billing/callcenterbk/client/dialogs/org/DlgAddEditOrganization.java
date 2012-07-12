@@ -218,6 +218,7 @@ public class DlgAddEditOrganization extends Window {
 			orgRemarkItem.setWidth(610 - minus);
 			orgRemarkItem.setTitle(CallCenterBK.constants.comment());
 			orgRemarkItem.setHeight(102);
+			orgRemarkItem.setTextBoxStyle("input14Px");
 
 			orgInfoItem = new TextItem();
 			orgInfoItem.setName("additional_info");
@@ -481,12 +482,7 @@ public class DlgAddEditOrganization extends Window {
 			saveItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					// if (selectedTabIndex == 0) {
-					// topTabSet.selectTab(1);
-					// copyItem.hide();
-					// } else {
 					save();
-					// }
 				}
 			});
 

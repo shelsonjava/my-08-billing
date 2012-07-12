@@ -151,3 +151,10 @@
 .topLine {
 	border-top: 1px #CCC solid;
 }
+
+.input14Px {
+	font-size: 14px !important;
+}
+.input14PxFocused {
+	font-size: 14px !important;
+}

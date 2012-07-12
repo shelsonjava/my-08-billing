@@ -25,7 +25,6 @@
 		<field name="staff_count"					type="integer"  	title="staff_count"/>
 		<field name="organization_index"			type="text"  		title="organization_index"/>
 		<field name="organization_name_eng"			type="text"  		title="organization_name_eng"/>
-		<field name="real_address_descr"			type="text"  		title="real_address_descr"/>
 		<field name="legal_address_descr"			type="text"  		title="legal_address_descr"/>
 		<field name="full_address_not_hidden"		type="text"  		title="full_address_not_hidden"/>
 		<field name="call_center_address"			type="text"  		title="call_center_address"/>

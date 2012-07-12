@@ -1,9 +1,12 @@
 package com.info08.billing.callcenterbk.client.content.callcenter;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.Criterion;
@@ -171,67 +174,24 @@ public class TabFindOrg extends Tab {
 
 			townItem = new ComboBoxItem();
 			townItem.setTitle(CallCenterBK.constants.town());
-			townItem.setName("town_name");
+			townItem.setName("town_id");
 			townItem.setWidth(245);
-			townItem.setFetchMissingValues(true);
-			townItem.setFilterLocally(false);
-			townItem.setAddUnknownValues(false);
-
-			DataSource townsDS = DataSource.get("TownsDS");
-			townItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-			townItem.setOptionDataSource(townsDS);
-			townItem.setValueField("town_id");
-			townItem.setDisplayField("town_name");
-
-			townItem.setOptionCriteria(new Criteria());
-			townItem.setAutoFetchData(false);
-
-			townItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = townItem.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("town_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("town_id", nullO);
-						}
-					}
-				}
-			});
+			ClientUtils.fillCombo(townItem, "TownsDS",
+					"searchCitiesFromDBForCombos", "town_id", "town_name");
+			townItem.setValue(Constants.defCityTbilisiId);
 
 			regionItem = new ComboBoxItem();
 			regionItem.setTitle(CallCenterBK.constants.cityRegion());
-			regionItem.setName("town_district_name");
+			regionItem.setName("town_district_id");
 			regionItem.setWidth(245);
-			regionItem.setFetchMissingValues(true);
-			regionItem.setFilterLocally(false);
-			regionItem.setAddUnknownValues(false);
 
-			DataSource streetsDS = DataSource.get("CityRegionDS");
-			regionItem.setOptionOperationId("searchCityRegsFromDBForCombos");
-			regionItem.setOptionDataSource(streetsDS);
-			regionItem.setValueField("town_district_id");
-			regionItem.setDisplayField("town_district_name");
+			Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
+			aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
+			aditionalCriteria.put("need_indexes", 1);
 
-			Criteria criteria = new Criterion();
-			regionItem.setOptionCriteria(criteria);
-			regionItem.setAutoFetchData(false);
-
-			regionItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = regionItem.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("town_district_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("town_district_id", nullO);
-						}
-					}
-				}
-			});
+			ClientUtils.fillCombo(regionItem, "TownDistrictDS",
+					"searchCityRegsFromDBForCombos", "town_district_id",
+					"town_district_name", aditionalCriteria);
 
 			searchForm.setFields(orgNameGeoItem, orgCommentItem,
 					orgDepartmentItem, orgDirectorItem, realAddressDescrItem,
@@ -261,8 +221,7 @@ public class TabFindOrg extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer statuse = countryRecord
-							.getAttributeAsInt("status");
+					Integer statuse = countryRecord.getAttributeAsInt("status");
 					Integer extra_priority = countryRecord
 							.getAttributeAsInt("super_priority");
 					Integer note_crit = countryRecord
