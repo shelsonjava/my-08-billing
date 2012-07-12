@@ -22,6 +22,7 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.HeaderSpan;
@@ -41,6 +42,7 @@ public class TabStatFull extends Tab {
 	private VLayout mainLayout;
 
 	private DateItem dateItem;
+	private BooleanItem exactDate;
 	// private DateItem dateItemEnd;
 	// actions
 	private IButton findButton;
@@ -83,8 +85,16 @@ public class TabStatFull extends Tab {
 			dateItem.setName("dateItem");
 			dateItem.setValue(new Date());
 			dateItem.setWidth(200);
+			
+			
+			exactDate = new BooleanItem();
+			exactDate.setTitle("დღის მიხედვით");
+			exactDate.setName("exactDate");
+			exactDate.setValue(false);
+			exactDate.setWidth(200);
+			
 
-			searchForm.setFields(dateItem);
+			searchForm.setFields(dateItem,exactDate);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(287);
@@ -714,15 +724,22 @@ public class TabStatFull extends Tab {
 			DateTimeFormat dateFormatter = DateTimeFormat.getFormat("yyMM");
 			final Integer ym = new Integer(dateFormatter.format(date));
 
-			Date prevDate = date;
-			CalendarUtil.addMonthsToDate(prevDate, -1);
-			final Integer ym_prev = new Integer(dateFormatter.format(prevDate));
+			
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchPrevStatisticsByMonth");
 			Criteria criteria = new Criteria();
+			
+			Date prevDate = new Date(date.getTime());
+			if(exactDate.getValueAsBoolean()){
+				CalendarUtil.addDaysToDate(prevDate, -1);
+				criteria.setAttribute("exactDate", prevDate);
+			}else
+			  CalendarUtil.addMonthsToDate(prevDate, -1);
+			final Integer ym_prev = new Integer(dateFormatter.format(prevDate));
 			criteria.setAttribute("ym", ym_prev);
-
+			
+			
 			statisticsDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
@@ -732,7 +749,7 @@ public class TabStatFull extends Tab {
 					if (records != null && records.length > 0) {
 						record = records[0];
 					}
-					searchData(ym, record);
+					searchData(date,ym, record);
 				}
 			}, dsRequest);
 
@@ -742,14 +759,17 @@ public class TabStatFull extends Tab {
 		}
 	}
 
-	private void searchData(Integer ym, Record record) {
+	private void searchData(Date date,Integer ym, Record record) {
 		try {
 			this.prevMonthRecord = record;
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchAllStatistics");
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("ym", ym);
-
+			if(exactDate.getValueAsBoolean()){
+				criteria.setAttribute("exactDate", date);
+			}
+			criteria.setAttribute("aaaa", System.currentTimeMillis());
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

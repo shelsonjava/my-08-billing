@@ -73,12 +73,25 @@
 				   	getFormatedDate(t.stat_date) as date_str,
 				   	Getweekdaybydate(t.stat_date) as week_day_descr				   	
 			</selectClause> 
-			<tableClause>statistic t</tableClause>
+			<tableClause> #if($criteria.exactDate) 
+			
+			
+								       (
+											select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-1)+(sysdate-trunc(sysdate)), 0)) 
+											union all
+											select * from table(PKG_STATISTICS.getStatisticsTablePipe(trunc($criteria.exactDate)+(sysdate-trunc(sysdate)), 0)) 
+										)
+				
+				
+				#else statistic #end t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
-				 #if($criteria.ym) and t.ym = $criteria.ym #end
-				 #if($criteria.stat_date_start) and trunc(t.stat_date) >= $criteria.stat_date_start #end
-				 #if($criteria.stat_date_end) and trunc(t.stat_date) <= $criteria.stat_date_end #end				 
+				 #if($criteria.exactDate)  and 1=1
+				 #else 
+					 #if($criteria.ym) and t.ym = $criteria.ym #end
+					 #if($criteria.stat_date_start) and trunc(t.stat_date) >= $criteria.stat_date_start #end
+					 #if($criteria.stat_date_end) and trunc(t.stat_date) <= $criteria.stat_date_end #end
+				 #end				 
 				]]>  
 			</whereClause> 
 			<orderClause>trunc(stat_date)</orderClause>
@@ -114,20 +127,21 @@
   					sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt),
   					(LAG((sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt)), 1, 0) OVER (ORDER BY YM))) - 100),2) as cnt_percent				   	
 			</selectClause> 
-			<tableClause>statistic t</tableClause>
+			<tableClause> #if($criteria.exactDate) table(PKG_STATISTICS.getStatisticsTablePipe(trunc($criteria.exactDate)+(sysdate-trunc(sysdate)), 0)) #else statistic #end t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
-				 #if($criteria.ym) and t.ym = $criteria.ym #end
-				 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
-				 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end				 
+				  #if($criteria.exactDate)  and 1=1
+				  #else 
+					 #if($criteria.ym) and t.ym = $criteria.ym #end
+					 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
+					 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end	
+				  #end			 
 				]]>  
 			</whereClause> 
 			<groupClause>t.ym</groupClause>
 			<orderClause>t.ym</orderClause>
     	</operationBinding>
-    	
-    	
-    	
+
     	<operationBinding operationId="searchPrevStatisticsByMonth" operationType="fetch">
     		<selectClause>   			
     			  	  t.ym,
@@ -144,12 +158,15 @@
 			          avg(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
 			          avg(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount				   	
 			</selectClause> 
-			<tableClause>statistic t</tableClause>
+			<tableClause> #if($criteria.exactDate) table(PKG_STATISTICS.getStatisticsTablePipe(trunc($criteria.exactDate)+(sysdate-trunc(sysdate)), 0)) #else statistic #end t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
-				 #if($criteria.ym) and t.ym = $criteria.ym #end
-				 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
-				 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end				 
+				#if($criteria.exactDate)  and 1=1
+				#else 
+					 #if($criteria.ym) and t.ym = $criteria.ym #end
+					 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
+					 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end
+			    #end				 
 				]]>  
 			</whereClause> 
 			<groupClause>t.ym</groupClause>
