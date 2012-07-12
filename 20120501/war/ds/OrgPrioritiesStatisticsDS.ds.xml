@@ -8,10 +8,10 @@
 		<field name="ym"   						type="integer"  		title="ym"/>
 		<field name="real_org_id"   			type="integer"  		title="real_org_id"/>
 		<field name="session_id"   				type="text"  			title="session_id"/>
-		<field name="call_start_date"   		type="datetime"  		title="call_start_date"/>
-		<field name="call_end_date"   			type="datetime"  		title="call_end_date"/>
-		<field name="call_phone"   				type="text"  			title="call_phone"/>
-		<field name="uname"   					type="text"  			title="uname"/>
+		<field name="call_start_date"   		type="datetime"  		title="Start date"/>
+		<field name="call_end_date"   			type="datetime"  		title="End date"/>
+		<field name="call_phone"   				type="text"  			title="Phone"/>
+		<field name="uname"   					type="text"  			title="User"/>
 		
 	</fields>
 	<operationBindings>
@@ -36,6 +36,7 @@
 						op.organization_name, opr.organization_name
 			</orderClause>
     	</operationBinding>
+    	
     	<operationBinding operationId="getStatistics" operationType="fetch">
     		<selectClause>   			
     			/*+ index(t,IDX_ORG_PRIORITY_STATIST_YMR)*/

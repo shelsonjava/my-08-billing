@@ -12,7 +12,7 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.GroupStartOpen;
+import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Window;
@@ -23,8 +23,6 @@ import com.smartgwt.client.widgets.events.VisibilityChangedHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
-import com.smartgwt.client.widgets.grid.GroupNode;
-import com.smartgwt.client.widgets.grid.GroupTitleRenderer;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -47,8 +45,8 @@ public class DlgHistOrgPriority extends Window {
 
 	public DlgHistOrgPriority() {
 		try {
-			setWidth(1260);
-			setHeight(730);
+			setWidth(750);
+			setHeight(660);
 			setTitle("გაწითლებული ორგანიზაციების ზარები");
 			setShowMinimizeButton(false);
 			setIsModal(true);
@@ -106,22 +104,22 @@ public class DlgHistOrgPriority extends Window {
 			histGroupListGrid.setFixedRecordHeights(false);
 			histGroupListGrid.setCanDragSelectText(true);
 
-			histGroupListGrid.setGroupStartOpen(GroupStartOpen.ALL);
-			histGroupListGrid.setGroupByField("org_name");
+			// histGroupListGrid.setGroupStartOpen(GroupStartOpen.ALL);
+			// histGroupListGrid.setGroupByField("org_name");
 
-			ListGridField org_id = new ListGridField("org_name",
-					CallCenterBK.constants.parrentOrgName(), 100);
-
-			org_id.setGroupTitleRenderer(new GroupTitleRenderer() {
-
-				@Override
-				public String getGroupTitle(Object groupValue,
-						GroupNode groupNode, ListGridField field,
-						String fieldName, ListGrid grid) {
-					return groupValue == null ? null : groupValue.toString();
-				}
-			});
-			org_id.setHidden(true);
+			// ListGridField org_id = new ListGridField("org_name",
+			// CallCenterBK.constants.parrentOrgName(), 100);
+			//
+			// org_id.setGroupTitleRenderer(new GroupTitleRenderer() {
+			//
+			// @Override
+			// public String getGroupTitle(Object groupValue,
+			// GroupNode groupNode, ListGridField field,
+			// String fieldName, ListGrid grid) {
+			// return groupValue == null ? null : groupValue.toString();
+			// }
+			// });
+			// org_id.setHidden(true);
 			ListGridField real_name = new ListGridField("real_name",
 					CallCenterBK.constants.organization());
 			real_name.setAlign(Alignment.LEFT);
@@ -130,7 +128,7 @@ public class DlgHistOrgPriority extends Window {
 					CallCenterBK.constants.count(), 50);
 			cnt.setAlign(Alignment.LEFT);
 
-			histGroupListGrid.setFields(org_id, real_name, cnt);
+			histGroupListGrid.setFields(real_name, cnt);
 
 			histSessionsListGrid = new ListGrid();
 			histSessionsListGrid.setWidth100();
@@ -209,6 +207,21 @@ public class DlgHistOrgPriority extends Window {
 			remarksButton.setWidth(50);
 			toolStrip.addButton(remarksButton);
 
+			ToolStripButton reportButton = new ToolStripButton("რეპორტი",
+					"excel.gif");
+			reportButton.setLayoutAlign(Alignment.LEFT);
+			reportButton.setWidth(50);
+			toolStrip.addButton(reportButton);
+
+			reportButton.addClickHandler(new ClickHandler() {
+
+				@Override
+				public void onClick(ClickEvent event) {
+					searchSessions(true);
+
+				}
+			});
+
 			remarksButton
 					.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
 						@Override
@@ -252,7 +265,7 @@ public class DlgHistOrgPriority extends Window {
 
 				@Override
 				public void onClick(ClickEvent event) {
-					searchSessions();
+					searchSessions(false);
 				}
 			});
 
@@ -292,16 +305,16 @@ public class DlgHistOrgPriority extends Window {
 			@Override
 			public void execute(DSResponse response, Object rawData,
 					DSRequest request) {
-				histGroupListGrid.getGroupTree().openAll();
+				// histGroupListGrid.getGroupTree().openAll();
 				if (response.getData() != null && response.getData().length > 0) {
-					histGroupListGrid.selectRecord(1);
-					searchSessions();
+					histGroupListGrid.selectRecord(0);
+					searchSessions(false);
 				}
 			}
 		}, dsRequest);
 	}
 
-	private void searchSessions() {
+	private void searchSessions(boolean export) {
 		try {
 			ListGridRecord gridRecord = histGroupListGrid.getSelectedRecord();
 			Criteria criteria = new Criteria();
@@ -310,17 +323,35 @@ public class DlgHistOrgPriority extends Window {
 						new Integer(gridRecord.getAttribute("real_org_id")));
 				criteria.setAttribute("ym",
 						new Integer(gridRecord.getAttribute("ym")));
-			}
+			} else
+				return;
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "getStatistics");
-			histSessionsListGrid.filterData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
+			if (export) {
+				dsRequest.setExportAs(ExportFormat.XLS);
+				
+				dsRequest.setExportFields(new String[]{"call_phone","call_start_date","call_end_date","uname"});
+				dsRequest.setExportHeader(gridRecord.getAttribute("real_name")+ "                    სულ:"+gridRecord.getAttribute("cnt"));
+//				dsRequest.setExportFooter();
+				histSessionsListGrid.getDataSource().exportData(criteria,
+						dsRequest, new DSCallback() {
 
-				}
-			}, dsRequest);
+							@Override
+							public void execute(DSResponse response,
+									Object rawData, DSRequest request) {
+								// TODO Auto-generated method stub
+
+							}
+						});
+			} else
+				histSessionsListGrid.filterData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+
+					}
+				}, dsRequest);
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
