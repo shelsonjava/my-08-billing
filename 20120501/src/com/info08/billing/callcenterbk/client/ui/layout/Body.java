@@ -19,7 +19,14 @@ public class Body extends VLayout {
 
 	Menu contextMenu;
 
+	
+	private static Body instance=null;
+	
+	public static Body getInstance(){
+		return instance;
+	}
 	public Body() {
+		instance=this;
 		contextMenu = new Menu();
 		contextMenu.setWidth(150);
 

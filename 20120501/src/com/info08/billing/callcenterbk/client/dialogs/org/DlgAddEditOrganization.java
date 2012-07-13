@@ -1004,7 +1004,7 @@ public class DlgAddEditOrganization extends Window {
 														.getData()[0];
 												DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
 														record,
-														organizationsGrid);
+														organizationsGrid, null);
 												addEditOrgDepartments.show();
 											} catch (Exception e) {
 												e.printStackTrace();

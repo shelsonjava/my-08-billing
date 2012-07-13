@@ -63,7 +63,7 @@ public class DlgManageOrgDepartments extends Window {
 	private ToolStripButton openOrgBtn;
 
 	public DlgManageOrgDepartments(final Record listGridRecord,
-			ListGrid orgTreeGrid) {
+			ListGrid orgTreeGrid, final Long department_id) {
 		try {
 			this.orgTreeGrid = orgTreeGrid;
 			this.orgListGridRecord = listGridRecord;
@@ -226,7 +226,7 @@ public class DlgManageOrgDepartments extends Window {
 			orgDepListGrid.setFetchOperation("orgDepartSearch");
 			orgDepListGrid.setCriteria(criteria);
 			orgDepListGrid.setDataSource(orgDepDataSource);
-			orgDepListGrid.setAutoFetchData(true);
+			orgDepListGrid.setAutoFetchData(department_id == null);
 			orgDepListGrid.setAutoSaveEdits(false);
 			orgDepListGrid.setCanSelectAll(false);
 			orgDepListGrid.setWrapCells(true);
@@ -261,6 +261,21 @@ public class DlgManageOrgDepartments extends Window {
 					CallCenterBK.constants.realAddress(), 400);
 			orgDepListGrid.setFields(tree_org_parrent, tree_org_child,
 					department, real_address);
+
+			if (department_id != null) {
+				orgDepListGrid.fetchData(criteria, new DSCallback() {
+
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						Record rec = orgDepListGrid.getRecordList().find(
+								"org_department_id", department_id);
+						if (rec != null)
+							orgDepListGrid.selectRecord(rec);
+
+					}
+				});
+			}
 
 			ToolStrip toolStrip1 = new ToolStrip();
 			toolStrip1.setWidth100();

@@ -548,33 +548,7 @@ public class TabOrganization extends Tab {
 			clearButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					orgNameGeoItem.clearValue();
-					orgCommentItem.clearValue();
-					orgDepartmentItem.clearValue();
-					phoneItem.clearValue();
-					orgDirectorItem.clearValue();
-					streetItem.clearValue();
-					regionItem.clearValue();
-					townItem.clearValue();
-					orgIdentCodeItem.clearValue();
-					phoneUpdDateItem.clearValue();
-					legalStreetItem.clearValue();
-					legalRegionItem.clearValue();
-					legalTownItem.clearValue();
-					orgWorkingHoursItem.clearValue();
-					mainOrganizationItem.setValue(false);
-					orgWebAddressItem.clearValue();
-					orgEmailItem.clearValue();
-					orgSocialAddressItem.clearValue();
-					orgFoundedEndItem.clearValue();
-					orgFoundedStartItem.clearValue();
-					partnerBankItem.clearValue();
-					orgActivity.clearValues();
-					weekDaysItem.clearValue();
-					orgStatusItem.clearValue();
-					orgContactPersonItem.clearValue();
-					searchForm.focusInItem(orgNameGeoItem);
-					organizationsGrid.deselectAllRecords();
+					clearFilter();
 				}
 			});
 
@@ -689,7 +663,7 @@ public class TabOrganization extends Tab {
 								CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					showOrgDepManagementDlg(listGridRecord);
+					showOrgDepManagementDlg(listGridRecord, null);
 				}
 			});
 
@@ -1101,9 +1075,67 @@ public class TabOrganization extends Tab {
 		this.advCriteria = advCriteria;
 	}
 
-	public void showOrgDepManagementDlg(ListGridRecord listGridRecord) {
+	public void showOrgDepManagementDlg(ListGridRecord listGridRecord,
+			Long department_id) {
 		DlgManageOrgDepartments addEditOrgDepartments = new DlgManageOrgDepartments(
-				listGridRecord, organizationsGrid);
+				listGridRecord, organizationsGrid, department_id);
 		addEditOrgDepartments.show();
+	}
+
+	public void filterByDepartmentIdAndPhone(final Long department_id,
+			String phone) {
+		clearFilter();
+		phoneItem.setValue(phone);
+		DSRequest dsRequest = new DSRequest();
+		dsRequest
+				.setAttribute("operationId", "customOrgSearchForCallCenterNew");
+		Criteria criteria = new Criteria();
+		criteria.setAttribute("org_department_id", department_id);
+		organizationsGrid.invalidateCache();
+		organizationsGrid.fetchData(criteria, new DSCallback() {
+			@Override
+			public void execute(DSResponse response, Object rawData,
+					DSRequest request) {
+				organizationsGrid.selectRecord(0);
+				ListGridRecord listGridRecord = organizationsGrid
+						.getSelectedRecord();
+				if (listGridRecord != null)
+					showOrgDepManagementDlg(listGridRecord, department_id);
+			}
+		}, dsRequest);
+	}
+
+	protected void clearFilter() {
+		orgNameGeoItem.clearValue();
+		orgCommentItem.clearValue();
+		orgDepartmentItem.clearValue();
+		phoneItem.clearValue();
+		orgDirectorItem.clearValue();
+		streetItem.clearValue();
+		regionItem.clearValue();
+		townItem.clearValue();
+		orgIdentCodeItem.clearValue();
+		phoneUpdDateItem.clearValue();
+		legalStreetItem.clearValue();
+		legalRegionItem.clearValue();
+		legalTownItem.clearValue();
+		orgWorkingHoursItem.clearValue();
+		mainOrganizationItem.setValue(false);
+		orgWebAddressItem.clearValue();
+		orgEmailItem.clearValue();
+		orgSocialAddressItem.clearValue();
+		orgFoundedEndItem.clearValue();
+		orgFoundedStartItem.clearValue();
+		partnerBankItem.clearValue();
+		orgActivity.clearValues();
+		weekDaysItem.clearValue();
+		orgStatusItem.clearValue();
+		orgContactPersonItem.clearValue();
+		try {
+			searchForm.focusInItem(orgNameGeoItem);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		organizationsGrid.deselectAllRecords();
 	}
 }

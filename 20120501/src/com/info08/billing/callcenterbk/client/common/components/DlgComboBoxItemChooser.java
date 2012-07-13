@@ -67,6 +67,8 @@ public class DlgComboBoxItemChooser extends Window {
 		listGrid.setCanSort(false);
 		listGrid.setCanReorderRecords(false);
 		listGrid.setCanReorderFields(false);
+		
+		listGrid.setFilterLocalData(false);
 
 		if (criteria != null) {
 			listGrid.setCriteria(criteria);

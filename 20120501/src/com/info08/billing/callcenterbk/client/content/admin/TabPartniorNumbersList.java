@@ -1,9 +1,11 @@
 package com.info08.billing.callcenterbk.client.content.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.content.TabOrganization;
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddEditSubscriber;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.client.utils.ISaveResult;
 import com.smartgwt.client.data.Criteria;
@@ -51,13 +53,15 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 
 	private ListGridField has_subscriber;
 
+	private TabOrganization tabOrgs;
+
 	private ListGridField has_organisation;
 	private ListGridField org_department_count;
 
 	private ListGrid lgPhones;
 
 	private ToolStripButton addPersonBtn;
-	private ToolStripButton editPersonBtn;
+	private ToolStripButton editBtn;
 	private ToolStripButton deletePersonBtn;
 	private ToolStripButton approveNmber;
 
@@ -208,7 +212,7 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 				public void onClick(ClickEvent event) {
 					if (addPersonBtn.equals(event.getSource()))
 						manageSubscriber(null);
-					else if (editPersonBtn.equals(event.getSource()))
+					else if (editBtn.equals(event.getSource()))
 						editRecord();
 					if (approveNmber.equals(event.getSource()))
 						removeRecord();
@@ -223,11 +227,11 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 			addPersonBtn.addClickHandler(ch);
 			toolStrip.addButton(addPersonBtn);
 
-			editPersonBtn = new ToolStripButton("შეცვლა", "person_edit.png");
-			editPersonBtn.addClickHandler(ch);
-			editPersonBtn.setLayoutAlign(Alignment.LEFT);
-			editPersonBtn.setWidth(50);
-			toolStrip.addButton(editPersonBtn);
+			editBtn = new ToolStripButton("შეცვლა", "person_edit.png");
+			editBtn.addClickHandler(ch);
+			editBtn.setLayoutAlign(Alignment.LEFT);
+			editBtn.setWidth(50);
+			toolStrip.addButton(editBtn);
 
 			deletePersonBtn = new ToolStripButton("წაშლა", "person_delete.png");
 			deletePersonBtn.addClickHandler(ch);
@@ -440,10 +444,28 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 		Record rec = lgPhones.getSelectedRecord();
 		String owner_type = rec.getAttribute("owner_type");
 		String owner_id = rec.getAttribute("owner_id");
+
 		if (owner_type.equals("0")) {
 			manageSubscriber(owner_id == null ? null : new Integer(owner_id));
 		} else {
 
+			Record rec1 = importedListGrid.getSelectedRecord();
+			String phone = rec1.getAttribute("phone_number");
+			if (tabOrgs == null) {
+				tabOrgs = new TabOrganization();
+				Body.getInstance().addTab(tabOrgs);
+			}
+
+			try {
+				tabOrgs.filterByDepartmentIdAndPhone(new Long(owner_id), phone);
+			} catch (Exception e) {
+				tabOrgs = new TabOrganization();
+				Body.getInstance().addTab(tabOrgs);
+				tabOrgs.filterByDepartmentIdAndPhone(new Long(owner_id), phone);
+			}
+
+			String tabId = tabOrgs.getID();
+			Body.getInstance().activateTab(tabId);
 		}
 	}
 
