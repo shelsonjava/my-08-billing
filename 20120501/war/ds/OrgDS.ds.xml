@@ -301,7 +301,9 @@
 				 <![CDATA[
 						 o.physical_address_id = a.addr_id(+) and 
 						 o.legal_address_id = a1.addr_id(+) 
-						 
+						 #if($criteria.org_department_id) 
+						 	and  exists (select 1 from organization_department od where od.organization_id=o.organization_id and od.org_department_id=$criteria.org_department_id)
+						 #end
 							#if($criteria.organization_name) 
 								#foreach($str in $criteria.organization_name.split(" "))
 									and o.organization_name like '%'||'$str'||'%'
@@ -512,9 +514,23 @@
 			<whereClause>
 					o.physical_address_id = a.addr_id
 				    #if($criteria.organization_id) and o.organization_id = $criteria.organization_id #end
-					#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end				    
-					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
-					#if($criteria.full_address_not_hidden) and concat_address_with_town like '%'||$criteria.full_address_not_hidden||'%' #end					
+				    
+					#if($criteria.organization_name) 
+								#foreach($str in $criteria.organization_name.split(" "))
+									and o.organization_name like '%'||'$str'||'%'
+								#end
+					#end				    
+				    #if($criteria.remark) 
+								#foreach($str in $criteria.remark.split(" "))
+									and o.remark like '%'||'$str'||'%'
+								#end
+					#end
+					
+					#if($criteria.full_address_not_hidden) 
+								#foreach($str in $criteria.full_address_not_hidden.split(" "))
+									and a.concat_address_with_town like '%'||'$str'||'%'
+								#end
+					#end
 			</whereClause>				
     	</operationBinding>
     	
