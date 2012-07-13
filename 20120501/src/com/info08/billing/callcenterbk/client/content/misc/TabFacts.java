@@ -451,6 +451,13 @@ public class TabFacts extends Tab {
 				criteria.setAttribute("fact_type_id", new Integer(
 						calendar_event_id));
 			}
+
+			String fact_descriptor_id = factDescriptorItem.getValueAsString();
+			if (fact_descriptor_id != null
+					&& !fact_descriptor_id.trim().equals("")) {
+				criteria.setAttribute("facts_descriptor_id", new Integer(
+						fact_descriptor_id));
+			}
 			boolean checkedDate = byCalendarDayItem.getValueAsBoolean();
 			if (checkedDate) {
 				Date calendar_day = calendarDayItem.getValueAsDate();
