@@ -91,6 +91,7 @@
 		<field name="original_org_name"				type="text"  		title="original_org_name"/>
 		<field name="mainIdList"					type="any"  		title="mainIdList"						hidden="true"/>
 		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true" />
+		<field name="org_part_bank_id" 				type="integer" 		title="org_part_bank_id" 				hidden="true" />
 		<field name="concat_phones"					type="text"  		title="concat_phones"					hidden="true"/>
 		<field name="concat_activity_descrs"		type="text"  		title="concat_activity_descrs"			hidden="true"/>
 		<field name="concat_org_partner_banks"		type="text"  		title="concat_org_partner_banks"/>
@@ -536,7 +537,8 @@
     	
     	
     	<operationBinding operationId="searchOrgPartnerBanks" operationType="fetch">
-    		<selectClause>   			
+    		<selectClause>   	
+    			t.org_part_bank_id,		
     			o.organization_id,
     			o.organization_name,
     			o.remark,
