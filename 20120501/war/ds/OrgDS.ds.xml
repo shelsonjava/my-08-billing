@@ -238,7 +238,7 @@
 							get_street_old_names(a.street_id) as street_old_name,
 							o.important_remark,						
 	             			a.town_district_id,
-	             		    getTbilisiOrder(a.town_id) as cust_order,
+	             		    sort_by_tbilisi(a.town_id) as cust_order,
 			                a.street_name,
 			                a.hidden_by_request,
 			                decode(a.hidden_by_request, 1, 'მისამართი დაფარულია', a.concat_address_with_town) as call_center_address,
@@ -294,7 +294,7 @@
 								)
 							  #end
 							connect by prior t.organization_id = t.parrent_organization_id
-							order siblings by getTbilisiOrder(t.ph_town_id), t.super_priority, nvl(t.parrent_organization_id,0), t.priority
+							order siblings by sort_by_tbilisi(t.ph_town_id), t.super_priority, nvl(t.parrent_organization_id,0), t.priority
 						) hr, #end
 				v_full_address a, v_full_address a1
 			</tableClause>
@@ -484,7 +484,7 @@
 						#if($criteria.pp_organization_id)
 							hr.my_rownum 
 						#else
-							getTbilisiOrder(a.town_id), o.super_priority, nvl(o.parrent_organization_id,0), o.priority 
+							sort_by_tbilisi(a.town_id), o.super_priority, nvl(o.parrent_organization_id,0), o.priority 
 						#end
 				
 			</orderClause>
@@ -572,7 +572,7 @@
 					#if($criteria.remark) and o.remark like '%'||$criteria.remark||'%' #end
 					#if($criteria.full_address_not_hidden) and concat_address_with_town like '%'||$criteria.full_address_not_hidden||'%' #end					
 			</whereClause>				
-			<orderClause>gettbilisiorder(o.ph_town_id),o.organization_name</orderClause>	
+			<orderClause>sort_by_tbilisi(o.ph_town_id),o.organization_name</orderClause>	
     	</operationBinding>
     	
     	
