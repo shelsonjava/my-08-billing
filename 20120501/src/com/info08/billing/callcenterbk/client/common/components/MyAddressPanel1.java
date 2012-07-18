@@ -106,11 +106,10 @@ public class MyAddressPanel1 extends HLayout {
 				"town_district_name", aditionalCriteria1);
 
 		addrStreetDescrItem = new TextAreaItem();
-		addrStreetDescrItem.setTitle(CallCenterBK.constants.streetDescr());
-		addrStreetDescrItem.setName("street_location");
+		addrStreetDescrItem.setTitle(CallCenterBK.constants.addInfo());
+		addrStreetDescrItem.setName("descr");
 		addrStreetDescrItem.setWidth(614);
 		addrStreetDescrItem.setHeight(49);
-		addrStreetDescrItem.setCanEdit(false);
 		addrStreetDescrItem.setColSpan(2);
 
 		addrStreetIdxItem = new TextAreaItem();
@@ -177,11 +176,9 @@ public class MyAddressPanel1 extends HLayout {
 				addrRegionItem);
 
 		ClientUtils.makeDependancy(addrTownItem, true, new FormItemDescr(
-				addrStreetDescrItem, "", "d"), new FormItemDescr(
 				addrStreetIdxItem, "", "k"));
 		ClientUtils.makeDependancy(addrStreetItem, true, new FormItemDescr(
 				addrRegionItem, "street_id", "town_district_id"),
-				new FormItemDescr(addrStreetDescrItem, "", "street_location"),
 				new FormItemDescr(addrStreetIdxItem, "", "street_index"));
 
 		dynamicForm.setFields(header, addrTownItem, addrStreetItem,
