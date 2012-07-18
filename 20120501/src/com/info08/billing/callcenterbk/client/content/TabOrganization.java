@@ -952,6 +952,7 @@ public class TabOrganization extends Tab {
 				criteria.setAttribute("org_partner_banks", org_partner_banks);
 			}
 			MyComboboxItemMultClass orgActivities = orgActivity.getParamClass();
+			boolean isByOrgActivity = false;
 			if (orgActivities != null
 					&& orgActivities.getValueRecords() != null
 					&& orgActivities.getValueRecords().length > 0) {
@@ -968,6 +969,7 @@ public class TabOrganization extends Tab {
 					i++;
 				}
 				criteria.setAttribute("orgActivitiesCrit", orgActivitiesCrit);
+				isByOrgActivity = true;
 			}
 
 			String week_daysItem = weekDaysItem.getValueAsString();
@@ -992,13 +994,13 @@ public class TabOrganization extends Tab {
 					&& (ident_code == null || ident_code.trim().equals(""))
 					&& (department == null || department.trim().equals(""))
 					&& (web_address == null || web_address.trim().equals(""))
-					&& (email_address == null || email_address.trim()
-							.equals(""))
+					&& (email_address == null || email_address.trim().equals(""))
 					&& (street == null || street.trim().equals(""))
 					&& (phone == null || phone.trim().equals(""))
 					&& (org_found_date_start == null && org_found_date_end == null)
-					&& (phone_upd_date == null || phone_upd_date.trim().equals(
-							""))) {
+					&& (phone_upd_date == null || phone_upd_date.trim().equals(""))
+					&& !isByOrgActivity) 
+			{
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.findOrgEnterAnyParam());
 				return;

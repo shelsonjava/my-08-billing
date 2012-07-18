@@ -529,14 +529,12 @@ public class DlgAddEditOrganization extends Window {
 
 			dForm3.setFields(partnerBankItem);
 
-			OrgPartnetBanksClientDS orgPartnetBanksClientDS = OrgPartnetBanksClientDS
-					.getInstance();
+			OrgPartnetBanksClientDS orgPartnetBanksClientDS = OrgPartnetBanksClientDS.getInstance();
 			orgPartBankOrgsGrid = new ListGrid();
 			orgPartBankOrgsGrid.setWidth(591);
 			orgPartBankOrgsGrid.setHeight(130);
 			orgPartBankOrgsGrid.setPreventDuplicates(true);
-			orgPartBankOrgsGrid
-					.setDuplicateDragMessage("ასეთი უკვე არჩეულია !");
+			orgPartBankOrgsGrid.setDuplicateDragMessage("ასეთი უკვე არჩეულია !");
 			orgPartBankOrgsGrid.setCanAcceptDroppedRecords(true);
 			orgPartBankOrgsGrid.setAlternateRecordStyles(true);
 			orgPartBankOrgsGrid.setAutoFetchData(true);

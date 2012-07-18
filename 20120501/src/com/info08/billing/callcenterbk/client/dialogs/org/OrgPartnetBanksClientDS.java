@@ -13,14 +13,14 @@ public class OrgPartnetBanksClientDS extends DataSource {
 
 	public OrgPartnetBanksClientDS(String id) {
 		// setID(id);
-		DataSourceIntegerField organization_id = new DataSourceIntegerField("organization_id");
-		organization_id.setHidden(true);
-		organization_id.setPrimaryKey(true);
-		organization_id.setRequired(true);
+		DataSourceIntegerField org_part_bank_id = new DataSourceIntegerField("org_part_bank_id");
+		org_part_bank_id.setHidden(true);
+		org_part_bank_id.setPrimaryKey(true);
+		org_part_bank_id.setRequired(true);
 
 		DataSourceTextField organization_name = new DataSourceTextField("organization_name", CallCenterBK.constants.orgName());
 
-		setFields(organization_id, organization_name);
+		setFields(org_part_bank_id, organization_name);
 		setClientOnly(true);		
 	}	
 }

@@ -145,11 +145,13 @@ public class TabOrgBusinessActivity extends Tab {
 			listGrid.setShowFilterEditor(false);
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
-			listGrid.setFetchOperation("OrgActDS");
+			listGrid.setFetchOperation("searchAllBusinesActivities");
 			listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
+			listGrid.setShowFilterEditor(true);
+			listGrid.setFilterOnKeypress(true);
 
 			datasource.getField("activity_description").setTitle(
 					CallCenterBK.constants.orgActivity());
@@ -159,13 +161,16 @@ public class TabOrgBusinessActivity extends Tab {
 			ListGridField activity_description = new ListGridField(
 					"activity_description",
 					CallCenterBK.constants.orgActivity(), 300);
+			activity_description.setCanFilter(true);
 
 			ListGridField is_bank_activity_descr = new ListGridField(
 					"is_bank_activity_descr",
 					CallCenterBK.constants.bankActivity(), 150);
+			is_bank_activity_descr.setCanFilter(false);
 
 			ListGridField remark = new ListGridField("remark",
 					CallCenterBK.constants.comment());
+			remark.setCanFilter(false);
 
 			listGrid.setFields(activity_description, is_bank_activity_descr,
 					remark);
@@ -285,12 +290,13 @@ public class TabOrgBusinessActivity extends Tab {
 					isBankActivityItem.getValueAsString());
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("activity_description", activity_description);
+			criteria.setAttribute("activity_description_param",
+					activity_description);
 			criteria.setAttribute("remark", remark);
 			if (!is_bank_activity.equals(new Integer(-1))) {
 				criteria.setAttribute("is_bank_activity", is_bank_activity);
 			}
-			
+
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "searchAllBusinesActivities");
 			listGrid.invalidateCache();
