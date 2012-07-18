@@ -25,7 +25,7 @@
     	<operationBinding operationId="searchBillCallsBySrv" operationType="fetch">
     		<selectClause>   			
     			trunc(t.STATISTICS_DATE),
-    			getFormatedDate(t.STATISTICS_DATE) as bill_date_str,
+    			date_format(t.STATISTICS_DATE) as bill_date_str,
     			#if($criteria.groupBySum == 0)
     				s.SERVICE_DESCRIPTION as service_name_geo,
 				#elseif($criteria.groupBySum == 1)
@@ -42,7 +42,7 @@
 				#end
 				
 				STATISTICS_TYPE as count_type,
-				Getweekdaybydate(t.STATISTICS_DATE) as week_day
+				get_day_of_week(t.STATISTICS_DATE) as week_day
 			</selectClause> 
 			<tableClause>call_statistics t, service_prices s</tableClause>
 			<whereClause><![CDATA[
@@ -93,10 +93,10 @@
 				 #if($criteria.groupBySum == 0) ) #end
 				 	
 				 #if($criteria.groupBySum == 0)
-				 	group by trunc(t.STATISTICS_DATE), getFormatedDate(t.STATISTICS_DATE), s.SERVICE_DESCRIPTION, t.SERVICE_PRICE_ID, STATISTICS_TYPE, Getweekdaybydate(t.STATISTICS_DATE)
+				 	group by trunc(t.STATISTICS_DATE), date_format(t.STATISTICS_DATE), s.SERVICE_DESCRIPTION, t.SERVICE_PRICE_ID, STATISTICS_TYPE, get_day_of_week(t.STATISTICS_DATE)
 				 	order by trunc(t.STATISTICS_DATE), t.SERVICE_PRICE_ID
 				 #elseif($criteria.groupBySum == 1)
-				 	group by trunc(t.STATISTICS_DATE), getFormatedDate(t.STATISTICS_DATE), STATISTICS_TYPE, Getweekdaybydate(t.STATISTICS_DATE)
+				 	group by trunc(t.STATISTICS_DATE), date_format(t.STATISTICS_DATE), STATISTICS_TYPE, get_day_of_week(t.STATISTICS_DATE)
 				 	order by trunc(t.STATISTICS_DATE)
 				 #end				 	
 				]]>  

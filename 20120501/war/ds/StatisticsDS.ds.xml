@@ -70,8 +70,8 @@
 				   	(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt) as org_sum,
 				   	(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
 				   	(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount,
-				   	getFormatedDate(t.stat_date) as date_str,
-				   	Getweekdaybydate(t.stat_date) as week_day_descr				   	
+				   	date_format(t.stat_date) as date_str,
+				   	get_day_of_week(t.stat_date) as week_day_descr				   	
 			</selectClause> 
 			<tableClause> #if($criteria.exactDate) 
 			
