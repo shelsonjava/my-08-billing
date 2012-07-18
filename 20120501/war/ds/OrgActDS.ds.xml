@@ -44,6 +44,7 @@
 			<whereClause><![CDATA[
 				1=1
 				#if($criteria.activity_description) and t.activity_description like '%'||($criteria.activity_description)||'%' #end
+				#if($criteria.activity_description_param) and t.activity_description like '%'||($criteria.activity_description_param)||'%' #end
 				#if($criteria.remark) and t.remark like '%'||($criteria.remark)||'%' #end
 				#if($criteria.is_bank_activity) and t.is_bank_activity = $criteria.is_bank_activity #end
 				]]>  
