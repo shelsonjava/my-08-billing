@@ -996,6 +996,7 @@ public class TabOrganization extends Tab {
 					&& (web_address == null || web_address.trim().equals(""))
 					&& (email_address == null || email_address.trim().equals(""))
 					&& (street == null || street.trim().equals(""))
+					&& (legal_street == null || legal_street.trim().equals(""))
 					&& (phone == null || phone.trim().equals(""))
 					&& (org_found_date_start == null && org_found_date_end == null)
 					&& (phone_upd_date == null || phone_upd_date.trim().equals(""))

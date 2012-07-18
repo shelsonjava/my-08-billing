@@ -410,7 +410,7 @@
 										#end
 							 	) 
 							 #end
-							 #if($criteria.legal_town_id) and a1.legal_town_id = $criteria.legal_town_id #end
+							 #if($criteria.legal_town_id) and a1.town_id = $criteria.legal_town_id #end
 							 #if($criteria.work_hours) and o.work_hours like '%'||($criteria.work_hours)||'%' #end
 							  #if($criteria.day_offs) 
 							 	 #foreach($str in $criteria.day_offs.split(" "))
