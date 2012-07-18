@@ -99,7 +99,7 @@
 				t.visible_options,
 				sr.town_district_name,
 				c.town_name,
-				getSreetOldNames(t.street_id) as street_old_name_descr,
+				get_street_old_names(t.street_id) as street_old_name_descr,
 				t.hide_for_call_center,
 				t.hide_for_correction								
 			</selectClause> 

@@ -819,8 +819,8 @@ public interface QueryConstants {
 	public static final String Q_GET_CONTRACTOR_ADV_PRICE = " select sum(nvl(t.price,0)) as advPrice from contract_price_items t where t.contract_id = ? and t.call_count_start<=? and t.call_count_end > ? ";
 
 	public static final String Q_GET_CONTRACTOR_INFO = "select distinct c.contract_id,\n"
-			+ "       date_to_msec(c.start_date) as start_date,\n"
-			+ "       date_to_msec(c.end_date) as end_date,\n"
+			+ "       dt2ms(c.start_date) as start_date,\n"
+			+ "       dt2ms(c.end_date) as end_date,\n"
 			+ "       c.critical_number,\n"
 			+ "       c.is_budget,\n"
 			+ "       c.price_type,\n"

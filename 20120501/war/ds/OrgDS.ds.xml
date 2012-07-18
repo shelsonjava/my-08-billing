@@ -234,7 +234,7 @@
 							a.street_location,
 							a.street_index_text,
 							a.street_index_text as index_text,
-							getsreetoldnames(a.street_id) as street_old_name,
+							get_street_old_names(a.street_id) as street_old_name,
 							o.important_remark,						
 	             			a.town_district_id,
 	             		    getTbilisiOrder(a.town_id) as cust_order,

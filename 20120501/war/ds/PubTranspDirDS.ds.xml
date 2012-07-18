@@ -88,10 +88,10 @@
     			   tt.NAME_DESCR as service_descr,
     			   t.transportid as pt_id,
 			       t.transportnodescr as dir_num,
-			       getminbusstop(t.transportid) start_place,
-			       getminbusstop_id(t.transportid) start_place_id,
-			       getmaxbusstop(t.transportid) end_place,
-			       getmaxbusstop_id(t.transportid) end_place_id,
+			       GETMINIMUMTRANSPSTOP(t.transportid) start_place,
+			       GETMINIMUMTRANSPSTOP_ID(t.transportid) start_place_id,
+			       GETMAXIMUMTRANSPSTOP(t.transportid) end_place,
+			       GETMAXIMUMTRANSPSTOP_ID(t.transportid) end_place_id,
 			       t.CYCLED_ID direction,
 			       decode(t.CYCLED_ID,1,'ჩვეულებრივი',2,'წრიული','უცნობი') as cycle_descr
 			</selectClause> 
