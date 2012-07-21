@@ -145,7 +145,7 @@ public class DlgGetContractorsBilling extends Window {
 				return;
 			}
 
-			final DataSource dataSource = DataSource.get("ContractorsDS");
+			final DataSource dataSource = DataSource.get("CorporateClientsDS");
 			boolean genBill = generateBillItem.getValueAsBoolean();
 			if (genBill) {
 				Record record = new Record();

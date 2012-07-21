@@ -54,7 +54,7 @@ public class DlgContractorPhones extends Window {
 
 	private DataSource OrgDS;
 	private DataSource OrgDepartmentDS;
-	private DataSource ContractorsPhonesDS;
+	private DataSource CorpClientPhonesDS;
 	private Criteria lastPhoneCriteria;
 	private CheckboxItem cbiByHirarchy;
 
@@ -67,7 +67,7 @@ public class DlgContractorPhones extends Window {
 			this.organization_id = organization_id;
 			OrgDS = DataSource.get("OrgDS");
 			OrgDepartmentDS = DataSource.get("OrgDepartmentDS");
-			ContractorsPhonesDS = DataSource.get("ContractorsPhonesDS");
+			CorpClientPhonesDS = DataSource.get("CorpClientPhonesDS");
 
 			setTitle(CallCenterBK.constants.advParameters());
 			setHeight(680);
@@ -311,7 +311,7 @@ public class DlgContractorPhones extends Window {
 			/*--------------------------------------------*/
 
 			phoneGrid = new ListGrid();
-			phoneGrid.setDataSource(ContractorsPhonesDS);
+			phoneGrid.setDataSource(CorpClientPhonesDS);
 
 			phoneGrid.setFetchOperation("searchPhones");
 
@@ -324,7 +324,7 @@ public class DlgContractorPhones extends Window {
 			// phoneGrid.setShowFilterEditor(true);
 			// phoneGrid.setFilterOnKeypress(true);
 
-			ListGridField phoneCol = new ListGridField("phone",
+			ListGridField phoneCol = new ListGridField("phone_number",
 					CallCenterBK.constants.phone());
 
 			phoneGrid.setFields(phoneCol);
@@ -488,7 +488,7 @@ public class DlgContractorPhones extends Window {
 
 	protected void addPhones() {
 
-		DataSource ds = DataSource.get("ContractorsPhonesDS");
+		DataSource ds = DataSource.get("CorpClientPhonesDS");
 		Criteria cr = lastPhoneCriteria;
 		if (cr == null) {
 			cr = new Criteria();
@@ -510,7 +510,7 @@ public class DlgContractorPhones extends Window {
 				if (response.getData() != null) {
 					Record records[] = response.getData();
 					for (Record record2 : records) {
-						String phone = record2.getAttribute("phone");
+						String phone = record2.getAttribute("phone_number");
 						if (phone != null)
 							addPhone(phone);
 					}

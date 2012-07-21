@@ -17,13 +17,13 @@ public class ContractorPhoneClientDS extends DataSource {
 		prcId.setPrimaryKey(true);
 		prcId.setRequired(true);
 
-		DataSourceTextField phone = new DataSourceTextField("phone",
-				CallCenterBK.constants.phone());
+		DataSourceTextField phone_number = new DataSourceTextField(
+				"phone_number", CallCenterBK.constants.phone());
 		DataSourceTextField deleted = new DataSourceTextField("deleted",
 				CallCenterBK.constants.status());
 		deleted.setHidden(true);
 
-		setFields(prcId, phone, deleted);
+		setFields(prcId, phone_number, deleted);
 		setClientOnly(true);
 	}
 }

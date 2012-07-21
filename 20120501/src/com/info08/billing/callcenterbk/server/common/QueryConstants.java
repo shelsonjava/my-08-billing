@@ -239,7 +239,7 @@ public interface QueryConstants {
 	// +
 	// "       inner join log_session_charges ch on ch.session_id = ls.session_id\n"
 	// +
-	// "       inner join contracts c on c.contract_id = ? \n" +
+	// "       inner join contracts c on c.corporate_client_id = ? \n" +
 	// "where ch.deleted = 0 and trunc(c.start_date) <= trunc(ls.start_date) and trunc(c.end_date)>=trunc(ls.start_date) and ls.phone in (\n"
 	// +
 	// "      select /*+ index(p PHN_PRY_KS001)*/\n" +
@@ -249,7 +249,7 @@ public interface QueryConstants {
 	// "      where a.main_detail_id in (\n" +
 	// "            select\n" +
 	// "                t.main_detail_id from main_details t\n" +
-	// "            start with t.main_detail_id = ((select c.main_detail_id from contracts c where c.contract_id = ? )) and t.deleted = 0\n"
+	// "            start with t.main_detail_id = ((select c.main_detail_id from contracts c where c.corporate_client_id = ? )) and t.deleted = 0\n"
 	// +
 	// "            connect by prior t.main_detail_id = t.main_detail_master_id\n"
 	// +
@@ -260,7 +260,7 @@ public interface QueryConstants {
 			+ "      /*+ index(ls IDX_LOG_SESS_PHANDDT) */ count(1)\n"
 			+ "from log_sessions ls\n"
 			+ "     inner join log_session_charges ch on ch.session_id = ls.session_id\n"
-			+ "     inner join contracts c on c.contract_id = ? \n"
+			+ "     inner join contracts c on c.corporate_client_id = ? \n"
 			+ "where ch.deleted = 0 and trunc(c.start_date) <= trunc(ls.start_date) and trunc(c.end_date)>=trunc(ls.start_date) and ls.phone in (\n"
 			+ "     select /*+ index(p PHN_PRY_KS001)*/\n"
 			+ "           distinct decode(length(p.phone),7,'32'||p.phone,p.phone) \n"
@@ -304,7 +304,7 @@ public interface QueryConstants {
 			+ "      /*+ index(ls IDX_LOG_SESS_PHANDDT) */ nvl(sum(ch.price)/100,0) as charges \n"
 			+ "from log_sessions ls\n"
 			+ "     inner join log_session_charges ch on ch.session_id = ls.session_id\n"
-			+ "     inner join contracts c on c.contract_id = ? \n"
+			+ "     inner join contracts c on c.corporate_client_id = ? \n"
 			+ "where ch.deleted = 0 and trunc(c.start_date) <= trunc(ls.start_date) and trunc(c.end_date)>=trunc(ls.start_date) and ls.phone in (\n"
 			+ "     select /*+ index(p PHN_PRY_KS001)*/\n"
 			+ "           distinct decode(length(p.phone),7,'32'||p.phone,p.phone) \n"
@@ -344,7 +344,7 @@ public interface QueryConstants {
 	// +
 	// "       inner join log_session_charges ch on ch.session_id = ls.session_id\n"
 	// +
-	// "       inner join contracts c on c.contract_id = ?\n" +
+	// "       inner join contracts c on c.corporate_client_id = ?\n" +
 	// "where ch.deleted = 0 and trunc(c.start_date) <= trunc(ls.start_date) and trunc(c.end_date)>=trunc(ls.start_date) and ls.phone in (\n"
 	// +
 	// "      select\n" +
@@ -355,7 +355,7 @@ public interface QueryConstants {
 	// "            select\n" +
 	// "               t.organization_id\n" +
 	// "            from main_services t\n" +
-	// "            start with t.organization_id =((select c.organization_id from contracts c where c.contract_id = ?))  and t.service_id = 3\n"
+	// "            start with t.organization_id =((select c.organization_id from contracts c where c.corporate_client_id = ?))  and t.service_id = 3\n"
 	// +
 	// "            connect by prior t.organization_id = t.main_master_id\n" +
 	// "       )\n" +
@@ -365,7 +365,7 @@ public interface QueryConstants {
 			+ "      /*+ index(ls IDX_LOG_SESS_PHANDDT) */ count(1)\n"
 			+ "from log_sessions ls\n"
 			+ "     inner join log_session_charges ch on ch.session_id = ls.session_id\n"
-			+ "     inner join contracts c on c.contract_id = ? \n"
+			+ "     inner join contracts c on c.corporate_client_id = ? \n"
 			+ "where ch.deleted = 0 and trunc(c.start_date) <= trunc(ls.start_date) and trunc(c.end_date)>=trunc(ls.start_date) and ls.phone in (\n"
 			+ "     select distinct decode(length(p.phone),7,'32'||p.phone,p.phone) from (\n"
 			+ "               select ms.organization_id from main_services ms\n"
@@ -426,7 +426,7 @@ public interface QueryConstants {
 			+ "      /*+ index(ls IDX_LOG_SESS_PHANDDT) */ nvl(sum(ch.price)/100,0) as charges \n"
 			+ "from log_sessions ls\n"
 			+ "     inner join log_session_charges ch on ch.session_id = ls.session_id\n"
-			+ "     inner join contracts c on c.contract_id = ? \n"
+			+ "     inner join contracts c on c.corporate_client_id = ? \n"
 			+ "where ch.deleted = 0 and trunc(c.start_date) <= trunc(ls.start_date) and trunc(c.end_date)>=trunc(ls.start_date) and ls.phone in (\n"
 			+ "     select distinct decode(length(p.phone),7,'32'||p.phone,p.phone) from (\n"
 			+ "               select ms.organization_id from main_services ms\n"
@@ -490,43 +490,6 @@ public interface QueryConstants {
 	public static final String Q_DELETE_BLACK_LIST_PHONES = "delete from BLACK_LIST_PHONES tt where tt.black_list_id=?";
 	public static final String Q_DELETE_BLACK_LIST = "delete from BLACK_LIST tt where tt.black_list_id=?";
 
-	public static final String Q_CHECK_PHONE_MAIN_ORG = "select count(1) from main_services ms\n"
-			+ "       inner join abonents a on a.organization_id = ms.organization_id\n"
-			+ "       inner join phones p on p.phone_id = a.phone_id\n"
-			+ "where ms.organization_id in\n"
-			+ "      (select t.organization_id from main_services t\n"
-			+ "       start with t.organization_id = ? and t.service_id = 3 and t.deleted = 0\n"
-			+ "       connect by prior t.organization_id = t.main_master_id\n"
-			+ "       )\n"
-			+ "and p.deleted = 0 and a.deleted = 0 and ms.deleted = 0 and p.phone is not null and p.phone not like '8%'\n"
-			+ "and length(p.phone)>6 and ms.service_id = 3 and ms.deleted = 0 and p.phone = ? ";
-
-	public static final String Q_CHECK_PHONE_MAIN_ORG_DET = "select p.phone from phones p\n"
-			+ "       inner join abonents a on a.phone_id = p.phone_id\n"
-			+ "       inner join main_services ms on ms.organization_id = a.organization_id\n"
-			+ "where a.main_detail_id in\n"
-			+ "      (select t.main_detail_id from main_details t\n"
-			+ "       start with t.main_detail_id = ? and t.deleted = 0\n"
-			+ "       connect by prior t.main_detail_id = t.main_detail_master_id\n"
-			+ "       )\n"
-			+ "and p.deleted = 0 and a.deleted = 0 and ms.service_id = 3 and ms.deleted = 0 and p.phone = ? ";
-
-	// public static final String Q_GET_PHONE_LIST_ONLY_CONTR_LIST =
-	// "select distinct t.phone from phones t\n" +
-	// "inner join abonents a on a.phone_id = t.phone_id\n" +
-	// "inner join main_services ms on ms.organization_id = a.organization_id\n"
-	// +
-	// "where t.deleted = 0 and a.deleted = 0 and ms.service_id = 3 and a.organization_id = ? and ms.organization_id = ?\n"
-	// +
-	// "  and a.main_detail_id = ? and t.phone is not null and length(t.phone)>6 and t.phone not in (\n"
-	// +
-	// "      select tt.phone from contractor_phones tt\n" +
-	// "             inner join contracts c on c.contract_id = tt.contract_id\n"
-	// +
-	// "      where tt.contract_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.main_detail_id = a.main_detail_id and c.deleted = 0\n"
-	// +
-	// ")";
-
 	public static final String Q_GET_PHONE_LIST_ONLY_CONTR_LIST = "select\n"
 			+ "      /*+ index(p PHN_PRY_KS001)*/ distinct p.phone\n"
 			+ "from abonents a\n"
@@ -560,7 +523,7 @@ public interface QueryConstants {
 			+ "        )\n"
 			+ "  )\n"
 			+ "  and p.phone not in (\n"
-			+ "      select tt.phone from contractor_phones tt where tt.contract_id = ? and tt.deleted = 0 "
+			+ "      select tt.phone_number from corp_client_phones tt where tt.corporate_client_id = ? and tt.deleted = 0 "
 			+ "  )\n";
 
 	public static final String Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST = "select\n"
@@ -596,7 +559,7 @@ public interface QueryConstants {
 			+ "        )\n"
 			+ "  )\n"
 			+ "  and p.phone in (\n"
-			+ "      select tt.phone from contractor_phones tt where tt.contract_id = ? and tt.deleted = 0 "
+			+ "      select tt.phone from corp_client_phones tt where tt.corporate_client_id = ? and tt.deleted = 0 "
 			+ "  )\n";
 
 	// public static final String Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST =
@@ -608,10 +571,10 @@ public interface QueryConstants {
 	// +
 	// "  and a.main_detail_id = ? and t.phone is not null and length(t.phone)>6 and t.phone in (\n"
 	// +
-	// "      select tt.phone from contractor_phones tt\n" +
-	// "             inner join contracts c on c.contract_id = tt.contract_id\n"
+	// "      select tt.phone from corp_client_phones tt\n" +
+	// "             inner join contracts c on c.corporate_client_id = tt.corporate_client_id\n"
 	// +
-	// "      where tt.contract_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.main_detail_id = a.main_detail_id and c.deleted = 0\n"
+	// "      where tt.corporate_client_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.main_detail_id = a.main_detail_id and c.deleted = 0\n"
 	// +
 	// ")";
 
@@ -630,10 +593,10 @@ public interface QueryConstants {
 	// +
 	// "and length(p.phone)>6 and ms.service_id = 3 and ms.deleted = 0 and p.phone not in (\n"
 	// +
-	// "      select tt.phone from contractor_phones tt\n" +
-	// "             inner join contracts c on c.contract_id = tt.contract_id\n"
+	// "      select tt.phone from corp_client_phones tt\n" +
+	// "             inner join contracts c on c.corporate_client_id = tt.corporate_client_id\n"
 	// +
-	// "      where tt.contract_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.deleted = 0\n"
+	// "      where tt.corporate_client_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.deleted = 0\n"
 	// +
 	// ")";
 
@@ -692,7 +655,7 @@ public interface QueryConstants {
 			+ "           connect by prior t.main_detail_id = t.main_detail_master_id)\n"
 			+ ") \n"
 			+ " and p.phone not in (\n"
-			+ "      select tt.phone from contractor_phones tt where tt.contract_id = ? and tt.deleted = 0 "
+			+ "      select tt.phone_number from corp_client_phones tt where tt.corporate_client_id = ? and tt.deleted = 0 "
 			+ "  )\n";
 
 	public static final String Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST1 = "select distinct p.phone from (\n"
@@ -750,7 +713,7 @@ public interface QueryConstants {
 			+ "           connect by prior t.main_detail_id = t.main_detail_master_id)\n"
 			+ ")\n"
 			+ " and p.phone in (\n"
-			+ "      select tt.phone from contractor_phones tt where tt.contract_id = ? and tt.deleted = 0 "
+			+ "      select tt.phone_number from corp_client_phones tt where tt.corporate_client_id = ? and tt.deleted = 0 "
 			+ "  )\n";
 
 	// public static final String Q_GET_PHONE_LIST_EXCEPT_CONTR_LIST1 =
@@ -768,10 +731,10 @@ public interface QueryConstants {
 	// +
 	// "and length(p.phone)>6 and ms.service_id = 3 and ms.deleted = 0 and p.phone in (\n"
 	// +
-	// "      select tt.phone from contractor_phones tt\n" +
-	// "             inner join contracts c on c.contract_id = tt.contract_id\n"
+	// "      select tt.phone from corp_client_phones tt\n" +
+	// "             inner join contracts c on c.corporate_client_id = tt.corporate_client_id\n"
 	// +
-	// "      where tt.contract_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.deleted = 0\n"
+	// "      where tt.corporate_client_id = ? and tt.deleted = 0 and c.organization_id = a.organization_id and c.deleted = 0\n"
 	// +
 	// ")";
 
@@ -805,10 +768,10 @@ public interface QueryConstants {
 			+ "      and p.deleted = 0 and a.deleted = 0 and md.deleted = 0 and p.phone is not null and p.phone not like '8%'\n"
 			+ "      and length(p.phone)>4\n"
 			+ "      and ms.service_id = 3 and ms.deleted = 0";
-
-	public static final String Q_DELETE_CONTRACT_PRICES = "delete from contract_price_items t where t.contract_id = ? ";
+	
+	public static final String Q_DELETE_CONTRACT_PRICES = "delete from contract_price_items t where t.corporate_client_id = ? ";
 	public static final String Q_DELETE_OLD_STREET_NAMES = "delete from street_old_names t where t.street_id = ? ";
-	public static final String Q_DELETE_CONTRACT_PHONES = "delete from contractor_phones t where t.contract_id = ? ";
+	public static final String Q_DELETE_CONTRACT_PHONES = "delete from corp_client_phones t where t.corporate_client_id = ? ";
 	public static final String Q_DELETE_BLOCKLIST_PHONES = "delete from block_list_phones t where t.block_list_id = ? ";
 	public static final String Q_DELETE_BILLINGCOMP = "delete from BILLING_COMPANIES t where t.billing_company_id = ? ";
 	public static final String Q_DELETE_BILLINGCOMP_IND = "delete from BILLING_COMPANIES_IND t where t.billing_company_id = ? ";
@@ -816,9 +779,9 @@ public interface QueryConstants {
 	public static final String Q_REMOVE_PHONE_FROM_AST_DB = " delete from asteriskcdrdb.block where code = ? and proriti = ? and len = ? ";
 	public static final String Q_ADD_PHONE_INTO_AST_DB = " insert into asteriskcdrdb.block (code,proriti,len) values (?, ?, ?) ";
 
-	public static final String Q_GET_CONTRACTOR_ADV_PRICE = " select sum(nvl(t.price,0)) as advPrice from contract_price_items t where t.contract_id = ? and t.call_count_start<=? and t.call_count_end > ? ";
+	public static final String Q_GET_CONTRACTOR_ADV_PRICE = " select sum(nvl(t.price,0)) as advPrice from contract_price_items t where t.corporate_client_id = ? and t.call_count_start<=? and t.call_count_end > ? ";
 
-	public static final String Q_GET_CONTRACTOR_INFO = "select distinct c.contract_id,\n"
+	public static final String Q_GET_CONTRACTOR_INFO = "select distinct c.corporate_client_id,\n"
 			+ "       dt2ms(c.start_date) as start_date,\n"
 			+ "       dt2ms(c.end_date) as end_date,\n"
 			+ "       c.critical_number,\n"
@@ -911,7 +874,7 @@ public interface QueryConstants {
 			+ "";
 
 	public static final String Q_GET_TRANSPORT_BY_ID = "select\n"
-			+ "        getdaysdescription(t.days) as days_descr,\n"
+			+ "        getWeekDays(t.days) as days_descr,\n"
 			+ "        tt.name_descr transport_type,\n"
 			+ "        dep_c.town_name||' '||dep_st.name_descr as departure_station,\n"
 			+ "        arr_c.town_name||' '||arr_st.name_descr as arrival_station,\n"
@@ -1300,6 +1263,6 @@ public interface QueryConstants {
 	public static final String Q_DELETE_STAFF_FAMOUS_PEOPLE = "delete from staff_famous_people t \n "
 			+ "where t.staff_id = ?";
 
-	public static final String Q_GET_CONTRACTOR_PHONES = "select phone from contractor_phones cp where cp.contract_id=?";
+	public static final String Q_GET_CORP_CLIENT_PHONES = "select phone_number from corp_client_phones cp where cp.corporate_client_id=?";
 
 }

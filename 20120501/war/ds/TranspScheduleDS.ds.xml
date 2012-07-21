@@ -61,7 +61,7 @@
     		<selectClause>   			
     			ts.transp_schedule_id,
 				ts.days,
-				getdaysdescription(ts.days) as days_descr,
+				getWeekDays(ts.days) as days_descr,
 				ts.arrival_time,
 				ts.arrival_transp_stat_id,
 				ts.important,

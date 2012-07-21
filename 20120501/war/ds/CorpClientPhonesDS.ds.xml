@@ -1,39 +1,39 @@
 <DataSource
-	ID="ContractorsPhonesDS"
+	ID="CorpClientPhonesDS"
 	serverType="sql"
-	tableName="contractor_phones"
+	tableName="corp_client_phones"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="cp_id"				type="integer"		title="cp_id"			hidden="true" 	primaryKey="true" />
-		<field name="phone"				type="text"			title="phone"/>
-		<field name="contract_id"		type="integer"		title="contract_id"		hidden="true"/>
-		<field name="pr"				type="integer"		title="phone"			hidden="true"/>
-		<field name="name"				type="text"			title="name"/>
-		<field name="id"				type="text"			title="phone"			hidden="true"/>
-		<field name="pid"				type="text"			title="phone"			hidden="true"/>
-		<field name="rid"				type="integer"		title="phone"			hidden="true"/>
+		<field name="corp_client_phone_id"	type="integer"		title="corp_client_phone_id"	hidden="true" 	primaryKey="true" />
+		<field name="phone_number"			type="text"			title="phone_number"/>
+		<field name="corporate_client_id"	type="integer"		title="corporate_client_id"				hidden="true"/>
+		<field name="pr"					type="integer"		title="phone"					hidden="true"/>
+		<field name="name"					type="text"			title="name"/>
+		<field name="id"					type="text"			title="phone"					hidden="true"/>
+		<field name="pid"					type="text"			title="phone"					hidden="true"/>
+		<field name="rid"					type="integer"		title="phone"					hidden="true"/>
 	</fields>
 	<operationBindings>		
     	<operationBinding operationId="searchContractorPhones" operationType="fetch">
     		<selectClause>
-    			   phone
+    			   phone_number
 			</selectClause> 
-			<tableClause>contractor_phones t</tableClause>
+			<tableClause>corp_client_phones t</tableClause>
 			<whereClause><![CDATA[
-				 t.contract_id = $criteria.contract_id 
+				 t.corporate_client_id = $criteria.corporate_client_id 
 				]]>  
 			</whereClause> 
-			<orderClause>t.cp_id</orderClause>
+			<orderClause>t.corp_client_phone_id</orderClause>
     	</operationBinding>
 
 
     	<operationBinding operationId="searchPhonesHirarchy" operationType="fetch">
     		<selectClause>
-    			   phone
+    			   phone_number
 			</selectClause> 
 			<tableClause>(
-					select pn.phone
+					select pn.phone as phone_number
 					  from organization_depart_to_phones odp
 					 inner join phone_numbers pn
 					    on pn.phone_number_id = odp.phone_number_id
@@ -65,10 +65,10 @@
 
 		<operationBinding operationId="searchPhones" operationType="fetch">
     		<selectClause>
-    			   phone
+    			   phone_number
 			</selectClause> 
 			<tableClause>(
-					select pn.phone
+					select pn.phone as phone_number
 					  from organization_depart_to_phones odp
 					 inner join phone_numbers pn
 					    on pn.phone_number_id = odp.phone_number_id
@@ -95,14 +95,14 @@
     		<selectClause>
     			    name,
     			    pr,
-    			    phone,
-    			    cp_id,
+    			    phone_number,
+    			    corp_client_phone_id,
     			    id,
     			    pid,
     			    rid
 			</selectClause> 
 			<tableClause>
-				(select phns.name, pr, phns.phone, cp_id, organization_id, org_department_id,id,pid,rid
+				(select phns.name, pr, phns.phone_number, corp_client_phone_id, organization_id, org_department_id,id,pid,rid
 				  from (select LPAD(' ', (LEVEL - 1) * 4, '.') || name name,
 				  				
 				               t.pr,
@@ -167,10 +167,10 @@
 				         start with pr = 1
 				        connect by prior id = pid
 				         order siblings by t.pr, t.lev, t.rn) phns
-				  left join contractor_phones t
-				    on t.contract_id = $criteria.contract_id
+				  left join corp_client_phones t
+				    on t.corporate_client_id = $criteria.corporate_client_id
 				   and phns.pr = 3
-				   and phns.phone = t.phone
+				   and phns.phone = t.phone_number
 				)
 			</tableClause>
 			<whereClause>

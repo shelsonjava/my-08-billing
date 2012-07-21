@@ -39,7 +39,7 @@
     			  	   distinct 
 				       t.transp_schedule_id as transport_id,
 				       t.days,
-				       getdaysdescription(t.days) as days_descr,
+				       getWeekDays(t.days) as days_descr,
 				       t.arrival_time as in_time,
 				       t.important as note_crit,
 				       t.remark as note_eng,
@@ -101,7 +101,7 @@
 					   #if($criteria.istation) and i.name_descr  like '%'||($criteria.istation)||'%' #end
 					   #if($criteria.transport_company_geo) and tc.name_descr like '%'||($criteria.transport_company_geo)||'%' #end
 					   #if($criteria.transport_plane_geo) and tp.name_descr like '%'||($criteria.transport_plane_geo)||'%' #end
-					   #if($criteria.days_descr) and getdaysdescription(t.days) like '%'||($criteria.days_descr)||'%' #end
+					   #if($criteria.days_descr) and getWeekDays(t.days) like '%'||($criteria.days_descr)||'%' #end
 				       
 				       
 				       #if($criteria.o_town_id && $criteria.i_town_id) 

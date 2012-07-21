@@ -63,7 +63,7 @@ public class TabContractors extends Tab {
 	private ToolStripButton contractorsBillFullBtn1;
 
 	private ListGrid contractorsGrid;
-	private DataSource contractorsDS;
+	private DataSource CorporateClientsDS;
 
 	public TabContractors() {
 		try {
@@ -71,7 +71,7 @@ public class TabContractors extends Tab {
 			setTitle(CallCenterBK.constants.contractors());
 			setCanClose(true);
 
-			contractorsDS = DataSource.get("ContractorsDS");
+			CorporateClientsDS = DataSource.get("CorporateClientsDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -220,20 +220,14 @@ public class TabContractors extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+					return super.getCellCSSText(record, rowNum, colNum);
 				};
 			};
 
 			contractorsGrid.setWidth100();
 			contractorsGrid.setHeight100();
 			contractorsGrid.setAlternateRecordStyles(true);
-			contractorsGrid.setDataSource(contractorsDS);
+			contractorsGrid.setDataSource(CorporateClientsDS);
 			contractorsGrid.setAutoFetchData(false);
 			contractorsGrid.setShowFilterEditor(false);
 			contractorsGrid.setCanEdit(false);
@@ -246,18 +240,16 @@ public class TabContractors extends Tab {
 			contractorsGrid.setWrapCells(true);
 			contractorsGrid.setFixedRecordHeights(false);
 			contractorsGrid.setCanDragSelectText(true);
-			
-			
 
 			ListGridField orgName = new ListGridField("organization_name",
 					CallCenterBK.constants.orgNameFull());
-			ListGridField orgDepName = new ListGridField("note",
+			ListGridField remark = new ListGridField("remark",
 					CallCenterBK.constants.comment(), 300);
-			ListGridField start_date = new ListGridField("start_date",
+			ListGridField contract_start_date = new ListGridField("contract_start_date",
 					CallCenterBK.constants.startDate(), 120);
-			ListGridField end_date = new ListGridField("end_date",
+			ListGridField contract_end_date = new ListGridField("contract_end_date",
 					CallCenterBK.constants.endDate(), 120);
-			ListGridField price = new ListGridField("price",
+			ListGridField call_price = new ListGridField("call_price",
 					CallCenterBK.constants.price(), 70);
 			ListGridField range_curr_price = new ListGridField(
 					"range_curr_price",
@@ -267,16 +259,16 @@ public class TabContractors extends Tab {
 			ListGridField critical_number = new ListGridField(
 					"critical_number", CallCenterBK.constants.limit(), 70);
 
-			start_date.setAlign(Alignment.CENTER);
-			end_date.setAlign(Alignment.CENTER);
+			contract_start_date.setAlign(Alignment.CENTER);
+			contract_end_date.setAlign(Alignment.CENTER);
 			price_type_descr.setAlign(Alignment.CENTER);
-			price.setAlign(Alignment.CENTER);
+			call_price.setAlign(Alignment.CENTER);
 			range_curr_price.setAlign(Alignment.CENTER);
 			critical_number.setAlign(Alignment.CENTER);
 
-			contractorsGrid.setFields(orgName, orgDepName, price_type_descr,
-					price, range_curr_price, critical_number, start_date,
-					end_date);
+			contractorsGrid.setFields(orgName, remark, price_type_descr,
+					call_price, range_curr_price, critical_number, contract_start_date,
+					contract_end_date);
 
 			mainLayout.addMember(contractorsGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -465,9 +457,9 @@ public class TabContractors extends Tab {
 				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
-			Integer contract_id = listGridRecord
-					.getAttributeAsInt("contract_id");
-			if (contract_id == null) {
+			Integer corporate_client_id = listGridRecord
+					.getAttributeAsInt("corporate_client_id");
+			if (corporate_client_id == null) {
 				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
@@ -476,7 +468,7 @@ public class TabContractors extends Tab {
 					contractorType.getValueAsString());
 
 			DlgGetContractorsBilling dlgGetCOntractorsBilling = new DlgGetContractorsBilling(
-					contract_id, full, contractor_type);
+					corporate_client_id, full, contractor_type);
 			dlgGetCOntractorsBilling.show();
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -518,13 +510,13 @@ public class TabContractors extends Tab {
 		}
 	}
 
-	private void showContractorCharges(Integer contract_id) {
+	private void showContractorCharges(Integer corporate_client_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-			record.setAttribute("contract_id", contract_id);
+			record.setAttribute("corporate_client_id", corporate_client_id);
 
 			DSRequest req = new DSRequest();
 
@@ -553,13 +545,13 @@ public class TabContractors extends Tab {
 		}
 	}
 
-	private void showContractorCallCnt(Integer contract_id) {
+	private void showContractorCallCnt(Integer corporate_client_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-			record.setAttribute("contract_id", contract_id);
+			record.setAttribute("corporate_client_id", corporate_client_id);
 
 			DSRequest req = new DSRequest();
 
@@ -595,10 +587,10 @@ public class TabContractors extends Tab {
 			if (org_name != null && !org_name.trim().equals("")) {
 				criteria.setAttribute("org_name", org_name.trim());
 			}
-			String is_budget_str = contractorType.getValueAsString();
-			if (is_budget_str != null && !is_budget_str.trim().equals("")
-					&& !is_budget_str.trim().equals("-1")) {
-				criteria.setAttribute("is_budget", new Integer(is_budget_str));
+			String goverment_str = contractorType.getValueAsString();
+			if (goverment_str != null && !goverment_str.trim().equals("")
+					&& !goverment_str.trim().equals("-1")) {
+				criteria.setAttribute("goverment", new Integer(goverment_str));
 			}
 			String phone = phoneItem.getValueAsString();
 			if (phone != null && !phone.trim().equals("")) {
@@ -638,9 +630,8 @@ public class TabContractors extends Tab {
 			Record record = new Record();
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
-			record.setAttribute("deleted", 1);
-			record.setAttribute("contract_id",
-					listGridRecord.getAttributeAsInt("contract_id"));
+			record.setAttribute("corporate_client_id",
+					listGridRecord.getAttributeAsInt("corporate_client_id"));
 
 			DSRequest req = new DSRequest();
 

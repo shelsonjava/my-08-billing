@@ -110,8 +110,8 @@ public class DlgBlackPhoneList extends Window {
 			phoneList.setFixedRecordHeights(false);
 			phoneList.setCanDragSelectText(true);
 
-			DataSource contractorsDS = DataSource.get("ContractorsDS");
-			phoneList.setDataSource(contractorsDS);
+			DataSource CorporateClientsDS = DataSource.get("CorporateClientsDS");
+			phoneList.setDataSource(CorporateClientsDS);
 			phoneList.setCriteria(criteria);
 			phoneList.setAutoFetchData(true);
 			phoneList.setFetchOperation(fetchMethod);

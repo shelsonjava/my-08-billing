@@ -16,62 +16,59 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * The persistent class for the CONTRACTS database table.
+ * The persistent class for the CORPORATE_CLIENTS database table.
  * 
  */
 @Entity
-@Table(name = "CONTRACTS")
-public class Contract implements Serializable {
+@Table(name = "CORPORATE_CLIENTS")
+public class CorporateClient implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "SEQ_CONTRACT_GENERATOR", sequenceName = "SEQ_CONTRACT")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CONTRACT_GENERATOR")
-	@Column(name = "CONTRACT_ID")
-	private Long contract_id;
+	@SequenceGenerator(name = "SEQ_CORPORATE_CLIENTS_GENERATOR", sequenceName = "SEQ_CORPORATE_CLIENTS")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CORPORATE_CLIENTS_GENERATOR")
+	@Column(name = "CORPORATE_CLIENT_ID")
+	private Long corporate_client_id;
 
 	@Basic
 	@Column(name = "BLOCK")
 	private Long block;
 
 	@Basic
-	@Column(name = "CRITICAL_NUMBER")
-	private Long critical_number;
-
-
-	@Basic
-	@Column(name = "END_DATE")
-	private Timestamp end_date;
+	@Column(name = "MAX_CALL_COUNT")
+	private Long max_call_count;
 
 	@Basic
-	@Column(name = "IS_BUDGET")
-	private Long is_budget;
+	@Column(name = "CONTRACT_END_DATE")
+	private Timestamp contract_end_date;
+
+	@Basic
+	@Column(name = "GOVERMENT")
+	private Long goverment;
 
 	@Basic
 	@Column(name = "ORGANIZATION_ID")
 	private Long organization_id;
 
 	@Basic
-	@Column(name = "NOTE")
-	private String note;
+	@Column(name = "REMARK")
+	private String remark;
 
 	@Basic
-	@Column(name = "PRICE")
-	private BigDecimal price;
+	@Column(name = "CALL_PRICE")
+	private BigDecimal call_price;
 
 	@Basic
 	@Column(name = "PRICE_TYPE")
 	private Long price_type;
-
 
 	@Basic
 	@Column(name = "SMS_WARNING")
 	private Long sms_warning;
 
 	@Basic
-	@Column(name = "START_DATE")
-	private Timestamp start_date;
-
+	@Column(name = "CONTRACT_START_DATE")
+	private Timestamp contract_start_date;
 
 	@Basic
 	@Column(name = "RANGE_CURR_PRICE")
@@ -82,7 +79,6 @@ public class Contract implements Serializable {
 
 	@Transient
 	private String orgName;
-
 
 	@Transient
 	private String price_type_descr;
@@ -102,15 +98,7 @@ public class Contract implements Serializable {
 	@Transient
 	private Long checkContractor;
 
-	public Contract() {
-	}
-
-	public Long getContract_id() {
-		return contract_id;
-	}
-
-	public void setContract_id(Long contract_id) {
-		this.contract_id = contract_id;
+	public CorporateClient() {
 	}
 
 	public Long getBlock() {
@@ -121,54 +109,12 @@ public class Contract implements Serializable {
 		this.block = block;
 	}
 
-	public Long getCritical_number() {
-		return critical_number;
-	}
-
-	public void setCritical_number(Long critical_number) {
-		this.critical_number = critical_number;
-	}
-
-
-	public Timestamp getEnd_date() {
-		return end_date;
-	}
-
-	public void setEnd_date(Timestamp end_date) {
-		this.end_date = end_date;
-	}
-
-	public Long getIs_budget() {
-		return is_budget;
-	}
-
-	public void setIs_budget(Long is_budget) {
-		this.is_budget = is_budget;
-	}
-
-
 	public Long getOrganization_id() {
 		return organization_id;
 	}
 
 	public void setOrganization_id(Long organization_id) {
 		this.organization_id = organization_id;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigDecimal price) {
-		this.price = price;
 	}
 
 	public Long getPrice_type() {
@@ -186,15 +132,6 @@ public class Contract implements Serializable {
 	public void setSms_warning(Long sms_warning) {
 		this.sms_warning = sms_warning;
 	}
-
-	public Timestamp getStart_date() {
-		return start_date;
-	}
-
-	public void setStart_date(Timestamp start_date) {
-		this.start_date = start_date;
-	}
-
 
 	public String getLoggedUserName() {
 		return loggedUserName;
@@ -220,7 +157,6 @@ public class Contract implements Serializable {
 			LinkedHashMap<String, LinkedHashMap<String, String>> contractorAdvPrices) {
 		this.contractorAdvPrices = contractorAdvPrices;
 	}
-
 
 	public LinkedHashMap<String, String> getContractorAdvPhones() {
 		return contractorAdvPhones;
@@ -270,4 +206,61 @@ public class Contract implements Serializable {
 	public void setCheckContractor(Long checkContractor) {
 		this.checkContractor = checkContractor;
 	}
+
+	public Long getCorporate_client_id() {
+		return corporate_client_id;
+	}
+
+	public void setCorporate_client_id(Long corporate_client_id) {
+		this.corporate_client_id = corporate_client_id;
+	}
+
+	public Long getMax_call_count() {
+		return max_call_count;
+	}
+
+	public void setMax_call_count(Long max_call_count) {
+		this.max_call_count = max_call_count;
+	}
+
+	public Timestamp getContract_end_date() {
+		return contract_end_date;
+	}
+
+	public void setContract_end_date(Timestamp contract_end_date) {
+		this.contract_end_date = contract_end_date;
+	}
+
+	public Long getGoverment() {
+		return goverment;
+	}
+
+	public void setGoverment(Long goverment) {
+		this.goverment = goverment;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public BigDecimal getCall_price() {
+		return call_price;
+	}
+
+	public void setCall_price(BigDecimal call_price) {
+		this.call_price = call_price;
+	}
+
+	public Timestamp getContract_start_date() {
+		return contract_start_date;
+	}
+
+	public void setContract_start_date(Timestamp contract_start_date) {
+		this.contract_start_date = contract_start_date;
+	}
+
 }

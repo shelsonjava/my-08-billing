@@ -27,7 +27,7 @@ public class CallCenterQueue implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "CALL_CENTER_QUEUE_ID_GENERATOR", sequenceName = "SEQ_CALL_CENT_QUEUE")
+	@SequenceGenerator(name = "CALL_CENTER_QUEUE_ID_GENERATOR", sequenceName = "SEQ_CALLCENTER_QUEUE")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CALL_CENTER_QUEUE_ID_GENERATOR")
 	private Long id;
 

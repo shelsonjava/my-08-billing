@@ -341,13 +341,7 @@ public class DlgAddEditContractor extends Window {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
-					Integer deleted = countryRecord
-							.getAttributeAsInt("deleted");
-					if (deleted != null && !deleted.equals(0)) {
-						return "color:red;";
-					} else {
-						return super.getCellCSSText(record, rowNum, colNum);
-					}
+					return super.getCellCSSText(record, rowNum, colNum);
 				};
 			};
 			listGridPhones.setHeight100();
@@ -434,7 +428,7 @@ public class DlgAddEditContractor extends Window {
 							});
 				}
 			});
-			
+
 			deleteBtnPhones.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
@@ -543,7 +537,7 @@ public class DlgAddEditContractor extends Window {
 			Criteria record = new Criteria();
 			record.setAttribute("organization_id", organization_id);
 			DSRequest req = new DSRequest();
-			DataSource dataSource = DataSource.get("ContractorsDS");
+			DataSource dataSource = DataSource.get("CorporateClientsDS");
 
 			req.setAttribute("operationId", "getCallsCountByMainAndYM");
 
@@ -611,8 +605,8 @@ public class DlgAddEditContractor extends Window {
 
 			DataSource dataSource = DataSource.get("ContractorsPricesDS");
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("contract_id",
-					editRecord.getAttributeAsInt("contract_id"));
+			criteria.setAttribute("corporate_client_id",
+					editRecord.getAttributeAsInt("corporate_client_id"));
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchContractorPrices");
 			dataSource.fetchData(criteria, new DSCallback() {
@@ -628,11 +622,11 @@ public class DlgAddEditContractor extends Window {
 				}
 			}, dsRequest);
 
-			DataSource contractorsPhonesDS = DataSource
-					.get("ContractorsPhonesDS");
+			DataSource CorpClientPhonesDS = DataSource
+					.get("CorpClientPhonesDS");
 			DSRequest dsRequest1 = new DSRequest();
 			dsRequest1.setOperationId("searchContractorPhones");
-			contractorsPhonesDS.fetchData(criteria, new DSCallback() {
+			CorpClientPhonesDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -652,26 +646,26 @@ public class DlgAddEditContractor extends Window {
 				this.organization_id = organization_id;
 				disableEnablePhoneButtons(false);
 			}
-			String note = editRecord.getAttributeAsString("note");
-			if (note != null && !note.trim().equals("")) {
-				noteItem.setValue(note);
+			String remark = editRecord.getAttributeAsString("remark");
+			if (remark != null && !remark.trim().equals("")) {
+				noteItem.setValue(remark);
 			}
-			Integer is_budget = editRecord.getAttributeAsInt("is_budget");
-			if (is_budget != null) {
-				contractorType.setValue(is_budget);
+			Integer goverment = editRecord.getAttributeAsInt("goverment");
+			if (goverment != null) {
+				contractorType.setValue(goverment);
 			}
-			Integer critical_number = editRecord
-					.getAttributeAsInt("critical_number");
-			if (critical_number != null) {
-				critNumberItem.setValue(critical_number);
+			Integer max_call_count = editRecord
+					.getAttributeAsInt("max_call_count");
+			if (max_call_count != null) {
+				critNumberItem.setValue(max_call_count);
 			}
-			Date start_date = editRecord.getAttributeAsDate("start_date");
-			if (start_date != null) {
-				startDateItem.setValue(start_date);
+			Date contract_start_date = editRecord.getAttributeAsDate("contract_start_date");
+			if (contract_start_date != null) {
+				startDateItem.setValue(contract_start_date);
 			}
-			Date end_date = editRecord.getAttributeAsDate("end_date");
-			if (end_date != null) {
-				endDateItem.setValue(end_date);
+			Date contract_end_date = editRecord.getAttributeAsDate("contract_end_date");
+			if (contract_end_date != null) {
+				endDateItem.setValue(contract_end_date);
 			}
 			Integer block = editRecord.getAttributeAsInt("block");
 			if (block != null && block.equals(1)) {
@@ -687,9 +681,9 @@ public class DlgAddEditContractor extends Window {
 				drawByPriceType(true);
 			}
 
-			String price = editRecord.getAttributeAsString("price");
-			if (price != null && !price.trim().equals("")) {
-				normalPriceItem.setValue(price);
+			String call_price = editRecord.getAttributeAsString("call_price");
+			if (call_price != null && !call_price.trim().equals("")) {
+				normalPriceItem.setValue(call_price);
 			}
 
 			String range_curr_price = editRecord
@@ -715,36 +709,36 @@ public class DlgAddEditContractor extends Window {
 			// main_detail_id = 0;
 			// }
 
-			String note = noteItem.getValueAsString();
+			String remark = noteItem.getValueAsString();
 			String is_budget_str = contractorType.getValueAsString();
 			if (is_budget_str == null || is_budget_str.trim().equals("")) {
 				SC.say(CallCenterBK.constants.plzSelectContractorType());
 				return;
 			}
-			Integer is_budget = null;
+			Integer goverment = null;
 			try {
-				is_budget = Integer.parseInt(is_budget_str);
+				goverment = Integer.parseInt(is_budget_str);
 			} catch (Exception e) {
 				SC.say(CallCenterBK.constants.plzSelectContractorType());
 				return;
 			}
 
 			String critNumberStr = critNumberItem.getValueAsString();
-			Integer critical_number = new Integer(
+			Integer max_call_count = new Integer(
 					Constants.criticalNumberIgnore);
 			if (critNumberStr != null && !critNumberStr.trim().equals("")) {
-				critical_number = Integer.parseInt(critNumberStr);
+				max_call_count = Integer.parseInt(critNumberStr);
 			}
-			if (critical_number != Constants.criticalNumberIgnore
-					&& critical_number.intValue() < 0) {
+			if (max_call_count != Constants.criticalNumberIgnore
+					&& max_call_count.intValue() < 0) {
 				SC.say(CallCenterBK.constants.incorrectCriticalNumber());
 				return;
 			}
 
-			Date start_date = null;
+			Date contract_start_date = null;
 			try {
-				start_date = startDateItem.getValueAsDate();
-				if (start_date == null) {
+				contract_start_date = startDateItem.getValueAsDate();
+				if (contract_start_date == null) {
 					SC.say(CallCenterBK.constants.plzSelectContrStartDate());
 					return;
 				}
@@ -752,10 +746,10 @@ public class DlgAddEditContractor extends Window {
 				SC.say(CallCenterBK.constants.plzSelectContrStartDate());
 				return;
 			}
-			Date end_date = null;
+			Date contract_end_date = null;
 			try {
-				end_date = endDateItem.getValueAsDate();
-				if (end_date == null) {
+				contract_end_date = endDateItem.getValueAsDate();
+				if (contract_end_date == null) {
 					SC.say(CallCenterBK.constants.plzSelectContrEndDate());
 					return;
 				}
@@ -764,12 +758,12 @@ public class DlgAddEditContractor extends Window {
 				return;
 			}
 
-			if (start_date.after(end_date)) {
+			if (contract_start_date.after(contract_end_date)) {
 				SC.say(CallCenterBK.constants.endDateMustBeAfterStartDate());
 				return;
 			}
 			Date currDate = new Date();
-			if (start_date.getTime() > currDate.getTime()) {
+			if (contract_start_date.getTime() > currDate.getTime()) {
 				SC.say(CallCenterBK.constants.startDateMustNotBeAfterSysDate());
 				return;
 			}
@@ -893,28 +887,27 @@ public class DlgAddEditContractor extends Window {
 
 			Record record = new Record();
 			if (editRecord != null) {
-				pcontract_id = editRecord.getAttributeAsInt("contract_id");
-				record.setAttribute("contract_id", pcontract_id);
+				pcontract_id = editRecord.getAttributeAsInt("corporate_client_id");
+				record.setAttribute("corporate_client_id", pcontract_id);
 			}
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("upd_user", loggedUser);
-			record.setAttribute("deleted", 0);
 			record.setAttribute("organization_id", organization_id);
 
-			record.setAttribute("note", note);
-			record.setAttribute("is_budget", is_budget);
-			record.setAttribute("start_date", start_date);
-			record.setAttribute("end_date", end_date);
+			record.setAttribute("remark", remark);
+			record.setAttribute("goverment", goverment);
+			record.setAttribute("contract_start_date", contract_start_date);
+			record.setAttribute("contract_end_date", contract_end_date);
 			record.setAttribute("block", block);
 			record.setAttribute("sms_warning", sms_warning);
 			record.setAttribute("price_type", price_type);
-			record.setAttribute("price", normalPrice);
+			record.setAttribute("call_price", normalPrice);
 			record.setAttribute("contractorAdvPrices", sortedParam);
 			record.setAttribute("contractorAdvPhones", contractorAdvPhones);
-			record.setAttribute("critical_number", critical_number);
+			record.setAttribute("max_call_count", max_call_count);
 
 			record.setAttribute("range_curr_price",
 					currrentPriceItem.getValueAsString());

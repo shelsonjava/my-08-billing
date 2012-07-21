@@ -38,7 +38,7 @@ public class DlgAddTextPhones extends Window {
 		try {
 			this.contractorPhones = contractorPhones;
 			this.organization_id = organization_id;
-			this.ds = DataSource.get("ContractorsDS");
+			this.ds = DataSource.get("CorporateClientsDS");
 			setTitle(CallCenterBK.constants.phones());
 
 			setHeight(400);

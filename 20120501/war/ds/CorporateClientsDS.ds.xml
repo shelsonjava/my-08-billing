@@ -1,39 +1,39 @@
 <DataSource
-	ID="ContractorsDS"
+	ID="CorporateClientsDS"
 	serverType="sql"
-	tableName="contracts"
+	tableName="corporate_clients"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="contract_id"			type="integer"		title="ID"					hidden="true" primaryKey="true" />
-		<field name="block"					type="integer"		title="block"				hidden="true"/>
-		<field name="organization_id"		type="integer"		title="organization_id"				hidden="true"/>
+		<field name="corporate_client_id"	type="integer"		title="ID"						hidden="true" primaryKey="true" />
+		<field name="block"					type="integer"		title="block"					hidden="true"/>
+		<field name="organization_id"		type="integer"		title="organization_id"			hidden="true"/>
 		<field name="organization_name"		type="text"			title="organization_name"/>
-		<field name="start_date"			type="date"			title="start_date"/>
-		<field name="end_date"				type="date"			title="end_date"/>
-		<field name="critical_number"		type="integer"		title="critical_number"		hidden="true"/>
-		<field name="price"					type="any"			title="price"/>
-		<field name="note"					type="text"			title="note"/>
-		<field name="is_budget"				type="integer"		title="is_budget"			hidden="true"/>
-		<field name="price_type"			type="integer"		title="price_type"			hidden="true"/>
-		<field name="sms_warning"			type="integer"		title="sms_warning"			hidden="true"/>
-		<field name="loggedUserName"		type="text"			title="loggedUserName"		hidden="true"/>
-		<field name="contractorAdvPrices"	type="any"			title="contractorAdvPrices" hidden="true"/>
-		<field name="contractorAdvPhones"	type="any"			title="contractorAdvPhones" hidden="true"/>
-		<field name="block_type"			type="integer"		title="block_type"			hidden="true"/>
-		<field name="contractor_call_cnt"	type="integer"		title="contractor_call_cnt"	hidden="true"/>
-		<field name="phone"					type="text"			title="phone"				hidden="true"/>
-		<field name="price_type_descr"		type="text"			title="price_type_descr"	hidden="true"/>
-		<field name="range_curr_price"		type="any"			title="range_curr_price"	hidden="true"/>
-		<field name="checkContractor"		type="integer"		title="checkContractor"		hidden="true"/>		
-		<field name="call_count"			type="integer"		title="call_count"			hidden="true"/>
-		<field name="amount"				type="any"			title="amount"				hidden="true"/>
+		<field name="contract_start_date"	type="date"			title="contract_start_date"/>
+		<field name="contract_end_date"		type="date"			title="contract_end_date"/>
+		<field name="max_call_count"		type="integer"		title="max_call_count"			hidden="true"/>
+		<field name="call_price"			type="any"			title="call_price"/>
+		<field name="remark"				type="text"			title="remark"/>
+		<field name="goverment"				type="integer"		title="goverment"				hidden="true"/>
+		<field name="price_type"			type="integer"		title="price_type"				hidden="true"/>
+		<field name="sms_warning"			type="integer"		title="sms_warning"				hidden="true"/>
+		<field name="loggedUserName"		type="text"			title="loggedUserName"			hidden="true"/>
+		<field name="contractorAdvPrices"	type="any"			title="contractorAdvPrices" 	hidden="true"/>
+		<field name="contractorAdvPhones"	type="any"			title="contractorAdvPhones" 	hidden="true"/>
+		<field name="block_type"			type="integer"		title="block_type"				hidden="true"/>
+		<field name="contractor_call_cnt"	type="integer"		title="contractor_call_cnt"		hidden="true"/>
+		<field name="phone"					type="text"			title="phone"					hidden="true"/>
+		<field name="price_type_descr"		type="text"			title="price_type_descr"		hidden="true"/>
+		<field name="range_curr_price"		type="any"			title="range_curr_price"		hidden="true"/>
+		<field name="checkContractor"		type="integer"		title="checkContractor"			hidden="true"/>		
+		<field name="call_count"			type="integer"		title="call_count"				hidden="true"/>
+		<field name="amount"				type="any"			title="amount"					hidden="true"/>
 		<field name="billing_company_name"	type="text"			title="billing_company_name"	hidden="true"/>
-		<field name="service_description"		type="text"			title="service_name_geo"	hidden="true"/>
-		<field name="call_date"				type="datetime"		title="call_date"			hidden="true"/>
-		<field name="charge_date"			type="datetime"		title="charge_date"			hidden="true"/>
-		<field name="limitType"				type="integer"		title="limitType"			hidden="true"/>
-		<field name="contractor_type"		type="integer"		title="contractor_type"		hidden="true"/>
+		<field name="service_description"	type="text"			title="service_name_geo"		hidden="true"/>
+		<field name="call_date"				type="datetime"		title="call_date"				hidden="true"/>
+		<field name="charge_date"			type="datetime"		title="charge_date"				hidden="true"/>
+		<field name="limitType"				type="integer"		title="limitType"				hidden="true"/>
+		<field name="contractor_type"		type="integer"		title="contractor_type"			hidden="true"/>
 	</fields>
 	<operationBindings>		
 
@@ -87,14 +87,14 @@
         
     	<operationBinding operationId="searchAllContractors" operationType="fetch">
     		<selectClause>   			
-	    			t.contract_id, 
+	    			t.corporate_client_id, 
 					t.organization_id, 
-					t.start_date, 
-					t.end_date, 
-					t.critical_number, 
-					t.price, 
-					t.note, 
-					t.is_budget, 
+					t.contract_start_date, 
+					t.contract_end_date, 
+					t.max_call_count, 
+					t.call_price, 
+					t.remark, 
+					t.goverment, 
 					t.price_type, 
 					t.block, 
 					t.sms_warning, 
@@ -102,7 +102,7 @@
 				  	mo1.organization_name,
 				  	decode(t.price_type,0,'მარტ.','რთული') as price_type_descr
 			</selectClause> 
-			<tableClause>contracts t, organizations mo1</tableClause>
+			<tableClause>corporate_clients t, organizations mo1</tableClause>
 			<whereClause><![CDATA[
 				 t.organization_id = mo1.organization_id
 				 #if($criteria.org_name) 
@@ -110,17 +110,17 @@
 								and mo1.organization_name like '%'||'$str'||'%'
 							#end
 				 #end
-				 #if($criteria.is_budget) and t.is_budget = $criteria.is_budget #end
+				 #if($criteria.goverment) and t.goverment = $criteria.goverment #end
 				 #if($criteria.price_type) and t.price_type = $criteria.price_type #end
 				 #if($criteria.phone)
-				 	and t.contract_id in (select tt.contract_id from contractor_phones tt where tt.phone = $criteria.phone) 				 	
+				 	and t.corporate_client_id in (select tt.corporate_client_id from contractor_phones tt where tt.phone = $criteria.phone) 				 	
 				 #end
-				 #if($criteria.limitType && $criteria.limitType == 0 ) and t.critical_number <> -999999999 #end
-				 #if($criteria.limitType && $criteria.limitType == 1 ) and t.critical_number =  -999999999 #end
-				 #if($criteria.contract_id) and t.contract_id =  $criteria.contract_id #end
+				 #if($criteria.limitType && $criteria.limitType == 0 ) and t.max_call_count <> -999999999 #end
+				 #if($criteria.limitType && $criteria.limitType == 1 ) and t.max_call_count =  -999999999 #end
+				 #if($criteria.corporate_client_id) and t.corporate_client_id =  $criteria.corporate_client_id #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.contract_id</orderClause>
+			<orderClause>t.corporate_client_id</orderClause>
     	</operationBinding>
     	
     	
@@ -129,9 +129,9 @@
     	
     	<operationBinding operationId="getCallsCountByMainAndYM" operationType="fetch">
     		<selectClause>   		
-    			  get_contractor_calls_count(to_number(to_char(sysdate,'YYMM')),t.contract_id)	as contractor_call_cnt 			  
+    			  get_contractor_calls_count(to_number(to_char(sysdate,'YYMM')),t.corporate_client_id)	as contractor_call_cnt 			  
 			</selectClause> 
-			<tableClause>contracts t</tableClause>
+			<tableClause>corporate_clients t</tableClause>
 			<whereClause><![CDATA[
 				 t.organization_id=$criteria.organization_id
 				]]>  
@@ -154,12 +154,12 @@
 			      t.price,
 			      t.amount
 			</selectClause> 
-			<tableClause>contractor_bill t, contracts c, organizations mo </tableClause>
+			<tableClause>contractor_bill t, corporate_clients c, organizations mo </tableClause>
 			<whereClause><![CDATA[
-				 t.contractor_id = c.contract_id and c.organization_id = mo.organization_id
+				 t.contractor_id = c.corporate_client_id and c.organization_id = mo.organization_id
 				 and t.ym = $criteria.ym
-				 #if($criteria.contract_id) and c.contract_id = $criteria.contract_id #end	
-				 #if($criteria.is_budget) and c.is_budget = $criteria.is_budget #end			 
+				 #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end	
+				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end			 
 				]]>  
 			</whereClause> 
 			<orderClause>mo.organization_name</orderClause>
@@ -175,12 +175,12 @@
 					      bi.charge_date,
 					      bi.price
 			</selectClause> 
-			<tableClause> contractor_bill_items bi, contracts c, organizations mo, BILLING_COMPANIES tc, service_prices s </tableClause>
+			<tableClause> contractor_bill_items bi, corporate_clients c, organizations mo, BILLING_COMPANIES tc, service_prices s </tableClause>
 			<whereClause><![CDATA[
-				 bi.contractor_id = c.contract_id and c.organization_id = mo.organization_id and 
+				 bi.contractor_id = c.corporate_client_id and c.organization_id = mo.organization_id and 
 				 bi.billing_company_id = tc.billing_company_id and  bi.service_id = s.service_price_id  and bi.ym = $criteria.ym
-				 #if($criteria.contract_id) and c.contract_id = $criteria.contract_id #end				 
-				 #if($criteria.is_budget) and c.is_budget = $criteria.is_budget #end
+				 #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end				 
+				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end
 				]]>  
 			</whereClause> 
 			<orderClause>tc.billing_company_name, mo.organization_name, bi.phone, s.service_description, bi.call_date, bi.charge_date </orderClause>

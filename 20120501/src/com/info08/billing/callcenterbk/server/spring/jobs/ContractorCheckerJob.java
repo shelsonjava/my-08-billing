@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI;
-import com.info08.billing.callcenterbk.shared.entity.contractors.Contract;
+import com.info08.billing.callcenterbk.shared.entity.contractors.CorporateClient;
 import com.info08.billing.callcenterbk.shared.entity.contractors.ContractorBlockChecker;
 import com.isomorphic.jpa.EMF;
 
@@ -57,7 +57,7 @@ public class ContractorCheckerJob extends TimerTask {
 					if (contractId == null) {
 						continue;
 					}
-					Contract contract = oracleManager.find(Contract.class,
+					CorporateClient contract = oracleManager.find(CorporateClient.class,
 							contractId);
 					if (contract == null) {
 						continue;
