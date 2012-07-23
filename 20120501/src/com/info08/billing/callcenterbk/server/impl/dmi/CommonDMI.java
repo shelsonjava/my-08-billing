@@ -316,14 +316,7 @@ public class CommonDMI implements QueryConstants {
 					loggedUserName, "Add StreetKind.");
 			String streetName = buildStreetName(street, oracleManager);
 			street.setStreet_name(streetName);
-			street.setRecord_type(1L);
-
-			// record.setAttribute("hideForCallCenterItem",
-			// bhideForCallCenterItem);
-			// record.setAttribute("hideForCorrectionItem",
-			// bhideForCorrectionItem);
-
-			// if ()
+			street.setRec_kind(1L);
 
 			oracleManager.persist(street);
 
@@ -337,17 +330,17 @@ public class CommonDMI implements QueryConstants {
 					streetDistrict.setTown_id(street.getTown_id());
 					streetDistrict.setTown_district_id(Long
 							.parseLong(town_district_id));
-					streetDistrict.setStreet_id(street.getStreet_id());
+					streetDistrict.setStreet_id(street.getStreets_id());
 					oracleManager.persist(streetDistrict);
 				}
 				street.setMapStreDistricts(street_Districts);
 			}
 
 			oracleManager.flush();
-			street = getStreetEntById(street.getStreet_id(), oracleManager);
+			street = getStreetEntById(street.getStreets_id(), oracleManager);
 
 			if (street != null) {
-				streetEnts.put(street.getStreet_id(), street);
+				streetEnts.put(street.getStreets_id(), street);
 			}
 			EMF.commitTransaction(transaction);
 			log += ". Inserting Finished SuccessFully. ";
@@ -381,191 +374,95 @@ public class CommonDMI implements QueryConstants {
 				return null;
 			}
 			StringBuilder streetName = new StringBuilder("");
-			Long str_descr_level_1 = streetEnt.getDescr_id_level_1();
-			if (str_descr_level_1 != null) {
+			Long level_I = streetEnt.getLevel_I();
+			if (level_I != null) {
 				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_1);
+						level_I);
 				if (streetDescr != null) {
 					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
-			Long str_descr_type_level_1 = streetEnt.getDescr_type_id_level_1();
-			if (str_descr_type_level_1 != null) {
+			Long type_level_I = streetEnt.getType_level_I();
+			if (type_level_I != null) {
 				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_1);
+						type_level_I);
 				if (streetType != null) {
 					streetName.append(streetType.getStreet_kind_name()).append(
 							" ");
 				}
 			}
 
-			Long str_descr_level_2 = streetEnt.getDescr_id_level_2();
-			if (str_descr_level_2 != null) {
+			Long level_II = streetEnt.getLevel_II();
+			if (level_II != null) {
 				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_2);
+						level_II);
 				if (streetDescr != null) {
 					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
-			Long str_descr_type_level_2 = streetEnt.getDescr_type_id_level_2();
-			if (str_descr_type_level_2 != null) {
+			Long type_level_II = streetEnt.getType_level_II();
+			if (type_level_II != null) {
 				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_2);
+						type_level_II);
 				if (streetType != null) {
 					streetName.append(streetType.getStreet_kind_name()).append(
 							" ");
 				}
 			}
 
-			Long str_descr_level_3 = streetEnt.getDescr_id_level_3();
-			if (str_descr_level_3 != null) {
+			Long level_III = streetEnt.getLevel_III();
+			if (level_III != null) {
 				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_3);
+						level_III);
 				if (streetDescr != null) {
 					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
-			Long str_descr_type_level_3 = streetEnt.getDescr_type_id_level_3();
-			if (str_descr_type_level_3 != null) {
+			Long type_level_III = streetEnt.getType_level_III();
+			if (type_level_III != null) {
 				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_3);
+						type_level_III);
 				if (streetType != null) {
 					streetName.append(streetType.getStreet_kind_name()).append(
 							" ");
 				}
 			}
 
-			Long str_descr_level_4 = streetEnt.getDescr_id_level_4();
-			if (str_descr_level_4 != null) {
+			Long level_IV = streetEnt.getLevel_IV();
+			if (level_IV != null) {
 				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_4);
+						level_IV);
 				if (streetDescr != null) {
 					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
-			Long str_descr_type_level_4 = streetEnt.getDescr_type_id_level_4();
-			if (str_descr_type_level_4 != null) {
+			Long type_level_IV = streetEnt.getType_level_IV();
+			if (type_level_IV != null) {
 				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_4);
+						type_level_IV);
 				if (streetType != null) {
 					streetName.append(streetType.getStreet_kind_name()).append(
 							" ");
 				}
 			}
 
-			Long str_descr_level_5 = streetEnt.getDescr_id_level_5();
-			if (str_descr_level_5 != null) {
+			Long level_V = streetEnt.getLevel_V();
+			if (level_V != null) {
 				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_5);
+						level_V);
 				if (streetDescr != null) {
 					streetName.append(streetDescr.getStreet_name_descr())
 							.append(" ");
 				}
 			}
-			Long str_descr_type_level_5 = streetEnt.getDescr_type_id_level_5();
-			if (str_descr_type_level_5 != null) {
+			Long type_level_V = streetEnt.getType_level_V();
+			if (type_level_V != null) {
 				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_5);
-				if (streetType != null) {
-					streetName.append(streetType.getStreet_kind_name()).append(
-							" ");
-				}
-			}
-
-			Long str_descr_level_6 = streetEnt.getDescr_id_level_6();
-			if (str_descr_level_6 != null) {
-				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_6);
-				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_name_descr())
-							.append(" ");
-				}
-			}
-			Long str_descr_type_level_6 = streetEnt.getDescr_type_id_level_6();
-			if (str_descr_type_level_6 != null) {
-				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_6);
-				if (streetType != null) {
-					streetName.append(streetType.getStreet_kind_name()).append(
-							" ");
-				}
-			}
-
-			Long str_descr_level_7 = streetEnt.getDescr_id_level_7();
-			if (str_descr_level_7 != null) {
-				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_7);
-				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_name_descr())
-							.append(" ");
-				}
-			}
-			Long str_descr_type_level_7 = streetEnt.getDescr_type_id_level_7();
-			if (str_descr_type_level_7 != null) {
-				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_7);
-				if (streetType != null) {
-					streetName.append(streetType.getStreet_kind_name()).append(
-							" ");
-				}
-			}
-
-			Long str_descr_level_8 = streetEnt.getDescr_id_level_8();
-			if (str_descr_level_8 != null) {
-				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_8);
-				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_name_descr())
-							.append(" ");
-				}
-			}
-			Long str_descr_type_level_8 = streetEnt.getDescr_type_id_level_8();
-			if (str_descr_type_level_8 != null) {
-				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_8);
-				if (streetType != null) {
-					streetName.append(streetType.getStreet_kind_name()).append(
-							" ");
-				}
-			}
-
-			Long str_descr_level_9 = streetEnt.getDescr_id_level_9();
-			if (str_descr_level_9 != null) {
-				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_9);
-				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_name_descr())
-							.append(" ");
-				}
-			}
-			Long str_descr_type_level_9 = streetEnt.getDescr_type_id_level_9();
-			if (str_descr_type_level_9 != null) {
-				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_9);
-				if (streetType != null) {
-					streetName.append(streetType.getStreet_kind_name()).append(
-							" ");
-				}
-			}
-
-			Long str_descr_level_10 = streetEnt.getDescr_id_level_10();
-			if (str_descr_level_10 != null) {
-				StreetNames streetDescr = oracleManager.find(StreetNames.class,
-						str_descr_level_10);
-				if (streetDescr != null) {
-					streetName.append(streetDescr.getStreet_name_descr())
-							.append(" ");
-				}
-			}
-			Long str_descr_type_level_10 = streetEnt
-					.getDescr_type_id_level_10();
-			if (str_descr_type_level_10 != null) {
-				StreetKind streetType = oracleManager.find(StreetKind.class,
-						str_descr_type_level_10);
+						type_level_V);
 				if (streetType != null) {
 					streetName.append(streetType.getStreet_kind_name()).append(
 							" ");
@@ -620,95 +517,43 @@ public class CommonDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_id = new Long(record.get("street_id").toString());
+			Long street_id = new Long(record.get("streets_id").toString());
 			Long town_id = new Long(record.get("town_id").toString());
-			String street_location = record.get("street_location") == null ? null
-					: record.get("street_location").toString();
+			String street_location = record.get("street_location") == null ? null: record.get("street_location").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Update Street.");
 
-			Object odescr_id_level_1 = record.get("descr_id_level_1");
-			Long descr_id_level_1 = (odescr_id_level_1 == null) ? null
-					: new Long(odescr_id_level_1.toString());
+			Object o_level_I = record.get("level_I");
+			Long level_I = (o_level_I == null) ? null : new Long(o_level_I.toString());
 
-			Object odescr_id_level_2 = record.get("descr_id_level_2");
-			Long descr_id_level_2 = (odescr_id_level_2 == null) ? null
-					: new Long(odescr_id_level_2.toString());
+			Object o_level_II = record.get("level_II");
+			Long level_II = (o_level_II == null) ? null: new Long(o_level_II.toString());
 
-			Object odescr_id_level_3 = record.get("descr_id_level_3");
-			Long descr_id_level_3 = (odescr_id_level_3 == null) ? null
-					: new Long(odescr_id_level_3.toString());
+			Object o_level_III = record.get("level_III");
+			Long level_III = (o_level_III == null) ? null : new Long(o_level_III.toString());
 
-			Object odescr_id_level_4 = record.get("descr_id_level_4");
-			Long descr_id_level_4 = (odescr_id_level_4 == null) ? null
-					: new Long(odescr_id_level_4.toString());
+			Object o_level_IV = record.get("level_IV");
+			Long level_IV = (o_level_IV == null) ? null : new Long(o_level_IV.toString());
 
-			Object odescr_id_level_5 = record.get("descr_id_level_5");
-			Long descr_id_level_5 = (odescr_id_level_5 == null) ? null
-					: new Long(odescr_id_level_5.toString());
+			Object o_level_V = record.get("level_V");
+			Long level_V = (o_level_V == null) ? null : new Long(o_level_V.toString());
 
-			Object odescr_id_level_6 = record.get("descr_id_level_6");
-			Long descr_id_level_6 = (odescr_id_level_6 == null) ? null
-					: new Long(odescr_id_level_6.toString());
+			Object o_type_level_I = record.get("type_level_I");
+			Long type_level_I = (o_type_level_I == null) ? null : new Long(o_type_level_I.toString());
 
-			Object odescr_id_level_7 = record.get("descr_id_level_7");
-			Long descr_id_level_7 = (odescr_id_level_7 == null) ? null
-					: new Long(odescr_id_level_7.toString());
+			Object o_type_level_II = record.get("type_level_II");
+			Long type_level_II = (o_type_level_II == null) ? null : new Long(o_type_level_II.toString());
 
-			Object odescr_id_level_8 = record.get("descr_id_level_8");
-			Long descr_id_level_8 = (odescr_id_level_8 == null) ? null
-					: new Long(odescr_id_level_8.toString());
+			Object o_type_level_III = record.get("type_level_III");
+			Long type_level_III = (o_type_level_III == null) ? null : new Long(o_type_level_III.toString());
 
-			Object odescr_id_level_9 = record.get("descr_id_level_9");
-			Long descr_id_level_9 = (odescr_id_level_9 == null) ? null
-					: new Long(odescr_id_level_9.toString());
+			Object o_type_level_IV = record.get("type_level_IV");
+			Long type_level_IV = (o_type_level_IV == null) ? null : new Long(o_type_level_IV.toString());
 
-			Object odescr_id_level_10 = record.get("descr_id_level_10");
-			Long descr_id_level_10 = (odescr_id_level_10 == null) ? null
-					: new Long(odescr_id_level_10.toString());
-
-			Object odescr_type_id_level_1 = record.get("descr_type_id_level_1");
-			Long descr_type_id_level_1 = (odescr_type_id_level_1 == null) ? null
-					: new Long(odescr_type_id_level_1.toString());
-
-			Object odescr_type_id_level_2 = record.get("descr_type_id_level_2");
-			Long descr_type_id_level_2 = (odescr_type_id_level_2 == null) ? null
-					: new Long(odescr_type_id_level_2.toString());
-
-			Object odescr_type_id_level_3 = record.get("descr_type_id_level_3");
-			Long descr_type_id_level_3 = (odescr_type_id_level_3 == null) ? null
-					: new Long(odescr_type_id_level_3.toString());
-
-			Object odescr_type_id_level_4 = record.get("descr_type_id_level_4");
-			Long descr_type_id_level_4 = (odescr_type_id_level_4 == null) ? null
-					: new Long(odescr_type_id_level_4.toString());
-
-			Object odescr_type_id_level_5 = record.get("descr_type_id_level_5");
-			Long descr_type_id_level_5 = (odescr_type_id_level_5 == null) ? null
-					: new Long(odescr_type_id_level_5.toString());
-
-			Object odescr_type_id_level_6 = record.get("descr_type_id_level_6");
-			Long descr_type_id_level_6 = (odescr_type_id_level_6 == null) ? null
-					: new Long(odescr_type_id_level_6.toString());
-
-			Object odescr_type_id_level_7 = record.get("descr_type_id_level_7");
-			Long descr_type_id_level_7 = (odescr_type_id_level_7 == null) ? null
-					: new Long(odescr_type_id_level_7.toString());
-
-			Object odescr_type_id_level_8 = record.get("descr_type_id_level_8");
-			Long descr_type_id_level_8 = (odescr_type_id_level_8 == null) ? null
-					: new Long(odescr_type_id_level_8.toString());
-
-			Object odescr_type_id_level_9 = record.get("descr_type_id_level_9");
-			Long descr_type_id_level_9 = (odescr_type_id_level_9 == null) ? null
-					: new Long(odescr_type_id_level_9.toString());
-
-			Object odescr_type_id_level_10 = record
-					.get("descr_type_id_level_10");
-			Long descr_type_id_level_10 = (odescr_type_id_level_10 == null) ? null
-					: new Long(odescr_type_id_level_10.toString());
+			Object o_type_level_V = record.get("type_level_V");
+			Long type_level_V = (o_type_level_V == null) ? null : new Long(o_type_level_V.toString());
 
 			Object saveStreetHistOrNotItem = record
 					.get("saveStreetHistOrNotItem");
@@ -717,37 +562,8 @@ public class CommonDMI implements QueryConstants {
 
 			Long hideForCallCenterItem = new Long(record.get(
 					"hide_for_call_center").toString());
-			// Boolean bhideForCallCenterItem = (hideForCallCenterItem == null)
-			// ? null
-			// : (Boolean) hideForCallCenterItem;
-
 			Long hideForCorrectionItem = new Long(record.get(
 					"hide_for_correction").toString());
-
-//			List result = oracleManager
-//					.createNativeQuery(QueryConstants.Q_CHECK_STREET_HIDE_FK)
-//					.setParameter(1, street_id).setParameter(2, street_id)
-//					.setParameter(3, street_id).getResultList();
-//
-//			if (result != null && !result.isEmpty()) {
-//				for (Object row : result) {
-//					Object cols[] = (Object[]) row;
-//					Long cnt = new Long(cols[0] == null ? "-1"
-//							: cols[0].toString());
-//					String type = cols[1] == null ? "" : cols[1].toString();
-//					if (cnt != null && cnt.intValue() > 0) {
-//						throw new CallCenterException(
-//								"შეცდომა ქუჩის დამალვის დროს : "
-//										+ String.format(hideText, "ქუჩის",
-//												type, type, "ქუჩის"));
-//					}
-//
-//				}
-//			}
-
-			// Boolean bhideForCorrectionItem = (hideForCorrectionItem == null)
-			// ? null
-			// : (Boolean) hideForCorrectionItem;
 
 			Street streetEntForGen = oracleManager
 					.find(Street.class, street_id);
@@ -756,7 +572,7 @@ public class CommonDMI implements QueryConstants {
 					&& bSaveStreetHistOrNotItem.booleanValue()) {
 				StreetsOldNames streetsOldEnt = new StreetsOldNames();
 				streetsOldEnt.setTown_id(streetEntForGen.getTown_id());
-				streetsOldEnt.setStreet_id(streetEntForGen.getStreet_id());
+				streetsOldEnt.setStreet_id(streetEntForGen.getStreets_id());
 				streetsOldEnt.setStreet_old_name_descr(streetEntForGen
 						.getStreet_name());
 				oracleManager.persist(streetsOldEnt);
@@ -765,36 +581,26 @@ public class CommonDMI implements QueryConstants {
 			streetEntForGen.setHide_for_call_center(hideForCallCenterItem);
 			streetEntForGen.setHide_for_correction(hideForCorrectionItem);
 
-			streetEntForGen.setDescr_id_level_1(descr_id_level_1);
-			streetEntForGen.setDescr_id_level_2(descr_id_level_2);
-			streetEntForGen.setDescr_id_level_3(descr_id_level_3);
-			streetEntForGen.setDescr_id_level_4(descr_id_level_4);
-			streetEntForGen.setDescr_id_level_5(descr_id_level_5);
-			streetEntForGen.setDescr_id_level_6(descr_id_level_6);
-			streetEntForGen.setDescr_id_level_7(descr_id_level_7);
-			streetEntForGen.setDescr_id_level_8(descr_id_level_8);
-			streetEntForGen.setDescr_id_level_9(descr_id_level_9);
-			streetEntForGen.setDescr_id_level_10(descr_id_level_10);
-			streetEntForGen.setDescr_type_id_level_1(descr_type_id_level_1);
-			streetEntForGen.setDescr_type_id_level_2(descr_type_id_level_2);
-			streetEntForGen.setDescr_type_id_level_3(descr_type_id_level_3);
-			streetEntForGen.setDescr_type_id_level_4(descr_type_id_level_4);
-			streetEntForGen.setDescr_type_id_level_5(descr_type_id_level_5);
-			streetEntForGen.setDescr_type_id_level_6(descr_type_id_level_6);
-			streetEntForGen.setDescr_type_id_level_7(descr_type_id_level_7);
-			streetEntForGen.setDescr_type_id_level_8(descr_type_id_level_8);
-			streetEntForGen.setDescr_type_id_level_9(descr_type_id_level_9);
-			streetEntForGen.setDescr_type_id_level_10(descr_type_id_level_10);
+			streetEntForGen.setLevel_I(level_I);
+			streetEntForGen.setLevel_II(level_II);
+			streetEntForGen.setLevel_III(level_III);
+			streetEntForGen.setLevel_IV(level_IV);
+			streetEntForGen.setLevel_V(level_V);
+			streetEntForGen.setType_level_I(type_level_I);
+			streetEntForGen.setType_level_II(type_level_II);
+			streetEntForGen.setType_level_III(type_level_III);
+			streetEntForGen.setType_level_IV(type_level_IV);
+			streetEntForGen.setType_level_V(type_level_V);
 			String streetName = buildStreetName(streetEntForGen, oracleManager);
 			streetEntForGen.setStreet_name(streetName);
 			streetEntForGen.setTown_id(town_id);
 			streetEntForGen.setStreet_location(street_location);
-			streetEntForGen.setRecord_type(1L);
+			streetEntForGen.setRec_kind(1L);
 			oracleManager.merge(streetEntForGen);
 
 			oracleManager
 					.createNativeQuery(Q_DELETE_STREET_DISCTRICTS_BY_STREET_ID)
-					.setParameter(1, streetEntForGen.getStreet_id())
+					.setParameter(1, streetEntForGen.getStreets_id())
 					.executeUpdate();
 
 			Map<String, String> street_Districts = null;
@@ -899,7 +705,7 @@ public class CommonDMI implements QueryConstants {
 
 			oracleManager
 					.createNativeQuery(Q_DELETE_STREET_DISCTRICTS_BY_STREET_ID)
-					.setParameter(1, street.getStreet_id()).executeUpdate();
+					.setParameter(1, street.getStreets_id()).executeUpdate();
 
 			oracleManager.remove(street);
 			oracleManager.flush();
@@ -976,7 +782,7 @@ public class CommonDMI implements QueryConstants {
 
 					for (Street streetEnt : list) {
 						TreeMap<String, String> mapItem = mapStrDistricts
-								.get(streetEnt.getStreet_id().toString());
+								.get(streetEnt.getStreets_id().toString());
 						if (mapItem != null) {
 							streetEnt.setMapStreDistricts(mapItem);
 						}
@@ -990,7 +796,7 @@ public class CommonDMI implements QueryConstants {
 							listByCity.add(streetEnt);
 							streetsByCityId.put(town_id, listByCity);
 						}
-						streetEnts.put(streetEnt.getStreet_id(), streetEnt);
+						streetEnts.put(streetEnt.getStreets_id(), streetEnt);
 					}
 				}
 			}

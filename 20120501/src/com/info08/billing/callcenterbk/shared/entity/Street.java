@@ -30,96 +30,56 @@ public class Street implements Serializable {
 	@Id
 	@SequenceGenerator(name = "SEQ_STREET_ID_GENERATOR", sequenceName = "SEQ_STREET_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STREET_ID_GENERATOR")
-	@Column(name = "STREET_ID")
-	private Long street_id;
+	@Column(name = "STREETS_ID")
+	private Long streets_id;
 
 	@Basic
 	@Column(name = "TOWN_ID")
 	private Long town_id;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_1")
-	private Long descr_id_level_1;
+	@Column(name = "LEVEL_I")
+	private Long level_I;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_2")
-	private Long descr_id_level_2;
+	@Column(name = "LEVEL_II")
+	private Long level_II;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_3")
-	private Long descr_id_level_3;
+	@Column(name = "LEVEL_III")
+	private Long level_III;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_4")
-	private Long descr_id_level_4;
+	@Column(name = "LEVEL_IV")
+	private Long level_IV;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_5")
-	private Long descr_id_level_5;
+	@Column(name = "LEVEL_V")
+	private Long level_V;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_6")
-	private Long descr_id_level_6;
+	@Column(name = "TYPE_LEVEL_I")
+	private Long type_level_I;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_7")
-	private Long descr_id_level_7;
+	@Column(name = "TYPE_LEVEL_II")
+	private Long type_level_II;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_8")
-	private Long descr_id_level_8;
+	@Column(name = "TYPE_LEVEL_III")
+	private Long type_level_III;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_9")
-	private Long descr_id_level_9;
+	@Column(name = "TYPE_LEVEL_IV")
+	private Long type_level_IV;
 
 	@Basic
-	@Column(name = "DESCR_ID_LEVEL_10")
-	private Long descr_id_level_10;
+	@Column(name = "TYPE_LEVEL_V")
+	private Long type_level_V;
 
 	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_1")
-	private Long descr_type_id_level_1;
-
-	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_2")
-	private Long descr_type_id_level_2;
-
-	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_3")
-	private Long descr_type_id_level_3;
-
-	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_4")
-	private Long descr_type_id_level_4;
-
-	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_5")
-	private Long descr_type_id_level_5;
-
-	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_6")
-	private Long descr_type_id_level_6;
-
-	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_7")
-	private Long descr_type_id_level_7;
-
-	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_8")
-	private Long descr_type_id_level_8;
-
-	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_9")
-	private Long descr_type_id_level_9;
-
-	@Basic
-	@Column(name = "DESCR_TYPE_ID_LEVEL_10")
-	private Long descr_type_id_level_10;
-
-	@Basic
-	@Column(name = "RECORD_TYPE")
-	private Long record_type;
+	@Column(name = "REC_KIND")
+	private Long rec_kind;
 
 	@Basic
 	@Column(name = "STREET_LOCATION")
@@ -134,8 +94,8 @@ public class Street implements Serializable {
 	private String street_remark;
 
 	@Basic
-	@Column(name = "VISIBLE_OPTIONS")
-	private Long visible_options;
+	@Column(name = "IS_VISIBLE")
+	private Long is_visible;
 
 	@Basic
 	@Column(name = "HIDE_FOR_CALL_CENTER")
@@ -157,12 +117,12 @@ public class Street implements Serializable {
 	public Street() {
 	}
 
-	public Long getStreet_id() {
-		return street_id;
+	public Long getStreets_id() {
+		return streets_id;
 	}
 
-	public void setStreet_id(Long street_id) {
-		this.street_id = street_id;
+	public void setStreets_id(Long streets_id) {
+		this.streets_id = streets_id;
 	}
 
 	public Long getTown_id() {
@@ -173,200 +133,92 @@ public class Street implements Serializable {
 		this.town_id = town_id;
 	}
 
-	public Long getDescr_id_level_1() {
-		return descr_id_level_1;
+	public Long getLevel_I() {
+		return level_I;
 	}
 
-	public void setDescr_id_level_1(Long descr_id_level_1) {
-		this.descr_id_level_1 = descr_id_level_1;
+	public void setLevel_I(Long level_I) {
+		this.level_I = level_I;
 	}
 
-	public Long getDescr_id_level_10() {
-		return descr_id_level_10;
+	public Long getLevel_II() {
+		return level_II;
 	}
 
-	public void setDescr_id_level_10(Long descr_id_level_10) {
-		this.descr_id_level_10 = descr_id_level_10;
+	public void setLevel_II(Long level_II) {
+		this.level_II = level_II;
 	}
 
-	public Long getDescr_id_level_2() {
-		return descr_id_level_2;
+	public Long getLevel_III() {
+		return level_III;
 	}
 
-	public void setDescr_id_level_2(Long descr_id_level_2) {
-		this.descr_id_level_2 = descr_id_level_2;
+	public void setLevel_III(Long level_III) {
+		this.level_III = level_III;
 	}
 
-	public Long getDescr_id_level_3() {
-		return descr_id_level_3;
+	public Long getLevel_IV() {
+		return level_IV;
 	}
 
-	public void setDescr_id_level_3(Long descr_id_level_3) {
-		this.descr_id_level_3 = descr_id_level_3;
+	public void setLevel_IV(Long level_IV) {
+		this.level_IV = level_IV;
 	}
 
-	public Long getDescr_id_level_4() {
-		return descr_id_level_4;
+	public Long getLevel_V() {
+		return level_V;
 	}
 
-	public void setDescr_id_level_4(Long descr_id_level_4) {
-		this.descr_id_level_4 = descr_id_level_4;
+	public void setLevel_V(Long level_V) {
+		this.level_V = level_V;
 	}
 
-	public Long getDescr_id_level_5() {
-		return descr_id_level_5;
+	public Long getType_level_I() {
+		return type_level_I;
 	}
 
-	public void setDescr_id_level_5(Long descr_id_level_5) {
-		this.descr_id_level_5 = descr_id_level_5;
+	public void setType_level_I(Long type_level_I) {
+		this.type_level_I = type_level_I;
 	}
 
-	public Long getDescr_id_level_6() {
-		return descr_id_level_6;
+	public Long getType_level_II() {
+		return type_level_II;
 	}
 
-	public void setDescr_id_level_6(Long descr_id_level_6) {
-		this.descr_id_level_6 = descr_id_level_6;
+	public void setType_level_II(Long type_level_II) {
+		this.type_level_II = type_level_II;
 	}
 
-	public Long getDescr_id_level_7() {
-		return descr_id_level_7;
+	public Long getType_level_III() {
+		return type_level_III;
 	}
 
-	public void setDescr_id_level_7(Long descr_id_level_7) {
-		this.descr_id_level_7 = descr_id_level_7;
+	public void setType_level_III(Long type_level_III) {
+		this.type_level_III = type_level_III;
 	}
 
-	public Long getDescr_id_level_8() {
-		return descr_id_level_8;
+	public Long getType_level_IV() {
+		return type_level_IV;
 	}
 
-	public void setDescr_id_level_8(Long descr_id_level_8) {
-		this.descr_id_level_8 = descr_id_level_8;
+	public void setType_level_IV(Long type_level_IV) {
+		this.type_level_IV = type_level_IV;
 	}
 
-	public Long getDescr_id_level_9() {
-		return descr_id_level_9;
+	public Long getType_level_V() {
+		return type_level_V;
 	}
 
-	public void setDescr_id_level_9(Long descr_id_level_9) {
-		this.descr_id_level_9 = descr_id_level_9;
+	public void setType_level_V(Long type_level_V) {
+		this.type_level_V = type_level_V;
 	}
 
-	public Long getDescr_type_id_level_1() {
-		return descr_type_id_level_1;
+	public Long getRec_kind() {
+		return rec_kind;
 	}
 
-	public void setDescr_type_id_level_1(Long descr_type_id_level_1) {
-		this.descr_type_id_level_1 = descr_type_id_level_1;
-	}
-
-	public Long getDescr_type_id_level_10() {
-		return descr_type_id_level_10;
-	}
-
-	public void setDescr_type_id_level_10(Long descr_type_id_level_10) {
-		this.descr_type_id_level_10 = descr_type_id_level_10;
-	}
-
-	public Long getDescr_type_id_level_2() {
-		return descr_type_id_level_2;
-	}
-
-	public void setDescr_type_id_level_2(Long descr_type_id_level_2) {
-		this.descr_type_id_level_2 = descr_type_id_level_2;
-	}
-
-	public Long getDescr_type_id_level_3() {
-		return descr_type_id_level_3;
-	}
-
-	public void setDescr_type_id_level_3(Long descr_type_id_level_3) {
-		this.descr_type_id_level_3 = descr_type_id_level_3;
-	}
-
-	public Long getDescr_type_id_level_4() {
-		return descr_type_id_level_4;
-	}
-
-	public void setDescr_type_id_level_4(Long descr_type_id_level_4) {
-		this.descr_type_id_level_4 = descr_type_id_level_4;
-	}
-
-	public Long getDescr_type_id_level_5() {
-		return descr_type_id_level_5;
-	}
-
-	public void setDescr_type_id_level_5(Long descr_type_id_level_5) {
-		this.descr_type_id_level_5 = descr_type_id_level_5;
-	}
-
-	public Long getDescr_type_id_level_6() {
-		return descr_type_id_level_6;
-	}
-
-	public void setDescr_type_id_level_6(Long descr_type_id_level_6) {
-		this.descr_type_id_level_6 = descr_type_id_level_6;
-	}
-
-	public Long getDescr_type_id_level_7() {
-		return descr_type_id_level_7;
-	}
-
-	public void setDescr_type_id_level_7(Long descr_type_id_level_7) {
-		this.descr_type_id_level_7 = descr_type_id_level_7;
-	}
-
-	public Long getDescr_type_id_level_8() {
-		return descr_type_id_level_8;
-	}
-
-	public void setDescr_type_id_level_8(Long descr_type_id_level_8) {
-		this.descr_type_id_level_8 = descr_type_id_level_8;
-	}
-
-	public Long getDescr_type_id_level_9() {
-		return descr_type_id_level_9;
-	}
-
-	public void setDescr_type_id_level_9(Long descr_type_id_level_9) {
-		this.descr_type_id_level_9 = descr_type_id_level_9;
-	}
-
-	public void setRecord_type(Long record_type) {
-		this.record_type = record_type;
-	}
-
-	public Long getVisible_options() {
-		return visible_options;
-	}
-
-	public void setVisible_options(Long visible_options) {
-		this.visible_options = visible_options;
-	}
-
-	public String getLoggedUserName() {
-		return loggedUserName;
-	}
-
-	public void setLoggedUserName(String loggedUserName) {
-		this.loggedUserName = loggedUserName;
-	}
-
-	public Map<String, String> getMapStreDistricts() {
-		return mapStreDistricts;
-	}
-
-	public void setMapStreDistricts(Map<String, String> mapStreDistricts) {
-		this.mapStreDistricts = mapStreDistricts;
-	}
-
-	public String getTown_name() {
-		return town_name;
-	}
-
-	public void setTown_name(String town_name) {
-		this.town_name = town_name;
+	public void setRec_kind(Long rec_kind) {
+		this.rec_kind = rec_kind;
 	}
 
 	public String getStreet_location() {
@@ -393,8 +245,12 @@ public class Street implements Serializable {
 		this.street_remark = street_remark;
 	}
 
-	public Long getRecord_type() {
-		return record_type;
+	public Long getIs_visible() {
+		return is_visible;
+	}
+
+	public void setIs_visible(Long is_visible) {
+		this.is_visible = is_visible;
 	}
 
 	public Long getHide_for_call_center() {
@@ -413,4 +269,27 @@ public class Street implements Serializable {
 		this.hide_for_correction = hide_for_correction;
 	}
 
+	public String getLoggedUserName() {
+		return loggedUserName;
+	}
+
+	public void setLoggedUserName(String loggedUserName) {
+		this.loggedUserName = loggedUserName;
+	}
+
+	public Map<String, String> getMapStreDistricts() {
+		return mapStreDistricts;
+	}
+
+	public void setMapStreDistricts(Map<String, String> mapStreDistricts) {
+		this.mapStreDistricts = mapStreDistricts;
+	}
+
+	public String getTown_name() {
+		return town_name;
+	}
+
+	public void setTown_name(String town_name) {
+		this.town_name = town_name;
+	}
 }

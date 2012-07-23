@@ -116,7 +116,7 @@ public class TabStreet extends Tab {
 			recordTypeItem = new ComboBoxItem();
 			recordTypeItem.setTitle("ჩანაწერის ტიპი");
 			recordTypeItem.setWidth(300);
-			recordTypeItem.setName("record_type");
+			recordTypeItem.setName("rec_kind");
 			recordTypeItem.setValueMap(ClientMapUtil.getInstance()
 					.getStreetRecTypes());
 
@@ -318,9 +318,9 @@ public class TabStreet extends Tab {
 						return;
 					}
 
-					final Integer street_id = listGridRecord
-							.getAttributeAsInt("street_id");
-					if (street_id == null) {
+					final Integer streets_id = listGridRecord
+							.getAttributeAsInt("streets_id");
+					if (streets_id == null) {
 						SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
 						return;
 					}
@@ -330,7 +330,7 @@ public class TabStreet extends Tab {
 								@Override
 								public void execute(Boolean value) {
 									if (value) {
-										delete(street_id);
+										delete(streets_id);
 									}
 								}
 							});
@@ -376,14 +376,6 @@ public class TabStreet extends Tab {
 
 	private void fillFields() {
 		try {
-			// DataSource townsDS = DataSource.get("TownsDS");
-			// citiesItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-			// citiesItem.setOptionDataSource(townsDS);
-			// citiesItem.setValueField("town_id");
-			// citiesItem.setDisplayField("town_name");
-			// citiesItem.setAutoFetchData(true);
-			// citiesItem.setValue(Constants.defCityTbilisiId);
-
 			ClientUtils.fillCombo(townsItem, "TownsDS",
 					"searchCitiesFromDBForCombosAll", "town_id", "town_name");
 			townsItem.setValue(Constants.defCityTbilisiId);
@@ -398,7 +390,7 @@ public class TabStreet extends Tab {
 		try {
 			String street_name = streetNameItem.getValueAsString();
 			String street_location = streetLocationItem.getValueAsString();
-			String record_type = recordTypeItem.getValueAsString();
+			String rec_kind = recordTypeItem.getValueAsString();
 			String town_id = townsItem.getValueAsString();
 			String town_district_id = townDistrictsItem.getValueAsString();
 			Criteria criteria = new Criteria();
@@ -419,8 +411,8 @@ public class TabStreet extends Tab {
 				}
 			}
 
-			if (record_type != null) {
-				criteria.setAttribute("record_type", new Integer(record_type));
+			if (rec_kind != null) {
+				criteria.setAttribute("rec_kind", new Integer(rec_kind));
 			}
 			if (town_id != null) {
 				criteria.setAttribute("town_id", new Integer(town_id));
@@ -440,11 +432,11 @@ public class TabStreet extends Tab {
 		}
 	}
 
-	private void delete(Integer street_id) {
+	private void delete(Integer streets_id) {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("street_id", street_id);
+			record.setAttribute("streets_id", streets_id);
 			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name());
 			DSRequest req = new DSRequest();

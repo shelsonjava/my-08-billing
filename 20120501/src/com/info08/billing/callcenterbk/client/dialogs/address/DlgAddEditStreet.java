@@ -61,12 +61,6 @@ public class DlgAddEditStreet extends Window {
 	private ComboBoxItem streetLevelItem_3;
 	private ComboBoxItem streetLevelItem_4;
 	private ComboBoxItem streetLevelItem_5;
-	// private ComboBoxItem streetLevelItem_6;
-	// private ComboBoxItem streetLevelItem_7;
-	// private ComboBoxItem streetLevelItem_8;
-	// private ComboBoxItem streetLevelItem_9;
-	// private ComboBoxItem streetLevelItem_10;
-
 	private ComboBoxItem arrOfLevels[][] = new ComboBoxItem[5][2];
 
 	private ComboBoxItem streetLevelTypeItem_1;
@@ -74,11 +68,6 @@ public class DlgAddEditStreet extends Window {
 	private ComboBoxItem streetLevelTypeItem_3;
 	private ComboBoxItem streetLevelTypeItem_4;
 	private ComboBoxItem streetLevelTypeItem_5;
-	// private ComboBoxItem streetLevelTypeItem_6;
-	// private ComboBoxItem streetLevelTypeItem_7;
-	// private ComboBoxItem streetLevelTypeItem_8;
-	// private ComboBoxItem streetLevelTypeItem_9;
-	// private ComboBoxItem streetLevelTypeItem_10;
 	private CheckboxItem saveStreetHistOrNotItem;
 	private CheckboxItem hideForCorrectionItem;
 	private CheckboxItem hideForCallCenterItem;
@@ -122,9 +111,6 @@ public class DlgAddEditStreet extends Window {
 			dynamicFormForHide.setWidth(300);
 			dynamicFormForHide.setTitleWidth(100);
 			dynamicFormForHide.setNumCols(4);
-
-			// dynamicFormForHide.setLayoutAlign(Alignment.RIGHT);
-			// dynamicFormForHide.setAlign(Alignment.LEFT);
 
 			townItem = new ComboBoxItem();
 			townItem.setTitle("ქალაქი");
@@ -178,12 +164,10 @@ public class DlgAddEditStreet extends Window {
 
 			hideForCorrectionItem = new CheckboxItem();
 			hideForCorrectionItem.setTitle("დამალულია კორექციისთვის");
-			// hideForCorrectionItem.setWidth("50%");
 			hideForCorrectionItem.setName("hideForCorrectionItem");
 
 			hideForCallCenterItem = new CheckboxItem();
 			hideForCallCenterItem.setTitle("დამალულია ქოლცენტრისთვის");
-			// hideForCallCenterItem.setWidth("50%");
 			hideForCallCenterItem.setName("hideForCallCenterItem");
 
 			dynamicForm.setFields(townItem, streetNameItem, streetLocationItem,
@@ -204,7 +188,6 @@ public class DlgAddEditStreet extends Window {
 
 			hLayout.addMember(layout1);
 
-			// regions ...
 			DataSource cityRegionsDS = DataSource.get("TownDistrictDS");
 			townDistrictsGrid = new ListGrid();
 			townDistrictsGrid.setWidth(240);
@@ -293,7 +276,7 @@ public class DlgAddEditStreet extends Window {
 			streetLevelItem_1 = new ComboBoxItem();
 			streetLevelItem_1.setTitle("I დონე");
 			streetLevelItem_1.setWidth(300);
-			streetLevelItem_1.setName("descr_id_level_1");
+			streetLevelItem_1.setName("level_I");
 			streetLevelItem_1.setFetchMissingValues(true);
 			streetLevelItem_1.setFilterLocally(false);
 			streetLevelItem_1.setAddUnknownValues(false);
@@ -302,7 +285,7 @@ public class DlgAddEditStreet extends Window {
 			streetLevelItem_2 = new ComboBoxItem();
 			streetLevelItem_2.setTitle("II დონე");
 			streetLevelItem_2.setWidth(300);
-			streetLevelItem_2.setName("descr_id_level_2");
+			streetLevelItem_2.setName("level_II");
 			streetLevelItem_2.setFetchMissingValues(true);
 			streetLevelItem_2.setFilterLocally(false);
 			streetLevelItem_2.setAddUnknownValues(false);
@@ -311,7 +294,7 @@ public class DlgAddEditStreet extends Window {
 			streetLevelItem_3 = new ComboBoxItem();
 			streetLevelItem_3.setTitle("III დონე");
 			streetLevelItem_3.setWidth(300);
-			streetLevelItem_3.setName("descr_id_level_3");
+			streetLevelItem_3.setName("level_III");
 			streetLevelItem_3.setFetchMissingValues(true);
 			streetLevelItem_3.setFilterLocally(false);
 			streetLevelItem_3.setAddUnknownValues(false);
@@ -320,7 +303,7 @@ public class DlgAddEditStreet extends Window {
 			streetLevelItem_4 = new ComboBoxItem();
 			streetLevelItem_4.setTitle("IV დონე");
 			streetLevelItem_4.setWidth(300);
-			streetLevelItem_4.setName("descr_id_level_4");
+			streetLevelItem_4.setName("level_IV");
 			streetLevelItem_4.setFetchMissingValues(true);
 			streetLevelItem_4.setFilterLocally(false);
 			streetLevelItem_4.setAddUnknownValues(false);
@@ -329,7 +312,7 @@ public class DlgAddEditStreet extends Window {
 			streetLevelItem_5 = new ComboBoxItem();
 			streetLevelItem_5.setTitle("V დონე");
 			streetLevelItem_5.setWidth(300);
-			streetLevelItem_5.setName("descr_id_level_5");
+			streetLevelItem_5.setName("level_V");
 			streetLevelItem_5.setFetchMissingValues(true);
 			streetLevelItem_5.setFilterLocally(false);
 			streetLevelItem_5.setAddUnknownValues(false);
@@ -409,52 +392,6 @@ public class DlgAddEditStreet extends Window {
 					}
 				}
 			});
-
-			// streetLevelItem_6 = new ComboBoxItem();
-			// streetLevelItem_6.setTitle("VI დონე");
-			// streetLevelItem_6.setWidth(300);
-			// streetLevelItem_6.setName("descr_id_level_6");
-			// streetLevelItem_6.setFetchMissingValues(true);
-			// streetLevelItem_6.setFilterLocally(false);
-			// streetLevelItem_6.setAddUnknownValues(false);
-			// streetLevelItem_6.setPickListHeight(200);
-			//
-			// streetLevelItem_7 = new ComboBoxItem();
-			// streetLevelItem_7.setTitle("VII დონე");
-			// streetLevelItem_7.setWidth(300);
-			// streetLevelItem_7.setName("descr_id_level_7");
-			// streetLevelItem_7.setFetchMissingValues(true);
-			// streetLevelItem_7.setFilterLocally(false);
-			// streetLevelItem_7.setAddUnknownValues(false);
-			// streetLevelItem_7.setPickListHeight(200);
-			//
-			// streetLevelItem_8 = new ComboBoxItem();
-			// streetLevelItem_8.setTitle("VII დონე");
-			// streetLevelItem_8.setWidth(300);
-			// streetLevelItem_8.setName("descr_id_level_8");
-			// streetLevelItem_8.setFetchMissingValues(true);
-			// streetLevelItem_8.setFilterLocally(false);
-			// streetLevelItem_8.setAddUnknownValues(false);
-			// streetLevelItem_8.setPickListHeight(200);
-			//
-			// streetLevelItem_9 = new ComboBoxItem();
-			// streetLevelItem_9.setTitle("IX დონე");
-			// streetLevelItem_9.setWidth(300);
-			// streetLevelItem_9.setName("descr_id_level_9");
-			// streetLevelItem_9.setFetchMissingValues(true);
-			// streetLevelItem_9.setFilterLocally(false);
-			// streetLevelItem_9.setAddUnknownValues(false);
-			// streetLevelItem_9.setPickListHeight(100);
-			//
-			// streetLevelItem_10 = new ComboBoxItem();
-			// streetLevelItem_10.setTitle("X დონე");
-			// streetLevelItem_10.setWidth(300);
-			// streetLevelItem_10.setName("descr_id_level_10");
-			// streetLevelItem_10.setFetchMissingValues(true);
-			// streetLevelItem_10.setFilterLocally(false);
-			// streetLevelItem_10.setAddUnknownValues(false);
-			// streetLevelItem_10.setPickListHeight(100);
-
 			streetLevelTypeItem_1 = new ComboBoxItem();
 			streetLevelTypeItem_1.setTitle("ტიპი");
 			streetLevelTypeItem_1.setWidth(100);
@@ -580,63 +517,11 @@ public class DlgAddEditStreet extends Window {
 				}
 			});
 
-			// streetLevelTypeItem_6 = new ComboBoxItem();
-			// streetLevelTypeItem_6.setTitle("ტიპი");
-			// streetLevelTypeItem_6.setWidth(100);
-			// streetLevelTypeItem_6.setName("descr_type_id_level_6");
-			// streetLevelTypeItem_6.setPickListHeight(200);
-			// streetLevelTypeItem_6.setFetchMissingValues(true);
-			// streetLevelTypeItem_6.setFilterLocally(false);
-			// streetLevelTypeItem_6.setAddUnknownValues(false);
-			//
-			// streetLevelTypeItem_7 = new ComboBoxItem();
-			// streetLevelTypeItem_7.setTitle("ტიპი");
-			// streetLevelTypeItem_7.setWidth(100);
-			// streetLevelTypeItem_7.setName("descr_type_id_level_7");
-			// streetLevelTypeItem_7.setPickListHeight(200);
-			// streetLevelTypeItem_7.setFetchMissingValues(true);
-			// streetLevelTypeItem_7.setFilterLocally(false);
-			// streetLevelTypeItem_7.setAddUnknownValues(false);
-			//
-			// streetLevelTypeItem_8 = new ComboBoxItem();
-			// streetLevelTypeItem_8.setTitle("ტიპი");
-			// streetLevelTypeItem_8.setWidth(100);
-			// streetLevelTypeItem_8.setName("descr_type_id_level_8");
-			// streetLevelTypeItem_8.setPickListHeight(200);
-			// streetLevelTypeItem_8.setFetchMissingValues(true);
-			// streetLevelTypeItem_8.setFilterLocally(false);
-			// streetLevelTypeItem_8.setAddUnknownValues(false);
-			//
-			// streetLevelTypeItem_9 = new ComboBoxItem();
-			// streetLevelTypeItem_9.setTitle("ტიპი");
-			// streetLevelTypeItem_9.setWidth(100);
-			// streetLevelTypeItem_9.setName("descr_type_id_level_9");
-			// streetLevelTypeItem_9.setPickListHeight(100);
-			// streetLevelTypeItem_9.setFetchMissingValues(true);
-			// streetLevelTypeItem_9.setFilterLocally(false);
-			// streetLevelTypeItem_9.setAddUnknownValues(false);
-			//
-			// streetLevelTypeItem_10 = new ComboBoxItem();
-			// streetLevelTypeItem_10.setTitle("ტიპი");
-			// streetLevelTypeItem_10.setWidth(100);
-			// streetLevelTypeItem_10.setName("descr_type_id_level_10");
-			// streetLevelTypeItem_10.setPickListHeight(100);
-			// streetLevelTypeItem_10.setFetchMissingValues(true);
-			// streetLevelTypeItem_10.setFilterLocally(false);
-			// streetLevelTypeItem_10.setAddUnknownValues(false);
-
 			dynamicForm1.setFields(streetLevelItem_1, streetLevelTypeItem_1,
 					streetLevelItem_2, streetLevelTypeItem_2,
 					streetLevelItem_3, streetLevelTypeItem_3,
 					streetLevelItem_4, streetLevelTypeItem_4,
 					streetLevelItem_5, streetLevelTypeItem_5);
-
-			// ,
-			// streetLevelItem_6, streetLevelTypeItem_6,
-			// streetLevelItem_7, streetLevelTypeItem_7,
-			// streetLevelItem_8, streetLevelTypeItem_8,
-			// streetLevelItem_9, streetLevelTypeItem_9,
-			// streetLevelItem_10, streetLevelTypeItem_10
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -680,16 +565,6 @@ public class DlgAddEditStreet extends Window {
 					streetLevelTypeItem_4 };
 			arrOfLevels[4] = new ComboBoxItem[] { streetLevelItem_5,
 					streetLevelTypeItem_5 };
-			// arrOfLevels[5] = new ComboBoxItem[] { streetLevelItem_6,
-			// streetLevelTypeItem_6 };
-			// arrOfLevels[6] = new ComboBoxItem[] { streetLevelItem_7,
-			// streetLevelTypeItem_7 };
-			// arrOfLevels[7] = new ComboBoxItem[] { streetLevelItem_8,
-			// streetLevelTypeItem_8 };
-			// arrOfLevels[8] = new ComboBoxItem[] { streetLevelItem_9,
-			// streetLevelTypeItem_9 };
-			// arrOfLevels[9] = new ComboBoxItem[] { streetLevelItem_10,
-			// streetLevelTypeItem_10 };
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -762,12 +637,6 @@ public class DlgAddEditStreet extends Window {
 				}, dsRequest);
 			}
 
-			// DataSource townsDS = DataSource.get("TownsDS");
-			// townItem.setOptionOperationId("searchCitiesFromDBForCombosAll");
-			// townItem.setOptionDataSource(townsDS);
-			// townItem.setValueField("town_id");
-			// townItem.setDisplayField("town_name");
-
 			ClientUtils.fillCombo(townItem, "TownsDS",
 					"searchCitiesFromDBForCombosAll", "town_id", "town_name");
 
@@ -790,14 +659,6 @@ public class DlgAddEditStreet extends Window {
 			}
 			fillCityRegionsCombo(ptown_id);
 
-			// DataSource descrDS = DataSource.get("StreetNamesDS");
-			// streetLevelItem_1.setOptionOperationId("fetchStreetNamesForCB");
-			// streetLevelItem_1.setOptionDataSource(descrDS);
-			// streetLevelItem_1.setValueField("street_name_id");
-			// streetLevelItem_1.setDisplayField("street_name_descr");
-			// streetLevelItem_1.setOptionCriteria(criteria1);
-			// streetLevelItem_1.setAutoFetchData(false);
-
 			ClientUtils.fillCombo(streetLevelItem_1, "StreetNamesDS",
 					"fetchStreetNamesForCB", "street_name_id",
 					"street_name_descr");
@@ -817,41 +678,6 @@ public class DlgAddEditStreet extends Window {
 			ClientUtils.fillCombo(streetLevelItem_5, "StreetNamesDS",
 					"fetchStreetNamesForCB", "street_name_id",
 					"street_name_descr");
-
-			// streetLevelItem_6.setOptionOperationId("fetchStreetDescrsForCB");
-			// streetLevelItem_6.setOptionDataSource(descrDS);
-			// streetLevelItem_6.setValueField("street_descr_id");
-			// streetLevelItem_6.setDisplayField("street_descr_name_geo");
-			// streetLevelItem_6.setOptionCriteria(criteria1);
-			// streetLevelItem_6.setAutoFetchData(false);
-			//
-			// streetLevelItem_7.setOptionOperationId("fetchStreetDescrsForCB");
-			// streetLevelItem_7.setOptionDataSource(descrDS);
-			// streetLevelItem_7.setValueField("street_descr_id");
-			// streetLevelItem_7.setDisplayField("street_descr_name_geo");
-			// streetLevelItem_7.setOptionCriteria(criteria1);
-			// streetLevelItem_7.setAutoFetchData(false);
-			//
-			// streetLevelItem_8.setOptionOperationId("fetchStreetDescrsForCB");
-			// streetLevelItem_8.setOptionDataSource(descrDS);
-			// streetLevelItem_8.setValueField("street_descr_id");
-			// streetLevelItem_8.setDisplayField("street_descr_name_geo");
-			// streetLevelItem_8.setOptionCriteria(criteria1);
-			// streetLevelItem_8.setAutoFetchData(false);
-			//
-			// streetLevelItem_9.setOptionOperationId("fetchStreetDescrsForCB");
-			// streetLevelItem_9.setOptionDataSource(descrDS);
-			// streetLevelItem_9.setValueField("street_descr_id");
-			// streetLevelItem_9.setDisplayField("street_descr_name_geo");
-			// streetLevelItem_9.setOptionCriteria(criteria1);
-			// streetLevelItem_9.setAutoFetchData(false);
-			//
-			// streetLevelItem_10.setOptionOperationId("fetchStreetDescrsForCB");
-			// streetLevelItem_10.setOptionDataSource(descrDS);
-			// streetLevelItem_10.setValueField("street_descr_id");
-			// streetLevelItem_10.setDisplayField("street_descr_name_geo");
-			// streetLevelItem_10.setOptionCriteria(criteria1);
-			// streetLevelItem_10.setAutoFetchData(false);
 
 			if (editRecord != null) {
 				Integer descr1 = editRecord
@@ -879,41 +705,7 @@ public class DlgAddEditStreet extends Window {
 				if (descr5 != null) {
 					streetLevelItem_5.setValue(descr5);
 				}
-				// Integer descr6 = editRecord
-				// .getAttributeAsInt("descr_id_level_6");
-				// if (descr6 != null) {
-				// streetLevelItem_6.setValue(descr6);
-				// }
-				// Integer descr7 = editRecord
-				// .getAttributeAsInt("descr_id_level_7");
-				// if (descr7 != null) {
-				// streetLevelItem_7.setValue(descr7);
-				// }
-				// Integer descr8 = editRecord
-				// .getAttributeAsInt("descr_id_level_8");
-				// if (descr8 != null) {
-				// streetLevelItem_8.setValue(descr8);
-				// }
-				// Integer descr9 = editRecord
-				// .getAttributeAsInt("descr_id_level_9");
-				// if (descr9 != null) {
-				// streetLevelItem_9.setValue(descr9);
-				// }
-				// Integer descr10 = editRecord
-				// .getAttributeAsInt("descr_id_level_10");
-				// if (descr10 != null) {
-				// streetLevelItem_10.setValue(descr10);
-				// }
 			}
-
-			// DataSource descrTypeDS = DataSource.get("StreetKindDS");
-			// streetLevelTypeItem_1
-			// .setOptionOperationId("searchStrKindsFromDBForCB");
-			// streetLevelTypeItem_1.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_1.setValueField("street_kind_Id");
-			// streetLevelTypeItem_1.setDisplayField("street_kind_name");
-			// streetLevelTypeItem_1.setOptionCriteria(criteria1);
-			// streetLevelTypeItem_1.setAutoFetchData(false);
 
 			ClientUtils.fillCombo(streetLevelTypeItem_1, "StreetKindDS",
 					"searchStrKindsFromDBForCB", "street_kind_Id",
@@ -934,46 +726,6 @@ public class DlgAddEditStreet extends Window {
 			ClientUtils.fillCombo(streetLevelTypeItem_5, "StreetKindDS",
 					"searchStrKindsFromDBForCB", "street_kind_Id",
 					"street_kind_name");
-
-			// streetLevelTypeItem_6
-			// .setOptionOperationId("searchStrTypesFromDBForCB");
-			// streetLevelTypeItem_6.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_6.setValueField("street_kind_id");
-			// streetLevelTypeItem_6.setDisplayField("street_kind_name");
-			// streetLevelTypeItem_6.setOptionCriteria(criteria1);
-			// streetLevelTypeItem_6.setAutoFetchData(false);
-			//
-			// streetLevelTypeItem_7
-			// .setOptionOperationId("searchStrTypesFromDBForCB");
-			// streetLevelTypeItem_7.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_7.setValueField("street_kind_id");
-			// streetLevelTypeItem_7.setDisplayField("street_kind_name");
-			// streetLevelTypeItem_7.setOptionCriteria(criteria1);
-			// streetLevelTypeItem_7.setAutoFetchData(false);
-			//
-			// streetLevelTypeItem_8
-			// .setOptionOperationId("searchStrTypesFromDBForCB");
-			// streetLevelTypeItem_8.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_8.setValueField("street_kind_id");
-			// streetLevelTypeItem_8.setDisplayField("street_kind_name");
-			// streetLevelTypeItem_8.setOptionCriteria(criteria1);
-			// streetLevelTypeItem_8.setAutoFetchData(false);
-			//
-			// streetLevelTypeItem_9
-			// .setOptionOperationId("searchStrTypesFromDBForCB");
-			// streetLevelTypeItem_9.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_9.setValueField("street_kind_id");
-			// streetLevelTypeItem_9.setDisplayField("street_kind_name");
-			// streetLevelTypeItem_9.setOptionCriteria(criteria1);
-			// streetLevelTypeItem_9.setAutoFetchData(false);
-			//
-			// streetLevelTypeItem_10
-			// .setOptionOperationId("searchStrTypesFromDBForCB");
-			// streetLevelTypeItem_10.setOptionDataSource(descrTypeDS);
-			// streetLevelTypeItem_10.setValueField("street_kind_id");
-			// streetLevelTypeItem_10.setDisplayField("street_kind_name");
-			// streetLevelTypeItem_10.setOptionCriteria(criteria1);
-			// streetLevelTypeItem_10.setAutoFetchData(false);
 
 			DataSource descrsTypeDS = DataSource.get("StreetKindDS");
 
@@ -1007,31 +759,6 @@ public class DlgAddEditStreet extends Window {
 			streetLevelTypeItem_5.setValueField("street_kind_id");
 			streetLevelTypeItem_5.setDisplayField("street_kind_name");
 
-			// streetLevelTypeItem_6.setOptionOperationId("searchStrKindsFromDBForCB");
-			// streetLevelTypeItem_6.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_6.setValueField("street_kind_id");
-			// streetLevelTypeItem_6.setDisplayField("street_kind_name");
-			//
-			// streetLevelTypeItem_7.setOptionOperationId("searchStrKindsFromDBForCB");
-			// streetLevelTypeItem_7.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_7.setValueField("street_kind_id");
-			// streetLevelTypeItem_7.setDisplayField("street_kind_name");
-			//
-			// streetLevelTypeItem_8.setOptionOperationId("searchStrKindsFromDBForCB");
-			// streetLevelTypeItem_8.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_8.setValueField("street_kind_id");
-			// streetLevelTypeItem_8.setDisplayField("street_kind_name");
-			//
-			// streetLevelTypeItem_9.setOptionOperationId("searchStrKindsFromDBForCB");
-			// streetLevelTypeItem_9.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_9.setValueField("street_kind_id");
-			// streetLevelTypeItem_9.setDisplayField("street_kind_name");
-			//
-			// streetLevelTypeItem_10.setOptionOperationId("searchStrKindsFromDBForCB");
-			// streetLevelTypeItem_10.setOptionDataSource(descrsTypeDS);
-			// streetLevelTypeItem_10.setValueField("street_kind_id");
-			// streetLevelTypeItem_10.setDisplayField("street_kind_name");
-
 			if (editRecord != null) {
 				Integer levelType_1 = editRecord
 						.getAttributeAsInt("descr_type_id_level_1");
@@ -1062,36 +789,6 @@ public class DlgAddEditStreet extends Window {
 				if (levelType_5 != null) {
 					streetLevelTypeItem_5.setValue(levelType_5);
 				}
-
-				// Integer levelType_6 = editRecord
-				// .getAttributeAsInt("descr_type_id_level_6");
-				// if (levelType_6 != null) {
-				// streetLevelTypeItem_6.setValue(levelType_6);
-				// }
-				//
-				// Integer levelType_7 = editRecord
-				// .getAttributeAsInt("descr_type_id_level_7");
-				// if (levelType_7 != null) {
-				// streetLevelTypeItem_7.setValue(levelType_7);
-				// }
-				//
-				// Integer levelType_8 = editRecord
-				// .getAttributeAsInt("descr_type_id_level_8");
-				// if (levelType_8 != null) {
-				// streetLevelTypeItem_8.setValue(levelType_8);
-				// }
-				//
-				// Integer levelType_9 = editRecord
-				// .getAttributeAsInt("descr_type_id_level_9");
-				// if (levelType_9 != null) {
-				// streetLevelTypeItem_9.setValue(levelType_9);
-				// }
-				//
-				// Integer levelType_10 = editRecord
-				// .getAttributeAsInt("descr_type_id_level_10");
-				// if (levelType_10 != null) {
-				// streetLevelTypeItem_10.setValue(levelType_10);
-				// }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

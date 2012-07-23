@@ -52,9 +52,6 @@ public class Users implements java.io.Serializable {
 	private String user_password;
 
 	@Transient
-	private String fullPersonName;
-
-	@Transient
 	private String loggedUserName;
 
 	@Transient
@@ -141,10 +138,6 @@ public class Users implements java.io.Serializable {
 	public String getFullPersonName() {
 		return getUser_name() + " ( " + getUser_firstname() + " "
 				+ getUser_lastname() + " ) ";
-	}
-
-	public void setFullPersonName(String fullPersonName) {
-		this.fullPersonName = fullPersonName;
 	}
 
 	public Map<String, String> getUserPerms() {

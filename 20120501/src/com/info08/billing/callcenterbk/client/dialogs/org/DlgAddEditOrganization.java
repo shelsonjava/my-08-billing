@@ -218,7 +218,7 @@ public class DlgAddEditOrganization extends Window {
 			orgRemarkItem.setWidth(610 - minus);
 			orgRemarkItem.setTitle(CallCenterBK.constants.comment());
 			orgRemarkItem.setHeight(102);
-			orgRemarkItem.setTextBoxStyle("input14Px");
+			//orgRemarkItem.setTextBoxStyle("input14Px");
 
 			orgInfoItem = new TextItem();
 			orgInfoItem.setName("additional_info");
