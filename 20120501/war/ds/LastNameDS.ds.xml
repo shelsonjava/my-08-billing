@@ -1,11 +1,11 @@
 <DataSource
 	ID="LastNameDS"
 	serverType="sql"
-	tableName="lastnames"
+	tableName="familyname"
 	qualifyColumnNames="false">
 	<fields>
-		<field name="lastname_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
-		<field name="lastname"			type="text" 	title="Lastname"/>		
+		<field name="familyname_id"		type="integer"	title="familyname"	hidden="true" primaryKey="true" />
+		<field name="familyname"			type="text" 	title="familyname"/>		
 		<field name="loggedUserName"	type="text"		title="Logged UserName" hidden="true" />
 	</fields>
 	
@@ -29,34 +29,34 @@
         </operationBinding>
     	<operationBinding operationId="searchFromDB" operationType="fetch">
     		<selectClause>   			
-    			t.lastname_id,
-    			t.lastname
+    			t.familyname_id,
+    			t.familyname
 			</selectClause> 
-			<tableClause>lastnames t</tableClause>
+			<tableClause>familynames t</tableClause>
 			<whereClause><![CDATA[ 
 				1 = 1
-				#if($criteria.lastname) AND t.lastname like ($criteria.lastname)||'%' #end
+				#if($criteria.familyname) AND t.familyname like ($criteria.familyname)||'%' #end
 				]]>  
 			</whereClause> 
     	</operationBinding>	
     	<operationBinding operationId="searchFromDB1" operationType="fetch">
     		<selectClause>   			
-    			t.lastname_id,
-    			t.lastname
+    			t.familyname_id,
+    			t.familyname
 			</selectClause> 
-			<tableClause>lastnames t</tableClause>
+			<tableClause>familynames t</tableClause>
 			<whereClause><![CDATA[ 
 				1 = 1
-				#if($criteria.lastname) AND t.lastname like ($criteria.lastname)||'%' #end
+				#if($criteria.familyname) AND t.familyname like ($criteria.familyname)||'%' #end
 				]]>  
 			</whereClause> 
     	</operationBinding>	
     	<operationBinding operationId="searchLastNamesFromDBCustomForCombos" operationType="fetch">
     		<selectClause>   			
-    			t.lastname_id,
-    			t.lastname
+    			t.familyname_id,
+    			t.familyname
 			</selectClause> 
-			<tableClause>lastnames t</tableClause>
+			<tableClause>familynames t</tableClause>
 			<whereClause><![CDATA[ 
 				($defaultWhereClause)
 				]]>  
