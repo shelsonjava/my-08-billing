@@ -14,6 +14,7 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
@@ -183,6 +184,7 @@ public class TabContractors extends Tab {
 					"telephone_delete.png");
 			blockPhoneListBtn.setLayoutAlign(Alignment.LEFT);
 			blockPhoneListBtn.setWidth(50);
+			blockPhoneListBtn.setVisibility(Visibility.HIDDEN);
 			toolStrip.addButton(blockPhoneListBtn);
 
 			toolStrip.addSeparator();
@@ -245,10 +247,11 @@ public class TabContractors extends Tab {
 					CallCenterBK.constants.orgNameFull());
 			ListGridField remark = new ListGridField("remark",
 					CallCenterBK.constants.comment(), 300);
-			ListGridField contract_start_date = new ListGridField("contract_start_date",
-					CallCenterBK.constants.startDate(), 120);
-			ListGridField contract_end_date = new ListGridField("contract_end_date",
-					CallCenterBK.constants.endDate(), 120);
+			ListGridField contract_start_date = new ListGridField(
+					"contract_start_date", CallCenterBK.constants.startDate(),
+					120);
+			ListGridField contract_end_date = new ListGridField(
+					"contract_end_date", CallCenterBK.constants.endDate(), 120);
 			ListGridField call_price = new ListGridField("call_price",
 					CallCenterBK.constants.price(), 70);
 			ListGridField range_curr_price = new ListGridField(
@@ -267,8 +270,8 @@ public class TabContractors extends Tab {
 			critical_number.setAlign(Alignment.CENTER);
 
 			contractorsGrid.setFields(orgName, remark, price_type_descr,
-					call_price, range_curr_price, critical_number, contract_start_date,
-					contract_end_date);
+					call_price, range_curr_price, critical_number,
+					contract_start_date, contract_end_date);
 
 			mainLayout.addMember(contractorsGrid);
 			findButton.addClickHandler(new ClickHandler() {
@@ -362,9 +365,9 @@ public class TabContractors extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					Integer contract_id = listGridRecord
-							.getAttributeAsInt("contract_id");
-					showContractorCallCnt(contract_id);
+					Integer corporate_client_id = listGridRecord
+							.getAttributeAsInt("corporate_client_id");
+					showContractorCallCnt(corporate_client_id);
 				}
 
 			});
@@ -378,9 +381,9 @@ public class TabContractors extends Tab {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					Integer contract_id = listGridRecord
-							.getAttributeAsInt("contract_id");
-					showContractorCharges(contract_id);
+					Integer corporate_client_id = listGridRecord
+							.getAttributeAsInt("corporate_client_id");
+					showContractorCharges(corporate_client_id);
 
 				}
 			});

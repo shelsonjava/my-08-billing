@@ -32,14 +32,14 @@ public class DlgGetContractorsBilling extends Window {
 	private TextItem ymItem;
 	private CheckboxItem generateBillItem;
 	private boolean full;
-	private Integer contract_id;
+	private Integer corporate_client_id;
 	private Integer is_budget;
 
-	public DlgGetContractorsBilling(Integer contract_id, boolean full,
+	public DlgGetContractorsBilling(Integer corporate_client_id, boolean full,
 			Integer is_budget) {
 		try {
 			this.full = full;
-			this.contract_id = contract_id;
+			this.corporate_client_id = corporate_client_id;
 			this.is_budget = is_budget;
 			setTitle(full ? CallCenterBK.constants.contractorsBillingFull()
 					: CallCenterBK.constants.contractorsBilling());
@@ -73,7 +73,8 @@ public class DlgGetContractorsBilling extends Window {
 			ymItem.setWidth(200);
 
 			generateBillItem = new CheckboxItem();
-			generateBillItem.setTitle(CallCenterBK.constants.generateBillAgain());
+			generateBillItem.setTitle(CallCenterBK.constants
+					.generateBillAgain());
 			generateBillItem.setName("generateBillItem");
 			generateBillItem.setWidth(200);
 
@@ -181,9 +182,10 @@ public class DlgGetContractorsBilling extends Window {
 
 			if (full) {
 				dsRequest.setOperationId("getFullContrBillMain2");
-				dsRequest.setExportFields(new String[] { "billing_company_name",
-						"orgName", "orgDepName", "service_name_geo", "phone",
-						"call_date", "charge_date", "price" });
+				dsRequest.setExportFields(new String[] {
+						"billing_company_name", "orgName", "orgDepName",
+						"service_name_geo", "phone", "call_date",
+						"charge_date", "price" });
 			} else {
 				dsRequest.setOperationId("getFullContrBillMain1");
 				dsRequest.setExportFields(new String[] { "orgName",
@@ -192,8 +194,9 @@ public class DlgGetContractorsBilling extends Window {
 
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("ym", ym);
-			if (contract_id != null) {
-				criteria.setAttribute("contract_id", contract_id);
+			if (corporate_client_id != null) {
+				criteria.setAttribute("corporate_client_id",
+						corporate_client_id);
 			}
 			if (is_budget != null && !is_budget.equals(new Integer(-1))) {
 				criteria.setAttribute("is_budget", is_budget);

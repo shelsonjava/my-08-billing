@@ -179,8 +179,8 @@ public class DlgBlockUnBlockContrPhones extends Window {
 		try {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
-			record.setAttribute("contract_id",
-					listGridRecord.getAttributeAsInt("contract_id"));
+			record.setAttribute("corporate_client_id",
+					listGridRecord.getAttributeAsInt("corporate_client_id"));
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);

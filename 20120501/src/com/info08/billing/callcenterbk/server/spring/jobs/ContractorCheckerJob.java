@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.server.impl.dmi.ContractorsDMI;
 import com.info08.billing.callcenterbk.shared.entity.contractors.CorporateClient;
-import com.info08.billing.callcenterbk.shared.entity.contractors.ContractorBlockChecker;
+import com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientBlockChecker;
 import com.isomorphic.jpa.EMF;
 
 public class ContractorCheckerJob extends TimerTask {
@@ -34,9 +34,9 @@ public class ContractorCheckerJob extends TimerTask {
 				String log = "Job. Checking Contractors.\n";
 				oracleManager = EMF.getEntityManager();
 
-				ArrayList<ContractorBlockChecker> list = (ArrayList<ContractorBlockChecker>) oracleManager
+				ArrayList<CorpClientBlockChecker> list = (ArrayList<CorpClientBlockChecker>) oracleManager
 						.createNamedQuery(
-								"ContractorBlockChecker.getPendingContractors")
+								"CorpClientBlockChecker.getPendingContractors")
 						.getResultList();
 				if (list == null || list.isEmpty()) {
 					log += "Contractors List Is Empty. ";
@@ -52,13 +52,13 @@ public class ContractorCheckerJob extends TimerTask {
 						new Timestamp(System.currentTimeMillis()), "JOB",
 						"Checking Contract.");
 
-				for (ContractorBlockChecker blockChecker : list) {
-					Long contractId = blockChecker.getContract_id();
+				for (CorpClientBlockChecker blockChecker : list) {
+					Long contractId = blockChecker.getCorporate_client_id();
 					if (contractId == null) {
 						continue;
 					}
-					CorporateClient contract = oracleManager.find(CorporateClient.class,
-							contractId);
+					CorporateClient contract = oracleManager.find(
+							CorporateClient.class, contractId);
 					if (contract == null) {
 						continue;
 					}

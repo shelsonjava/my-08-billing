@@ -337,12 +337,12 @@ public class DlgContractorPhones extends Window {
 			contractPhonesGrid.setDuplicateDragMessage(CallCenterBK.constants
 					.thisOrgActAlreadyChoosen());
 
-			ListGridField phone = new ListGridField("phone",
+			ListGridField phone = new ListGridField("phone_number",
 					CallCenterBK.constants.phone());
 			phone.setAlign(Alignment.LEFT);
 
 			DataSource dsDest = new DataSource();
-			DataSourceField dsPhone = new DataSourceField("phone",
+			DataSourceField dsPhone = new DataSourceField("phone_number",
 					FieldType.TEXT);
 			dsPhone.setPrimaryKey(true);
 			dsDest.setFields(dsPhone);
@@ -423,7 +423,7 @@ public class DlgContractorPhones extends Window {
 	protected void addSelectefPhones() {
 		Record records[] = phoneGrid.getSelectedRecords();
 		for (Record record2 : records) {
-			String phone = record2.getAttribute("phone");
+			String phone = record2.getAttribute("phone_number");
 			if (phone != null)
 				addPhone(phone);
 		}
@@ -472,7 +472,7 @@ public class DlgContractorPhones extends Window {
 
 		if (phoneItem.getValueAsString() != null
 				&& !phoneItem.getValueAsString().equals("")) {
-			orgGridCriteria.setAttribute("phone", phoneItem.getValueAsString());
+			orgGridCriteria.setAttribute("phone_number", phoneItem.getValueAsString());
 		}
 		organizationGrid.fetchData(orgGridCriteria, new DSCallback() {
 
@@ -522,10 +522,10 @@ public class DlgContractorPhones extends Window {
 	}
 
 	void addPhone(String phone) {
-		Record record = contractPhonesGrid.getRecordList().find("phone", phone);
+		Record record = contractPhonesGrid.getRecordList().find("phone_number", phone);
 		if (record == null) {
 			record = new Record();
-			record.setAttribute("phone", phone);
+			record.setAttribute("phone_number", phone);
 			contractPhonesGrid.getDataSource().addData(record);
 			contractPhonesGrid.fetchData();
 		}

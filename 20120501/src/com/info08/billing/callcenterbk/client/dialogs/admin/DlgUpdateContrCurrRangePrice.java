@@ -62,7 +62,8 @@ public class DlgUpdateContrCurrRangePrice extends Window {
 			hLayout.addMember(dynamicForm);
 
 			rangeCurrPriceItem = new TextItem();
-			rangeCurrPriceItem.setTitle(CallCenterBK.constants.setCurrentPrice());
+			rangeCurrPriceItem.setTitle(CallCenterBK.constants
+					.setCurrentPrice());
 			rangeCurrPriceItem.setWidth("100%");
 			rangeCurrPriceItem.setName("rangeCurrPriceItem");
 			rangeCurrPriceItem.setKeyPressFilter("[0-9\\.]");
@@ -121,8 +122,8 @@ public class DlgUpdateContrCurrRangePrice extends Window {
 				return;
 			}
 			Record record = new Record();
-			record.setAttribute("contract_id",
-					listGridRecord.getAttributeAsInt("contract_id"));
+			record.setAttribute("corporate_client_id",
+					listGridRecord.getAttributeAsInt("corporate_client_id"));
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);

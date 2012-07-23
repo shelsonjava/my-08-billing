@@ -355,7 +355,7 @@ public class DlgAddEditContractor extends Window {
 			listGridPhones.setFilterOnKeypress(true);
 			listGridPhones.setCanDragSelectText(true);
 
-			ListGridField phone = new ListGridField("phone",
+			ListGridField phone = new ListGridField("phone_number",
 					CallCenterBK.constants.phone());
 			phone.setAlign(Alignment.CENTER);
 			listGridPhones.setFields(phone);
@@ -605,6 +605,10 @@ public class DlgAddEditContractor extends Window {
 
 			DataSource dataSource = DataSource.get("ContractorsPricesDS");
 			Criteria criteria = new Criteria();
+			System.out.println(editRecord.getAttributeAsInt("corp_client_phone_id"));
+			System.out.println(editRecord.getAttributeAsInt("corporate_client_id"));
+			criteria.setAttribute("corp_client_phone_id",
+					editRecord.getAttributeAsInt("corp_client_phone_id"));
 			criteria.setAttribute("corporate_client_id",
 					editRecord.getAttributeAsInt("corporate_client_id"));
 			DSRequest dsRequest = new DSRequest();
@@ -874,7 +878,7 @@ public class DlgAddEditContractor extends Window {
 			if (length > 0) {
 				for (int i = 0; i < length; i++) {
 					Record record = recordList.get(i);
-					String phone = record.getAttributeAsString("phone");
+					String phone = record.getAttributeAsString("phone_number");
 					Integer deleted = record.getAttributeAsInt("deleted");
 					if (deleted == null) {
 						deleted = 0;

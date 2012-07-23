@@ -12,39 +12,38 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 /**
- * The persistent class for the CONTRACT_PRICE_ITEMS database table.
+ * The persistent class for the CORP_CLIENT_PRICE_ITEMS database table.
  * 
  */
 @Entity
-@Table(name="CONTRACT_PRICE_ITEMS")
-public class ContractPriceItem implements Serializable {
+@Table(name = "CORP_CLIENT_PRICE_ITEMS")
+public class CorpClientPriceItems implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="CONTRACT_PRICE_ITEMS_ID_GENERATOR", sequenceName="SEQ_CONTR_PRICE_ITEMS")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CONTRACT_PRICE_ITEMS_ID_GENERATOR")
+	@SequenceGenerator(name = "SEQ_CORP_CLIENT_PRICE_ITEMS_GENERATOR", sequenceName = "SEQ_CORP_CLIENT_PRICE_ITEMS")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CORP_CLIENT_PRICE_ITEMS_GENERATOR")
 	private Long id;
 
-	@Basic	
-	@Column(name="CALL_COUNT_END")
+	@Basic
+	@Column(name = "CALL_COUNT_END")
 	private Long call_count_end;
 
 	@Basic
-	@Column(name="CALL_COUNT_START")
+	@Column(name = "CALL_COUNT_START")
 	private Long call_count_start;
 
 	@Basic
-	@Column(name="CONTRACT_ID")
-	private Long contract_id;
+	@Column(name = "CORPORATE_CLIENT_ID")
+	private Long corporate_client_id;
 
 	@Basic
-	@Column(name="PRICE")
+	@Column(name = "PRICE")
 	private BigDecimal price;
 
-    public ContractPriceItem() {
-    }
+	public CorpClientPriceItems() {
+	}
 
 	public Long getId() {
 		return id;
@@ -70,12 +69,12 @@ public class ContractPriceItem implements Serializable {
 		this.call_count_start = call_count_start;
 	}
 
-	public Long getContract_id() {
-		return contract_id;
+	public Long getCorporate_client_id() {
+		return corporate_client_id;
 	}
 
-	public void setContract_id(Long contract_id) {
-		this.contract_id = contract_id;
+	public void setCorporate_client_id(Long corporate_client_id) {
+		this.corporate_client_id = corporate_client_id;
 	}
 
 	public BigDecimal getPrice() {

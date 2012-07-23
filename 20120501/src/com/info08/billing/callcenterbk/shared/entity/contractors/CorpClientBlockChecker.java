@@ -15,26 +15,22 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
- * The persistent class for the CONTRACTOR_BLOCK_CHECKER database table.
+ * The persistent class for the CORP_CLIENT_BLOCK_CHECKER database table.
  * 
  */
-@NamedQueries({
-	@NamedQuery(
-				name="ContractorBlockChecker.getPendingContractors",
-				query="select e from ContractorBlockChecker e where trunc(e.rec_date) >= trunc(sysdate-10) and e.status = 0 ")
-})
+@NamedQueries({ @NamedQuery(name = "CorpClientBlockChecker.getPendingContractors", query = "select e from CorpClientBlockChecker e where trunc(e.rec_date) >= trunc(sysdate-10) and e.status = 0 ") })
 @Entity
-@Table(name = "CONTRACTOR_BLOCK_CHECKER")
-public class ContractorBlockChecker implements Serializable {
+@Table(name = "CORP_CLIENT_BLOCK_CHECKER")
+public class CorpClientBlockChecker implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "CONTRACTOR_BLOCK_CHECKER_ID_GENERATOR", sequenceName = "SEQ_CONTR_BLOCK_CHECKER")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTRACTOR_BLOCK_CHECKER_ID_GENERATOR")
+	@SequenceGenerator(name = "SEQ_CORP_CLIENT_BLOCK_CHECKER_GENERATOR", sequenceName = "SEQ_CORP_CLIENT_BLOCK_CHECKER")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CORP_CLIENT_BLOCK_CHECKER_GENERATOR")
 	private Long id;
 
-	@Column(name = "CONTRACT_ID")
-	private Long contract_id;
+	@Column(name = "CORPORATE_CLIENT_ID")
+	private Long corporate_client_id;
 
 	@Basic
 	@Column(name = "REC_DATE")
@@ -48,7 +44,7 @@ public class ContractorBlockChecker implements Serializable {
 	@Column(name = "UPD_DATE")
 	private Timestamp updDate;
 
-	public ContractorBlockChecker() {
+	public CorpClientBlockChecker() {
 	}
 
 	public Long getId() {
@@ -59,12 +55,12 @@ public class ContractorBlockChecker implements Serializable {
 		this.id = id;
 	}
 
-	public Long getContract_id() {
-		return contract_id;
+	public Long getCorporate_client_id() {
+		return corporate_client_id;
 	}
 
-	public void setContract_id(Long contract_id) {
-		this.contract_id = contract_id;
+	public void setCorporate_client_id(Long corporate_client_id) {
+		this.corporate_client_id = corporate_client_id;
 	}
 
 	public Timestamp getRec_date() {

@@ -43,16 +43,16 @@ public class DlgBlackPhoneList extends Window {
 			Integer main_detail_id = listGridRecord
 					.getAttributeAsInt("main_detail_id");
 			Integer organization_id = listGridRecord.getAttributeAsInt("organization_id");
-			Integer contract_id = listGridRecord
-					.getAttributeAsInt("contract_id");
+			Integer corporate_client_id = listGridRecord
+					.getAttributeAsInt("corporate_client_id");
 			Integer phone_list_type = listGridRecord
-					.getAttributeAsInt("phone_list_type");
+					.getAttributeAsInt("price_type");
 
 			String fetchMethod = "";
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("main_detail_id", main_detail_id);
 			criteria.setAttribute("organization_id", organization_id);
-			criteria.setAttribute("contract_id", contract_id);
+			criteria.setAttribute("corporate_client_id", corporate_client_id);
 
 			if (main_detail_id != null && main_detail_id.longValue() > 0) {
 				switch (phone_list_type.intValue()) {

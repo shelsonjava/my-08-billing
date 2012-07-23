@@ -62,9 +62,9 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.session.CallSession</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.control.OperatorWarn</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.contractors.CorporateClient</class>
-		<class>com.info08.billing.callcenterbk.shared.entity.contractors.ContractPriceItem</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientPriceItems</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientPhones</class>
-		<class>com.info08.billing.callcenterbk.shared.entity.contractors.ContractorBlockChecker</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientBlockChecker</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.black.BlackList</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.billingcomps.BillingCompany</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.billingcomps.BillingCompanyInd</class>

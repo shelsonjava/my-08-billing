@@ -21,7 +21,7 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
 import com.info08.billing.callcenterbk.shared.common.Constants;
-import com.info08.billing.callcenterbk.shared.entity.contractors.ContractPriceItem;
+import com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientPriceItems;
 import com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientPhones;
 import com.info08.billing.callcenterbk.shared.entity.contractors.CorporateClient;
 import com.info08.billing.callcenterbk.shared.entity.org.Organization;
@@ -68,7 +68,7 @@ public class ContractorsDMI implements QueryConstants {
 		try {
 			String log = "Method:CommonDMI.addContractor.";
 
-			ArrayList<ContractPriceItem> contractAdvPrices = new ArrayList<ContractPriceItem>();
+			ArrayList<CorpClientPriceItems> contractAdvPrices = new ArrayList<CorpClientPriceItems>();
 			Object oMap = dsRequest.getFieldValue("contractorAdvPrices");
 			if (oMap != null) {
 				LinkedMap contractorAdvPrices = (LinkedMap) oMap;
@@ -85,7 +85,7 @@ public class ContractorsDMI implements QueryConstants {
 							Object oValue2 = value1.get(key2);
 							String value2 = oValue2.toString();
 
-							ContractPriceItem item = new ContractPriceItem();
+							CorpClientPriceItems item = new CorpClientPriceItems();
 
 							item.setCall_count_start(new Long(key1));
 							item.setCall_count_end(new Long(key2));
@@ -142,8 +142,8 @@ public class ContractorsDMI implements QueryConstants {
 			oracleManager.flush();
 
 			if (contractAdvPrices != null && !contractAdvPrices.isEmpty()) {
-				for (ContractPriceItem priceItem : contractAdvPrices) {
-					priceItem.setContract_id(corporateClient
+				for (CorpClientPriceItems priceItem : contractAdvPrices) {
+					priceItem.setCorporate_client_id(corporateClient
 							.getCorporate_client_id());
 					oracleManager.persist(priceItem);
 				}
@@ -225,7 +225,7 @@ public class ContractorsDMI implements QueryConstants {
 	 */
 	private BigDecimal getRangeCurrPrice(Long corporate_client_id,
 			EntityManager oracleManager,
-			ArrayList<ContractPriceItem> contractAdvPrices)
+			ArrayList<CorpClientPriceItems> contractAdvPrices)
 			throws CallCenterException {
 		try {
 			BigDecimal result = new BigDecimal("0");
@@ -238,7 +238,7 @@ public class ContractorsDMI implements QueryConstants {
 					.createNativeQuery(QueryConstants.Q_GET_ORG_CALL_CNT_BY_YM)
 					.setParameter(1, corporate_client_id).getSingleResult()
 					.toString());
-			for (ContractPriceItem priceItem : contractAdvPrices) {
+			for (CorpClientPriceItems priceItem : contractAdvPrices) {
 				Long start = priceItem.getCall_count_start();
 				Long end = priceItem.getCall_count_end();
 				if (start != null && end != null && callCnt >= start

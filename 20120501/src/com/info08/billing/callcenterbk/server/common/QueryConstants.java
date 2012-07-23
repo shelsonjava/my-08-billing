@@ -60,9 +60,9 @@ public interface QueryConstants {
 			+ "      and getcontractorpricenew(t.phone)=-999999999\n"
 			+ "      and t.phone like '322%'";
 
-	public static final String Q_GET_ORG_CALL_CNT_BY_YM = "select get_contractor_calls_count(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
-	public static final String Q_GET_ORG_CALL_CNT_BY_ALL = "select get_contractor_calls_count(null,?) as depCallsCnt from dual";
-	public static final String Q_GET_ORG_CALL_CNT_BY_ALL_SUM = "select get_contractor_calls_count(null,?,2) as depCallsCnt from dual";
+	public static final String Q_GET_ORG_CALL_CNT_BY_YM = "select nvl(get_contractor_calls_count(to_number(to_char(sysdate,'YYMM')),?), 0) as depCallsCnt from dual";
+	public static final String Q_GET_ORG_CALL_CNT_BY_ALL = "select nvl(get_contractor_calls_count(null,?), 0) as depCallsCnt from dual";
+	public static final String Q_GET_ORG_CALL_CNT_BY_ALL_SUM = "select nvl(get_contractor_calls_count(null,?,2), 0) as depCallsCnt from dual";
 
 	public static final String Q_GET_DEP_CALL_CNT_BY_YM = "select getCallsByMainDetAndYM(to_number(to_char(sysdate,'YYMM')),?) as depCallsCnt from dual";
 
@@ -769,7 +769,7 @@ public interface QueryConstants {
 			+ "      and length(p.phone)>4\n"
 			+ "      and ms.service_id = 3 and ms.deleted = 0";
 	
-	public static final String Q_DELETE_CONTRACT_PRICES = "delete from contract_price_items t where t.corporate_client_id = ? ";
+	public static final String Q_DELETE_CONTRACT_PRICES = "delete from corp_client_price_items t where t.corporate_client_id = ? ";
 	public static final String Q_DELETE_OLD_STREET_NAMES = "delete from street_old_names t where t.street_id = ? ";
 	public static final String Q_DELETE_CONTRACT_PHONES = "delete from corp_client_phones t where t.corporate_client_id = ? ";
 	public static final String Q_DELETE_BLOCKLIST_PHONES = "delete from block_list_phones t where t.block_list_id = ? ";
@@ -779,7 +779,7 @@ public interface QueryConstants {
 	public static final String Q_REMOVE_PHONE_FROM_AST_DB = " delete from asteriskcdrdb.block where code = ? and proriti = ? and len = ? ";
 	public static final String Q_ADD_PHONE_INTO_AST_DB = " insert into asteriskcdrdb.block (code,proriti,len) values (?, ?, ?) ";
 
-	public static final String Q_GET_CONTRACTOR_ADV_PRICE = " select sum(nvl(t.price,0)) as advPrice from contract_price_items t where t.corporate_client_id = ? and t.call_count_start<=? and t.call_count_end > ? ";
+	public static final String Q_GET_CONTRACTOR_ADV_PRICE = " select sum(nvl(t.price,0)) as advPrice from corp_client_price_items t where t.corporate_client_id = ? and t.call_count_start<=? and t.call_count_end > ? ";
 
 	public static final String Q_GET_CONTRACTOR_INFO = "select distinct c.corporate_client_id,\n"
 			+ "       dt2ms(c.start_date) as start_date,\n"
