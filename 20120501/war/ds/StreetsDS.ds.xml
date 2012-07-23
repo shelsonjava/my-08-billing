@@ -5,43 +5,32 @@
 	qualifyColumnNames="false"
 	dropExtraFields="false">
 	<fields>
-		<field name="street_id"					type="integer"	title="ID"						hidden="true" 	primaryKey="true" />
-		<field name="town_id"					type="integer"	title="City ID" 				hidden="true"/>
-		<field name="descr_id_level_1"			type="integer"	title="descr_id_level_1"		hidden="true"/>
-		<field name="descr_id_level_2"			type="integer"	title="descr_id_level_2"		hidden="true"/>
-		<field name="descr_id_level_3"			type="integer"	title="descr_id_level_3"		hidden="true"/>
-		<field name="descr_id_level_4"			type="integer"	title="descr_id_level_4"		hidden="true"/>
-		<field name="descr_id_level_5"			type="integer"	title="descr_id_level_5"		hidden="true"/>
-		<field name="descr_id_level_6"			type="integer"	title="descr_id_level_6"		hidden="true"/>
-		<field name="descr_id_level_7"			type="integer"	title="descr_id_level_7"		hidden="true"/>
-		<field name="descr_id_level_8"			type="integer"	title="descr_id_level_8"		hidden="true"/>
-		<field name="descr_id_level_9"			type="integer"	title="descr_id_level_9"		hidden="true"/>
-		<field name="descr_id_level_10"			type="integer"	title="descr_id_level_10"		hidden="true"/>
-		<field name="descr_type_id_level_1"		type="integer"	title="descr_type_id_level_1"	hidden="true"/>
-		<field name="descr_type_id_level_2"		type="integer"	title="descr_type_id_level_2"	hidden="true"/>
-		<field name="descr_type_id_level_3"		type="integer"	title="descr_type_id_level_3"	hidden="true"/>
-		<field name="descr_type_id_level_4"		type="integer"	title="descr_type_id_level_4"	hidden="true"/>
-		<field name="descr_type_id_level_5"		type="integer"	title="descr_type_id_level_5"	hidden="true"/>
-		<field name="descr_type_id_level_6"		type="integer"	title="descr_type_id_level_6"	hidden="true"/>
-		<field name="descr_type_id_level_7"		type="integer"	title="descr_type_id_level_7"	hidden="true"/>
-		<field name="descr_type_id_level_8"		type="integer"	title="descr_type_id_level_8"	hidden="true"/>
-		<field name="descr_type_id_level_9"		type="integer"	title="descr_type_id_level_9"	hidden="true"/>
-		<field name="descr_type_id_level_10"	type="integer"	title="descr_type_id_level_10"	hidden="true"/>
-		<field name="record_type"				type="integer"	title="record_type"				hidden="true"/>		
-		<field name="street_location"			type="text" 	title="street_location"		/>
+		<field name="streets_id"				type="integer"	title="ID"						hidden="true" 	primaryKey="true" />
+		<field name="town_id"					type="integer"	title="town_id" 				hidden="true"/>
+		<field name="level_I"					type="integer"	title="level_I"					hidden="true"/>
+		<field name="level_II"					type="integer"	title="level_II"				hidden="true"/>
+		<field name="level_III"					type="integer"	title="level_III"				hidden="true"/>
+		<field name="level_IV"					type="integer"	title="level_IV"				hidden="true"/>
+		<field name="level_V"					type="integer"	title="level_V"					hidden="true"/>
+		<field name="type_level_I"				type="integer"	title="type_level_I"			hidden="true"/>
+		<field name="type_level_II"				type="integer"	title="type_level_II"			hidden="true"/>
+		<field name="type_level_III"			type="integer"	title="type_level_III"			hidden="true"/>
+		<field name="type_level_IV"				type="integer"	title="type_level_IV"			hidden="true"/>
+		<field name="type_level_V"				type="integer"	title="type_level_V"			hidden="true"/>
+		<field name="rec_kind"					type="integer"	title="rec_kind"				hidden="true"/>		
+		<field name="street_location"			type="text" 	title="street_location"/>
 		<field name="street_name"				type="text" 	title="Street Name"/>
 		<field name="town_name"					type="text"		title="City Name"/>
 		<field name="town_district_name"		type="text"		title="town_district_name"/>			
 		<field name="street_remark"				type="text" 	title="street_remark"			hidden="true"/>
-		<field name="visible_options"			type="integer"	title="Visible Options"			hidden="true"/>		
+		<field name="is_visible"				type="integer"	title="is_visible"				hidden="true"/>		
 		<field name="loggedUserName"			type="text"		title="Logged UserName" 		hidden="true" />
 		<field name="town_district_id"			type="text"		title="City Region ID" 			hidden="true" />	
 		<field name="street_old_name_descr"		type="text"		title="street_old_name_descr"/>
 		<field name="street_index"				type="text"		title="street_index"		/>
 		<field name="street_to_town_district"	type="text"		title="street_to_town_district"/>
 		<field name="hide_for_call_center"		type="integer"	title="hide_for_call_center"/>
-		<field name="hide_for_correction"		type="integer"	title="hide_for_correction"/>
-		
+		<field name="hide_for_correction"		type="integer"	title="hide_for_correction"/>		
 	</fields>
 	
 	<operationBindings>		
@@ -70,47 +59,37 @@
     	
     	<operationBinding operationId="fetchStreetsFromDB" operationType="fetch">
     		<selectClause>   			
-    			t.street_id,
+    			t.streets_id,
 				t.town_id,
 				t.descr_id_level_1,
 				t.descr_id_level_2,   
 				t.descr_id_level_3,
 				t.descr_id_level_4,
 				t.descr_id_level_5,
-				t.descr_id_level_6,
-				t.descr_id_level_7,
-				t.descr_id_level_8,
-				t.descr_id_level_9,
-				t.descr_id_level_10,
 				t.descr_type_id_level_1,
 				t.descr_type_id_level_2,
 				t.descr_type_id_level_3,
 				t.descr_type_id_level_4,
 				t.descr_type_id_level_5,
-				t.descr_type_id_level_6,
-				t.descr_type_id_level_7,
-				t.descr_type_id_level_8,
-				t.descr_type_id_level_9,
-				t.descr_type_id_level_10,
-				t.record_type,
+				t.rec_kind,
 				t.street_location, 
 				t.street_name,
 				t.street_remark,
-				t.visible_options,
+				t.is_visible,
 				sr.town_district_name,
 				c.town_name,
-				get_street_old_names(t.street_id) as street_old_name_descr,
+				get_street_old_names(t.streets_id) as street_old_name_descr,
 				t.hide_for_call_center,
 				t.hide_for_correction								
 			</selectClause> 
 			<tableClause>streets t,towns c,street_to_town_districts sd,town_district sr</tableClause>
 			<whereClause><![CDATA[ 
 				 t.town_id = c.town_id and
-				 t.street_id = sd.street_id(+) and
+				 t.streets_id = sd.street_id(+) and
 				 sd.town_district_id = sr.town_district_id(+)
 				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
 				 #if($criteria.town_district_id) AND sd.town_district_id = $criteria.town_district_id #end
-				 #if($criteria.record_type) AND t.record_type = $criteria.record_type #end
+				 #if($criteria.rec_kind) AND t.rec_kind = $criteria.rec_kind #end
 				 #if($criteria.street_name) AND t.street_name like '%'||($criteria.street_name)||'%' #end
 				 
 				  #if($criteria.street_location1) 
@@ -136,7 +115,7 @@
 
     	<operationBinding operationId="searchStreetFromDBForCombos" operationType="fetch" customFields="street_id, town_id, street_name, town_district_id ">
     		<selectClause>   			
-    			t.street_id,
+    			t.streets_id,
     			t.town_id,
     			t.street_location,
 				t.street_name,
@@ -144,15 +123,15 @@
 				t.hide_for_correction,
 				(select min(town_district_id)
 			          from street_to_town_districts sd
-			         where sd.street_id = t.street_id) town_district_id
+			         where sd.street_id = t.streets_id) town_district_id
 			   #if($criteria.need_indexes) 
-			   		, getStreetIndexIds(t.street_id) as street_index 
+			   		, getStreetIndexIds(t.streets_id) as street_index 
 			   #end
 			</selectClause> 
 			<tableClause>streets t</tableClause>
 			<whereClause><![CDATA[ 
 				1=1 and t.hide_for_correction = 0
-				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+				#if($criteria.street_id) AND t.streets_id = $criteria.street_id #end
 				#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
 				#if($criteria.street_name) AND t.street_name like ($criteria.street_name)||'%' #end
 				]]>  
@@ -162,7 +141,7 @@
     	
     	<operationBinding operationId="searchStreetFromDBForCombosNoDistr" operationType="fetch">
     		<selectClause>   			
-    			t.street_id,
+    			t.streets_id,
     			t.street_name				
 			</selectClause> 
 			<tableClause>streets t</tableClause>
@@ -175,7 +154,7 @@
     	
     	<operationBinding operationId="searchStreetFromDBForCombosNoDistrTbil" operationType="fetch">
     		<selectClause>   			
-    			t.street_id,
+    			t.streets_id,
     			t.street_name				
 			</selectClause> 
 			<tableClause>streets t</tableClause>
@@ -191,7 +170,7 @@
     	<operationBinding operationId="searchStreetForCallCenter" operationType="fetch">
     		<selectClause>
     			   /*+ index (t STR_IND_KS001)*/   			
-    			   t.street_id,
+    			   t.streets_id,
 			       t.street_name,
 			       t.street_location,
 			       t.town_id,
@@ -228,7 +207,7 @@
 				 #if($criteria.street_index) AND t.street_index like '%'||($criteria.street_index)||'%' #end
 				]]>  
 			</whereClause>
-			<groupClause>c.town_name, t.street_id, t.street_name, t.street_location, t.town_id, t.street_old_name_descr, t.hide_for_call_center,t.hide_for_correction</groupClause>
+			<groupClause>c.town_name, t.streets_id, t.street_name, t.street_location, t.town_id, t.street_old_name_descr, t.hide_for_call_center,t.hide_for_correction</groupClause>
 			<orderClause>t.town_id, t.street_name</orderClause> 
     	</operationBinding>
     	
