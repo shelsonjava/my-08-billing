@@ -22,7 +22,7 @@ import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments;
-import com.info08.billing.callcenterbk.shared.entity.contractors.ContractorBlockChecker;
+import com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientBlockChecker;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
 import com.isomorphic.jpa.EMF;
 
@@ -476,8 +476,9 @@ public class InitAppServlet extends HttpServlet {
 			// serverSession.setContractorCallPrice(contractorPrice);
 			// }
 
-			ContractorBlockChecker blockChecker = new ContractorBlockChecker();
-			blockChecker.setContract_id(serverSession.getContractorId());
+			CorpClientBlockChecker blockChecker = new CorpClientBlockChecker();
+			blockChecker
+					.setCorporate_client_id(serverSession.getContractorId());
 			blockChecker.setRec_date(new Timestamp(currTime));
 			blockChecker.setUpdDate(new Timestamp(currTime));
 			blockChecker.setStatus(0L);
