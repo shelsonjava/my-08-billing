@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -30,8 +31,6 @@ import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -56,18 +55,18 @@ public class DlgAddEditStreet extends Window {
 	private ListGrid streetToTownDistrictsGrid;
 	private StreetToTownDistrictsClientDS streetToTownDistrictsClientDS;
 
-	private ComboBoxItem streetLevelItem_1;
-	private ComboBoxItem streetLevelItem_2;
-	private ComboBoxItem streetLevelItem_3;
-	private ComboBoxItem streetLevelItem_4;
-	private ComboBoxItem streetLevelItem_5;
+	private ComboBoxItem level_I;
+	private ComboBoxItem level_II;
+	private ComboBoxItem level_III;
+	private ComboBoxItem level_IV;
+	private ComboBoxItem level_V;
 	private ComboBoxItem arrOfLevels[][] = new ComboBoxItem[5][2];
 
-	private ComboBoxItem streetLevelTypeItem_1;
-	private ComboBoxItem streetLevelTypeItem_2;
-	private ComboBoxItem streetLevelTypeItem_3;
-	private ComboBoxItem streetLevelTypeItem_4;
-	private ComboBoxItem streetLevelTypeItem_5;
+	private ComboBoxItem typeLevel_I;
+	private ComboBoxItem typeLevel_II;
+	private ComboBoxItem typeLevel_III;
+	private ComboBoxItem typeLevel_IV;
+	private ComboBoxItem typeLevel_V;
 	private CheckboxItem saveStreetHistOrNotItem;
 	private CheckboxItem hideForCorrectionItem;
 	private CheckboxItem hideForCallCenterItem;
@@ -116,23 +115,8 @@ public class DlgAddEditStreet extends Window {
 			townItem.setTitle("ქალაქი");
 			townItem.setWidth("100%");
 			townItem.setName("town_name");
-			townItem.setFetchMissingValues(true);
-			townItem.setFilterLocally(false);
-			townItem.setAddUnknownValues(false);
-
-			townItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = townItem.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("town_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("town_id", nullO);
-						}
-					}
-				}
-			});
+			ClientUtils.fillCombo(townItem, "TownsDS",
+					"searchCitiesFromDBForCombosAll", "town_id", "town_name");
 
 			streetNameItem = new TextItem();
 			streetNameItem.setTitle("ძველი დასახ.");
@@ -273,255 +257,89 @@ public class DlgAddEditStreet extends Window {
 			dynamicForm1.setNumCols(4);
 			hLayout.addMember(dynamicForm1);
 
-			streetLevelItem_1 = new ComboBoxItem();
-			streetLevelItem_1.setTitle("I დონე");
-			streetLevelItem_1.setWidth(300);
-			streetLevelItem_1.setName("level_I");
-			streetLevelItem_1.setFetchMissingValues(true);
-			streetLevelItem_1.setFilterLocally(false);
-			streetLevelItem_1.setAddUnknownValues(false);
-			streetLevelItem_1.setPickListHeight(200);
+			level_I = new ComboBoxItem();
+			level_I.setName("level_I");
+			level_I.setTitle("I დონე");
+			level_I.setWidth(300);
+			ClientUtils.fillCombo(level_I, "StreetNamesDS",
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
 
-			streetLevelItem_2 = new ComboBoxItem();
-			streetLevelItem_2.setTitle("II დონე");
-			streetLevelItem_2.setWidth(300);
-			streetLevelItem_2.setName("level_II");
-			streetLevelItem_2.setFetchMissingValues(true);
-			streetLevelItem_2.setFilterLocally(false);
-			streetLevelItem_2.setAddUnknownValues(false);
-			streetLevelItem_2.setPickListHeight(200);
+			level_II = new ComboBoxItem();
+			level_II.setName("level_II");
+			level_II.setTitle("II დონე");
+			level_II.setWidth(300);
+			ClientUtils.fillCombo(level_II, "StreetNamesDS",
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
 
-			streetLevelItem_3 = new ComboBoxItem();
-			streetLevelItem_3.setTitle("III დონე");
-			streetLevelItem_3.setWidth(300);
-			streetLevelItem_3.setName("level_III");
-			streetLevelItem_3.setFetchMissingValues(true);
-			streetLevelItem_3.setFilterLocally(false);
-			streetLevelItem_3.setAddUnknownValues(false);
-			streetLevelItem_3.setPickListHeight(200);
+			level_III = new ComboBoxItem();
+			level_III.setName("level_III");
+			level_III.setTitle("III დონე");
+			level_III.setWidth(300);
+			ClientUtils.fillCombo(level_III, "StreetNamesDS",
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
 
-			streetLevelItem_4 = new ComboBoxItem();
-			streetLevelItem_4.setTitle("IV დონე");
-			streetLevelItem_4.setWidth(300);
-			streetLevelItem_4.setName("level_IV");
-			streetLevelItem_4.setFetchMissingValues(true);
-			streetLevelItem_4.setFilterLocally(false);
-			streetLevelItem_4.setAddUnknownValues(false);
-			streetLevelItem_4.setPickListHeight(200);
+			level_IV = new ComboBoxItem();
+			level_IV.setName("level_IV");
+			level_IV.setTitle("IV დონე");
+			level_IV.setWidth(300);
+			ClientUtils.fillCombo(level_IV, "StreetNamesDS",
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
 
-			streetLevelItem_5 = new ComboBoxItem();
-			streetLevelItem_5.setTitle("V დონე");
-			streetLevelItem_5.setWidth(300);
-			streetLevelItem_5.setName("level_V");
-			streetLevelItem_5.setFetchMissingValues(true);
-			streetLevelItem_5.setFilterLocally(false);
-			streetLevelItem_5.setAddUnknownValues(false);
-			streetLevelItem_5.setPickListHeight(200);
+			level_V = new ComboBoxItem();
+			level_V.setName("level_V");
+			level_V.setTitle("V დონე");
+			level_V.setWidth(300);
+			ClientUtils.fillCombo(level_V, "StreetNamesDS",
+					"fetchStreetNamesForCB", "street_name_id",
+					"street_name_descr");
 
-			streetLevelItem_1.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelItem_1.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_descr_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_descr_id", nullO);
-						}
-					}
-				}
-			});
+			typeLevel_I = new ComboBoxItem();
+			typeLevel_I.setTitle("ტიპი");
+			typeLevel_I.setWidth(100);
+			typeLevel_I.setName("type_level_I");
+			ClientUtils.fillCombo(typeLevel_I, "StreetKindDS",
+					"searchStrKindsFromDBForCB", "street_kind_id",
+					"street_kind_name");
 
-			streetLevelItem_2.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelItem_2.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_descr_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_descr_id", nullO);
-						}
-					}
-				}
-			});
+			typeLevel_II = new ComboBoxItem();
+			typeLevel_II.setTitle("ტიპი");
+			typeLevel_II.setWidth(100);
+			typeLevel_II.setName("type_level_II");
+			ClientUtils.fillCombo(typeLevel_II, "StreetKindDS",
+					"searchStrKindsFromDBForCB", "street_kind_id",
+					"street_kind_name");
 
-			streetLevelItem_3.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelItem_3.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_descr_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_descr_id", nullO);
-						}
-					}
-				}
-			});
+			typeLevel_III = new ComboBoxItem();
+			typeLevel_III.setTitle("ტიპი");
+			typeLevel_III.setWidth(100);
+			typeLevel_III.setName("type_level_III");
+			ClientUtils.fillCombo(typeLevel_III, "StreetKindDS",
+					"searchStrKindsFromDBForCB", "street_kind_id",
+					"street_kind_name");
 
-			streetLevelItem_4.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelItem_4.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_descr_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_descr_id", nullO);
-						}
-					}
-				}
-			});
+			typeLevel_IV = new ComboBoxItem();
+			typeLevel_IV.setTitle("ტიპი");
+			typeLevel_IV.setWidth(100);
+			typeLevel_IV.setName("type_level_IV");
+			ClientUtils.fillCombo(typeLevel_IV, "StreetKindDS",
+					"searchStrKindsFromDBForCB", "street_kind_id",
+					"street_kind_name");
 
-			streetLevelItem_5.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelItem_5.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_descr_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_descr_id", nullO);
-						}
-					}
-				}
-			});
-			streetLevelTypeItem_1 = new ComboBoxItem();
-			streetLevelTypeItem_1.setTitle("ტიპი");
-			streetLevelTypeItem_1.setWidth(100);
-			streetLevelTypeItem_1.setName("descr_type_id_level_1");
-			streetLevelTypeItem_1.setPickListHeight(200);
-			streetLevelTypeItem_1.setFetchMissingValues(true);
-			streetLevelTypeItem_1.setFilterLocally(false);
-			streetLevelTypeItem_1.setAddUnknownValues(false);
+			typeLevel_V = new ComboBoxItem();
+			typeLevel_V.setTitle("ტიპი");
+			typeLevel_V.setWidth(100);
+			typeLevel_V.setName("type_level_V");
+			ClientUtils.fillCombo(typeLevel_V, "StreetKindDS",
+					"searchStrKindsFromDBForCB", "street_kind_id",
+					"street_kind_name");
 
-			streetLevelTypeItem_2 = new ComboBoxItem();
-			streetLevelTypeItem_2.setTitle("ტიპი");
-			streetLevelTypeItem_2.setWidth(100);
-			streetLevelTypeItem_2.setName("descr_type_id_level_2");
-			streetLevelTypeItem_2.setPickListHeight(200);
-			streetLevelTypeItem_2.setFetchMissingValues(true);
-			streetLevelTypeItem_2.setFilterLocally(false);
-			streetLevelTypeItem_2.setAddUnknownValues(false);
-
-			streetLevelTypeItem_3 = new ComboBoxItem();
-			streetLevelTypeItem_3.setTitle("ტიპი");
-			streetLevelTypeItem_3.setWidth(100);
-			streetLevelTypeItem_3.setName("descr_type_id_level_3");
-			streetLevelTypeItem_3.setPickListHeight(200);
-			streetLevelTypeItem_3.setFetchMissingValues(true);
-			streetLevelTypeItem_3.setFilterLocally(false);
-			streetLevelTypeItem_3.setAddUnknownValues(false);
-
-			streetLevelTypeItem_4 = new ComboBoxItem();
-			streetLevelTypeItem_4.setTitle("ტიპი");
-			streetLevelTypeItem_4.setWidth(100);
-			streetLevelTypeItem_4.setName("descr_type_id_level_4");
-			streetLevelTypeItem_4.setPickListHeight(200);
-			streetLevelTypeItem_4.setFetchMissingValues(true);
-			streetLevelTypeItem_4.setFilterLocally(false);
-			streetLevelTypeItem_4.setAddUnknownValues(false);
-
-			streetLevelTypeItem_5 = new ComboBoxItem();
-			streetLevelTypeItem_5.setTitle("ტიპი");
-			streetLevelTypeItem_5.setWidth(100);
-			streetLevelTypeItem_5.setName("descr_type_id_level_5");
-			streetLevelTypeItem_5.setPickListHeight(200);
-			streetLevelTypeItem_5.setFetchMissingValues(true);
-			streetLevelTypeItem_5.setFilterLocally(false);
-			streetLevelTypeItem_5.setAddUnknownValues(false);
-
-			streetLevelTypeItem_1.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelTypeItem_1
-							.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_kind_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_kind_id", nullO);
-						}
-					}
-				}
-			});
-
-			streetLevelTypeItem_2.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelTypeItem_2
-							.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_kind_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_kind_id", nullO);
-						}
-					}
-				}
-			});
-
-			streetLevelTypeItem_3.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelTypeItem_3
-							.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_kind_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_kind_id", nullO);
-						}
-					}
-				}
-			});
-
-			streetLevelTypeItem_4.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelTypeItem_4
-							.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_kind_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_kind_id", nullO);
-						}
-					}
-				}
-			});
-
-			streetLevelTypeItem_5.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetLevelTypeItem_5
-							.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria
-								.getAttribute("street_kind_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_kind_id", nullO);
-						}
-					}
-				}
-			});
-
-			dynamicForm1.setFields(streetLevelItem_1, streetLevelTypeItem_1,
-					streetLevelItem_2, streetLevelTypeItem_2,
-					streetLevelItem_3, streetLevelTypeItem_3,
-					streetLevelItem_4, streetLevelTypeItem_4,
-					streetLevelItem_5, streetLevelTypeItem_5);
+			dynamicForm1.setFields(level_I, typeLevel_I, level_II,
+					typeLevel_II, level_III, typeLevel_III, level_IV,
+					typeLevel_IV, level_V, typeLevel_V);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -555,16 +373,11 @@ public class DlgAddEditStreet extends Window {
 			addItem(hLayout);
 			fillCombos(pRecord);
 
-			arrOfLevels[0] = new ComboBoxItem[] { streetLevelItem_1,
-					streetLevelTypeItem_1 };
-			arrOfLevels[1] = new ComboBoxItem[] { streetLevelItem_2,
-					streetLevelTypeItem_2 };
-			arrOfLevels[2] = new ComboBoxItem[] { streetLevelItem_3,
-					streetLevelTypeItem_3 };
-			arrOfLevels[3] = new ComboBoxItem[] { streetLevelItem_4,
-					streetLevelTypeItem_4 };
-			arrOfLevels[4] = new ComboBoxItem[] { streetLevelItem_5,
-					streetLevelTypeItem_5 };
+			arrOfLevels[0] = new ComboBoxItem[] { level_I, typeLevel_I };
+			arrOfLevels[1] = new ComboBoxItem[] { level_II, typeLevel_II };
+			arrOfLevels[2] = new ComboBoxItem[] { level_III, typeLevel_III };
+			arrOfLevels[3] = new ComboBoxItem[] { level_IV, typeLevel_IV };
+			arrOfLevels[4] = new ComboBoxItem[] { level_V, typeLevel_V };
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -601,8 +414,7 @@ public class DlgAddEditStreet extends Window {
 				DataSource streetsDS = DataSource.get("StreetsDS");
 
 				Criteria criteria = new Criteria();
-				criteria.setAttribute("street_id",
-						editRecord.getAttributeAsString("street_id"));
+				criteria.setAttribute("streets_id",editRecord.getAttributeAsString("streets_id"));
 
 				DSRequest dsRequest = new DSRequest();
 				dsRequest.setOperationId("fetchStreetEnts");
@@ -636,13 +448,6 @@ public class DlgAddEditStreet extends Window {
 					}
 				}, dsRequest);
 			}
-
-			ClientUtils.fillCombo(townItem, "TownsDS",
-					"searchCitiesFromDBForCombosAll", "town_id", "town_name");
-
-			Criteria criteria1 = new Criteria();
-			townItem.setOptionCriteria(criteria1);
-			townItem.setAutoFetchData(false);
 			Integer ptown_id = Constants.defCityTbilisiId;
 			if (editRecord != null) {
 				Integer town_id = editRecord.getAttributeAsInt("town_id");
@@ -659,135 +464,57 @@ public class DlgAddEditStreet extends Window {
 			}
 			fillCityRegionsCombo(ptown_id);
 
-			ClientUtils.fillCombo(streetLevelItem_1, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id",
-					"street_name_descr");
-
-			ClientUtils.fillCombo(streetLevelItem_2, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id",
-					"street_name_descr");
-
-			ClientUtils.fillCombo(streetLevelItem_3, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id",
-					"street_name_descr");
-
-			ClientUtils.fillCombo(streetLevelItem_4, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id",
-					"street_name_descr");
-
-			ClientUtils.fillCombo(streetLevelItem_5, "StreetNamesDS",
-					"fetchStreetNamesForCB", "street_name_id",
-					"street_name_descr");
-
 			if (editRecord != null) {
-				Integer descr1 = editRecord
-						.getAttributeAsInt("descr_id_level_1");
+				Integer descr1 = editRecord.getAttributeAsInt("level_I");
 				if (descr1 != null) {
-					streetLevelItem_1.setValue(descr1);
+					level_I.setValue(descr1);
 				}
-				Integer descr2 = editRecord
-						.getAttributeAsInt("descr_id_level_2");
+				Integer descr2 = editRecord.getAttributeAsInt("level_II");
 				if (descr2 != null) {
-					streetLevelItem_2.setValue(descr2);
+					level_II.setValue(descr2);
 				}
-				Integer descr3 = editRecord
-						.getAttributeAsInt("descr_id_level_3");
+				Integer descr3 = editRecord.getAttributeAsInt("level_III");
 				if (descr3 != null) {
-					streetLevelItem_3.setValue(descr3);
+					level_III.setValue(descr3);
 				}
-				Integer descr4 = editRecord
-						.getAttributeAsInt("descr_id_level_4");
+				Integer descr4 = editRecord.getAttributeAsInt("level_IV");
 				if (descr4 != null) {
-					streetLevelItem_4.setValue(descr4);
+					level_IV.setValue(descr4);
 				}
-				Integer descr5 = editRecord
-						.getAttributeAsInt("descr_id_level_5");
+				Integer descr5 = editRecord.getAttributeAsInt("level_V");
 				if (descr5 != null) {
-					streetLevelItem_5.setValue(descr5);
+					level_V.setValue(descr5);
 				}
 			}
-
-			ClientUtils.fillCombo(streetLevelTypeItem_1, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id",
-					"street_kind_name");
-
-			ClientUtils.fillCombo(streetLevelTypeItem_2, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id",
-					"street_kind_name");
-
-			ClientUtils.fillCombo(streetLevelTypeItem_3, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id",
-					"street_kind_name");
-
-			ClientUtils.fillCombo(streetLevelTypeItem_4, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id",
-					"street_kind_name");
-
-			ClientUtils.fillCombo(streetLevelTypeItem_5, "StreetKindDS",
-					"searchStrKindsFromDBForCB", "street_kind_Id",
-					"street_kind_name");
-
-			DataSource descrsTypeDS = DataSource.get("StreetKindDS");
-
-			streetLevelTypeItem_1
-					.setOptionOperationId("searchStrKindsFromDBForCB");
-			streetLevelTypeItem_1.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_1.setValueField("street_kind_id");
-			streetLevelTypeItem_1.setDisplayField("street_kind_name");
-
-			streetLevelTypeItem_2
-					.setOptionOperationId("searchStrKindsFromDBForCB");
-			streetLevelTypeItem_2.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_2.setValueField("street_kind_id");
-			streetLevelTypeItem_2.setDisplayField("street_kind_name");
-
-			streetLevelTypeItem_3
-					.setOptionOperationId("searchStrKindsFromDBForCB");
-			streetLevelTypeItem_3.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_3.setValueField("street_kind_id");
-			streetLevelTypeItem_3.setDisplayField("street_kind_name");
-
-			streetLevelTypeItem_4
-					.setOptionOperationId("searchStrKindsFromDBForCB");
-			streetLevelTypeItem_4.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_4.setValueField("street_kind_id");
-			streetLevelTypeItem_4.setDisplayField("street_kind_name");
-
-			streetLevelTypeItem_5
-					.setOptionOperationId("searchStrKindsFromDBForCB");
-			streetLevelTypeItem_5.setOptionDataSource(descrsTypeDS);
-			streetLevelTypeItem_5.setValueField("street_kind_id");
-			streetLevelTypeItem_5.setDisplayField("street_kind_name");
-
 			if (editRecord != null) {
 				Integer levelType_1 = editRecord
-						.getAttributeAsInt("descr_type_id_level_1");
+						.getAttributeAsInt("type_level_I");
 				if (levelType_1 != null) {
-					streetLevelTypeItem_1.setValue(levelType_1);
+					typeLevel_I.setValue(levelType_1);
 				}
 
 				Integer levelType_2 = editRecord
-						.getAttributeAsInt("descr_type_id_level_2");
+						.getAttributeAsInt("type_level_II");
 				if (levelType_2 != null) {
-					streetLevelTypeItem_2.setValue(levelType_2);
+					typeLevel_II.setValue(levelType_2);
 				}
 
 				Integer levelType_3 = editRecord
-						.getAttributeAsInt("descr_type_id_level_3");
+						.getAttributeAsInt("type_level_III");
 				if (levelType_3 != null) {
-					streetLevelTypeItem_3.setValue(levelType_3);
+					typeLevel_III.setValue(levelType_3);
 				}
 
 				Integer levelType_4 = editRecord
-						.getAttributeAsInt("descr_type_id_level_4");
+						.getAttributeAsInt("type_level_IV");
 				if (levelType_4 != null) {
-					streetLevelTypeItem_4.setValue(levelType_4);
+					typeLevel_IV.setValue(levelType_4);
 				}
 
 				Integer levelType_5 = editRecord
-						.getAttributeAsInt("descr_type_id_level_5");
+						.getAttributeAsInt("type_level_V");
 				if (levelType_5 != null) {
-					streetLevelTypeItem_5.setValue(levelType_5);
+					typeLevel_V.setValue(levelType_5);
 				}
 			}
 		} catch (Exception e) {
@@ -827,8 +554,8 @@ public class DlgAddEditStreet extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			if (editRecord != null) {
-				record.setAttribute("street_id",
-						editRecord.getAttributeAsInt("street_id"));
+				record.setAttribute("streets_id",
+						editRecord.getAttributeAsInt("streets_id"));
 			}
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
@@ -836,10 +563,8 @@ public class DlgAddEditStreet extends Window {
 			record.setAttribute("rec_user", loggedUser);
 			record.setAttribute("town_id",
 					city_record.getAttributeAsInt("town_id"));
-			record.setAttribute("deleted", 0);
-			record.setAttribute("map_id", 0);
-			record.setAttribute("visible_options", 0);
-			record.setAttribute("record_type", 1);
+			record.setAttribute("is_visible", 0);
+			record.setAttribute("rec_kind", 1);
 			record.setAttribute("street_name",
 					streetNameItem.getValueAsString());
 			record.setAttribute("street_location",
@@ -889,29 +614,32 @@ public class DlgAddEditStreet extends Window {
 
 				// level identifiers
 				Integer level_sel_rec_Id = null;
-				Integer level__type_sel_rec_Id = null;
+				Integer level_type_sel_rec_Id = null;
 
 				if (level_sel_record != null) {
 					level_sel_rec_Id = Integer.parseInt(level_sel_record);
 				}
 				if (level_type_sel_record != null) {
-					level__type_sel_rec_Id = Integer
+					level_type_sel_rec_Id = Integer
 							.parseInt(level_type_sel_record);
 				}
 
 				// first level check
 				if (index == 1
-						&& (level_sel_rec_Id == null || level__type_sel_rec_Id == null)) {
+						&& (level_sel_rec_Id == null || level_type_sel_rec_Id == null)) {
 					SC.say("გთხოვთ მიუთითოთ I დონე და მისი ტიპი აუცილებლად !");
 					return;
 				}
 
 				// set fields to record - if not null
-				if (level_sel_rec_Id != null && level__type_sel_rec_Id != null) {
-					record.setAttribute("descr_id_level_" + index,
+				if (level_sel_rec_Id != null && level_type_sel_rec_Id != null) {
+					record.setAttribute(
+							"level_" + CommonFunctions.getRomanNumber(index),
 							level_sel_rec_Id);
-					record.setAttribute("descr_type_id_level_" + index,
-							level__type_sel_rec_Id);
+					record.setAttribute(
+							"type_level_"
+									+ CommonFunctions.getRomanNumber(index),
+							level_type_sel_rec_Id);
 				}
 				index++;
 			}

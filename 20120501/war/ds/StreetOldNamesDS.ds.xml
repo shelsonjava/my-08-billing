@@ -38,7 +38,7 @@
 			</selectClause> 
 			<tableClause>street_old_names t, streets s, towns tt</tableClause>
 			<whereClause><![CDATA[ 				
-				1 = 1 and s.street_id = t.street_id and tt.town_id = t.town_id
+				1 = 1 and s.streets_id = t.street_id and tt.town_id = t.town_id
 				#if($criteria.street_old_name_descr) AND t.street_old_name_descr like ($criteria.street_old_name_descr)||'%' #end
 				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
 				#if($criteria.town_id) AND t.town_id = $criteria.town_id #end

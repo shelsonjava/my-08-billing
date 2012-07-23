@@ -1,45 +1,39 @@
-<DataSource ID="PubTranspDirStreetDS" serverType="sql"
-	tableName="PUBLIC_TRANSP_DIR_STREET" qualifyColumnNames="false"
+<DataSource 
+	ID="PubTranspDirStreetDS" 
+	serverType="sql"
+	tableName="PUBLIC_TRANSP_DIR_STREET" 
+	qualifyColumnNames="false"
 	dropExtraFields="false">
 	<fields>
-		<field name="pts_id" 			type="integer" title="ID" hidden="true" 			primaryKey="true" />
-		<field name="descr" 			type="text" title="Route Desciption" />
-		<field name="street_name" 		type="text" title="Street Name" />
-		<field name="remarks" 			type="text" title="remarks" />
-		<field name="dir_descr" 		type="text" title="Route Dir Description" />
-		<field name="dir_order" 		type="integer" title="Route Order" />
-		<field name="dir" 				type="integer" title="Route Direction" hidden="true" />
-		<field name="dir_id" 			type="integer" title="Route ID" hidden="true" />
-		<field name="street_id" 		type="integer" title="Street ID" hidden="true" />
-		<field name="loggedUserName" 	type="text" title="Logged UserName"
-			hidden="true" />
+		<field name="pts_id" 			type="integer" 		title="ID" 						hidden="true" 			primaryKey="true" />
+		<field name="descr" 			type="text" 		title="Route Desciption" />
+		<field name="street_name" 		type="text" 		title="Street Name" />
+		<field name="remarks" 			type="text" 		title="remarks" />
+		<field name="dir_descr" 		type="text" 		title="Route Dir Description" />
+		<field name="dir_order" 		type="integer" 		title="Route Order" />
+		<field name="dir" 				type="integer" 		title="Route Direction" 		hidden="true" />
+		<field name="dir_id" 			type="integer" 		title="Route ID" 				hidden="true" />
+		<field name="street_id" 		type="integer" 		title="Street ID" 				hidden="true" />
+		<field name="loggedUserName" 	type="text" 		title="Logged UserName"			hidden="true" />
 	</fields>
 
 	<operationBindings>
 
-		<serverObject lookupStyle="new"
-			className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI" />
+		<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI" />
 
 		<!-- Add BusRouteStreet -->
-		<operationBinding operationType="add"
-			operationId="addPublicTransportDirectionsStreet" serverMethod="addPublicTransportDirectionsStreet">
-			<serverObject lookupStyle="new"
-				className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI" />
+		<operationBinding operationType="add" operationId="addPublicTransportDirectionsStreet" serverMethod="addPublicTransportDirectionsStreet">
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI" />
 		</operationBinding>
 
 		<!-- BusRouteStreet Update -->
-		<operationBinding operationType="update"
-			operationId="updatePublicTransportDirectionsStreet" serverMethod="updatePublicTransportDirectionsStreet">
-			<serverObject lookupStyle="new"
-				className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI" />
+		<operationBinding operationType="update" operationId="updatePublicTransportDirectionsStreet" serverMethod="updatePublicTransportDirectionsStreet">
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI" />
 		</operationBinding>
 
 		<!-- BusRouteStreet Status Update -->
-		<operationBinding operationType="remove"
-			operationId="updatePublicTransportDirectionsStreetStatus"
-			serverMethod="updatePublicTransportDirectionsStreetStatus">
-			<serverObject lookupStyle="new"
-				className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI" />
+		<operationBinding operationType="remove" operationId="updatePublicTransportDirectionsStreetStatus" serverMethod="updatePublicTransportDirectionsStreetStatus">
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TransportDMI" />
 		</operationBinding>
 
 		<operationBinding operationId="searchAllPublicTransportDirectionstreets"
@@ -58,7 +52,7 @@
 			<tableClause>public_transp_dir_street t,public_transp_dir r, streets
 				s</tableClause>
 			<whereClause><![CDATA[
-				t.street_id = s.street_id and r.pt_id = t.dir_id 
+				t.street_id = s.streets_id and r.pt_id = t.dir_id 
 				#if($criteria.dir_id) and t.dir_id = $criteria.dir_id #end
 				#if($criteria.pt_id) and t.dir_id = $criteria.pt_id #end
 				#if($criteria.dir) and t.dir = $criteria.dir #end

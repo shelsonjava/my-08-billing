@@ -12,19 +12,20 @@ public class CommonFunctions {
 		return (!phone.startsWith("5") && !phone.startsWith("790"));
 	}
 
-	public static void main(String[] args) {
-		try {
-			System.out.println("599693939 = "+isPhoneChargeable("599693939"));
-			System.out.println("570693939 = "+isPhoneChargeable("570693939"));
-			System.out.println("577693939 = "+isPhoneChargeable("577693939"));
-			System.out.println("593693939 = "+isPhoneChargeable("593693939"));
-			System.out.println("2693939 = "+isPhoneChargeable("2693939"));
-			System.out.println("322693939 = "+isPhoneChargeable("322693939"));
-			System.out.println("790693939 = "+isPhoneChargeable("790693939"));
-			System.out.println("791693939 = "+isPhoneChargeable("791693939"));
-
-		} catch (Exception e) {
-			e.printStackTrace();
+	public static String getRomanNumber(int index) {
+		switch (index) {
+		case 1:
+			return "I";
+		case 2:
+			return "II";
+		case 3:
+			return "III";
+		case 4:
+			return "IV";
+		case 5:
+			return "V";
+		default:
+			return "XXX";
 		}
 	}
 }

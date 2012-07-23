@@ -61,16 +61,16 @@
     		<selectClause>   			
     			t.streets_id,
 				t.town_id,
-				t.descr_id_level_1,
-				t.descr_id_level_2,   
-				t.descr_id_level_3,
-				t.descr_id_level_4,
-				t.descr_id_level_5,
-				t.descr_type_id_level_1,
-				t.descr_type_id_level_2,
-				t.descr_type_id_level_3,
-				t.descr_type_id_level_4,
-				t.descr_type_id_level_5,
+				t.level_I,
+				t.level_II,   
+				t.level_III,
+				t.level_IV,
+				t.level_V,
+				t.type_level_I,
+				t.type_level_II,
+				t.type_level_III,
+				t.type_level_IV,
+				t.type_level_V,
 				t.rec_kind,
 				t.street_location, 
 				t.street_name,
@@ -113,7 +113,7 @@
 			<orderClause>t.street_name</orderClause>
     	</operationBinding>
 
-    	<operationBinding operationId="searchStreetFromDBForCombos" operationType="fetch" customFields="street_id, town_id, street_name, town_district_id ">
+    	<operationBinding operationId="searchStreetFromDBForCombos" operationType="fetch" >
     		<selectClause>   			
     			t.streets_id,
     			t.town_id,
@@ -186,7 +186,7 @@
 				 c.town_id = t.town_id and t.hide_for_call_center = 0
 				 #if($criteria.town_id) AND t.town_id = $criteria.town_id #end
 				 #if($criteria.town_district_id) 
-				 	AND getDistrictid(t.street_id) like '%' || ($criteria.town_district_id)||'%'				 	 
+				 	AND getDistrictid(t.streets_id) like '%' || ($criteria.town_district_id)||'%'				 	 
 				 #end
 				 #if($criteria.street_index) AND t.street_index like '%' || ($criteria.street_index)||'%' #end
 				 #if($criteria.street_name1) 

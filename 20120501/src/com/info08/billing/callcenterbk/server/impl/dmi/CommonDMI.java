@@ -519,41 +519,52 @@ public class CommonDMI implements QueryConstants {
 
 			Long street_id = new Long(record.get("streets_id").toString());
 			Long town_id = new Long(record.get("town_id").toString());
-			String street_location = record.get("street_location") == null ? null: record.get("street_location").toString();
+			String street_location = record.get("street_location") == null ? null
+					: record.get("street_location").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Update Street.");
 
 			Object o_level_I = record.get("level_I");
-			Long level_I = (o_level_I == null) ? null : new Long(o_level_I.toString());
+			Long level_I = (o_level_I == null) ? null : new Long(
+					o_level_I.toString());
 
 			Object o_level_II = record.get("level_II");
-			Long level_II = (o_level_II == null) ? null: new Long(o_level_II.toString());
+			Long level_II = (o_level_II == null) ? null : new Long(
+					o_level_II.toString());
 
 			Object o_level_III = record.get("level_III");
-			Long level_III = (o_level_III == null) ? null : new Long(o_level_III.toString());
+			Long level_III = (o_level_III == null) ? null : new Long(
+					o_level_III.toString());
 
 			Object o_level_IV = record.get("level_IV");
-			Long level_IV = (o_level_IV == null) ? null : new Long(o_level_IV.toString());
+			Long level_IV = (o_level_IV == null) ? null : new Long(
+					o_level_IV.toString());
 
 			Object o_level_V = record.get("level_V");
-			Long level_V = (o_level_V == null) ? null : new Long(o_level_V.toString());
+			Long level_V = (o_level_V == null) ? null : new Long(
+					o_level_V.toString());
 
 			Object o_type_level_I = record.get("type_level_I");
-			Long type_level_I = (o_type_level_I == null) ? null : new Long(o_type_level_I.toString());
+			Long type_level_I = (o_type_level_I == null) ? null : new Long(
+					o_type_level_I.toString());
 
 			Object o_type_level_II = record.get("type_level_II");
-			Long type_level_II = (o_type_level_II == null) ? null : new Long(o_type_level_II.toString());
+			Long type_level_II = (o_type_level_II == null) ? null : new Long(
+					o_type_level_II.toString());
 
 			Object o_type_level_III = record.get("type_level_III");
-			Long type_level_III = (o_type_level_III == null) ? null : new Long(o_type_level_III.toString());
+			Long type_level_III = (o_type_level_III == null) ? null : new Long(
+					o_type_level_III.toString());
 
 			Object o_type_level_IV = record.get("type_level_IV");
-			Long type_level_IV = (o_type_level_IV == null) ? null : new Long(o_type_level_IV.toString());
+			Long type_level_IV = (o_type_level_IV == null) ? null : new Long(
+					o_type_level_IV.toString());
 
 			Object o_type_level_V = record.get("type_level_V");
-			Long type_level_V = (o_type_level_V == null) ? null : new Long(o_type_level_V.toString());
+			Long type_level_V = (o_type_level_V == null) ? null : new Long(
+					o_type_level_V.toString());
 
 			Object saveStreetHistOrNotItem = record
 					.get("saveStreetHistOrNotItem");
@@ -669,8 +680,8 @@ public class CommonDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long street_id = new Long(dsRequest.getOldValues().get("street_id")
-					.toString());
+			Long street_id = new Long(dsRequest.getOldValues()
+					.get("streets_id").toString());
 
 			List result = oracleManager
 					.createNativeQuery(QueryConstants.Q_CHECK_STREET_FK)
@@ -805,7 +816,7 @@ public class CommonDMI implements QueryConstants {
 			ArrayList<Street> ret = new ArrayList<Street>();
 			if (streetEnts != null && !streetEnts.isEmpty()) {
 
-				Object oStreet_id = dsRequest.getFieldValue("street_id");
+				Object oStreet_id = dsRequest.getFieldValue("streets_id");
 				Long street_id = -100L;
 				if (oStreet_id != null) {
 					street_id = new Long(oStreet_id.toString());
