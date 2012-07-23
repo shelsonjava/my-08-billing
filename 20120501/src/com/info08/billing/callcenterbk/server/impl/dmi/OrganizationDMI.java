@@ -431,7 +431,7 @@ public class OrganizationDMI {
 			values = DMIUtils.findRecordById("OrgDS",
 					"customOrgSearchForCallCenterNew", organization_id,
 					"organization_id");
-			DSResponse dsResponse = new DSResponse();			
+			DSResponse dsResponse = new DSResponse();
 			dsResponse.setData(values);
 			// dsResponse.setInvalidateCache(true);
 			return dsResponse;
@@ -466,6 +466,10 @@ public class OrganizationDMI {
 
 		Map<?, ?> addrValues = (Map<?, ?>) values.get(subMapValueNames);
 		DataTools.setProperties(addrValues, address);
+		Object ostreets_id = addrValues.get("streets_id");
+		if (ostreets_id != null) {
+			address.setStreet_id(new Long(ostreets_id.toString()));
+		}
 		address.setAddr_id(address_id);
 
 		if (address.getAddr_id() != null) {
