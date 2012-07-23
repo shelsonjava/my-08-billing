@@ -44,9 +44,10 @@ public class DlgAddEditStreetOldNames extends Window {
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
-	private TabStreetOldNames  hstStreets;
+	private TabStreetOldNames hstStreets;
 
-	public DlgAddEditStreetOldNames(TabStreetOldNames  hstStreets,ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditStreetOldNames(TabStreetOldNames hstStreets,
+			ListGrid listGrid, ListGridRecord pRecord) {
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
@@ -233,8 +234,6 @@ public class DlgAddEditStreetOldNames extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			// setStreetId(editRecord.getAttributeAsString("street_id"));
-			// setTownId(editRecord.getAttributeAsString("town_id"));
 			StreetNameItem.setValue(editRecord
 					.getAttributeAsString("street_name"));
 			townNameItem.setValue(editRecord.getAttributeAsString("town_name"));
@@ -294,14 +293,12 @@ public class DlgAddEditStreetOldNames extends Window {
 			record.setAttribute("streetOldNamesMap", streetOldNamesMap);
 			DSRequest req = new DSRequest();
 			req.setAttribute("operationId", "updateStreetOldNames");
-			
-			
-			
+
 			listGrid.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
-					
+
 					hstStreets.search(true);
 					destroy();
 				}

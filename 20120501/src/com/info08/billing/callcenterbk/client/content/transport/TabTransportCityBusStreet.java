@@ -3,7 +3,7 @@ package com.info08.billing.callcenterbk.client.content.transport;
 import com.info08.billing.callcenterbk.client.dialogs.transport.DlgAddEditBusRouteStreet;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
-import com.info08.billing.callcenterbk.shared.common.Constants;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -106,23 +106,8 @@ public class TabTransportCityBusStreet extends Tab {
 			streetItem.setTitle("ქუჩა");
 			streetItem.setName("street_name");
 			streetItem.setWidth(300);
-			streetItem.setFetchMissingValues(true);
-			streetItem.setFilterLocally(false);
-			streetItem.setAddUnknownValues(false);
-
-			streetItem.addKeyPressHandler(new KeyPressHandler() {
-				@Override
-				public void onKeyPress(KeyPressEvent event) {
-					Criteria criteria = streetItem.getOptionCriteria();
-					if (criteria != null) {
-						String oldAttr = criteria.getAttribute("street_id");
-						if (oldAttr != null) {
-							Object nullO = null;
-							criteria.setAttribute("street_id", nullO);
-						}
-					}
-				}
-			});
+			ClientUtils.fillCombo(streetItem, "StreetsDS",
+					"searchStreetFromDBForCombos", "street_id", "street_name");
 
 			routeDirItem = new ComboBoxItem();
 			routeDirItem.setTitle("მიმართულება");
@@ -367,17 +352,6 @@ public class TabTransportCityBusStreet extends Tab {
 			Criteria criteria = new Criteria();
 			routeItem.setOptionCriteria(criteria);
 			routeItem.setAutoFetchData(false);
-
-			DataSource streetsDS = DataSource.get("StreetsDS");
-			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
-			streetItem.setOptionDataSource(streetsDS);
-			streetItem.setValueField("street_id");
-			streetItem.setDisplayField("street_name");
-
-			criteria.setAttribute("town_id", Constants.defCityTbilisiId);
-			streetItem.setOptionCriteria(criteria);
-			streetItem.setAutoFetchData(false);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

@@ -87,7 +87,7 @@ public class TabStreetOldNames extends Tab {
 
 			addrStreetItem = new ComboBoxItem();
 			addrStreetItem.setTitle(CallCenterBK.constants.street());
-			addrStreetItem.setName("street_id");
+			addrStreetItem.setName("streets_id");
 			addrStreetItem.setWidth(300);
 
 			Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
@@ -95,7 +95,7 @@ public class TabStreetOldNames extends Tab {
 			aditionalCriteria.put("need_indexes", 1);
 
 			ClientUtils.fillCombo(addrStreetItem, "StreetsDS",
-					"searchStreetFromDBForCombos", "street_id", "street_name",
+					"searchStreetFromDBForCombos", "streets_id", "street_name",
 					aditionalCriteria);
 
 			ClientUtils.makeDependancy(addrTownItem, "town_id", addrStreetItem);
@@ -216,15 +216,6 @@ public class TabStreetOldNames extends Tab {
 			criteria.setAttribute("town_id", town_id);
 
 			DSRequest dsRequest = new DSRequest();
-			// if (refresh) {
-			// Integer[] visibleRows = listGrid.getVisibleRows();
-			// Integer startRow = visibleRows[0];
-			// Integer endRow = visibleRows[1];
-			// int preloadSize = 10;
-			// dsRequest.setStartRow(((startRow - preloadSize) < 0) ? 0
-			// : (startRow - preloadSize));
-			// dsRequest.setEndRow(endRow + preloadSize);
-			// }
 
 			dsRequest.setAttribute("operationId", "searchFromDB");
 			listGrid.invalidateCache();

@@ -13,40 +13,40 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "LASTNAMES")
-public class LastName implements Serializable {
+@Table(name = "FAMILYNAMES")
+public class FamilyNames implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name = "SEQ_LASTNAME_GENERATOR", sequenceName = "SEQ_LASTNAME")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_LASTNAME_GENERATOR")
-	@Column(name = "LASTNAME_ID")
-	private Long lastname_id;
+	@Column(name = "FAMILYNAME_ID")
+	private Long familyname_id;
 
 	@Basic
-	@Column(name = "LASTNAME")
-	private String lastname;
+	@Column(name = "FAMILYNAME")
+	private String familyname;
 
 	@Transient
 	private String loggedUserName;
 
-	public LastName() {
+	public FamilyNames() {
 	}
 
-	public Long getLastname_id() {
-		return lastname_id;
+	public Long getFamilyname_id() {
+		return familyname_id;
 	}
 
-	public void setLastname_id(Long lastname_id) {
-		this.lastname_id = lastname_id;
+	public void setFamilyname_id(Long familyname_id) {
+		this.familyname_id = familyname_id;
 	}
 
-	public String getLastname() {
-		return lastname;
+	public String getFamilyname() {
+		return familyname;
 	}
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setFamilyname(String familyname) {
+		this.familyname = familyname;
 	}
 
 	public String getLoggedUserName() {

@@ -82,7 +82,7 @@ public class MyAddressPanel extends HLayout {
 
 		addrStreetItem = new ComboBoxItem();
 		addrStreetItem.setTitle(CallCenterBK.constants.street());
-		addrStreetItem.setName("street_id");
+		addrStreetItem.setName("streets_id");
 		addrStreetItem.setWidth(414);
 
 		Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
@@ -90,7 +90,7 @@ public class MyAddressPanel extends HLayout {
 		aditionalCriteria.put("need_indexes", 1);
 
 		ClientUtils.fillCombo(addrStreetItem, "StreetsDS",
-				"searchStreetFromDBForCombos", "street_id", "street_name",
+				"searchStreetFromDBForCombos", "streets_id", "street_name",
 				aditionalCriteria);
 
 		addrRegionItem = new ComboBoxItem();
@@ -179,7 +179,7 @@ public class MyAddressPanel extends HLayout {
 				addrStreetDescrItem, "", "d"), new FormItemDescr(
 				addrStreetIdxItem, "", "k"));
 		ClientUtils.makeDependancy(addrStreetItem, true, new FormItemDescr(
-				addrRegionItem, "street_id", "town_district_id"),
+				addrRegionItem, "streets_id", "town_district_id"),
 				new FormItemDescr(addrStreetDescrItem, "", "street_location"),
 				new FormItemDescr(addrStreetIdxItem, "", "street_index"));
 
@@ -239,8 +239,7 @@ public class MyAddressPanel extends HLayout {
 				if (cr1 == null) {
 					cr1 = new Criteria();
 				}
-				cr1.setAttribute("street_id",
-						record.getAttributeAsInt("street_id"));
+				cr1.setAttribute("streets_id", record.getAttributeAsInt("streets_id"));
 				addrRegionItem.setOptionCriteria(cr1);
 
 				dynamicForm.setValues(record.toMap());

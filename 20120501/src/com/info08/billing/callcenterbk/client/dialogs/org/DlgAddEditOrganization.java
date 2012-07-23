@@ -218,7 +218,7 @@ public class DlgAddEditOrganization extends Window {
 			orgRemarkItem.setWidth(610 - minus);
 			orgRemarkItem.setTitle(CallCenterBK.constants.comment());
 			orgRemarkItem.setHeight(102);
-			//orgRemarkItem.setTextBoxStyle("input14Px");
+			// orgRemarkItem.setTextBoxStyle("input14Px");
 
 			orgInfoItem = new TextItem();
 			orgInfoItem.setName("additional_info");
@@ -529,12 +529,14 @@ public class DlgAddEditOrganization extends Window {
 
 			dForm3.setFields(partnerBankItem);
 
-			OrgPartnetBanksClientDS orgPartnetBanksClientDS = OrgPartnetBanksClientDS.getInstance();
+			OrgPartnetBanksClientDS orgPartnetBanksClientDS = OrgPartnetBanksClientDS
+					.getInstance();
 			orgPartBankOrgsGrid = new ListGrid();
 			orgPartBankOrgsGrid.setWidth(591);
 			orgPartBankOrgsGrid.setHeight(130);
 			orgPartBankOrgsGrid.setPreventDuplicates(true);
-			orgPartBankOrgsGrid.setDuplicateDragMessage("ასეთი უკვე არჩეულია !");
+			orgPartBankOrgsGrid
+					.setDuplicateDragMessage("ასეთი უკვე არჩეულია !");
 			orgPartBankOrgsGrid.setCanAcceptDroppedRecords(true);
 			orgPartBankOrgsGrid.setAlternateRecordStyles(true);
 			orgPartBankOrgsGrid.setAutoFetchData(true);
@@ -828,8 +830,8 @@ public class DlgAddEditOrganization extends Window {
 						physicalAddress.getAddrTownItem());
 				return;
 			}
-			Integer street_id = physicalAddrValues.get("street_id") == null ? null
-					: new Integer(physicalAddrValues.get("street_id")
+			Integer street_id = physicalAddrValues.get("streets_id") == null ? null
+					: new Integer(physicalAddrValues.get("streets_id")
 							.toString());
 			if (street_id == null) {
 				SC.say(CallCenterBK.constants.warning(),
@@ -851,8 +853,8 @@ public class DlgAddEditOrganization extends Window {
 							legalAddress.getAddrTownItem());
 					return;
 				}
-				Integer legal_street_id = legalAddrValues.get("street_id") == null ? null
-						: new Integer(legalAddrValues.get("street_id")
+				Integer legal_street_id = legalAddrValues.get("streets_id") == null ? null
+						: new Integer(legalAddrValues.get("streets_id")
 								.toString());
 				if (legal_street_id == null) {
 					SC.say(CallCenterBK.constants.warning(),

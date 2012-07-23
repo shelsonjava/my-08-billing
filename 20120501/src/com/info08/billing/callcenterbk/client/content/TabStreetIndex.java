@@ -87,7 +87,7 @@ public class TabStreetIndex extends Tab {
 			streetsItem = new ComboBoxItem();
 			streetsItem.setTitle("ქუჩა");
 			streetsItem.setWidth(350);
-			streetsItem.setName("street_id");
+			streetsItem.setName("streets_id");
 			streetsItem.setFetchMissingValues(true);
 			streetsItem.setFilterLocally(false);
 			streetsItem.setAddUnknownValues(false);
@@ -97,7 +97,7 @@ public class TabStreetIndex extends Tab {
 			aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
 
 			ClientUtils.fillCombo(streetsItem, "StreetsDS",
-					"searchStreetFromDBForCombos", "street_id", "street_name",
+					"searchStreetFromDBForCombos", "streets_id", "street_name",
 					aditionalCriteria);
 
 			streetIndexRemarkItem = new TextItem();

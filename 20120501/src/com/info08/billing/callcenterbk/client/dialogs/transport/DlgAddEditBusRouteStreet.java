@@ -95,7 +95,7 @@ public class DlgAddEditBusRouteStreet extends Window {
 
 		streetItem = new ComboBoxItem();
 		streetItem.setTitle("ქუჩა");
-		streetItem.setName("street_id");
+		streetItem.setName("streets_id");
 		streetItem.setWidth(300);
 		streetItem.setFetchMissingValues(true);
 		streetItem.setFilterLocally(false);
@@ -106,10 +106,10 @@ public class DlgAddEditBusRouteStreet extends Window {
 			public void onKeyPress(KeyPressEvent event) {
 				Criteria criteria = streetItem.getOptionCriteria();
 				if (criteria != null) {
-					String oldAttr = criteria.getAttribute("street_id");
+					String oldAttr = criteria.getAttribute("streets_id");
 					if (oldAttr != null) {
 						Object nullO = null;
-						criteria.setAttribute("street_id", nullO);
+						criteria.setAttribute("streets_id", nullO);
 					}
 				}
 			}
@@ -185,7 +185,7 @@ public class DlgAddEditBusRouteStreet extends Window {
 			DataSource streetsDS = DataSource.get("StreetsDS");
 			streetItem.setOptionOperationId("searchStreetFromDBForCombos");
 			streetItem.setOptionDataSource(streetsDS);
-			streetItem.setValueField("street_id");
+			streetItem.setValueField("streets_id");
 			streetItem.setDisplayField("street_name");
 
 			criteria.setAttribute("town_id", Constants.defCityTbilisiId);
@@ -196,28 +196,6 @@ public class DlgAddEditBusRouteStreet extends Window {
 
 				Map mp = editRecord.toMap();
 				dynamicForm.setValues(mp);
-				// Integer dir_id = editRecord.getAttributeAsInt("dir_id");
-				// if (dir_id != null) {
-				// routeItem.setValue(dir_id);
-				// }
-				// Integer street_id =
-				// editRecord.getAttributeAsInt("street_id");
-				// if (street_id != null) {
-				// streetItem.setValue(street_id);
-				// }
-				// Integer dir = editRecord.getAttributeAsInt("dir");
-				// if (dir != null) {
-				// routeDirItem.setValue(dir);
-				// }
-				// String remarks = editRecord.getAttributeAsString("remarks");
-				// if (remarks != null) {
-				// notesItem.setValue(remarks);
-				// }
-				// Integer dir_order = editRecord
-				// .getAttributeAsInt("dir_order");
-				// if (dir_order != null) {
-				// routeOrderItem.setValue(dir_order);
-				// }
 			}
 		} catch (Exception e) {
 			SC.say(e.toString());

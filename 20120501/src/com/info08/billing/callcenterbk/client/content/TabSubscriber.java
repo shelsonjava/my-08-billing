@@ -165,16 +165,15 @@ public class TabSubscriber extends Tab {
 			columnMap.put("town_id", "town_name");
 			streetItem = new ComboBoxItem();
 			streetItem.setTitle(CallCenterBK.constants.street());
-			streetItem.setName("street_id");
+			streetItem.setName("streets_id");
 			streetItem.setWidth(200);
-			// streetItem.setColSpan(3);
 			columnMap.put("street_id", "concat_address");
 
 			aditionalCriteria.put("town_id",
 					Constants.defCityTbilisiId.toString());
 
 			ClientUtils.fillCombo(streetItem, "StreetsDS",
-					"searchStreetFromDBForCombos", "street_id", "street_name",
+					"searchStreetFromDBForCombos", "streets_id", "street_name",
 					aditionalCriteria);
 
 			regionItem = new ComboBoxItem();
@@ -421,7 +420,7 @@ public class TabSubscriber extends Tab {
 			abonentsGrid.setFields(firstName, lastName, street, addr_number,
 					addr_block, addr_appt, addr_descr, phone, opCloseField,
 					parallelUsualField, phoneStatusField, phoneStateField,
-					phoneTypeField,update_date);
+					phoneTypeField, update_date);
 
 			mainLayout.addMember(abonentsGrid);
 

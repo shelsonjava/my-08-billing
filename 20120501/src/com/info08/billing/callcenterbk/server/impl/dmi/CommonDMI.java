@@ -31,7 +31,7 @@ import com.info08.billing.callcenterbk.shared.entity.Towns;
 import com.info08.billing.callcenterbk.shared.entity.descriptions.Description;
 import com.info08.billing.callcenterbk.shared.items.Departments;
 import com.info08.billing.callcenterbk.shared.items.FirstName;
-import com.info08.billing.callcenterbk.shared.items.LastName;
+import com.info08.billing.callcenterbk.shared.items.FamilyNames;
 import com.isomorphic.datasource.DSRequest;
 import com.isomorphic.datasource.DataSource;
 import com.isomorphic.datasource.DataSourceManager;
@@ -46,7 +46,7 @@ public class CommonDMI implements QueryConstants {
 	Logger logger = Logger.getLogger(CommonDMI.class.getName());
 
 	private static TreeMap<Integer, FirstName> firstNames = new TreeMap<Integer, FirstName>();
-	private static TreeMap<Integer, LastName> lastNames = new TreeMap<Integer, LastName>();
+	private static TreeMap<Integer, FamilyNames> lastNames = new TreeMap<Integer, FamilyNames>();
 	private static TreeMap<Integer, Departments> departments = new TreeMap<Integer, Departments>();
 	private static TreeMap<Long, Continents> continents = new TreeMap<Long, Continents>();
 	private static TreeMap<Long, Country> countries = new TreeMap<Long, Country>();
@@ -77,7 +77,7 @@ public class CommonDMI implements QueryConstants {
 		return firstNames.get(firstNameId);
 	}
 
-	public static LastName getLastName(Integer lastNameId) {
+	public static FamilyNames getLastName(Integer lastNameId) {
 		return lastNames.get(lastNameId);
 	}
 
@@ -2951,7 +2951,7 @@ public class CommonDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public LastName addLastName(DSRequest dsRequest) throws Exception {
+	public FamilyNames addLastName(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -2960,12 +2960,12 @@ public class CommonDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			Map<?, ?> values = dsRequest.getValues();
-			String lastname = values.containsKey("lastname") ? values.get(
-					"lastname").toString() : null;
+			String familyname = values.containsKey("familyname") ? values.get(
+					"familyname").toString() : null;
 			String loggedUserName = values.get("loggedUserName").toString();
 
-			LastName lastNameObj = new LastName();
-			lastNameObj.setLastname(lastname);
+			FamilyNames lastNameObj = new FamilyNames();
+			lastNameObj.setFamilyname(familyname);
 			lastNameObj.setLoggedUserName(loggedUserName);
 
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
@@ -2974,22 +2974,22 @@ public class CommonDMI implements QueryConstants {
 
 			List countIfLastNames = oracleManager
 					.createNativeQuery(Q_GET_LAST_NAME_COUNT)
-					.setParameter(1, lastname).getResultList();
+					.setParameter(1, familyname).getResultList();
 			if (countIfLastNames != null && !countIfLastNames.isEmpty()) {
 				Long count = new Long(countIfLastNames.get(0).toString());
 				if (count > 0) {
 					log += ". Result : Duplicate Last Name ";
 					logger.info(log);
 					throw new CallCenterException("ასეთი გვარი უკვე არსებობს: "
-							+ lastname);
+							+ familyname);
 				}
 			}
 
 			oracleManager.persist(lastNameObj);
 			oracleManager.flush();
 
-			lastNameObj = oracleManager.find(LastName.class,
-					lastNameObj.getLastname_id());
+			lastNameObj = oracleManager.find(FamilyNames.class,
+					lastNameObj.getFamilyname_id());
 
 			lastNameObj.setLoggedUserName(loggedUserName);
 
@@ -3020,7 +3020,7 @@ public class CommonDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	public LastName updateLastName(Map record) throws Exception {
+	public FamilyNames updateLastName(Map record) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -3028,37 +3028,38 @@ public class CommonDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long lastname_id = new Long(record.get("lastname_id").toString());
-			String lastname = record.get("lastname") == null ? null : record
-					.get("lastname").toString();
+			Long familyname_id = new Long(record.get("familyname_id")
+					.toString());
+			String familyname = record.get("familyname") == null ? null
+					: record.get("familyname").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Update lastname.");
 
-			LastName lastNameObj = oracleManager.find(LastName.class,
-					lastname_id);
+			FamilyNames lastNameObj = oracleManager.find(FamilyNames.class,
+					familyname_id);
 
-			lastNameObj.setLastname(lastname);
+			lastNameObj.setFamilyname(familyname);
 			lastNameObj.setLoggedUserName(loggedUserName);
 
 			List countIfLastNames = oracleManager
 					.createNativeQuery(Q_GET_LAST_NAME_COUNT)
-					.setParameter(1, lastname).getResultList();
+					.setParameter(1, familyname).getResultList();
 			if (countIfLastNames != null && !countIfLastNames.isEmpty()) {
 				Long count = new Long(countIfLastNames.get(0).toString());
 				if (count > 0) {
 					log += ". Result : Duplicate Last Name ";
 					logger.info(log);
 					throw new CallCenterException("ასეთი გვარი უკვე არსებობს: "
-							+ lastname);
+							+ familyname);
 				}
 			}
 
 			oracleManager.merge(lastNameObj);
 			oracleManager.flush();
 
-			lastNameObj = oracleManager.find(LastName.class, lastname_id);
+			lastNameObj = oracleManager.find(FamilyNames.class, familyname_id);
 
 			EMF.commitTransaction(transaction);
 			log += ". Updating Finished SuccessFully. ";
@@ -3088,7 +3089,7 @@ public class CommonDMI implements QueryConstants {
 	 */
 
 	@SuppressWarnings("rawtypes")
-	public LastName removeLastName(DSRequest dsRequest) throws Exception {
+	public FamilyNames removeLastName(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -3104,7 +3105,7 @@ public class CommonDMI implements QueryConstants {
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
 					loggedUserName, "Removing lastname.");
 
-			LastName lastNameObj = oracleManager.find(LastName.class,
+			FamilyNames lastNameObj = oracleManager.find(FamilyNames.class,
 					lastname_id);
 			lastNameObj.setLoggedUserName(loggedUserName);
 
@@ -3127,7 +3128,7 @@ public class CommonDMI implements QueryConstants {
 			oracleManager.remove(lastNameObj);
 			oracleManager.flush();
 
-			lastNameObj = oracleManager.find(LastName.class, lastname_id);
+			lastNameObj = oracleManager.find(FamilyNames.class, lastname_id);
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";

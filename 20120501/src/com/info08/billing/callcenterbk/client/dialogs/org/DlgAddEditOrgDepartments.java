@@ -232,8 +232,8 @@ public class DlgAddEditOrgDepartments extends Window {
 							myAddressPanel1.getAddrTownItem());
 					return;
 				}
-				Integer street_id = physicalAddrValues.get("street_id") == null ? null
-						: new Integer(physicalAddrValues.get("street_id")
+				Integer street_id = physicalAddrValues.get("streets_id") == null ? null
+						: new Integer(physicalAddrValues.get("streets_id")
 								.toString());
 				if (street_id == null) {
 					SC.say(CallCenterBK.constants.warning(),
