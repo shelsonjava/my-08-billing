@@ -57,6 +57,7 @@
 		<field name="is_abonent"					type="integer"  	title="is_abonent"						hidden="true"/>
 		<field name="town_district_id"				type="integer"  	title="town_district_id"				hidden="true"/>
 		<field name="street_id"						type="integer"  	title="street_id"						hidden="true"/>
+		<field name="streets_id"					type="integer"  	title="streets_id"						hidden="true"/>
 		<field name="legal_address_id"				type="integer"  	title="legal_address_id"				hidden="true"/>
 		<field name="physical_address_id"			type="integer"  	title="physical_address_id"				hidden="true"/>
 		<field name="hidden_by_request"				type="integer"  	title="hidden_by_request"				hidden="true"/>
@@ -229,6 +230,7 @@
 							getdescription(o.legal_form_desc_id) as legal_form_desc,
 							o.status,
 							a.street_id,
+							a.street_id as streets_id,
 							a.town_name,
 							a.town_district_name as town_district,
 							a.town_district_name as town_district_name,

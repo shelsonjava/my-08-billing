@@ -830,10 +830,10 @@ public class DlgAddEditOrganization extends Window {
 						physicalAddress.getAddrTownItem());
 				return;
 			}
-			Integer street_id = physicalAddrValues.get("streets_id") == null ? null
+			Integer streets_id = physicalAddrValues.get("streets_id") == null ? null
 					: new Integer(physicalAddrValues.get("streets_id")
 							.toString());
-			if (street_id == null) {
+			if (streets_id == null) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.plzChoosePhysicalAddrStreet());
 				topTabSet.selectTab(1);
@@ -853,10 +853,10 @@ public class DlgAddEditOrganization extends Window {
 							legalAddress.getAddrTownItem());
 					return;
 				}
-				Integer legal_street_id = legalAddrValues.get("streets_id") == null ? null
+				Integer legal_streets_id = legalAddrValues.get("streets_id") == null ? null
 						: new Integer(legalAddrValues.get("streets_id")
 								.toString());
-				if (legal_street_id == null) {
+				if (legal_streets_id == null) {
 					SC.say(CallCenterBK.constants.warning(),
 							CallCenterBK.constants.plzChooseLegalAddrStreet());
 					topTabSet.selectTab(1);
