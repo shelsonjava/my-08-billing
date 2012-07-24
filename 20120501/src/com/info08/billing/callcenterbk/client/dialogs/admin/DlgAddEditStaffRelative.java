@@ -14,7 +14,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditStaffRelative09 extends Window {
+public class DlgAddEditStaffRelative extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -26,12 +26,12 @@ public class DlgAddEditStaffRelative09 extends Window {
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
 
-	public DlgAddEditStaffRelative09(ListGrid listGrid, ListGridRecord pRecord) {
+	public DlgAddEditStaffRelative(ListGrid listGrid, ListGridRecord pRecord) {
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
-		setTitle(pRecord == null ? "თანამშრომლის კავშირი 09-თან დამატება"
-				: "თანამშრომლის კავშირი 09-თან მოდიფიცირება");
+		setTitle(pRecord == null ? "თანამშრომლის კავშირის  დამატება"
+				: "თანამშრომლის კავშირის  მოდიფიცირება");
 
 		setHeight(190);
 		setWidth(450);
@@ -137,8 +137,8 @@ public class DlgAddEditStaffRelative09 extends Window {
 		Record record = new Record();
 		boolean edit = false;
 		if (edit = editRecord != null) {
-			record.setAttribute("staff_relative_09_id",
-					editRecord.getAttribute("staff_relative_09_id"));
+			record.setAttribute("staff_relative_id",
+					editRecord.getAttribute("staff_relative_id"));
 		}
 
 		record.setAttribute("first_name", firstNameItem.getValueAsString());

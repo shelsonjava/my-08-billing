@@ -11,16 +11,16 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "STAFF_RELATIVE_09")
-public class StaffRelative09 implements java.io.Serializable {
+@Table(name = "STAFF_RELATIVE")
+public class StaffRelative implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4693844952773726969L;
 
 	@Id
-	@Column(name = "STAFF_RELATIVE_09_ID")
-	@SequenceGenerator(name = "SEQ_STAFF_RELATIVE_09_GENERATOR", sequenceName = "SEQ_STAFF_RELATIVE_09")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STAFF_RELATIVE_09_GENERATOR")
-	private long staff_relative_09_id;
+	@Column(name = "STAFF_RELATIVE_ID")
+	@SequenceGenerator(name = "SEQ_STAFF_RELATIVE_GENERATOR", sequenceName = "SEQ_STAFF_RELATIVE")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_STAFF_RELATIVE_GENERATOR")
+	private long staff_relative_id;
 
 	@Basic
 	@Column(name = "STAFF_ID")
@@ -41,15 +41,15 @@ public class StaffRelative09 implements java.io.Serializable {
 	@Transient
 	private String loggedUserName;
 
-	public StaffRelative09() {
+	public StaffRelative() {
 	}
 
-	public long getStaff_relative_09_id() {
-		return staff_relative_09_id;
+	public long getStaff_relative_id() {
+		return staff_relative_id;
 	}
 
-	public void setStaff_relative_09_id(long staff_relative_09_id) {
-		this.staff_relative_09_id = staff_relative_09_id;
+	public void setStaff_relative_id(long staff_relative_id) {
+		this.staff_relative_id = staff_relative_id;
 	}
 
 	public Long getStaff_id() {

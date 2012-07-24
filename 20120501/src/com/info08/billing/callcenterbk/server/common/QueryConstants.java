@@ -1258,7 +1258,7 @@ public interface QueryConstants {
 			+ "where t.staff_id = ?";
 	public static final String Q_DELETE_STAFF_WORKS = "delete from staff_works t \n "
 			+ "where t.staff_id = ?";
-	public static final String Q_DELETE_STAFF_RELATIVE_09 = "delete from staff_relative_09 t \n "
+	public static final String Q_DELETE_STAFF_RELATIVE = "delete from staff_relative t \n "
 			+ "where t.staff_id = ?";
 	public static final String Q_DELETE_STAFF_FAMOUS_PEOPLE = "delete from staff_famous_people t \n "
 			+ "where t.staff_id = ?";

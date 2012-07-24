@@ -4,18 +4,18 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
 
-public class StaffRelative09ClientDS extends DataSource {
+public class StaffRelativeClientDS extends DataSource {
 
-	public static StaffRelative09ClientDS getInstance() {
-		return new StaffRelative09ClientDS("StaffRelative09ClientDS");
+	public static StaffRelativeClientDS getInstance() {
+		return new StaffRelativeClientDS("StaffRelativeClientDS");
 	}
 
-	public StaffRelative09ClientDS(String id) {
-		DataSourceIntegerField staff_relative_09_id = new DataSourceIntegerField(
-				"staff_relative_09_id");
-		staff_relative_09_id.setHidden(true);
-		staff_relative_09_id.setPrimaryKey(true);
-		staff_relative_09_id.setRequired(true);
+	public StaffRelativeClientDS(String id) {
+		DataSourceIntegerField staff_relative_id = new DataSourceIntegerField(
+				"staff_relative_id");
+		staff_relative_id.setHidden(true);
+		staff_relative_id.setPrimaryKey(true);
+		staff_relative_id.setRequired(true);
 
 		DataSourceIntegerField staff_id = new DataSourceIntegerField("staff_id");
 		staff_id.setHidden(true);
@@ -28,7 +28,7 @@ public class StaffRelative09ClientDS extends DataSource {
 
 		DataSourceTextField position = new DataSourceTextField("position",
 				"პოზიცია");
-		setFields(staff_relative_09_id, staff_id, first_name, last_name,
+		setFields(staff_relative_id, staff_id, first_name, last_name,
 				position);
 		setClientOnly(true);
 	}

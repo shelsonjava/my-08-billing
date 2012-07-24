@@ -110,10 +110,10 @@ public class DlgAddEditStaff extends Window {
 	private ToolStripButton addStaffWorksBtn;
 	private ToolStripButton editStaffWorksBtn;
 
-	private StaffRelative09ClientDS staffRelative09ClientDS;
-	private ListGrid staffRelative09Grid;
-	private ToolStripButton addStaffRelative09Btn;
-	private ToolStripButton editStaffRelative09Btn;
+	private StaffRelativeClientDS staffRelativeClientDS;
+	private ListGrid staffRelativeGrid;
+	private ToolStripButton addStaffRelativeBtn;
+	private ToolStripButton editStaffRelativeBtn;
 
 	private StaffFamousPeopleClientDS staffFamousPeopleClientDS;
 	private ListGrid staffFamousPeopleGrid;
@@ -202,91 +202,91 @@ public class DlgAddEditStaff extends Window {
 		// TODO
 
 		/***********************************************************************************/
-		/******************************* Staff Relative 09 *********************************/
+		/******************************* Staff Relative ************************************/
 		/***********************************************************************************/
 
-		staffRelative09ClientDS = StaffRelative09ClientDS.getInstance();
+		staffRelativeClientDS = StaffRelativeClientDS.getInstance();
 
-		staffRelative09Grid = new ListGrid();
-		staffRelative09Grid.setWidth100();
-		staffRelative09Grid.setHeight(250);
-		staffRelative09Grid.setDataSource(staffRelative09ClientDS);
-		staffRelative09Grid.setCanReorderRecords(true);
-		staffRelative09Grid.setCanRemoveRecords(true);
-		staffRelative09Grid.setAutoFetchData(true);
-		staffRelative09Grid.setWrapCells(true);
-		staffRelative09Grid.setFixedRecordHeights(false);
+		staffRelativeGrid = new ListGrid();
+		staffRelativeGrid.setWidth100();
+		staffRelativeGrid.setHeight(250);
+		staffRelativeGrid.setDataSource(staffRelativeClientDS);
+		staffRelativeGrid.setCanReorderRecords(true);
+		staffRelativeGrid.setCanRemoveRecords(true);
+		staffRelativeGrid.setAutoFetchData(true);
+		staffRelativeGrid.setWrapCells(true);
+		staffRelativeGrid.setFixedRecordHeights(false);
 
 		ListGridField first_name = new ListGridField("first_name", "სახელი",
 				150);
 		ListGridField last_name = new ListGridField("last_name", "გვარი", 150);
 		ListGridField position = new ListGridField("position", "პოზიცია");
 
-		staffRelative09Grid.setFields(first_name, last_name, position);
+		staffRelativeGrid.setFields(first_name, last_name, position);
 
-		ToolStrip toolRelative09 = new ToolStrip();
-		toolRelative09.setWidth100();
-		toolRelative09.setPadding(5);
+		ToolStrip toolRelative = new ToolStrip();
+		toolRelative.setWidth100();
+		toolRelative.setPadding(5);
 
-		Label toolRelative09Label = new Label("კავშირი");
-		toolRelative09Label.setWidth(150);
-		toolRelative09Label.setStyleName("staffGridTitle");
-		toolRelative09.addMember(toolRelative09Label);
+		Label toolRelativeLabel = new Label("კავშირი");
+		toolRelativeLabel.setWidth(150);
+		toolRelativeLabel.setStyleName("staffGridTitle");
+		toolRelative.addMember(toolRelativeLabel);
 
-		addStaffRelative09Btn = new ToolStripButton(
-				CallCenterBK.constants.add(), "addIcon.png");
-		addStaffRelative09Btn.setLayoutAlign(Alignment.LEFT);
-		addStaffRelative09Btn.setWidth(50);
-		toolRelative09.addButton(addStaffRelative09Btn);
+		addStaffRelativeBtn = new ToolStripButton(CallCenterBK.constants.add(),
+				"addIcon.png");
+		addStaffRelativeBtn.setLayoutAlign(Alignment.LEFT);
+		addStaffRelativeBtn.setWidth(50);
+		toolRelative.addButton(addStaffRelativeBtn);
 
-		addStaffRelative09Btn.addClickHandler(new ClickHandler() {
+		addStaffRelativeBtn.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				DlgAddEditStaffRelative09 dlgAddEditStaffRelative09 = new DlgAddEditStaffRelative09(
-						staffRelative09Grid, null);
-				dlgAddEditStaffRelative09.show();
+				DlgAddEditStaffRelative dlgAddEditStaffRelative = new DlgAddEditStaffRelative(
+						staffRelativeGrid, null);
+				dlgAddEditStaffRelative.show();
 			}
 		});
 
-		editStaffRelative09Btn = new ToolStripButton(
+		editStaffRelativeBtn = new ToolStripButton(
 				CallCenterBK.constants.modify(), "editIcon.png");
-		editStaffRelative09Btn.setLayoutAlign(Alignment.LEFT);
-		editStaffRelative09Btn.setWidth(50);
-		toolRelative09.addButton(editStaffRelative09Btn);
+		editStaffRelativeBtn.setLayoutAlign(Alignment.LEFT);
+		editStaffRelativeBtn.setWidth(50);
+		toolRelative.addButton(editStaffRelativeBtn);
 
-		editStaffRelative09Btn.addClickHandler(new ClickHandler() {
+		editStaffRelativeBtn.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				ListGridRecord listGridRecord = staffRelative09Grid
+				ListGridRecord listGridRecord = staffRelativeGrid
 						.getSelectedRecord();
 				if (listGridRecord == null) {
 					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 					return;
 				}
 
-				DlgAddEditStaffRelative09 dlgAddEditStaffRelative09 = new DlgAddEditStaffRelative09(
-						staffRelative09Grid, listGridRecord);
-				dlgAddEditStaffRelative09.show();
+				DlgAddEditStaffRelative dlgAddEditStaffRelative = new DlgAddEditStaffRelative(
+						staffRelativeGrid, listGridRecord);
+				dlgAddEditStaffRelative.show();
 
 			}
 		});
 
-		staffRelative09Grid.addDoubleClickHandler(new DoubleClickHandler() {
+		staffRelativeGrid.addDoubleClickHandler(new DoubleClickHandler() {
 
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
-				ListGridRecord listGridRecord = staffRelative09Grid
+				ListGridRecord listGridRecord = staffRelativeGrid
 						.getSelectedRecord();
 				if (listGridRecord == null) {
 					SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 					return;
 				}
 
-				DlgAddEditStaffRelative09 dlgAddEditStaffRelative09 = new DlgAddEditStaffRelative09(
-						staffRelative09Grid, listGridRecord);
-				dlgAddEditStaffRelative09.show();
+				DlgAddEditStaffRelative dlgAddEditStaffRelative = new DlgAddEditStaffRelative(
+						staffRelativeGrid, listGridRecord);
+				dlgAddEditStaffRelative.show();
 
 			}
 		});
@@ -395,15 +395,15 @@ public class DlgAddEditStaff extends Window {
 		/***********************************************************************************/
 		/***********************************************************************************/
 
-		VLayout layoutRelative09 = new VLayout();
-		layoutRelative09.setWidth("50%");
+		VLayout layoutRelative = new VLayout();
+		layoutRelative.setWidth("50%");
 
 		VLayout layoutFamousPeople = new VLayout();
 		layoutFamousPeople.setWidth("50%");
 
-		layoutRelative09.setMembers(toolRelative09, staffRelative09Grid);
+		layoutRelative.setMembers(toolRelative, staffRelativeGrid);
 		layoutFamousPeople.setMembers(toolFamousPeople, staffFamousPeopleGrid);
-		hLayoutForAddresses1.setMembers(layoutRelative09, layoutFamousPeople);
+		hLayoutForAddresses1.setMembers(layoutRelative, layoutFamousPeople);
 
 		formsLayoutAddInfo.addMember(toolStrip);
 		formsLayoutAddInfo
@@ -1203,17 +1203,17 @@ public class DlgAddEditStaff extends Window {
 				}
 			}, dsRequestWorks);
 
-			DataSource staffRelative09DS = DataSource.get("StaffRelative09DS");
+			DataSource staffRelativeDS = DataSource.get("StaffRelativeDS");
 
-			Criteria criteriaRelative09 = new Criteria();
-			criteriaRelative09.setAttribute("staff_id",
+			Criteria criteriaRelative = new Criteria();
+			criteriaRelative.setAttribute("staff_id",
 					listGridRecord.getAttributeAsInt("staff_id"));
 
-			DSRequest dsRequestRelative09 = new DSRequest();
-			dsRequestRelative09.setAttribute("operationId",
-					"getAllStaffRelative09");
+			DSRequest dsRequestRelative = new DSRequest();
+			dsRequestRelative
+					.setAttribute("operationId", "getAllStaffRelative");
 
-			staffRelative09DS.fetchData(criteriaRelative09, new DSCallback() {
+			staffRelativeDS.fetchData(criteriaRelative, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
@@ -1222,10 +1222,10 @@ public class DlgAddEditStaff extends Window {
 						return;
 					}
 					for (Record record : records) {
-						staffRelative09Grid.addData(record);
+						staffRelativeGrid.addData(record);
 					}
 				}
-			}, dsRequestRelative09);
+			}, dsRequestRelative);
 
 			DataSource staffFamousPeopleDS = DataSource
 					.get("StaffFamousPeopleDS");
@@ -1399,12 +1399,12 @@ public class DlgAddEditStaff extends Window {
 				}
 			}
 
-			Map<String, Map<String, String>> preStaffRaltive09 = new TreeMap<String, Map<String, String>>();
+			Map<String, Map<String, String>> preStaffRaltive = new TreeMap<String, Map<String, String>>();
 
-			if (staffRelative09Grid.getDataAsRecordList() != null) {
-				for (int i = 0; i < staffRelative09Grid.getDataAsRecordList()
+			if (staffRelativeGrid.getDataAsRecordList() != null) {
+				for (int i = 0; i < staffRelativeGrid.getDataAsRecordList()
 						.getLength(); i++) {
-					Record element = staffRelative09Grid.getDataAsRecordList()
+					Record element = staffRelativeGrid.getDataAsRecordList()
 							.get(i);
 					if (element != null) {
 						Map<String, String> item = new TreeMap<String, String>();
@@ -1412,8 +1412,8 @@ public class DlgAddEditStaff extends Window {
 								element.getAttribute("first_name"));
 						item.put("last_name", element.getAttribute("last_name"));
 						item.put("position", element.getAttribute("position"));
-						preStaffRaltive09.put(element
-								.getAttributeAsString("staff_relative_09_id"),
+						preStaffRaltive.put(element
+								.getAttributeAsString("staff_relative_id"),
 								item);
 					}
 				}
@@ -1483,7 +1483,7 @@ public class DlgAddEditStaff extends Window {
 			record.setAttribute("preStaffLanguages", preStaffLanguages);
 			record.setAttribute("preStaffPhones", preStaffPhones);
 			record.setAttribute("preStaffWorks", preStaffWorks);
-			record.setAttribute("preStaffRaltive09", preStaffRaltive09);
+			record.setAttribute("preStaffRaltive", preStaffRaltive);
 			record.setAttribute("preStaffFamousPeople", preStaffFamousPeople);
 
 			DSRequest req = new DSRequest();

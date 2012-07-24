@@ -1,11 +1,11 @@
 <DataSource
-	ID="StaffRelative09DS"
+	ID="StaffRelativeDS"
 	serverType="sql"
-	tableName="staff_relative_09"
+	tableName="staff_relative"
 	qualifyColumnNames="false"
 	dropExtraFields = "false">
 	<fields>
-		<field name="staff_relative_09_id"	type="integer"	title="staff_relative_09_id"	primaryKey="true" />
+		<field name="staff_relative_id"	type="integer"	title="staff_relative_id"	primaryKey="true" />
 		<field name="staff_id"				type="integer"	title="staff_id"/>
 		<field name="first_name"			type="text"		title="first_name"/>
 		<field name="last_name"				type="text"		title="last_name"/>
@@ -15,15 +15,15 @@
 
 	<operationBindings>		
 
-		<operationBinding operationId="getAllStaffRelative09" operationType="fetch">
+		<operationBinding operationId="getAllStaffRelative" operationType="fetch">
     		<selectClause>   			
-    		    t.staff_relative_09_id
+    		    t.staff_relative_id
 			   ,t.staff_id
 			   ,t.first_name
 			   ,t.last_name
 			   ,t.position
 			</selectClause> 
-			<tableClause>staff_relative_09 t</tableClause>
+			<tableClause>staff_relative t</tableClause>
 			<whereClause><![CDATA[
 				1 = 1
 				#if($criteria.staff_id) and t.staff_id = $criteria.staff_id #end

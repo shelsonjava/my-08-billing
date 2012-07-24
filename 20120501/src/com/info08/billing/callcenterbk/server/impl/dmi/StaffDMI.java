@@ -19,7 +19,7 @@ import com.info08.billing.callcenterbk.shared.entity.StaffEducation;
 import com.info08.billing.callcenterbk.shared.entity.StaffFamousPeople;
 import com.info08.billing.callcenterbk.shared.entity.StaffLanguages;
 import com.info08.billing.callcenterbk.shared.entity.StaffPhones;
-import com.info08.billing.callcenterbk.shared.entity.StaffRelative09;
+import com.info08.billing.callcenterbk.shared.entity.StaffRelative;
 import com.info08.billing.callcenterbk.shared.entity.StaffWorks;
 import com.info08.billing.callcenterbk.shared.items.Address;
 import com.isomorphic.datasource.DSRequest;
@@ -352,33 +352,32 @@ public class StaffDMI implements QueryConstants {
 
 			/************************************************************************************/
 
-			Map<String, Map<String, String>> staffRelative09 = new TreeMap<String, Map<String, String>>();
-			staffRelative09 = (Map<String, Map<String, String>>) values
-					.get("preStaffRaltive09");
+			Map<String, Map<String, String>> staffRelative = new TreeMap<String, Map<String, String>>();
+			staffRelative = (Map<String, Map<String, String>>) values
+					.get("preStaffRaltive");
 
 			oracleManager
-					.createNativeQuery(
-							QueryConstants.Q_DELETE_STAFF_RELATIVE_09)
+					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_RELATIVE)
 					.setParameter(1, staff_id).executeUpdate();
 
-			if (staffRelative09 != null) {
-				Set<String> keys = staffRelative09.keySet();
+			if (staffRelative != null) {
+				Set<String> keys = staffRelative.keySet();
 				if (keys != null) {
 					for (String key : keys) {
-						Map<String, String> item = staffRelative09.get(key);
+						Map<String, String> item = staffRelative.get(key);
 						if (item != null) {
-							StaffRelative09 staffRelative09Item = new StaffRelative09();
-							staffRelative09Item.setStaff_id(staff_id);
-							staffRelative09Item
+							StaffRelative staffRelativeItem = new StaffRelative();
+							staffRelativeItem.setStaff_id(staff_id);
+							staffRelativeItem
 									.setLoggedUserName(loggedUserName);
-							staffRelative09Item.setFirst_name(item
+							staffRelativeItem.setFirst_name(item
 									.get("first_name"));
-							staffRelative09Item.setLast_name(item
+							staffRelativeItem.setLast_name(item
 									.get("last_name"));
-							staffRelative09Item.setPosition(item
+							staffRelativeItem.setPosition(item
 									.get("position"));
 
-							oracleManager.persist(staffRelative09Item);
+							oracleManager.persist(staffRelativeItem);
 
 						}
 					}
@@ -494,8 +493,7 @@ public class StaffDMI implements QueryConstants {
 					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_WORKS)
 					.setParameter(1, staff_id).executeUpdate();
 			oracleManager
-					.createNativeQuery(
-							QueryConstants.Q_DELETE_STAFF_RELATIVE_09)
+					.createNativeQuery(QueryConstants.Q_DELETE_STAFF_RELATIVE)
 					.setParameter(1, staff_id).executeUpdate();
 			oracleManager
 					.createNativeQuery(

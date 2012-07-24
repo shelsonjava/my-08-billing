@@ -32,7 +32,7 @@
 		<field name="preStaffPhones"			type="any"			title="preStaffPhones" 		hidden="true" />
 		<field name="preStaffWorks"				type="any"			title="preStaffWorks" 		hidden="true" />
 		<field name="physicalAddress"			type="any"			title="physicalAddress" 	hidden="true" />
-		<field name="preStaffRaltive09"			type="any"			title="preStaffRaltive09" 	hidden="true" />
+		<field name="preStaffRaltive"			type="any"			title="preStaffRaltive" 	hidden="true" />
 		<field name="preStaffFamousPeople"		type="any"			title="preStaffFamousPeople" 	hidden="true" />
 		
 		
