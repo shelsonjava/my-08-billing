@@ -65,7 +65,7 @@ public class TabAbonentNames extends Tab {
 			nameItem = new TextItem();
 			nameItem.setTitle("სახელი");
 			nameItem.setWidth(400);
-			nameItem.setName("name");
+			nameItem.setName("name_descr");
 
 			searchForm.setFields(nameItem);
 

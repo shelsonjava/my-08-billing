@@ -2409,61 +2409,6 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	// public ArrayList<LastName> fetchLastNames(DSRequest dsRequest)
-	// throws CallCenterException {
-	// PreparedStatement selectStmt = null;
-	// Connection connection = null;
-	// try {
-	// logger.info("getting lastnames ...");
-	//
-	// if (lastNames == null || lastNames.isEmpty()) {
-	// logger.info("getting lastnames from DB. ");
-	// lastNames = new TreeMap<Integer, LastName>();
-	// DataSource ds = DataSourceManager.get("CallSessDS");
-	// SQLDataSource sqlDS = (SQLDataSource) ds;
-	// connection = sqlDS.getConnection();
-	//
-	// selectStmt = connection.prepareStatement(Q_GET_LAST_NAMES_ALL);
-	// ResultSet rLastNames = selectStmt.executeQuery();
-	// while (rLastNames.next()) {
-	// LastName lastName = new LastName();
-	// Integer lastname_id = rLastNames.getInt(4);
-	// lastName.setDeleted(rLastNames.getInt(1));
-	// lastName.setDeletedText(rLastNames.getString(2));
-	// lastName.setLastname(rLastNames.getString(3));
-	// lastName.setLastname_Id(lastname_id);
-	// lastName.setRec_date(rLastNames.getTimestamp(5));
-	// lastNames.put(lastname_id, lastName);
-	// }
-	// }
-	// ArrayList<LastName> ret = new ArrayList<LastName>();
-	// ret.addAll(lastNames.values());
-	// return ret;
-	// } catch (Exception e) {
-	// if (e instanceof CallCenterException) {
-	// throw (CallCenterException) e;
-	// }
-	// logger.error("Error While Select LastNames From Database : ", e);
-	// throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-	// + e.toString());
-	// } finally {
-	// try {
-	// if (selectStmt != null) {
-	// selectStmt.close();
-	// }
-	// if (connection != null) {
-	// connection.close();
-	// }
-	// } catch (Exception e2) {
-	// logger.error("Error While Closing Connection : ", e2);
-	// throw new CallCenterException(
-	// "შეცდომა მონაცემების შენახვისას Ex: " + e2.toString());
-	// }
-	// }
-	// }
-
-	
-
 	@SuppressWarnings("rawtypes")
 	public Name addFirstName(DSRequest dsRequest) throws Exception {
 		EntityManager oracleManager = null;
@@ -2534,7 +2479,6 @@ public class CommonDMI implements QueryConstants {
 	 * @throws Exception
 	 */
 
-
 	@SuppressWarnings("rawtypes")
 	public Name updateFirstName(Map record) throws Exception {
 		EntityManager oracleManager = null;
@@ -2545,8 +2489,8 @@ public class CommonDMI implements QueryConstants {
 			transaction = EMF.getTransaction(oracleManager);
 
 			Long name_id = new Long(record.get("name_id").toString());
-			String name_descr = record.get("name_descr") == null ? null : record
-					.get("name_descr").toString();
+			String name_descr = record.get("name_descr") == null ? null
+					: record.get("name_descr").toString();
 			String loggedUserName = record.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
@@ -2601,7 +2545,6 @@ public class CommonDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	
 
 	@SuppressWarnings("rawtypes")
 	public Name removeFirstName(DSRequest dsRequest) throws Exception {
@@ -2612,8 +2555,8 @@ public class CommonDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long name_id = new Long(dsRequest.getOldValues()
-					.get("name_id").toString());
+			Long name_id = new Long(dsRequest.getOldValues().get("name_id")
+					.toString());
 			String loggedUserName = dsRequest.getOldValues()
 					.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
@@ -2664,8 +2607,6 @@ public class CommonDMI implements QueryConstants {
 			}
 		}
 	}
-
-
 
 	/**
 	 * Adding New LastName
@@ -2821,8 +2762,8 @@ public class CommonDMI implements QueryConstants {
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
-			Long lastname_id = new Long(dsRequest.getOldValues()
-					.get("lastname_id").toString());
+			Long familyname_id = new Long(dsRequest.getOldValues()
+					.get("familyname_id").toString());
 			String loggedUserName = dsRequest.getOldValues()
 					.get("loggedUserName").toString();
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
@@ -2830,12 +2771,12 @@ public class CommonDMI implements QueryConstants {
 					loggedUserName, "Removing lastname.");
 
 			FamilyNames lastNameObj = oracleManager.find(FamilyNames.class,
-					lastname_id);
+					familyname_id);
 			lastNameObj.setLoggedUserName(loggedUserName);
 
 			List result = oracleManager
 					.createNativeQuery(QueryConstants.Q_CHECK_LASTNAME_FK)
-					.setParameter(1, lastname_id).getResultList();
+					.setParameter(1, familyname_id).getResultList();
 			if (result != null && !result.isEmpty()) {
 				for (Object row : result) {
 					Object cols[] = (Object[]) row;
@@ -2852,7 +2793,7 @@ public class CommonDMI implements QueryConstants {
 			oracleManager.remove(lastNameObj);
 			oracleManager.flush();
 
-			lastNameObj = oracleManager.find(FamilyNames.class, lastname_id);
+			lastNameObj = oracleManager.find(FamilyNames.class, familyname_id);
 
 			EMF.commitTransaction(transaction);
 			log += ". Status Updating Finished SuccessFully. ";
@@ -2875,44 +2816,6 @@ public class CommonDMI implements QueryConstants {
 		}
 	}
 
-	// private LastName getLastName(Integer lastNameId, String loggedUserName,
-	// Connection connection) throws CallCenterException {
-	// PreparedStatement selectNote = null;
-	// try {
-	// String log = "Method:CommonDMI.getLastName. Params : 1. lastNameId = "
-	// + lastNameId + ", 2. loggedUserName = " + loggedUserName;
-	// selectNote = connection.prepareStatement(Q_GET_LAST_NAME_BY_ID);
-	// selectNote.setInt(1, lastNameId);
-	// ResultSet resultSetNote = selectNote.executeQuery();
-	// if (!resultSetNote.next()) {
-	// log += ". Result : Invalid LastName From Database: "
-	// + lastNameId;
-	// logger.info(log);
-	// throw new CallCenterException(
-	// "შეცდომა შენიშვნის ჩანაწერის წამოღებისას");
-	// }
-	// LastName existingRecord = new LastName();
-	// existingRecord.setLoggedUserName(loggedUserName);
-	// existingRecord.setLastname_id(new Long((resultSetNote.getInt(1))));
-	// existingRecord.setLastname(resultSetNote.getString(2));
-	// log += ". Result : getLastName Finished Successfully.";
-	// logger.info(log);
-	// return existingRecord;
-	// } catch (Exception e) {
-	// logger.error("Error While Retrieving LastNames : ", e);
-	// throw new CallCenterException(
-	// "შეცდომა მონაცემების წამოღებისას მონაცემთა ბაზიდან: "
-	// + e.toString());
-	// } finally {
-	// try {
-	// if (selectNote != null) {
-	// selectNote.close();
-	// }
-	// } catch (Exception e2) {
-	// e2.printStackTrace();
-	// }
-	// }
-	// }
 
 	/**
 	 * Update LastName Status

@@ -24,12 +24,12 @@ public class DlgAddEditLastName extends Window {
 	private TextItem lastNameItem;
 	private DynamicForm form;
 
-	public DlgAddEditLastName(final Integer lastNameId, String lastName,
-			final DataSource lastNameDS) {
+	public DlgAddEditLastName(final Integer familyname_id, String lastName,
+			final DataSource FamilyNameDS) {
 
 		setWidth(400);
 		setHeight(130);
-		setTitle(lastNameId == null ? "ახალი გვარი" : "გვარის შესწორება");
+		setTitle(familyname_id == null ? "ახალი გვარი" : "გვარის შესწორება");
 		setShowMinimizeButton(false);
 		setIsModal(true);
 		setShowModalMask(true);
@@ -49,7 +49,7 @@ public class DlgAddEditLastName extends Window {
 		form.setWidth100();
 		form.setTitleWidth(80);
 		form.setNumCols(2);
-		form.setDataSource(lastNameDS);
+		form.setDataSource(FamilyNameDS);
 
 		lastNameItem = new TextItem();
 		lastNameItem.setTitle("გვარი");
@@ -58,13 +58,13 @@ public class DlgAddEditLastName extends Window {
 		lastNameItem.setWidth("100%");
 
 		HiddenItem lastNameIdItem = null;
-		if (lastNameId != null) {
+		if (familyname_id != null) {
 			lastNameIdItem = new HiddenItem();
-			lastNameIdItem.setValue(lastNameId);
-			lastNameIdItem.setName("lastname_id");
+			lastNameIdItem.setValue(familyname_id);
+			lastNameIdItem.setName("familyname_id");
 			lastNameIdItem.setVisible(false);
 		}
-		if (lastNameId == null) {
+		if (familyname_id == null) {
 			form.setFields(lastNameItem);
 		} else {
 			form.setFields(lastNameItem, lastNameIdItem);
@@ -98,22 +98,22 @@ public class DlgAddEditLastName extends Window {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					String lastName = lastNameItem.getValueAsString();
-					if (lastName == null || lastName.trim().equals("")) {
+					String familyname = lastNameItem.getValueAsString();
+					if (familyname == null || familyname.trim().equals("")) {
 						SC.say("ცარიელი გვარის შენახვა შეუძლებელია!");
 						return;
 					}
 					com.smartgwt.client.rpc.RPCManager.startQueue();
 					Record record = new Record();
-					record.setAttribute("lastname", lastName);
-					record.setAttribute("lastname_id", lastNameId);
+					record.setAttribute("familyname", familyname);
+					record.setAttribute("familyname_id", familyname_id);
 					record.setAttribute("loggedUserName", CommonSingleton
 							.getInstance().getSessionPerson().getUser_name());
 
 					DSRequest req = new DSRequest();
-					if (lastNameId == null) {
+					if (familyname_id == null) {
 						req.setAttribute("operationId", "addLastName");
-						lastNameDS.addData(record, new DSCallback() {
+						FamilyNameDS.addData(record, new DSCallback() {
 							@Override
 							public void execute(DSResponse response,
 									Object rawData, DSRequest request) {
@@ -122,7 +122,7 @@ public class DlgAddEditLastName extends Window {
 						}, req);
 					} else {
 						req.setAttribute("operationId", "updateLastName");
-						lastNameDS.updateData(record, new DSCallback() {
+						FamilyNameDS.updateData(record, new DSCallback() {
 							@Override
 							public void execute(DSResponse response,
 									Object rawData, DSRequest request) {

@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 public class TabAbonentLastNames extends Tab {
 
 	private VLayout mainLayout;
-	private DataSource lastNameDS;
+	private DataSource FamilyNameDS;
 	private DynamicForm searchForm;
 	private TextItem lastNameItem;
 	private IButton findButton;
@@ -49,7 +49,7 @@ public class TabAbonentLastNames extends Tab {
 			setTitle("აბონენტების გვარების მართვა");
 			setCanClose(true);
 
-			lastNameDS = DataSource.get("LastNameDS");
+			FamilyNameDS = DataSource.get("FamilyNameDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -66,7 +66,7 @@ public class TabAbonentLastNames extends Tab {
 			lastNameItem = new TextItem();
 			lastNameItem.setTitle("გვარი");
 			lastNameItem.setWidth("100%");
-			lastNameItem.setName("lastname");
+			lastNameItem.setName("familyname");
 
 			searchForm.setFields(lastNameItem);
 
@@ -113,13 +113,13 @@ public class TabAbonentLastNames extends Tab {
 			exportButton.setWidth(50);
 			toolStrip.addButton(exportButton);
 
-			ListGridField lastName = new ListGridField("lastname", "გვარი");
+			ListGridField lastName = new ListGridField("familyname", "გვარი");
 
 			final ListGrid lastNamesGrid = new ListGrid();
 			lastNamesGrid.setWidth(530);
 			lastNamesGrid.setHeight100();
 			lastNamesGrid.setAlternateRecordStyles(true);
-			lastNamesGrid.setDataSource(lastNameDS);
+			lastNamesGrid.setDataSource(FamilyNameDS);
 			lastNamesGrid.setAutoFetchData(false);
 			lastNamesGrid.setShowFilterEditor(false);
 			lastNamesGrid.setCanEdit(false);
@@ -163,7 +163,7 @@ public class TabAbonentLastNames extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					DlgAddEditLastName dlgAddEditLastName = new DlgAddEditLastName(
-							null, "", lastNameDS);
+							null, "", FamilyNameDS);
 					dlgAddEditLastName.show();
 				}
 			});
@@ -176,16 +176,16 @@ public class TabAbonentLastNames extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
 						return;
 					}
-					Integer lastname_id = listGridRecord
-							.getAttributeAsInt("lastname_id");
-					if (lastname_id == null) {
+					Integer familyname_id = listGridRecord
+							.getAttributeAsInt("familyname_id");
+					if (familyname_id == null) {
 						SC.say("არასწორი ჩანაწერი");
 						return;
 					}
 					String lastName = listGridRecord
-							.getAttributeAsString("lastname");
+							.getAttributeAsString("familyname");
 					DlgAddEditLastName dlgAddEditLastName = new DlgAddEditLastName(
-							lastname_id, lastName, lastNameDS);
+							familyname_id, lastName, FamilyNameDS);
 					dlgAddEditLastName.show();
 				}
 			});
@@ -211,9 +211,9 @@ public class TabAbonentLastNames extends Tab {
 													.startQueue();
 											Record record = new Record();
 											record.setAttribute(
-													"lastname_id",
+													"familyname_id",
 													listGridRecord
-															.getAttributeAsInt("lastname_id"));
+															.getAttributeAsInt("familyname_id"));
 											record.setAttribute(
 													"loggedUserName",
 													CommonSingleton

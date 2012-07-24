@@ -1,5 +1,5 @@
 <DataSource
-	ID="LastNameDS"
+	ID="FamilyNameDS"
 	serverType="sql"
 	tableName="familyname"
 	qualifyColumnNames="false">

@@ -1003,10 +1003,10 @@ public interface QueryConstants {
 
 	// Herio bichebo
 	public static final String Q_GET_FIRST_NAME_COUNT = " select count(1) from names t where t.name_descr = ? ";
-	public static final String Q_GET_LAST_NAME_COUNT = " select count(1) from lastnames t where t.lastname = ? ";
+	public static final String Q_GET_LAST_NAME_COUNT = " select count(1) from familynames t where t.familyname = ? ";
 	public static final String Q_GET_FIRST_NAME_COUNT_ALL = " select count(1) from names t ";
 	public static final String Q_GET_FIRST_NAMES_ALL = " select t.name_descr, t.name_id from names t order by t.name_descr ";
-	public static final String Q_GET_LAST_NAMES_ALL = " select t.deleted,decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText,t.lastname, t.lastname_id,t.rec_date from lastnames t where t.deleted=0 order by t.lastname ";
+	public static final String Q_GET_LAST_NAMES_ALL = " select t.deleted,decode(t.deleted, 0, 'აქტიური', 'გაუქმებული') as deletedText,t.lastname, t.familyname_id,t.rec_date from lastnames t where t.deleted=0 order by t.lastname ";
 	public static final String Q_GET_DEPARTMENTS = " select * from departments t order by 1 ";
 	public static final String Q_GET_USER_PERMISSIONS = " select t.permission_id from user_permission t where t.user_id = ? ";
 	public static final String Q_DELETE_USER_PERMISSIONS = " delete from user_permission t where t.user_id = ? ";
@@ -1021,10 +1021,10 @@ public interface QueryConstants {
 			+ "from names t\n"
 			+ "where t.firstname_id = ? ";
 
-	public static final String Q_GET_LAST_NAME_BY_ID = "select t.lastname_id,\n"
+	public static final String Q_GET_LAST_NAME_BY_ID = "select t.familyname_id,\n"
 			+ "       t.lastname \n"
-			+ "from lastnames t\n"
-			+ "where t.lastname_id = ? ";
+			+ "from familynames t\n"
+			+ "where t.familyname_id = ? ";
 
 	public static final String Q_GET_STREET_BY_ID = "select\n"
 			+ "  t.town_id,\n" + "  t.street_id,\n" + "  t.street_name,\n"
@@ -1088,10 +1088,10 @@ public interface QueryConstants {
 			+ "where t.note_id = ? ";
 
 	public static final String Q_UPDATE_FIRST_NAME = "update names t set t.firstname = ?, t.upd_user = ? where t.firstname_id = ? ";
-	public static final String Q_UPDATE_LAST_NAME = "update lastnames t set t.lastname = ?, t.upd_user = ? where t.lastname_id = ? ";
+	public static final String Q_UPDATE_LAST_NAME = "update familynames t set t.familyname = ?, t.upd_user = ? where t.familyname_id = ? ";
 
 	public static final String Q_UPDATE_FIRST_NAME_STATUS = "update names t set t.deleted = ? , t.upd_user = ? where t.firstname_id = ? ";
-	public static final String Q_UPDATE_LAST_NAME_STATUS = "update lastnames t set t.deleted = ? , t.upd_user = ? where t.lastname_id = ? ";
+	public static final String Q_UPDATE_LAST_NAME_STATUS = "update lastnames t set t.deleted = ? , t.upd_user = ? where t.familyname_id = ? ";
 
 	public static final String Q_UPDATE_LOCK_STATUS = " update call_record_lock t set t.LOCK_STATUS = 1 where t.CALL_SESSION = ? ";
 

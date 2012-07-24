@@ -129,9 +129,9 @@ public class TabSubscriber extends Tab {
 			lastNameItem.setTitle(CallCenterBK.constants.lastName());
 			lastNameItem.setName("family_name_id");
 			lastNameItem.setWidth(200);
-			ClientUtils.fillCombo(lastNameItem, "LastNameDS",
-					"searchLastNamesFromDBCustomForCombos", "lastname_id",
-					"lastname");
+			ClientUtils.fillCombo(lastNameItem, "FamilyNameDS",
+					"searchLastNamesFromDBCustomForCombos", "familyname_id",
+					"familyname");
 			columnMap.put("family_name_id", "family_name");
 
 			phoneItem = new TextItem();
