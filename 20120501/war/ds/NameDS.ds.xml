@@ -1,11 +1,11 @@
 <DataSource
-	ID="FirstNameDS"
+	ID="NameDS"
 	serverType="sql"
-	tableName="firstnames"
+	tableName="names"
 	qualifyColumnNames="false">
 	<fields>
-		<field name="firstname_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
-		<field name="firstname"			type="text" 	title="Firstname"/>		
+		<field name="name_id"		type="integer"	title="ID"	hidden="true" primaryKey="true" />
+		<field name="name_descr"			type="text" 	title="name_descr"/>		
 	</fields>
 	
 	<operationBindings>
@@ -29,34 +29,34 @@
 	
 		<operationBinding operationId="searchFromDB" operationType="fetch">
     		<selectClause>   			
-    			t.firstname_id,
-    			t.firstname
+    			t.name_id,
+    			t.name_descr
 			</selectClause> 
-			<tableClause>firstnames t</tableClause>
+			<tableClause>names t</tableClause>
 			<whereClause><![CDATA[ 
 				1 = 1
-				#if($criteria.firstname) AND t.firstname like ($criteria.firstname)||'%' #end
+				#if($criteria.name_descr) AND t.name_descr like ($criteria.name_descr)||'%' #end
 				]]>  
 			</whereClause> 
     	</operationBinding>    	
     	<operationBinding operationId="searchFromDB1" operationType="fetch">
     		<selectClause>   			
-    			t.firstname_id,
-    			t.firstname
+    			t.name_id,
+    			t.name_descr
 			</selectClause> 
-			<tableClause>firstnames t</tableClause>
+			<tableClause>names t</tableClause>
 			<whereClause><![CDATA[ 
 				1 = 1
-				#if($criteria.firstname) AND t.firstname like ($criteria.firstname)||'%' #end
+				#if($criteria.name_descr) AND t.name_descr like ($criteria.name_descr)||'%' #end
 				]]>  
 			</whereClause> 
     	</operationBinding> 	
 		<operationBinding operationId="searchFNamesFromDBCustomForCombos" operationType="fetch">
     		<selectClause>   			
-    			t.firstname_id,
-    			t.firstname
+    			t.name_id,
+    			t.name_descr
 			</selectClause> 
-			<tableClause>firstnames t</tableClause>	
+			<tableClause>names t</tableClause>	
 			<whereClause>
 				($defaultWhereClause) 
 			</whereClause>			

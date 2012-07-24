@@ -75,7 +75,7 @@
     			l.lastname as lastname,
     			t.phone
 			</selectClause> 
-			<tableClause>phone_numbers t,subscriber_to_phones sp,subscribers a, firstnames f, lastnames l</tableClause>
+			<tableClause>phone_numbers t,subscriber_to_phones sp,subscribers a, names f, lastnames l</tableClause>
 			<whereClause><![CDATA[ 
 				 t.phone_number_id = sp.phone_number_id
 			     and sp.subscriber_id = a.subscriber_id

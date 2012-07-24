@@ -156,7 +156,7 @@
 			</selectClause> 
 			<tableClause>corp_client_bill t, corporate_clients c, organizations mo </tableClause>
 			<whereClause><![CDATA[
-				 t.contractor_id = c.corporate_client_id and c.organization_id = mo.organization_id
+				 t.corporate_client_id = c.corporate_client_id and c.organization_id = mo.organization_id
 				 and t.ym = $criteria.ym
 				 #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end	
 				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end			 
@@ -177,7 +177,7 @@
 			</selectClause> 
 			<tableClause> corp_client_bill_items bi, corporate_clients c, organizations mo, BILLING_COMPANIES tc, service_prices s </tableClause>
 			<whereClause><![CDATA[
-				 bi.contractor_id = c.corporate_client_id and c.organization_id = mo.organization_id and 
+				 bi.corporate_client_id = c.corporate_client_id and c.organization_id = mo.organization_id and 
 				 bi.billing_company_id = tc.billing_company_id and  bi.service_id = s.service_price_id  and bi.ym = $criteria.ym
 				 #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end				 
 				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end
