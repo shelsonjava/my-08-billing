@@ -78,9 +78,9 @@ public class DlgAddEditTranspStation extends Window {
 		transpTypeItem.setFilterLocally(false);
 		transpTypeItem.setAddUnknownValues(false);
 
-		DataSource firstNamesDS = DataSource.get("TranspTypeDS");
+		DataSource TranspTypeDS = DataSource.get("TranspTypeDS");
 		transpTypeItem.setOptionOperationId("searchAllTransportTypesForCombos");
-		transpTypeItem.setOptionDataSource(firstNamesDS);
+		transpTypeItem.setOptionDataSource(TranspTypeDS);
 		transpTypeItem.setValueField("transp_type_id");
 		transpTypeItem.setDisplayField("name_descr");
 

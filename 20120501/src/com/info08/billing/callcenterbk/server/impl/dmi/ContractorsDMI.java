@@ -608,7 +608,7 @@ public class ContractorsDMI implements QueryConstants {
 			StringBuilder log = new StringBuilder(
 					"Checking Contractor Blocking ... \n");
 			if (contract == null || contract.getCorporate_client_id() == null) {
-				log.append("Result : Contract Or ContractId Is Null. \n");
+				log.append("Result : Contract Or corporate_client_id Is Null. \n");
 				logger.info(log.toString());
 				return;
 			}

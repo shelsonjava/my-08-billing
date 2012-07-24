@@ -13,40 +13,40 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "FIRSTNAMES")
-public class FirstName implements Serializable {
+@Table(name = "FAMILYNAMES")
+public class FamilyName implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "SEQ_FIRSTNAME_GENERATOR", sequenceName = "SEQ_FIRSTNAME")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FIRSTNAME_GENERATOR")
-	@Column(name = "FIRSTNAME_ID")
-	private Long firstname_id;
+	@SequenceGenerator(name = "SEQ_LASTNAME_GENERATOR", sequenceName = "SEQ_LASTNAME")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_LASTNAME_GENERATOR")
+	@Column(name = "FAMILYNAME_ID")
+	private Long familyname_id;
 
 	@Basic
-	@Column(name = "FIRSTNAME")
-	private String firstname;
+	@Column(name = "FAMILYNAME")
+	private String familyname;
 
 	@Transient
 	private String loggedUserName;
 
-	public FirstName() {
+	public FamilyName() {
 	}
 
-	public Long getFirstname_id() {
-		return firstname_id;
+	public Long getFamilyname_id() {
+		return familyname_id;
 	}
 
-	public void setFirstname_id(Long firstname_id) {
-		this.firstname_id = firstname_id;
+	public void setFamilyname_id(Long familyname_id) {
+		this.familyname_id = familyname_id;
 	}
 
-	public String getFirstname() {
-		return firstname;
+	public String getFamilyname() {
+		return familyname;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setFamilyname(String familyname) {
+		this.familyname = familyname;
 	}
 
 	public String getLoggedUserName() {

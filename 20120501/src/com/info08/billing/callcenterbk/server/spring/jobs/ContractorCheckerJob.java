@@ -53,12 +53,12 @@ public class ContractorCheckerJob extends TimerTask {
 						"Checking Contract.");
 
 				for (CorpClientBlockChecker blockChecker : list) {
-					Long contractId = blockChecker.getCorporate_client_id();
-					if (contractId == null) {
+					Long corporate_client_id = blockChecker.getCorporate_client_id();
+					if (corporate_client_id == null) {
 						continue;
 					}
 					CorporateClient contract = oracleManager.find(
-							CorporateClient.class, contractId);
+							CorporateClient.class, corporate_client_id);
 					if (contract == null) {
 						continue;
 					}
