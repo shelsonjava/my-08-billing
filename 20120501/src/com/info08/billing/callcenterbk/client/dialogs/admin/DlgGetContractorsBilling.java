@@ -151,7 +151,7 @@ public class DlgGetContractorsBilling extends Window {
 			if (genBill) {
 				Record record = new Record();
 				record.setAttribute("ym", ym);
-				record.setAttribute("contrac_id", 123123123);
+				record.setAttribute("corporate_client_id", 123123123);
 
 				DSRequest dsRequest = new DSRequest();
 				dsRequest.setOperationId("getContractorsBilling1");

@@ -24,12 +24,12 @@ public class DlgAddEditFirstName extends Window {
 	private TextItem firstNameItem;
 	private DynamicForm form;
 
-	public DlgAddEditFirstName(final Integer firstNameId, String firstName,
-			final DataSource firstNameDS) {
+	public DlgAddEditFirstName(final Integer name_id, String firstName,
+			final DataSource NameDS) {
 
 		setWidth(400);
 		setHeight(130);
-		setTitle(firstNameId == null ? "ახალი სახელი" : "სახელის შესწორება");
+		setTitle(name_id == null ? "ახალი სახელი" : "სახელის შესწორება");
 		setShowMinimizeButton(false);
 		setIsModal(true);
 		setShowModalMask(true);
@@ -49,7 +49,7 @@ public class DlgAddEditFirstName extends Window {
 		form.setWidth100();
 		form.setTitleWidth(80);
 		form.setNumCols(2);
-		form.setDataSource(firstNameDS);
+		form.setDataSource(NameDS);
 
 		firstNameItem = new TextItem();
 		firstNameItem.setTitle("სახელი");
@@ -58,13 +58,13 @@ public class DlgAddEditFirstName extends Window {
 		firstNameItem.setWidth("100%");
 
 		HiddenItem firstNameIdItem = null;
-		if (firstNameId != null) {
+		if (name_id != null) {
 			firstNameIdItem = new HiddenItem();
-			firstNameIdItem.setValue(firstNameId);
+			firstNameIdItem.setValue(name_id);
 			firstNameIdItem.setName("firstname_id");
 			firstNameIdItem.setVisible(false);
 		}
-		if (firstNameId == null) {
+		if (name_id == null) {
 			form.setFields(firstNameItem);
 		} else {
 			form.setFields(firstNameItem, firstNameIdItem);
@@ -98,22 +98,22 @@ public class DlgAddEditFirstName extends Window {
 			@Override
 			public void onClick(ClickEvent event) {
 				try {
-					String firstName = firstNameItem.getValueAsString();
-					if (firstName == null || firstName.trim().equals("")) {
+					String name_descr = firstNameItem.getValueAsString();
+					if (name_descr == null || name_descr.trim().equals("")) {
 						SC.say("ცარიელი სახელის შენახვა შეუძლებელია!");
 						return;
 					}
 					com.smartgwt.client.rpc.RPCManager.startQueue();
 					Record record = new Record();
-					record.setAttribute("firstname", firstName);
-					record.setAttribute("firstname_id", firstNameId);
+					record.setAttribute("name_descr", name_descr);
+					record.setAttribute("name_id", name_id);
 					record.setAttribute("loggedUserName", CommonSingleton
 							.getInstance().getSessionPerson().getUser_name());
 
 					DSRequest req = new DSRequest();
-					if (firstNameId == null) {
+					if (name_id == null) {
 						req.setAttribute("operationId", "addFirstName");
-						firstNameDS.addData(record, new DSCallback() {
+						NameDS.addData(record, new DSCallback() {
 							@Override
 							public void execute(DSResponse response,
 									Object rawData, DSRequest request) {
@@ -122,7 +122,7 @@ public class DlgAddEditFirstName extends Window {
 						}, req);
 					} else {
 						req.setAttribute("operationId", "updateFirstName");
-						firstNameDS.updateData(record, new DSCallback() {
+						NameDS.updateData(record, new DSCallback() {
 							@Override
 							public void execute(DSResponse response,
 									Object rawData, DSRequest request) {

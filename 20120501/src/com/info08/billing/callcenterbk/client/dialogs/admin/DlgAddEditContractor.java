@@ -887,12 +887,12 @@ public class DlgAddEditContractor extends Window {
 				}
 			}
 
-			Integer pcontract_id = null;
+			Integer pcorporate_client_id = null;
 
 			Record record = new Record();
 			if (editRecord != null) {
-				pcontract_id = editRecord.getAttributeAsInt("corporate_client_id");
-				record.setAttribute("corporate_client_id", pcontract_id);
+				pcorporate_client_id = editRecord.getAttributeAsInt("corporate_client_id");
+				record.setAttribute("corporate_client_id", pcorporate_client_id);
 			}
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();

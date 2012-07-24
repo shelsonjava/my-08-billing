@@ -121,9 +121,9 @@ public class TabSubscriber extends Tab {
 			firstNameItem.setTitle(CallCenterBK.constants.name());
 			firstNameItem.setName("name_id");
 			firstNameItem.setWidth(200);
-			ClientUtils.fillCombo(firstNameItem, "FirstNameDS",
-					"searchFNamesFromDBCustomForCombos", "firstname_id",
-					"firstname");
+			ClientUtils.fillCombo(firstNameItem, "NameDS",
+					"searchFNamesFromDBCustomForCombos", "name_id",
+					"name_descr");
 			columnMap.put("name_id", "name");
 			lastNameItem = new ComboBoxItem();
 			lastNameItem.setTitle(CallCenterBK.constants.lastName());

@@ -33,9 +33,9 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 public class TabAbonentNames extends Tab {
 
 	private VLayout mainLayout;
-	private DataSource firstNameDS;
+	private DataSource NameDS;
 	private DynamicForm searchForm;
-	private TextItem firstNameItem;
+	private TextItem nameItem;
 	private IButton findButton;
 	private IButton clearButton;
 	private ToolStripButton addFirstNameBtn;
@@ -48,7 +48,7 @@ public class TabAbonentNames extends Tab {
 			setTitle("აბონენტების სახელების მართვა");
 			setCanClose(true);
 
-			firstNameDS = DataSource.get("FirstNameDS");
+			NameDS = DataSource.get("NameDS");
 
 			mainLayout = new VLayout(5);
 			mainLayout.setWidth100();
@@ -62,12 +62,12 @@ public class TabAbonentNames extends Tab {
 			searchForm.setNumCols(1);
 			mainLayout.addMember(searchForm);
 
-			firstNameItem = new TextItem();
-			firstNameItem.setTitle("სახელი");
-			firstNameItem.setWidth(400);
-			firstNameItem.setName("firstname");
+			nameItem = new TextItem();
+			nameItem.setTitle("სახელი");
+			nameItem.setWidth(400);
+			nameItem.setName("name");
 
-			searchForm.setFields(firstNameItem);
+			searchForm.setFields(nameItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(540);
@@ -112,27 +112,27 @@ public class TabAbonentNames extends Tab {
 			exportButton.setWidth(50);
 			toolStrip.addButton(exportButton);
 
-			ListGridField firstName = new ListGridField("firstname", "სახელი");
+			ListGridField name_descr = new ListGridField("name_descr", "სახელი");
 
-			final ListGrid firstNamesGrid = new ListGrid();
-			firstNamesGrid.setWidth(530);
-			firstNamesGrid.setHeight100();
-			firstNamesGrid.setAlternateRecordStyles(true);
-			firstNamesGrid.setDataSource(firstNameDS);
-			firstNamesGrid.setAutoFetchData(false);
-			firstNamesGrid.setShowFilterEditor(false);
-			firstNamesGrid.setCanEdit(false);
-			firstNamesGrid.setCanRemoveRecords(false);
-			firstNamesGrid.setFetchOperation("searchFromDB");
-			firstNamesGrid.setFields(firstName);
+			final ListGrid namesGrid = new ListGrid();
+			namesGrid.setWidth(530);
+			namesGrid.setHeight100();
+			namesGrid.setAlternateRecordStyles(true);
+			namesGrid.setDataSource(NameDS);
+			namesGrid.setAutoFetchData(false);
+			namesGrid.setShowFilterEditor(false);
+			namesGrid.setCanEdit(false);
+			namesGrid.setCanRemoveRecords(false);
+			namesGrid.setFetchOperation("searchFromDB");
+			namesGrid.setFields(name_descr);
 
-			mainLayout.addMember(firstNamesGrid);
+			mainLayout.addMember(namesGrid);
 
 			findButton.addClickHandler(new ClickHandler() {
 
 				@Override
 				public void onClick(ClickEvent event) {
-					search(firstNamesGrid);
+					search(namesGrid);
 				}
 			});
 
@@ -140,14 +140,14 @@ public class TabAbonentNames extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					searchForm.clearValues();
-					firstNamesGrid.clearCriteria();
+					namesGrid.clearCriteria();
 				}
 			});
-			firstNameItem.addKeyPressHandler(new KeyPressHandler() {
+			nameItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
-						search(firstNamesGrid);
+						search(namesGrid);
 					}
 				}
 			});
@@ -156,29 +156,29 @@ public class TabAbonentNames extends Tab {
 				@Override
 				public void onClick(ClickEvent event) {
 					DlgAddEditFirstName dlgAddEditFirstName = new DlgAddEditFirstName(
-							null, "", firstNameDS);
+							null, "", NameDS);
 					dlgAddEditFirstName.show();
 				}
 			});
 			editFirstiNameBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = firstNamesGrid
+					ListGridRecord listGridRecord = namesGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
 						return;
 					}
-					Integer firstname_id = listGridRecord
-							.getAttributeAsInt("firstname_id");
-					if (firstname_id == null) {
+					Integer name_id = listGridRecord
+							.getAttributeAsInt("name_id");
+					if (name_id == null) {
 						SC.say("არასწორი ჩანაწერი");
 						return;
 					}
-					String firstiName = listGridRecord
-							.getAttributeAsString("firstname");
+					String name_descr = listGridRecord
+							.getAttributeAsString("name_descr");
 					DlgAddEditFirstName dlgAddEditFirstName = new DlgAddEditFirstName(
-							firstname_id, firstiName, firstNameDS);
+							name_id, name_descr, NameDS);
 					dlgAddEditFirstName.show();
 				}
 			});
@@ -186,7 +186,7 @@ public class TabAbonentNames extends Tab {
 			deleteFirstNameBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					final ListGridRecord listGridRecord = firstNamesGrid
+					final ListGridRecord listGridRecord = namesGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
@@ -205,9 +205,9 @@ public class TabAbonentNames extends Tab {
 													.startQueue();
 											Record record = new Record();
 											record.setAttribute(
-													"firstname_id",
+													"name_id",
 													listGridRecord
-															.getAttributeAsInt("firstname_id"));
+															.getAttributeAsInt("name_id"));
 											record.setAttribute(
 													"loggedUserName",
 													CommonSingleton
@@ -218,7 +218,7 @@ public class TabAbonentNames extends Tab {
 											DSRequest req = new DSRequest();
 											req.setAttribute("operationId",
 													"removeFirstName");
-											firstNamesGrid.removeData(record,
+											namesGrid.removeData(record,
 													new DSCallback() {
 														@Override
 														public void execute(
@@ -248,7 +248,7 @@ public class TabAbonentNames extends Tab {
 					dsRequestProperties
 							.setExportDisplay(ExportDisplay.DOWNLOAD);
 					dsRequestProperties.setOperationId("searchFromDB");
-					firstNamesGrid.exportData(dsRequestProperties);
+					namesGrid.exportData(dsRequestProperties);
 				}
 			});
 			setPane(mainLayout);

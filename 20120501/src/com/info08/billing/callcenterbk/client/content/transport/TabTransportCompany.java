@@ -88,10 +88,10 @@ public class TabTransportCompany extends Tab {
 			transportTypeItem.setFilterLocally(false);
 			transportTypeItem.setAddUnknownValues(false);
 
-			DataSource firstNamesDS = DataSource.get("TranspTypeDS");
+			DataSource TranspTypeDS = DataSource.get("TranspTypeDS");
 			transportTypeItem
 					.setOptionOperationId("searchAllTransportTypesForCombos");
-			transportTypeItem.setOptionDataSource(firstNamesDS);
+			transportTypeItem.setOptionDataSource(TranspTypeDS);
 			transportTypeItem.setValueField("transp_type_id");
 			transportTypeItem.setDisplayField("name_descr");
 

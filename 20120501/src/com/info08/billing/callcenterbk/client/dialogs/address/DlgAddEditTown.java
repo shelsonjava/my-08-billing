@@ -111,9 +111,9 @@ public class DlgAddEditTown extends Window {
 		townTypeItem.setFilterLocally(false);
 		townTypeItem.setAddUnknownValues(false);
 
-		DataSource firstNamesDS = DataSource.get("DescriptionsDS");
+		DataSource DescriptionsDS = DataSource.get("DescriptionsDS");
 		townTypeItem.setOptionOperationId("searchDescriptionsOrderById");
-		townTypeItem.setOptionDataSource(firstNamesDS);
+		townTypeItem.setOptionDataSource(DescriptionsDS);
 		townTypeItem.setValueField("description_id");
 		townTypeItem.setDisplayField("description");
 
