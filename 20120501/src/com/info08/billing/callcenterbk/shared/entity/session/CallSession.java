@@ -81,6 +81,10 @@ public class CallSession implements Serializable {
 	@Basic
 	@Column(name="YEAR_MONTH")
 	private Long year_month;
+	
+	@Basic
+	@Column(name="OPERATOR_SRC")
+	private String operator_src;
 
     public CallSession() {
     }
@@ -179,5 +183,13 @@ public class CallSession implements Serializable {
 
 	public void setYear_month(Long year_month) {
 		this.year_month = year_month;
+	}
+
+	public String getOperator_src() {
+		return operator_src;
+	}
+
+	public void setOperator_src(String operator_src) {
+		this.operator_src = operator_src;
 	}
 }

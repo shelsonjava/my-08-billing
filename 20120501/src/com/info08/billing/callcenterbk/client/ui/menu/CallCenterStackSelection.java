@@ -42,6 +42,27 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class CallCenterStackSelection extends SectionStackSection {
 
+	private IButton iButtonOrg = null;
+	private IButton iButtonAbFind = null;
+	private IButton iButtonCodes = null;
+	private IButton iButtonTransport = null;
+	private IButton iButtonCityTransp = null;
+	private IButton iButtonPoster = null;
+	private IButton iButtonValute = null;
+	private IButton iButtonStreets = null;
+	private IButton iButtonRegInd = null;
+	private IButton iButtonFindByNum = null;
+	private IButton iButtonCityDist = null;
+	private IButton iButtonExactTime = null;
+	private IButton iButtonCalendar = null;
+	private IButton iButtonWeb = null;
+	private IButton iButtonSport = null;
+	private IButton iButtonWiki = null;
+	private IButton iButtonWeather = null;
+	private IButton iButtonNews = null;
+	private IButton iButtonSchedule = null;
+	private IButton iButtonTest = null;
+
 	public CallCenterStackSelection(final Body body) {
 		setTitle(CallCenterBK.constants.callCenterActions());
 		setExpanded(false);
@@ -52,103 +73,103 @@ public class CallCenterStackSelection extends SectionStackSection {
 		vLayout.setHeight100();
 		vLayout.setPadding(10);
 
-		IButton iButtonOrg = new IButton();
+		iButtonOrg = new IButton();
 		iButtonOrg.setTitle(CallCenterBK.constants.organization());
 		iButtonOrg.setIcon("organization.gif");
 		iButtonOrg.setWidth100();
 		iButtonOrg.setAlign(Alignment.LEFT);
 
-		IButton iButtonAbFind = new IButton();
+		iButtonAbFind = new IButton();
 		iButtonAbFind.setTitle(CallCenterBK.constants.abonentFind());
 		iButtonAbFind.setIcon("person.png");
 		iButtonAbFind.setWidth100();
 		iButtonAbFind.setAlign(Alignment.LEFT);
 
-		IButton iButtonCodes = new IButton();
+		iButtonCodes = new IButton();
 		iButtonCodes.setTitle(CallCenterBK.constants.codes());
 		iButtonCodes.setIcon("index.jpg");
 		iButtonCodes.setWidth100();
 		iButtonCodes.setAlign(Alignment.LEFT);
 
-		IButton iButtonTransport = new IButton();
+		iButtonTransport = new IButton();
 		iButtonTransport.setTitle(CallCenterBK.constants.transport());
 		iButtonTransport.setIcon("bus.gif");
 		iButtonTransport.setWidth100();
 		iButtonTransport.setAlign(Alignment.LEFT);
 
-		IButton iButtonCityTransp = new IButton();
+		iButtonCityTransp = new IButton();
 		iButtonCityTransp.setTitle(CallCenterBK.constants.tbilisiTransport());
 		iButtonCityTransp.setIcon("bus.gif");
 		iButtonCityTransp.setWidth100();
 		iButtonCityTransp.setAlign(Alignment.LEFT);
 
-		IButton iButtonPoster = new IButton();
+		iButtonPoster = new IButton();
 		iButtonPoster.setTitle(CallCenterBK.constants.poster());
 		iButtonPoster.setIcon("entertainment.png");
 		iButtonPoster.setWidth100();
 		iButtonPoster.setAlign(Alignment.LEFT);
 
-		IButton iButtonValute = new IButton();
+		iButtonValute = new IButton();
 		iButtonValute.setTitle(CallCenterBK.constants.valute());
 		iButtonValute.setIcon("currency.png");
 		iButtonValute.setWidth100();
 		iButtonValute.setAlign(Alignment.LEFT);
 
-		IButton iButtonStreets = new IButton();
+		iButtonStreets = new IButton();
 		iButtonStreets.setTitle(CallCenterBK.constants.streetsFind());
 		iButtonStreets.setIcon("street.png");
 		iButtonStreets.setWidth100();
 		iButtonStreets.setAlign(Alignment.LEFT);
 
-		IButton iButtonRegInd = new IButton();
+		iButtonRegInd = new IButton();
 		iButtonRegInd.setTitle(CallCenterBK.constants.regIndexes());
 		iButtonRegInd.setIcon("index.jpg");
 		iButtonRegInd.setWidth100();
 		iButtonRegInd.setAlign(Alignment.LEFT);
 
-		IButton iButtonFindByNum = new IButton();
+		iButtonFindByNum = new IButton();
 		iButtonFindByNum.setTitle(CallCenterBK.constants.findByNumber());
 		iButtonFindByNum.setIcon("phone.png");
 		iButtonFindByNum.setWidth100();
 		iButtonFindByNum.setAlign(Alignment.LEFT);
 
-		IButton iButtonCityDist = new IButton();
+		iButtonCityDist = new IButton();
 		iButtonCityDist.setTitle(CallCenterBK.constants.distBetweenCities());
 		iButtonCityDist.setIcon("measure_distance.gif");
 		iButtonCityDist.setWidth100();
 		iButtonCityDist.setAlign(Alignment.LEFT);
 
-		IButton iButtonExactTime = new IButton();
+		iButtonExactTime = new IButton();
 		iButtonExactTime.setTitle(CallCenterBK.constants.exactTime());
 		iButtonExactTime.setIcon("preferences_system_time.png");
 		iButtonExactTime.setWidth100();
 		iButtonExactTime.setAlign(Alignment.LEFT);
 
-		IButton iButtonCalendar = new IButton();
+		iButtonCalendar = new IButton();
 		iButtonCalendar.setTitle(CallCenterBK.constants.calendar());
 		iButtonCalendar.setIcon("calendar.png");
 		iButtonCalendar.setWidth100();
 		iButtonCalendar.setAlign(Alignment.LEFT);
 
-		IButton iButtonWeb = new IButton();
+		iButtonWeb = new IButton();
 		iButtonWeb.setTitle(CallCenterBK.constants.sites());
 		iButtonWeb.setIcon("web.png");
 		iButtonWeb.setWidth100();
 		iButtonWeb.setAlign(Alignment.LEFT);
 
-		IButton iButtonSport = new IButton();
+		iButtonSport = new IButton();
 		iButtonSport.setTitle(CallCenterBK.constants.sport());
 		iButtonSport.setIcon("soccer_ball.png");
 		iButtonSport.setWidth100();
 		iButtonSport.setAlign(Alignment.LEFT);
 
-		IButton iButtonWiki = new IButton();
+		iButtonWiki = new IButton();
 		iButtonWiki.setTitle(CallCenterBK.constants.wiki());
 		iButtonWiki.setIcon("wikipedia_globe_icon.png");
 		iButtonWiki.setWidth100();
 		iButtonWiki.setAlign(Alignment.LEFT);
 
-		IButton iButtonWeather = new IButton();
+		iButtonWeather = new IButton();
 		iButtonWeather.setTitle(CallCenterBK.constants.weather());
 		iButtonWeather.setIcon("weather.png");
 		iButtonWeather.setWidth100();
@@ -160,13 +181,13 @@ public class CallCenterStackSelection extends SectionStackSection {
 				iButtonCityDist, iButtonExactTime, iButtonCalendar, iButtonWeb,
 				iButtonSport, iButtonWiki, iButtonWeather);
 
-		IButton iButtonNews = new IButton();
+		iButtonNews = new IButton();
 		iButtonNews.setTitle(CallCenterBK.constants.news());
 		iButtonNews.setIcon("feed.png");
 		iButtonNews.setWidth100();
 		iButtonNews.setAlign(Alignment.LEFT);
 
-		IButton iButtonSchedule = new IButton();
+		iButtonSchedule = new IButton();
 		iButtonSchedule.setTitle(CallCenterBK.constants.schedule());
 		iButtonSchedule.setIcon("calendar.png");
 		iButtonSchedule.setWidth100();
@@ -180,7 +201,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 		vLayout.addMember(iButtonNews);
 		vLayout.addMember(iButtonSchedule);
 
-		IButton iButtonTest = new IButton();
+		iButtonTest = new IButton();
 		iButtonTest.setTitle("Test Menu");
 		iButtonTest.setIcon("wikipedia_globe_icon.png");
 		iButtonTest.setWidth100();
@@ -329,7 +350,6 @@ public class CallCenterStackSelection extends SectionStackSection {
 				showRestShedule();
 			}
 		});
-
 		addItem(vLayout);
 	}
 
@@ -383,9 +403,75 @@ public class CallCenterStackSelection extends SectionStackSection {
 		}
 	}
 
-	public void setMenuPersmission() {
+	public void setButtonsVisible() {
 		try {
-
+			ServerSession serverSession = CommonSingleton.getInstance()
+					.getServerSession();
+			if (serverSession == null || serverSession.isWebSession()) {
+				return;
+			}
+			String operatorSrc = serverSession.getOperatorSrc();
+			if (operatorSrc == null || operatorSrc.trim().equals("")) {
+				return;
+			}
+			if (operatorSrc.trim().equals("NONE")) {
+				return;
+			}
+			if (iButtonOrg != null) {
+				iButtonOrg.setDisabled(operatorSrc.trim().equals("16007"));
+			}
+			if (iButtonAbFind != null) {
+				iButtonAbFind.setDisabled(operatorSrc.trim().equals("16007"));
+			}
+			if (iButtonFindByNum != null) {
+				iButtonFindByNum
+						.setDisabled(operatorSrc.trim().equals("16007"));
+			}
+			if (iButtonCodes != null) {
+				iButtonCodes.setDisabled(operatorSrc.trim().equals("16007"));
+			}
+			if (iButtonStreets != null) {
+				iButtonStreets.setDisabled(operatorSrc.trim().equals("16007"));
+			}
+			if (iButtonTransport != null) {
+				iButtonTransport
+						.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonCityTransp != null) {
+				iButtonCityTransp.setDisabled(operatorSrc.trim()
+						.equals("11808"));
+			}
+			if (iButtonPoster != null) {
+				iButtonPoster.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonValute != null) {
+				iButtonValute.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonRegInd != null) {
+				iButtonRegInd.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonCityDist != null) {
+				iButtonCityDist.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonExactTime != null) {
+				iButtonExactTime
+						.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonCalendar != null) {
+				iButtonCalendar.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonWeb != null) {
+				iButtonWeb.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonSport != null) {
+				iButtonSport.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonWiki != null) {
+				iButtonWiki.setDisabled(operatorSrc.trim().equals("11808"));
+			}
+			if (iButtonWeather != null) {
+				iButtonWeather.setDisabled(operatorSrc.trim().equals("11808"));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

@@ -49,7 +49,7 @@ public class ServerSession implements Serializable {
 	private Long contractorMainDetailId;
 	private boolean contractorNeedBlock;
 	private CallSession callSession;
-
+	private String operatorSrc;
 	private String non_charge_remark;
 
 	@SuppressWarnings("deprecation")
@@ -365,5 +365,13 @@ public class ServerSession implements Serializable {
 
 	public void setCallSession(CallSession callSession) {
 		this.callSession = callSession;
+	}
+
+	public String getOperatorSrc() {
+		return operatorSrc;
+	}
+
+	public void setOperatorSrc(String operatorSrc) {
+		this.operatorSrc = operatorSrc;
 	}
 }

@@ -80,6 +80,15 @@ public class InitAppServlet extends HttpServlet {
 						+ sessionId);
 				return;
 			}
+			String operatorSrc = null;
+			if (sessionId.endsWith("B")) {
+				operatorSrc = "11808";
+			} else if (sessionId.endsWith("C")) {
+				operatorSrc = "16007";
+			} else {
+				operatorSrc = "NONE";
+			}
+
 			String ipAddress = request.getRemoteAddr();
 
 			oracleManager = EMF.getEntityManager();
@@ -338,6 +347,7 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setTreatment(treatment);
 			serverSession.setPhoneIsMobile(phoneIsMobile);
 			serverSession.setOrganization_id(organization_id);
+			serverSession.setOperatorSrc(operatorSrc);
 
 			if (isContractor) {
 				blockContractor(serverSession, oracleManager);
@@ -357,6 +367,7 @@ public class InitAppServlet extends HttpServlet {
 			callSession.setSwitch_ower_type(0L);
 			callSession.setReject_type(0L);
 			callSession.setCall_duration(0L);
+			callSession.setOperator_src(operatorSrc);
 
 			oracleManager.persist(callSession);
 			serverSession.setCallSession(callSession);
@@ -376,14 +387,14 @@ public class InitAppServlet extends HttpServlet {
 
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
-			// response.sendRedirect(response
-			// .encodeRedirectURL("http://192.168.1.3:8888/CallCenterBK.html?gwt.codesvr=192.168.1.3:9997&sessionId="
-			// + sessionId));
+			 response.sendRedirect(response
+			 .encodeRedirectURL("http://192.168.1.3:8888/CallCenterBK.html?gwt.codesvr=192.168.1.3:9997&sessionId="
+			 + sessionId));
 			// } else {
 			// Live
-			response.sendRedirect(response
-					.encodeRedirectURL("http://192.168.1.5:19080/CallCenterBK/CallCenterBK.html?sessionId="
-							+ sessionId));
+//			response.sendRedirect(response
+//					.encodeRedirectURL("http://192.168.1.5:19080/CallCenterBK/CallCenterBK.html?sessionId="
+//							+ sessionId));
 			// }
 			time = System.currentTimeMillis() - time;
 			System.out.println("Servlet Initialize Time Is : " + time

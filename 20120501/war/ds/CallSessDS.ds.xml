@@ -17,6 +17,7 @@
 		<field name="call_quality"				type="integer" 	title="reject_type" 		hidden="true"/>
 		<field name="call_quality_desc"			type="text" 	title="call_quality_desc" />
 		<field name="full_user_name" 			type="text" 	title="full_user_name" />
+		<field name="operator_src" 				type="text" 	title="operator_src" />
 		<field name="loggedUserName"			type="text" 	title="loggedUserName" 		hidden="true"/>
 		<field name="service_id"				type="integer" 	title="service_id" 			hidden="true"/>
 		<field name="virt_call_type" 			type="integer" 	title="virt_call_type" 		hidden="true"/>		
@@ -50,7 +51,8 @@
 				count(ch.session_id) as chargeCount,
 				s.call_quality,
 				decode(s.call_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი') as call_quality_desc,
-				p.user_firstname||' '||p.user_lastname as full_user_name
+				p.user_firstname||' '||p.user_lastname as full_user_name,
+				s.operator_src
 			</selectClause>
 			<tableClause> <![CDATA[call_sessions s, call_session_expense ch, users p ]]>
 			</tableClause>
@@ -108,7 +110,8 @@
 				decode(s.reject_type,0,'აბონენტმა',1,'ოპერატორმა','უცნობია'),
 				s.call_quality,
 				decode(s.call_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი'),
-				p.user_firstname||' '||p.user_lastname
+				p.user_firstname||' '||p.user_lastname,
+				s.operator_src
 			</groupClause>	
 			<orderClause>
 				s.call_start_date desc

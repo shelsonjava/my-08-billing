@@ -144,11 +144,11 @@ public class West extends VLayout {
 				statistics.setMenuPersmission();
 			}
 
-			callCenter.setMenuPersmission();
 			if (personelTypeId.equals(Constants.OperatorDepartmentID)) {
 				callCenter.setExpanded(true);
 				ServerSession serverSession = CommonSingleton.getInstance()
 						.getServerSession();
+				callCenter.setButtonsVisible();
 				if (serverSession == null || !serverSession.isWebSession()) {
 
 					// application loaded
