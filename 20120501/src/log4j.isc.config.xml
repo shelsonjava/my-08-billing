@@ -44,114 +44,115 @@
          value of the "File" param in the FILE_LOG definition above.
     -->
   	<category name="com.isomorphic">
-	  <priority value="ERROR" />
+	  <priority value="DEBUG" />
       <appender-ref ref="STDOUT"/>
       <appender-ref ref="SmartClientLog"/>
 	</category>
 
         <category name="com.isomorphic.base.Reflection">
-          <priority value="ERROR" />
+          <priority value="INFO" />
         </category>
 
         <category name="com.isomorphic.base.ISCInit">
-          <priority value="ERROR" />
+          <priority value="INFO" />
         </category>
 
         <category name="com.isomorphic.base.ConfigLoader">
-          <priority value="ERROR" />
+          <priority value="INFO" />
         </category>
 
 	<category name="com.isomorphic.download.Download">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.sql.ValueSet">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.servlet.RequestContext">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.datasource.DataSource">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.datasource.BasicDataSource">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.validation.Validation">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.store.DataStructCache">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.assembly.FileAssembler">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.obfuscation.Obfuscator">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.servlet.PreCache">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.timing.Timing">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
     
    	<category name="com.isomorphic.resultData.ResultData">
-      <priority value="ERROR" />
+      <priority value="INFO" />
     </category>
 
     <category name="com.isomorphic.js.JSSyntaxScannerFilter">
-        <priority value="ERROR" />
+        <priority value="INFO" />
     </category>
 
 	<category name="com.isomorphic.interfaces.InterfaceProvider">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.compression.Compression">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="com.isomorphic.servlet.ProxyHttpServletResponse">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
 	</category>
 
 	<category name="org.apache.velocity">
-	  <priority value="ERROR" />
+	  <priority value="WARN" />
 	</category>
 
 	<category name="org.hibernate.SQL">
-	  <priority value="ERROR" />
+	  <priority value="DEBUG" />
 	</category>
 
     <!-- shows values bound to params in SQL query, but produces a lot of output -->
     <!--
 	<category name="org.hibernate.type">
-	  <priority value="ERROR" />
+	  <priority value="DEBUG" />
       <appender-ref ref="STDOUT"/>
 	</category>
     -->
 
 	<!-- embedded tomcat -->
 	<category name="org.apache">
-	  <priority value="ERROR" />
+	  <priority value="INFO" />
       <appender-ref ref="STDOUT"/>
       <appender-ref ref="SmartClientLog"/>
 	</category>
 
     <!-- hibernate log messages -->
   	<category name="org.hibernate">
-	  <priority value="ERROR" />
+	  <priority value="DEBUG" />
       <appender-ref ref="STDOUT"/>
       <appender-ref ref="SmartClientLog"/>
 	</category>
 </log4j:configuration>
+

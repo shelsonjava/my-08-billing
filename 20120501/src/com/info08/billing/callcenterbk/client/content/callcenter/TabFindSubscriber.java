@@ -204,19 +204,6 @@ public class TabFindSubscriber extends Tab {
 				search();
 			}
 		});
-
-		// citiesItem.addChangedHandler(new ChangedHandler() {
-		// @Override
-		// public void onChanged(ChangedEvent event) {
-		// String value = citiesItem.getValueAsString();
-		// if (value == null) {
-		// return;
-		// }
-		// regionItem.clearValue();
-		// fillCityRegionCombo(new Integer(value));
-		// }
-		// });
-
 		nameItem.addKeyPressHandler(new KeyPressHandler() {
 			@Override
 			public void onKeyPress(KeyPressEvent event) {

@@ -156,6 +156,9 @@ public class CommonServiceImpl extends RemoteServiceServlet implements
 				throw new CallCenterException("არასწორი სესიის თარიღი : "
 						+ sessionDate);
 			}
+			if (sessionId.endsWith("B") || sessionId.endsWith("C")) {
+				sessionId = sessionId.substring(0, sessionId.length() - 1);
+			}
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 					"yyyy-MM-dd");
 			String formatedDate = simpleDateFormat.format(sessionDate);

@@ -140,7 +140,7 @@ public class DlgViewOrg extends Window {
 			orgAddressInfo.setCanFocus(false);
 
 			final Integer address_hide = pRecord
-					.getAttributeAsInt("address_hide");
+					.getAttributeAsInt("hidden_by_request");
 
 			if (address_hide != null && address_hide.equals(1)) {
 				orgAddressInfo.setValue(CallCenterBK.constants.addressHide());

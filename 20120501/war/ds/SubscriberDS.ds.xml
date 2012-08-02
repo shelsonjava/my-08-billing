@@ -69,8 +69,7 @@
       
         
 		<!-- FETCH -->
-		<operationBinding operationId="customSearch"
-			operationType="fetch">			
+		<operationBinding operationId="customSearch" operationType="fetch">			
 			<selectClause>
 					/*+ index(lmn,#if($criteria.family_name) UK_LASTNAMES) #else PK_LASTNAMES_ID #end
 						index(lmn,#if($criteria.name) UK_FIRSTNAME) #else PK_FIRSTNAME_ID #end 
@@ -143,9 +142,11 @@
 					#if($criteria.family_name_id) AND t.family_name_id = $criteria.family_name_id #end
 					#if($criteria.town_id) AND t.town_id = $criteria.town_id #end
 					#if($criteria.town_district_id) AND t.town_district_id = $criteria.town_district_id #end
+					#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+					#if($criteria.streets_id) AND t.street_id = $criteria.streets_id #end
 					
-					#if(!$criteria.for_call_center)
-							#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+					
+					#if(!$criteria.for_call_center)							
 							#if($criteria.street_name_geo) AND street_location like '%'||$criteria.street_name_geo||'%' #end
 							#if($criteria.anumber) AND anumber like '%%'||($criteria.anumber)||'%' #end
 							#if($criteria.block) AND block like '%%'||($criteria.block)||'%' #end
@@ -162,8 +163,7 @@
 							||$criteria.phone_contract_type||$criteria.phone_contract_type
 							||$criteria.phone_state_id||$criteria.phone_type_id||$criteria.ph_hidden_by_request
 						)
-								 #if($criteria.for_call_center)  AND spm.hidden_by_request =0 #end
-						         #if($criteria.phone) and pnm.phone = $criteria.phone #end
+								 #if($criteria.phone) and pnm.phone = $criteria.phone #end
 						         #if($criteria.is_parallel) AND pnm.is_parallel = $criteria.is_parallel #end
 								 #if($criteria.phone_contract_type) AND spm.phone_contract_type = $criteria.phone_contract_type #end
 								 #if($criteria.phone_state_id) AND pnm.phone_state_id = $criteria.phone_state_id #end

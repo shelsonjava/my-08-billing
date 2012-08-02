@@ -582,22 +582,6 @@ public class TabSubscriber extends Tab {
 								fmItem.invalidateDisplayValueCache();
 							}
 							fmItem.setValue(value);
-							// fmItem.setOptionCriteria(fmItem.getOptionCriteria());
-							// if (fmItem instanceof ComboBoxItem) {
-							// ComboBoxItem cItem = (ComboBoxItem) fmItem;
-							// cItem.setAutoFetchData(true);
-							// cItem.setAutoFetchData(false);
-							// //
-							// cItem.setTextMatchStyle(TextMatchStyle.SUBSTRING);
-							//
-							// } else if (fmItem instanceof SelectItem) {
-							// SelectItem sItem = (SelectItem) fmItem;
-							// sItem.setAutoFetchData(true);
-							// sItem.setAutoFetchData(false);
-							//
-							// }
-							// fmItem.getForm().setValues(fmItem.getForm().getValues());
-
 						}
 					});
 			historyButton.addClickHandler(new ClickHandler() {
