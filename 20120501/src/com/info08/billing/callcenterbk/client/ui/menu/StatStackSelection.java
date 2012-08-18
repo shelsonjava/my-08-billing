@@ -5,6 +5,7 @@ import com.info08.billing.callcenterbk.client.content.stat.TabBillCallsBySrvBK;
 import com.info08.billing.callcenterbk.client.content.stat.TabStatByBillingComps;
 import com.info08.billing.callcenterbk.client.content.stat.TabStatFull;
 import com.info08.billing.callcenterbk.client.content.stat.TabStatFullByMonth;
+import com.info08.billing.callcenterbk.client.content.stat.TabStatOrgCorrect;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -26,7 +27,8 @@ public class StatStackSelection extends SectionStackSection {
 		new MenuNode("100", "1", CallCenterBK.constants.callsTotalBySrv(), true,"stats.png") ,
 		new MenuNode("101", "1", CallCenterBK.constants.statisticFullDay(), true,"stats.png"),
 		new MenuNode("102", "1", CallCenterBK.constants.statisticFullMonth(), true,"stats.png"),
-		new MenuNode("103", "1", CallCenterBK.constants.statisticByBillingComp(), true,"stats.png")
+		new MenuNode("103", "1", CallCenterBK.constants.statisticByBillingComp(), true,"stats.png"),
+		new MenuNode("104", "1", CallCenterBK.constants.statisticOrgCorrect(), true,"stats.png")
 	};
 
 	private TreeGrid menuTreeGrid;
@@ -94,6 +96,8 @@ public class StatStackSelection extends SectionStackSection {
 			menuData[1].setAttribute("enabled", hasAdminPerm);
 			menuData[2].setAttribute("enabled", hasAdminPerm);
 			menuData[3].setAttribute("enabled", hasAdminPerm);
+			menuData[4].setAttribute("enabled", hasAdminPerm);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -116,6 +120,9 @@ public class StatStackSelection extends SectionStackSection {
 		} else if (menuId.equals("103")) {
 			TabStatByBillingComps tabStatByBillingComp = new TabStatByBillingComps(body.getMainTabPanel());
 			body.addTab(tabStatByBillingComp);
+		} else if (menuId.equals("104")) {
+			TabStatOrgCorrect tabStatOrgCorrect = new TabStatOrgCorrect(body.getMainTabPanel());
+			body.addTab(tabStatOrgCorrect);
 		}
 	}
 

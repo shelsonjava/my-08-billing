@@ -1,0 +1,63 @@
+<DataSource
+	ID="StatisticOrgCorrectDS"
+	serverType="sql"
+	tableName="statistic_org_correction"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="id"						type="integer"			title="id"					hidden="true"		primaryKey="true" />
+		<field name="stat_date"					type="date"				title="stat_date"/>
+		<field name="name_cnt"					type="integer"			title="name_cnt"/>		
+		<field name="phone_cnt"					type="integer"			title="phone_cnt"/>
+		<field name="ph_addr_cnt"				type="integer"			title="ph_addr_cnt"/>
+		<field name="mail_cnt"					type="integer"			title="mail_cnt"/>
+		<field name="web_cnt"					type="integer"			title="web_cnt"/>
+		<field name="director_cnt"				type="integer"			title="director_cnt"/>
+		<field name="part_bank_cnt"				type="integer"			title="part_bank_cnt"/>
+		<field name="staff_count_cnt"			type="integer"			title="staff_count_cnt"/>
+		<field name="fdate_cnt"					type="integer"			title="fdate_cnt"/>
+		<field name="ident_code_cnt"			type="integer"			title="ident_code_cnt"/>
+		<field name="legal_stat_cnt"			type="integer"			title="legal_stat_cnt"/>
+		<field name="dayoffs_cnt"				type="integer"			title="dayoffs_cnt"/>
+		<field name="full_cnt"					type="integer"			title="full_cnt"/>
+		<field name="cnt_type"					type="integer"			title="dayoffs_cnt"/>
+		<field name="stat_date_descr"			type="text"				title="stat_date_descr"/>
+	</fields>
+
+	<operationBindings>		
+    	<operationBinding operationId="searchStat" operationType="fetch">
+    		<selectClause>   			
+				t.id,
+				t.stat_date,
+				decode(cnt_type,1,to_char(stat_date),2,'%') as stat_date_descr,
+				t.name_cnt,
+				t.phone_cnt,
+				t.ph_addr_cnt,
+				t.mail_cnt,
+				t.web_cnt,
+				t.director_cnt,
+				t.part_bank_cnt,
+				t.staff_count_cnt,
+				t.fdate_cnt,
+				t.ident_code_cnt,
+				t.legal_stat_cnt,
+				t.dayoffs_cnt,
+				t.full_cnt,
+				t.cnt_type
+			</selectClause> 
+			<tableClause>statistic_org_correction t</tableClause>
+			<whereClause><![CDATA[
+				 1 = 1 and (
+				 	#if($criteria.stat_date1) trunc(t.stat_date) = trunc($criteria.stat_date1) #end
+				 	#if($criteria.stat_date2) or trunc(t.stat_date) = trunc($criteria.stat_date2) #end
+				 	#if($criteria.stat_date3) or trunc(t.stat_date) = trunc($criteria.stat_date3) #end
+				 	#if($criteria.stat_date4) or trunc(t.stat_date) = trunc($criteria.stat_date4) #end
+				 	#if($criteria.stat_date5) or trunc(t.stat_date) = trunc($criteria.stat_date5) #end
+				 	#if($criteria.stat_date6) or trunc(t.stat_date) = trunc($criteria.stat_date6) #end
+				 )			 				
+				]]>  
+			</whereClause> 
+			<orderClause>t.stat_date, t.cnt_type </orderClause>
+    	</operationBinding>
+    </operationBindings>	
+</DataSource>

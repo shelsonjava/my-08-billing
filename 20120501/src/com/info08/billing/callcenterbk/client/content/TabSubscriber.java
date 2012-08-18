@@ -245,7 +245,6 @@ public class TabSubscriber extends Tab {
 			hl.setMembersMargin(10);
 
 			phoneIsHideItem = new SelectItem();
-			phoneIsHideItem.setDefaultToFirstOption(true);
 			phoneIsHideItem.setTitle(CallCenterBK.constants.openClose());
 			phoneIsHideItem.setName("ph_hidden_by_request");
 			phoneIsHideItem.setWidth(200);
@@ -607,7 +606,6 @@ public class TabSubscriber extends Tab {
 		searchFormAddress.clearValues();
 		searchFormPhone.clearValues();
 
-		citiesItem.setValue(Constants.defCityTbilisiId);
 		ClientUtils.setDefauldCriterias(streetItem, aditionalCriteria);
 		ClientUtils.setDefauldCriterias(regionItem, aditionalCriteria);
 		phoneIsHideItem.clearValue();

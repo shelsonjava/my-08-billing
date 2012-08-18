@@ -104,7 +104,7 @@
 					
 					#if($criteria.start_place_id) 
 							and t.transportid in (select tt1.dir_id from public_transp_dir_street tt1 , streets str
-								where str.hide_for_call_center = 0 and tt1.street_id = str.street_id
+								where str.hide_for_call_center = 0 and tt1.street_id = str.streets_id
 										#foreach($str in $criteria.start_place_id.split(" "))
 											and trim(str.street_name ||' '||tt1.remarks) like '%'||'$str'||'%'
 										#end
@@ -113,7 +113,7 @@
 																   where tt2.dir_id =tt1.dir_id and tt1.dir=tt2.dir 
 																   and 
 																   		 tt2.dir_order>tt1.dir_order
-																   	 and str1.hide_for_call_center = 0 and tt2.street_id = str1.street_id
+																   	 and str1.hide_for_call_center = 0 and tt2.street_id = str1.streets_id
 																		#foreach($str in $criteria.end_place_id.split(" ")) 
 																			and trim(str1.street_name ||' '||tt2.remarks) like '%'||'$str'||'%'
 																		#end

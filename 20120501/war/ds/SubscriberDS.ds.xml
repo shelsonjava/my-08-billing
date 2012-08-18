@@ -19,6 +19,7 @@
 		<field name="family_name_id" 				type="integer"	title="Last Name ID" 		hidden="true"/>
 		<field name="town_id" 						type="integer"	title="City ID"				hidden="true"/>
 		<field name="street_id" 					type="integer"	title="Street ID"			hidden="true"/>
+		<field name="streets_id" 					type="integer"	title="StreetsID"			hidden="true"/>
 		<field name="town_district_id" 				type="integer"	title="City Region ID"		hidden="true"/>
 		<field name="hidden_by_request" 			type="integer"	title="Address Hide"		hidden="true"/>
 		<field name="full_address"					type="text"		title="Address Suffix Geo"	hidden="true"/>
@@ -91,6 +92,7 @@
 				       t.family_name_id,
 				       t.town_id,
 				       t.street_id,
+				       t.street_id as streets_id,
 				       t.town_district_id,
 				       t.hidden_by_request,
 				       t.full_address,

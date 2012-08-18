@@ -743,4 +743,8 @@ public interface AppConstants extends Constants {
 	String parrentOrganization();
 	String orgDoesNotHaveParrent();
 	String noDayOff();
+	String statisticOrgCorrect();
+	String fullCount();
+	String identCodeShort();
+	String partnerBankShort();
 }

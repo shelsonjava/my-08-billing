@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -287,7 +288,7 @@ public class DlgContractorPhones extends Window {
 			departmentGrid.setHeight100();
 			departmentGrid.setAlternateRecordStyles(true);
 			departmentGrid.setAutoFetchData(false);
-			
+
 			departmentGrid.setShowFilterEditor(true);
 			departmentGrid.setFilterOnKeypress(true);
 
@@ -431,26 +432,35 @@ public class DlgContractorPhones extends Window {
 	}
 
 	private void save() {
-		contractPhonesGrid.clearCriteria(new DSCallback() {
-
-			@Override
-			public void execute(DSResponse response, Object rawData,
-					DSRequest request) {
-				RecordList phoneList = contractPhonesGrid.getRecordList();
-				if (phoneList == null || phoneList.isEmpty()) {
-					SC.say(CallCenterBK.constants.phonesListIsEmpty());
-					return;
-				}
-				listGridPhones.selectAllRecords();
-				listGridPhones.removeSelectedData();
-				for (int i = 0; i < phoneList.getLength(); i++) {
-					listGridPhones.addData(phoneList.get(i));
-				}
-				destroy();
-
+		try {
+			// contractPhonesGrid.clearCriteria(new DSCallback() {
+			//
+			// @Override
+			// public void execute(DSResponse response, Object rawData,
+			// DSRequest request) {
+			// RecordList phoneList = contractPhonesGrid.getRecordList();
+			// if (phoneList == null || phoneList.isEmpty()) {
+			// SC.say(CallCenterBK.constants.phonesListIsEmpty());
+			// return;
+			// }
+			RecordList phoneList = contractPhonesGrid.getRecordList();
+			if (phoneList == null || phoneList.isEmpty()) {
+				SC.say(CallCenterBK.constants.phonesListIsEmpty());
+				return;
 			}
-		}, new DSRequest());
-
+			listGridPhones.selectAllRecords();
+			listGridPhones.removeSelectedData();
+			for (int i = 0; i < phoneList.getLength(); i++) {
+				listGridPhones.addData(phoneList.get(i));
+			}
+			destroy();
+			//
+			// }
+			// }, new DSRequest());
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
 	}
 
 	private void search() {
@@ -472,7 +482,8 @@ public class DlgContractorPhones extends Window {
 
 		if (phoneItem.getValueAsString() != null
 				&& !phoneItem.getValueAsString().equals("")) {
-			orgGridCriteria.setAttribute("phone_number", phoneItem.getValueAsString());
+			orgGridCriteria.setAttribute("phone_number",
+					phoneItem.getValueAsString());
 		}
 		organizationGrid.fetchData(orgGridCriteria, new DSCallback() {
 
@@ -522,14 +533,18 @@ public class DlgContractorPhones extends Window {
 	}
 
 	void addPhone(String phone) {
-		Record record = contractPhonesGrid.getRecordList().find("phone_number", phone);
+		if (phone == null || phone.trim().equals("")
+				|| CommonFunctions.isPhoneMobile(phone)) {
+			return;
+		}
+		Record record = contractPhonesGrid.getRecordList().find("phone_number",
+				phone);
 		if (record == null) {
 			record = new Record();
 			record.setAttribute("phone_number", phone);
 			contractPhonesGrid.getDataSource().addData(record);
 			contractPhonesGrid.fetchData();
 		}
-
 	}
 
 	private void fetchPhones(Record record) {

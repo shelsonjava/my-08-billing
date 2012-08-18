@@ -605,8 +605,10 @@ public class DlgAddEditContractor extends Window {
 
 			DataSource dataSource = DataSource.get("ContractorsPricesDS");
 			Criteria criteria = new Criteria();
-			System.out.println(editRecord.getAttributeAsInt("corp_client_phone_id"));
-			System.out.println(editRecord.getAttributeAsInt("corporate_client_id"));
+			System.out.println(editRecord
+					.getAttributeAsInt("corp_client_phone_id"));
+			System.out.println(editRecord
+					.getAttributeAsInt("corporate_client_id"));
 			criteria.setAttribute("corp_client_phone_id",
 					editRecord.getAttributeAsInt("corp_client_phone_id"));
 			criteria.setAttribute("corporate_client_id",
@@ -663,11 +665,13 @@ public class DlgAddEditContractor extends Window {
 			if (max_call_count != null) {
 				critNumberItem.setValue(max_call_count);
 			}
-			Date contract_start_date = editRecord.getAttributeAsDate("contract_start_date");
+			Date contract_start_date = editRecord
+					.getAttributeAsDate("contract_start_date");
 			if (contract_start_date != null) {
 				startDateItem.setValue(contract_start_date);
 			}
-			Date contract_end_date = editRecord.getAttributeAsDate("contract_end_date");
+			Date contract_end_date = editRecord
+					.getAttributeAsDate("contract_end_date");
 			if (contract_end_date != null) {
 				endDateItem.setValue(contract_end_date);
 			}
@@ -728,8 +732,7 @@ public class DlgAddEditContractor extends Window {
 			}
 
 			String critNumberStr = critNumberItem.getValueAsString();
-			Integer max_call_count = new Integer(
-					Constants.criticalNumberIgnore);
+			Integer max_call_count = new Integer(Constants.criticalNumberIgnore);
 			if (critNumberStr != null && !critNumberStr.trim().equals("")) {
 				max_call_count = Integer.parseInt(critNumberStr);
 			}
@@ -891,7 +894,8 @@ public class DlgAddEditContractor extends Window {
 
 			Record record = new Record();
 			if (editRecord != null) {
-				pcorporate_client_id = editRecord.getAttributeAsInt("corporate_client_id");
+				pcorporate_client_id = editRecord
+						.getAttributeAsInt("corporate_client_id");
 				record.setAttribute("corporate_client_id", pcorporate_client_id);
 			}
 			String loggedUser = CommonSingleton.getInstance()
@@ -922,37 +926,44 @@ public class DlgAddEditContractor extends Window {
 				record.setAttribute("checkContractor", 0);
 			}
 
-			// if (contractorAdvPhones != null &&
-			// !contractorAdvPhones.isEmpty()) {
-			// checkContractPhones(record);
-			// } else {
-			//
-			// }
-			saveContract(record);
+//			if (contractorAdvPhones != null && !contractorAdvPhones.isEmpty()) {
+//				checkContractPhones(record, contractorAdvPhones);
+//			} else {
+				saveContract(record);
+//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
 
-	// private void checkContractPhones(final Record record) {
-	// try {
-	// com.smartgwt.client.rpc.RPCManager.startQueue();
-	// DSRequest req = new DSRequest();
-	// req.setAttribute("operationId", "checkContractorNumbers");
-	// listGrid.updateData(record, new DSCallback() {
-	// @Override
-	// public void execute(DSResponse response, Object rawData,
-	// DSRequest request) {
-	// saveContract(record);
-	// }
-	// }, req);
-	// com.smartgwt.client.rpc.RPCManager.sendQueue();
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// SC.say(e.toString());
-	// }
-	// }
+//	private void checkContractPhones(final Record record,
+//			LinkedHashMap<String, String> map) {
+//		try {
+//			DataSource ds = DataSource.get("CorporateClientsDS");
+//			com.smartgwt.client.rpc.RPCManager.startQueue();
+//			DSRequest req = new DSRequest();
+//			Criteria cr = new Criteria();
+//
+//			cr.setAttribute("contractorAdvPhones", map);
+//			cr.setAttribute("organization_id", organization_id);
+//
+//			req.setOperationId("checkPhones");
+//			ds.fetchData(cr, new DSCallback() {
+//
+//				@Override
+//				public void execute(DSResponse response, Object rawData,
+//						DSRequest request) {
+//					saveContract(record);
+//				}
+//			}, req);
+//
+//			com.smartgwt.client.rpc.RPCManager.sendQueue();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			SC.say(e.toString());
+//		}
+//	}
 
 	private void saveContract(Record record) {
 		try {

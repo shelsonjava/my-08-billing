@@ -135,11 +135,17 @@ public class ContractorsDMI implements QueryConstants {
 						oracleManager, contractAdvPrices);
 			}
 			corporateClient.setRange_curr_price(range_curr_price);
-			if (corporateClient.getCorporate_client_id() == null)
+			if (corporateClient.getCorporate_client_id() == null) {
 				oracleManager.persist(corporateClient);
-			else
+			} else {
 				oracleManager.merge(corporateClient);
+			}
 			oracleManager.flush();
+
+			oracleManager
+					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PRICES)
+					.setParameter(1, corporateClient.getCorporate_client_id())
+					.executeUpdate();
 
 			if (contractAdvPrices != null && !contractAdvPrices.isEmpty()) {
 				for (CorpClientPriceItems priceItem : contractAdvPrices) {
@@ -148,10 +154,7 @@ public class ContractorsDMI implements QueryConstants {
 					oracleManager.persist(priceItem);
 				}
 			}
-			oracleManager
-					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PRICES)
-					.setParameter(1, corporateClient.getCorporate_client_id())
-					.executeUpdate();
+
 			oracleManager
 					.createNativeQuery(QueryConstants.Q_DELETE_CONTRACT_PHONES)
 					.setParameter(1, corporateClient.getCorporate_client_id())
@@ -162,7 +165,6 @@ public class ContractorsDMI implements QueryConstants {
 				LinkedMap contractorAdvPhones = (LinkedMap) oMap1;
 				if (!contractorAdvPhones.isEmpty()) {
 					Set keys1 = contractorAdvPhones.keySet();
-
 					for (Object okey1 : keys1) {
 						String phone = okey1.toString();
 						CorpClientPhones item = new CorpClientPhones();
@@ -170,6 +172,8 @@ public class ContractorsDMI implements QueryConstants {
 								.getCorporate_client_id());
 						item.setPhone_number(phone);
 						oracleManager.persist(item);
+						System.out.println("Persist Phone = "+phone);
+						oracleManager.flush();
 					}
 				}
 			}
@@ -740,9 +744,9 @@ public class ContractorsDMI implements QueryConstants {
 
 			Map<String, Long> criteria = new TreeMap<String, Long>();
 			criteria.put("organization_id", organization_id);
-			List<PhoneNumber> list = DMIUtils.findObjectsdByCriteria(
+			List<CorpClientPhones> list = DMIUtils.findObjectsdByCriteria(
 					"CorpClientPhonesDS", "searchPhonesHirarchy", criteria,
-					PhoneNumber.class);
+					CorpClientPhones.class);
 
 			List<PhoneNumber> result = new ArrayList<PhoneNumber>();
 			Set<String> keys = phones.keySet();
@@ -751,8 +755,8 @@ public class ContractorsDMI implements QueryConstants {
 				pn.setPhone_number_id(0L);
 				pn.setPhone(phone);
 				result.add(pn);
-				for (PhoneNumber phoneNumber : list) {
-					if (phoneNumber.getPhone().equals(phone)) {
+				for (CorpClientPhones phoneNumber : list) {
+					if (phoneNumber.getPhone_number().equals(phone)) {
 						pn.setPhone_number_id(1L);
 						break;
 					}

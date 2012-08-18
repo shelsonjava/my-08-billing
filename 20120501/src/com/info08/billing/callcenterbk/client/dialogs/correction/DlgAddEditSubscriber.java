@@ -161,7 +161,7 @@ public class DlgAddEditSubscriber extends Window {
 
 			streetItem = new ComboBoxItem();
 			streetItem.setTitle("ქუჩა");
-			streetItem.setName("street_id");
+			streetItem.setName("streets_id");
 			streetItem.setWidth(322);
 
 			Map<String, Object> aditionalCriteria = new TreeMap<String, Object>();
@@ -169,7 +169,7 @@ public class DlgAddEditSubscriber extends Window {
 			aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
 
 			ClientUtils.fillCombo(streetItem, "StreetsDS",
-					"searchStreetFromDBForCombos", "street_id", "street_name",
+					"searchStreetFromDBForCombos", "streets_id", "street_name",
 					aditionalCriteria);
 
 			regionItem = new ComboBoxItem();
@@ -196,7 +196,7 @@ public class DlgAddEditSubscriber extends Window {
 					streetDescrItem, "", "g"));
 
 			ClientUtils.makeDependancy(streetItem, true, new FormItemDescr(
-					regionItem, "street_id", "town_district_id"),
+					regionItem, "streets_id", "town_district_id"),
 					new FormItemDescr(streetDescrItem, "", "street_location"));
 
 			formAddress.setFields(headerItemAddr, townsItem, streetItem,

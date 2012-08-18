@@ -405,6 +405,13 @@ public class CallCenterStackSelection extends SectionStackSection {
 
 	public void setButtonsVisible() {
 		try {
+			// TODO - This Must Be Removed
+			boolean flag = true;
+			if (flag) {
+				return;
+			}
+			// TODO - This Must Be Removed
+			
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {

@@ -14,6 +14,7 @@
 		<field name="dir" 				type="integer" 		title="Route Direction" 		hidden="true" />
 		<field name="dir_id" 			type="integer" 		title="Route ID" 				hidden="true" />
 		<field name="street_id" 		type="integer" 		title="Street ID" 				hidden="true" />
+		<field name="streets_id" 		type="integer" 		title="streets_id" 				hidden="true" />
 		<field name="loggedUserName" 	type="text" 		title="Logged UserName"			hidden="true" />
 	</fields>
 
@@ -47,7 +48,8 @@
 				t.dir_order,
 				t.dir,
 				t.dir_id,
-				t.street_id
+				t.street_id,
+				t.street_id as streets_id
 			</selectClause>
 			<tableClause>public_transp_dir_street t,public_transp_dir r, streets
 				s</tableClause>

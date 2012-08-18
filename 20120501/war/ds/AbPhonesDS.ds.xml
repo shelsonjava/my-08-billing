@@ -69,10 +69,10 @@
 			<orderClause>t.phone</orderClause>
     	</operationBinding>    
     	
-    	<operationBinding operationId="getPhone" operationType="fetch" customFields="firstname, lastname, phone">    		
+    	<operationBinding operationId="getPhone" operationType="fetch">    		
     		<selectClause>  
-    			f.firstname as firstname,
-    			l.lastname as lastname,
+    			f.name_descr as firstname,
+    			l.familyname as lastname,
     			t.phone
 			</selectClause> 
 			<tableClause>phone_numbers t,subscriber_to_phones sp,subscribers a, names f, familynames l</tableClause>

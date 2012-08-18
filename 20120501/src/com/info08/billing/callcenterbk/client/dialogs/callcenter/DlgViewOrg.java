@@ -1144,13 +1144,12 @@ public class DlgViewOrg extends Window {
 				criteria.setAttribute("department", "");
 			}
 
-			String main_detail_note_geo = depAddressItem.getValueAsString();
-			if (main_detail_note_geo != null
-					&& !main_detail_note_geo.trim().equals("")) {
-				criteria.setAttribute("main_detail_note_geo",
-						main_detail_note_geo);
+			String department_real_address = depAddressItem.getValueAsString();
+			if (department_real_address != null
+					&& !department_real_address.trim().equals("")) {
+				criteria.setAttribute("department_real_address", department_real_address);
 			}
-
+			
 			String phone = depPhonesItem.getValueAsString();
 			if (phone != null && !phone.trim().equals("")) {
 				criteria.setAttribute("phone", phone);

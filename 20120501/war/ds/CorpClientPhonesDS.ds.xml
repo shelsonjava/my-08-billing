@@ -7,7 +7,7 @@
 	<fields>
 		<field name="corp_client_phone_id"	type="integer"		title="corp_client_phone_id"	hidden="true" 	primaryKey="true" />
 		<field name="phone_number"			type="text"			title="phone_number"/>
-		<field name="corporate_client_id"	type="integer"		title="corporate_client_id"				hidden="true"/>
+		<field name="corporate_client_id"	type="integer"		title="corporate_client_id"		hidden="true"/>
 		<field name="pr"					type="integer"		title="phone"					hidden="true"/>
 		<field name="name"					type="text"			title="name"/>
 		<field name="id"					type="text"			title="phone"					hidden="true"/>

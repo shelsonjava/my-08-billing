@@ -113,7 +113,7 @@
 				 #if($criteria.goverment) and t.goverment = $criteria.goverment #end
 				 #if($criteria.price_type) and t.price_type = $criteria.price_type #end
 				 #if($criteria.phone)
-				 	and t.corporate_client_id in (select tt.corporate_client_id from contractor_phones tt where tt.phone = $criteria.phone) 				 	
+				 	and t.corporate_client_id in (select tt.corporate_client_id from corp_client_phones tt where tt.phone_number = $criteria.phone) 				 	
 				 #end
 				 #if($criteria.limitType && $criteria.limitType == 0 ) and t.max_call_count <> -999999999 #end
 				 #if($criteria.limitType && $criteria.limitType == 1 ) and t.max_call_count =  -999999999 #end

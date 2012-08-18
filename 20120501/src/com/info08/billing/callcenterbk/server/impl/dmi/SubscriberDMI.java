@@ -76,7 +76,10 @@ public class SubscriberDMI implements QueryConstants {
 			if (addr == null)
 				addr = new Address();
 			DataTools.setProperties(values, addr);
-
+			Object streets_id = values.get("streets_id");
+			if (streets_id != null) {
+				addr.setStreet_id(Long.parseLong(streets_id.toString()));
+			}
 			if (address_id == null)
 				oracleManager.persist(addr);
 			else
@@ -160,8 +163,7 @@ public class SubscriberDMI implements QueryConstants {
 			}
 			oracleManager.flush();
 			oracleManager.createNativeQuery("{call createSubscriberHist(?)}")
-					.setParameter(1, subscriber_id)
-					.executeUpdate();
+					.setParameter(1, subscriber_id).executeUpdate();
 			EMF.commitTransaction(transaction);
 			values = DMIUtils.findRecordById("SubscriberDS", "customSearch",
 					subscriber_id, "subscriber_id");
