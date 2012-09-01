@@ -279,13 +279,13 @@ public class TabStreetIndex extends Tab {
 
 	private void search() {
 		try {
-			String street_id = streetsItem.getValueAsString();
+			String streets_id = streetsItem.getValueAsString();
 			String street_index_remark = streetIndexRemarkItem
 					.getValueAsString();
 			String street_index_value = streetIndexValueItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("street_id", street_id);
+			criteria.setAttribute("streets_id", streets_id);
 			criteria.setAttribute("street_index_remark", street_index_remark);
 			criteria.setAttribute("street_index_value", street_index_value);
 			criteria.setAttribute("town_id", townsItem.getValueAsString());

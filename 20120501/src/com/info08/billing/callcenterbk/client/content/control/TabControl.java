@@ -609,13 +609,12 @@ public class TabControl extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
 						return;
 					}
-					String sessionId = listGridRecord
-							.getAttributeAsString("session_id");
-					Integer quality = listGridRecord
-							.getAttributeAsInt("session_quality");
+					String sessionId = listGridRecord.getAttributeAsString("session_id");
+					Integer quality = listGridRecord.getAttributeAsInt("call_quality");
+					Integer call_session_id = listGridRecord.getAttributeAsInt("call_session_id");
 
 					DlgAddEditSessQuality addEditSessQuality = new DlgAddEditSessQuality(
-							sessionId, quality, sessionsDS);
+							sessionId, quality,call_session_id, sessionsDS);
 					addEditSessQuality.show();
 				}
 			});
@@ -649,7 +648,7 @@ public class TabControl extends Tab {
 			}
 			if (services != null) {
 				serviceItem.setOptionDataSource(services);
-				serviceItem.setDisplayField("serviceNameGeo");
+				serviceItem.setDisplayField("service_description");
 			}
 		} catch (Exception e) {
 			SC.say(e.toString());

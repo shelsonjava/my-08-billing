@@ -466,7 +466,7 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 					streetIndex.getStreet_index_id());
 			streetIndex.setLoggedUserName(loggedUserName);
 
-			Long street_id = streetIndex.getStreet_id();
+			Long street_id = streetIndex.getStreets_id();
 			if (street_id != null) {
 				Street street = oracleManager.find(Street.class, street_id);
 				if (street != null) {
@@ -511,8 +511,8 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 
 			Long street_index_id = new Long(record.get("street_index_id")
 					.toString());
-			Long street_id = record.get("street_id") == null ? null : new Long(
-					record.get("street_id").toString());
+			Long streets_id = record.get("streets_id") == null ? null : new Long(
+					record.get("streets_id").toString());
 			String street_index_remark = record.get("street_index_remark") == null ? null
 					: record.get("street_index_remark").toString();
 			String street_index_value = record.get("street_index_value") == null ? null
@@ -526,7 +526,7 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 			StreetIndex streetIndex = oracleManager.find(StreetIndex.class,
 					street_index_id);
 
-			streetIndex.setStreet_id(street_id);
+			streetIndex.setStreets_id(streets_id);
 			streetIndex.setStreet_index_remark(street_index_remark);
 			streetIndex.setStreet_index_value(street_index_value);
 
@@ -537,8 +537,8 @@ public class DistrictVillageIndexesDMI implements QueryConstants {
 					.find(StreetIndex.class, street_index_id);
 			streetIndex.setLoggedUserName(loggedUserName);
 
-			if (street_id != null) {
-				Street streetEnt = oracleManager.find(Street.class, street_id);
+			if (streets_id != null) {
+				Street streetEnt = oracleManager.find(Street.class, streets_id);
 				if (streetEnt != null) {
 					streetIndex.setStreet_name(streetEnt.getStreet_name());
 				}

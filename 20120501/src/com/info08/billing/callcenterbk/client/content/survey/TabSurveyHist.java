@@ -347,7 +347,7 @@ public class TabSurveyHist extends Tab {
 						CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
-			String upd_user = listGridRecord.getAttributeAsString("upd_user");
+			String upd_user = listGridRecord.getAttributeAsString("loked_user");
 			if (!userName.trim().equals(
 					((upd_user == null) ? "NO_USSERRRRRRRRRRRRRR" : upd_user
 							.trim()))) {
@@ -384,9 +384,9 @@ public class TabSurveyHist extends Tab {
 			criteria.setAttribute("survery_responce_status", new Integer(1));
 
 			try {
-				Date rec_date = surveyDateItem.getValueAsDate();
-				if (rec_date != null) {
-					criteria.setAttribute("rec_date", rec_date);
+				Date SURVEY_CREATED = surveyDateItem.getValueAsDate();
+				if (SURVEY_CREATED != null) {
+					criteria.setAttribute("SURVEY_CREATED", SURVEY_CREATED);
 				}
 			} catch (Exception e) {
 			}

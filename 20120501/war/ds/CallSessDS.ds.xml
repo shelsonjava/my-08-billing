@@ -58,10 +58,10 @@
 			</tableClause>
 			<whereClause><![CDATA[ 
 				s.session_id = ch.session_id(+) and p.user_name = s.uname and 	
-				#if ($criteria.call_session_id) AND s.call_session_id = $criteria.call_session_id #end						
 				s.call_start_date > to_date(to_char(#if($criteria.startDate) $criteria.startDate #else trunc(sysdate) #end ,'yyyymmdd')||  #if ($criteria.startTime)  to_char($criteria.startTime ,'hh24miss')  #else '000000' #end ,'yyyymmddhh24miss') and 
 				s.call_start_date < to_date(to_char(#if($criteria.endDate)   $criteria.endDate   #else trunc(sysdate)+1 #end ,'yyyymmdd')|| #if ($criteria.endTime) to_char($criteria.endTime,'hh24miss')  #else '235959' #end ,'yyyymmddhh24miss')
 				
+				#if ($criteria.call_session_id) AND s.call_session_id = $criteria.call_session_id #end				
 				#if($criteria.phone && $criteria.numberCondTypeItem == 1)AND 
 					s.call_phone like ($criteria.phone)||'%'
 				#end
@@ -112,10 +112,7 @@
 				decode(s.call_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი'),
 				p.user_firstname||' '||p.user_lastname,
 				s.operator_src
-			</groupClause>	
-			<orderClause>
-				s.call_start_date desc
-			</orderClause>		
+			</groupClause>					
 		</operationBinding>
 		
 		

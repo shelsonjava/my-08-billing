@@ -72,7 +72,15 @@ public class DlgSendDiscSMS extends Window {
 			phoneItem.setTitle(CallCenterBK.constants.phone());
 			phoneItem.setName("phoneItem");
 			phoneItem.setWidth("100%");
-			phoneItem.setValue(record.getAttributeAsString("survey_phone"));
+			String phone = "";
+			String p_numb = record.getAttributeAsString("p_numb");
+			String survey_phone = record.getAttributeAsString("survey_phone");
+			if (p_numb != null && p_numb.trim().startsWith("5")) {
+				phone = p_numb;
+			} else if (survey_phone != null && survey_phone.startsWith("5")) {
+				phone = survey_phone;
+			}
+			phoneItem.setValue(phone);
 
 			smsItem = new TextAreaItem();
 			smsItem.setTitle(CallCenterBK.constants.sms());
@@ -175,8 +183,9 @@ public class DlgSendDiscSMS extends Window {
 						CallCenterBK.constants.invalidPhone());
 				return;
 			}
-			
-			String session_call_id = record.getAttributeAsString("session_call_id");
+
+			String session_call_id = record
+					.getAttributeAsString("session_call_id");
 			String rec_user = CommonSingleton.getInstance().getSessionPerson()
 					.getUser_name();
 

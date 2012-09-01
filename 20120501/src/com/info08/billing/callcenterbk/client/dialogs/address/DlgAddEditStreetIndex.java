@@ -80,7 +80,7 @@ public class DlgAddEditStreetIndex extends Window {
 		streetsItem = new ComboBoxItem();
 		streetsItem.setTitle("ქუჩა");
 		streetsItem.setWidth(350);
-		streetsItem.setName("street_id");
+		streetsItem.setName("streets_id");
 		streetsItem.setFetchMissingValues(true);
 		streetsItem.setFilterLocally(false);
 		streetsItem.setAddUnknownValues(false);
@@ -90,7 +90,7 @@ public class DlgAddEditStreetIndex extends Window {
 		aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
 
 		ClientUtils.fillCombo(streetsItem, "StreetsDS",
-				"searchStreetFromDBForCombos", "street_id", "street_name",
+				"searchStreetFromDBForCombos", "streets_id", "street_name",
 				aditionalCriteria);
 
 		streetIndexRemarkItem = new TextItem();
@@ -158,8 +158,8 @@ public class DlgAddEditStreetIndex extends Window {
 
 	private void save() {
 		try {
-			String street_id = streetsItem.getValueAsString();
-			if (street_id == null || street_id.trim().equalsIgnoreCase("")) {
+			String streets_id = streetsItem.getValueAsString();
+			if (streets_id == null || streets_id.trim().equalsIgnoreCase("")) {
 				SC.say("აირჩიეთ ქუჩა !");
 				return;
 			}
@@ -183,7 +183,7 @@ public class DlgAddEditStreetIndex extends Window {
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
-			record.setAttribute("street_id", street_id);
+			record.setAttribute("streets_id", streets_id);
 			record.setAttribute("street_index_remark", street_index_remark);
 			record.setAttribute("street_index_value", street_index_value);
 

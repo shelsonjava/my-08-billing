@@ -197,7 +197,7 @@ public class TabEvent extends Tab {
 			eventPriceItem.setWidth(300);
 
 			Date startDate = new Date();
-			CalendarUtil.addMonthsToDate(startDate, -192);
+			CalendarUtil.addMonthsToDate(startDate, -2);
 
 			eventDateStartItem = new DateItem();
 			eventDateStartItem.setTitle("საწყისი თარიღი");

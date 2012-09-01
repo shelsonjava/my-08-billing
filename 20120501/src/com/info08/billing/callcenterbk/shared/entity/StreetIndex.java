@@ -33,7 +33,7 @@ public class StreetIndex implements Serializable {
 
 	@Basic
 	@Column(name = "STREET_ID")
-	private Long street_id;
+	private Long streets_id;
 
 	@Basic
 	@Column(name = "STREET_INDEX_VALUE")
@@ -64,12 +64,12 @@ public class StreetIndex implements Serializable {
 		this.street_index_remark = street_index_remark;
 	}
 
-	public Long getStreet_id() {
-		return street_id;
+	public Long getStreets_id() {
+		return streets_id;
 	}
 
-	public void setStreet_id(Long street_id) {
-		this.street_id = street_id;
+	public void setStreets_id(Long streets_id) {
+		this.streets_id = streets_id;
 	}
 
 	public String getStreet_index_value() {

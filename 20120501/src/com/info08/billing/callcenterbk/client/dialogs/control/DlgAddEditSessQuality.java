@@ -25,13 +25,13 @@ public class DlgAddEditSessQuality extends Window {
 	private VLayout hLayout;
 	private SelectItem qualityItem;
 	private DynamicForm form;
-
-	public DlgAddEditSessQuality(final String sessionId, Integer quality,
+	
+	public DlgAddEditSessQuality(final String sessionId, Integer quality, final Integer call_session_id,
 			final DataSource sessionDS) {
 
 		try {
 			setWidth(330);
-			setHeight(125);
+			setHeight(128);
 			setTitle("ზარის ხარისხის მართვა");
 			setShowMinimizeButton(false);
 			setIsModal(true);
@@ -117,9 +117,9 @@ public class DlgAddEditSessQuality extends Window {
 					try {
 						com.smartgwt.client.rpc.RPCManager.startQueue();
 						Record record = new Record();
-						record.setAttribute("session_quality", new Integer(
-								qualityItem.getValueAsString()));
+						record.setAttribute("call_quality", new Integer(qualityItem.getValueAsString()));
 						record.setAttribute("sessionId", sessionId);
+						record.setAttribute("call_session_id", call_session_id);
 
 						DSRequest req = new DSRequest();
 						req.setAttribute("operationId", "update");

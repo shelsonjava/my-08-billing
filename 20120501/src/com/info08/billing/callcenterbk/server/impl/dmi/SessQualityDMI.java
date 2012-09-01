@@ -143,8 +143,7 @@ public class SessQualityDMI implements QueryConstants {
 
 			updateStmt.executeUpdate();
 			updateStmt.close();
-			CallSessionItem sessionItem = getLogSessionItem(new Long(
-					call_session_id.toString()));
+			CallSessionItem sessionItem = getLogSessionItem(new Long(call_session_id.toString()));
 			DSResponse resp = new DSResponse();
 			resp.setData(sessionItem);
 			resp.setStatus(DSResponse.STATUS_SUCCESS);

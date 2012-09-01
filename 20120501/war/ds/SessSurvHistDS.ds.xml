@@ -18,14 +18,14 @@
     		customFields="survey_id, phone, survey_descript , rec_user, upd_user, survey_reply_type_name ,survery_responce_status">
     		<selectClause>  
     			t.survey_id,
-  				t.phone,
+  				t.p_numb,
   				t.survey_descript,
-  				(r.user_name||' ( '||r.personnel_name||' '||r.personnel_surname||' ) ') as survey_creator,
-  				(d.user_name||' ( '||d.personnel_name||' '||d.personnel_surname||' ) ') as loked_user,
+  				(r.user_name||' ( '||r.user_firstname||' '||r.user_lastname||' ) ') as survey_creator,
+  				(d.user_name||' ( '||d.user_firstname||' '||d.user_lastname||' ) ') as loked_user,
   				dt.survey_reply_type_name,
   				t.survery_responce_status
 			</selectClause> 
-			<tableClause>survey t, personnel r, personnel d, survey_reply_type dt</tableClause>
+			<tableClause>survey t, users r, users d, survey_reply_type dt</tableClause>
 			<whereClause><![CDATA[ 
 				r.user_name = t.survey_creator and 
 				d.user_name = t.loked_user and

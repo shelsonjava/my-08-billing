@@ -86,19 +86,19 @@
     	
     	<operationBinding operationId="getBillingCompBillByDay" operationType="fetch">
     		<selectClause>   			
-    			  		t.phone as phonea, 
+    			  		t.call_phone as phonea, 
 				       '11808' as phoneb, 
-				        ch.rec_date as charge_date,
-				        to_char(ch.rec_date,'MM/DD/YYYY HH24:MI:SS') as charge_date1,
+				        ch.charge_date as charge_date,
+				        to_char(ch.charge_date,'MM/DD/YYYY HH24:MI:SS') as charge_date1,
 				        60 as duration,
-				        ch.price/100 as rate,
-				        ch.price/100 as price
+				        ch.charge/100 as rate,
+				        ch.charge/100 as price
 			</selectClause> 
-			<tableClause>log_sessions t, log_session_charges ch</tableClause>
+			<tableClause>call_sessions t, call_session_expense ch</tableClause>
 			<whereClause><![CDATA[
 				 t.session_id  = ch.session_id and 
-				 trunc(t.start_date) = trunc($criteria.date_param) and
-				 trunc(ch.rec_date) = trunc($criteria.date_param) and
+				 trunc(t.call_start_date) = trunc($criteria.date_param) and
+				 trunc(ch.charge_date) = trunc($criteria.date_param) and
 					exists (
 					  select 
 					    to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start)),
@@ -106,28 +106,28 @@
 					  from BILLING_COMPANIES tc 
 					         inner join BILLING_COMPANIES_ind i on i.billing_company_id = tc.billing_company_id
 					  where tc.billing_company_id = $criteria.billing_company_id
-					        and to_number(t.phone) >= to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
-					        and to_number(t.phone) <= to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
+					        and to_number(t.call_phone) >= to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
+					        and to_number(t.call_phone) <= to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
 					) 
-					and getcontractorpricenew(t.phone)=-999999999
+					and getcontractorpricenew(t.call_phone)=-999999999
 				]]>  
 			</whereClause> 
     	</operationBinding>
     	
     	<operationBinding operationId="getBillingCompBillByMonth" operationType="fetch">
     		<selectClause>   			
-    			  		t.phone as phonea, 
+    			  		t.call_phone as phonea, 
 				       '11808' as phoneb, 
-				        ch.rec_date as charge_date,
-				        to_char(ch.rec_date,'MM/DD/YYYY HH24:MI:SS') as charge_date1,
+				        ch.charge_date as charge_date,
+				        to_char(ch.charge_date,'MM/DD/YYYY HH24:MI:SS') as charge_date1,
 				        60 as duration,
-				        ch.price/100 as rate,
-				        ch.price/100 as price
+				        ch.charge/100 as rate,
+				        ch.charge/100 as price
 			</selectClause> 
-			<tableClause>log_sessions t, log_session_charges ch</tableClause>
+			<tableClause>call_sessions t, call_session_expense ch</tableClause>
 			<whereClause><![CDATA[
 				 t.session_id  = ch.session_id and 
-				 t.ym = $criteria.ym and ch.ym = $criteria.ym and
+				 t.year_month = $criteria.ym and ch.year_month = $criteria.ym and
 					exists (
 					  select 
 					    to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start)),
@@ -135,10 +135,10 @@
 					  from BILLING_COMPANIES tc 
 					         inner join BILLING_COMPANIES_ind i on i.billing_company_id = tc.billing_company_id
 					  where tc.billing_company_id = $criteria.billing_company_id
-					        and to_number(t.phone) >= to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
-					        and to_number(t.phone) <= to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
+					        and to_number(t.call_phone) >= to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
+					        and to_number(t.call_phone) <= to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
 					) 
-					and getcontractorpricenew(t.phone)=-999999999
+					and getcontractorpricenew(t.call_phone)=-999999999
 				]]>  
 			</whereClause> 
     	</operationBinding>
