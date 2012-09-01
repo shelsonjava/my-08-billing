@@ -7,6 +7,7 @@
 	<fields>
 		<field name="street_index_id"		type="integer"		title="ID"						hidden="true" primaryKey="true" />
 		<field name="street_id"				type="integer" 		title="Street Id"				hidden="true"/>
+		<field name="streets_id"			type="integer" 		title="Street Id1"				hidden="true"/>
 		<field name="town_id"				type="integer" 		title="Street Id"				hidden="true"/>
 		<field name="street_name"			type="text"			title="Street Name" />
 		<field name="street_index_remark"	type="text"			title="street_index_remark"/>
@@ -38,6 +39,7 @@
     		<selectClause>   			
     			t.street_index_id,
 				t.street_id,
+				t.street_id as streets_id,
 				s.town_id,
 				t.street_index_remark,
 				t.street_index_value,
@@ -47,6 +49,7 @@
 			<whereClause><![CDATA[ 
 				t.street_id = s.streets_id
 				#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+				#if($criteria.streets_id) AND t.street_id = $criteria.streets_id #end
 				#if($criteria.town_id) AND s.town_id = $criteria.town_id #end
 				#if($criteria.street_index_remark) and t.street_index_remark like '%'||($criteria.street_index_remark)||'%' #end
 				#if($criteria.street_index_value) and t.street_index_value like ($criteria.street_index_value)||'%' #end
