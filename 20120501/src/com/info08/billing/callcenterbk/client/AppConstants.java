@@ -747,4 +747,7 @@ public interface AppConstants extends Constants {
 	String fullCount();
 	String identCodeShort();
 	String partnerBankShort();
+	String directSmall();
+	String nonDirectSmall();
+	String governmentSmall();
 }

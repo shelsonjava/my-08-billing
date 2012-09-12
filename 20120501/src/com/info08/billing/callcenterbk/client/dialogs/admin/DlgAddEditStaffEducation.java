@@ -1,8 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
-import com.info08.billing.callcenterbk.client.utils.Calendar;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
-import com.info08.billing.callcenterbk.client.utils.GregorianCalendar;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
@@ -198,38 +196,38 @@ public class DlgAddEditStaffEducation extends Window {
 		record.setAttribute("degree_descr_id",
 				degreeSelectItem.getValueAsString());
 		record.setAttribute("degree_descr", degreeSelectItem.getDisplayValue());
-		int start_year = 0;
+		//int start_year = 0;
 		if (startYearItem.getValueAsString() != null) {
-			start_year = new Long(startYearItem.getValueAsString()).intValue();
+			//start_year = new Long(startYearItem.getValueAsString()).intValue();
 			record.setAttribute("start_year", startYearItem.getValueAsString());
 		}
 
-		int end_year = 0;
+		//int end_year = 0;
 		if (endYearItem.getValueAsString() != null) {
-			end_year = new Long(endYearItem.getValueAsString()).intValue();
+			//end_year = new Long(endYearItem.getValueAsString()).intValue();
 			record.setAttribute("end_year", endYearItem.getValueAsString());
 		}
 
-		GregorianCalendar gregorianCalendar = new GregorianCalendar();
-		gregorianCalendar.setTimeInMillis(System.currentTimeMillis());
-		int currentYear = gregorianCalendar.get(Calendar.YEAR);
-
-		if (start_year < 1950 || start_year > currentYear) {
-			SC.say("დაწყების წელი უნდა იყოს  ინტერვალში 1950-დან "
-					+ currentYear + "-მდე !");
-			return;
-		}
-
-		if (end_year < 1950 || end_year > currentYear) {
-			SC.say("დამთავრების წელი უნდა იყოს  ინტერვალში 1950-დან "
-					+ currentYear + "-მდე !");
-			return;
-		}
-
-		if (start_year >= end_year) {
-			SC.say("დაწყების და დამთავრების წლები შეყვანილია არასწორად !");
-			return;
-		}
+//		GregorianCalendar gregorianCalendar = new GregorianCalendar();
+//		gregorianCalendar.setTimeInMillis(System.currentTimeMillis());
+//		int currentYear = gregorianCalendar.get(Calendar.YEAR);
+//
+//		if (start_year < 1950 || start_year > currentYear) {
+//			SC.say("დაწყების წელი უნდა იყოს  ინტერვალში 1950-დან "
+//					+ currentYear + "-მდე !");
+//			return;
+//		}
+//
+//		if (end_year < 1950 || end_year > currentYear) {
+//			SC.say("დამთავრების წელი უნდა იყოს  ინტერვალში 1950-დან "
+//					+ currentYear + "-მდე !");
+//			return;
+//		}
+//
+//		if (start_year >= end_year) {
+//			SC.say("დაწყების და დამთავრების წლები შეყვანილია არასწორად !");
+//			return;
+//		}
 
 		record.setAttribute("se_years", startYearItem.getValueAsString()
 				+ " - " + endYearItem.getValueAsString());

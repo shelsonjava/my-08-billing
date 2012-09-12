@@ -180,7 +180,7 @@ public class TabStatFull extends Tab {
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
 			listGrid.setFetchOperation("searchAllStatistics");
-			listGrid.setShowRowNumbers(true);
+			//listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
@@ -199,38 +199,38 @@ public class TabStatFull extends Tab {
 					CallCenterBK.constants.abonent(), 80);
 
 			ListGridField org_contr_comm_cnt = new ListGridField(
-					"org_contr_comm_cnt", CallCenterBK.constants.direct(), 100);
+					"org_contr_comm_cnt", CallCenterBK.constants.directSmall(), 70);
 
 			ListGridField org_non_contr_cnt = new ListGridField(
-					"org_non_contr_cnt", CallCenterBK.constants.nonDirect(), 100);
+					"org_non_contr_cnt", CallCenterBK.constants.nonDirectSmall(), 70);
 
 			ListGridField org_contr_gov_cnt = new ListGridField(
-					"org_contr_gov_cnt", CallCenterBK.constants.government(), 100);
+					"org_contr_gov_cnt", CallCenterBK.constants.governmentSmall(), 70);
 
 			ListGridField org_sum = new ListGridField("org_sum",
-					CallCenterBK.constants.sum(), 100);
+					CallCenterBK.constants.sum(), 70);
 
 			ListGridField magti_cnt = new ListGridField("magti_cnt",
-					CallCenterBK.constants.magti(), 100);
+					CallCenterBK.constants.magti(), 80);
 
 			ListGridField geocell_cnt = new ListGridField("geocell_cnt",
-					CallCenterBK.constants.geocell(), 100);
+					CallCenterBK.constants.geocell(), 80);
 
 			ListGridField beeline_cnt = new ListGridField("beeline_cnt",
-					CallCenterBK.constants.beeline(), 100);
+					CallCenterBK.constants.beeline(), 80);
 
 			ListGridField org_contr_email_srv_cnt = new ListGridField(
-					"org_contr_email_srv_cnt", CallCenterBK.constants.direct(),
-					100);
+					"org_contr_email_srv_cnt", CallCenterBK.constants.directSmall(),
+					70);
 
 			ListGridField org_email_srv_cnt = new ListGridField(
-					"org_email_srv_cnt", CallCenterBK.constants.nonDirect(), 100);
+					"org_email_srv_cnt", CallCenterBK.constants.nonDirectSmall(), 70);
 
 			ListGridField all_sum = new ListGridField("all_sum",
-					CallCenterBK.constants.sum(), 100);
+					CallCenterBK.constants.sum(), 70);
 
 			ListGridField all_amount = new ListGridField("all_amount",
-					CallCenterBK.constants.amount(), 100);
+					CallCenterBK.constants.amount(), 70);
 
 			stat_date.setAlign(Alignment.CENTER);
 			abonent_cnt.setAlign(Alignment.CENTER);

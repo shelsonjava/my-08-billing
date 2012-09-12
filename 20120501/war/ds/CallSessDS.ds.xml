@@ -70,11 +70,17 @@
 				#end				
 				#if ($criteria.user_id) AND p.user_id = $criteria.user_id #end
 				#if ($criteria.serviceId) AND
-					(ch.service_id = $criteria.serviceId or 
-						(						
-							select count(1) from SENT_SMS_HIST sms where s.session_id = sms.SESSION_CALL_ID and sms.service_id = $criteria.serviceId 
-						) > 0 
-					)
+					
+					(ch.service_id = $criteria.serviceId or
+			           exists  
+			            (            
+			              select  1 from SENT_SMS_HIST sms 
+			              where sms.SESSION_CALL_ID = s.session_id and sms.service_id = $criteria.serviceId and
+			              trunc( sms.message_sent_time) > trunc(s.call_start_date) and
+			              trunc( sms.message_sent_time) < trunc(s.call_start_date)
+			            )
+			          )
+					
 				#end	
 				#if ($criteria.numOfSecondsStart) AND s.call_duration > $criteria.numOfSecondsStart #end
 				#if ($criteria.numOfSecondsEnd) AND s.call_duration <= $criteria.numOfSecondsEnd #end

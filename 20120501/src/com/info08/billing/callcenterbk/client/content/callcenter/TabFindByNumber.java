@@ -336,6 +336,10 @@ public class TabFindByNumber extends Tab {
 								record.getAttributeAsInt("town_id"));
 						pRecord.setAttribute("org_allert_by_buss_det", record
 								.getAttributeAsString("org_allert_by_buss_det"));
+						pRecord.setAttribute("full_address_not_hidden", record
+								.getAttributeAsString("full_address_not_hidden"));
+						pRecord.setAttribute("hidden_by_request",
+								record.getAttributeAsInt("hidden_by_request"));
 
 						showOrgDialog(pRecord);
 					} catch (Exception e) {

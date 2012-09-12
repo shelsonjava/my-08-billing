@@ -193,6 +193,11 @@
 					       start with o.org_department_id in
 					                  (select kk.org_department_id
 					                     from organization_department kk
+					                     	
+					                     	#if($criteria.department_real_address)
+					                     		left join V_FULL_ADDRESS da on da.addr_id = kk.physical_address_id
+					                     	#end
+					                     		
 					                    where 1=1
 					                    	#if($criteria.organization_id) and kk.organization_id = $criteria.organization_id #end
 					                    	#if($criteria.org_department_id) and kk.org_department_id = $criteria.org_department_id #end
@@ -218,6 +223,11 @@
               											#end
 					                        	) 
 					                        #end
+					                        #if($criteria.department_real_address)
+									 			#foreach($str in $criteria.department_real_address.split(" "))
+													and da.concat_address_with_town like '%'||'$str'||'%'
+												#end
+					 						#end
 					                   )
 					      connect by prior o.parrent_department_id = o.org_department_id
 					      union
@@ -226,6 +236,11 @@
 					       start with o.org_department_id in
 					                  (select kk.org_department_id
 					                     from organization_department kk
+					                     	
+					                     	#if($criteria.department_real_address)
+					                     		left join V_FULL_ADDRESS da on da.addr_id = kk.physical_address_id
+					                     	#end
+					                     	
 					                    where 1=1
 					                    	#if($criteria.organization_id) and kk.organization_id = $criteria.organization_id #end
 					                    	#if($criteria.org_department_id) and kk.org_department_id = $criteria.org_department_id #end
@@ -251,6 +266,11 @@
               											#end
 					                        	) 
 					                        #end
+					                        #if($criteria.department_real_address)
+									 			#foreach($str in $criteria.department_real_address.split(" "))
+													and da.concat_address_with_town like '%'||'$str'||'%'
+												#end
+					 						#end
 					                   )
 					      connect by prior o.org_department_id = o.parrent_department_id) f
 					inner join organization_department dd on dd.org_department_id = f.org_department_id
@@ -259,12 +279,6 @@
 					order siblings by dd.inner_order ) t1
 					left join V_FULL_ADDRESS pa on pa.addr_id = t1.physical_address_id 
 					left join V_FULL_ADDRESS la on la.addr_id = t1.legal_address_id
-					where 1 = 1
-					 #if($criteria.department_real_address)
-				 		#foreach($str in $criteria.department_real_address.split(" "))
-							and pa.concat_address_with_town like '%'||'$str'||'%'
-						#end
-					 #end
             	 ]]>
             </customSQL> 
         </operationBinding>

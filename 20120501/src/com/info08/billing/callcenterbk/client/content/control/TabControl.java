@@ -111,7 +111,7 @@ public class TabControl extends Tab {
 			serviceItem.setTitle("სერვისი");
 			serviceItem.setType("comboBox");
 			serviceItem.setWidth("100%");
-			serviceItem.setName("serviceId");
+			serviceItem.setName("service_price_id");			
 
 			numberItem = new TextItem();
 			numberItem.setTitle("ნომერი");
@@ -647,7 +647,7 @@ public class TabControl extends Tab {
 				operatorItem.setDisplayField("fullPersonName");
 			}
 			if (services != null) {
-				serviceItem.setOptionDataSource(services);
+				serviceItem.setOptionDataSource(services);				
 				serviceItem.setDisplayField("service_description");
 			}
 		} catch (Exception e) {

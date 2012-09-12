@@ -129,6 +129,7 @@
 				t.event_price,
 				t.event_time,
 				ep.event_owner_name,
+				ep.organization_id,
 				t.sms_remark,
 				ep.event_category_id,
 				trim(to_char(t.event_date,'DD-MM-YYYY')||' '||t.event_time) as eventDateTime,

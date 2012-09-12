@@ -80,7 +80,7 @@
 				#if($criteria.critRemarc10)  AND t.additional_comment || ' '|| t.remark like '%'||$criteria.critRemarc10 ||'%' #end
 				]]>  
 			</whereClause> 
-			<orderClause>t.fact_date asc, t.priority desc</orderClause>
+			<orderClause>t.priority desc, t.fact_date asc</orderClause>
     	</operationBinding>
     </operationBindings>	
 </DataSource>
