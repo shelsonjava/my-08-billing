@@ -13,6 +13,7 @@
         <field name="service_description"	type="text"  	title="service_description"/>
         <field name="charge"  				type="integer"  title="charge"/>
         <field name="rec_date_time"			type="datetime" title="rec_date_time"/>
+        <field name="rec_date"				type="datetime" title="rec_date"/>
         <field name="call_start_date"		type="datetime" title="call_start_date"/>
 		<field name="charge_date"			type="date" 	title="charge_date"/>
         <field name="organization_name"		type="text"  	title="organization_name"/>

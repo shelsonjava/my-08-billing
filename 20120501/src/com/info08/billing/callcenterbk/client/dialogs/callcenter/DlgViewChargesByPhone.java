@@ -72,13 +72,13 @@ public class DlgViewChargesByPhone extends Window {
 
 			dynamicForm.setFields(nmItem);
 
-			DataSource callSessDS = DataSource.get("CallSessDS");
+			DataSource callSessDS = DataSource.get("CallSessExpDS1");
 
 			listGrid = new ListGrid();
 			listGrid.setWidth100();
 			listGrid.setHeight100();
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("call_phone", call_phone);
+			criteria.setAttribute("phone", call_phone);
 			listGrid.setCriteria(criteria);
 			listGrid.setFetchOperation("selectChargesByPhoneInCurrMonth");
 			listGrid.setDataSource(callSessDS);
@@ -86,7 +86,7 @@ public class DlgViewChargesByPhone extends Window {
 			listGrid.setCanSort(false);
 			listGrid.setCanResizeFields(false);
 			listGrid.setShowAllRecords(true);
-			listGrid.setGroupByField("service_name_geo");
+			listGrid.setGroupByField("service_description");
 			listGrid.setGroupStartOpen(GroupStartOpen.ALL);
 			listGrid.setShowGridSummary(true);
 			listGrid.setShowGroupSummary(true);
@@ -122,13 +122,13 @@ public class DlgViewChargesByPhone extends Window {
 					CallCenterBK.constants.cntShort(), 70);
 			cnt.setAlign(Alignment.CENTER);
 
-			ListGridField service_name_geo = new ListGridField(
-					"service_name_geo", CallCenterBK.constants.service());
+			ListGridField service_description = new ListGridField(
+					"service_description", CallCenterBK.constants.service());
 			rec_date.setAlign(Alignment.CENTER);
 			amount.setAlign(Alignment.CENTER);
-			service_name_geo.setAlign(Alignment.CENTER);
+			service_description.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(rec_date, aprice, cnt, amount, service_name_geo);
+			listGrid.setFields(rec_date, aprice, cnt, amount, service_description);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();

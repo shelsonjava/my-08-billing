@@ -223,7 +223,7 @@
 							o.web_address,
 							o.contact_person,
 							o.day_offs,
-							getWeekDays(o.day_offs) as day_offs_descr,
+							getDayOffs(o.day_offs) as day_offs_descr,
 							o.staff_count,
 							o.organization_index,
 							o.organization_name_eng,						
