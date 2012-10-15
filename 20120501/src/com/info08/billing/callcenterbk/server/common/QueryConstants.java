@@ -1,6 +1,10 @@
 package com.info08.billing.callcenterbk.server.common;
 
 public interface QueryConstants {
+		
+	
+	public static final String Q_UPDATE_STREET_TRUXA =" update ccare.addresses t set t.town_id = t.town_id where t.street_id = ? ";
+	
 	
 	public static final String Q_GET_CALL_PRICE = "select getchargeprice(?,?) as price from dual";
 	

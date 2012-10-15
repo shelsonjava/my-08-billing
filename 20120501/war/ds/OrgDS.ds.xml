@@ -91,11 +91,12 @@
 		<field name="unique_ident_code"				type="integer"  	title="unique_ident_code"				hidden="true"/>
 		<field name="original_org_name"				type="text"  		title="original_org_name"/>
 		<field name="mainIdList"					type="any"  		title="mainIdList"						hidden="true"/>
-		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true" />
-		<field name="org_part_bank_id" 				type="integer" 		title="org_part_bank_id" 				hidden="true" />
+		<field name="recCount" 						type="integer" 		title="recCount" 						hidden="true"/>
+		<field name="org_part_bank_id" 				type="integer" 		title="org_part_bank_id" 				hidden="true"/>
 		<field name="concat_phones"					type="text"  		title="concat_phones"					hidden="true"/>
 		<field name="concat_activity_descrs"		type="text"  		title="concat_activity_descrs"			hidden="true"/>
-		<field name="flow_priority" 				type="integer" 		title="flow_priority" 					hidden="true" />
+		<field name="flow_priority" 				type="integer" 		title="flow_priority" 					hidden="true"/>
+		<field name="is_org_contractor" 			type="integer" 		title="is_org_contractor" 				hidden="true"/>
 		<field name="concat_org_partner_banks"		type="text"  		title="concat_org_partner_banks"/>
 		<field name="hist_start_date"   			type="datetime" 	title="hs_hist_start_date"/>
 		<field name="hist_end_date"   				type="datetime" 	title="hs_hist_end_date"/>
@@ -196,12 +197,16 @@
 	       								inner join organization_activities tt on tt.org_activity_id = t.org_activity_id
 								  where t.organization_id = o.organization_id ) as concat_activity_descrs,
 							#end
+							
+							
 							#if($criteria.isCallCenter)
 								(select 
 									 wm_concat(oo.organization_name) as concat_org_partner_banks 
 								from organization_partner_banks t
 	       						inner join organizations oo on oo.organization_id = t.part_bank_org_id
 								where t.organization_id = o.organization_id) as concat_org_partner_banks,
+							#else
+								is_organization_contractor(o.organization_id) is_org_contractor, 
 							#end
 							o.organization_name as original_org_name,
 							a.concat_address_with_town as full_address_not_hidden,
@@ -211,6 +216,7 @@
 							a.town_id,
 							o.priority,
 	             			o.super_priority,
+	             			o.flow_priority,
 							o.ident_code,
 							o.ident_code_new,
 							decode(o.ident_code_new,null,o.ident_code,o.ident_code_new) as unique_ident_code,
@@ -386,8 +392,7 @@
 							 #end
 							 #if($criteria.real_address_descr) 
 							 	#foreach($str in $criteria.real_address_descr.split(" "))
-							 		and a.concat_address like '%'||'$str'||'%' AND 
-							 		(a.town_district_name is null or a.town_district_name not like '%'||'$str'||'%')
+							 		and (a.street_name||' '||a.calc_short_address) like '%'||'$str'||'%'
 								#end							 	
 							 #end
 							 #if($criteria.town_district_id) 
@@ -434,6 +439,11 @@
 							              ) 
 							       ) 
 							 #end
+							 
+							 #if($criteria.isExport) 
+							 		and o.status not in (2,1)
+							 #end
+							 
 							 #if($criteria.main_organization) and o.parrent_organization_id is null #end
 							 #if($criteria.web_address) and o.web_address like '%'||($criteria.web_address)||'%' #end
 							 #if($criteria.email_address) and o.email_address like '%'||($criteria.email_address)||'%' #end
@@ -700,6 +710,15 @@
 				   	#if($criteria.town_district) AND t.town_district like '%'||($criteria.town_district)||'%' #end
 				   	#if($criteria.ident_code) AND $criteria.ident_code in (ident_code,ident_code_new) #end
 				   	#if($criteria.remark) AND t.remark like '%'||($criteria.remark)||'%' #end
+				   	
+				   	#if($criteria.user) 
+				   		AND (t.on_user = $criteria.user or t.off_user = $criteria.user) 
+				   	#end
+				   	
+				   	#if($criteria.start_date) 
+				   		AND (trunc(t.hist_start_date)  = trunc($criteria.start_date) or trunc(nvl(t.hist_end_date,to_date('01/01/2050','DD/MM/YYYY'))) = trunc($criteria.start_date) )
+				   	#end
+				   	
 				   	
 				   	#if($criteria.phone_number)
 				   	and exists (select 1

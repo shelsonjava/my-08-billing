@@ -58,6 +58,17 @@
 			</whereClause> 
     	</operationBinding>
     	
+    	
+    	<!-- Log SMS -->
+		<operationBinding operationId="ChargeLogRedOrg" operationType="update">
+            <customSQL>
+            	 <![CDATA[
+            	      call addorgprioritysessionlog($values.organization_id,$values.session_id)
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+    	
+    	
         <!-- Log SMS -->
 		<operationBinding operationId="LogSMS" operationType="add">
             <customSQL>

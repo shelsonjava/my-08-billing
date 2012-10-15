@@ -243,8 +243,7 @@ public class TabFindInCityTransport extends Tab {
 			String end_place_id = streetToItem.getValueAsString();
 			if (end_place_id != null && !end_place_id.trim().equals("")) {
 				toStreetId = end_place_id;
-				criteria.setAttribute(fromStreetId == null ? "start_place_id"
-						: "end_place_id", end_place_id);
+				criteria.setAttribute(fromStreetId == null ? "start_place_id" : "end_place_id", end_place_id);
 			}
 
 			DSRequest dsRequest = new DSRequest();

@@ -354,6 +354,7 @@ public class DlgAddEditContractor extends Window {
 			listGridPhones.setShowFilterEditor(true);
 			listGridPhones.setFilterOnKeypress(true);
 			listGridPhones.setCanDragSelectText(true);
+			listGridPhones.setShowRowNumbers(true);
 
 			ListGridField phone = new ListGridField("phone_number",
 					CallCenterBK.constants.phone());

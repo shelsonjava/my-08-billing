@@ -797,6 +797,7 @@ public class DlgManageOrgDepartments extends Window {
 				}
 			}
 			criteria.setAttribute("real_address_descr", real_address_descr);
+			criteria.setAttribute("department_real_address", real_address_descr);
 
 			if (phone != null && !phone.trim().equals("")) {
 				criteria.setAttribute("phone", phone);

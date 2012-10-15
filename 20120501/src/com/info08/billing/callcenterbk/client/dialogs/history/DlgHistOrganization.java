@@ -22,6 +22,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
@@ -54,6 +55,8 @@ public class DlgHistOrganization extends Window {
 	private TextItem streetItem;
 	private TextItem districtItem;
 	private TextItem townItem;
+	private DateItem startDateItem;
+	private TextItem userItem;
 
 	private IButton findButton;
 	private IButton clearButton;
@@ -141,6 +144,17 @@ public class DlgHistOrganization extends Window {
 			districtItem.setName("districtItem");
 			districtItem.setWidth(200);
 
+			startDateItem = new DateItem();
+			startDateItem.setTitle(CallCenterBK.constants.date());
+			startDateItem.setName("startDateItem");
+			startDateItem.setWidth(200);
+			startDateItem.setUseTextField(true);
+
+			userItem = new TextItem();
+			userItem.setTitle(CallCenterBK.constants.username());
+			userItem.setName("userItem");
+			userItem.setWidth(200);
+
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth100();
@@ -151,7 +165,7 @@ public class DlgHistOrganization extends Window {
 
 			searchForm.setFields(orgNameItem, remarkItem, departmentNameItem,
 					identCodeItem, streetItem, townItem, districtItem,
-					phoneItem);
+					phoneItem, userItem, startDateItem);
 
 			searchForm.setBorder("1px solid #CCC");
 
@@ -715,9 +729,9 @@ public class DlgHistOrganization extends Window {
 			hLayout.addMember(searchForm);
 			hLayout.addMember(buttonLayout);
 
-//			if (abonentRecord != null) {
-//				searchBySubscriber(abonentRecord);
-//			}
+			// if (abonentRecord != null) {
+			// searchBySubscriber(abonentRecord);
+			// }
 			hLayout.addMember(histOrganizaionListGrid);
 			hLayout.addMember(topTabSet);
 			addItem(hLayout);
@@ -739,6 +753,8 @@ public class DlgHistOrganization extends Window {
 			String town_name = townItem.getValueAsString();
 			String town_district = districtItem.getValueAsString();
 			String phone_number = phoneItem.getValueAsString();
+			Date start_date = startDateItem.getValueAsDate();
+			String user = userItem.getValueAsString();
 
 			Criteria criteria = new Criteria();
 
@@ -746,7 +762,9 @@ public class DlgHistOrganization extends Window {
 					&& (remark == null || remark.equals(""))
 					&& (departmentName == null || departmentName.equals(""))
 					&& (ident_code == null || ident_code.equals(""))
-					&& (phone_number == null || phone_number.equals(""))) {
+					&& (phone_number == null || phone_number.equals(""))
+					&& (start_date==null)
+					&& (user == null || user.equals(""))) {
 				SC.say("გთხოვთ შეიყვანოთ აუცილებელი მნიშვნელობები!");
 				return;
 
@@ -783,7 +801,14 @@ public class DlgHistOrganization extends Window {
 			if (phone_number != null && !phone_number.equals("")) {
 				criteria.setAttribute("phone_number", phone_number);
 			}
-
+			
+			if (start_date != null) {
+				criteria.setAttribute("start_date", start_date);
+			}
+			
+			if (user != null && !user.trim().equals("")) {
+				criteria.setAttribute("user", user);
+			}
 			searchByCriteria(criteria);
 		} catch (Exception e) {
 			SC.say(e.toString());

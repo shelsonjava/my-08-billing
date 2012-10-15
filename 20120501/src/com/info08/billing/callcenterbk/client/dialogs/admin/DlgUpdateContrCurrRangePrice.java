@@ -27,7 +27,7 @@ public class DlgUpdateContrCurrRangePrice extends Window {
 	private TextItem rangeCurrPriceItem;
 	private ListGridRecord listGridRecord;
 	private ListGrid listGrid;
-
+	
 	public DlgUpdateContrCurrRangePrice(ListGridRecord listGridRecord,
 			ListGrid listGrid) {
 		try {
@@ -128,6 +128,7 @@ public class DlgUpdateContrCurrRangePrice extends Window {
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("range_curr_price", range_curr_price);
+			
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			DSRequest req = new DSRequest();
 			req.setAttribute("operationId", "updateContractorRangePrice");

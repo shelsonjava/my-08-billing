@@ -210,14 +210,17 @@
 					                        #if($criteria.department7) and kk.department like '%'||($criteria.department7)||'%' #end
 					                        #if($criteria.department8) and kk.department like '%'||($criteria.department8)||'%' #end
 					                        #if($criteria.department9) and kk.department like '%'||($criteria.department9)||'%' #end
-					                        #if($criteria.phone)
+					                        #if($criteria.phone || $criteria.for_contact)
 					                        	and exists (
 					                        		select 
 					                        			1 
 					                        		from organization_depart_to_phones p
                      									inner join phone_numbers pn on pn.phone_number_id = p.phone_number_id
               										where 
-              											kk.org_department_id = p.org_department_id and pn.phone = $criteria.phone
+              											kk.org_department_id = p.org_department_id 
+              											#if($criteria.phone)
+              											    and pn.phone = $criteria.phone
+              											#end              											
               											#if($criteria.for_contact)
               												and p.for_contact = $criteria.for_contact 
               											#end
@@ -227,7 +230,7 @@
 									 			#foreach($str in $criteria.department_real_address.split(" "))
 													and da.concat_address_with_town like '%'||'$str'||'%'
 												#end
-					 						#end
+					 						#end					 						
 					                   )
 					      connect by prior o.parrent_department_id = o.org_department_id
 					      union
@@ -253,14 +256,17 @@
 					                        #if($criteria.department7) and kk.department like '%'||($criteria.department7)||'%' #end
 					                        #if($criteria.department8) and kk.department like '%'||($criteria.department8)||'%' #end
 					                        #if($criteria.department9) and kk.department like '%'||($criteria.department9)||'%' #end
-					                        #if($criteria.phone)
+					                        #if($criteria.phone || $criteria.for_contact)
 					                        	and exists (
 					                        		select 
 					                        			1 
 					                        		from organization_depart_to_phones p
                      									inner join phone_numbers pn on pn.phone_number_id = p.phone_number_id
               										where 
-              											kk.org_department_id = p.org_department_id and pn.phone = $criteria.phone
+              											kk.org_department_id = p.org_department_id 
+              											#if($criteria.phone)
+              											    and pn.phone = $criteria.phone
+              											#end              											
               											#if($criteria.for_contact)
               												and p.for_contact = $criteria.for_contact 
               											#end

@@ -176,10 +176,10 @@ public class DlgAddEditStaff extends Window {
 		hLayoutForAddresses.setPadding(0);
 		hLayoutForAddresses.setMargin(0);
 
-		physicalAddress = new MyAddressPanel(null, "PhysicalAddress",
+		physicalAddress = new MyAddressPanel(false, "PhysicalAddress",
 				"ფაქტიური მისამართი", 614, 0);
 
-		legalAddress = new MyAddressPanel(null, "LegalAddress",
+		legalAddress = new MyAddressPanel(false, "LegalAddress",
 				"იურიდიული მისამართი", 614, 0);
 
 		ToolStrip toolStrip = new ToolStrip();
@@ -1058,8 +1058,7 @@ public class DlgAddEditStaff extends Window {
 			}
 
 			Integer address_id = listGridRecord.getAttributeAsInt("address_id");
-			Integer document_address_id = listGridRecord
-					.getAttributeAsInt("document_address_id");
+			Integer document_address_id = listGridRecord.getAttributeAsInt("document_address_id");
 
 			physicalAddress.setValue(address_id);
 			legalAddress.setValue(document_address_id);
@@ -1465,19 +1464,15 @@ public class DlgAddEditStaff extends Window {
 			record.setAttribute("first_name", firstName);
 			record.setAttribute("last_name", lastName);
 			record.setAttribute("image_id", photoItem.getValue());
-			record.setAttribute("department_id",
-					departmentItem.getValueAsString());
+			record.setAttribute("department_id",departmentItem.getValueAsString());
 			record.setAttribute("doc_num", docNumberItem.getValueAsString());
 			record.setAttribute("gender_id", genderItem.getValueAsString());
-			record.setAttribute("nationality_id",
-					nationalityItem.getValueAsString());
-			record.setAttribute("family_status_id",
-					familyStatusItem.getValueAsString());
+			record.setAttribute("nationality_id",nationalityItem.getValueAsString());
+			record.setAttribute("family_status_id",familyStatusItem.getValueAsString());
 			record.setAttribute("start_date", startDateItem.getValueAsDate());
 			record.setAttribute("dob", dobItem.getValueAsDate());
 			record.setAttribute("remark", remarkItem.getValueAsString());
-			record.setAttribute("loggedUserName", CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name());
+			record.setAttribute("loggedUserName", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 			record.setAttribute("preStaffEducation", preStaffEducation);
 			record.setAttribute("preStaffCompSkills", preStaffCompSkills);
 			record.setAttribute("preStaffLanguages", preStaffLanguages);

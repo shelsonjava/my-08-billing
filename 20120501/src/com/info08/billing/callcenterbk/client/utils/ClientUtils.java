@@ -435,8 +435,8 @@ public class ClientUtils {
 			winModal.setHeight(80);
 			winModal.setTitle("ჩანაწერის მოსმენა");
 			winModal.setShowMinimizeButton(false);
-			winModal.setIsModal(true);
-			winModal.setShowModalMask(true);
+			winModal.setIsModal(false);
+			winModal.setShowModalMask(false);
 			winModal.centerInPage();
 			winModal.addCloseClickHandler(new CloseClickHandler() {
 				@Override

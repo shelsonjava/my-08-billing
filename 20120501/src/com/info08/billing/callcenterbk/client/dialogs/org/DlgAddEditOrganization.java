@@ -651,15 +651,12 @@ public class DlgAddEditOrganization extends Window {
 							});
 				}
 
-				physicalAddress.setValue(listGridRecord
-						.getAttributeAsInt("physical_address_id"));
-				legalAddress.setValue(listGridRecord
-						.getAttributeAsInt("legal_address_id"));
+				physicalAddress.setValue(listGridRecord.getAttributeAsInt("physical_address_id"));
+				legalAddress.setValue(listGridRecord.getAttributeAsInt("legal_address_id"));
 
 				DataSource orgDS = DataSource.get("OrgDS");
 				Criteria criteria1 = new Criteria();
-				criteria1.setAttribute("organization_id",
-						listGridRecord.getAttributeAsInt("organization_id"));
+				criteria1.setAttribute("organization_id", listGridRecord.getAttributeAsInt("organization_id"));
 				DSRequest dsRequest1 = new DSRequest();
 				dsRequest1.setOperationId("searchOrgPartnerBanks");
 				orgDS.fetchData(criteria1, new DSCallback() {

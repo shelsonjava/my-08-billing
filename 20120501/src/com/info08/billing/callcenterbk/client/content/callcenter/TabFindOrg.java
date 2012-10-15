@@ -226,8 +226,11 @@ public class TabFindOrg extends Tab {
 							.getAttributeAsInt("super_priority");
 					Integer note_crit = countryRecord
 							.getAttributeAsInt("priority");
-
-					if (extra_priority != null && extra_priority < 0) {
+					Integer flow_priority = countryRecord
+							.getAttributeAsInt("flow_priority");
+					if (flow_priority != null && flow_priority.intValue() < 0) {
+						return "color:red;";
+					} else if (extra_priority != null && extra_priority < 0) {
 						return "color:red;";
 					} else if (statuse != null && statuse.equals(2)) {
 						if (note_crit != null && note_crit.intValue() == -1

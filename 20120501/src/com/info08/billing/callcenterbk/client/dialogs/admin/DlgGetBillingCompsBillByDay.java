@@ -128,6 +128,9 @@ public class DlgGetBillingCompsBillByDay extends Window {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("billing_company_id", billing_company_id);
 			criteria.setAttribute("date_param", date_param);
+			criteria.setAttribute("no_email", 1);
+			
+			
 			dataSource.exportData(criteria, dsRequest, new DSCallback() {
 
 				@Override

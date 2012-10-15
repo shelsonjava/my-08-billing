@@ -101,6 +101,10 @@ public class StaffDMI implements QueryConstants {
 			// physicalAddress.set
 
 			DataTools.setProperties(physicalAddressMap, physicalAddress);
+			Object strId = physicalAddressMap.get("streets_id");
+			if (strId != null) {
+				physicalAddress.setStreet_id(new Long(strId.toString()));
+			}
 
 			if (physicalAddress.getStreet_id() != null) {
 
@@ -146,6 +150,11 @@ public class StaffDMI implements QueryConstants {
 			// physicalAddress.set
 
 			DataTools.setProperties(legalAddressMap, legalAddress);
+
+			Object legstrId = legalAddressMap.get("streets_id");
+			if (legstrId != null) {
+				legalAddress.setStreet_id(new Long(legstrId.toString()));
+			}
 
 			if (legalAddress.getStreet_id() != null) {
 				if (legalAddress.getAddr_id() != null) {
@@ -368,14 +377,12 @@ public class StaffDMI implements QueryConstants {
 						if (item != null) {
 							StaffRelative staffRelativeItem = new StaffRelative();
 							staffRelativeItem.setStaff_id(staff_id);
-							staffRelativeItem
-									.setLoggedUserName(loggedUserName);
+							staffRelativeItem.setLoggedUserName(loggedUserName);
 							staffRelativeItem.setFirst_name(item
 									.get("first_name"));
 							staffRelativeItem.setLast_name(item
 									.get("last_name"));
-							staffRelativeItem.setPosition(item
-									.get("position"));
+							staffRelativeItem.setPosition(item.get("position"));
 
 							oracleManager.persist(staffRelativeItem);
 

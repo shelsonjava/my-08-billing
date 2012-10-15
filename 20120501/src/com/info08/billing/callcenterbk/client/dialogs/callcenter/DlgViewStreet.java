@@ -223,10 +223,10 @@ public class DlgViewStreet extends Window {
 			if (street_name != null && !street_name.trim().equals("")) {
 				sms_text.append(street_name).append(" ");
 			}
-			String streetIndex = listGridRecord
-					.getAttributeAsString("street_index_text");
-			if (streetIndex != null && !streetIndex.trim().equals("")) {
-				sms_text.append(streetIndex).append(" ");
+			String street_index = listGridRecord
+					.getAttributeAsString("street_index");
+			if (street_index != null && !street_index.trim().equals("")) {
+				sms_text.append(street_index).append(" ");
 			}
 			String streetDistrict = listGridRecord
 					.getAttributeAsString("streetDistrict");

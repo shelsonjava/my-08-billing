@@ -74,15 +74,24 @@
 				   	get_day_of_week(t.stat_date) as week_day_descr				   	
 			</selectClause> 
 			<tableClause> #if($criteria.exactDate) 
-			
-			
-								       (
-											select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-1)+(sysdate-trunc(sysdate)), 0)) 
-											union all
-											select * from table(PKG_STATISTICS.getStatisticsTablePipe(trunc($criteria.exactDate)+(sysdate-trunc(sysdate)), 0)) 
-										)
-				
-				
+		       (
+		       		#foreach($item in $list)
+					 $item
+					#end
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-6)+(sysdate-trunc(sysdate)), 0))
+		       		    union all
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-5)+(sysdate-trunc(sysdate)), 0))
+		       		    union all
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-4)+(sysdate-trunc(sysdate)), 0))
+		       		    union all
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-3)+(sysdate-trunc(sysdate)), 0))
+		       		    union all
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-2)+(sysdate-trunc(sysdate)), 0))
+		       			union all
+					select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-1)+(sysdate-trunc(sysdate)), 0)) 
+						union all
+					select * from table(PKG_STATISTICS.getStatisticsTablePipe(trunc($criteria.exactDate)+(sysdate-trunc(sysdate)), 0)) 
+				)
 				#else statistic #end t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1

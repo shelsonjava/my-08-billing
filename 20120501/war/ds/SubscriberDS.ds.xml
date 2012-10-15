@@ -82,8 +82,7 @@
 			       t.subscriber_id,
 			       #if($criteria.for_call_center) 
 			       	decode(spm.hidden_by_request,1,map_char_codes_geo('dafaruli'), 
-			       		decode(pnm.phone_state_id,52102,map_char_codes_geo('moxs.'),'032' || pnm.phone)
-			       		) shown_phones,
+			       		decode(pnm.phone_state_id,52102,map_char_codes_geo('moxs.'),decode(length(pnm.phone),7,'032'||pnm.phone,pnm.phone))) shown_phones,
 			       #else
 				       t.addr_id,
 				       t.street_name,

@@ -417,15 +417,18 @@ public class TabOrganization extends Tab {
 					if (countryRecord == null) {
 						return super.getCellCSSText(record, rowNum, colNum);
 					}
+					Integer flow_priority = countryRecord
+							.getAttributeAsInt("flow_priority");
 					Integer status = countryRecord.getAttributeAsInt("status");
-					Integer super_priority = countryRecord
-							.getAttributeAsInt("super_priority");
+					Integer super_priority = countryRecord.getAttributeAsInt("super_priority");
 					Integer tree_org_child = (countryRecord
 							.getAttributeAsString("tree_org_child") != null && countryRecord
 							.getAttributeAsString("tree_org_child").equals(
 									"associations")) ? 1 : -1000;
 
-					if (super_priority != null && super_priority < 0) {
+					if (flow_priority != null && flow_priority.intValue() < 0) {
+						return "color:red;";
+					} else if (super_priority != null && super_priority < 0) {
 						if (tree_org_child != -1000) {
 							return "font-weight:bold;color:red;";
 						} else {
@@ -640,16 +643,34 @@ public class TabOrganization extends Tab {
 			editBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = organizationsGrid
+					final ListGridRecord listGridRecord = organizationsGrid
 							.getSelectedRecord();
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.warning(),
 								CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
+					// Integer is_org_contractor =
+					// listGridRecord.getAttributeAsInt("is_org_contractor");
+					// if(is_org_contractor!=null &&
+					// is_org_contractor.intValue()>0){
+					//
+					// SC.warn("AAAAAAAAAAAAAAAAAAAAAAA", new BooleanCallback()
+					// {
+					// @Override
+					// public void execute(Boolean value) {
+					// DlgAddEditOrganization dlgAddEditMainOrg = new
+					// DlgAddEditOrganization(
+					// null, listGridRecord, organizationsGrid);
+					// dlgAddEditMainOrg.show();
+					// }
+					// });
+					//
+					// }else{
 					DlgAddEditOrganization dlgAddEditMainOrg = new DlgAddEditOrganization(
 							null, listGridRecord, organizationsGrid);
 					dlgAddEditMainOrg.show();
+					// }
 				}
 			});
 
@@ -687,6 +708,7 @@ public class TabOrganization extends Tab {
 					}
 				}
 			};
+
 			orgNameGeoItem.addKeyPressHandler(searchHendler);
 			orgCommentItem.addKeyPressHandler(searchHendler);
 			orgDepartmentItem.addKeyPressHandler(searchHendler);
@@ -994,14 +1016,14 @@ public class TabOrganization extends Tab {
 					&& (ident_code == null || ident_code.trim().equals(""))
 					&& (department == null || department.trim().equals(""))
 					&& (web_address == null || web_address.trim().equals(""))
-					&& (email_address == null || email_address.trim().equals(""))
+					&& (email_address == null || email_address.trim()
+							.equals(""))
 					&& (street == null || street.trim().equals(""))
 					&& (legal_street == null || legal_street.trim().equals(""))
 					&& (phone == null || phone.trim().equals(""))
 					&& (org_found_date_start == null && org_found_date_end == null)
-					&& (phone_upd_date == null || phone_upd_date.trim().equals(""))
-					&& !isByOrgActivity) 
-			{
+					&& (phone_upd_date == null || phone_upd_date.trim().equals(
+							"")) && !isByOrgActivity) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.findOrgEnterAnyParam());
 				return;
@@ -1013,6 +1035,7 @@ public class TabOrganization extends Tab {
 					"customOrgSearchForCallCenterNew");
 			if (isExport) {
 				criteria.setAttribute("need_phones", "YES");
+				criteria.setAttribute("isExport", 1L);
 				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
 						ExportFormat.values(), "xls"));
 				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);

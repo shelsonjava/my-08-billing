@@ -188,27 +188,23 @@ public class DlgAddEditStreet extends Window {
 					"town_district_name", "რეგიონების სია");
 			townDistrictsGrid.setFields(town_district_name);
 
-			streetToTownDistrictsClientDS = StreetToTownDistrictsClientDS
-					.getInstance();
+			streetToTownDistrictsClientDS = StreetToTownDistrictsClientDS.getInstance();
 
 			streetToTownDistrictsGrid = new ListGrid();
 			streetToTownDistrictsGrid.setWidth(240);
 			streetToTownDistrictsGrid.setHeight(200);
-			streetToTownDistrictsGrid
-					.setDataSource(streetToTownDistrictsClientDS);
+			streetToTownDistrictsGrid.setDataSource(streetToTownDistrictsClientDS);
 			streetToTownDistrictsGrid.setCanAcceptDroppedRecords(true);
 			streetToTownDistrictsGrid.setCanRemoveRecords(true);
 			streetToTownDistrictsGrid.setAutoFetchData(true);
 			streetToTownDistrictsGrid.setPreventDuplicates(true);
-			streetToTownDistrictsGrid
-					.setDuplicateDragMessage("ასეთი რაიონი უკვე არჩეულია !");
+			streetToTownDistrictsGrid.setDuplicateDragMessage("ასეთი რაიონი უკვე არჩეულია !");
 
 			Img arrowImg = new Img("arrow_right.png", 32, 32);
 			arrowImg.setLayoutAlign(Alignment.CENTER);
 			arrowImg.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					streetToTownDistrictsGrid
-							.transferSelectedData(townDistrictsGrid);
+					streetToTownDistrictsGrid.transferSelectedData(townDistrictsGrid);
 				}
 			});
 			townDistrictsGrid
@@ -426,22 +422,15 @@ public class DlgAddEditStreet extends Window {
 							DSRequest request) {
 						Record record[] = response.getData();
 						if (record != null && record.length > 0) {
-							Map<String, String> mapRegions = record[0]
-									.getAttributeAsMap("mapStreDistricts");
+							Map<String, String> mapRegions = record[0].getAttributeAsMap("mapStreDistricts");
 							if (mapRegions != null && !mapRegions.isEmpty()) {
 								Set<String> keys = mapRegions.keySet();
 								for (String town_district_id : keys) {
-									String town_district_name = mapRegions
-											.get(town_district_id);
+									String town_district_name = mapRegions.get(town_district_id);
 									ListGridRecord listGridRecord = new ListGridRecord();
-									listGridRecord.setAttribute(
-											"town_district_id",
-											town_district_id);
-									listGridRecord.setAttribute(
-											"town_district_name",
-											town_district_name);
-									streetToTownDistrictsGrid
-											.addData(listGridRecord);
+									listGridRecord.setAttribute("town_district_id", town_district_id);
+									listGridRecord.setAttribute("town_district_name", town_district_name);
+									streetToTownDistrictsGrid.addData(listGridRecord);
 								}
 							}
 						}
@@ -554,36 +543,25 @@ public class DlgAddEditStreet extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			if (editRecord != null) {
-				record.setAttribute("streets_id",
-						editRecord.getAttributeAsInt("streets_id"));
+				record.setAttribute("streets_id", editRecord.getAttributeAsInt("streets_id"));
 			}
 			String loggedUser = CommonSingleton.getInstance()
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("rec_user", loggedUser);
-			record.setAttribute("town_id",
-					city_record.getAttributeAsInt("town_id"));
+			record.setAttribute("town_id", city_record.getAttributeAsInt("town_id"));
 			record.setAttribute("is_visible", 0);
 			record.setAttribute("rec_kind", 1);
-			record.setAttribute("street_name",
-					streetNameItem.getValueAsString());
-			record.setAttribute("street_location",
-					streetLocationItem.getValueAsString());
+			record.setAttribute("street_name", streetNameItem.getValueAsString());
+			record.setAttribute("street_location", streetLocationItem.getValueAsString());
 
-			boolean bSaveStreetHistOrNotItem = saveStreetHistOrNotItem
-					.getValueAsBoolean();
-
-			boolean bhideForCallCenterItem = hideForCallCenterItem
-					.getValueAsBoolean();
-			boolean bhideForCorrectionItem = hideForCorrectionItem
-					.getValueAsBoolean();
-			record.setAttribute("saveStreetHistOrNotItem",
-					bSaveStreetHistOrNotItem);
-			record.setAttribute("hide_for_call_center",
-					bhideForCallCenterItem == true ? "1" : "0");
-
-			record.setAttribute("hide_for_correction",
-					bhideForCorrectionItem == true ? "1" : "0");
+			boolean bSaveStreetHistOrNotItem = saveStreetHistOrNotItem.getValueAsBoolean();
+			boolean bhideForCallCenterItem = hideForCallCenterItem.getValueAsBoolean();
+			boolean bhideForCorrectionItem = hideForCorrectionItem.getValueAsBoolean();
+			
+			record.setAttribute("saveStreetHistOrNotItem",bSaveStreetHistOrNotItem);
+			record.setAttribute("hide_for_call_center", bhideForCallCenterItem == true ? "1" : "0");
+			record.setAttribute("hide_for_correction", bhideForCorrectionItem == true ? "1" : "0");
 
 			TreeMap<String, String> mapStreDistricts = new TreeMap<String, String>();
 			ListGridRecord cityRegions[] = streetToTownDistrictsGrid

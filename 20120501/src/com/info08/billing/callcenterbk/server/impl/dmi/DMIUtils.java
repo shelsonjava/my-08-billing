@@ -11,6 +11,17 @@ import com.isomorphic.datasource.DSResponse;
 import com.isomorphic.util.DataTools;
 
 public class DMIUtils {
+	
+	
+	public static final void updateRecord(String dsName, String operationId, Map<?, ?> values) throws Exception {
+		DSRequest request = new DSRequest();
+		request.setValues(values);
+		request.setOperationId(operationId);
+		request.setDataSourceName(dsName);
+		request.setOperationType("update");
+		request.execute();		
+	}
+	
 
 	@SuppressWarnings({ "unchecked" })
 	public static final List<Map<?, ?>> findRecordsByCriteria(String dsName,

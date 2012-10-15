@@ -34,6 +34,7 @@
 		<field name="charge_date"			type="datetime"		title="charge_date"				hidden="true"/>
 		<field name="limitType"				type="integer"		title="limitType"				hidden="true"/>
 		<field name="contractor_type"		type="integer"		title="contractor_type"			hidden="true"/>
+		<field name="ident_code"			type="text"			title="ident_code"				hidden="true"/>
 	</fields>
 	<operationBindings>		
 
@@ -152,7 +153,8 @@
     			  mo.organization_name,
 			      t.call_count,
 			      t.price,
-			      t.amount
+			      t.amount,
+			      decode(mo.ident_code_new,null,mo.ident_code,mo.ident_code_new) ident_code
 			</selectClause> 
 			<tableClause>corp_client_bill t, corporate_clients c, organizations mo </tableClause>
 			<whereClause><![CDATA[
@@ -178,7 +180,7 @@
 			<tableClause> corp_client_bill_items bi, corporate_clients c, organizations mo, BILLING_COMPANIES tc, service_prices s </tableClause>
 			<whereClause><![CDATA[
 				 bi.corporate_client_id = c.corporate_client_id and c.organization_id = mo.organization_id and 
-				 bi.billing_company_id = tc.billing_company_id and  bi.service_id = s.service_price_id  and bi.ym = $criteria.ym
+				 bi.billing_company_id = tc.billing_company_id(+) and  bi.service_id = s.service_price_id  and bi.ym = $criteria.ym
 				 #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end				 
 				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end
 				]]>  

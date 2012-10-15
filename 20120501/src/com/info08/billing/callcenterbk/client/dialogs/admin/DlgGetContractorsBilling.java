@@ -189,7 +189,8 @@ public class DlgGetContractorsBilling extends Window {
 			} else {
 				dsRequest.setOperationId("getFullContrBillMain1");
 				dsRequest.setExportFields(new String[] { "organization_name",
-						"orgDepName", "call_count", "price", "amount" });
+						"ident_code", "orgDepName", "call_count", "price",
+						"amount" });
 			}
 
 			Criteria criteria = new Criteria();
@@ -200,6 +201,7 @@ public class DlgGetContractorsBilling extends Window {
 			}
 			if (is_budget != null && !is_budget.equals(new Integer(-1))) {
 				criteria.setAttribute("is_budget", is_budget);
+				criteria.setAttribute("goverment", is_budget);
 			}
 			dataSource.exportData(criteria, dsRequest, new DSCallback() {
 

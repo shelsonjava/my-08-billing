@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -1186,6 +1187,13 @@ public class MiscDMI implements QueryConstants {
 			callSessionExpense.setEvent_describtion(event_describtion);
 
 			oracleManager.persist(callSessionExpense);
+
+			if (organization_id != null) {
+				Map<String, Object> values = new LinkedHashMap<String, Object>();
+				values.put("organization_id", organization_id);
+				values.put("session_id", session_id);
+				DMIUtils.updateRecord("LogSessChDS", "ChargeLogRedOrg", values);
+			}
 
 			log += ". Inserting Log Session Charge Finished Successfully. ";
 			logger.info(log);

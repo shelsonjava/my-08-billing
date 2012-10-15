@@ -337,6 +337,7 @@ public class CommonDMI implements QueryConstants {
 			}
 
 			oracleManager.flush();
+			
 			street = getStreetEntById(street.getStreets_id(), oracleManager);
 
 			if (street != null) {
@@ -632,7 +633,9 @@ public class CommonDMI implements QueryConstants {
 			}
 
 			oracleManager.flush();
-
+			
+			oracleManager.createNativeQuery(QueryConstants.Q_UPDATE_STREET_TRUXA).setParameter(1, street_id).executeUpdate();
+			
 			Street streetEnt = getStreetEntById(street_id, oracleManager);
 			if (street_Districts != null && !street_Districts.isEmpty()) {
 				streetEnt.setMapStreDistricts(street_Districts);
@@ -764,8 +767,7 @@ public class CommonDMI implements QueryConstants {
 			if (streetEnts == null || streetEnts.isEmpty()) {
 				log += " fetching Streets From DB ...";
 				streetEnts = new TreeMap<Long, Street>();
-				ArrayList<Street> list = (ArrayList<Street>) oracleManager
-						.createNamedQuery("Street.getAllActive")
+				ArrayList<Street> list = (ArrayList<Street>) oracleManager.createNamedQuery("Street.getAllActive")
 						.getResultList();
 				if (list != null && !list.isEmpty()) {
 

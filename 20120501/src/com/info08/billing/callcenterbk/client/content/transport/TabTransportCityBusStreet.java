@@ -107,7 +107,7 @@ public class TabTransportCityBusStreet extends Tab {
 			streetItem.setName("street_name");
 			streetItem.setWidth(300);
 			ClientUtils.fillCombo(streetItem, "StreetsDS",
-					"searchStreetFromDBForCombos", "street_id", "street_name");
+					"searchStreetFromDBForCombos", "streets_id", "street_name");
 
 			routeDirItem = new ComboBoxItem();
 			routeDirItem.setTitle("მიმართულება");
@@ -283,7 +283,6 @@ public class TabTransportCityBusStreet extends Tab {
 			// SC.say("ჩანაწერი უკვე აღდგენილია !");
 			// return;
 			// }
-			// final Integer route_street_id = listGridRecord
 			// .getAttributeAsInt("route_street_id");
 			// if (route_street_id == null) {
 			// SC.say("არასწორი ჩანაწერი, გთხოვთ გააკეთოთ ძებნა ხელმეორედ !");
@@ -361,7 +360,7 @@ public class TabTransportCityBusStreet extends Tab {
 	private void search() {
 		try {
 			String id = routeItem.getValueAsString();
-			String street_id = streetItem.getValueAsString();
+			String streets_id = streetItem.getValueAsString();
 			String route_dir = routeDirItem.getValueAsString();
 			String remarks = remarksItem.getValueAsString();
 
@@ -369,8 +368,8 @@ public class TabTransportCityBusStreet extends Tab {
 			if (id != null) {
 				criteria.setAttribute("pt_id", new Integer(id));
 			}
-			if (street_id != null) {
-				criteria.setAttribute("street_id", new Integer(street_id));
+			if (streets_id != null) {
+				criteria.setAttribute("street_id", new Integer(streets_id));
 			}
 			if (route_dir != null) {
 				criteria.setAttribute("dir", new Integer(route_dir));
