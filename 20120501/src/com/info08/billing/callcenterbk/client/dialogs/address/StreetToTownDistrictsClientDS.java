@@ -12,14 +12,12 @@ public class StreetToTownDistrictsClientDS extends DataSource {
 
 	public StreetToTownDistrictsClientDS(String id) {
 		//setID(id);
-		DataSourceIntegerField town_district_id = new DataSourceIntegerField(
-				"town_district_id");
+		DataSourceIntegerField town_district_id = new DataSourceIntegerField("town_district_id");
 		town_district_id.setHidden(true);
 		town_district_id.setPrimaryKey(true);
 		town_district_id.setRequired(true);
 
-		DataSourceTextField town_district_name = new DataSourceTextField(
-				"town_district_name", "არჩეული რეგიონი");
+		DataSourceTextField town_district_name = new DataSourceTextField("town_district_name", "არჩეული რეგიონი");
 
 		setFields(town_district_id, town_district_name);
 		setClientOnly(true);
