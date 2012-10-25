@@ -10,7 +10,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurvey;
 import com.info08.billing.callcenterbk.client.dialogs.control.NotesDialog;
+import com.smartgwt.client.data.Criteria;
+import com.smartgwt.client.data.DSCallback;
+import com.smartgwt.client.data.DSRequest;
+import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
+import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DateDisplayFormat;
 import com.smartgwt.client.util.SC;
@@ -94,7 +99,8 @@ public class DlgSurveyManager extends Window {
 			removeChargeBtn.setWidth(50);
 			toolStrip.addButton(removeChargeBtn);
 
-			smsBtn = new ToolStripButton(CallCenterBK.constants.sms(), "sms.png");
+			smsBtn = new ToolStripButton(CallCenterBK.constants.sms(),
+					"sms.png");
 			smsBtn.setLayoutAlign(Alignment.LEFT);
 			smsBtn.setWidth(50);
 			toolStrip.addButton(smsBtn);
@@ -117,7 +123,7 @@ public class DlgSurveyManager extends Window {
 			detailViewer.setWidth100();
 			detailViewer.setHeight100();
 			detailViewer.selectRecord(pRecord);
-			
+
 			DetailViewerField survey_kind_name = new DetailViewerField(
 					"survey_kind_name", CallCenterBK.constants.type());
 			DetailViewerField p_numb = new DetailViewerField("p_numb",
@@ -128,10 +134,10 @@ public class DlgSurveyManager extends Window {
 					"survey_person", CallCenterBK.constants.contactPerson());
 			DetailViewerField survey_descript = new DetailViewerField(
 					"survey_descript", CallCenterBK.constants.message());
-			DetailViewerField rec_user = new DetailViewerField("survey_creator",
-					CallCenterBK.constants.operator());
-			DetailViewerField rec_date = new DetailViewerField("survey_created",
-					CallCenterBK.constants.time());
+			DetailViewerField rec_user = new DetailViewerField(
+					"survey_creator", CallCenterBK.constants.operator());
+			DetailViewerField rec_date = new DetailViewerField(
+					"survey_created", CallCenterBK.constants.time());
 			DetailViewerField status_descr = new DetailViewerField(
 					"status_descr", CallCenterBK.constants.status());
 
@@ -212,11 +218,33 @@ public class DlgSurveyManager extends Window {
 				@Override
 				public void onClick(ClickEvent event) {
 
-					DlgAddCharge dlgAddCharge = new DlgAddCharge(editRecord
-							.getAttributeAsString("p_numb"), editRecord
-							.getAttributeAsString("rec_user"), editRecord
-							.getAttributeAsDate("rec_date"));
-					dlgAddCharge.show();
+					DataSource dataSource = DataSource.get("SubscriberDS");
+					Criteria criteria = new Criteria();
+					criteria.setAttribute("phone_number", "phone_shown");
+					DSRequest dsRequest = new DSRequest();
+					dsRequest.setOperationId("countFreeOfCharge");
+					dataSource.fetchData(criteria, new DSCallback() {
+
+						@Override
+						public void execute(DSResponse response,
+								Object rawData, DSRequest request) {
+							Record records[] = response.getData();
+							if (records != null && records.length > 0) {
+								SC.say(CallCenterBK.constants
+										.freeOfChargeMessage());
+								return;
+							} else {
+								DlgAddCharge dlgAddCharge = new DlgAddCharge(
+										editRecord
+												.getAttributeAsString("p_numb"),
+										editRecord
+												.getAttributeAsString("rec_user"),
+										editRecord
+												.getAttributeAsDate("rec_date"));
+								dlgAddCharge.show();
+							}
+						}
+					}, dsRequest);
 				}
 			});
 

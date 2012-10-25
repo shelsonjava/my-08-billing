@@ -170,6 +170,36 @@ public class DlgHistOrgPriority extends Window {
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setWidth100();
 			toolStrip.setPadding(5);
+
+			ToolStripButton saveFileButton = new ToolStripButton("გადმოწერა",
+					"download.png");
+			saveFileButton.setLayoutAlign(Alignment.LEFT);
+			saveFileButton.setWidth(50);
+			toolStrip.addButton(saveFileButton);
+
+			saveFileButton
+					.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+						@Override
+						public void onClick(
+								com.smartgwt.client.widgets.events.ClickEvent event) {
+							try {
+								ListGridRecord listGridRecord = histSessionsListGrid
+										.getSelectedRecord();
+								if (listGridRecord == null) {
+									SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
+									return;
+								}
+								String sessionId = listGridRecord
+										.getAttributeAsString("session_id");
+								Date date = listGridRecord
+										.getAttributeAsDate("call_start_date");
+								ClientUtils.downloadFile(sessionId, date);
+							} catch (Exception e) {
+								SC.say(e.toString());
+							}
+						}
+					});
+
 			ToolStripButton playButton = new ToolStripButton("მოსმენა",
 					"play.png");
 			playButton.setLayoutAlign(Alignment.LEFT);
@@ -330,10 +360,13 @@ public class DlgHistOrgPriority extends Window {
 			dsRequest.setAttribute("operationId", "getStatistics");
 			if (export) {
 				dsRequest.setExportAs(ExportFormat.XLS);
-				
-				dsRequest.setExportFields(new String[]{"call_phone","call_start_date","call_end_date","uname"});
-				dsRequest.setExportHeader(gridRecord.getAttribute("real_name")+ "                    სულ:"+gridRecord.getAttribute("cnt"));
-//				dsRequest.setExportFooter();
+
+				dsRequest.setExportFields(new String[] { "call_phone",
+						"call_start_date", "call_end_date", "uname" });
+				dsRequest.setExportHeader(gridRecord.getAttribute("real_name")
+						+ "                    სულ:"
+						+ gridRecord.getAttribute("cnt"));
+				// dsRequest.setExportFooter();
 				histSessionsListGrid.getDataSource().exportData(criteria,
 						dsRequest, new DSCallback() {
 

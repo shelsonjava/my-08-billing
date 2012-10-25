@@ -30,7 +30,14 @@
 		<field name="street_index"				type="text"		title="street_index"		/>
 		<field name="street_to_town_district"	type="text"		title="street_to_town_district"/>
 		<field name="hide_for_call_center"		type="integer"	title="hide_for_call_center"/>
-		<field name="hide_for_correction"		type="integer"	title="hide_for_correction"/>		
+		<field name="hide_for_correction"		type="integer"	title="hide_for_correction"/>	
+		<field name="hist_start_date"			type="date"		title="hist_start_date"/>
+		<field name="hist_end_date"				type="date"		title="hist_end_date"/>
+		<field name="start_rcn"					type="integer"	title="start_rcn"/>
+		<field name="end_rcn"					type="integer"	title="end_rcn"/>
+		<field name="on_user"					type="text"		title="on_user"		/>
+		<field name="off_user"					type="text"		title="off_user"/>
+		
 	</fields>
 	
 	<operationBindings>		
@@ -210,6 +217,48 @@
 			<groupClause>c.town_name, t.streets_id, t.street_name, t.street_location, t.town_id, t.street_old_name_descr, t.hide_for_call_center,t.hide_for_correction</groupClause>
 			<orderClause>t.town_id, t.street_name</orderClause> 
     	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="histSearch" operationType="fetch">
+			<selectClause>
+				    t.town_id,
+					t.streets_id,
+					t.street_name,
+					t.street_remark,
+					t.street_location,
+					t.is_visible,
+					t.rec_kind,
+					t.level_i,
+					t.level_ii,
+					t.level_iii,
+					t.level_iv,
+					t.level_v,
+					t.type_level_i,
+					t.type_level_ii,
+					t.type_level_iii,
+					t.type_level_iv,
+					t.type_level_v,
+					t.hide_for_call_center,
+					t.hide_for_correction,
+					t.hist_start_date,
+					t.hist_end_date,
+					t.start_rcn,
+					t.end_rcn,
+					t.on_user,
+					t.off_user
+			</selectClause>
+			<tableClause>
+			  	   hist_streets t
+       		</tableClause>
+			<whereClause><![CDATA[ 
+				   	1 = 1
+				   	#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+				   	]]>
+			</whereClause>	
+			<orderClause>t.start_rcn desc</orderClause>
+		</operationBinding>
+    	
     	
     </operationBindings>	
 </DataSource>

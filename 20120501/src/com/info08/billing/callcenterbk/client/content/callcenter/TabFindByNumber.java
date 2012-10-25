@@ -272,6 +272,7 @@ public class TabFindByNumber extends Tab {
 			}
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("organization_id", mainID);
+			criteria.setAttribute("isCallCenter", 1);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("customOrgSearchForCallCenterNew");
 			OrgDS.fetchData(criteria, new DSCallback() {
@@ -336,10 +337,20 @@ public class TabFindByNumber extends Tab {
 								record.getAttributeAsInt("town_id"));
 						pRecord.setAttribute("org_allert_by_buss_det", record
 								.getAttributeAsString("org_allert_by_buss_det"));
-						pRecord.setAttribute("full_address_not_hidden", record
-								.getAttributeAsString("full_address_not_hidden"));
+						pRecord.setAttribute(
+								"full_address_not_hidden",
+								record.getAttributeAsString("full_address_not_hidden"));
 						pRecord.setAttribute("hidden_by_request",
 								record.getAttributeAsInt("hidden_by_request"));
+
+						pRecord.setAttribute("staff_count",
+								record.getAttributeAsString("staff_count"));
+						pRecord.setAttribute(
+								"concat_org_partner_banks",
+								record.getAttributeAsString("concat_org_partner_banks"));
+						pRecord.setAttribute(
+								"call_center_legal_address",
+								record.getAttributeAsString("call_center_legal_address"));
 
 						showOrgDialog(pRecord);
 					} catch (Exception e) {

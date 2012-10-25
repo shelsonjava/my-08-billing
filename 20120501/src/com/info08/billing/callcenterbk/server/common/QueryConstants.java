@@ -3,6 +3,10 @@ package com.info08.billing.callcenterbk.server.common;
 public interface QueryConstants {
 		
 	
+	
+	public static final String Q_GET_PHONE_FREE_OF_CHARGE =" select t.remark from free_of_charge_phone t where t.phone_number = ? and sysdate between t.start_date and t.end_date ";
+	
+	
 	public static final String Q_UPDATE_STREET_TRUXA =" update ccare.addresses t set t.town_id = t.town_id where t.street_id = ? ";
 	
 	

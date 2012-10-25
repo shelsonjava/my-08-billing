@@ -165,10 +165,6 @@ public class DlgAddEditOrganization extends Window {
 			formsLayoutAddInfo.setMargin(0);
 			formsLayoutAddInfo.setMembersMargin(10);
 
-			// Tab tabDepartment = new Tab(CallCenterBK.constants.department());
-			// tabDepartment.setPane(formsLayoutAddInfo);
-			// topTabSet.addTab(tabDepartment);
-
 			hLayout.addMember(topTabSet);
 
 			parrentOrgItem = new MyComboBoxItem("parrent_organization_name",
@@ -218,7 +214,6 @@ public class DlgAddEditOrganization extends Window {
 			orgRemarkItem.setWidth(610 - minus);
 			orgRemarkItem.setTitle(CallCenterBK.constants.comment());
 			orgRemarkItem.setHeight(102);
-			// orgRemarkItem.setTextBoxStyle("input14Px");
 
 			orgInfoItem = new TextItem();
 			orgInfoItem.setName("additional_info");
@@ -651,12 +646,15 @@ public class DlgAddEditOrganization extends Window {
 							});
 				}
 
-				physicalAddress.setValue(listGridRecord.getAttributeAsInt("physical_address_id"));
-				legalAddress.setValue(listGridRecord.getAttributeAsInt("legal_address_id"));
+				physicalAddress.setValue(listGridRecord
+						.getAttributeAsInt("physical_address_id"));
+				legalAddress.setValue(listGridRecord
+						.getAttributeAsInt("legal_address_id"));
 
 				DataSource orgDS = DataSource.get("OrgDS");
 				Criteria criteria1 = new Criteria();
-				criteria1.setAttribute("organization_id", listGridRecord.getAttributeAsInt("organization_id"));
+				criteria1.setAttribute("organization_id",
+						listGridRecord.getAttributeAsInt("organization_id"));
 				DSRequest dsRequest1 = new DSRequest();
 				dsRequest1.setOperationId("searchOrgPartnerBanks");
 				orgDS.fetchData(criteria1, new DSCallback() {

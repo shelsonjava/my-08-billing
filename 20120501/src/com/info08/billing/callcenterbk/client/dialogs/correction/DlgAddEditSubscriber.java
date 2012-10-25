@@ -49,6 +49,8 @@ public class DlgAddEditSubscriber extends Window {
 
 	private ComboBoxItem firstNameItem;
 	private ComboBoxItem lastNameItem;
+	private SelectItem fullHiddenItem;
+
 	private TextItem oldAddItem;
 	private ComboBoxItem townsItem;
 	private ComboBoxItem streetItem;
@@ -100,7 +102,7 @@ public class DlgAddEditSubscriber extends Window {
 			formPersInfo.setAutoFocus(false);
 			formPersInfo.setWidth100();
 			formPersInfo.setTitleWidth(80);
-			formPersInfo.setNumCols(2);
+			formPersInfo.setNumCols(3);
 			formPersInfo.setTitleOrientation(TitleOrientation.TOP);
 
 			HeaderItem headerItemPersInfo = new HeaderItem();
@@ -118,14 +120,21 @@ public class DlgAddEditSubscriber extends Window {
 			lastNameItem = new ComboBoxItem();
 			lastNameItem.setTitle("გვარი");
 			lastNameItem.setName("family_name_id");
-			lastNameItem.setWidth(324);
+			lastNameItem.setWidth(270);
 
 			ClientUtils.fillCombo(lastNameItem, "FamilyNameDS",
 					"searchLastNamesFromDBCustomForCombos", "familyname_id",
 					"familyname");
 
+			fullHiddenItem = new SelectItem();
+			fullHiddenItem.setTitle("სრულად დაფარული");
+			fullHiddenItem.setName("full_hidden");
+			fullHiddenItem.setWidth(155);
+			fullHiddenItem.setValueMap(ClientMapUtil.getInstance()
+					.getMapOpClose());
+
 			formPersInfo.setFields(headerItemPersInfo, firstNameItem,
-					lastNameItem);
+					lastNameItem, fullHiddenItem);
 
 			final AbPhonesClientDS abPhonesClientDS = AbPhonesClientDS
 					.getInstance();
@@ -263,10 +272,9 @@ public class DlgAddEditSubscriber extends Window {
 			adressOpCloseItem.setName("hidden_by_request");
 			adressOpCloseItem.setWidth(170);
 			adressOpCloseItem.setDefaultToFirstOption(true);
-//			adressOpCloseItem.setAutoFetchData(true);
-//			ClientUtils.fillCombo(adressOpCloseItem, "ClosedOpenedDS",
-//					"searchClosedOpened", "id", "name");
-			
+			// adressOpCloseItem.setAutoFetchData(true);
+			// ClientUtils.fillCombo(adressOpCloseItem, "ClosedOpenedDS",
+			// "searchClosedOpened", "id", "name");
 
 			adressItem = new TextItem();
 			adressItem.setTitle("სახლი");

@@ -5,6 +5,7 @@ import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.address.DlgAddEditStreet;
+import com.info08.billing.callcenterbk.client.dialogs.address.DlgHistStreets;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
@@ -60,6 +61,7 @@ public class TabStreet extends Tab {
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
 	private ToolStripButton exportButton;
+	private ToolStripButton historyBtn;
 
 	// ListGrid
 	private ListGrid listGrid;
@@ -218,6 +220,14 @@ public class TabStreet extends Tab {
 			exportButton.setWidth(50);
 			toolStrip.addButton(exportButton);
 
+			toolStrip.addSeparator();
+
+			historyBtn = new ToolStripButton(CallCenterBK.constants.history(),
+					"date.png");
+			historyBtn.setLayoutAlign(Alignment.LEFT);
+			historyBtn.setWidth(50);
+			toolStrip.addButton(historyBtn);
+
 			listGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
@@ -363,6 +373,21 @@ public class TabStreet extends Tab {
 					DlgAddEditStreet dlgAddEditStreet = new DlgAddEditStreet(
 							listGrid, listGridRecord);
 					dlgAddEditStreet.show();
+				}
+			});
+
+			historyBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					ListGridRecord listGridRecord = listGrid
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
+						return;
+					}
+					DlgHistStreets dlgHistStreets = new DlgHistStreets(
+							listGridRecord);
+					dlgHistStreets.show();
 				}
 			});
 

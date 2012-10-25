@@ -38,6 +38,11 @@ public class Subscribers implements Serializable {
 	@Basic
 	@Column(name = "FAMILY_NAME_ID")
 	private Long family_name_id;
+	
+	@Basic
+	@Column(name = "FULL_HIDDEN")
+	private Long full_hidden;
+	
 
 	@Transient
 	private String lastname;
@@ -91,4 +96,11 @@ public class Subscribers implements Serializable {
 		this.addr_id = addr_id;
 	}
 
+	public Long getFull_hidden() {
+		return full_hidden;
+	}
+
+	public void setFull_hidden(Long full_hidden) {
+		this.full_hidden = full_hidden;
+	}
 }

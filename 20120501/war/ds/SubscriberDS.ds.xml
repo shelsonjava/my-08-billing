@@ -31,6 +31,8 @@
 		<field name="address" 						type="text"		title="address"				hidden="true"/>
 		<field name="loggedUserName" 				type="text"		title="address"				hidden="true"/>
 		<field name="town_name" 					type="text"		title="address"				hidden="true"/>
+		<field name="full_hidden" 					type="integer"	title="full_hidden"			hidden="true"/>
+		<field name="tmp_count" 					type="integer"	title="tmp_count"			hidden="true"/>
 		<field name="concat_address" 				type="text"		title="address"/>
 		<field name="phone_state"					type="text"		title="Phone State"/>
 		<field name="phone_state_id"				type="text"		title="Phone State"/>
@@ -75,15 +77,24 @@
 					/*+ index(lmn,#if($criteria.family_name) UK_LASTNAMES) #else PK_LASTNAMES_ID #end
 						index(lmn,#if($criteria.name) UK_FIRSTNAME) #else PK_FIRSTNAME_ID #end 
 					*/
-				   t.family_name,
-			       t.name,
+				   
 			       pnm.phone phones,
 			       pnm.phone,
 			       t.subscriber_id,
+			       t.full_hidden,
 			       #if($criteria.for_call_center) 
-			       	decode(spm.hidden_by_request,1,map_char_codes_geo('dafaruli'), 
-			       		decode(pnm.phone_state_id,52102,map_char_codes_geo('moxs.'),decode(length(pnm.phone),7,'032'||pnm.phone,pnm.phone))) shown_phones,
+			       	
+				   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),
+				   		decode(spm.hidden_by_request,1,map_char_codes_geo('dafaruli'), 
+				       	decode(pnm.phone_state_id,52102,map_char_codes_geo('moxs.'),
+				       	decode(length(pnm.phone),7,'032'||pnm.phone,pnm.phone)))) shown_phones,
+				        
+				        decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.family_name) as family_name,
+				        decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.name) as name,
+			       			
 			       #else
+			       	   t.family_name,
+			           t.name,
 				       t.addr_id,
 				       t.street_name,
 				       t.street_location,
@@ -115,16 +126,16 @@
 			           getDescription(pnm.phone_type_id) phone_type,
 				    #end
  					#if($criteria.for_call_center) 
- 					   		decode(spm.hidden_by_request,1,map_char_codes_geo('dafaruli'),
+ 					   		decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),decode(spm.hidden_by_request,1,map_char_codes_geo('dafaruli'),
  					#end
  					   getDescription(pnm.phone_state_id)
  					#if($criteria.for_call_center)
- 					   ) 
+ 					   ))
  					#end   
  					phone_state,
- 					#if($criteria.for_call_center)
- 						decode(t.hidden_by_request,1,map_char_codes_geo('dafaruli'),t.town_name) town_name,
- 					    decode(t.hidden_by_request,1,map_char_codes_geo('dafaruli'),t.concat_address) concat_address
+ 					#if($criteria.for_call_center) 						
+ 						decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),decode(t.hidden_by_request,1,map_char_codes_geo('dafaruli'),t.town_name)) as town_name, 						
+ 					    decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),decode(t.hidden_by_request,1,map_char_codes_geo('dafaruli'),t.concat_address)) concat_address
  					#else
  						town_name,
  						concat_address
@@ -241,6 +252,22 @@
 			</whereClause>	
 			<orderClause>t.subscriber_id, start_rcn desc</orderClause>
 		</operationBinding>
+		
+		
+		
+		<operationBinding operationId="countFreeOfCharge" operationType="fetch">			
+			<selectClause>
+				count(1)
+			</selectClause>
+			<tableClause>
+			  	   free_of_charge_phone t
+       		</tableClause>
+			<whereClause><![CDATA[ 
+				   	t.phone_number = $criteria.phone_number and sysdate between t.start_date and t.end_date
+				   	]]>
+			</whereClause>	
+		</operationBinding>
+		
 		
 	</operationBindings>
 </DataSource>

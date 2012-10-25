@@ -398,7 +398,7 @@
 							 #if($criteria.town_district_id) 
 							 	and ( 1<>1
 									 	#foreach($str in $criteria.town_district_id.split(","))
-									 		or a.town_district_id =to_number($str)
+									 		or a.town_district_id = to_number($str)
 										#end
 							 	) 
 							 #end
@@ -408,7 +408,7 @@
 								
 							 #if($criteria.legal_real_address_descr) 
 							 	#foreach($str in $criteria.legal_real_address_descr.split(" "))
-							 		and a1.concat_address like '%'||'$str'||'%' AND a1.town_district_name not like '%'||'$str'||'%'
+							 		and a1.concat_address like '%'||'$str'||'%'
 								#end							 	
 							 #end
 							 #if($criteria.legal_town_district_id) 

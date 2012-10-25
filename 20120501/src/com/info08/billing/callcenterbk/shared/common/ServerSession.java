@@ -51,6 +51,8 @@ public class ServerSession implements Serializable {
 	private CallSession callSession;
 	private String operatorSrc;
 	private String non_charge_remark;
+	private boolean isFreeOfCharge;
+	private String freeOfChargeText;
 
 	@SuppressWarnings("deprecation")
 	public ServerSession() {
@@ -373,5 +375,21 @@ public class ServerSession implements Serializable {
 
 	public void setOperatorSrc(String operatorSrc) {
 		this.operatorSrc = operatorSrc;
+	}
+
+	public boolean isFreeOfCharge() {
+		return isFreeOfCharge;
+	}
+
+	public void setFreeOfCharge(boolean isFreeOfCharge) {
+		this.isFreeOfCharge = isFreeOfCharge;
+	}
+
+	public String getFreeOfChargeText() {
+		return freeOfChargeText;
+	}
+
+	public void setFreeOfChargeText(String freeOfChargeText) {
+		this.freeOfChargeText = freeOfChargeText;
 	}
 }

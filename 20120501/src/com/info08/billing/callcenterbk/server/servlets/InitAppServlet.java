@@ -164,6 +164,18 @@ public class InitAppServlet extends HttpServlet {
 				findPhone = realPhone;
 			}
 
+			// Free Of Charge
+			List freeOfChargeList = oracleManager
+					.createNativeQuery(
+							QueryConstants.Q_GET_PHONE_FREE_OF_CHARGE)
+					.setParameter(1, findPhone).getResultList();
+			boolean isFreeOfCharge = false;
+			String freeOfChargeText = "";
+			if (freeOfChargeList != null && !freeOfChargeList.isEmpty()) {
+				freeOfChargeText = freeOfChargeList.get(0).toString();
+				isFreeOfCharge = true;				
+			}
+			
 			// Check for Unknown Phone Number
 			// TODO
 			List qResisUnknownPhoneNumber = oracleManager
@@ -181,7 +193,7 @@ public class InitAppServlet extends HttpServlet {
 				}
 			}
 
-			if (isUnknownPhoneNumber) {
+			if (!phoneIsMobile && isUnknownPhoneNumber) {
 				oracleManager
 						.createNativeQuery(QueryConstants.INS_UNKNOWN_NUMBER)
 						.setParameter(1, findPhone).executeUpdate();
@@ -348,6 +360,8 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setPhoneIsMobile(phoneIsMobile);
 			serverSession.setOrganization_id(organization_id);
 			serverSession.setOperatorSrc(operatorSrc);
+			serverSession.setFreeOfCharge(isFreeOfCharge);
+			serverSession.setFreeOfChargeText(freeOfChargeText);
 
 			if (isContractor) {
 				blockContractor(serverSession, oracleManager);
@@ -356,6 +370,7 @@ public class InitAppServlet extends HttpServlet {
 			System.out.println("InitAppServlet. Incomming Session ID : "
 					+ sessionId + ", userName = " + userName + ", phone = "
 					+ phone + ", type = " + type + ", who = " + who);
+			
 			CallSession callSession = new CallSession();
 			callSession.setCall_kind(new Long(callKind));
 			callSession.setCall_phone(realPhone);
@@ -388,7 +403,7 @@ public class InitAppServlet extends HttpServlet {
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
 //			 response.sendRedirect(response
-//			 .encodeRedirectURL("http://192.168.1.3:8888/CallCenterBK.html?gwt.codesvr=192.168.1.3:9997&sessionId="
+//			 .encodeRedirectURL("http://127.0.0.1:8888/CallCenterBK.html?gwt.codesvr=127.0.0.1:9997&sessionId="
 //			 + sessionId));
 			// } else {
 			// Live

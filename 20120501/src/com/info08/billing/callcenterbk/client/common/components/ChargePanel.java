@@ -505,6 +505,11 @@ public class ChargePanel extends HLayout {
 			CallSession callSession = serverSession.getCallSession();
 			Long call_session_id = callSession.getCall_session_id();
 			Long call_kind = callSession.getCall_kind();
+			boolean isFreeOfCharge = serverSession.isFreeOfCharge();
+			if (isFreeOfCharge) {
+				SC.say(CallCenterBK.constants.freeOfChargeMessage());
+				return;
+			}
 
 			CanvasDisableTimer.addCanvasClickTimer(chargeBtn);
 

@@ -262,15 +262,33 @@ public class TabVirtualCharge extends Tab {
 
 	private void makeAdvancedCharge() {
 		try {
-			ListGridRecord record = listGrid.getSelectedRecord();
+			final ListGridRecord record = listGrid.getSelectedRecord();
 			if (record == null) {
 				SC.say(CallCenterBK.constants.pleaseSelrecord());
 				return;
 			}
-			DlgAddVirtualCharge addVirtualCharge = new DlgAddVirtualCharge(
-					phoneViewDS, record);
-			addVirtualCharge.show();
 
+			DataSource dataSource = DataSource.get("SubscriberDS");
+			Criteria criteria = new Criteria();
+			criteria.setAttribute("phone_number", "phone_shown");
+			DSRequest dsRequest = new DSRequest();
+			dsRequest.setOperationId("countFreeOfCharge");
+			dataSource.fetchData(criteria, new DSCallback() {
+
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record records[] = response.getData();
+					if (records != null && records.length > 0) {
+						SC.say(CallCenterBK.constants.freeOfChargeMessage());
+						return;
+					} else {
+						DlgAddVirtualCharge addVirtualCharge = new DlgAddVirtualCharge(
+								phoneViewDS, record);
+						addVirtualCharge.show();
+					}
+				}
+			}, dsRequest);
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}

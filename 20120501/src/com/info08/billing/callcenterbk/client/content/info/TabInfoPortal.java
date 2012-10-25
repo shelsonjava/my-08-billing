@@ -166,7 +166,12 @@ public class TabInfoPortal extends Tab {
 					SC.warn(callCenterReqMsg);
 				}
 			}
-
+			String freeOfCharge = serverSession.getFreeOfChargeText();
+			if (freeOfCharge != null && !freeOfCharge.trim().equals("")) {
+				SC.say(freeOfCharge);
+				return;
+			}
+			
 			HLayout hLayout = new HLayout();
 			hLayout.setHeight(400);
 			hLayout.setWidth100();
