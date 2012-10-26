@@ -257,7 +257,7 @@
 		
 		<operationBinding operationId="countFreeOfCharge" operationType="fetch">			
 			<selectClause>
-				count(1)
+				count(1) as tmp_count
 			</selectClause>
 			<tableClause>
 			  	   free_of_charge_phone t

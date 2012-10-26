@@ -279,7 +279,15 @@ public class TabVirtualCharge extends Tab {
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {
 					Record records[] = response.getData();
+					boolean flag = false;
 					if (records != null && records.length > 0) {
+						Long cnt = new Long(records[0]
+								.getAttributeAsString("tmp_count"));
+						if (cnt.intValue() > 0) {
+							flag = true;
+						}
+					}
+					if (flag) {
 						SC.say(CallCenterBK.constants.freeOfChargeMessage());
 						return;
 					} else {
