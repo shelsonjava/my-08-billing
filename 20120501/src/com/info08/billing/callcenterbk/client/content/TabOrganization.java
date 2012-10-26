@@ -97,6 +97,7 @@ public class TabOrganization extends Tab {
 	private ToolStripButton deleteBtn;
 	private ToolStripButton supperOrgBtn;
 	private ToolStripButton parrentOrgBtn;
+	private ToolStripButton currentOrgBtn;
 	private ToolStripButton orgDepartmentsBtn;
 	private ToolStripButton historyBtn;
 	private ToolStripButton exportBtn;
@@ -364,6 +365,13 @@ public class TabOrganization extends Tab {
 			parrentOrgBtn.setWidth(50);
 			toolStrip.addButton(parrentOrgBtn);
 
+			currentOrgBtn = new ToolStripButton(
+					CallCenterBK.constants.currentOrganization(),
+					"folder_classic_up.png");
+			currentOrgBtn.setLayoutAlign(Alignment.LEFT);
+			currentOrgBtn.setWidth(50);
+			toolStrip.addButton(currentOrgBtn);
+
 			toolStrip.addSeparator();
 
 			orgDepartmentsBtn = new ToolStripButton(
@@ -420,7 +428,8 @@ public class TabOrganization extends Tab {
 					Integer flow_priority = countryRecord
 							.getAttributeAsInt("flow_priority");
 					Integer status = countryRecord.getAttributeAsInt("status");
-					Integer super_priority = countryRecord.getAttributeAsInt("super_priority");
+					Integer super_priority = countryRecord
+							.getAttributeAsInt("super_priority");
 					Integer tree_org_child = (countryRecord
 							.getAttributeAsString("tree_org_child") != null && countryRecord
 							.getAttributeAsString("tree_org_child").equals(
@@ -758,6 +767,28 @@ public class TabOrganization extends Tab {
 					}
 					Integer parrent_organization_id = listGridRecord
 							.getAttributeAsInt("parrent_organization_id");
+					if (parrent_organization_id == null
+							|| parrent_organization_id.intValue() <= 0) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.orgDoesNotHaveParrent());
+						return;
+					}
+					fingOrgById(parrent_organization_id, true);
+				}
+			});
+
+			currentOrgBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					ListGridRecord listGridRecord = organizationsGrid
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say(CallCenterBK.constants.warning(),
+								CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+					Integer parrent_organization_id = listGridRecord
+							.getAttributeAsInt("organization_id");
 					if (parrent_organization_id == null
 							|| parrent_organization_id.intValue() <= 0) {
 						SC.say(CallCenterBK.constants.warning(),

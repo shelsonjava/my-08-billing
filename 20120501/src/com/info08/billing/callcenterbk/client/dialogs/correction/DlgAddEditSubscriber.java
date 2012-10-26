@@ -132,6 +132,7 @@ public class DlgAddEditSubscriber extends Window {
 			fullHiddenItem.setWidth(155);
 			fullHiddenItem.setValueMap(ClientMapUtil.getInstance()
 					.getMapOpClose());
+			fullHiddenItem.setDefaultToFirstOption(true);
 
 			formPersInfo.setFields(headerItemPersInfo, firstNameItem,
 					lastNameItem, fullHiddenItem);

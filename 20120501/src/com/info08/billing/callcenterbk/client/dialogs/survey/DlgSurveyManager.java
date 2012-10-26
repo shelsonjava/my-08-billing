@@ -217,10 +217,12 @@ public class DlgSurveyManager extends Window {
 
 				@Override
 				public void onClick(ClickEvent event) {
-
+					
+					String phoneNumber = pRecord.getAttributeAsString("p_numb");
+					
 					DataSource dataSource = DataSource.get("SubscriberDS");
 					Criteria criteria = new Criteria();
-					criteria.setAttribute("phone_number", "phone_shown");
+					criteria.setAttribute("phone_number", phoneNumber);
 					DSRequest dsRequest = new DSRequest();
 					dsRequest.setOperationId("countFreeOfCharge");
 					dataSource.fetchData(criteria, new DSCallback() {

@@ -751,4 +751,5 @@ public interface AppConstants extends Constants {
 	String nonDirectSmall();
 	String governmentSmall();
 	String freeOfChargeMessage();
+	String currentOrganization();	
 }

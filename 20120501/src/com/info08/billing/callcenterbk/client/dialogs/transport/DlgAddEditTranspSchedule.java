@@ -443,12 +443,6 @@ public class DlgAddEditTranspSchedule extends Window {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში !");
 						return;
 					}
-					Integer deleted = listGridRecord
-							.getAttributeAsInt("deleted");
-					if (!deleted.equals(0)) {
-						SC.say("ჩანაწერი უკვე გაუქმებულია !");
-						return;
-					}
 					SC.ask("დარწმუნებული ხართ რომ გნებავთ ჩანაწერის გაუქმება ?",
 							new BooleanCallback() {
 								@Override

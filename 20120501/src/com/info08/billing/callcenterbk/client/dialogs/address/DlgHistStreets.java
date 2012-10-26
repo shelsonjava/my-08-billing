@@ -6,7 +6,6 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.GroupStartOpen;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Window;
@@ -18,7 +17,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class DlgHistStreets extends Window {
 
 	private VLayout hLayout;
-	private ListGrid histOrganizaionListGrid;
+	private ListGrid histStreetsGrid;
 	private DataSource streetsDS;
 
 	public DlgHistStreets(ListGridRecord listGridRecord) {
@@ -43,7 +42,7 @@ public class DlgHistStreets extends Window {
 			hLayout.setHeight100();
 			hLayout.setPadding(10);
 
-			histOrganizaionListGrid = new ListGrid() {
+			histStreetsGrid = new ListGrid() {
 				@Override
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
@@ -57,23 +56,20 @@ public class DlgHistStreets extends Window {
 						return super.getCellCSSText(record, rowNum, colNum);
 				}
 			};
-			histOrganizaionListGrid.setWidth100();
-			histOrganizaionListGrid.setHeight100();
-			histOrganizaionListGrid.setAlternateRecordStyles(true);
-			histOrganizaionListGrid.setDataSource(streetsDS);
-			histOrganizaionListGrid.setAutoFetchData(false);
-			histOrganizaionListGrid.setShowFilterEditor(false);
-			histOrganizaionListGrid.setCanEdit(false);
-			histOrganizaionListGrid.setCanRemoveRecords(false);
-			histOrganizaionListGrid.setFetchOperation("histSearch");
-			histOrganizaionListGrid.setCanSort(false);
-			histOrganizaionListGrid.setCanResizeFields(false);
-			histOrganizaionListGrid.setWrapCells(true);
-			histOrganizaionListGrid.setFixedRecordHeights(false);
-			histOrganizaionListGrid.setCanDragSelectText(true);
-
-			histOrganizaionListGrid.setGroupStartOpen(GroupStartOpen.ALL);
-			histOrganizaionListGrid.setGroupByField("organization_id");
+			histStreetsGrid.setWidth100();
+			histStreetsGrid.setHeight100();
+			histStreetsGrid.setAlternateRecordStyles(true);
+			histStreetsGrid.setDataSource(streetsDS);
+			histStreetsGrid.setAutoFetchData(false);
+			histStreetsGrid.setShowFilterEditor(false);
+			histStreetsGrid.setCanEdit(false);
+			histStreetsGrid.setCanRemoveRecords(false);
+			histStreetsGrid.setFetchOperation("histSearch");
+			histStreetsGrid.setCanSort(false);
+			histStreetsGrid.setCanResizeFields(false);
+			histStreetsGrid.setWrapCells(true);
+			histStreetsGrid.setFixedRecordHeights(false);
+			histStreetsGrid.setCanDragSelectText(true);
 
 			ListGridField l_original_org_name = new ListGridField(
 					"street_name", "დასახელება", 400);
@@ -101,11 +97,11 @@ public class DlgHistStreets extends Window {
 			ph_deleted_org.setWidth(70);
 			ph_deleted_org.setType(ListGridFieldType.BOOLEAN);
 
-			histOrganizaionListGrid.setFields(l_original_org_name,
+			histStreetsGrid.setFields(l_original_org_name,
 					l_full_address_not_hidden, hist_user_on, hist_start,
 					hist_user_off, hist_end, ph_deleted_org);
 
-			hLayout.addMember(histOrganizaionListGrid);
+			hLayout.addMember(histStreetsGrid);
 			addItem(hLayout);
 			search(listGridRecord);
 
@@ -117,12 +113,12 @@ public class DlgHistStreets extends Window {
 
 	private void search(ListGridRecord listGridRecord) {
 		try {
-			Integer street_id = listGridRecord.getAttributeAsInt("street_id");
+			Integer streets_id = listGridRecord.getAttributeAsInt("streets_id");
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("street_id", street_id);
+			criteria.setAttribute("streets_id", streets_id);
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("");
-			histOrganizaionListGrid.fetchData(criteria, new DSCallback() {
+			dsRequest.setOperationId("histSearch");
+			histStreetsGrid.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
 						DSRequest request) {

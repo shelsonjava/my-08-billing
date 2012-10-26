@@ -253,7 +253,7 @@
        		</tableClause>
 			<whereClause><![CDATA[ 
 				   	1 = 1
-				   	#if($criteria.street_id) AND t.street_id = $criteria.street_id #end
+				   	#if($criteria.streets_id) AND t.streets_id = $criteria.streets_id #end
 				   	]]>
 			</whereClause>	
 			<orderClause>t.start_rcn desc</orderClause>

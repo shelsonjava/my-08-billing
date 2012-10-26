@@ -185,7 +185,7 @@
 				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end
 				]]>  
 			</whereClause> 
-			<orderClause>tc.billing_company_name, mo.organization_name, bi.phone, s.service_description, bi.call_date, bi.charge_date </orderClause>
+			<orderClause>bi.phone, bi.charge_date </orderClause>
     	</operationBinding>
     	
     </operationBindings>	
