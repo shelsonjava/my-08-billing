@@ -169,8 +169,13 @@ public class TabInfoPortal extends Tab {
 			String freeOfCharge = serverSession.getFreeOfChargeText();
 			if (freeOfCharge != null && !freeOfCharge.trim().equals("")) {
 				SC.say(freeOfCharge);
-				return;
 			}
+			
+			boolean isBirthdayOrg = serverSession.isBirthdayOrg();
+			if (isBirthdayOrg) {
+				SC.say(CallCenterBK.constants.birthdayAlert());
+			}
+			
 			
 			HLayout hLayout = new HLayout();
 			hLayout.setHeight(400);

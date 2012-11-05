@@ -2,7 +2,16 @@ package com.info08.billing.callcenterbk.server.common;
 
 public interface QueryConstants {
 		
-	
+
+	public static final String Q_GET_PHONE_ORG_BIRTHDAY = "select count(1)\n" +
+			"from ccare.phone_numbers t\n" + 
+			"       inner join ccare.organization_depart_to_phones dp on dp.phone_number_id = t.phone_number_id\n" + 
+			"       inner join ccare.organization_department od on od.org_department_id = dp.org_department_id\n" + 
+			"       inner join ccare.organizations o on o.organization_id = od.organization_id\n" + 
+			"where t.phone = ? and dp.phone_contract_type = 53102 and t.is_parallel = 0\n" + 
+			"      and o.found_date is not null and to_char(o.found_date,'DDMM') = to_char(trunc(sysdate),'DDMM')\n" + 
+			"      and t.phone not like '790%' and t.phone not like '5%' and dp.hidden_by_request = 0";
+
 	
 	public static final String Q_GET_PHONE_FREE_OF_CHARGE =" select t.remark from free_of_charge_phone t where t.phone_number = ? and sysdate between t.start_date and t.end_date ";
 	

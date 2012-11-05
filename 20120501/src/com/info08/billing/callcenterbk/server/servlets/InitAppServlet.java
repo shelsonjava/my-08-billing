@@ -169,13 +169,14 @@ public class InitAppServlet extends HttpServlet {
 					.createNativeQuery(
 							QueryConstants.Q_GET_PHONE_FREE_OF_CHARGE)
 					.setParameter(1, findPhone).getResultList();
+			boolean isBirthdayOrg = false;
 			boolean isFreeOfCharge = false;
 			String freeOfChargeText = "";
 			if (freeOfChargeList != null && !freeOfChargeList.isEmpty()) {
 				freeOfChargeText = freeOfChargeList.get(0).toString();
-				isFreeOfCharge = true;				
+				isFreeOfCharge = true;
 			}
-			
+
 			// Check for Unknown Phone Number
 			// TODO
 			List qResisUnknownPhoneNumber = oracleManager
@@ -254,10 +255,20 @@ public class InitAppServlet extends HttpServlet {
 						bid = new Double(array[2] == null ? "-1"
 								: array[2].toString());
 						callKind = Constants.callTypeOrganization;
+						// Organization Birthday
+						Long orgBirthdayList = new Long(
+								oracleManager
+										.createNativeQuery(
+												QueryConstants.Q_GET_PHONE_ORG_BIRTHDAY)
+										.setParameter(1, findPhone)
+										.getSingleResult().toString());
+						if (orgBirthdayList != null
+								&& orgBirthdayList.longValue() > 0) {
+							isBirthdayOrg = true;
+						}
 					} else {
 						callKind = Constants.callTypeAbonent;
 					}
-					// checkContractor = true;
 				}
 			}
 
@@ -362,6 +373,7 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setOperatorSrc(operatorSrc);
 			serverSession.setFreeOfCharge(isFreeOfCharge);
 			serverSession.setFreeOfChargeText(freeOfChargeText);
+			serverSession.setBirthdayOrg(isBirthdayOrg);
 
 			if (isContractor) {
 				blockContractor(serverSession, oracleManager);
@@ -370,7 +382,7 @@ public class InitAppServlet extends HttpServlet {
 			System.out.println("InitAppServlet. Incomming Session ID : "
 					+ sessionId + ", userName = " + userName + ", phone = "
 					+ phone + ", type = " + type + ", who = " + who);
-			
+
 			CallSession callSession = new CallSession();
 			callSession.setCall_kind(new Long(callKind));
 			callSession.setCall_phone(realPhone);
@@ -402,9 +414,9 @@ public class InitAppServlet extends HttpServlet {
 
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
-//			 response.sendRedirect(response
-//			 .encodeRedirectURL("http://127.0.0.1:8888/CallCenterBK.html?gwt.codesvr=127.0.0.1:9997&sessionId="
-//			 + sessionId));
+			// response.sendRedirect(response
+			// .encodeRedirectURL("http://127.0.0.1:8888/CallCenterBK.html?gwt.codesvr=127.0.0.1:9997&sessionId="
+			// + sessionId));
 			// } else {
 			// Live
 			response.sendRedirect(response

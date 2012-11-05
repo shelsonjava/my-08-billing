@@ -376,6 +376,7 @@ public class TabFindByNumber extends Tab {
 				return;
 			}
 			criteria.setAttribute("phone", phone);
+			criteria.setAttribute("isCallCenter", phone);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "customSearch");
 			listGrid.invalidateCache();

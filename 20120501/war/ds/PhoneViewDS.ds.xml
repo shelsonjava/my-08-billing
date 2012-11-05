@@ -29,6 +29,7 @@
 		<field name="super_priority"					type="integer"					title="super_priority" 					hidden="true"/>
 		<field name="important_remark"					type="integer"					title="important_remark" 				hidden="true"/>
 		<field name="status"							type="integer"					title="status" 							hidden="true"/>
+		<field name="full_hidden"						type="integer"					title="full_hidden" 					hidden="true"/>
 		<field name="town_name"							type="text"						title="status"/>
 		<field name="phone_shown"						type="text"						title="phone_shown"/>
 		<field name="concat_address" 					type="text"						title="address"/>
@@ -44,23 +45,32 @@
 			operationType="fetch">			
 			<selectClause>
 				phone,
-				phone_shown,
 				owner_type, 
 				owner_id, 
-				owner_type_descr, 
-				full_name, 
+				
+				#if($criteria.isCallCenter)
+					decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.full_name) as full_name,
+					decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.owner_type_descr) as owner_type_descr,
+					decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.town_name) as town_name,
+					decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.phone_shown) as phone_shown,
+					decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.phone_contract_type_desc) as phone_contract_type_desc,
+				#else
+					t.full_name as full_name,
+					t.owner_type_descr as owner_type_descr,
+					t.town_name as town_name,
+					t.phone_shown as phone_shown,
+					t.phone_contract_type_desc as phone_contract_type_desc,
+				#end
 				addr_id, 
 				super_priority, 
 				important_remark, 
 				status, 
-				town_name, 
 				address, 
 				address_hidden_by_request, 
 				address_hidden_by_request_des, 
 				phone_hidden_by_request, 
 				phone_hidden_by_request_desc, 
 				phone_contract_type, 
-				phone_contract_type_desc, 
 				phone_state_id, 
 				phone_state_id_desc, 
 				phone_type_id, 
@@ -70,15 +80,20 @@
 				for_contact, 
 				for_contact_desr,
 				organization_id,
-				concat_address
-				#if($criteria.reall_address)
-					,real_town||' - '||real_address real_address,
-					full_name_reverse,
-					decode(owner_type,0,
-						decode(#if($criteria.subscriber_proceeded)$criteria.subscriber_proceeded #else -1 #end,owner_id,1,0), 
-						is_In_string(to_char(owner_id),#if($criteria.organization_proceeded)$criteria.organization_proceeded #else '' #end)
-					) proceeded
+				#if($criteria.isCallCenter)
+					decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.concat_address) as concat_address
+				#else
+					concat_address
 					
+					#if($criteria.reall_address)
+						,real_town||' - '||real_address real_address,
+						full_name_reverse,
+						decode(owner_type,0,
+							decode(#if($criteria.subscriber_proceeded)$criteria.subscriber_proceeded #else -1 #end,owner_id,1,0), 
+							is_In_string(to_char(owner_id),#if($criteria.organization_proceeded)$criteria.organization_proceeded #else '' #end)
+						) proceeded
+						
+					#end
 				#end
 					
 			</selectClause>

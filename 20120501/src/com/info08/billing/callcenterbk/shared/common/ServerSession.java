@@ -53,6 +53,7 @@ public class ServerSession implements Serializable {
 	private String non_charge_remark;
 	private boolean isFreeOfCharge;
 	private String freeOfChargeText;
+	private boolean isBirthdayOrg;
 
 	@SuppressWarnings("deprecation")
 	public ServerSession() {
@@ -391,5 +392,13 @@ public class ServerSession implements Serializable {
 
 	public void setFreeOfChargeText(String freeOfChargeText) {
 		this.freeOfChargeText = freeOfChargeText;
+	}
+
+	public boolean isBirthdayOrg() {
+		return isBirthdayOrg;
+	}
+
+	public void setBirthdayOrg(boolean isBirthdayOrg) {
+		this.isBirthdayOrg = isBirthdayOrg;
 	}
 }

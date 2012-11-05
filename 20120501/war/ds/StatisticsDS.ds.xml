@@ -78,6 +78,8 @@
 		       		#foreach($item in $list)
 					 $item
 					#end
+					select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-7)+(sysdate-trunc(sysdate)), 0))
+		       		    union all
 		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-6)+(sysdate-trunc(sysdate)), 0))
 		       		    union all
 		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-5)+(sysdate-trunc(sysdate)), 0))
