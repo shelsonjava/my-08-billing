@@ -78,21 +78,21 @@
 		       		#foreach($item in $list)
 					 $item
 					#end
-					select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-7)+(sysdate-trunc(sysdate)), 0))
+					select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc(sysdate)-7)+(sysdate-trunc(sysdate)), 0))
 		       		    union all
-		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-6)+(sysdate-trunc(sysdate)), 0))
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc(sysdate)-6)+(sysdate-trunc(sysdate)), 0))
 		       		    union all
-		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-5)+(sysdate-trunc(sysdate)), 0))
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc(sysdate)-5)+(sysdate-trunc(sysdate)), 0))
 		       		    union all
-		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-4)+(sysdate-trunc(sysdate)), 0))
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc(sysdate)-4)+(sysdate-trunc(sysdate)), 0))
 		       		    union all
-		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-3)+(sysdate-trunc(sysdate)), 0))
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc(sysdate)-3)+(sysdate-trunc(sysdate)), 0))
 		       		    union all
-		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-2)+(sysdate-trunc(sysdate)), 0))
+		       		select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc(sysdate)-2)+(sysdate-trunc(sysdate)), 0))
 		       			union all
-					select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc($criteria.exactDate)-1)+(sysdate-trunc(sysdate)), 0)) 
+					select * from table(PKG_STATISTICS.getStatisticsTablePipe((trunc(sysdate)-1)+(sysdate-trunc(sysdate)), 0)) 
 						union all
-					select * from table(PKG_STATISTICS.getStatisticsTablePipe(trunc($criteria.exactDate)+(sysdate-trunc(sysdate)), 0)) 
+					select * from table(PKG_STATISTICS.getStatisticsTablePipe(trunc(sysdate)+(sysdate-trunc(sysdate)), 0)) 
 				)
 				#else statistic #end t</tableClause>
 			<whereClause><![CDATA[
@@ -138,7 +138,7 @@
   					sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt),
   					(LAG((sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt)), 1, 0) OVER (ORDER BY YM))) - 100),2) as cnt_percent				   	
 			</selectClause> 
-			<tableClause> #if($criteria.exactDate) table(PKG_STATISTICS.getStatisticsTablePipe(trunc($criteria.exactDate)+(sysdate-trunc(sysdate)), 0)) #else statistic #end t</tableClause>
+			<tableClause> #if($criteria.exactDate) table(PKG_STATISTICS.getStatisticsTablePipe(trunc(sysdate)+(sysdate-trunc(sysdate)), 0)) #else statistic #end t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				  #if($criteria.exactDate)  and 1=1
@@ -169,7 +169,7 @@
 			          avg(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
 			          avg(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount				   	
 			</selectClause> 
-			<tableClause> #if($criteria.exactDate) table(PKG_STATISTICS.getStatisticsTablePipe(trunc($criteria.exactDate)+(sysdate-trunc(sysdate)), 0)) #else statistic #end t</tableClause>
+			<tableClause> #if($criteria.exactDate) table(PKG_STATISTICS.getStatisticsTablePipe(trunc(sysdate)+(sysdate-trunc(sysdate)), 0)) #else statistic #end t</tableClause>
 			<whereClause><![CDATA[
 				 1 = 1
 				#if($criteria.exactDate)  and 1=1

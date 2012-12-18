@@ -102,6 +102,7 @@
 					   #if($criteria.transport_company_geo) and tc.name_descr like '%'||($criteria.transport_company_geo)||'%' #end
 					   #if($criteria.transport_plane_geo) and tp.name_descr like '%'||($criteria.transport_plane_geo)||'%' #end
 					   #if($criteria.days_descr) and getWeekDays(t.days) like '%'||($criteria.days_descr)||'%' #end
+				       #if($criteria.trip_criteria_param) and t.transp_model_descr like '%'||($criteria.trip_criteria_param)||'%' #end
 				       
 				       
 				       #if($criteria.o_town_id && $criteria.i_town_id) 

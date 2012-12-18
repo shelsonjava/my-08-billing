@@ -89,6 +89,7 @@
 			     #if($criteria.groupBySum == 0 && $criteria.servicesId28) or t.SERVICE_PRICE_ID = $criteria.servicesId28 #end
 			     #if($criteria.groupBySum == 0 && $criteria.servicesId29) or t.SERVICE_PRICE_ID = $criteria.servicesId29 #end
 			     #if($criteria.groupBySum == 0 && $criteria.servicesId30) or t.SERVICE_PRICE_ID = $criteria.servicesId30 #end
+			     #if($criteria.groupBySum == 0 && $criteria.servicesId35) or t.SERVICE_PRICE_ID = $criteria.servicesId35 #end
 				
 				 #if($criteria.groupBySum == 0) ) #end
 				 	

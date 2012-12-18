@@ -30,14 +30,15 @@
 		<field name="important_remark"					type="integer"					title="important_remark" 				hidden="true"/>
 		<field name="status"							type="integer"					title="status" 							hidden="true"/>
 		<field name="full_hidden"						type="integer"					title="full_hidden" 					hidden="true"/>
+		<field name="parrent_organization_id"			type="integer"					title="parrent_organization_id" 		hidden="true"/>
 		<field name="town_name"							type="text"						title="status"/>
 		<field name="phone_shown"						type="text"						title="phone_shown"/>
 		<field name="concat_address" 					type="text"						title="address"/>
 		<field name="real_address" 						type="text"						title="address"/>
 		<field name="real_town" 						type="text"						title="address"/>
 		<field name="full_name_reverse" 				type="text"						title="address"/>
-		<field name="organization_id"							type="integer"					title="organization_id" 							hidden="true"/>
-		<field name="proceeded" 						type="boolean"   				title="need_organisation" 					sqlStorageStrategy="integer"/>
+		<field name="organization_id"					type="integer"					title="organization_id" 				hidden="true"/>
+		<field name="proceeded" 						type="boolean"   				title="need_organisation" 				sqlStorageStrategy="integer"/>
 	</fields>
 	
 	<operationBindings>
@@ -72,6 +73,7 @@
 				phone_hidden_by_request_desc, 
 				phone_contract_type, 
 				phone_state_id, 
+				parrent_organization_id,
 				phone_state_id_desc, 
 				phone_type_id, 
 				phone_type_id_desc, 
