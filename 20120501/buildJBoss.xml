@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CallCenter" basedir="." default="default">
+
+	<property file="build.properties">
+	</property>
+
+	<path id="classpath">
+		<pathelement location="src" />
+		<!-- So that we can get jndi.properties for InitialContext -->
+		<fileset dir="war/WEB-INF/lib/">
+			<include name="*.jar" />
+			<exclude name="ojdbc6.jar" />
+		</fileset>
+		<fileset dir="war/WEB-INF/lib/">
+			<include name="*.jar" />
+			<exclude name="ojdbc6.jar" />
+		</fileset>
+		<fileset dir="${gwt_dir}/">
+			<include name="*.jar" />
+			<exclude name="ojdbc6.jar" />
+		</fileset>
+	</path>
+	<target name="compileClasses" description="Package up the module project and required projects as jars">
+		<mkdir dir="war/WEB-INF/lib" />
+		<delete dir="war/WEB-INF/classes" />
+		<mkdir dir="war/WEB-INF/classes" />
+		<javac srcdir="src" destdir="war/WEB-INF/classes" debug="on" deprecation="on" optimize="off" includes="**">
+			<classpath refid="classpath" />
+		</javac>
+		<copy todir="war/WEB-INF/classes">
+			<fileset dir="src">
+				<exclude name="**/*.java" />
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="gwt-compile" description="Compile to JavaScript" depends="compileClasses">
+		<delete dir="war/callcenterbk" />
+		<delete dir="war/WEB-INF/deploy" />
+		<java classname="com.google.gwt.dev.Compiler" fork="yes" failonerror="true" maxmemory="${gwt_memorie}">
+			<arg value="-localWorkers" />
+			<arg value="2" />
+			<classpath refid="classpath" />
+			<arg value="-style" />
+			<arg value="OBFUSCATED" />
+			<arg value="${gwt.module.id}" />
+		</java>
+	</target>
+	<target name="default" depends="buildwar">
+	</target>
+	
+	<!--  depends="gwt-compile" -->	
+	<target name="buildwar">
+		<delete dir="tmpLib" />
+		<delete file="${war_name}" />
+		<mkdir dir="tmpLib" />
+		<copydir dest="tmpLib" src="war" />
+		<delete file="tmpLib/WEB-INF/classes/server.properties" />
+		<copy file="pl/server.properties" tofile="tmpLib/WEB-INF/classes/server.properties" />
+		<delete file="tmpLib/WEB-INF/classes/log4j.isc.config.xml" />
+		<copy file="pl/log4j.isc.config.xml.live" tofile="tmpLib/WEB-INF/classes/log4j.isc.config.xml" />
+		<delete file="tmpLib/WEB-INF/activemq_jboss.xml" />
+		<delete file="tmpLib/WEB-INF/activemq.xml" />
+		<copy file="pl/activemq_jboss.xml" tofile="tmpLib/WEB-INF/activemq.xml" />
+		<delete file="tmpLib/WEB-INF/classes/META-INF/persistence.xml" />
+		<copy file="pl/persistence.xml" tofile="tmpLib/WEB-INF/classes/META-INF/persistence.xml" />
+		<war basedir="tmpLib" destfile="${war_name}" webxml="tmpLib/WEB-INF/web.xml" />
+		<delete dir="tmpLib" />
+	</target>
+</project>

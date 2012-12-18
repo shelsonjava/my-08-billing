@@ -94,6 +94,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-5.1.18-bin.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/activeio-core-3.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/smartgwtee.jar"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sip-servlets-client-2.1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sip-servlets-spec-2.1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/servlet-api-2.5.jar"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sip-app>
+	<app-name>CallCenterBK</app-name>
+	<display-name>CallCenterBK</display-name>
+	<description>CallCenter Application</description>
+	
+	<servlet-selection>
+		<main-servlet>
+			CallCenterServlet
+		</main-servlet>
+	</servlet-selection>
+
+	<servlet>
+		<servlet-name>CallCenterServlet</servlet-name>
+		<display-name>CallCenterServlet</display-name>
+		<description>WebSocket Call Center SIP servlet</description>
+		<servlet-class>
+			com.info08.billing.callcenterbk.server.servlets.sip.CallCenterServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+    
+    <listener>
+		<listener-class>
+			com.info08.billing.callcenterbk.server.servlets.sip.CallCenterServlet
+		</listener-class>
+	</listener>
+	
+</sip-app>

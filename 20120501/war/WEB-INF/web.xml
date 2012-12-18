@@ -34,7 +34,19 @@
         <url-pattern>/*</url-pattern>  
     </filter-mapping>  
     <!-- //<FileLoader -->  
-  
+  	
+  	
+  	<filter>
+         	<filter-name>gwtCacheControlFilter</filter-name>
+			<filter-class>com.info08.billing.callcenterbk.server.servlets.GWTCacheControlFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+         <filter-name>gwtCacheControlFilter</filter-name>
+         <url-pattern>/*</url-pattern>
+     </filter-mapping>
+  	
+  	
     <servlet>  
         <servlet-name>context</servlet-name>  
         <servlet-class>org.springframework.web.context.ContextLoaderServlet</servlet-class>  
