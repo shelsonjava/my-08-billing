@@ -351,6 +351,9 @@ public class TabFindByNumber extends Tab {
 						pRecord.setAttribute(
 								"call_center_legal_address",
 								record.getAttributeAsString("call_center_legal_address"));
+						pRecord.setAttribute(
+								"parrent_organization_id",
+								record.getAttributeAsInt("parrent_organization_id"));
 
 						showOrgDialog(pRecord);
 					} catch (Exception e) {

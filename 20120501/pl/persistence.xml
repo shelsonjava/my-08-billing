@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+	<persistence-unit name="ds" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:jboss/datasources/OracleDS</jta-data-source>
+		<class>com.info08.billing.callcenterbk.shared.entity.Towns</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.DistBetweenTowns</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.TownDistrict</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.DistrictIndexes</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.VillageIndexes</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.SentSMSHist</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.Users</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.UserPermission</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.ServicePrice</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StreetNames</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StreetToTownDistricts</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.Street</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StreetIndex</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StreetsOldNames</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StreetKind</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.Continents</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.Country</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.facts.Facts</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.facts.FactStatus</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.facts.FactType</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.currency.CurrencyCourse</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.currency.Currency</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirection</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.transport.PublicTranspDirectionStreet</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.transport.TranspSchedule</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.transport.TranspCompany</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.transport.TranspItems</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.transport.TranspStation</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.transport.TranspType</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.main.MainDetailType</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.main.MainDetail</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.callcenter.CallCenterQueue</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.survey.Survey</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.survey.SurveyReplyType</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.survey.SurveyKind</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.survey.SurveyHistSMS</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.event.EventOwner</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.event.Event</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.event.EventCategory</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.Organization</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationPartnerBank</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationToActivity</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartMent</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartToPhone</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.OrganizationActivity</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.BusinessSector</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.org.BusinessUnion</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.admin.LandlineIndexes</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.admin.CountryIndexes</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.admin.GSMIndexes</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.CallCenterNews</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.session.CallSessionExpense</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.session.CallSession</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.control.OperatorWarn</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.contractors.CorporateClient</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientPriceItems</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientPhones</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientBlockChecker</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.black.BlackList</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.billingcomps.BillingCompany</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.billingcomps.BillingCompanyInd</class>
+		<class>com.info08.billing.callcenterbk.shared.items.PhoneNumber</class>
+		<class>com.info08.billing.callcenterbk.shared.items.Subscribers</class>
+		<class>com.info08.billing.callcenterbk.shared.items.Address</class>
+		<class>com.info08.billing.callcenterbk.shared.items.SubscribersToPhones</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.OperatorBreaks</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.Staff</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffEducation</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffComputerSkill</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffLanguages</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffPhones</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffWorks</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffRelative</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.StaffFamousPeople</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.callcenter.FreeOfChargePhone</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.websites.WebSiteGroups</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.websites.WebSites</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.nonstandartinfo.NonStandartInfoGroups</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.nonstandartinfo.NonStandartInfo</class>
+
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
+			<property name="hibernate.connection.username" value="ccare" />
+			<property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />
+			<property name="hibernate.connection.password" value="ccare" />
+			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@192.168.1.5:1522:ORCL" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
+		</properties>
+	</persistence-unit>
+</persistence>

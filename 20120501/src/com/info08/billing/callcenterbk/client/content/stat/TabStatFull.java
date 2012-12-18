@@ -57,6 +57,8 @@ public class TabStatFull extends Tab {
 	private ToolStripButton statN1Btn;
 	private ToolStripButton statN2Btn;
 	private ToolStripButton printPreviewBtn;
+	private ToolStripButton directOrgsBtn;
+	
 
 	private Record prevMonthRecord;
 
@@ -132,6 +134,13 @@ public class TabStatFull extends Tab {
 			printPreviewBtn.setLayoutAlign(Alignment.LEFT);
 			printPreviewBtn.setWidth(50);
 			toolStrip.addButton(printPreviewBtn);
+			
+			toolStrip.addSeparator();
+			
+			directOrgsBtn = new ToolStripButton(CallCenterBK.constants.directOrganizations(), "organization.gif");
+			directOrgsBtn.setLayoutAlign(Alignment.LEFT);
+			directOrgsBtn.setWidth(50);
+			toolStrip.addButton(directOrgsBtn);
 
 			// printPreviewButton.addClickHandler(new ClickHandler() {
 			// public void onClick(ClickEvent event) {

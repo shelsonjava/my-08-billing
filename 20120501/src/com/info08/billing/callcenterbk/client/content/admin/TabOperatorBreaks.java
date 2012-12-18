@@ -51,7 +51,7 @@ public class TabOperatorBreaks extends Tab {
 	public TabOperatorBreaks() {
 		try {
 
-			setTitle("შესფვენების განრიგი");
+			setTitle("შესვენების განრიგი");
 			setCanClose(true);
 
 			dataSource = DataSource.get("OperatorBreaksDS");

@@ -10,6 +10,7 @@ import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.MainLayout;
 import com.info08.billing.callcenterbk.client.ui.layout.West;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
+import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Img;
@@ -123,12 +124,26 @@ public class LoginDialog extends Window {
 										serverSession);
 								CommonSingleton.getInstance().setSessionPerson(
 										serverSession.getUser());
+								if (userName.equals("paata")) {
+									Users user = serverSession.getUser();
+									String displayName = user
+											.getUser_firstname()
+											+ " "
+											+ user.getUser_lastname();
+									String sipUsername = user.getUser_name();
+									String sipLogin = sipUsername + "@11808.ge";
+									String sipPassword = user
+											.getUser_password();
+									sipLogin(displayName, sipUsername,
+											sipLogin, sipPassword,
+											LoginDialog.this);
+								}
 								West.openByLoggedUser();
 								mainLayout.getCenterPanel().getBodyPanel();
 								TabInfoPortal.draw();
 								saveCookies();
 								destroy();
-								//KeyboardHandler.setLanguage(1);
+								// KeyboardHandler.setLanguage(1);
 							} catch (Exception e) {
 								SC.say(e.toString());
 							}
@@ -144,8 +159,20 @@ public class LoginDialog extends Window {
 			SC.say(e.toString());
 			buttonItem.setDisabled(false);
 		}
-		
+
 	}
+
+	public void myCallBack(String phone) {
+		SC.say("Phone = " + phone);
+	}
+
+	public static native void sipLogin(String displayName, String sipUsername,
+			String sipLogin, String sipPassword, LoginDialog instance) /*-{
+		$wnd.register(displayName, sipUsername, sipLogin, sipPassword);
+		$wnd.myCallBack = function(phone) {
+			instance.@com.info08.billing.callcenterbk.client.dialogs.LoginDialog::myCallBack(Ljava/lang/String;)(phone);
+		};
+	}-*/;
 
 	private void setCookieValues() {
 		String objUserName = Cookies.getCookie("infoBill08PortUserName");

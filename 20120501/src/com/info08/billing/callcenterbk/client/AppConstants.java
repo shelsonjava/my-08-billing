@@ -753,4 +753,6 @@ public interface AppConstants extends Constants {
 	String freeOfChargeMessage();
 	String currentOrganization();	
 	String birthdayAlert();
+	String freeCharges();
+	String directOrganizations();
 }

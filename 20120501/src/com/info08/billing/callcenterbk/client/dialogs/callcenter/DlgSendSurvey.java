@@ -29,7 +29,6 @@ public class DlgSendSurvey extends Window {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
-
 	private ComboBoxItem surveyKindItem;
 	private TextItem phoneItem;
 	private TextItem contactPersonItem;

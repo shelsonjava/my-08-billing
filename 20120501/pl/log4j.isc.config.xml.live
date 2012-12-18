@@ -154,4 +154,11 @@
       <appender-ref ref="STDOUT"/>
       <appender-ref ref="SmartClientLog"/>
 	</category>
+	
+	<!-- 08 log messages -->
+  	<category name="com.info08">
+	  <priority value="TRACE" />
+      <appender-ref ref="STDOUT"/>      
+	</category>	
+	
 </log4j:configuration>

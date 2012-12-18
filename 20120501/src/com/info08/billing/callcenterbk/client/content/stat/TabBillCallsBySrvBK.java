@@ -87,6 +87,7 @@ public class TabBillCallsBySrvBK extends Tab {
 	private CheckboxItem chbItemSMSInfo;
 	private CheckboxItem chbItemCallRules;
 	private CheckboxItem chbItemRailScheduler;
+	private CheckboxItem chbItemFreeChargeService;
 
 	private CheckboxItem selectServices;
 	private CheckboxItem autoRefresh;
@@ -302,6 +303,14 @@ public class TabBillCallsBySrvBK extends Tab {
 			chbItemRailScheduler.setValue(false);
 			chbItemRailScheduler.setDisabled(true);
 			chbItemRailScheduler.setWidth(100);
+			
+			chbItemFreeChargeService = new CheckboxItem();
+			chbItemFreeChargeService.setTitle(CallCenterBK.constants.freeCharges());
+			chbItemFreeChargeService.setName("chbItemFreeChargeService");
+			chbItemFreeChargeService.setValue(false);
+			chbItemFreeChargeService.setDisabled(false);
+			chbItemFreeChargeService.setWidth(100);
+			
 
 			searchForm1.setFields(chbItemOrg, chbItemAbon, chbItemFindByNum,
 					chbItemCodesInfo, chbItemGadartva, chbItemExactTime,
@@ -313,7 +322,7 @@ public class TabBillCallsBySrvBK extends Tab {
 					chbItemDistBetwCities, chbItemOrthCalendar,
 					chbItemHourDateAndOther, chbItemAviaScheduler,
 					chbItemMonumGard, chbItemSMSInfo, chbItemCallRules,
-					chbItemRailScheduler);
+					chbItemRailScheduler,chbItemFreeChargeService);
 
 			HLayout hLayout = new HLayout();
 			hLayout.setWidth100();
@@ -496,6 +505,7 @@ public class TabBillCallsBySrvBK extends Tab {
 					chbItemCallRules.setValue(value);
 					chbItemRailScheduler.setValue(value);
 					chbItemStreetInfo.setValue(value);
+					chbItemFreeChargeService.setValue(value);
 				}
 			});
 
@@ -576,6 +586,11 @@ public class TabBillCallsBySrvBK extends Tab {
 				criteria.setAttribute("servicesId1", new Integer(50004));
 				isSelMin1 = true;
 			}
+			if (chbItemFreeChargeService.getValueAsBoolean()) {
+				criteria.setAttribute("servicesId35", new Integer(50019));
+				isSelMin1 = true;
+			}
+			
 			if (chbItemAbon.getValueAsBoolean()) {
 				criteria.setAttribute("servicesId2", new Integer(50014));
 				isSelMin1 = true;
