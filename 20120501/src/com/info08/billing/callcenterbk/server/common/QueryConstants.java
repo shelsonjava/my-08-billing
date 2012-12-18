@@ -1,8 +1,14 @@
 package com.info08.billing.callcenterbk.server.common;
 
 public interface QueryConstants {
-		
-
+	
+	
+	public static final String Q_UPDATEORG_DEP_PHONE = " update ccare.organization_depart_to_phones t set t.org_department_id = ?, t.phone_number_id = ?, t.hidden_by_request = ?, t.phone_contract_type = ?, "+
+            									" t.for_contact = ?, t.phone_order = ?, t.rec_upd_date = ? "+
+            								    " where t.org_dep_to_ph_id = ? ";                                                 
+	
+	public static final String Q_UPDATE_PHONE = " update ccare.phone_numbers t set t.phone = ?, t.phone_state_id = ?, t.phone_type_id = ?, t.is_parallel = ? where t.phone_number_id = ? ";
+	
 	public static final String Q_GET_PHONE_ORG_BIRTHDAY = "select count(1)\n" +
 			"from ccare.phone_numbers t\n" + 
 			"       inner join ccare.organization_depart_to_phones dp on dp.phone_number_id = t.phone_number_id\n" + 

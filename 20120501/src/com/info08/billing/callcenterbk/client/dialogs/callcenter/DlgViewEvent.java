@@ -248,8 +248,8 @@ public class DlgViewEvent extends Window {
 			CanvasDisableTimer.addCanvasClickTimer(sendSMS1);
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("event_list_id",
-					listGridRecord.getAttributeAsInt("event_list_id"));
+			criteria.setAttribute("event_list_owner_id",
+					listGridRecord.getAttributeAsInt("event_list_owner_id"));
 			criteria.setAttribute("event_list_time",
 					listGridRecord.getAttributeAsDate("event_list_time"));
 

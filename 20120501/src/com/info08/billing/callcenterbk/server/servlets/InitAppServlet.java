@@ -125,21 +125,23 @@ public class InitAppServlet extends HttpServlet {
 			String realPhone = phone.substring(0, ampIndex);
 
 			int length = realPhone.length();
-			switch (length) {
-			case 9:
-				break;
-			case 8:
-				realPhone = "2" + realPhone;
-				break;
-			case 7:
-				realPhone = "22" + realPhone;
-				break;
-			case 6:
-				realPhone = "322" + realPhone;
-				break;
-			default:
-				out.println("Invalid Phone Length : " + realPhone);
-				return;
+			if (!realPhone.equals("322112")) {
+				switch (length) {
+				case 9:
+					break;
+				case 8:
+					realPhone = "2" + realPhone;
+					break;
+				case 7:
+					realPhone = "22" + realPhone;
+					break;
+				case 6:
+					realPhone = "322" + realPhone;
+					break;
+				default:
+					out.println("Invalid Phone Length : " + realPhone);
+					return;
+				}
 			}
 
 			boolean phoneIsMobile = CommonFunctions.isPhoneMobile(realPhone);

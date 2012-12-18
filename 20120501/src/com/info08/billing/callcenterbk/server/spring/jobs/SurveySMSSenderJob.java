@@ -28,8 +28,9 @@ public class SurveySMSSenderJob extends TimerTask {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
-			if (!InetAddress.getLocalHost().getHostAddress()
-					.contains("127.0.0")) {
+			String inetAddress = InetAddress.getLocalHost().getHostAddress();
+			//logger.info("inedAddress = "+inetAddress);
+			if (!inetAddress.contains("127.0.0") && !inetAddress.contains("192.168.1.7")) {
 				String log = "Job. Sending Auto Survey SMS.\n";
 				oracleManager = EMF.getEntityManager();
 				transaction = EMF.getTransaction(oracleManager);

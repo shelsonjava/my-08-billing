@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
+import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationActivity;
@@ -975,7 +976,16 @@ public class OrganizationDMI {
 			if (phoneNumber.getPhone_number_id() == null) {
 				oracleManager.persist(phoneNumber);
 			} else {
-				oracleManager.merge(phoneNumber);
+				//
+				//Q_UPDATE_PHONE = " update ccare.phone_numbers t set t.phone = ?, t.phone_state_id = ?, t.phone_type_id = ?, 
+				//t.is_parallel = ? where t.phone_number_id = ? ";
+				oracleManager.createNativeQuery(QueryConstants.Q_UPDATE_PHONE)
+				.setParameter(1, phoneNumber.getPhone())
+				.setParameter(2, phoneNumber.getPhone_state_id())
+				.setParameter(3, phoneNumber.getPhone_type_id())
+				.setParameter(4, phoneNumber.getIs_parallel())
+				.setParameter(5, phoneNumber.getPhone_number_id()).executeUpdate();
+//				oracleManager.merge(phoneNumber);
 			}
 			DataTools.setProperties(values, orgDepartToPhone);
 			orgDepartToPhone.setPhone_number_id(phoneNumber
@@ -984,7 +994,17 @@ public class OrganizationDMI {
 			if (orgDepartToPhone.getOrg_dep_to_ph_id() == null) {
 				oracleManager.persist(orgDepartToPhone);
 			} else {
-				oracleManager.merge(orgDepartToPhone);
+				System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");				
+				oracleManager.createNativeQuery(QueryConstants.Q_UPDATEORG_DEP_PHONE)
+						.setParameter(1, orgDepartToPhone.getOrg_department_id())
+						.setParameter(2, orgDepartToPhone.getPhone_number_id())
+						.setParameter(3, orgDepartToPhone.getHidden_by_request())
+						.setParameter(4, orgDepartToPhone.getPhone_contract_type())
+						.setParameter(5, orgDepartToPhone.getFor_contact())
+						.setParameter(6, orgDepartToPhone.getPhone_order())
+					    .setParameter(7, orgDepartToPhone.getRec_upd_date())
+					    .setParameter(8, orgDepartToPhone.getOrg_dep_to_ph_id()).executeUpdate();
+				//oracleManager.merge(orgDepartToPhone);
 			}
 
 			org_dep_to_ph_id = orgDepartToPhone.getOrg_dep_to_ph_id();

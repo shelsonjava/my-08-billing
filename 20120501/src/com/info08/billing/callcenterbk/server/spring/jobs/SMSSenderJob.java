@@ -66,8 +66,11 @@ public class SMSSenderJob extends TimerTask {
 		Object transaction = null;
 		StringBuilder log = new StringBuilder();
 		try {
-			if (InetAddress.getLocalHost().getHostAddress()
-					.contains("127.0.0.")) {
+			String inetAddress = InetAddress.getLocalHost().getHostAddress();
+			if (inetAddress.contains("127.0.0.")) {
+				return;
+			}
+			if (inetAddress.contains("192.168.1.7")) {
 				return;
 			}
 			oracleManager = EMF.getEntityManager();

@@ -1,21 +1,27 @@
  <?xml version="1.0" encoding="UTF-8"?>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">	
 	<meta name="gwt:property" content="locale=en">
+	<meta name="author" content="Paata Lominadze" />
+	<meta name="Description" content="Call Center (HTML5 SIP client using WebRTC framework) and Billing Application" />
+	<meta name="Keywords" content="Call Center, sipML5, VoIP, HTML5, WebRTC, RTCWeb, SIP, IMS, Video chat, VP8, live demo, Billing " />
+	
 	<link type="text/css" rel="stylesheet" href="CallCenterBK.css">
 	<link type="image/x-icon" href="images/favicon.ico" rel="shortcut icon" />
 	<title>Info Billing 08</title>
 	 <script>
     	var isomorphicDir="callcenterbk/sc/"
     </script>
+    <script type='text/javascript'>   
+            var logger =  undefined; //console;
+    </script>	
+        
     <script>window.isomorphicDir="callcenterbk/sc/"</script>
  	<script src=callcenterbk/sc/modules/ISC_FileLoader.js></script>
  	<script src=javascript/keyboard.js></script>
  	
- 	
-	<script type="text/javascript" src="callcenterbk/callcenterbk.nocache.js"></script>
+ 	<script type="text/javascript" src="callcenterbk/callcenterbk.nocache.js"></script>
 	<script type="text/javascript" src="callcenterbk/sc/DataSourceLoader?dataSource=CallSessDS,LogSessChDS,ServiceDS,UsersDS,OperatorWarnsDS,SentSMSHist,OrgInfoByPhoneDS,BillingCompsDS,BillingCompsIndDS"></script>
 	<script type="text/javascript" src="callcenterbk/sc/DataSourceLoader?dataSource=SessSurvHistDS,OrgDS,SubscriberDS,NameDS,FamilyNameDS,CitiesDS,TownDistrictDS,DescriptionsDS"></script>
 	<script type="text/javascript" src="callcenterbk/sc/DataSourceLoader?dataSource=AbPhonesDS,imageTestDS,PermisssionsDS,CountryDS,DepartmentDS,ContinentDS,TownsDS,StatisticsDS,OrgDepartmentDS,AddressDS"></script>
@@ -30,7 +36,151 @@
 	<script type="text/javascript" src="callcenterbk/sc/DataSourceLoader?dataSource=OrgPrioritiesStatisticsDS,WebSiteGroupsDS,WebSitesDS,NoneStandartInfoGroupsDS,NonStandartInfosDS"></script>
 	<script type="text/javascript" src="callcenterbk/sc/DataSourceLoader?dataSource=ImageDataDS,StatisticOrgCorrectDS"></script>
 </head>
-<body>
-	<iframe src="javascript:''" id="__gwt_historyFrame" style="width:0;height:0;border:0"></iframe>	
+
+<body onload="onLoad()" onbeforeunload="onBeforeUnload()">
+	 <iframe src="javascript:''" id="__gwt_historyFrame" style="width:0;height:0;border:0"></iframe>
+	 
+	 	<audio id="ringing" loop src="audio/ringing.wav" />
+	 	
+	 	<script src="javascript/jquery-1.7.2.min.js"></script>
+		<script src="javascript/jquery-ui-1.8.23.custom.min.js"></script>	
+        <script src="javascript/jain-sip.js" type="text/javascript"></script>
+        <script src="javascript/MobicentsWebRTCPhone.js" type="text/javascript" ></script>
+		<script type='text/javascript'>	
+	            var mobicentsWebRTCPhone=null;         
+	            var defaultStunServer="";
+	            var defaultSipDomain="11808.ge";
+	            var defaultSipDisplayName="Test";
+	            var defaultSipUserName="test";
+	            var defaultSipLogin="test@11808.ge";
+	            var defaultSipPassword="test";
+	            var defaultSipContactPhoneNumber="test@11808.ge";
+	            
+	            var localAudioVideoMediaStream=null;
+	            
+	            function onLoad()
+	            {
+	                console.debug("onLoad");
+	                navigator.webkitGetUserMedia({audio:true, video:true},gotLocalAudioVideoStream, gotLocalAudioVideoFailed);
+	                console.debug("onLoad.");
+	            }
+	
+	            function onBeforeUnload()
+	            {
+	                unRegister();
+	                for(var i=0;i<5000;i++)
+	                {
+	                    console.log("OnBeforeUnLoad()");  
+	                }     
+	            }
+	            
+	            function gotLocalAudioVideoStream (localStream) {
+	                localAudioVideoMediaStream=localStream;
+	                var url = webkitURL.createObjectURL(localStream);
+	                //document.getElementById("localVideoPreview").src=url;
+	                //document.getElementById("localVideoPreview").play();
+	                showRegisterButton();
+	            }
+	
+	            function  gotLocalAudioVideoFailed(error) 
+	            {
+	                alert("Failed to get access to local media. Error code was " + error.code + ".");
+	                hideRegisterButton();
+	            }	
+	    
+	            function register(sipDisplayName,sipUserName,sipLogin,sipPassword)
+	            {		            	
+	            	defaultSipDisplayName=sipDisplayName;
+	            	defaultSipUserName=sipUserName;
+	            	defaultSipLogin=sipLogin;
+	            	defaultSipPassword=sipPassword;
+	            	
+	            	// enable notifications if not already done		
+				    if (window.webkitNotifications) {
+				    	window.webkitNotifications.requestPermission();
+				    }
+				    mobicentsWebRTCPhone = new MobicentsWebRTCPhone("ws://192.168.1.7:5062");
+	                mobicentsWebRTCPhone.localAudioVideoMediaStream=localAudioVideoMediaStream;	                
+	            }
+	
+	            function unRegister()
+	            {
+	                if(mobicentsWebRTCPhone!=null)
+	                {
+	                    mobicentsWebRTCPhone.unRegister();   
+	                }
+	            }
+	
+	            function call(from,to)
+	            {   
+	                mobicentsWebRTCPhone.call(from,to);
+	            }
+	
+	
+	            function bye()
+	            {
+	               // mobicentsWebRTCPhone.bye();
+	            }
+	                
+	                
+	            function hideCallButton()
+	            {
+	             //   var call=document.getElementById("Call");
+	              //  call.disabled=true;
+	            }
+	            
+	            function showCallButton()
+	            {
+	               // var call=document.getElementById("Call");
+	              //  call.disabled=false;
+	            }
+	            
+	            function hideByeButton()
+	            {
+	              //  var bye=document.getElementById("Bye");
+	              //  bye.disabled=true;
+	            }
+	            
+	            function showByeButton()
+	            {
+	              //  var bye=document.getElementById("Bye");
+	              //  bye.disabled=false;
+	            }
+	            
+	            function showUnRegisterButton()
+	            {
+	               // var unRegister=document.getElementById("UnRegister");
+	                //unRegister.disabled=false;
+	            }
+	            
+	            function showRegisterButton()
+	            {
+	                //var register=document.getElementById("Register");
+	                //register.disabled=false;
+	            }
+	            function hideUnRegisterButton()
+	            {
+	                //var unRegister=document.getElementById("UnRegister");
+	                //unRegister.disabled=true;
+	            }
+	            
+	            function hideRegisterButton()
+	            {
+	                //var register=document.getElementById("Register");
+	                //register.disabled=true;
+	            }	
+			
+		    function startRinging() {
+	        	ringing.play(); 
+		    }
+	
+		    function stopRinging() {
+				ringing.pause();
+		    }
+		    
+		    var myCallBack;
+		    
+	     </script>        
 </body>
 </html>
+
