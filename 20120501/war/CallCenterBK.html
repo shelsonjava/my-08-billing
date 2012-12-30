@@ -37,9 +37,12 @@
 	<script type="text/javascript" src="callcenterbk/sc/DataSourceLoader?dataSource=ImageDataDS,StatisticOrgCorrectDS"></script>
 </head>
 
-<body onload="onLoad()" onbeforeunload="onBeforeUnload()">
+
+
+<!-- onload="onLoad()" onbeforeunload="onBeforeUnload()" -->
+<body>
 	 <iframe src="javascript:''" id="__gwt_historyFrame" style="width:0;height:0;border:0"></iframe>
-	 
+	 	<!--  
 	 	<audio id="ringing" loop src="audio/ringing.wav" />
 	 	
 	 	<script src="javascript/jquery-1.7.2.min.js"></script>
@@ -55,18 +58,26 @@
 	            var defaultSipLogin="test@11808.ge";
 	            var defaultSipPassword="test";
 	            var defaultSipContactPhoneNumber="test@11808.ge";
+	            var is_chrome=null;
 	            
 	            var localAudioVideoMediaStream=null;
 	            
 	            function onLoad()
-	            {
+	            {	            	
 	                console.debug("onLoad");
+	                is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+	                if(!is_chrome){
+	                	return;
+	                }
 	                navigator.webkitGetUserMedia({audio:true, video:true},gotLocalAudioVideoStream, gotLocalAudioVideoFailed);
 	                console.debug("onLoad.");
 	            }
 	
 	            function onBeforeUnload()
-	            {
+	            {	
+	            	if(!is_chrome){
+	                	return;
+	                }
 	                unRegister();
 	                for(var i=0;i<5000;i++)
 	                {
@@ -89,7 +100,12 @@
 	            }	
 	    
 	            function register(sipDisplayName,sipUserName,sipLogin,sipPassword)
-	            {		            	
+	            {		      
+	            	
+	            	if(!is_chrome){
+	                	return;
+	                }
+	            	
 	            	defaultSipDisplayName=sipDisplayName;
 	            	defaultSipUserName=sipUserName;
 	            	defaultSipLogin=sipLogin;
@@ -105,6 +121,9 @@
 	
 	            function unRegister()
 	            {
+	            	if(!is_chrome){
+	                	return;
+	                }
 	                if(mobicentsWebRTCPhone!=null)
 	                {
 	                    mobicentsWebRTCPhone.unRegister();   
@@ -181,6 +200,7 @@
 		    var myCallBack;
 		    
 	     </script>        
+	     -->
 </body>
 </html>
 

@@ -32,7 +32,7 @@
     		<selectClause>
     			   phone_number
 			</selectClause> 
-			<tableClause>(
+			<tableClause><![CDATA[(
 					select pn.phone as phone_number
 					  from organization_depart_to_phones odp
 					 inner join phone_numbers pn
@@ -53,8 +53,9 @@
 					              #end
 					             connect by prior org_department_id = parrent_department_id) c
 					    on c.org_department_id = odp.org_department_id
+					    where pn.phone_state_id <> 52102
 					group by phone
-			)</tableClause>
+			)]]></tableClause>
 			<whereClause><![CDATA[
 				 1=1 
 				]]>  
@@ -67,7 +68,7 @@
     		<selectClause>
     			   phone_number
 			</selectClause> 
-			<tableClause>(
+			<tableClause><![CDATA[(
 					select pn.phone as phone_number
 					  from organization_depart_to_phones odp
 					 inner join phone_numbers pn
@@ -82,8 +83,9 @@
 					              #end
 					             connect by prior org_department_id = parrent_department_id) c
 					    on c.org_department_id = odp.org_department_id
+					    where pn.phone_state_id <> 52102
 					group by phone
-			)</tableClause>
+			)]]></tableClause>
 			<whereClause><![CDATA[
 				 1=1 
 				]]>  

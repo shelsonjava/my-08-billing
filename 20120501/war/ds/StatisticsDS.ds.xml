@@ -36,6 +36,12 @@
 		<field name="date_str"					type="text"			title="date_str"/>
 		<field name="week_day_descr"			type="text"			title="week_day_descr"/>
 		<field name="cnt_percent"				type="integer"		title="cnt_percent"/>
+		<field name="free_call_non_contr_cnt"	type="integer"		title="free_call_non_contr_cnt"/>
+		<field name="free_call_contr_cnt"		type="integer"		title="free_call_contr_cnt"/>
+		<field name="organization_name"			type="text"			title="organization_name"/>
+		<field name="call_count"				type="integer"		title="call_count"/>
+		<field name="organization_id"			type="integer"		title="organization_id"/>
+		<field name="call_date"					type="text"			title="call_date"/>
 	</fields>
 
 	<operationBindings>		
@@ -63,6 +69,8 @@
 					t.org_contr_email_srv_amm,
 					t.org_email_srv_cnt,
 					t.org_email_srv_amm,
+					t.free_call_non_contr_cnt,
+					t.free_call_contr_cnt,
 					case when to_number(to_char(t.stat_date,'D')) = 1 or to_number(to_char(t.stat_date,'D')) = 7 then 
 				    	1 else 
 				    	0 
@@ -130,6 +138,8 @@
 					sum(t.org_contr_email_srv_amm) as org_contr_email_srv_amm,
 					sum(t.org_email_srv_cnt) as org_email_srv_cnt,
 					sum(t.org_email_srv_amm) as org_email_srv_amm,
+					sum(t.free_call_non_contr_cnt) as free_call_non_contr_cnt,
+					sum(t.free_call_contr_cnt) as free_call_contr_cnt,
 				   	sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt) as org_sum,
 				   	sum(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
 				   	sum(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount,
@@ -165,6 +175,8 @@
 			          avg(t.beeline_cnt) as beeline_cnt,
 			          avg(t.org_contr_email_srv_cnt) as org_contr_email_srv_cnt,
 			          avg(t.org_email_srv_cnt) as org_email_srv_cnt,
+			          avg(t.free_call_non_contr_cnt) as free_call_non_contr_cnt,
+					  avg(t.free_call_contr_cnt) as free_call_contr_cnt,
 			          avg(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt) as org_sum,
 			          avg(t.org_contr_comm_cnt+t.org_non_contr_cnt+t.org_contr_gov_cnt+abonent_cnt+magti_cnt+geocell_cnt+beeline_cnt+org_contr_email_srv_cnt+org_email_srv_cnt) as all_sum,
 			          avg(t.org_contr_comm_amm+t.org_non_contr_amm+t.org_contr_gov_amm+abonent_amm+magti_amm+geocell_amm+beeline_amm+org_contr_email_srv_amm+org_email_srv_amm) as all_amount				   	
@@ -174,13 +186,99 @@
 				 1 = 1
 				#if($criteria.exactDate)  and 1=1
 				#else 
-					 #if($criteria.ym) and t.ym = $criteria.ym #end
+					 #if($criteria.ym) and t.ym = to_number(to_char(add_months(sysdate,-1),'yymm')) #end
 					 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
 					 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end
 			    #end				 
 				]]>  
 			</whereClause> 
 			<groupClause>t.ym</groupClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	
+    	<operationBinding operationId="searchContrStatistics" operationType="fetch">
+    		<selectClause>   	
+    				/* use_nl(ch,ls,p,c) ordered index (ch IDX_LOG_SCH_REC_DATE1) */		
+    				o.organization_id,
+    			  	o.organization_name as organization_name,
+           			count(1) as call_count   	
+			</selectClause> 
+			<tableClause>
+				call_session_expense ch
+			         inner join call_sessions ls  on ch.session_id = ls.session_id
+			         inner join v_normalized_contractor_phones p on p.phone=ls.call_phone
+			         inner join corporate_clients c on c.corporate_client_id=p.corporate_client_id
+			         inner join organizations o on o.organization_id = c.organization_id 
+			</tableClause>
+			<whereClause><![CDATA[
+				 ch.year_month = $criteria.ym and ls.year_month = $criteria.ym
+				 and trunc(c.contract_start_date) <= trunc(ls.call_start_date)
+				 and trunc(c.contract_end_date) >= trunc(ls.call_start_date)
+				 and c.goverment = $criteria.type				
+				]]>  
+			</whereClause> 
+			<groupClause>o.organization_id,o.organization_name</groupClause>
+			<orderClause>call_count desc</orderClause>
+    	</operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchNonContrStatistics" operationType="fetch">
+    		<selectClause>   	
+    				   /* use_nl(ch,cs) ordered index(cs,IDX_CS_SESSION_ID) index (ch IDX_LOG_SCH_REC_DATE1) */
+				       o.organization_id,
+				       o.organization_name,
+				       count(1) as call_count
+			</selectClause> 
+			<tableClause>
+				call_session_expense ch
+					inner join call_sessions cs on ch.session_id = cs.session_id
+					inner join phone_numbers pn on pn.phone = cs.norm_phone
+					inner join organization_depart_to_phones odp on odp.phone_number_id = pn.phone_number_id
+					inner join organization_department od on od.org_department_id = odp.org_department_id
+					inner join organizations o on o.organization_id = od.organization_id 
+			</tableClause>
+			<whereClause><![CDATA[
+				  ch.year_month = $criteria.ym and cs.year_month = $criteria.ym and 
+			      ch.charge > 0 and cs.call_kind = 3 and not exists
+			        (select 1 from v_normalized_contractor_phones p where p.phone = cs.call_phone)
+				]]>  
+			</whereClause> 
+			<groupClause>o.organization_id, o.organization_name</groupClause>
+			<orderClause>call_count desc</orderClause>
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchOrgDetailStatistics" operationType="fetch">
+    		<selectClause>   	
+    				   /* use_nl(ch,cs) ordered index(cs,IDX_CS_SESSION_ID) index (ch IDX_LOG_SCH_REC_DATE1) */
+		               to_char(trunc(ch.charge_date),'DD/MM/YYYY') as call_date,
+		               o.organization_id,
+		               o.organization_name,
+		               count(1) as call_count,
+		               case when to_number(to_char(trunc(ch.charge_date),'D')) = 1 or to_number(to_char(trunc(ch.charge_date),'D')) = 7 then 
+				    	1 else 
+				    	0 
+				   		end as week_day
+			</selectClause> 
+			<tableClause>
+				        call_session_expense ch
+				          inner join call_sessions cs on ch.session_id = cs.session_id
+				          inner join phone_numbers pn on pn.phone = cs.norm_phone
+				          inner join organization_depart_to_phones odp on odp.phone_number_id = pn.phone_number_id
+				          inner join organization_department od on od.org_department_id = odp.org_department_id
+				          inner join organizations o on o.organization_id = od.organization_id 
+			</tableClause>
+			<whereClause><![CDATA[
+			       ch.year_month = $criteria.ym and cs.year_month = $criteria.ym and 
+			       ch.charge > 0 and cs.call_kind = 3 and
+			       o.organization_id = $criteria.organization_id
+				]]>  
+			</whereClause> 
+			<groupClause>o.organization_id,o.organization_name,trunc(ch.charge_date)</groupClause>
+			<orderClause>trunc(ch.charge_date)</orderClause>
     	</operationBinding>
     	
     </operationBindings>	
