@@ -124,7 +124,10 @@ public class LoginDialog extends Window {
 										serverSession);
 								CommonSingleton.getInstance().setSessionPerson(
 										serverSession.getUser());
-								if (userName.equals("paata")) {
+
+								boolean flag = false;
+
+								if (flag && userName.equals("paata")) {
 									Users user = serverSession.getUser();
 									String displayName = user
 											.getUser_firstname()
@@ -163,7 +166,7 @@ public class LoginDialog extends Window {
 	}
 
 	public void myCallBack(String phone) {
-		SC.say("Phone = " + phone);
+		// SC.say("Phone = " + phone);
 	}
 
 	public static native void sipLogin(String displayName, String sipUsername,

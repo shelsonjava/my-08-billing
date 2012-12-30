@@ -755,4 +755,8 @@ public interface AppConstants extends Constants {
 	String birthdayAlert();
 	String freeCharges();
 	String directOrganizations();
+	String freeCalls5TetriNonContr();
+	String freeCalls5TetriContr();
+	String statisticByOrgs();
+	String viewDetail();
 }

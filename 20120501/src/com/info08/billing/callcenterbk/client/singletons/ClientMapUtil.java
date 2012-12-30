@@ -57,6 +57,7 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> yesAndNo;
 	private LinkedHashMap<String, String> gender;
 	private LinkedHashMap<String, String> visible;
+	private LinkedHashMap<String, String> statisticTypes;
 
 	protected ClientMapUtil() {
 		mapOpClose = new LinkedHashMap<String, String>();
@@ -102,6 +103,7 @@ public class ClientMapUtil {
 		gender = new LinkedHashMap<String, String>();
 		visible = new LinkedHashMap<String, String>();
 		dayOffs = new LinkedHashMap<String, String>();
+		statisticTypes = new LinkedHashMap<String, String>();
 
 		mapOpClose.put("0", "ღია");
 		mapOpClose.put("1", "დაფარულია");
@@ -206,7 +208,7 @@ public class ClientMapUtil {
 		weekDays.put("32", CallCenterBK.constants.wdaySaturday());
 		weekDays.put("64", CallCenterBK.constants.wdaySunday());
 		weekDays.put("128", CallCenterBK.constants.wdayUnknown());
-		
+
 		dayOffs.put("0", CallCenterBK.constants.noDayOff());
 		dayOffs.put("1", CallCenterBK.constants.wdayMonday());
 		dayOffs.put("2", CallCenterBK.constants.wdayTuesday());
@@ -267,6 +269,10 @@ public class ClientMapUtil {
 
 		visible.put("75100", "ღია");
 		visible.put("75101", "დაფარული");
+
+		statisticTypes.put("1", CallCenterBK.constants.direct());
+		statisticTypes.put("2", CallCenterBK.constants.nonDirect());
+		statisticTypes.put("0", CallCenterBK.constants.government());
 	}
 
 	public LinkedHashMap<String, String> getCallTypes() {
@@ -436,8 +442,12 @@ public class ClientMapUtil {
 	public LinkedHashMap<String, String> getVisible() {
 		return visible;
 	}
-	
+
 	public LinkedHashMap<String, String> getDayOffs() {
 		return dayOffs;
+	}
+
+	public LinkedHashMap<String, String> getStatisticTypes() {
+		return statisticTypes;
 	}
 }

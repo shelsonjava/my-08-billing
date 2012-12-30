@@ -213,7 +213,7 @@ public class DlgViewSubscriber extends Window {
 					.append(" ");
 			sms_text.append(listGridRecord.getAttributeAsString("family_name"))
 					.append(";");
-			String address = listGridRecord.getAttributeAsString("address");
+			String address = listGridRecord.getAttributeAsString("concat_address");
 			if (address != null && !address.trim().equals("")) {
 				sms_text.append(address).append(";");
 			}

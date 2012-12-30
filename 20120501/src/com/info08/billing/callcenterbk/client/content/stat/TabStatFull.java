@@ -57,8 +57,6 @@ public class TabStatFull extends Tab {
 	private ToolStripButton statN1Btn;
 	private ToolStripButton statN2Btn;
 	private ToolStripButton printPreviewBtn;
-	private ToolStripButton directOrgsBtn;
-	
 
 	private Record prevMonthRecord;
 
@@ -87,16 +85,14 @@ public class TabStatFull extends Tab {
 			dateItem.setName("dateItem");
 			dateItem.setValue(new Date());
 			dateItem.setWidth(200);
-			
-			
+
 			exactDate = new BooleanItem();
 			exactDate.setTitle("დღის მიხედვით");
 			exactDate.setName("exactDate");
 			exactDate.setValue(false);
 			exactDate.setWidth(200);
-			
 
-			searchForm.setFields(dateItem,exactDate);
+			searchForm.setFields(dateItem, exactDate);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(287);
@@ -123,8 +119,8 @@ public class TabStatFull extends Tab {
 			statN1Btn.setWidth(50);
 			toolStrip.addButton(statN1Btn);
 
-			statN2Btn = new ToolStripButton(CallCenterBK.constants.graphAmount(),
-					"stats.png");
+			statN2Btn = new ToolStripButton(
+					CallCenterBK.constants.graphAmount(), "stats.png");
 			statN2Btn.setLayoutAlign(Alignment.LEFT);
 			statN2Btn.setWidth(50);
 			toolStrip.addButton(statN2Btn);
@@ -134,13 +130,8 @@ public class TabStatFull extends Tab {
 			printPreviewBtn.setLayoutAlign(Alignment.LEFT);
 			printPreviewBtn.setWidth(50);
 			toolStrip.addButton(printPreviewBtn);
-			
+
 			toolStrip.addSeparator();
-			
-			directOrgsBtn = new ToolStripButton(CallCenterBK.constants.directOrganizations(), "organization.gif");
-			directOrgsBtn.setLayoutAlign(Alignment.LEFT);
-			directOrgsBtn.setWidth(50);
-			toolStrip.addButton(directOrgsBtn);
 
 			// printPreviewButton.addClickHandler(new ClickHandler() {
 			// public void onClick(ClickEvent event) {
@@ -189,7 +180,7 @@ public class TabStatFull extends Tab {
 			listGrid.setCanEdit(false);
 			listGrid.setCanRemoveRecords(false);
 			listGrid.setFetchOperation("searchAllStatistics");
-			//listGrid.setShowRowNumbers(true);
+			// listGrid.setShowRowNumbers(true);
 			listGrid.setCanHover(true);
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
@@ -208,13 +199,16 @@ public class TabStatFull extends Tab {
 					CallCenterBK.constants.abonent(), 80);
 
 			ListGridField org_contr_comm_cnt = new ListGridField(
-					"org_contr_comm_cnt", CallCenterBK.constants.directSmall(), 70);
+					"org_contr_comm_cnt", CallCenterBK.constants.directSmall(),
+					70);
 
 			ListGridField org_non_contr_cnt = new ListGridField(
-					"org_non_contr_cnt", CallCenterBK.constants.nonDirectSmall(), 70);
+					"org_non_contr_cnt",
+					CallCenterBK.constants.nonDirectSmall(), 70);
 
 			ListGridField org_contr_gov_cnt = new ListGridField(
-					"org_contr_gov_cnt", CallCenterBK.constants.governmentSmall(), 70);
+					"org_contr_gov_cnt",
+					CallCenterBK.constants.governmentSmall(), 70);
 
 			ListGridField org_sum = new ListGridField("org_sum",
 					CallCenterBK.constants.sum(), 70);
@@ -229,11 +223,20 @@ public class TabStatFull extends Tab {
 					CallCenterBK.constants.beeline(), 80);
 
 			ListGridField org_contr_email_srv_cnt = new ListGridField(
-					"org_contr_email_srv_cnt", CallCenterBK.constants.directSmall(),
-					70);
+					"org_contr_email_srv_cnt",
+					CallCenterBK.constants.directSmall(), 70);
 
 			ListGridField org_email_srv_cnt = new ListGridField(
-					"org_email_srv_cnt", CallCenterBK.constants.nonDirectSmall(), 70);
+					"org_email_srv_cnt",
+					CallCenterBK.constants.nonDirectSmall(), 70);
+
+			ListGridField free_call_non_contr_cnt = new ListGridField(
+					"free_call_non_contr_cnt",
+					CallCenterBK.constants.freeCalls5TetriNonContr(), 70);
+
+			ListGridField free_call_contr_cnt = new ListGridField(
+					"free_call_contr_cnt",
+					CallCenterBK.constants.freeCalls5TetriContr(), 75);
 
 			ListGridField all_sum = new ListGridField("all_sum",
 					CallCenterBK.constants.sum(), 70);
@@ -251,6 +254,8 @@ public class TabStatFull extends Tab {
 			geocell_cnt.setAlign(Alignment.CENTER);
 			beeline_cnt.setAlign(Alignment.CENTER);
 			org_contr_email_srv_cnt.setAlign(Alignment.CENTER);
+			free_call_non_contr_cnt.setAlign(Alignment.CENTER);
+			free_call_contr_cnt.setAlign(Alignment.CENTER);
 			org_email_srv_cnt.setAlign(Alignment.CENTER);
 			all_sum.setAlign(Alignment.CENTER);
 			all_amount.setAlign(Alignment.CENTER);
@@ -376,6 +381,34 @@ public class TabStatFull extends Tab {
 			});
 
 			org_contr_email_srv_cnt.setCellFormatter(new CellFormatter() {
+				public String format(Object value, ListGridRecord record,
+						int rowNum, int colNum) {
+					if (value == null)
+						return null;
+					try {
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
+						return nf.format(((Number) value).doubleValue());
+					} catch (Exception e) {
+						return value.toString();
+					}
+				}
+			});
+
+			free_call_non_contr_cnt.setCellFormatter(new CellFormatter() {
+				public String format(Object value, ListGridRecord record,
+						int rowNum, int colNum) {
+					if (value == null)
+						return null;
+					try {
+						NumberFormat nf = NumberFormat.getFormat("#,##0.00");
+						return nf.format(((Number) value).doubleValue());
+					} catch (Exception e) {
+						return value.toString();
+					}
+				}
+			});
+
+			free_call_contr_cnt.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
 					if (value == null)
@@ -535,12 +568,51 @@ public class TabStatFull extends Tab {
 							"org_contr_email_srv_cnt");
 				}
 			});
+
+			free_call_non_contr_cnt.setSummaryFunction(SummaryFunctionType.SUM);
+			free_call_non_contr_cnt.addSummaryFunction(new SummaryFunction() {
+				@Override
+				public Object getSummaryValue(Record[] records,
+						ListGridField field) {
+					return getCustomAvarageSummary1(records,
+							"free_call_non_contr_cnt");
+				}
+			});
+
+			free_call_contr_cnt.setSummaryFunction(SummaryFunctionType.SUM);
+			free_call_contr_cnt.addSummaryFunction(new SummaryFunction() {
+				@Override
+				public Object getSummaryValue(Record[] records,
+						ListGridField field) {
+					return getCustomAvarageSummary1(records,
+							"free_call_contr_cnt");
+				}
+			});
+
 			org_contr_email_srv_cnt.addSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
 						ListGridField field) {
 					return getCustomAvarageSummary(records,
 							"org_contr_email_srv_cnt");
+				}
+			});
+
+			free_call_non_contr_cnt.addSummaryFunction(new SummaryFunction() {
+				@Override
+				public Object getSummaryValue(Record[] records,
+						ListGridField field) {
+					return getCustomAvarageSummary(records,
+							"free_call_non_contr_cnt");
+				}
+			});
+
+			free_call_contr_cnt.addSummaryFunction(new SummaryFunction() {
+				@Override
+				public Object getSummaryValue(Record[] records,
+						ListGridField field) {
+					return getCustomAvarageSummary(records,
+							"free_call_contr_cnt");
 				}
 			});
 
@@ -584,17 +656,20 @@ public class TabStatFull extends Tab {
 			listGrid.setFields(stat_date, abonent_cnt, org_contr_comm_cnt,
 					org_non_contr_cnt, org_contr_gov_cnt, org_sum, magti_cnt,
 					geocell_cnt, beeline_cnt, org_contr_email_srv_cnt,
-					org_email_srv_cnt, all_sum, all_amount);
+					org_email_srv_cnt, free_call_non_contr_cnt,
+					free_call_contr_cnt, all_sum, all_amount);
 
 			listGrid.setHeaderSpans(
 					new HeaderSpan(CallCenterBK.constants.organization(),
 							new String[] { "org_contr_comm_cnt",
 									"org_non_contr_cnt", "org_contr_gov_cnt",
 									"org_sum" }),
-					new HeaderSpan(CallCenterBK.constants.mobile(), new String[] {
-							"magti_cnt", "geocell_cnt", "beeline_cnt" }),
-					new HeaderSpan(CallCenterBK.constants.eMail(), new String[] {
-							"org_contr_email_srv_cnt", "org_email_srv_cnt" }));
+					new HeaderSpan(CallCenterBK.constants.mobile(),
+							new String[] { "magti_cnt", "geocell_cnt",
+									"beeline_cnt" }), new HeaderSpan(
+							CallCenterBK.constants.eMail(), new String[] {
+									"org_contr_email_srv_cnt",
+									"org_email_srv_cnt" }));
 
 			mainLayout.addMember(listGrid);
 
@@ -633,7 +708,6 @@ public class TabStatFull extends Tab {
 					Canvas.showPrintPreview(listGrid);
 				}
 			});
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -733,22 +807,19 @@ public class TabStatFull extends Tab {
 			DateTimeFormat dateFormatter = DateTimeFormat.getFormat("yyMM");
 			final Integer ym = new Integer(dateFormatter.format(date));
 
-			
-
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchPrevStatisticsByMonth");
 			Criteria criteria = new Criteria();
-			
+
 			Date prevDate = new Date(date.getTime());
-			if(exactDate.getValueAsBoolean()){
+			if (exactDate.getValueAsBoolean()) {
 				CalendarUtil.addDaysToDate(prevDate, -1);
 				criteria.setAttribute("exactDate", prevDate);
-			}else
-			  CalendarUtil.addMonthsToDate(prevDate, -1);
+			} else
+				CalendarUtil.addMonthsToDate(prevDate, -1);
 			final Integer ym_prev = new Integer(dateFormatter.format(prevDate));
 			criteria.setAttribute("ym", ym_prev);
-			
-			
+
 			statisticsDS.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
@@ -758,7 +829,7 @@ public class TabStatFull extends Tab {
 					if (records != null && records.length > 0) {
 						record = records[0];
 					}
-					searchData(date,ym, record);
+					searchData(date, ym, record);
 				}
 			}, dsRequest);
 
@@ -768,14 +839,14 @@ public class TabStatFull extends Tab {
 		}
 	}
 
-	private void searchData(Date date,Integer ym, Record record) {
+	private void searchData(Date date, Integer ym, Record record) {
 		try {
 			this.prevMonthRecord = record;
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchAllStatistics");
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("ym", ym);
-			if(exactDate.getValueAsBoolean()){
+			if (exactDate.getValueAsBoolean()) {
 				criteria.setAttribute("exactDate", date);
 			}
 			criteria.setAttribute("aaaa", System.currentTimeMillis());

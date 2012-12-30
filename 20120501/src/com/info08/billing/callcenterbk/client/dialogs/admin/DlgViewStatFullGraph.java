@@ -15,6 +15,8 @@ import com.smartgwt.client.widgets.chart.FacetChart;
 import com.smartgwt.client.widgets.cube.Facet;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.CloseClickEvent;
+import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -46,8 +48,7 @@ public class DlgViewStatFullGraph extends Window {
 			hLayout.setHeight100();
 			hLayout.setPadding(10);
 
-			final NumberFormat nf = NumberFormat
-					.getFormat("################");
+			final NumberFormat nf = NumberFormat.getFormat("################");
 
 			chart = new FacetChart();
 			chart.setWidth100();
@@ -109,6 +110,14 @@ public class DlgViewStatFullGraph extends Window {
 			});
 			fillData();
 			addItem(hLayout);
+
+			addCloseClickHandler(new CloseClickHandler() {
+				@Override
+				public void onCloseClick(CloseClickEvent event) {
+					destroy();
+				}
+			});
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -219,22 +228,25 @@ public class DlgViewStatFullGraph extends Window {
 				org_email_srv_cnt.setAttribute("week_day_descr",
 						record.getAttributeAsString("week_day_descr"));
 
-				// ListGridRecord all_sum = new ListGridRecord();
-				// all_sum.setAttribute("date_str",
-				// record.getAttributeAsString("date_str"));
-				// all_sum.setAttribute("service_name",
-				// CallCenter.constants.sum()
-				// + ".1");
-				// all_sum.setAttribute("value",
-				// record.getAttributeAsInt("all_sum"));
-				//
-				// ListGridRecord all_amount = new ListGridRecord();
-				// all_amount.setAttribute("date_str",
-				// record.getAttributeAsString("date_str"));
-				// all_amount.setAttribute("service_name",
-				// CallCenter.constants.amount());
-				// all_amount.setAttribute("value",
-				// record.getAttributeAsInt("all_amount"));
+				ListGridRecord free_call_non_contr_cnt = new ListGridRecord();
+				free_call_non_contr_cnt.setAttribute("date_str",
+						record.getAttributeAsString("date_str"));
+				free_call_non_contr_cnt.setAttribute("service_name",
+						CallCenterBK.constants.freeCalls5TetriNonContr());
+				free_call_non_contr_cnt.setAttribute("value",
+						record.getAttributeAsInt("free_call_non_contr_cnt"));
+				free_call_non_contr_cnt.setAttribute("week_day_descr",
+						record.getAttributeAsString("week_day_descr"));
+
+				ListGridRecord free_call_contr_cnt = new ListGridRecord();
+				free_call_contr_cnt.setAttribute("date_str",
+						record.getAttributeAsString("date_str"));
+				free_call_contr_cnt.setAttribute("service_name",
+						CallCenterBK.constants.freeCalls5TetriContr());
+				free_call_contr_cnt.setAttribute("value",
+						record.getAttributeAsInt("free_call_contr_cnt"));
+				free_call_contr_cnt.setAttribute("week_day_descr",
+						record.getAttributeAsString("week_day_descr"));
 
 				listData.add(abonent_cnt);
 				listData.add(org_contr_comm_cnt);
@@ -246,8 +258,8 @@ public class DlgViewStatFullGraph extends Window {
 				listData.add(beeline_cnt);
 				listData.add(org_contr_email_srv_cnt);
 				listData.add(org_email_srv_cnt);
-				// listData.add(all_sum);
-				// listData.add(all_amount);
+				listData.add(free_call_non_contr_cnt);
+				listData.add(free_call_contr_cnt);
 			}
 			chart.setData(listData.toArray(new ListGridRecord[] {}));
 		} catch (Exception e) {

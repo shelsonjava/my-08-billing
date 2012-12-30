@@ -215,7 +215,8 @@ public class DlgViewSubscriberOrOrg extends Window {
 			Integer addresshide = listGridRecord
 					.getAttributeAsInt("address_hidden_by_request");
 			if ((addresshide == null || !addresshide.equals(1))) {
-				String address = listGridRecord.getAttributeAsString("address");
+				String address = listGridRecord
+						.getAttributeAsString("concat_address");
 				if (address != null && !address.trim().equals("")) {
 					sms_text.append(address).append(" ");
 				}

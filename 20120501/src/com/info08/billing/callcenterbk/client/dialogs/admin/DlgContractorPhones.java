@@ -508,10 +508,11 @@ public class DlgContractorPhones extends Window {
 
 		boolean hirarchy = cbiByHirarchy.getValueAsBoolean();
 		DSRequest req = new DSRequest();
-		if (!hirarchy)
+		if (!hirarchy) {
 			req.setOperationId("searchPhones");
-		else
+		} else {
 			req.setOperationId("searchPhonesHirarchy");
+		}
 		cbiByHirarchy.setValue(false);
 		ds.fetchData(cr, new DSCallback() {
 
@@ -522,11 +523,11 @@ public class DlgContractorPhones extends Window {
 					Record records[] = response.getData();
 					for (Record record2 : records) {
 						String phone = record2.getAttribute("phone_number");
-						if (phone != null)
+						if (phone != null) {
 							addPhone(phone);
+						}
 					}
 				}
-
 			}
 		}, req);
 
@@ -534,7 +535,7 @@ public class DlgContractorPhones extends Window {
 
 	void addPhone(String phone) {
 		if (phone == null || phone.trim().equals("")
-				|| CommonFunctions.isPhoneMobile(phone)) {
+				|| !CommonFunctions.isPhoneChargeable(phone)) {
 			return;
 		}
 		Record record = contractPhonesGrid.getRecordList().find("phone_number",
@@ -572,8 +573,9 @@ public class DlgContractorPhones extends Window {
 
 	protected void setOrgFetchResult(DSResponse response) {
 		Record r[] = response.getData();
-		if (r != null && r.length > 0)
+		if (r != null && r.length > 0) {
 			organizationGrid.selectRecord(r[0]);
+		}
 		Record record = organizationGrid.getSelectedRecord();
 		record = record == null ? new Record() : record;
 		fetchDepartmentAndPhones(record);
@@ -583,5 +585,4 @@ public class DlgContractorPhones extends Window {
 		contractPhonesGrid.selectAllRecords();
 		contractPhonesGrid.removeSelectedData();
 	}
-
 }
