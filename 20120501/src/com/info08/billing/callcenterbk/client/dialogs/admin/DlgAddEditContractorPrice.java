@@ -186,10 +186,10 @@ public class DlgAddEditContractorPrice extends Window {
 				return;
 			}
 
-			if ((startPriceCount.intValue() + 99) >= endPriceCount.intValue()) {
-				SC.say(CallCenterBK.constants.priceRangeMustBeMoreThen99());
-				return;
-			}
+//			if ((startPriceCount.intValue() + 99) >= endPriceCount.intValue()) {
+//				SC.say(CallCenterBK.constants.priceRangeMustBeMoreThen99());
+//				return;
+//			}
 
 			RecordList recordList = listGrid.getDataAsRecordList();
 			if (recordList != null && !recordList.isEmpty()) {

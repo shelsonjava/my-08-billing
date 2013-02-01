@@ -28,7 +28,8 @@
   <inherits name="com.smartgwtee.SmartGwtEE"/>
   <inherits name="com.smartclient.theme.enterpriseblue.EnterpriseBlue"/>  
   <inherits name="com.smartclient.theme.enterpriseblue.EnterpriseBlueResources"/>
-  
+  <inherits name="org.moxieapps.gwt.highcharts.Highcharts"/> 
+   
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.info08.billing.callcenterbk.client.CallCenterBK'/>
   

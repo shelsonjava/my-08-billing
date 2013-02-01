@@ -54,6 +54,7 @@ public class ServerSession implements Serializable {
 	private boolean isFreeOfCharge;
 	private String freeOfChargeText;
 	private boolean isBirthdayOrg;
+	private Long unreadNewsCnt = 0L;
 
 	@SuppressWarnings("deprecation")
 	public ServerSession() {
@@ -400,5 +401,13 @@ public class ServerSession implements Serializable {
 
 	public void setBirthdayOrg(boolean isBirthdayOrg) {
 		this.isBirthdayOrg = isBirthdayOrg;
+	}
+
+	public Long getUnreadNewsCnt() {
+		return unreadNewsCnt;
+	}
+
+	public void setUnreadNewsCnt(Long unreadNewsCnt) {
+		this.unreadNewsCnt = unreadNewsCnt;
 	}
 }

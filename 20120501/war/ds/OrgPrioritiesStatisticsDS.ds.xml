@@ -27,6 +27,11 @@
 					   ym = to_number(to_char($criteria.time, 'YYYYMM'))
 					   and opr.organization_id = t.real_org_id
 					   and op.organization_id = t.org_id
+					    #if ($criteria.organization_name)
+						 	 #foreach($str in $criteria.organization_name.split(" "))
+								and opr.organization_name like '%'||'$str'||'%'
+							 #end
+				 		#end
 				]]>  
 			</whereClause> 
 			<groupClause>

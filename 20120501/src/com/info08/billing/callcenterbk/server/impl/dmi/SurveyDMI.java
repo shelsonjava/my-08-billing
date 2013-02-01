@@ -433,11 +433,14 @@ public class SurveyDMI implements QueryConstants {
 					.toString());
 			Long call_session_id = Long.parseLong(values.get("call_session_id")
 					.toString());
+			System.out.println("================= call_session_id = "+call_session_id);
+			Long call_kind = new Long(oracleManager.createNativeQuery(QueryConstants.Q_GET_CALL_KIND).setParameter(1, call_session_id).getSingleResult().toString());			
 
 			Double charge = new Double(oracleManager
-					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE)
+					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE_NEW)
 					.setParameter(1, call_phone)
 					.setParameter(2, service.getService_price_id())
+					.setParameter(3, call_kind)
 					.getSingleResult().toString());
 
 			for (int i = 0; i < chargeCount; i++) {
@@ -465,6 +468,7 @@ public class SurveyDMI implements QueryConstants {
 				throw (CallCenterException) e;
 			}
 			logger.error("Error While Adding Charges Into Database : ", e);
+			e.printStackTrace();
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -619,10 +623,12 @@ public class SurveyDMI implements QueryConstants {
 			String log = "Method:SurveyDMI.deleteSessionCharge.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
-			
-			Long cse_id = new Long(dsRequest.getOldValues().get("cse_id").toString());
-			String loggedUserName = dsRequest.getOldValues().get("loggedUserName").toString();
-			
+
+			Long cse_id = new Long(dsRequest.getOldValues().get("cse_id")
+					.toString());
+			String loggedUserName = dsRequest.getOldValues()
+					.get("loggedUserName").toString();
+
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
 
 			RCNGenerator.getInstance().initRcn(oracleManager, updDate,

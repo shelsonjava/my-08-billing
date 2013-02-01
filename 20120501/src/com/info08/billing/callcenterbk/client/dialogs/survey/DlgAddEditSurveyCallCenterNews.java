@@ -1,7 +1,5 @@
 package com.info08.billing.callcenterbk.client.dialogs.survey;
 
-import java.sql.Timestamp;
-
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -152,9 +150,7 @@ public class DlgAddEditSurveyCallCenterNews extends Window {
 					.getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("call_center_news_text", call_center_news_text);
-			record.setAttribute("call_center_warning", call_center_warning);
-			record.setAttribute("call_center_news_date",
-					new Timestamp(System.currentTimeMillis()));
+			record.setAttribute("call_center_warning", call_center_warning);			
 
 			if (editRecord != null) {
 				record.setAttribute("call_center_news_id",

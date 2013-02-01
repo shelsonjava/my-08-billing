@@ -152,7 +152,7 @@
     		<selectClause>
     			  mo.organization_name,
 			      t.call_count,
-			      t.price,
+			      t.price as call_price,
 			      t.amount,
 			      decode(mo.ident_code_new,null,mo.ident_code,mo.ident_code_new) ident_code
 			</selectClause> 
@@ -175,7 +175,7 @@
 					      bi.phone,
 					      bi.call_date,
 					      bi.charge_date,
-					      bi.price
+					      bi.price as call_price
 			</selectClause> 
 			<tableClause> corp_client_bill_items bi, corporate_clients c, organizations mo, BILLING_COMPANIES tc, service_prices s </tableClause>
 			<whereClause><![CDATA[

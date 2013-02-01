@@ -175,6 +175,7 @@ public class West extends VLayout {
 							&& !specTextMessage.trim().equals("")) {
 						SC.warn(specTextMessage.trim());
 					}
+					callCenter.initStartupScript();
 				}
 			}
 		} catch (Exception e) {

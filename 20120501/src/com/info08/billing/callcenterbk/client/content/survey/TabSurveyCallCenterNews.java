@@ -177,9 +177,6 @@ public class TabSurveyCallCenterNews extends Tab {
 			listGrid.setShowHover(true);
 			listGrid.setShowHoverComponents(true);
 
-			datasource.getField("call_center_news_text").setTitle(
-					CallCenterBK.constants.type());
-
 			ListGridField call_center_news_date = new ListGridField(
 					"call_center_news_date", CallCenterBK.constants.date(), 150);
 
@@ -262,9 +259,15 @@ public class TabSurveyCallCenterNews extends Tab {
 		try {
 			Criteria criteria = new Criteria();
 
-			Long call_center_warning = new Long(
+			Integer call_center_warning = new Integer(
 					callCenterWarningItem.getValueAsString());
-			criteria.setAttribute("call_center_warning", call_center_warning);
+			if (call_center_warning != null
+					&& !call_center_warning.toString().equals("")) {
+				if (call_center_warning.intValue() != -1) {
+					criteria.setAttribute("call_center_warning",
+							call_center_warning);
+				}
+			}
 
 			String call_center_news_text = call_center_news_textItem
 					.getValueAsString();

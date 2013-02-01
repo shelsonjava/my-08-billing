@@ -411,6 +411,7 @@ public interface AppConstants extends Constants {
 	String currSMSWarning();
 	String hour();
 	String news();
+	String newsUnread();
 	String schedule();
 	String operScheduleNotFound();
 	String mainNews();
@@ -759,4 +760,5 @@ public interface AppConstants extends Constants {
 	String freeCalls5TetriContr();
 	String statisticByOrgs();
 	String viewDetail();
+	String read();
 }

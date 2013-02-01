@@ -815,8 +815,9 @@ public class TabStatFull extends Tab {
 			if (exactDate.getValueAsBoolean()) {
 				CalendarUtil.addDaysToDate(prevDate, -1);
 				criteria.setAttribute("exactDate", prevDate);
-			} else
+			} else{
 				CalendarUtil.addMonthsToDate(prevDate, -1);
+			}
 			final Integer ym_prev = new Integer(dateFormatter.format(prevDate));
 			criteria.setAttribute("ym", ym_prev);
 

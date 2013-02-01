@@ -3,6 +3,15 @@ package com.info08.billing.callcenterbk.server.common;
 public interface QueryConstants {
 	
 	
+	public static final String Q_GET_CALL_KIND = " select nvl(max(t.call_kind),0) from ccare.call_sessions t where t.call_session_id = ? ";
+	
+	
+	public static final String Q_GET_CC_USER_NEWS_CNT = 
+					"select count(1) from ccare.call_center_news t\n" +
+							"where t.call_center_news_id >= 2514002 and not exists ( \n" + 
+							"  select 1 from ccare.user_cc_news_status tt where tt.news_id = t.call_center_news_id and tt.user_id = ? \n" + 
+				     ")";
+	
 	public static final String Q_UPDATEORG_DEP_PHONE = " update ccare.organization_depart_to_phones t set t.org_department_id = ?, t.phone_number_id = ?, t.hidden_by_request = ?, t.phone_contract_type = ?, "+
             									" t.for_contact = ?, t.phone_order = ?, t.rec_upd_date = ? "+
             								    " where t.org_dep_to_ph_id = ? ";                                                 
@@ -26,6 +35,7 @@ public interface QueryConstants {
 	
 	
 	public static final String Q_GET_CALL_PRICE = "select getchargeprice(?,?) as price from dual";
+	public static final String Q_GET_CALL_PRICE_NEW = "select getChargePriceNew(?,?,?) as price from dual";
 	
 	public static final String Q_GET_VIRTUAL_SESSION_ID = " select 'VIRT.'||seq_virtual_session_id.nextval as session_id from dual ";
 

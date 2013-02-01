@@ -1,6 +1,5 @@
 package com.info08.billing.callcenterbk.server.jms;
 
-import java.io.InputStream;
 import java.net.URLEncoder;
 
 import javax.jms.Connection;
@@ -24,6 +23,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.info08.billing.callcenterbk.shared.entity.SentSMSHist;
@@ -43,7 +43,9 @@ public class SMSSenderMagti implements MessageListener {
 	// "http://81.95.160.47/mt/sendsms?username=jeocnobari&password=jeo123&client_id=414&service_id=%s&to=%s&text=%s";
 	// private String from = "16008";
 	// http://msg.ge/bi/track.php?username=nolrva&password=as110rva&client_id=3&service_id=0003&message_id=7
-	private String urlSMS = "http://msg.ge/bi/sendsms.php?username=nolrva&password=as110rva&client_id=3&service_id=0003&to=%s&text=%s";
+	// private String urlSMS =
+	// "http://msg.ge/bi/sendsms.php?username=nolrva&password=as110rva&client_id=3&service_id=0003&to=%s&text=%s";
+	private String urlSMS = "http://91.151.128.64:7777/pls/sms/phttp2sms.Process?src=11375&dst=%s&txt=%s";
 
 	public void run() throws JMSException {
 		try {
@@ -104,23 +106,31 @@ public class SMSSenderMagti implements MessageListener {
 			HttpResponse httpResponse = client.execute(method);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
 			HttpEntity httpEntity = httpResponse.getEntity();
-			InputStream inputStream = httpEntity.getContent();
-			byte data[] = new byte[inputStream.available()];
-			inputStream.read(data);
-			String str = new String(data);
-			int idx = str.indexOf("-");
-			if (statusCode == HttpStatus.SC_OK) {
-				if (idx < 0) {
-					logSMS.setHist_status_id(-3L);
-				} else {
-					String msgId = str.substring((idx + 1), str.length());
-					logSMS.setHist_status_id(1L);
-					logSMS.setGsm_operator_msg_id(msgId);
-				}
+			// InputStream inputStream = httpEntity.getContent();
+			// byte data[] = new byte[inputStream.available()];
+			// inputStream.read(data);
+			// String str = new String(data);
+			// int idx = str.indexOf("-");
+			String str = null;
+			if (httpEntity == null) {
+				logSMS.setHist_status_id(-9L);
 			} else {
-				logSMS.setHist_status_id(-4L);
+				str = EntityUtils.toString(httpEntity);
+				if (statusCode == HttpStatus.SC_OK) {
+					if (str == null) {
+						logSMS.setHist_status_id(-7L);
+					} else if (str != null && str.contains("N")) {
+						logSMS.setHist_status_id(-3L);
+					} else if (str != null && str.contains("Y")) {
+						logSMS.setHist_status_id(1L);
+						logSMS.setGsm_operator_msg_id("10000");
+					} else {
+						logSMS.setHist_status_id(-8L);
+					}
+				} else {
+					logSMS.setHist_status_id(-4L);
+				}
 			}
-
 			logger.info("SMS Response : " + str + ", phone = " + phone
 					+ ", Status = " + logSMS.getHist_status_id());
 

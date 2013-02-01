@@ -61,10 +61,11 @@ public class SessQualityDMI implements QueryConstants {
 					service_id);
 
 			Double charge = new Double(oracleManager
-					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE)
+					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE_NEW)
 					.setParameter(1, call_phone)
 					.setParameter(2, service.getService_price_id())
-					.getSingleResult().toString());
+					.setParameter(3, virt_call_type).getSingleResult()
+					.toString());
 
 			CallSession logSession = new CallSession();
 			String session_id = oracleManager
@@ -143,7 +144,8 @@ public class SessQualityDMI implements QueryConstants {
 
 			updateStmt.executeUpdate();
 			updateStmt.close();
-			CallSessionItem sessionItem = getLogSessionItem(new Long(call_session_id.toString()));
+			CallSessionItem sessionItem = getLogSessionItem(new Long(
+					call_session_id.toString()));
 			DSResponse resp = new DSResponse();
 			resp.setData(sessionItem);
 			resp.setStatus(DSResponse.STATUS_SUCCESS);

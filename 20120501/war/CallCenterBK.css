@@ -160,3 +160,28 @@
 	font-weight: bold !important;
 	font-size: 10px;
 }
+.newsBtn{
+	color: red;
+	font-size: 11px;
+}
+.newsBtnOver{
+	color: red;
+	font-size: 11px;
+}
+.newsBtnDown{
+	color: red;
+	font-size: 11px;
+}
+
+.newsBtnBlack{
+	color: black;
+	font-size: 11px;
+}
+.newsBtnBlackOver{
+	color: black;
+	font-size: 11px;
+}
+.newsBtnBlackDown{
+	color: black;
+	font-size: 11px;
+}

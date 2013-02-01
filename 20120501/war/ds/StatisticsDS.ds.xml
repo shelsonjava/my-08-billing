@@ -186,7 +186,8 @@
 				 1 = 1
 				#if($criteria.exactDate)  and 1=1
 				#else 
-					 #if($criteria.ym) and t.ym = to_number(to_char(add_months(sysdate,-1),'yymm')) #end
+					 #if($criteria.ym) and t.ym = $criteria.ym #end
+					 /*to_number(to_char(add_months(sysdate,-1),'yymm'))*/
 					 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
 					 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end
 			    #end				 
@@ -202,7 +203,7 @@
     		<selectClause>   	
     				/* use_nl(ch,ls,p,c) ordered index (ch IDX_LOG_SCH_REC_DATE1) */		
     				o.organization_id,
-    			  	o.organization_name as organization_name,
+    			  	o.organization_name,
            			count(1) as call_count   	
 			</selectClause> 
 			<tableClause>
@@ -216,11 +217,15 @@
 				 ch.year_month = $criteria.ym and ls.year_month = $criteria.ym
 				 and trunc(c.contract_start_date) <= trunc(ls.call_start_date)
 				 and trunc(c.contract_end_date) >= trunc(ls.call_start_date)
-				 and c.goverment = $criteria.type				
+				 and c.goverment = $criteria.type	
+				 #if ($criteria.organization_name)
+				 	 #foreach($str in $criteria.organization_name.split(" "))
+						and o.organization_name like '%'||'$str'||'%'
+					#end
+				 #end			
 				]]>  
 			</whereClause> 
 			<groupClause>o.organization_id,o.organization_name</groupClause>
-			<orderClause>call_count desc</orderClause>
     	</operationBinding>
     	
     	
@@ -244,10 +249,14 @@
 				  ch.year_month = $criteria.ym and cs.year_month = $criteria.ym and 
 			      ch.charge > 0 and cs.call_kind = 3 and not exists
 			        (select 1 from v_normalized_contractor_phones p where p.phone = cs.call_phone)
+			      #if ($criteria.organization_name)
+				 	 #foreach($str in $criteria.organization_name.split(" "))
+						and o.organization_name like '%'||'$str'||'%'
+					#end
+				 #end
 				]]>  
 			</whereClause> 
-			<groupClause>o.organization_id, o.organization_name</groupClause>
-			<orderClause>call_count desc</orderClause>
+			<groupClause>o.organization_id, o.organization_name</groupClause>			
     	</operationBinding>
     	
     	

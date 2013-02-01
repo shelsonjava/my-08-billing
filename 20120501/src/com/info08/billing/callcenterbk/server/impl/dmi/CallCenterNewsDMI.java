@@ -12,6 +12,7 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.CallCenterNews;
 import com.isomorphic.datasource.DSRequest;
+import com.isomorphic.datasource.DSResponse;
 import com.isomorphic.jpa.EMF;
 
 public class CallCenterNewsDMI implements QueryConstants {
@@ -25,7 +26,7 @@ public class CallCenterNewsDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	public CallCenterNews addCallCenterNews(CallCenterNews callCenterNews)
+	public DSResponse addCallCenterNews(CallCenterNews callCenterNews)
 			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
@@ -39,17 +40,24 @@ public class CallCenterNewsDMI implements QueryConstants {
 			String loggedUserName = callCenterNews.getLoggedUserName();
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
 					loggedUserName, log);
+			callCenterNews.setCall_center_news_date(new Timestamp(System
+					.currentTimeMillis()));
 			oracleManager.persist(callCenterNews);
 			oracleManager.flush();
 
-			callCenterNews = oracleManager.find(CallCenterNews.class,
-					callCenterNews.getCall_center_news_id());
-			callCenterNews.setLoggedUserName(loggedUserName);
-
 			EMF.commitTransaction(transaction);
+
+			Map<?, ?> values = DMIUtils.findRecordById("CallCenterNewsDS",
+					"searchAllCallCenterNews",
+					callCenterNews.getCall_center_news_id(),
+					"call_center_news_id");
+
+			DSResponse dsResponse = new DSResponse();
+			dsResponse.setData(values);
+
 			log += ". Inserting Finished SuccessFully. ";
 			logger.info(log);
-			return callCenterNews;
+			return dsResponse;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {
@@ -73,14 +81,15 @@ public class CallCenterNewsDMI implements QueryConstants {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public CallCenterNews updateCallCenterNews(Map record) throws Exception {
+	public DSResponse updateCallCenterNews(DSRequest dsRequest)
+			throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
 			String log = "Method:CommonDMI.updateCallCenterNews.";
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
+			Map<?, ?> record = dsRequest.getValues();
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 			Long call_center_news_id = new Long(record.get(
@@ -97,17 +106,24 @@ public class CallCenterNewsDMI implements QueryConstants {
 
 			callCenterNews.setCall_center_news_text(call_center_news_text);
 			callCenterNews.setCall_center_warning(call_center_warning);
+			callCenterNews.setCall_center_news_date(new Timestamp(System
+					.currentTimeMillis()));
 
 			oracleManager.merge(callCenterNews);
 			oracleManager.flush();
-
-			callCenterNews = oracleManager.find(CallCenterNews.class,
-					call_center_news_id);
-
 			EMF.commitTransaction(transaction);
+
+			Map<?, ?> values = DMIUtils.findRecordById("CallCenterNewsDS",
+					"searchAllCallCenterNews", call_center_news_id,
+					"call_center_news_id");
+
+			DSResponse dsResponse = new DSResponse();
+			dsResponse.setData(values);
+
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
-			return callCenterNews;
+
+			return dsResponse;
 		} catch (Exception e) {
 			EMF.rollbackTransaction(transaction);
 			if (e instanceof CallCenterException) {

@@ -236,7 +236,7 @@ public class ClientMapUtil {
 		newsTypes.put("0", CallCenterBK.constants.newsTypeNormal());
 		newsTypes.put("1", CallCenterBK.constants.newsTypeMain());
 
-		searchNewsTypes.put("-1", " ");
+		searchNewsTypes.put("-1", CallCenterBK.constants.all());
 		searchNewsTypes.put("0", CallCenterBK.constants.newsTypeNormal());
 		searchNewsTypes.put("1", CallCenterBK.constants.newsTypeMain());
 

@@ -185,7 +185,7 @@ public class DlgGetContractorsBilling extends Window {
 				dsRequest.setExportFields(new String[] {
 						"billing_company_name", "organization_name",
 						"orgDepName", "service_name_geo", "phone",
-						"charge_date", "price" });
+						"charge_date", "call_price" });
 			} else {
 				dsRequest.setOperationId("getFullContrBillMain1");
 				dsRequest.setExportFields(new String[] { "organization_name",

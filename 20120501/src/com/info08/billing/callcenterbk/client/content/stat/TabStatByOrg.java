@@ -19,6 +19,9 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -35,6 +38,7 @@ public class TabStatByOrg extends Tab {
 
 	private DateItem dateItem;
 	private SelectItem typeItem;
+	private TextItem organizationNameItem;
 	private IButton findButton;
 	private IButton clearButton;
 	private DynamicForm searchForm;
@@ -77,7 +81,12 @@ public class TabStatByOrg extends Tab {
 					.getStatisticTypes());
 			typeItem.setDefaultToFirstOption(true);
 
-			searchForm.setFields(dateItem, typeItem);
+			organizationNameItem = new TextItem();
+			organizationNameItem.setName("organizationNameItem");
+			organizationNameItem.setTitle(CallCenterBK.constants.orgName());
+			organizationNameItem.setWidth(200);
+
+			searchForm.setFields(dateItem, typeItem, organizationNameItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(287);
@@ -129,10 +138,12 @@ public class TabStatByOrg extends Tab {
 			ListGridField organization = new ListGridField("organization_name",
 					CallCenterBK.constants.organization());
 			organization.setAlign(Alignment.LEFT);
+			organization.setCanFilter(true);
 
 			ListGridField call_count = new ListGridField("call_count",
 					CallCenterBK.constants.count(), 300);
 			call_count.setAlign(Alignment.LEFT);
+			call_count.setCanFilter(false);
 
 			listGrid.setFields(organization, call_count);
 
@@ -179,6 +190,15 @@ public class TabStatByOrg extends Tab {
 				}
 			});
 
+			organizationNameItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			});
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -206,6 +226,12 @@ public class TabStatByOrg extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("ym", ym);
 			criteria.setAttribute("type", type);
+			String organization_name = organizationNameItem.getValueAsString();
+			if (organization_name != null
+					&& !organization_name.trim().equals("")) {
+				criteria.setAttribute("organization_name", organization_name);
+			}
+
 			listGrid.invalidateCache();
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override

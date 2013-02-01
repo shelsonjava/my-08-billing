@@ -120,6 +120,44 @@ public class CallCenterBK implements EntryPoint {
 	public void onModuleLoad() {
 		try {
 
+//			
+//			VLayout mainLayout = new VLayout(5);
+//			mainLayout.setWidth100();
+//			mainLayout.setHeight100();
+//			mainLayout.setMargin(5);
+//
+//			final Chart chart = new Chart()
+//					.setType(Series.Type.AREA)
+//					.setChartTitleText("Area chart with negative values")
+//					.setToolTip(
+//							new ToolTip().setFormatter(new ToolTipFormatter() {
+//								public String format(ToolTipData toolTipData) {
+//									return toolTipData.getSeriesName() + ": "
+//											+ toolTipData.getYAsLong();
+//								}
+//							})).setCredits(new Credits().setEnabled(false));
+//
+//			chart.getXAxis().setCategories("Apples", "Oranges", "Pears",
+//					"Grapes", "Bananas");
+//
+//			chart.addSeries(chart.createSeries().setName("John")
+//					.setPoints(new Number[] { 5, 3, 4, 7, 2 }));
+//			chart.addSeries(chart.createSeries().setName("Jane")
+//					.setPoints(new Number[] { 2, -2, -3, 2, 1 }));
+//			chart.addSeries(chart.createSeries().setName("Joe")
+//					.setPoints(new Number[] { 3, 4, 4, -2, 5 }));
+//
+//			mainLayout.addMember(chart);
+//			
+//			TabSet tabSet = new TabSet();
+//			tabSet.setWidth100();
+//			tabSet.setHeight100();
+//			Tab tab = new Tab();
+//			tab.setPane(mainLayout);
+//			tabSet.addTab(tab);
+//			
+//			RootPanel.get().add(tabSet);
+			
 			sessionId = com.google.gwt.user.client.Window.Location
 					.getParameter("sessionId");
 
@@ -148,7 +186,8 @@ public class CallCenterBK implements EntryPoint {
 		if (!isOperator) {
 			CommonSingleton.getInstance().reInitDS();
 			mainLayout = new MainLayout();
-			RootPanel.get().add(mainLayout);
+			//RootPanel.get().add(mainLayout);
+			mainLayout.draw();
 			LoginDialog loginDialog = new LoginDialog(mainLayout);
 			loginDialog.draw();
 		} else {

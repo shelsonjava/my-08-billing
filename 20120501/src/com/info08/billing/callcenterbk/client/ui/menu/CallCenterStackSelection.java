@@ -339,7 +339,8 @@ public class CallCenterStackSelection extends SectionStackSection {
 		iButtonNews.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				TabFindCallCenterNews tabFindNews = new TabFindCallCenterNews();
+				TabFindCallCenterNews tabFindNews = new TabFindCallCenterNews(
+						CallCenterStackSelection.this);
 				body.addTab(tabFindNews);
 			}
 		});
@@ -351,6 +352,76 @@ public class CallCenterStackSelection extends SectionStackSection {
 			}
 		});
 		addItem(vLayout);
+	}
+
+	public void initStartupScript() {
+		try {
+			final ServerSession serverSession = CommonSingleton.getInstance()
+					.getServerSession();
+			if (serverSession == null || serverSession.isWebSession()) {
+				return;
+			}
+			Users user = serverSession.getUser();
+			if (user == null) {
+				return;
+			}
+			Long persTypeId = user.getDepartment_id();
+			if (persTypeId == null
+					|| !persTypeId.equals(Constants.OperatorDepartmentID)) {
+				return;
+			}
+			Long unreadNewsCnt = serverSession.getUnreadNewsCnt();
+			String title = CallCenterBK.constants.newsUnread()
+					+ unreadNewsCnt.toString();
+			iButtonNews.setTitle(title);
+			if (unreadNewsCnt.intValue() > 0) {
+				iButtonNews.setTitleStyle("newsBtn");
+			}
+			iButtonNews.redraw();
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
+	}
+
+	public void redrawNewsTitle() {
+		try {
+			DataSource dataSource = DataSource.get("CallCenterNewsDS");
+			Criteria criteria = new Criteria();
+			criteria.setAttribute("user_id", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_id());
+			DSRequest req = new DSRequest();
+			req.setAttribute("operationId", "getUsrCCNewsCnt");
+			dataSource.fetchData(criteria, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record records[] = response.getData();
+					if (records == null || records.length < 0) {
+						return;
+					}
+					Record record = records[0];
+					Integer unread_news_cnt = record
+							.getAttributeAsInt("unread_news_cnt");
+					if (unread_news_cnt == null) {
+						return;
+					}
+					String title = CallCenterBK.constants.newsUnread()
+							+ unread_news_cnt.toString();
+					iButtonNews.setTitle(title);
+					if (unread_news_cnt.intValue() > 0) {
+						iButtonNews.setTitleStyle("newsBtn");
+					} else {
+						iButtonNews.setTitleStyle("newsBtnBlack");
+					}
+					iButtonNews.redraw();
+				}
+			}, req);
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.say(e.toString());
+		}
 	}
 
 	private void showRestShedule() {
@@ -411,7 +482,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 				return;
 			}
 			// TODO - This Must Be Removed
-			
+
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();
 			if (serverSession == null || serverSession.isWebSession()) {

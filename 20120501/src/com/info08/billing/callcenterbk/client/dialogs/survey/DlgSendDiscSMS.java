@@ -158,6 +158,7 @@ public class DlgSendDiscSMS extends Window {
 						CallCenterBK.constants.smsTextIsEmpty());
 				return;
 			}
+			sms_text += " gmadlobt.";
 
 			String phone = phoneItem.getValueAsString();
 			if (phone == null || phone.trim().equals("")) {

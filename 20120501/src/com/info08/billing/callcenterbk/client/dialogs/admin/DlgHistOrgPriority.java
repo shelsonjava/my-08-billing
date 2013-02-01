@@ -23,6 +23,9 @@ import com.smartgwt.client.widgets.events.VisibilityChangedHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -36,6 +39,7 @@ public class DlgHistOrgPriority extends Window {
 	private DynamicForm searchForm;
 
 	private DateItem histDate;
+	private TextItem organizationNameItem;
 
 	private ButtonItem findButton;
 
@@ -73,6 +77,11 @@ public class DlgHistOrgPriority extends Window {
 			histDate.setName("histDate");
 			histDate.setWidth(300);
 
+			organizationNameItem = new TextItem();
+			organizationNameItem.setTitle(CallCenterBK.constants.orgNameFull());
+			organizationNameItem.setName("organizationNameItem");
+			organizationNameItem.setWidth(300);
+
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth100();
@@ -84,7 +93,7 @@ public class DlgHistOrgPriority extends Window {
 
 			findButton.setStartRow(false);
 			findButton.setEndRow(false);
-			searchForm.setFields(histDate, findButton);
+			searchForm.setFields(histDate, organizationNameItem, findButton);
 
 			searchForm.setBorder("1px solid #CCC");
 
@@ -290,6 +299,15 @@ public class DlgHistOrgPriority extends Window {
 						}
 					});
 
+			organizationNameItem.addKeyPressHandler(new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			});
+
 			search();
 			histGroupListGrid.addClickHandler(new ClickHandler() {
 
@@ -321,6 +339,8 @@ public class DlgHistOrgPriority extends Window {
 			Criteria criteria = new Criteria();
 
 			criteria.setAttribute("time", histDate.getValueAsDate());
+			criteria.setAttribute("organization_name",
+					organizationNameItem.getValueAsString());
 
 			searchByCriteria(criteria);
 		} catch (Exception e) {

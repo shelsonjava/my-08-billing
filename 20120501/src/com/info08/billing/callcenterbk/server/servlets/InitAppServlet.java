@@ -301,6 +301,11 @@ public class InitAppServlet extends HttpServlet {
 					.createNativeQuery(QueryConstants.Q_GET_OPERATOR_REMARKS)
 					.setParameter(1, userName).getSingleResult().toString());
 
+			Long unreadNewsCnt = new Long(oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_CC_USER_NEWS_CNT)
+					.setParameter(1, user.getUser_id()).getSingleResult()
+					.toString());
+
 			boolean isContractor = false;
 
 			// if (checkContractor) {
@@ -376,6 +381,7 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setFreeOfCharge(isFreeOfCharge);
 			serverSession.setFreeOfChargeText(freeOfChargeText);
 			serverSession.setBirthdayOrg(isBirthdayOrg);
+			serverSession.setUnreadNewsCnt(unreadNewsCnt);
 
 			if (isContractor) {
 				blockContractor(serverSession, oracleManager);
@@ -416,14 +422,14 @@ public class InitAppServlet extends HttpServlet {
 
 			// // My Host - Test
 			// if (sessionId.startsWith("ts-")) {
-			 response.sendRedirect(response
-			 .encodeRedirectURL("http://127.0.0.1:8888/CallCenterBK.html?gwt.codesvr=127.0.0.1:9997&sessionId="
-			 + sessionId));
+//			response.sendRedirect(response
+//					.encodeRedirectURL("http://127.0.0.1:8888/CallCenterBK.html?gwt.codesvr=127.0.0.1:9997&sessionId="
+//							+ sessionId));
 			// } else {
 			// Live
-//			response.sendRedirect(response
-//					.encodeRedirectURL("http://192.168.1.5:19080/CallCenterBK/CallCenterBK.html?sessionId="
-//							+ sessionId));
+			 response.sendRedirect(response
+			 .encodeRedirectURL("http://192.168.1.5:19080/CallCenterBK/CallCenterBK.html?sessionId="
+			 + sessionId));
 			// }
 			time = System.currentTimeMillis() - time;
 			System.out.println("Servlet Initialize Time Is : " + time

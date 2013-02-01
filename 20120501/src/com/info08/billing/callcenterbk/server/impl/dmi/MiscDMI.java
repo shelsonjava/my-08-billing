@@ -1172,10 +1172,10 @@ public class MiscDMI implements QueryConstants {
 			ServicePrice service = oracleManager.find(ServicePrice.class,
 					service_id);
 			Double charge = new Double(oracleManager
-					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE)
+					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE_NEW)
 					.setParameter(1, call_phone)
 					.setParameter(2, service.getService_price_id())
-					.getSingleResult().toString());
+					.setParameter(3, call_kind).getSingleResult().toString());
 
 			CallSessionExpense callSessionExpense = new CallSessionExpense();
 			callSessionExpense.setCall_session_id(call_session_id);
