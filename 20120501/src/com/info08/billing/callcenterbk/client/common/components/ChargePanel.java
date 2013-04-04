@@ -47,6 +47,8 @@ public class ChargePanel extends HLayout {
 	private ToolStripButton addMyMobileInfo;
 	private ToolStripButton viewChargeInfo;
 	private ToolStripButton surveyBtn;
+	private ToolStripButton makeImportantCall;
+
 	private ToolStripButton chargeBtn;
 	private Integer service_id;
 	private Integer organization_id;
@@ -117,6 +119,11 @@ public class ChargePanel extends HLayout {
 					"survey.png");
 			surveyBtn.setLayoutAlign(Alignment.LEFT);
 			toolStrip.addButton(surveyBtn);
+
+			makeImportantCall = new ToolStripButton(
+					CallCenterBK.constants.important(), "important.png");
+			makeImportantCall.setLayoutAlign(Alignment.LEFT);
+			toolStrip.addButton(makeImportantCall);
 
 			toolStrip.addSeparator();
 			toolStrip.addFill();
@@ -215,6 +222,13 @@ public class ChargePanel extends HLayout {
 				@Override
 				public void onClick(ClickEvent event) {
 					addMyMobile();
+				}
+			});
+
+			makeImportantCall.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					makeCallImportant();
 				}
 			});
 
@@ -383,6 +397,43 @@ public class ChargePanel extends HLayout {
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
+		}
+	}
+
+	private void makeCallImportant() {
+		try {
+			ServerSession serverSession = CommonSingleton.getInstance()
+					.getServerSession();
+			if (serverSession == null || serverSession.isWebSession()) {
+				SC.say(CallCenterBK.constants.notCallCenterUser());
+				return;
+			}
+			String phone = serverSession.getPhone();
+			if (phone == null || phone.trim().equalsIgnoreCase("")) {
+				SC.say(CallCenterBK.constants.notCallCenterUser());
+				return;
+			}
+
+			com.smartgwt.client.rpc.RPCManager.startQueue();
+			Record record = new Record();
+			record.setAttribute("session_id", serverSession.getSessionId());
+			record.setAttribute("cse_id", serverSession.getCallSession().getCall_session_id());
+
+			DSRequest req = new DSRequest();
+			req.setAttribute("operationId", "makeCallImportant");
+			DataSource logSessChDS = DataSource.get("LogSessChDS");
+			
+			logSessChDS.updateData(record, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					SC.say(CallCenterBK.constants.importantCallSaved());
+				}
+			}, req);
+			com.smartgwt.client.rpc.RPCManager.sendQueue();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

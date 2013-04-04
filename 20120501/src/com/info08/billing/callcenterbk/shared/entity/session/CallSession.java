@@ -14,22 +14,16 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 /**
  * The persistent class for the LOG_SESSIONS database table.
  * 
  */
 
-@NamedQueries({
-	@NamedQuery(
-				name="CallSession.getByCallSessionId",
-				query="select e from CallSession e where e.session_id = :callSessId")
-})
-
+@NamedQueries({ @NamedQuery(name = "CallSession.getByCallSessionId", query = "select e from CallSession e where e.session_id = :callSessId") })
 @Entity
-@Table(name="CALL_SESSIONS")
+@Table(name = "CALL_SESSIONS")
 public class CallSession implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -37,57 +31,61 @@ public class CallSession implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CALL_SESSION_ID")
 	@Column(name = "CALL_SESSION_ID")
 	private Long call_session_id;
-	
+
 	@Id
-	@Column(name="SESSION_ID")
+	@Column(name = "SESSION_ID")
 	private String session_id;
 
 	@Basic
-	@Column(name="CALL_KIND")
+	@Column(name = "CALL_KIND")
 	private Long call_kind;
 
 	@Basic
-	@Column(name="CALL_DURATION")
+	@Column(name = "CALL_DURATION")
 	private Long call_duration;
 
 	@Basic
-    @Column(name="CALL_END_DATE")
+	@Column(name = "CALL_END_DATE")
 	private Timestamp call_end_date;
 
 	@Basic
-	@Column(name="REJECT_TYPE")
+	@Column(name = "REJECT_TYPE")
 	private Long reject_type;
 
 	@Basic
-	@Column(name="SWITCH_OVER_TYPE")
+	@Column(name = "SWITCH_OVER_TYPE")
 	private Long switch_ower_type;
 
 	@Basic
-	@Column(name="CALL_PHONE")
+	@Column(name = "CALL_PHONE")
 	private String call_phone;
 
 	@Basic
-	@Column(name="CALL_QUALITY")
+	@Column(name = "CALL_QUALITY")
 	private Long call_quality;
 
 	@Basic
-    @Column(name="CALL_START_DATE")
+	@Column(name = "CALL_START_DATE")
 	private Timestamp call_start_date;
 
 	@Basic
-	@Column(name="UNAME")
+	@Column(name = "UNAME")
 	private String uname;
 
 	@Basic
-	@Column(name="YEAR_MONTH")
+	@Column(name = "YEAR_MONTH")
 	private Long year_month;
-	
+
 	@Basic
-	@Column(name="OPERATOR_SRC")
+	@Column(name = "OPERATOR_SRC")
 	private String operator_src;
 
-    public CallSession() {
-    }
+	@Basic
+	@Column(name = "IMPORTANT")
+	private Long important;
+
+	public CallSession() {
+	}
 
 	public Long getCall_session_id() {
 		return call_session_id;
@@ -191,5 +189,13 @@ public class CallSession implements Serializable {
 
 	public void setOperator_src(String operator_src) {
 		this.operator_src = operator_src;
+	}
+
+	public Long getImportant() {
+		return important;
+	}
+
+	public void setImportant(Long important) {
+		this.important = important;
 	}
 }

@@ -106,29 +106,14 @@ public class DlgHistOrgPriority extends Window {
 			histGroupListGrid.setShowFilterEditor(false);
 			histGroupListGrid.setCanEdit(false);
 			histGroupListGrid.setCanRemoveRecords(false);
-			histGroupListGrid.setFetchOperation("getStatisticsGroup");
+			histGroupListGrid.setFetchOperation("getStatisticsGroupNew");
 			histGroupListGrid.setCanSort(false);
 			histGroupListGrid.setCanResizeFields(false);
 			histGroupListGrid.setWrapCells(true);
 			histGroupListGrid.setFixedRecordHeights(false);
 			histGroupListGrid.setCanDragSelectText(true);
+			histGroupListGrid.setShowRowNumbers(true);
 
-			// histGroupListGrid.setGroupStartOpen(GroupStartOpen.ALL);
-			// histGroupListGrid.setGroupByField("org_name");
-
-			// ListGridField org_id = new ListGridField("org_name",
-			// CallCenterBK.constants.parrentOrgName(), 100);
-			//
-			// org_id.setGroupTitleRenderer(new GroupTitleRenderer() {
-			//
-			// @Override
-			// public String getGroupTitle(Object groupValue,
-			// GroupNode groupNode, ListGridField field,
-			// String fieldName, ListGrid grid) {
-			// return groupValue == null ? null : groupValue.toString();
-			// }
-			// });
-			// org_id.setHidden(true);
 			ListGridField real_name = new ListGridField("real_name",
 					CallCenterBK.constants.organization());
 			real_name.setAlign(Alignment.LEFT);
@@ -148,12 +133,13 @@ public class DlgHistOrgPriority extends Window {
 			histSessionsListGrid.setShowFilterEditor(false);
 			histSessionsListGrid.setCanEdit(false);
 			histSessionsListGrid.setCanRemoveRecords(false);
-			histSessionsListGrid.setFetchOperation("getStatistics");
+			histSessionsListGrid.setFetchOperation("getStatisticsNew");
 			histSessionsListGrid.setCanSort(false);
 			histSessionsListGrid.setCanResizeFields(false);
 			histSessionsListGrid.setWrapCells(true);
 			histSessionsListGrid.setFixedRecordHeights(false);
 			histSessionsListGrid.setCanDragSelectText(true);
+			histSessionsListGrid.setShowRowNumbers(true);
 
 			ListGridField phones = new ListGridField("call_phone",
 					CallCenterBK.constants.phone(), 100);
@@ -307,8 +293,6 @@ public class DlgHistOrgPriority extends Window {
 					}
 				}
 			});
-
-			search();
 			histGroupListGrid.addClickHandler(new ClickHandler() {
 
 				@Override
@@ -341,7 +325,9 @@ public class DlgHistOrgPriority extends Window {
 			criteria.setAttribute("time", histDate.getValueAsDate());
 			criteria.setAttribute("organization_name",
 					organizationNameItem.getValueAsString());
-
+			Date vHistDate = histDate.getValueAsDate();
+			criteria.setAttribute("vHistDate", vHistDate);
+			
 			searchByCriteria(criteria);
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -350,7 +336,7 @@ public class DlgHistOrgPriority extends Window {
 
 	protected void searchByCriteria(Criteria criteria) {
 		DSRequest dsRequest = new DSRequest();
-		dsRequest.setAttribute("operationId", "getStatisticsGroup");
+		dsRequest.setAttribute("operationId", "getStatisticsGroupNew");
 		histGroupListGrid.filterData(criteria, new DSCallback() {
 			@Override
 			public void execute(DSResponse response, Object rawData,
@@ -369,15 +355,15 @@ public class DlgHistOrgPriority extends Window {
 			ListGridRecord gridRecord = histGroupListGrid.getSelectedRecord();
 			Criteria criteria = new Criteria();
 			if (gridRecord != null) {
-				criteria.setAttribute("real_org_id",
-						new Integer(gridRecord.getAttribute("real_org_id")));
-				criteria.setAttribute("ym",
-						new Integer(gridRecord.getAttribute("ym")));
-			} else
+				criteria.setAttribute("real_org_id",new Integer(gridRecord.getAttribute("real_org_id")));
+				Date vHistDate = histDate.getValueAsDate();
+				criteria.setAttribute("vHistDate", vHistDate);
+			} else {
 				return;
+			}
 
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setAttribute("operationId", "getStatistics");
+			dsRequest.setAttribute("operationId", "getStatisticsNew");
 			if (export) {
 				dsRequest.setExportAs(ExportFormat.XLS);
 

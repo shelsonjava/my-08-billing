@@ -77,6 +77,7 @@ public class DlgViewOrg extends Window {
 	private TextItem orgAddressInfo;
 	private ListGrid listGridOrgTreeChilds;
 	private ListGrid listGridOrgTreeParrent;
+	private Integer organization_id;
 
 	public DlgViewOrg(final DataSource dataSource, Record pRecord) {
 		this(dataSource, pRecord, false);
@@ -108,9 +109,9 @@ public class DlgViewOrg extends Window {
 			hLayout.setHeight100();
 			hLayout.setPadding(10);
 
+			organization_id = pRecord.getAttributeAsInt("organization_id");
 			chargePanel = new ChargePanel(1100, true, true,
-					Constants.serviceOrganization,
-					pRecord.getAttributeAsInt("organization_id"),
+					Constants.serviceOrganization, organization_id,
 					pRecord.getAttributeAsString("organization_name"));
 			hLayout.addMember(chargePanel);
 
@@ -974,14 +975,12 @@ public class DlgViewOrg extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record recordParam = new Record();
 
-			recordParam.setAttribute("service_id",
-					Constants.serviceOrganization);
-			recordParam
-					.setAttribute("session_id", serverSession.getSessionId());
+			recordParam.setAttribute("organization_id", organization_id);
+			recordParam.setAttribute("service_id",Constants.serviceOrganization);
+			recordParam.setAttribute("session_id", serverSession.getSessionId());
 			recordParam.setAttribute("sms_text", sms_text.toString());
 			recordParam.setAttribute("phone", phone);
-			recordParam.setAttribute("rec_user", CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name());
+			recordParam.setAttribute("rec_user", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");
@@ -1060,8 +1059,7 @@ public class DlgViewOrg extends Window {
 							|| dep_phone.equals(CallCenterBK.constants.daf())) {
 						continue;
 					}
-					if (dep_phone.startsWith("2")
-							&& town_id.equals(Constants.defCityTbilisiId)) {
+					if (dep_phone.startsWith("2") && town_id.equals(Constants.defCityTbilisiId)) {
 						dep_phone = "032" + dep_phone;
 					} else if (dep_phone.startsWith("79")) {
 						dep_phone = "0" + dep_phone;
@@ -1097,14 +1095,12 @@ public class DlgViewOrg extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
+			record.setAttribute("organization_id", organization_id);
 			record.setAttribute("service_id", Constants.serviceOrganization);
 			record.setAttribute("session_id", serverSession.getSessionId());
 			record.setAttribute("sms_text", sms_text.toString());
-			record.setAttribute("phone", phone);
-			record.setAttribute("organization_id",
-					this.record.getAttributeAsInt("organization_id"));
-			record.setAttribute("rec_user", CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name());
+			record.setAttribute("phone", phone);			
+			record.setAttribute("rec_user", CommonSingleton.getInstance().getSessionPerson().getUser_name());
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");
@@ -1147,9 +1143,10 @@ public class DlgViewOrg extends Window {
 			String department_real_address = depAddressItem.getValueAsString();
 			if (department_real_address != null
 					&& !department_real_address.trim().equals("")) {
-				criteria.setAttribute("department_real_address", department_real_address);
+				criteria.setAttribute("department_real_address",
+						department_real_address);
 			}
-			
+
 			String phone = depPhonesItem.getValueAsString();
 			if (phone != null && !phone.trim().equals("")) {
 				criteria.setAttribute("phone", phone);

@@ -2,14 +2,12 @@ package com.info08.billing.callcenterbk.server.impl.dmi;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 
@@ -19,17 +17,13 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
-import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
-import com.info08.billing.callcenterbk.shared.common.Constants;
-import com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientPriceItems;
 import com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientPhones;
+import com.info08.billing.callcenterbk.shared.entity.contractors.CorpClientPriceItems;
 import com.info08.billing.callcenterbk.shared.entity.contractors.CorporateClient;
 import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.info08.billing.callcenterbk.shared.items.PhoneNumber;
 import com.isomorphic.datasource.DSRequest;
-import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
-import com.isomorphic.sql.SQLDataSource;
 import com.isomorphic.util.DataTools;
 
 /**
@@ -609,103 +603,103 @@ public class ContractorsDMI implements QueryConstants {
 			throws CallCenterException {
 		Connection mySQLConnection = null;
 		try {
-			StringBuilder log = new StringBuilder(
-					"Checking Contractor Blocking ... \n");
-			boolean flag = true;
-			if (flag || contract == null || contract.getCorporate_client_id() == null) {
-				log.append("Result : Contract Or corporate_client_id Is Null. \n");
-				logger.info(log.toString());
-				return;
-			}
-
-			Long organization_id = contract.getOrganization_id();
-			if (organization_id == null) {
-				log.append("Result : organization_id Is Null. \n");
-				logger.info(log.toString());
-				return;
-			}
-
-			List<?> resultList = oracleManager
-					.createNativeQuery(QueryConstants.Q_GET_CORP_CLIENT_PHONES)
-					.setParameter(1, contract.getCorporate_client_id())
-					.getResultList();
-
-			log.append("Params : 1. Contract Id : ").append(
-					contract.getCorporate_client_id());
-			log.append(", 2. organization_id : ").append(organization_id);
-
-			if (resultList == null || resultList.isEmpty()) {
-				log.append("\nResult : Phone List For This Contract Is Empty. \n");
-				logger.info(log.toString());
-				return;
-			}
-			SQLDataSource mySqlDS = (SQLDataSource) DataSourceManager
-					.get("MySQLSubsDS");
-			mySQLConnection = mySqlDS.getConnection();
-			PreparedStatement statement = mySQLConnection
-					.prepareStatement(QueryConstants.Q_MYSQL_DELETE_BLOCK_PHONE);
-
-			TreeSet<String> contractPhons = new TreeSet<String>();
-			for (Object object : resultList) {
-				String phone = object.toString().trim();
-				if (phone.length() == 0)
-					continue;
-				contractPhons.add(phone);
-				statement.setString(1, phone);
-				statement.executeUpdate();
-
-			}
-			if (onlyRemove)
-				return;
-
-			boolean blockedByCondition = oracleManager
-					.createNativeQuery(
-							"select have_to_block_contractor(?,?,?) from dual")
-					.setParameter(1, contract.getCorporate_client_id())
-					.setParameter(2, 10)
-					// add_calls 10
-					.setParameter(3, Constants.criticalNumberIgnore)
-					.getSingleResult().toString().equals("1");
-
-			log.append(", 8. blockedByCondition : ").append(blockedByCondition);
-			if (blockedByCondition) {
-				List<?> list = resultList;
-
-				if (list == null || list.isEmpty()) {
-					log.append(", 8. blockedByCondition : ");
-					log.append("\nResult : list is empty. \n");
-					logger.info(log.toString());
-					return;
-				}
-
-				log.append(", 9. List Size For Block : ").append(list.size());
-
-				PreparedStatement statement1 = mySQLConnection
-						.prepareStatement(QueryConstants.Q_MYSQL_INSERT_BLOCK_PHONE);
-
-				for (Object oPhone : list) {
-					String phone = oPhone.toString().trim();
-					if (phone.length() == 0)
-						continue;
-					;
-					if (!CommonFunctions.isPhoneChargeable(phone)) {
-						continue;
-					}
-					int phoneLength = phone.length();
-					statement1.setString(1, phone);
-					statement1.setInt(2, phone.length());
-					statement1.setInt(3, phone.length());
-					statement1.executeUpdate();
-
-					if (phoneLength == 7) {
-						statement1.setString(1, ("32" + phone));
-						statement1.setInt(2, (phone.length() + 2));
-						statement1.setInt(3, (phone.length() + 2));
-						statement1.executeUpdate();
-					}
-				}
-			}
-			log.append("\nResult : Contractor Blocking Finished Successfully. \n");
+//			StringBuilder log = new StringBuilder(
+//					"Checking Contractor Blocking ... \n");
+//			boolean flag = true;
+//			if (flag || contract == null || contract.getCorporate_client_id() == null) {
+//				log.append("Result : Contract Or corporate_client_id Is Null. \n");
+//				logger.info(log.toString());
+//				return;
+//			}
+//
+//			Long organization_id = contract.getOrganization_id();
+//			if (organization_id == null) {
+//				log.append("Result : organization_id Is Null. \n");
+//				logger.info(log.toString());
+//				return;
+//			}
+//
+//			List<?> resultList = oracleManager
+//					.createNativeQuery(QueryConstants.Q_GET_CORP_CLIENT_PHONES)
+//					.setParameter(1, contract.getCorporate_client_id())
+//					.getResultList();
+//
+//			log.append("Params : 1. Contract Id : ").append(
+//					contract.getCorporate_client_id());
+//			log.append(", 2. organization_id : ").append(organization_id);
+//
+//			if (resultList == null || resultList.isEmpty()) {
+//				log.append("\nResult : Phone List For This Contract Is Empty. \n");
+//				logger.info(log.toString());
+//				return;
+//			}
+//			SQLDataSource mySqlDS = (SQLDataSource) DataSourceManager
+//					.get("MySQLSubsDS");
+//			mySQLConnection = mySqlDS.getConnection();
+//			PreparedStatement statement = mySQLConnection
+//					.prepareStatement(QueryConstants.Q_MYSQL_DELETE_BLOCK_PHONE);
+//
+//			TreeSet<String> contractPhons = new TreeSet<String>();
+//			for (Object object : resultList) {
+//				String phone = object.toString().trim();
+//				if (phone.length() == 0)
+//					continue;
+//				contractPhons.add(phone);
+//				statement.setString(1, phone);
+//				statement.executeUpdate();
+//
+//			}
+//			if (onlyRemove)
+//				return;
+//
+//			boolean blockedByCondition = oracleManager
+//					.createNativeQuery(
+//							"select have_to_block_contractor(?,?,?) from dual")
+//					.setParameter(1, contract.getCorporate_client_id())
+//					.setParameter(2, 10)
+//					// add_calls 10
+//					.setParameter(3, Constants.criticalNumberIgnore)
+//					.getSingleResult().toString().equals("1");
+//
+//			log.append(", 8. blockedByCondition : ").append(blockedByCondition);
+//			if (blockedByCondition) {
+//				List<?> list = resultList;
+//
+//				if (list == null || list.isEmpty()) {
+//					log.append(", 8. blockedByCondition : ");
+//					log.append("\nResult : list is empty. \n");
+//					logger.info(log.toString());
+//					return;
+//				}
+//
+//				log.append(", 9. List Size For Block : ").append(list.size());
+//
+//				PreparedStatement statement1 = mySQLConnection
+//						.prepareStatement(QueryConstants.Q_MYSQL_INSERT_BLOCK_PHONE);
+//
+//				for (Object oPhone : list) {
+//					String phone = oPhone.toString().trim();
+//					if (phone.length() == 0)
+//						continue;
+//					;
+//					if (!CommonFunctions.isPhoneChargeable(phone)) {
+//						continue;
+//					}
+//					int phoneLength = phone.length();
+//					statement1.setString(1, phone);
+//					statement1.setInt(2, phone.length());
+//					statement1.setInt(3, phone.length());
+//					statement1.executeUpdate();
+//
+//					if (phoneLength == 7) {
+//						statement1.setString(1, ("32" + phone));
+//						statement1.setInt(2, (phone.length() + 2));
+//						statement1.setInt(3, (phone.length() + 2));
+//						statement1.executeUpdate();
+//					}
+//				}
+//			}
+//			log.append("\nResult : Contractor Blocking Finished Successfully. \n");
 		} catch (Exception e) {
 			try {
 				mySQLConnection.rollback();
@@ -720,16 +714,17 @@ public class ContractorsDMI implements QueryConstants {
 					e);
 			throw new CallCenterException("შეცდომა მონაცემების ცვლილებისას : "
 					+ e.toString());
-		} finally {
-			try {
-				mySQLConnection.commit();
-			} catch (Exception e2) {
-			}
-			try {
-				mySQLConnection.close();
-			} catch (Exception e2) {
-			}
-		}
+		} 
+//		finally {
+//			try {
+//				mySQLConnection.commit();
+//			} catch (Exception e2) {
+//			}
+//			try {
+//				mySQLConnection.close();
+//			} catch (Exception e2) {
+//			}
+//		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

@@ -2,9 +2,7 @@ package com.info08.billing.callcenterbk.server.impl.dmi;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -17,9 +15,7 @@ import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
 import com.info08.billing.callcenterbk.shared.entity.black.BlackList;
 import com.isomorphic.datasource.DSRequest;
-import com.isomorphic.datasource.DataSourceManager;
 import com.isomorphic.jpa.EMF;
-import com.isomorphic.sql.SQLDataSource;
 import com.isomorphic.util.DataTools;
 
 public class BlackListManagerDMI implements QueryConstants {
@@ -175,70 +171,70 @@ public class BlackListManagerDMI implements QueryConstants {
 
 	private void operateWithMysql(String[] deletedPhones,
 			String[] insertedPhones) throws Exception {
-		SQLDataSource mySqlDS = (SQLDataSource) DataSourceManager
-				.get("MySQLSubsDS");
-		Connection mySQLConnection = null;
+//		SQLDataSource mySqlDS = (SQLDataSource) DataSourceManager
+//				.get("MySQLSubsDS");
+//		Connection mySQLConnection = null;
 		try {
-			mySQLConnection = mySqlDS.getConnection();
-			mySQLConnection.setAutoCommit(false);
-			executeStetment(deletedPhones, mySQLConnection,
-					Q_MYSQL_DELETE_BLOCK_PHONE, false);
-			if (insertedPhones != null && insertedPhones.length > 0) {
-
-				ArrayList<String> list = new ArrayList<String>();
-				for (String str : insertedPhones) {
-					list.add(str);
-					list.add("32" + str);
-				}
-				executeStetment(list.toArray(new String[] {}), mySQLConnection,
-						Q_MYSQL_INSERT_BLOCK_PHONE, true);
-			}
-			mySQLConnection.commit();
+//			mySQLConnection = mySqlDS.getConnection();
+//			mySQLConnection.setAutoCommit(false);
+//			executeStetment(deletedPhones, mySQLConnection,
+//					Q_MYSQL_DELETE_BLOCK_PHONE, false);
+//			if (insertedPhones != null && insertedPhones.length > 0) {
+//
+//				ArrayList<String> list = new ArrayList<String>();
+//				for (String str : insertedPhones) {
+//					list.add(str);
+//					list.add("32" + str);
+//				}
+//				executeStetment(list.toArray(new String[] {}), mySQLConnection,
+//						Q_MYSQL_INSERT_BLOCK_PHONE, true);
+//			}
+//			mySQLConnection.commit();
 		} catch (Exception e) {
-			try {
-				mySQLConnection.rollback();
-			} catch (Exception e2) {
-				// TODO: handle exception
-			}
-			throw e;
-		} finally {
-			try {
-				mySQLConnection.close();
-			} catch (Exception e2) {
-				// TODO: handle exception
-			}
+//			try {
+//				mySQLConnection.rollback();
+//			} catch (Exception e2) {
+//				// TODO: handle exception
+//			}
+//			throw e;
+//		} finally {
+//			try {
+//				mySQLConnection.close();
+//			} catch (Exception e2) {
+//				// TODO: handle exception
+//			}
 		}
 	}
 
 	protected void executeStetment(String[] phones, Connection mySQLConnection,
 			String param, boolean insert) throws Exception {
-		PreparedStatement stmt = null;
-		if (phones != null && phones.length > 0) {
-			try {
-				stmt = mySQLConnection.prepareStatement(param);
-
-				for (String str : phones) {
-					if (str.length() < 7)
-						continue;
-					stmt.setString(1, str);
-					if (insert) {
-						stmt.setInt(2, str.length());
-						stmt.setInt(3, str.length());
-					}
-					stmt.addBatch();
-				}
-				stmt.executeBatch();
-
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				try {
-					stmt.close();
-				} catch (Exception e2) {
-					// TODO: handle exception
-				}
-			}
-		}
+//		PreparedStatement stmt = null;
+//		if (phones != null && phones.length > 0) {
+//			try {
+//				stmt = mySQLConnection.prepareStatement(param);
+//
+//				for (String str : phones) {
+//					if (str.length() < 7)
+//						continue;
+//					stmt.setString(1, str);
+//					if (insert) {
+//						stmt.setInt(2, str.length());
+//						stmt.setInt(3, str.length());
+//					}
+//					stmt.addBatch();
+//				}
+//				stmt.executeBatch();
+//
+//			} catch (Exception e) {
+//				throw e;
+//			} finally {
+//				try {
+//					stmt.close();
+//				} catch (Exception e2) {
+//					// TODO: handle exception
+//				}
+//			}
+//		}
 	}
 
 }

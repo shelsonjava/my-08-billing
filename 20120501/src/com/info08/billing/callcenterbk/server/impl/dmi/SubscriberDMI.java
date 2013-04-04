@@ -80,18 +80,21 @@ public class SubscriberDMI implements QueryConstants {
 			if (streets_id != null) {
 				addr.setStreet_id(Long.parseLong(streets_id.toString()));
 			}
-			if (address_id == null)
+			if (address_id == null) {
 				oracleManager.persist(addr);
-			else
+			} else {
 				oracleManager.merge(addr);
+			}
 			address_id = addr.getAddr_id();
 
 			subscr.setAddr_id(address_id);
+			subscr.setUptDate(new Timestamp(System.currentTimeMillis()));
 
-			if (subscriber_id == null)
+			if (subscriber_id == null) {
 				oracleManager.persist(subscr);
-			else
+			} else {
 				oracleManager.merge(subscr);
+			}
 			subscriber_id = subscr.getSubscriber_id();
 
 			oracleManager.createNativeQuery(Q_DELETE_PHONES_BY_SUBSCRIBER)
@@ -99,15 +102,18 @@ public class SubscriberDMI implements QueryConstants {
 			oracleManager.flush();
 
 			Object objPhoneList = values.get("listPhones");
-			if (objPhoneList == null)
+			if (objPhoneList == null) {
 				throw new Exception("ტელეფონების სია არ არის გადმოცემული !!!");
+			}
 
-			if (!(objPhoneList instanceof Map))
+			if (!(objPhoneList instanceof Map)) {
 				throw new Exception(
 						"ტელეფონების სია არასწორედაა გადმოცემული !!!");
+			}
 			Map<?, ?> mpPhoneList = (Map<?, ?>) objPhoneList;
-			if (mpPhoneList.isEmpty())
+			if (mpPhoneList.isEmpty()) {
 				throw new Exception("ტელეფონების სია ცარიელია !!!");
+			}
 			String sql = "select decode(count(1), 0, 1, 0) allowed\n"
 					+ "  from SUBSCRIBER_TO_PHONES t\n"
 					+ " inner join phone_numbers pn\n"
@@ -129,38 +135,42 @@ public class SubscriberDMI implements QueryConstants {
 
 			for (Object key : pkeys) {
 				Object objPhone = mpPhoneList.get(key);
-				if (objPhone == null || !(objPhone instanceof Map))
+				if (objPhone == null || !(objPhone instanceof Map)) {
 					throw new Exception("პარამეტრები ნომერზე - " + key
 							+ " არ არის გადმოცემული !!!");
+				}
 
 				Map<?, ?> mpPhone = (Map<?, ?>) objPhone;
-				if (mpPhone.isEmpty())
+				if (mpPhone.isEmpty()) {
 					throw new Exception("პარამეტრები ნომერზე - " + key
 							+ " ცარიელია !!!");
+				}
 
 				List<PhoneNumber> phoneNumbers = (List<PhoneNumber>) oracleManager
 						.createNamedQuery("PhoneNumber.getByPhoneNumber")
 						.setParameter("phone", key).getResultList();
 				PhoneNumber number = null;
-				if (phoneNumbers == null || phoneNumbers.isEmpty())
+				if (phoneNumbers == null || phoneNumbers.isEmpty()) {
 					number = new PhoneNumber();
-				else
+				} else {
 					number = phoneNumbers.get(0);
+				}
 				Long phone_id = number.getPhone_number_id();
 				DataTools.setProperties(mpPhone, number);
 				number.setPhone_number_id(phone_id);
-				if (phone_id == null)
+				if (phone_id == null) {
 					oracleManager.persist(number);
-				else
+				} else {
 					oracleManager.merge(number);
+				}
 				phone_id = number.getPhone_number_id();
 				SubscribersToPhones sp = new SubscribersToPhones();
 				DataTools.setProperties(mpPhone, sp);
 				sp.setSubscriber_id(subscriber_id);
 				sp.setPhone_number_id(phone_id);
 				oracleManager.persist(sp);
-
 			}
+			
 			oracleManager.flush();
 			oracleManager.createNativeQuery("{call createSubscriberHist(?)}")
 					.setParameter(1, subscriber_id).executeUpdate();

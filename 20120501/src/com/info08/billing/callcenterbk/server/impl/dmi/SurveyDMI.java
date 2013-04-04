@@ -521,6 +521,7 @@ public class SurveyDMI implements QueryConstants {
 			logSession.setCall_start_date(currDate);
 			logSession.setUname(loggedUserName);
 			logSession.setYear_month(ym);
+			logSession.setImportant(0L);
 
 			oracleManager.persist(logSession);
 

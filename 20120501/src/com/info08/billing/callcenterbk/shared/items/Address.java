@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "ADDRESSES")
@@ -49,6 +50,9 @@ public class Address implements Serializable {
 	@Basic
 	@Column(name = "ANUMBER")
 	private String anumber;
+	
+	@Transient
+	boolean addrChanched;
 
 	public Address() {
 
@@ -132,5 +136,11 @@ public class Address implements Serializable {
 
 	public void setAnumber(String anumber) {
 		this.anumber = anumber;
+	}
+	public void setAddrChanched(boolean addrChanched) {
+		this.addrChanched = addrChanched;
+	}
+	public boolean isAddrChanched() {
+		return addrChanched;
 	}
 }

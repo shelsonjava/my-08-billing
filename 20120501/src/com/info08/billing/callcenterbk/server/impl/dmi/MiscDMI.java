@@ -1185,6 +1185,10 @@ public class MiscDMI implements QueryConstants {
 			callSessionExpense.setCharge_date(recDate);
 			callSessionExpense.setCharge(charge);
 			callSessionExpense.setEvent_describtion(event_describtion);
+			if (organization_id != null) {
+				callSessionExpense.setOrganization_id(new Long(organization_id
+						.intValue()));
+			}
 
 			oracleManager.persist(callSessionExpense);
 

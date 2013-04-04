@@ -761,4 +761,24 @@ public interface AppConstants extends Constants {
 	String statisticByOrgs();
 	String viewDetail();
 	String read();
+	String important();
+	String importantCallSaved();
+	String newOrgShort();
+	String delOrgShort();
+	String newPhoneShort();
+	String phoneUpd();
+	String delPhone();
+	String workHourDayOffShort();
+	String orgCommentShort();
+	String other();
+	String newSubsShort();
+	String updateSubsShort();
+	String delSubsShort();
+	String usernameShort();
+	String webSiteShort();
+	String socialAddressShort();
+	String foundedShort();
+	String partnerBankShort1();
+	String addressShort();
+	String directorShort();
 }

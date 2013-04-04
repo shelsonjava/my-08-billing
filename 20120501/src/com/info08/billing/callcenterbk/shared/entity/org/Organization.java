@@ -603,5 +603,5 @@ public class Organization implements Serializable {
 
 	public void setPh_town_id(Long ph_town_id) {
 		this.ph_town_id = ph_town_id;
-	}	
+	}
 }

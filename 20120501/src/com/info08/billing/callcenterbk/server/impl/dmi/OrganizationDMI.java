@@ -1,11 +1,16 @@
 package com.info08.billing.callcenterbk.server.impl.dmi;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 
@@ -14,6 +19,7 @@ import org.apache.log4j.Logger;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.server.common.QueryConstants;
 import com.info08.billing.callcenterbk.server.common.RCNGenerator;
+import com.info08.billing.callcenterbk.shared.entity.correction.CorrUsrStat;
 import com.info08.billing.callcenterbk.shared.entity.org.Organization;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationActivity;
 import com.info08.billing.callcenterbk.shared.entity.org.OrganizationDepartMent;
@@ -31,7 +37,9 @@ public class OrganizationDMI {
 
 	private static final String Q_CHECK_ORG_ACTIVITIES = "select count(1) from organization_to_activities t where t.org_activity_id = ? ";
 	private static final String Q_DELETE_ORG_ACTIVITIES = "delete from organization_to_activities t where t.organization_id = ? ";
+	private static final String Q_SELECT_ORG_ACTIVITIES = "select t.org_activity_id from organization_to_activities t where t.organization_id = ?  order by t.org_activity_id";
 	private static final String Q_DELETE_ORG_PART_BANKS = "delete from organization_partner_banks t where t.organization_id = ? ";
+	private static final String Q_SELECT_ORG_PART_BANKS = "select t.part_bank_org_id from organization_partner_banks t where t.organization_id = ? order by t.part_bank_org_id";
 	private static final String Q_DELETE_ORG_DEP_PHONES = "delete from organization_depart_to_phones t where t.org_department_id = ? ";
 	private static final String Q_DELETE_ORG_DEPARTMENT = "delete from organization_department t where t.org_department_id = ? ";
 	private static final String Q_DELETE_ADDRESS = "delete from addresses a where a.addr_id = ? ";
@@ -39,8 +47,11 @@ public class OrganizationDMI {
 	private static final String Q_UPDATE_ORG_DEP_ORDER = " update organization_department t set t.inner_order = ? where t.org_department_id = ? and t.inner_order <> ? ";
 	private static final String Q_UPDATE_ORG_ORDER = " update organizations t set t.priority = ? where t.organization_id = ? and t.priority <> ? ";
 	private static final String Q_UPDATE_ORG_DEP_PHONE_ORDER = " update organization_depart_to_phones t set t.phone_order = ? where t.org_dep_to_ph_id = ? and t.phone_order <> ? ";
+	private static final String Q_SELECT_ORG_ADDRESS = "select nvl(t.concat_address_with_town,'') from ccare.addresses t where t.addr_id = ? ";
 
 	private Logger logger = Logger.getLogger(OrganizationDMI.class.getName());
+	private static final SimpleDateFormat dateFormatMMYYY = new SimpleDateFormat(
+			"MMyy");
 
 	/**
 	 * Adding New OrganizationActivity
@@ -310,6 +321,7 @@ public class OrganizationDMI {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("rawtypes")
 	public DSResponse addOrUpdateOrganization(DSRequest dsRequest)
 			throws Exception {
 		EntityManager oracleManager = null;
@@ -326,49 +338,52 @@ public class OrganizationDMI {
 			transaction = EMF.getTransaction(oracleManager);
 
 			Organization organization = null;
+			Map oldValues = null;
+			boolean isNewOrg = false;
 			if (organization_id != null) {
-				organization = oracleManager.find(Organization.class,
-						organization_id);
+				organization = oracleManager.find(Organization.class, organization_id);
+				oldValues = DataTools.getProperties(organization);				
 			}
-			if (organization == null && organization_id != null)
-				throw new Exception("ვერ ვიპოვე ორგანიზაცია შესაცვლელად(ID="
-						+ organization_id + ")");
+			if (organization == null && organization_id != null) {
+				throw new Exception("ვერ ვიპოვე ორგანიზაცია შესაცვლელად(ID="+ organization_id + ")");
+			}
 			Long super_priority = null;
 			if (organization == null) {
 				organization = new Organization();
+				isNewOrg = true;
 			} else {
 				super_priority = organization.getSuper_priority();
 			}
 
 			DataTools.setProperties(values, organization);
-			if (super_priority != null
-					&& Math.abs(super_priority.longValue()) > 1) {
+			if (super_priority != null && Math.abs(super_priority.longValue()) > 1) {
 				organization.setSuper_priority(super_priority);
 			}
 
-			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
-					loggedUserName, log);
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate, loggedUserName, log);
 
-			Long legal_address_id = values.get("legal_address_id") != null ? new Long(
-					values.get("legal_address_id").toString()) : null;
-			Long physical_address_id = values.get("physical_address_id") != null ? new Long(
-					values.get("physical_address_id").toString()) : null;
-
-			Map<?, ?> legalAddrValues = (Map<?, ?>) values
-					.get("legalAddrValues");
-			boolean deleteLegalAddress = legal_address_id != null
-					&& legalAddrValues == null;
-
+			Long legal_address_id = values.get("legal_address_id") != null ? new Long(values.get("legal_address_id").toString()) : null;
+			Long physical_address_id = values.get("physical_address_id") != null ? new Long(values.get("physical_address_id").toString()) : null;
+			
+			Map<?, ?> legalAddrValues = (Map<?, ?>) values.get("legalAddrValues");			
+			
+			boolean deleteLegalAddress = legal_address_id != null && legalAddrValues == null;
+			boolean isAddressChanged = false;
 			if (legalAddrValues != null) {
-				legal_address_id = persistAddress(oracleManager, values,
-						legal_address_id, "legalAddrValues").getAddr_id();
+				Address legAddress = persistAddress(oracleManager, values, legal_address_id, "legalAddrValues");
+				legal_address_id = legAddress.getAddr_id();
+				if(legAddress.isAddrChanched()){
+					isAddressChanged = true;
+				}
 			}
-			Address physical_address = persistAddress(oracleManager, values,
-					physical_address_id, "physicalAddrValues");
+			
+			Address physical_address = persistAddress(oracleManager, values, physical_address_id, "physicalAddrValues");
+			if(physical_address.isAddrChanched() && !isAddressChanged){
+				isAddressChanged = true;
+			}
 			physical_address_id = physical_address.getAddr_id();
 
-			organization.setLegal_address_id(deleteLegalAddress ? null
-					: legal_address_id);
+			organization.setLegal_address_id(deleteLegalAddress ? null : legal_address_id);
 			organization.setPhysical_address_id(physical_address_id);
 
 			organization.setPh_town_id(physical_address.getTown_id());
@@ -385,7 +400,19 @@ public class OrganizationDMI {
 			}
 			organization_id = organization.getOrganization_id();
 
+			Integer old_activities[] = new Integer[0];
 			if (!isPersist) {
+
+				List resultlist = oracleManager
+						.createNativeQuery(Q_SELECT_ORG_ACTIVITIES)
+						.setParameter(1, organization_id).getResultList();
+				if (resultlist != null && !resultlist.isEmpty()) {
+					old_activities = new Integer[resultlist.size()];
+					for (int i = 0; i < resultlist.size(); i++) {
+						Object object = resultlist.get(i);
+						old_activities[i] = new Integer(object.toString());
+					}
+				}
 				oracleManager.createNativeQuery(Q_DELETE_ORG_ACTIVITIES)
 						.setParameter(1, organization_id).executeUpdate();
 				oracleManager.flush();
@@ -393,35 +420,60 @@ public class OrganizationDMI {
 
 			Map<?, ?> orgActivities = (Map<?, ?>) values.get("orgActivities");
 			Set<?> orgActKeys = orgActivities.keySet();
+			SortedSet<Integer> sortedSet = new TreeSet<Integer>();
 			for (Object orgActKey : orgActKeys) {
 				Object value = orgActivities.get(orgActKey);
 				OrganizationToActivity organizationToActivity = new OrganizationToActivity();
 				organizationToActivity.setOrganization_id(organization_id);
-				organizationToActivity.setOrg_activity_id(new Long(value
-						.toString()));
+				Long actId = new Long(value.toString());
+				organizationToActivity.setOrg_activity_id(actId);
+				sortedSet.add(new Integer(actId.intValue()));
 				oracleManager.persist(organizationToActivity);
 			}
-
+			Integer new_activities[] = sortedSet.toArray(new Integer[]{});			
+			
+			Integer old_part_banks[] = new Integer[0];
+			
 			if (!isPersist) {
+				
+				List resultlist = oracleManager
+						.createNativeQuery(Q_SELECT_ORG_PART_BANKS)
+						.setParameter(1, organization_id).getResultList();
+				if (resultlist != null && !resultlist.isEmpty()) {
+					old_part_banks = new Integer[resultlist.size()];
+					for (int i = 0; i < resultlist.size(); i++) {
+						Object object = resultlist.get(i);
+						old_part_banks[i] = new Integer(object.toString());
+					}
+				}
 				oracleManager.createNativeQuery(Q_DELETE_ORG_PART_BANKS)
 						.setParameter(1, organization_id).executeUpdate();
 				oracleManager.flush();
 			}
 
-			Map<?, ?> orgPartnerBanks = (Map<?, ?>) values
-					.get("orgPartnerBanks");
+			Map<?, ?> orgPartnerBanks = (Map<?, ?>) values.get("orgPartnerBanks");
+			SortedSet<Integer> sortedSetPB = new TreeSet<Integer>();
 			if (orgPartnerBanks != null) {
 				Set<?> orgPartnerBankKeys = orgPartnerBanks.keySet();
 				for (Object partBankKey : orgPartnerBankKeys) {
 					Object value = orgPartnerBanks.get(partBankKey);
 					OrganizationPartnerBank organizationPartnerBank = new OrganizationPartnerBank();
 					organizationPartnerBank.setOrganization_id(organization_id);
-					organizationPartnerBank.setPart_bank_org_id(new Long(value
-							.toString()));
+					organizationPartnerBank.setPart_bank_org_id(new Long(value.toString()));
+					sortedSetPB.add(new Integer(value.toString()));
 					oracleManager.persist(organizationPartnerBank);
 				}
 			}
-
+			Integer new_part_banks[] = sortedSetPB.toArray(new Integer[]{});
+			
+			
+			if (isNewOrg) {
+				saveOrgActionHistNewOrDelOrg(true, loggedUserName,
+						oracleManager);
+			} else {
+				saveOrgActionHistUpdateOrg(loggedUserName, oracleManager,
+						dsRequest, oldValues, old_activities, new_activities, old_part_banks, new_part_banks, isAddressChanged);
+			}
 			oracleManager.flush();
 			oracleManager.createNativeQuery("{call createOrganizationHist(?)}")
 					.setParameter(1, organization_id).executeUpdate();
@@ -441,8 +493,7 @@ public class OrganizationDMI {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error(
-					"Error While adding New organization Into Database : ", e);
+			e.printStackTrace();
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -472,12 +523,24 @@ public class OrganizationDMI {
 			address.setStreet_id(new Long(ostreets_id.toString()));
 		}
 		address.setAddr_id(address_id);
-
+		boolean changed = false;
+		String oldFullAdd = null;
+		String newFullAdd = null;
 		if (address.getAddr_id() != null) {
-			oracleManager.merge(address);
+			Object oldObject = oracleManager.createNativeQuery(Q_SELECT_ORG_ADDRESS).setParameter(1, address.getAddr_id()).getSingleResult();
+			oldFullAdd = oldObject == null ? "" : oldObject.toString();			
+			oracleManager.merge(address);			
 		} else {
+			changed = true;
 			oracleManager.persist(address);
 		}
+		if(!changed){
+			oracleManager.flush();
+			Object newObject = oracleManager.createNativeQuery(Q_SELECT_ORG_ADDRESS).setParameter(1, address.getAddr_id()).getSingleResult();
+			newFullAdd = newObject == null ? "" : newObject.toString();
+			changed = !oldFullAdd.equals(newFullAdd);
+		}
+		address.setAddrChanched(changed);
 		return address;
 	}
 
@@ -748,6 +811,8 @@ public class OrganizationDMI {
 				}
 			}
 
+			saveOrgActionHistNewOrDelOrg(false, loggedUserName, oracleManager);
+
 			EMF.commitTransaction(transaction);
 			log += ". Removing Finished SuccessFully. ";
 			logger.info(log);
@@ -767,6 +832,135 @@ public class OrganizationDMI {
 		}
 	}
 
+	private void saveOrgActionHistNewOrDelOrg(boolean isNewOrg, String user,
+			EntityManager oracleManager) throws CallCenterException {
+		try {
+			CorrUsrStat corrUsrStat = new CorrUsrStat();
+			corrUsrStat.setAct_date(new Timestamp(System.currentTimeMillis()));
+			corrUsrStat.setUser_name(user);
+			corrUsrStat.setMmyy(Long.parseLong(dateFormatMMYYY.format(new Date(
+					System.currentTimeMillis()))));
+			if (isNewOrg) {
+				corrUsrStat.setNew_org(1L);
+				corrUsrStat.setDel_org(0L);
+			} else {
+				corrUsrStat.setNew_org(0L);
+				corrUsrStat.setDel_org(1L);
+			}
+			corrUsrStat.setAddress(0L);
+			corrUsrStat.setDel_phone(0L);
+			corrUsrStat.setDel_subs(0L);
+			corrUsrStat.setDirector(0L);
+			corrUsrStat.setEmail(0L);
+			corrUsrStat.setFounded_date(0L);
+			corrUsrStat.setIdent_code(0L);
+			corrUsrStat.setNew_phone(0L);
+			corrUsrStat.setNew_subs(0L);
+			corrUsrStat.setOrg_comment(0L);
+			corrUsrStat.setOther(0L);
+			corrUsrStat.setPart_bank(0L);
+			corrUsrStat.setPhone_upd(0L);
+			corrUsrStat.setSoc_network(0L);
+			corrUsrStat.setUpdate_subs(0L);
+			corrUsrStat.setWeb_site(0L);
+			corrUsrStat.setWork_hour_dayy_off(0L);
+
+			oracleManager.persist(corrUsrStat);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Error saveOrgActionHistNewOrg : ", e);
+			throw new CallCenterException("saveOrgActionHistNewOrg : "
+					+ e.toString());
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void saveOrgActionHistUpdateOrg(String user,
+			EntityManager oracleManager, DSRequest dsRequest, Map oldValues, 
+			Integer [] old_activities, Integer [] new_activities,
+			Integer old_part_banks[],Integer new_part_banks[], boolean isAddressChanged)
+			throws CallCenterException {
+		try {
+			Map<?, ?> values = dsRequest.getValues();
+
+			CorrUsrStat corrUsrStat = new CorrUsrStat();
+			corrUsrStat.setAct_date(new Timestamp(System.currentTimeMillis()));
+			corrUsrStat.setUser_name(user);
+			corrUsrStat.setMmyy(Long.parseLong(dateFormatMMYYY.format(new Date(System.currentTimeMillis()))));
+			corrUsrStat.setNew_org(0L);
+			corrUsrStat.setDel_org(0L);
+			corrUsrStat.setDel_phone(0L);
+			corrUsrStat.setDel_subs(0L);
+			corrUsrStat.setNew_phone(0L);
+			corrUsrStat.setNew_subs(0L);
+			corrUsrStat.setPhone_upd(0L);
+			corrUsrStat.setUpdate_subs(0L);
+			corrUsrStat.setDirector( (!(values.get("chief")==null?"":values.get("chief").toString()).equals(oldValues.get("chief")==null?"":oldValues.get("chief").toString())) ? 1L : 0L);			 
+			corrUsrStat.setEmail( (!(values.get("email_address")==null?"":values.get("email_address").toString()).equals(oldValues.get("email_address")==null?"":oldValues.get("email_address").toString())) ? 1L : 0L);
+			corrUsrStat.setOrg_comment( (!(values.get("remark")==null?"":values.get("remark").toString()).equals(oldValues.get("remark")==null?"":oldValues.get("remark").toString())) ? 1L : 0L);			
+			corrUsrStat.setSoc_network( (!(values.get("social_address")==null?"":values.get("social_address").toString()).equals(oldValues.get("social_address")==null?"":oldValues.get("social_address").toString())) ? 1L : 0L);
+			corrUsrStat.setWeb_site( (!(values.get("web_address")==null?"":values.get("web_address").toString()).equals(oldValues.get("web_address")==null?"":oldValues.get("web_address").toString())) ? 1L : 0L);			
+			corrUsrStat.setIdent_code((
+										(!(values.get("ident_code")==null?"":values.get("ident_code").toString()).equals(oldValues.get("ident_code")==null?"":oldValues.get("ident_code").toString())) ||
+										(!(values.get("ident_code_new")==null?"":values.get("ident_code_new").toString()).equals(oldValues.get("ident_code_new")==null?"":oldValues.get("ident_code_new").toString()))
+									  ) ? 1L : 0L);
+			corrUsrStat.setWork_hour_dayy_off((
+										(!(values.get("work_hours")==null?"":values.get("work_hours").toString()).equals(oldValues.get("work_hours")==null?"":oldValues.get("work_hours").toString())) ||
+										(!(values.get("day_offs")==null?"":values.get("day_offs").toString()).equals(oldValues.get("day_offs")==null?"":oldValues.get("day_offs").toString()))
+									  ) ? 1L : 0L);
+
+			Long fd = values.get("found_date")==null?0L:Long.valueOf(((Date)values.get("found_date")).getTime());
+			Long fd1 =oldValues.get("found_date")==null?0L:Long.valueOf(((Date)oldValues.get("found_date")).getTime());			
+			corrUsrStat.setFounded_date( !fd.equals(fd1) ? 1L : 0L);
+			
+			Long cnt = 0L;
+			String sc = values.get("staff_count")==null?"":values.get("staff_count").toString();
+			String sc1 = oldValues.get("staff_count")==null?"":oldValues.get("staff_count").toString();
+			cnt = cnt.longValue()+ ( !sc.equals(sc1) ? 1 : 0);
+			
+			
+			String oi = values.get("organization_index")==null?"":values.get("organization_index").toString();
+			String oi1 = oldValues.get("organization_index")==null?"":oldValues.get("organization_index").toString();
+			cnt = cnt.longValue()+ ( !oi.equals(oi1) ? 1 : 0);
+			
+			String ai = values.get("additional_info")==null?"":values.get("additional_info").toString();
+			String ai1 = oldValues.get("additional_info")==null?"":oldValues.get("additional_info").toString();
+			cnt = cnt.longValue()+ ( !ai.equals(ai1) ? 1 : 0);
+			
+			cnt = cnt.longValue()+ ( !Arrays.equals(old_activities, new_activities) ? 1 : 0);
+			corrUsrStat.setOther(cnt);			
+			corrUsrStat.setPart_bank( !Arrays.equals(old_part_banks, new_part_banks) ? 1L : 0L);
+			
+			
+			corrUsrStat.setAddress( !isAddressChanged ? 0L : 1L);
+			
+			if(corrUsrStat.getDirector().equals(0L) &&
+			   corrUsrStat.getEmail().equals(0L) &&
+			   corrUsrStat.getOrg_comment().equals(0L) &&
+			   corrUsrStat.getSoc_network().equals(0L) &&
+			   corrUsrStat.getWeb_site().equals(0L) &&
+			   corrUsrStat.getIdent_code().equals(0L) &&
+			   corrUsrStat.getWork_hour_dayy_off().equals(0L) &&
+			   corrUsrStat.getFounded_date().equals(0L) &&
+			   corrUsrStat.getOther().equals(0L) &&
+			   corrUsrStat.getAddress().equals(0L) &&
+			   corrUsrStat.getPart_bank().equals(0L)){
+				return;
+			}
+			
+			oracleManager.persist(corrUsrStat);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Error saveOrgActionHistNewOrg : ", e);
+			throw new CallCenterException("saveOrgActionHistNewOrg : "
+					+ e.toString());
+		}
+	}
+
+	
+	
 	/**
 	 * Updating Transport Status
 	 * 
@@ -977,15 +1171,17 @@ public class OrganizationDMI {
 				oracleManager.persist(phoneNumber);
 			} else {
 				//
-				//Q_UPDATE_PHONE = " update ccare.phone_numbers t set t.phone = ?, t.phone_state_id = ?, t.phone_type_id = ?, 
-				//t.is_parallel = ? where t.phone_number_id = ? ";
+				// Q_UPDATE_PHONE = " update ccare.phone_numbers t set t.phone =
+				// ?, t.phone_state_id = ?, t.phone_type_id = ?,
+				// t.is_parallel = ? where t.phone_number_id = ? ";
 				oracleManager.createNativeQuery(QueryConstants.Q_UPDATE_PHONE)
-				.setParameter(1, phoneNumber.getPhone())
-				.setParameter(2, phoneNumber.getPhone_state_id())
-				.setParameter(3, phoneNumber.getPhone_type_id())
-				.setParameter(4, phoneNumber.getIs_parallel())
-				.setParameter(5, phoneNumber.getPhone_number_id()).executeUpdate();
-//				oracleManager.merge(phoneNumber);
+						.setParameter(1, phoneNumber.getPhone())
+						.setParameter(2, phoneNumber.getPhone_state_id())
+						.setParameter(3, phoneNumber.getPhone_type_id())
+						.setParameter(4, phoneNumber.getIs_parallel())
+						.setParameter(5, phoneNumber.getPhone_number_id())
+						.executeUpdate();
+				// oracleManager.merge(phoneNumber);
 			}
 			DataTools.setProperties(values, orgDepartToPhone);
 			orgDepartToPhone.setPhone_number_id(phoneNumber
@@ -994,17 +1190,23 @@ public class OrganizationDMI {
 			if (orgDepartToPhone.getOrg_dep_to_ph_id() == null) {
 				oracleManager.persist(orgDepartToPhone);
 			} else {
-				System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");				
-				oracleManager.createNativeQuery(QueryConstants.Q_UPDATEORG_DEP_PHONE)
-						.setParameter(1, orgDepartToPhone.getOrg_department_id())
+				System.out
+						.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				oracleManager
+						.createNativeQuery(QueryConstants.Q_UPDATEORG_DEP_PHONE)
+						.setParameter(1,
+								orgDepartToPhone.getOrg_department_id())
 						.setParameter(2, orgDepartToPhone.getPhone_number_id())
-						.setParameter(3, orgDepartToPhone.getHidden_by_request())
-						.setParameter(4, orgDepartToPhone.getPhone_contract_type())
+						.setParameter(3,
+								orgDepartToPhone.getHidden_by_request())
+						.setParameter(4,
+								orgDepartToPhone.getPhone_contract_type())
 						.setParameter(5, orgDepartToPhone.getFor_contact())
 						.setParameter(6, orgDepartToPhone.getPhone_order())
-					    .setParameter(7, orgDepartToPhone.getRec_upd_date())
-					    .setParameter(8, orgDepartToPhone.getOrg_dep_to_ph_id()).executeUpdate();
-				//oracleManager.merge(orgDepartToPhone);
+						.setParameter(7, orgDepartToPhone.getRec_upd_date())
+						.setParameter(8, orgDepartToPhone.getOrg_dep_to_ph_id())
+						.executeUpdate();
+				// oracleManager.merge(orgDepartToPhone);
 			}
 
 			org_dep_to_ph_id = orgDepartToPhone.getOrg_dep_to_ph_id();

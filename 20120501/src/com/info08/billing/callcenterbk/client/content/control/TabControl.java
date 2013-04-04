@@ -1,4 +1,4 @@
-	package com.info08.billing.callcenterbk.client.content.control;
+package com.info08.billing.callcenterbk.client.content.control;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -22,6 +22,7 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -63,6 +64,8 @@ public class TabControl extends Tab {
 	private ToolStripButton exportButton;
 	private TimeItem startTimeItem;
 	private TimeItem endTimeItem;
+	private CheckboxItem checkboxItem;
+
 	private DataSource sessionsDS;
 	private DataSource sessionChargesDS;
 
@@ -111,7 +114,7 @@ public class TabControl extends Tab {
 			serviceItem.setTitle("სერვისი");
 			serviceItem.setType("comboBox");
 			serviceItem.setWidth("100%");
-			serviceItem.setName("service_price_id");			
+			serviceItem.setName("service_price_id");
 
 			numberItem = new TextItem();
 			numberItem.setTitle("ნომერი");
@@ -210,6 +213,11 @@ public class TabControl extends Tab {
 			sessQualItems.put("-1", "ძალიან ცუდი");
 			sessQualItems.put("100", "ყველა");
 
+			checkboxItem = new CheckboxItem();
+			checkboxItem.setTitle("მნიშვნელოვანი ზარი");
+			checkboxItem.setName("checkboxItem");
+			checkboxItem.setValue(false);
+
 			sessQualityTypeItem.setValueMap(sessQualItems);
 			sessQualityTypeItem.setDefaultToFirstOption(true);
 			sessQualityTypeItem.setWidth("100%");
@@ -217,7 +225,7 @@ public class TabControl extends Tab {
 			searchForm.setFields(serviceItem, operatorItem, numberCondTypeItem,
 					numberItem, startDateItem, endDateItem, startTimeItem,
 					endTimeItem, numOfSecondsStart, numOfSecondsEnd,
-					chargedCallItem, sessQualityTypeItem);
+					chargedCallItem, sessQualityTypeItem, checkboxItem);
 
 			vLayout.addMember(searchForm);
 
@@ -411,7 +419,12 @@ public class TabControl extends Tab {
 					if (serviceId != null && !serviceId.trim().equals("")) {
 						criteria.setAttribute("serviceId", new Integer(
 								serviceId));
+					}					
+					Boolean isImportant = checkboxItem.getValueAsBoolean();
+					if(isImportant!=null && isImportant.booleanValue()){
+						criteria.setAttribute("isImportant", isImportant); 
 					}
+					
 					sessionsGrid.invalidateCache();
 					sessionsGrid.filterData(criteria);
 					sessionChargesGrid.invalidateCache();
@@ -551,6 +564,7 @@ public class TabControl extends Tab {
 					endTimeItem.setValue("23:59:59");
 					chargedCallItem.setValue(1);
 					sessQualityTypeItem.setValue(0);
+					checkboxItem.setValue(false);
 
 					Criteria criteria = sessionsGrid.getCriteria();
 					if (criteria == null) {
@@ -609,12 +623,15 @@ public class TabControl extends Tab {
 						SC.say("გთხოვთ მონიშნოთ ჩანაწერი ცხრილში");
 						return;
 					}
-					String sessionId = listGridRecord.getAttributeAsString("session_id");
-					Integer quality = listGridRecord.getAttributeAsInt("call_quality");
-					Integer call_session_id = listGridRecord.getAttributeAsInt("call_session_id");
+					String sessionId = listGridRecord
+							.getAttributeAsString("session_id");
+					Integer quality = listGridRecord
+							.getAttributeAsInt("call_quality");
+					Integer call_session_id = listGridRecord
+							.getAttributeAsInt("call_session_id");
 
 					DlgAddEditSessQuality addEditSessQuality = new DlgAddEditSessQuality(
-							sessionId, quality,call_session_id, sessionsDS);
+							sessionId, quality, call_session_id, sessionsDS);
 					addEditSessQuality.show();
 				}
 			});
@@ -647,7 +664,7 @@ public class TabControl extends Tab {
 				operatorItem.setDisplayField("fullPersonName");
 			}
 			if (services != null) {
-				serviceItem.setOptionDataSource(services);				
+				serviceItem.setOptionDataSource(services);
 				serviceItem.setDisplayField("service_description");
 			}
 		} catch (Exception e) {

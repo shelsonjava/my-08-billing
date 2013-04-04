@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.shared.items;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -42,6 +43,10 @@ public class Subscribers implements Serializable {
 	@Basic
 	@Column(name = "FULL_HIDDEN")
 	private Long full_hidden;
+	
+	@Basic
+	@Column(name = "UPT_DATE")
+	private Timestamp uptDate;
 	
 
 	@Transient
@@ -102,5 +107,11 @@ public class Subscribers implements Serializable {
 
 	public void setFull_hidden(Long full_hidden) {
 		this.full_hidden = full_hidden;
+	}
+	public Timestamp getUptDate() {
+		return uptDate;
+	}
+	public void setUptDate(Timestamp uptDate) {
+		this.uptDate = uptDate;
 	}
 }
