@@ -86,6 +86,7 @@
 		<class>com.info08.billing.callcenterbk.shared.entity.websites.WebSites</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.nonstandartinfo.NonStandartInfoGroups</class>
 		<class>com.info08.billing.callcenterbk.shared.entity.nonstandartinfo.NonStandartInfo</class>
+		<class>com.info08.billing.callcenterbk.shared.entity.correction.CorrUsrStat</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
