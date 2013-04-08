@@ -47,11 +47,10 @@ public class OrganizationDMI {
 	private static final String Q_UPDATE_ORG_DEP_ORDER = " update organization_department t set t.inner_order = ? where t.org_department_id = ? and t.inner_order <> ? ";
 	private static final String Q_UPDATE_ORG_ORDER = " update organizations t set t.priority = ? where t.organization_id = ? and t.priority <> ? ";
 	private static final String Q_UPDATE_ORG_DEP_PHONE_ORDER = " update organization_depart_to_phones t set t.phone_order = ? where t.org_dep_to_ph_id = ? and t.phone_order <> ? ";
-	private static final String Q_SELECT_ORG_ADDRESS = "select nvl(t.concat_address_with_town,'') from ccare.addresses t where t.addr_id = ? ";
+	private static final String Q_SELECT_ORG_ADDRESS = "select nvl(t.concat_address_with_town,'') from addresses t where t.addr_id = ? ";
 
 	private Logger logger = Logger.getLogger(OrganizationDMI.class.getName());
-	private static final SimpleDateFormat dateFormatMMYYY = new SimpleDateFormat(
-			"MMyy");
+	private static final SimpleDateFormat dateFormatMMYYY = new SimpleDateFormat("MMyy");
 
 	/**
 	 * Adding New OrganizationActivity
@@ -60,8 +59,7 @@ public class OrganizationDMI {
 	 * @return
 	 * @throws Exception
 	 */
-	public OrganizationActivity addOrgActivity(
-			OrganizationActivity organizationActivity) throws Exception {
+	public OrganizationActivity addOrgActivity(OrganizationActivity organizationActivity) throws Exception {
 		EntityManager oracleManager = null;
 		Object transaction = null;
 		try {
@@ -252,60 +250,6 @@ public class OrganizationDMI {
 			logger.error(
 					"Error While remove organizationActivity from Database : ",
 					e);
-			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
-					+ e.toString());
-		} finally {
-			if (oracleManager != null) {
-				EMF.returnEntityManager(oracleManager);
-			}
-		}
-	}
-
-	/**
-	 * Updating Organizations
-	 * 
-	 * @param record
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("rawtypes")
-	public Organization updateMainServiceOrg(Map record) throws Exception {
-		EntityManager oracleManager = null;
-		Object transaction = null;
-		try {
-			String log = "Method:OrganizationDMI.updateMainServiceOrg.";
-			oracleManager = EMF.getEntityManager();
-			transaction = EMF.getTransaction(oracleManager);
-
-			Long parrent_organization_id = record
-					.get("parrent_organization_id") == null ? null : new Long(
-					record.get("parrent_organization_id").toString());
-			Long organization_id = new Long(record.get("organization_id")
-					.toString());
-			String loggedUserName = record.get("loggedUserName").toString();
-
-			Timestamp updDate = new Timestamp(System.currentTimeMillis());
-			RCNGenerator.getInstance().initRcn(oracleManager, updDate,
-					loggedUserName, "Update Organization.");
-
-			Organization organization = oracleManager.find(Organization.class,
-					organization_id);
-
-			organization.setParrent_organization_id(parrent_organization_id);
-			oracleManager.merge(organization);
-			EMF.commitTransaction(transaction);
-			DMIUtils.findRecordById("OrgDS", "customOrgSearchForCallCenterNew",
-					organization_id, "organization_id", organization);
-			organization.setLoggedUserName(loggedUserName);
-			log += ". Updating Finished SuccessFully. ";
-			logger.info(log);
-			return null;
-		} catch (Exception e) {
-			EMF.rollbackTransaction(transaction);
-			if (e instanceof CallCenterException) {
-				throw (CallCenterException) e;
-			}
-			logger.error("Error While Update organization Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {
@@ -591,17 +535,13 @@ public class OrganizationDMI {
 					.get("physicalAddrValues");
 			Long physical_address_id = values.get("physical_address_id") != null ? new Long(
 					values.get("physical_address_id").toString()) : null;
-			boolean deletePhysicalAddress = physical_address_id != null
-					&& physicalAddrValues == null;
+			boolean deletePhysicalAddress = physical_address_id != null && physicalAddrValues == null;
 
 			if (physicalAddrValues != null) {
-				physical_address_id = persistAddress(oracleManager, values,
-						physical_address_id, "physicalAddrValues").getAddr_id();
+				physical_address_id = persistAddress(oracleManager, values, physical_address_id, "physicalAddrValues").getAddr_id();
 			}
 
-			organizationDepartMent
-					.setPhysical_address_id(deletePhysicalAddress ? null
-							: physical_address_id);
+			organizationDepartMent.setPhysical_address_id(deletePhysicalAddress ? null : physical_address_id);
 
 			if (org_department_id == null) {
 				oracleManager.persist(organizationDepartMent);
@@ -611,15 +551,12 @@ public class OrganizationDMI {
 			org_department_id = organizationDepartMent.getOrg_department_id();
 
 			if (deletePhysicalAddress) {
-				oracleManager.remove(oracleManager.find(Address.class,
-						physical_address_id));
+				oracleManager.remove(oracleManager.find(Address.class, physical_address_id));
 			}
 
 			oracleManager.flush();
 
-			oracleManager
-					.createNativeQuery("{call createOrgDepartmentHist(?)}")
-					.setParameter(1, org_department_id).executeUpdate();
+			oracleManager.createNativeQuery("{call createOrgDepartmentHist(?)}").setParameter(1, org_department_id).executeUpdate();
 			EMF.commitTransaction(transaction);
 			log += ". Save Or Update Finished SuccessFully. ";
 			logger.info(log);
@@ -1165,15 +1102,14 @@ public class OrganizationDMI {
 				phoneNumber.setPhone_number_id(id_tmp);
 			}
 
-			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
-					loggedUserName, "OrgDepPhone Changes.");
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate, loggedUserName, "OrgDepPhone Changes.");
+			
+			boolean isNewPhone = false;
+			
 			if (phoneNumber.getPhone_number_id() == null) {
 				oracleManager.persist(phoneNumber);
+				isNewPhone = true;
 			} else {
-				//
-				// Q_UPDATE_PHONE = " update ccare.phone_numbers t set t.phone =
-				// ?, t.phone_state_id = ?, t.phone_type_id = ?,
-				// t.is_parallel = ? where t.phone_number_id = ? ";
 				oracleManager.createNativeQuery(QueryConstants.Q_UPDATE_PHONE)
 						.setParameter(1, phoneNumber.getPhone())
 						.setParameter(2, phoneNumber.getPhone_state_id())
@@ -1181,17 +1117,14 @@ public class OrganizationDMI {
 						.setParameter(4, phoneNumber.getIs_parallel())
 						.setParameter(5, phoneNumber.getPhone_number_id())
 						.executeUpdate();
-				// oracleManager.merge(phoneNumber);
 			}
 			DataTools.setProperties(values, orgDepartToPhone);
-			orgDepartToPhone.setPhone_number_id(phoneNumber
-					.getPhone_number_id());
+			orgDepartToPhone.setPhone_number_id(phoneNumber.getPhone_number_id());
 			orgDepartToPhone.setRec_upd_date(recDate);
 			if (orgDepartToPhone.getOrg_dep_to_ph_id() == null) {
 				oracleManager.persist(orgDepartToPhone);
+				isNewPhone = true;
 			} else {
-				System.out
-						.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 				oracleManager
 						.createNativeQuery(QueryConstants.Q_UPDATEORG_DEP_PHONE)
 						.setParameter(1,
@@ -1206,11 +1139,12 @@ public class OrganizationDMI {
 						.setParameter(7, orgDepartToPhone.getRec_upd_date())
 						.setParameter(8, orgDepartToPhone.getOrg_dep_to_ph_id())
 						.executeUpdate();
-				// oracleManager.merge(orgDepartToPhone);
 			}
-
 			org_dep_to_ph_id = orgDepartToPhone.getOrg_dep_to_ph_id();
 			EMF.commitTransaction(transaction);
+			
+			saveOrgActionHistDelorAddOrUpdatePhone(isNewPhone, false, loggedUserName, oracleManager);
+			
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
 
@@ -1255,6 +1189,7 @@ public class OrganizationDMI {
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
 					loggedUserName, "OrgDepPhone Remove.");
 			oracleManager.remove(orgDepartToPhone);
+			saveOrgActionHistDelorAddOrUpdatePhone(false, true, loggedUserName, oracleManager);
 
 			EMF.commitTransaction(transaction);
 			log += ". Removing Finished SuccessFully. ";
@@ -1275,4 +1210,57 @@ public class OrganizationDMI {
 			}
 		}
 	}
+	
+	
+	private void saveOrgActionHistDelorAddOrUpdatePhone(boolean isNewPhone,boolean isDelete, String user,EntityManager oracleManager) throws CallCenterException {
+		try {
+			CorrUsrStat corrUsrStat = new CorrUsrStat();
+			corrUsrStat.setAct_date(new Timestamp(System.currentTimeMillis()));
+			corrUsrStat.setUser_name(user);
+			corrUsrStat.setMmyy(Long.parseLong(dateFormatMMYYY.format(new Date(
+					System.currentTimeMillis()))));
+			corrUsrStat.setNew_org(0L);
+			corrUsrStat.setDel_org(0L);			
+			corrUsrStat.setAddress(0L);
+			
+			if(isDelete){
+				corrUsrStat.setNew_phone(0L);
+				corrUsrStat.setPhone_upd(0L);
+				corrUsrStat.setDel_phone(1L);
+			}else {
+				if (isNewPhone) {
+					corrUsrStat.setNew_phone(1L);
+					corrUsrStat.setPhone_upd(0L);
+					corrUsrStat.setDel_phone(0L);
+				}else{
+					corrUsrStat.setNew_phone(0L);
+					corrUsrStat.setPhone_upd(1L);
+					corrUsrStat.setDel_phone(0L);
+				}
+			}
+						
+			corrUsrStat.setDel_subs(0L);
+			corrUsrStat.setDirector(0L);
+			corrUsrStat.setEmail(0L);
+			corrUsrStat.setFounded_date(0L);
+			corrUsrStat.setIdent_code(0L);
+			
+			corrUsrStat.setNew_subs(0L);
+			corrUsrStat.setOrg_comment(0L);
+			corrUsrStat.setOther(0L);
+			corrUsrStat.setPart_bank(0L);
+			
+			corrUsrStat.setSoc_network(0L);
+			corrUsrStat.setUpdate_subs(0L);
+			corrUsrStat.setWeb_site(0L);
+			corrUsrStat.setWork_hour_dayy_off(0L);
+			oracleManager.persist(corrUsrStat);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Error saveOrgActionHistNewOrg : ", e);
+			throw new CallCenterException("saveOrgActionHistNewOrg : "
+					+ e.toString());
+		}
+	}
+	
 }

@@ -15,7 +15,7 @@
 		
 	</fields>
 	<operationBindings>
-		<operationBinding operationId="getStatisticsGroup" operationType="fetch">
+		<operationBinding operationId="getStatisticsGroup1111" operationType="fetch">
     		<selectClause>   			
     			/*+ index(t,IDX_ORG_PRIORITY_STATIST_YMR)*/
  				op.organization_name org_name, opr.organization_name real_name, count(1) cnt,ym, org_id, real_org_id
@@ -42,7 +42,7 @@
 			</orderClause>
     	</operationBinding>
     	
-    	<operationBinding operationId="getStatistics" operationType="fetch">
+    	<operationBinding operationId="getStatistics111" operationType="fetch">
     		<selectClause>   			
     			/*+ index(t,IDX_ORG_PRIORITY_STATIST_YMR)*/
  				cs.session_id, cs.call_start_date,cs.call_end_date, cs.call_phone, cs.uname
@@ -63,5 +63,69 @@
 						cs.call_start_date, cs.call_end_date
 			</orderClause>
     	</operationBinding>
+    	
+    	
+    	
+    	
+    	<operationBinding operationId="getStatisticsGroupNew" operationType="fetch">
+    	
+    		<customSQL>
+            	 <![CDATA[
+            	 	select 
+					  k.organization_id as org_id,
+					  k.organization_id as real_org_id,
+					  k.organization_name as org_name,
+					  k.organization_name as real_name,
+					  sum(k.cnt) as cnt
+					from (
+					  select ce.session_id,ce.organization_id,o.organization_name,1 as cnt from ccare.call_sessions t
+					         inner join ccare.call_session_expense ce on ce.call_session_id = t.call_session_id
+					         inner join ccare.org_priorities op on op.org_id = ce.organization_id
+					         inner join ccare.organizations o on o.organization_id = op.org_id
+					  where t.year_month = to_number(to_char($criteria.vHistDate,'YYMM')) and ce.year_month >= to_number(to_char($criteria.vHistDate,'YYMM'))  
+					  group by ce.session_id, ce.organization_id,o.organization_name
+					  union all
+					  select sms.session_call_id, o.organization_id,o.organization_name,1 as cnt from ccare.sent_sms_hist sms 
+					         inner join ccare.org_priorities op on op.org_id = sms.organization_id
+					         inner join ccare.organizations o on o.organization_id = op.org_id       
+					  where to_number(to_char(sms.message_sent_time,'YYMM')) = to_number(to_char($criteria.vHistDate,'YYMM')) and 
+					        sms.organization_id is not null
+					  group by sms.session_call_id,o.organization_id,o.organization_name      
+					) k
+					group by k.organization_id,k.organization_name 
+            	 ]]>
+            </customSQL> 
+    	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="getStatisticsNew" operationType="fetch">
+    		<selectClause>   			
+    			cs.session_id,
+    			cs.call_start_date,
+    			cs.call_end_date,
+    			cs.call_phone,
+    			cs.uname    			
+			</selectClause> 
+			<tableClause>
+				ccare.call_sessions cs
+       		</tableClause>
+			<whereClause><![CDATA[ 			
+				cs.session_id in
+					(
+					  select t.session_call_id from ccare.sent_sms_hist t
+					  where t.organization_id = $criteria.real_org_id and to_number(to_char(t.message_sent_time,'YYMM')) = to_number(to_char($criteria.vHistDate,'YYMM'))
+					  
+					  union 
+					
+					  select ce.session_id from ccare.call_session_expense ce 
+					  where ce.organization_id = $criteria.real_org_id and to_number(to_char(ce.charge_date,'YYMM')) = to_number(to_char($criteria.vHistDate,'YYMM'))  
+					)
+				]]>  
+			</whereClause> 
+			<orderClause>
+						cs.call_start_date, cs.call_end_date
+			</orderClause>
+    	</operationBinding>
+    	
 	</operationBindings>
 </DataSource>

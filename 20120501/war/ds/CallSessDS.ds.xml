@@ -84,6 +84,8 @@
 				#end	
 				#if ($criteria.numOfSecondsStart) AND s.call_duration > $criteria.numOfSecondsStart #end
 				#if ($criteria.numOfSecondsEnd) AND s.call_duration <= $criteria.numOfSecondsEnd #end
+				#if ($criteria.isImportant) AND s.important = 1 #end
+				
 				#if ($criteria.chargedCall == 2) AND
 					 (
             			select 
@@ -141,5 +143,6 @@
 				t.ym
 			</groupClause>			
 		</operationBinding>
+		
 	</operationBindings>
 </DataSource>

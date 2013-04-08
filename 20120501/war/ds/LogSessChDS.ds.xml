@@ -123,5 +123,13 @@
             </customSQL> 
         </operationBinding>
         
+        <operationBinding operationId="makeCallImportant" operationType="update">
+            <customSQL>
+            	 <![CDATA[
+            	 	update ccare.call_sessions t set t.important = 1 where t.session_id = $values.session_id
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
     </operationBindings>
 </DataSource>

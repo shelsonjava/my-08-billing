@@ -1,0 +1,77 @@
+<DataSource
+	ID="CorrUserStatDS"
+	serverType="sql"
+	tableName="corr_usr_stat"
+	qualifyColumnNames="false"
+	dropExtraFields = "false">
+	<fields>
+		<field name="id"					type="integer"		title="ID"						hidden="true" 		primaryKey="true" />
+		<field name="user_name"				type="text"			title="user_name"/>
+		<field name="act_date"				type="date"			title="act_date"/>
+		<field name="mmyy"					type="integer"		title="mmyy" 					hidden="true"/>
+		<field name="new_org"				type="integer"		title="new_org"/>
+		<field name="del_org"				type="integer"		title="del_org"/>
+		<field name="new_phone"				type="integer"		title="new_phone"/>
+		<field name="phone_upd"				type="integer"		title="phone_upd"/>
+		<field name="del_phone"				type="integer"		title="del_phone"/>
+		<field name="address"				type="integer"		title="address"/>
+		<field name="director"				type="integer"		title="director"/>
+		<field name="ident_code"			type="integer"		title="ident_code"/>
+		<field name="work_hour_dayy_off"	type="integer"		title="work_hour_dayy_off"/>
+		<field name="web_site"				type="integer"		title="web_site"/>
+		<field name="email"					type="integer"		title="email"/>
+		<field name="soc_network"			type="integer"		title="soc_network"/>
+		<field name="part_bank"				type="integer"		title="part_bank"/>
+		<field name="org_comment"			type="integer"		title="org_comment"/>
+		<field name="founded_date"			type="integer"		title="founded_date"/>
+		<field name="other"					type="integer"		title="other"/>
+		<field name="new_subs"				type="integer"		title="new_subs"/>
+		<field name="update_subs"			type="integer"		title="update_subs"/>
+		<field name="del_subs"				type="integer"		title="del_subs"/>
+		<field name="sum_cnt"				type="integer"		title="sum_cnt"/>
+	</fields>
+
+	<operationBindings>		
+
+    	<operationBinding operationId="searchCorrUserStats" operationType="fetch">
+    		<selectClause>   			
+    			t.user_name,
+				trunc(t.act_date) as act_date,
+				sum(t.new_org) as new_org,
+				sum(t.del_org) as del_org,
+				sum(t.new_phone) as new_phone,
+				sum(t.phone_upd) as phone_upd,
+				sum(t.del_phone) as del_phone,
+				sum(t.address) as address,
+				sum(t.director) as director,
+				sum(t.ident_code) as ident_code,
+				sum(t.work_hour_dayy_off) as work_hour_dayy_off,
+				sum(t.web_site) as web_site,
+				sum(t.email) as email,
+				sum(t.soc_network) as soc_network,
+				sum(t.part_bank) as part_bank,
+				sum(t.org_comment) as org_comment,
+				sum(t.founded_date) as founded_date,
+				sum(t.other) as other,
+				sum(t.new_subs) as new_subs,
+				sum(t.update_subs) as update_subs,
+				sum(t.del_subs) as del_subs,				 
+				
+				sum(t.new_org+t.del_org+t.new_phone+t.phone_upd+t.del_phone+t.address+t.director+t.ident_code+t.work_hour_dayy_off+t.web_site+
+				 t.email+t.soc_network+t.part_bank+t.org_comment+t.founded_date+t.other+t.new_subs++t.update_subs+t.del_subs) as sum_cnt
+				 				  
+			</selectClause> 
+			<tableClause>ccare.corr_usr_stat t</tableClause>
+			<whereClause><![CDATA[
+			    1 = 1
+				#if($criteria.user_name) and t.user_name = $criteria.user_name #end
+				#if($criteria.act_date) and trunc(t.act_date) = trunc($criteria.act_date) #end
+				#if($criteria.mmyy) and t.mmyy = to_number(to_char(trunc($criteria.mmyy),'MMYY')) #end
+				]]>  
+			</whereClause> 
+			<orderClause>trunc(t.act_date)</orderClause>
+			<groupClause>trunc(t.act_date),t.user_name</groupClause>
+    	</operationBinding>
+    	
+    </operationBindings>	
+</DataSource>
