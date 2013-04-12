@@ -775,8 +775,7 @@ public class OrganizationDMI {
 			CorrUsrStat corrUsrStat = new CorrUsrStat();
 			corrUsrStat.setAct_date(new Timestamp(System.currentTimeMillis()));
 			corrUsrStat.setUser_name(user);
-			corrUsrStat.setMmyy(Long.parseLong(dateFormatMMYYY.format(new Date(
-					System.currentTimeMillis()))));
+			corrUsrStat.setMmyy(Long.parseLong(dateFormatMMYYY.format(new Date(System.currentTimeMillis()))));
 			if (isNewOrg) {
 				corrUsrStat.setNew_org(1L);
 				corrUsrStat.setDel_org(0L);
@@ -1127,13 +1126,10 @@ public class OrganizationDMI {
 			} else {
 				oracleManager
 						.createNativeQuery(QueryConstants.Q_UPDATEORG_DEP_PHONE)
-						.setParameter(1,
-								orgDepartToPhone.getOrg_department_id())
+						.setParameter(1, orgDepartToPhone.getOrg_department_id())
 						.setParameter(2, orgDepartToPhone.getPhone_number_id())
-						.setParameter(3,
-								orgDepartToPhone.getHidden_by_request())
-						.setParameter(4,
-								orgDepartToPhone.getPhone_contract_type())
+						.setParameter(3, orgDepartToPhone.getHidden_by_request())
+						.setParameter(4, orgDepartToPhone.getPhone_contract_type())
 						.setParameter(5, orgDepartToPhone.getFor_contact())
 						.setParameter(6, orgDepartToPhone.getPhone_order())
 						.setParameter(7, orgDepartToPhone.getRec_upd_date())
@@ -1141,15 +1137,17 @@ public class OrganizationDMI {
 						.executeUpdate();
 			}
 			org_dep_to_ph_id = orgDepartToPhone.getOrg_dep_to_ph_id();
-			EMF.commitTransaction(transaction);
-			
 			saveOrgActionHistDelorAddOrUpdatePhone(isNewPhone, false, loggedUserName, oracleManager);
+			
+			oracleManager.flush();
+			oracleManager.createNativeQuery("{call createOrgDepToPhoneHist(?)}").setParameter(1, orgDepartToPhone.getOrg_dep_to_ph_id()).executeUpdate();
+			
+			EMF.commitTransaction(transaction);
 			
 			log += ". Updating Finished SuccessFully. ";
 			logger.info(log);
 
-			values = DMIUtils.findRecordById("OrgDepPhoneDS",
-					"searchOrgDepPhones", org_dep_to_ph_id, "org_dep_to_ph_id");
+			values = DMIUtils.findRecordById("OrgDepPhoneDS", "searchOrgDepPhones", org_dep_to_ph_id, "org_dep_to_ph_id");
 			DSResponse dsResponse = new DSResponse();
 			dsResponse.setData(values);
 			// dsResponse.setInvalidateCache(true);
@@ -1161,6 +1159,7 @@ public class OrganizationDMI {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
+			e.printStackTrace();
 			logger.error("Error While Update Data Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების წაშლისას : "
 					+ e.toString());
@@ -1184,12 +1183,11 @@ public class OrganizationDMI {
 			String loggedUserName = values.get("loggedUserName").toString();
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
-			OrganizationDepartToPhone orgDepartToPhone = oracleManager.find(
-					OrganizationDepartToPhone.class, org_dep_to_ph_id);
-			RCNGenerator.getInstance().initRcn(oracleManager, recDate,
-					loggedUserName, "OrgDepPhone Remove.");
+			OrganizationDepartToPhone orgDepartToPhone = oracleManager.find(OrganizationDepartToPhone.class, org_dep_to_ph_id);
+			RCNGenerator.getInstance().initRcn(oracleManager, recDate, loggedUserName, "OrgDepPhone Remove.");
 			oracleManager.remove(orgDepartToPhone);
 			saveOrgActionHistDelorAddOrUpdatePhone(false, true, loggedUserName, oracleManager);
+			
 
 			EMF.commitTransaction(transaction);
 			log += ". Removing Finished SuccessFully. ";

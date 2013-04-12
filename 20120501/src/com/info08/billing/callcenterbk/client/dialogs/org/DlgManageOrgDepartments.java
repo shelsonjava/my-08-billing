@@ -336,13 +336,12 @@ public class DlgManageOrgDepartments extends Window {
 			orgDepPhonesListGrid.setFixedRecordHeights(false);
 			orgDepPhonesListGrid.setCanSelectText(true);
 			orgDepPhonesListGrid.setCanDragSelectText(true);
+			orgDepPhonesListGrid.setShowRowNumbers(true);
 
-			ListGridField phone = new ListGridField("phone",
-					CallCenterBK.constants.phone());
+			ListGridField phone = new ListGridField("phone",CallCenterBK.constants.phone());
 			phone.setCanFilter(true);
 
-			ListGridField rec_upd_date = new ListGridField("rec_upd_date",
-					CallCenterBK.constants.updDate(), 130);
+			ListGridField rec_upd_date = new ListGridField("rec_upd_date",CallCenterBK.constants.updDate(), 130);
 			rec_upd_date.setAlign(Alignment.CENTER);
 			rec_upd_date.setCanFilter(false);
 

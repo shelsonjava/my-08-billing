@@ -226,6 +226,7 @@
 				]]>  
 			</whereClause> 
 			<groupClause>o.organization_id,o.organization_name</groupClause>
+			<orderClause>count(1) desc</orderClause>
     	</operationBinding>
     	
     	
@@ -256,7 +257,8 @@
 				 #end
 				]]>  
 			</whereClause> 
-			<groupClause>o.organization_id, o.organization_name</groupClause>			
+			<groupClause>o.organization_id, o.organization_name</groupClause>	
+			<orderClause>count(1) desc</orderClause>		
     	</operationBinding>
     	
     	
