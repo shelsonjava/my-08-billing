@@ -94,14 +94,14 @@ public class StatStackSelection extends SectionStackSection {
 
 	public void setMenuPersmission() {
 		try {
-			boolean hasAdminPerm = CommonSingleton.getInstance().hasPermission(
-					"501000");
+			boolean hasAdminPerm = CommonSingleton.getInstance().hasPermission("501000");
 			menuData[0].setAttribute("enabled", hasAdminPerm);
 			menuData[1].setAttribute("enabled", hasAdminPerm);
 			menuData[2].setAttribute("enabled", hasAdminPerm);
 			menuData[3].setAttribute("enabled", hasAdminPerm);
 			menuData[4].setAttribute("enabled", hasAdminPerm);
-			
+			menuData[5].setAttribute("enabled", hasAdminPerm);
+			menuData[6].setAttribute("enabled", hasAdminPerm);			
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
