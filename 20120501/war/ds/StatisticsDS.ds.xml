@@ -42,6 +42,7 @@
 		<field name="call_count"				type="integer"		title="call_count"/>
 		<field name="organization_id"			type="integer"		title="organization_id"/>
 		<field name="call_date"					type="text"			title="call_date"/>
+		<field name="concat_address_with_town"	type="text"			title="concat_address_with_town"/>
 	</fields>
 
 	<operationBindings>		
@@ -204,6 +205,7 @@
     				/* use_nl(ch,ls,p,c) ordered index (ch IDX_LOG_SCH_REC_DATE1) */		
     				o.organization_id,
     			  	o.organization_name,
+    			  	a.concat_address_with_town,
            			count(1) as call_count   	
 			</selectClause> 
 			<tableClause>
@@ -211,7 +213,8 @@
 			         inner join call_sessions ls  on ch.session_id = ls.session_id
 			         inner join v_normalized_contractor_phones p on p.phone=ls.call_phone
 			         inner join corporate_clients c on c.corporate_client_id=p.corporate_client_id
-			         inner join organizations o on o.organization_id = c.organization_id 
+			         inner join organizations o on o.organization_id = c.organization_id
+			         left join v_full_address a on o.physical_address_id = a.addr_id  
 			</tableClause>
 			<whereClause><![CDATA[
 				 ch.year_month = $criteria.ym and ls.year_month = $criteria.ym
@@ -225,7 +228,7 @@
 				 #end			
 				]]>  
 			</whereClause> 
-			<groupClause>o.organization_id,o.organization_name</groupClause>
+			<groupClause>o.organization_id,o.organization_name,a.concat_address_with_town</groupClause>
 			<orderClause>count(1) desc</orderClause>
     	</operationBinding>
     	
@@ -233,9 +236,10 @@
     	
     	<operationBinding operationId="searchNonContrStatistics" operationType="fetch">
     		<selectClause>   	
-    				   /* use_nl(ch,cs) ordered index(cs,IDX_CS_SESSION_ID) index (ch IDX_LOG_SCH_REC_DATE1) */
+    				   /*+ use_nl(ch,cs) ordered index(cs,IDX_CS_SESSION_ID) index (ch IDX_LOG_SCH_REC_DATE1) */
 				       o.organization_id,
 				       o.organization_name,
+				       a.concat_address_with_town,
 				       count(1) as call_count
 			</selectClause> 
 			<tableClause>
@@ -245,6 +249,7 @@
 					inner join organization_depart_to_phones odp on odp.phone_number_id = pn.phone_number_id
 					inner join organization_department od on od.org_department_id = odp.org_department_id
 					inner join organizations o on o.organization_id = od.organization_id 
+					left join v_full_address a on o.physical_address_id = a.addr_id  
 			</tableClause>
 			<whereClause><![CDATA[
 				  ch.year_month = $criteria.ym and cs.year_month = $criteria.ym and 
@@ -257,7 +262,7 @@
 				 #end
 				]]>  
 			</whereClause> 
-			<groupClause>o.organization_id, o.organization_name</groupClause>	
+			<groupClause>o.organization_id, o.organization_name,a.concat_address_with_town</groupClause>	
 			<orderClause>count(1) desc</orderClause>		
     	</operationBinding>
     	

@@ -138,14 +138,19 @@ public class TabStatByOrg extends Tab {
 			ListGridField organization = new ListGridField("organization_name",
 					CallCenterBK.constants.organization());
 			organization.setAlign(Alignment.LEFT);
-			organization.setCanFilter(true);
+			organization.setCanFilter(false);
+			
+			ListGridField organization_address = new ListGridField("concat_address_with_town",
+					CallCenterBK.constants.address(),450);
+			organization_address.setAlign(Alignment.LEFT);
+			organization_address.setCanFilter(false);
 
 			ListGridField call_count = new ListGridField("call_count",
-					CallCenterBK.constants.count(), 300);
+					CallCenterBK.constants.count(), 80);
 			call_count.setAlign(Alignment.LEFT);
 			call_count.setCanFilter(false);
 
-			listGrid.setFields(organization, call_count);
+			listGrid.setFields(organization,organization_address, call_count);
 
 			mainLayout.addMember(listGrid);
 

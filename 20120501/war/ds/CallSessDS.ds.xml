@@ -95,13 +95,7 @@
             		 ) > 0
 				#end
 				#if ($criteria.chargedCall == 3) AND
-					s.call_kind in (0,3) AND
-					 (
-            			select 
-            				count(1) 
-            			from call_session_expense a 
-            			where a.session_id = s.session_id
-            		 ) <= 0
+					ch.service_id = 50019
 				#end
 				#if($criteria.sessQualityTypeItem && $criteria.sessQualityTypeItem != 100) AND s.call_quality = $criteria.sessQualityTypeItem #end
 				]]>

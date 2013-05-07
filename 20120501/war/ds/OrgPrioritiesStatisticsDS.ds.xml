@@ -82,14 +82,16 @@
 					         inner join ccare.call_session_expense ce on ce.call_session_id = t.call_session_id
 					         inner join ccare.org_priorities op on op.org_id = ce.organization_id
 					         inner join ccare.organizations o on o.organization_id = op.org_id
-					  where t.year_month = to_number(to_char($criteria.vHistDate,'YYMM')) and ce.year_month >= to_number(to_char($criteria.vHistDate,'YYMM'))  
+					  where t.year_month = to_number(to_char($criteria.vHistDate,'YYMM')) and ce.year_month >= to_number(to_char($criteria.vHistDate,'YYMM'))
+					  		#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end
 					  group by ce.session_id, ce.organization_id,o.organization_name
 					  union all
 					  select sms.session_call_id, o.organization_id,o.organization_name,1 as cnt from ccare.sent_sms_hist sms 
 					         inner join ccare.org_priorities op on op.org_id = sms.organization_id
 					         inner join ccare.organizations o on o.organization_id = op.org_id       
 					  where to_number(to_char(sms.message_sent_time,'YYMM')) = to_number(to_char($criteria.vHistDate,'YYMM')) and 
-					        sms.organization_id is not null
+					        sms.organization_id is not null 
+					        #if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end
 					  group by sms.session_call_id,o.organization_id,o.organization_name      
 					) k
 					group by k.organization_id,k.organization_name 

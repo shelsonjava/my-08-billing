@@ -34,7 +34,7 @@ public interface QueryConstants {
 	public static final String Q_UPDATE_STREET_TRUXA =" update ccare.addresses t set t.town_id = t.town_id where t.street_id = ? ";
 	
 	
-	public static final String Q_GET_CALL_PRICE = "select getchargeprice(?,?) as price from dual";
+	//public static final String Q_GET_CALL_PRICE = "select getchargeprice(?,?) as price from dual";
 	public static final String Q_GET_CALL_PRICE_NEW = "select getChargePriceNew(?,?,?) as price from dual";
 	
 	public static final String Q_GET_VIRTUAL_SESSION_ID = " select 'VIRT.'||seq_virtual_session_id.nextval as session_id from dual ";

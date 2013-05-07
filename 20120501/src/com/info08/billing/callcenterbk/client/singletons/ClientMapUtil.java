@@ -182,7 +182,7 @@ public class ClientMapUtil {
 		orgStatuses.put("3", "ბანკის ორგანიზაცია");
 
 		orgNoteCrits.put("0", "ჩვეულებრივი");
-		orgNoteCrits.put("-1", "გაწითლებული");
+		orgNoteCrits.put("100", "კონქტრაქტორი");
 
 		indexSearchTypes.put("1", CallCenterBK.constants.findByCountry());
 		indexSearchTypes.put("2", CallCenterBK.constants.findByTown());

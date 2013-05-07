@@ -901,8 +901,11 @@ public class DlgHistOrganization extends Window {
 			}
 			Criteria criteria = new Criteria();
 			if (!organization_id.equals("")) {
-				criteria.setAttribute("organization_id", new Long(
-						organization_id));
+				criteria.setAttribute("organization_id", new Long(organization_id));
+			}
+			String phoneNumber = phoneItem.getValueAsString();
+			if(phoneNumber!=null && !phoneNumber.trim().equals("")){
+				criteria.setAttribute("phoneNumber", phoneNumber);
 			}
 
 			DSRequest dsRequest = new DSRequest();

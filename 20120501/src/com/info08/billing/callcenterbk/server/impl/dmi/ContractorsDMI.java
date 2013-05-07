@@ -166,7 +166,6 @@ public class ContractorsDMI implements QueryConstants {
 								.getCorporate_client_id());
 						item.setPhone_number(phone);
 						oracleManager.persist(item);
-						System.out.println("Persist Phone = "+phone);
 						oracleManager.flush();
 					}
 				}

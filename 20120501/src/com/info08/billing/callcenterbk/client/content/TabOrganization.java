@@ -428,8 +428,7 @@ public class TabOrganization extends Tab {
 					Integer flow_priority = countryRecord
 							.getAttributeAsInt("flow_priority");
 					Integer status = countryRecord.getAttributeAsInt("status");
-					Integer super_priority = countryRecord
-							.getAttributeAsInt("super_priority");
+					Integer is_contractor = countryRecord.getAttributeAsInt("super_priority");
 					Integer tree_org_child = (countryRecord
 							.getAttributeAsString("tree_org_child") != null && countryRecord
 							.getAttributeAsString("tree_org_child").equals(
@@ -437,15 +436,15 @@ public class TabOrganization extends Tab {
 
 					if (flow_priority != null && flow_priority.intValue() < 0) {
 						return "color:red;";
-					} else if (super_priority != null && super_priority < 0) {
+					} else if (is_contractor != null && is_contractor == 100) {
 						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:red;";
+							return "font-weight:bold;color:orange;";
 						} else {
-							return "color:red;";
+							return "color:green;";
 						}
 					} else if (status != null && status.equals(2)) {
 						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:gray;";
+							return "font-weight:bold;color:orange;";
 						} else {
 							return "color:gray;";
 						}

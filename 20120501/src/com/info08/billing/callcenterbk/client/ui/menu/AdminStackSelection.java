@@ -29,23 +29,16 @@ public class AdminStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", CallCenterBK.constants.users(), true,
-					"person.png"),
-			new MenuNode("101", "1", CallCenterBK.constants.mobOpIndexes(),
-					true, "mobile.png"),
-			new MenuNode("102", "1", CallCenterBK.constants.fixedOpIndexes(),
-					true, "phone.png"),
-			new MenuNode("103", "1", CallCenterBK.constants.contractors(),
-					true, "contracts.png"),
-			new MenuNode("104", "1", CallCenterBK.constants.blockPhone(), true,
-					"telephone_delete.png"),
-			new MenuNode("105", "1", CallCenterBK.constants.billingComps(),
-					true, "phone.png"),
-			new MenuNode("106", "1", CallCenterBK.constants.extraPriority(),
-					true, "sort.png"),
-			new MenuNode("107", "1", CallCenterBK.constants.sendSMS(),
-					true, "sms.png"),
-			new MenuNode("108", "1", "Test Panel",true, "sms.png")};
+			new MenuNode("100", "1", CallCenterBK.constants.users(), true, "person.png"),
+			new MenuNode("101", "1", CallCenterBK.constants.mobOpIndexes(), true, "mobile.png"),
+			new MenuNode("102", "1", CallCenterBK.constants.fixedOpIndexes(), true, "phone.png"),
+			new MenuNode("103", "1", CallCenterBK.constants.contractors(), true, "contracts.png"),
+			new MenuNode("104", "1", CallCenterBK.constants.blockPhone(), true, "telephone_delete.png"),
+			new MenuNode("105", "1", CallCenterBK.constants.billingComps(), true, "phone.png"),
+			new MenuNode("106", "1", CallCenterBK.constants.extraPriority(), true, "sort.png"),
+			new MenuNode("107", "1", CallCenterBK.constants.sendSMS(), true, "sms.png"),
+			new MenuNode("108", "1", "Test Panel",true, "sms.png")
+	};
 
 	private TreeGrid menuTreeGrid;
 
@@ -106,12 +99,15 @@ public class AdminStackSelection extends SectionStackSection {
 
 	public void setMenuPersmission() {
 		try {
-			boolean hasAdminPerm = CommonSingleton.getInstance().hasPermission(
-					"107000");
-			for (TreeNode tn : menuData) {
-				tn.setAttribute("enabled", hasAdminPerm);
-			}
-
+			menuData[0].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107100"));
+			menuData[1].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107200"));
+			menuData[2].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107300"));
+			menuData[3].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107400"));
+			menuData[4].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107500"));
+			menuData[5].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107600"));
+			menuData[6].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107700"));
+			menuData[7].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107800"));
+			menuData[8].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107000"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

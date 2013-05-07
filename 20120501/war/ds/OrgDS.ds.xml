@@ -303,7 +303,7 @@
 								)
 							  #end
 							connect by prior t.organization_id = t.parrent_organization_id
-							order siblings by sort_by_tbilisi(t.ph_town_id), t.super_priority, nvl(t.parrent_organization_id,0), t.priority
+							order siblings by sort_by_tbilisi(t.ph_town_id), nvl(t.parrent_organization_id,0), t.priority
 						) hr, #end
 				v_full_address a, v_full_address a1
 			</tableClause>
@@ -497,7 +497,7 @@
 						#if($criteria.pp_organization_id)
 							hr.my_rownum 
 						#else
-							sort_by_tbilisi(a.town_id), o.flow_priority, o.super_priority, nvl(o.parrent_organization_id,0), o.priority 
+							sort_by_tbilisi(a.town_id), o.flow_priority,  nvl(o.parrent_organization_id,0), o.priority 
 						#end
 				
 			</orderClause>
@@ -724,7 +724,7 @@
 				   	and exists (select 1
 				          from  hist_phone_numbers        hph
 				          	    ,HIST_ORG_DEPART_TO_PHONES htp
-				          		,HIST_ORGANIZATION_DEPARTMENT hd
+				          		,hist_v_organization_department hd
 				         where hph.phone = ($criteria.phone_number) 
 				         	and htp.phone_number_id = hph.phone_number_id
 				         	and htp.ORG_DEPARTMENT_ID = hd.ORG_DEPARTMENT_ID

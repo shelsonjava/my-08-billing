@@ -376,10 +376,23 @@
 					off_user, 
 					rdeleted
 			</selectClause>
-			<tableClause>HIST_V_ORGANIZATION_DEPARTMENT</tableClause>
+			<tableClause>HIST_V_ORGANIZATION_DEPARTMENT k</tableClause>
 			<whereClause>
 				 <![CDATA[
-				 	#if($criteria.organization_id) organization_id = $criteria.organization_id #end
+				 	1 = 1
+				 	#if($criteria.organization_id) and organization_id = $criteria.organization_id #end
+				 	#if($criteria.phoneNumber) 
+					 		and exists (
+					 			select 1
+	                  from  hist_phone_numbers        hph
+	                        ,HIST_ORG_DEPART_TO_PHONES htp
+	                      ,hist_v_organization_department hd
+	                 where hph.phone = $criteria.phoneNumber 
+	                   and htp.phone_number_id = hph.phone_number_id
+	                   and htp.ORG_DEPARTMENT_ID = hd.ORG_DEPARTMENT_ID
+	                   and htp.org_department_id = k.org_department_id
+				 		)
+				 	#end
 				 ]]>
 			</whereClause>
 			<orderClause>department, start_rcn desc</orderClause>
