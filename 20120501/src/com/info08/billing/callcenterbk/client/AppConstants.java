@@ -781,4 +781,5 @@ public interface AppConstants extends Constants {
 	String partnerBankShort1();
 	String addressShort();
 	String directorShort();
+	String contractor();
 }

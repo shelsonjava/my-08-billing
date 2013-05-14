@@ -291,18 +291,12 @@ public class OrganizationDMI {
 			if (organization == null && organization_id != null) {
 				throw new Exception("ვერ ვიპოვე ორგანიზაცია შესაცვლელად(ID="+ organization_id + ")");
 			}
-			Long super_priority = null;
+			//Long super_priority = null;
 			if (organization == null) {
 				organization = new Organization();
 				isNewOrg = true;
-			} else {
-				super_priority = organization.getSuper_priority();
-			}
-
+			} 
 			DataTools.setProperties(values, organization);
-			if (super_priority != null && Math.abs(super_priority.longValue()) > 1) {
-				organization.setSuper_priority(super_priority);
-			}
 
 			RCNGenerator.getInstance().initRcn(oracleManager, recDate, loggedUserName, log);
 

@@ -112,6 +112,7 @@
 				       t.descr,
 				       t.street_to_town_district_id,
 				       pnm.is_parallel,
+				       t.town_id,
 				       pnm.phone_type_id,
 				       spm.phone_contract_type,
 				       spm.hidden_by_request ph_hidden_by_request,

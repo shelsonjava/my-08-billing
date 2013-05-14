@@ -438,13 +438,13 @@ public class TabOrganization extends Tab {
 						return "color:red;";
 					} else if (is_contractor != null && is_contractor == 100) {
 						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:orange;";
+							return "font-weight:bold;color:violet;";
 						} else {
-							return "color:green;";
+							return "color:violet;";
 						}
 					} else if (status != null && status.equals(2)) {
 						if (tree_org_child != -1000) {
-							return "font-weight:bold;color:orange;";
+							return "font-weight:bold;color:gray;";
 						} else {
 							return "color:gray;";
 						}

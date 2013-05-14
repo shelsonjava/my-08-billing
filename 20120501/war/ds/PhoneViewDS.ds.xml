@@ -31,6 +31,7 @@
 		<field name="status"							type="integer"					title="status" 							hidden="true"/>
 		<field name="full_hidden"						type="integer"					title="full_hidden" 					hidden="true"/>
 		<field name="parrent_organization_id"			type="integer"					title="parrent_organization_id" 		hidden="true"/>
+		<field name="town_id"							type="integer"					title="town_id" 						hidden="true"/>
 		<field name="town_name"							type="text"						title="status"/>
 		<field name="phone_shown"						type="text"						title="phone_shown"/>
 		<field name="concat_address" 					type="text"						title="address"/>
@@ -81,6 +82,7 @@
 				is_parallel_descr, 
 				for_contact, 
 				for_contact_desr,
+				town_id,
 				organization_id,
 				#if($criteria.isCallCenter)
 					decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.concat_address) as concat_address

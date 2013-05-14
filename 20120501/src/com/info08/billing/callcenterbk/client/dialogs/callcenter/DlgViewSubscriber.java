@@ -213,14 +213,26 @@ public class DlgViewSubscriber extends Window {
 					.append(" ");
 			sms_text.append(listGridRecord.getAttributeAsString("family_name"))
 					.append(";");
-			String address = listGridRecord.getAttributeAsString("concat_address");
+			String address = listGridRecord
+					.getAttributeAsString("concat_address");
+
 			if (address != null && !address.trim().equals("")) {
-				sms_text.append(address).append(";");
+				sms_text.append(address).append("; ");
 			}
 
 			String pPhone = listGridRecord.getAttributeAsString("shown_phones");
 			if (pPhone != null && !pPhone.trim().equals("")) {
-				sms_text.append(pPhone).append(";");
+				int phLength = pPhone.length();
+				if (pPhone.startsWith("2") && phLength == 7) {
+					pPhone = "032" + pPhone;
+				} else if (pPhone.startsWith("79")) {
+					pPhone = "0" + pPhone;
+				} else if (phLength == 9
+						&& (pPhone.startsWith("3") || pPhone.startsWith("4"))) {
+					pPhone = "0" + pPhone;
+				}
+
+				sms_text.append(pPhone).append(" ; ");
 			}
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();

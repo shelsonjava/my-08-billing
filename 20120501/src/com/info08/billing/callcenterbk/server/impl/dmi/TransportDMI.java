@@ -959,8 +959,8 @@ public class TransportDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Update BusRouteStreet Into Database : ",
-					e);
+			e.printStackTrace();
+			//logger.error("Error While Update BusRouteStreet Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {

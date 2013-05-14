@@ -976,11 +976,14 @@ public class DlgViewOrg extends Window {
 			Record recordParam = new Record();
 
 			recordParam.setAttribute("organization_id", organization_id);
-			recordParam.setAttribute("service_id",Constants.serviceOrganization);
-			recordParam.setAttribute("session_id", serverSession.getSessionId());
+			recordParam.setAttribute("service_id",
+					Constants.serviceOrganization);
+			recordParam
+					.setAttribute("session_id", serverSession.getSessionId());
 			recordParam.setAttribute("sms_text", sms_text.toString());
 			recordParam.setAttribute("phone", phone);
-			recordParam.setAttribute("rec_user", CommonSingleton.getInstance().getSessionPerson().getUser_name());
+			recordParam.setAttribute("rec_user", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name());
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");
@@ -1043,7 +1046,6 @@ public class DlgViewOrg extends Window {
 					sms_text.append(mainDetail).append(" ");
 				}
 			}
-			Integer town_id = record.getAttributeAsInt("town_id");
 			RecordList recordList = phonesGrid.getDataAsRecordList();
 			int length = recordList.getLength();
 			if (length > 0) {
@@ -1059,9 +1061,14 @@ public class DlgViewOrg extends Window {
 							|| dep_phone.equals(CallCenterBK.constants.daf())) {
 						continue;
 					}
-					if (dep_phone.startsWith("2") && town_id.equals(Constants.defCityTbilisiId)) {
+					int phLength = dep_phone.length();
+					if (dep_phone.startsWith("2") && phLength == 7) {
 						dep_phone = "032" + dep_phone;
 					} else if (dep_phone.startsWith("79")) {
+						dep_phone = "0" + dep_phone;
+					} else if (phLength == 9
+							&& (dep_phone.startsWith("3") || dep_phone
+									.startsWith("4"))) {
 						dep_phone = "0" + dep_phone;
 					}
 					phones.append(dep_phone).append(";").append(" ");
@@ -1099,8 +1106,9 @@ public class DlgViewOrg extends Window {
 			record.setAttribute("service_id", Constants.serviceOrganization);
 			record.setAttribute("session_id", serverSession.getSessionId());
 			record.setAttribute("sms_text", sms_text.toString());
-			record.setAttribute("phone", phone);			
-			record.setAttribute("rec_user", CommonSingleton.getInstance().getSessionPerson().getUser_name());
+			record.setAttribute("phone", phone);
+			record.setAttribute("rec_user", CommonSingleton.getInstance()
+					.getSessionPerson().getUser_name());
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");

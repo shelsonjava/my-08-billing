@@ -295,7 +295,7 @@ public class DlgAddEditOrganization extends Window {
 			orgFoundedItem.setUseMask(true);
 
 			superPriorityItem = new SelectItem();
-			superPriorityItem.setTitle(CallCenterBK.constants.extraPriority());
+			superPriorityItem.setTitle(CallCenterBK.constants.contractor());
 			superPriorityItem.setWidth(307);
 			superPriorityItem.setName("super_priority");
 			superPriorityItem.setDefaultToFirstOption(true);
