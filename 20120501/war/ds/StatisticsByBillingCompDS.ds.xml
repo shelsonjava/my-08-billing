@@ -29,7 +29,8 @@
 			<tableClause>STATISTIC_BY_BILLING_COMPANY t, BILLING_COMPANIES tc</tableClause>
 			<whereClause><![CDATA[
 				 t.billing_company_id = tc.billing_company_id
-				 #if($criteria.ym) and t.ym = $criteria.ym #end			 				
+				 #if($criteria.ym) and t.ym = $criteria.ym #end
+				 #if($criteria.operator_src) and t.operator_src = $criteria.operator_src #end
 				]]>  
 			</whereClause> 
 			<groupClause>tc.billing_company_id, t.ym, tc.billing_company_name</groupClause>

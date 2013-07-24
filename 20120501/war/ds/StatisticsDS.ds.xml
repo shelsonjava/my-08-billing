@@ -111,6 +111,7 @@
 					 #if($criteria.ym) and t.ym = $criteria.ym #end
 					 #if($criteria.stat_date_start) and trunc(t.stat_date) >= $criteria.stat_date_start #end
 					 #if($criteria.stat_date_end) and trunc(t.stat_date) <= $criteria.stat_date_end #end
+					 #if($criteria.operator_src) and t.operator_src = $criteria.operator_src #end
 				 #end				 
 				]]>  
 			</whereClause> 
@@ -157,7 +158,8 @@
 					 #if($criteria.ym) and t.ym = $criteria.ym #end
 					 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
 					 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end	
-				  #end			 
+				  #end
+				  #if($criteria.operator_src) and t.operator_src = $criteria.operator_src #end			 
 				]]>  
 			</whereClause> 
 			<groupClause>t.ym</groupClause>
@@ -191,6 +193,7 @@
 					 /*to_number(to_char(add_months(sysdate,-1),'yymm'))*/
 					 #if($criteria.ym_start) and t.ym >= $criteria.ym_start #end
 					 #if($criteria.ym_end) and t.ym <= $criteria.ym_end #end
+					 #if($criteria.operator_src) and t.operator_src = $criteria.operator_src #end
 			    #end				 
 				]]>  
 			</whereClause> 
@@ -225,7 +228,8 @@
 				 	 #foreach($str in $criteria.organization_name.split(" "))
 						and o.organization_name like '%'||'$str'||'%'
 					#end
-				 #end			
+				 #end	
+				 #if ($criteria.operator_src) and ls.operator_src = to_char($criteria.operator_src) and c.operator_src = $criteria.operator_src #end
 				]]>  
 			</whereClause> 
 			<groupClause>o.organization_id,o.organization_name,a.concat_address_with_town</groupClause>
@@ -260,6 +264,7 @@
 						and o.organization_name like '%'||'$str'||'%'
 					#end
 				 #end
+				 #if ($criteria.operator_src) and cs.operator_src = to_char($criteria.operator_src) #end
 				]]>  
 			</whereClause> 
 			<groupClause>o.organization_id, o.organization_name,a.concat_address_with_town</groupClause>	
@@ -289,13 +294,49 @@
 			</tableClause>
 			<whereClause><![CDATA[
 			       ch.year_month = $criteria.ym and cs.year_month = $criteria.ym and 
-			       ch.charge > 0 and cs.call_kind = 3 and
-			       o.organization_id = $criteria.organization_id
+			       ch.charge > 0 and
+			       o.organization_id = $criteria.organization_id and
+			       c.operator_src = $criteria.operator_src
+			       #if ($criteria.operator_src) and cs.operator_src = to_char($criteria.operator_src) #end
 				]]>  
 			</whereClause> 
 			<groupClause>o.organization_id,o.organization_name,trunc(ch.charge_date)</groupClause>
 			<orderClause>trunc(ch.charge_date)</orderClause>
     	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="searchOrgDetailStatisticsContr" operationType="fetch">
+    		<selectClause>   	
+    				   /* use_nl(ch,cs) ordered index(cs,IDX_CS_SESSION_ID) index (ch IDX_LOG_SCH_REC_DATE1) */
+		               to_char(trunc(ch.charge_date),'DD/MM/YYYY') as call_date,
+		               o.organization_id,
+		               o.organization_name,
+		               count(1) as call_count,
+		               case when to_number(to_char(trunc(ch.charge_date),'D')) = 1 or to_number(to_char(trunc(ch.charge_date),'D')) = 7 then 
+				    	1 else 
+				    	0 
+				   		end as week_day
+			</selectClause> 
+			<tableClause>
+				        call_session_expense ch
+				          inner join call_sessions cs on ch.session_id = cs.session_id
+				          inner join v_normalized_contractor_phones p on p.phone = cs.call_phone
+			              inner join corporate_clients c on c.corporate_client_id=p.corporate_client_id
+			              inner join organizations o on o.organization_id = c.organization_id
+			              left join v_full_address a on o.physical_address_id = a.addr_id 
+			</tableClause>
+			<whereClause><![CDATA[
+			       ch.year_month = $criteria.ym and cs.year_month = $criteria.ym and 
+			       ch.charge > 0 and
+			       o.organization_id = $criteria.organization_id and
+			       c.operator_src = $criteria.operator_src
+			       #if ($criteria.operator_src) and cs.operator_src = to_char($criteria.operator_src) #end
+				]]>  
+			</whereClause> 
+			<groupClause>o.organization_id,o.organization_name,trunc(ch.charge_date)</groupClause>
+			<orderClause>trunc(ch.charge_date)</orderClause>
+    	</operationBinding>
+    	
     	
     </operationBindings>	
 </DataSource>

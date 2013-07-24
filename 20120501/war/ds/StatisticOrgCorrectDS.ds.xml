@@ -18,6 +18,7 @@
 		<field name="fdate_cnt"					type="integer"			title="fdate_cnt"/>
 		<field name="ident_code_cnt"			type="integer"			title="ident_code_cnt"/>
 		<field name="legal_stat_cnt"			type="integer"			title="legal_stat_cnt"/>
+		<field name="soc_netw_cnt"				type="integer"			title="soc_netw_cnt"/>		
 		<field name="dayoffs_cnt"				type="integer"			title="dayoffs_cnt"/>
 		<field name="full_cnt"					type="integer"			title="full_cnt"/>
 		<field name="cnt_type"					type="integer"			title="dayoffs_cnt"/>
@@ -41,6 +42,7 @@
 				t.fdate_cnt,
 				t.ident_code_cnt,
 				t.legal_stat_cnt,
+				t.soc_netw_cnt,
 				t.dayoffs_cnt,
 				t.full_cnt,
 				t.cnt_type

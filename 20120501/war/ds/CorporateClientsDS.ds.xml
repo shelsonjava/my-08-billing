@@ -35,6 +35,7 @@
 		<field name="limitType"				type="integer"		title="limitType"				hidden="true"/>
 		<field name="contractor_type"		type="integer"		title="contractor_type"			hidden="true"/>
 		<field name="ident_code"			type="text"			title="ident_code"				hidden="true"/>
+		<field name="operator_src"			type="integer"		title="operator_src"			hidden="true"/>
 	</fields>
 	<operationBindings>		
 
@@ -101,7 +102,8 @@
 					t.sms_warning, 
 					t.range_curr_price,
 				  	mo1.organization_name,
-				  	decode(t.price_type,0,'მარტ.','რთული') as price_type_descr
+				  	decode(t.price_type,0,'მარტ.','რთული') as price_type_descr,
+				  	t.operator_src
 			</selectClause> 
 			<tableClause>corporate_clients t, organizations mo1</tableClause>
 			<whereClause><![CDATA[
@@ -119,6 +121,8 @@
 				 #if($criteria.limitType && $criteria.limitType == 0 ) and t.max_call_count <> -999999999 #end
 				 #if($criteria.limitType && $criteria.limitType == 1 ) and t.max_call_count =  -999999999 #end
 				 #if($criteria.corporate_client_id) and t.corporate_client_id =  $criteria.corporate_client_id #end
+				 #if($criteria.operator_src) and t.operator_src =  $criteria.operator_src #end
+				 
 				]]>  
 			</whereClause> 
 			<orderClause>t.corporate_client_id</orderClause>

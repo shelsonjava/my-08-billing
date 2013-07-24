@@ -6,6 +6,7 @@
 		<field name="remark"				type="text" 		title="remark" />
 		<field name="changer_user"			type="text" 		title="changer_user" />
 		<field name="org_ids" 				type="text" 		title="org_ids" 				hidden="true" />
+		<field name="operator_src"			type="integer"		title="operator_src"/>
 	</fields>
 	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.DefaultDMI"/>
 	

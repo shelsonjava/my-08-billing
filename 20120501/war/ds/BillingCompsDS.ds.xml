@@ -23,6 +23,9 @@
 		<field name="rate"						type="any"			title="rate"					hidden="true"/>
 		<field name="charge_date1"				type="text"			title="charge_date1"			hidden="true"/>
 		<field name="loggedUserName"			type="text"			title="loggedUserName"			hidden="true"/>
+		<field name="operator_src"				type="integer"		title="operator_src"			hidden="true"/>
+		<field name="mobile_company"			type="integer"		title="mobile_company"			hidden="true"/>
+		<field name="mobile_company_name"		type="text"			title="mobile_company_name"		hidden="true"/>		
 	</fields>
 
 	<operationBindings>		
@@ -38,27 +41,11 @@
 		<operationBinding operationType="update" operationId="updateBillingComp" serverMethod="updateBillingComp">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BillingCompsDMI"/>
         </operationBinding>
-        
-        <!-- Checking Tel. Comp. Indexes -->
-        <!-- 
-        <operationBinding operationType="validate" operationId="checkBillingCompIndexes" serverMethod="checkBillingCompIndexes">
-            <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BillingCompsDMI"/>
-        </operationBinding>
-         -->
-        
+
         <!-- Delete  BillingComp -->
 		<operationBinding operationType="remove" operationId="removeBillingComp" serverMethod="removeBillingComp">
             <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BillingCompsDMI"/>
         </operationBinding>
-         
-         <!--              
-         <validators>
-                <validator type="serverCustom" operationId="condition">
-                    <serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.BillingCompsDMI"/>
-                    <errorMessage>Only $available in stock</errorMessage>
-                </validator>
-         </validators>
-         -->
                      
         
     	<operationBinding operationId="searchAllBillingComps" operationType="fetch">
@@ -68,7 +55,10 @@
 					t.our_percent,
 					t.has_calculation,
 					decode(t.has_calculation,1,'დიახ',0,'არა','ყველა') as has_calculation_descr,
-					t.call_price					
+					t.call_price,
+					t.operator_src,
+					t.mobile_company,
+					t.mobile_company_name
 			</selectClause> 
 			<tableClause>BILLING_COMPANIES t</tableClause>
 			<whereClause><![CDATA[
@@ -78,6 +68,7 @@
 				 	and t.billing_company_id in (select tt.billing_company_id from BILLING_COMPANIES_IND tt where $criteria.phoneIndex between tt.bill_index_start and bill_index_end) 				 	
 				 #end
 				 #if($criteria.has_calculation) and t.has_calculation = $criteria.has_calculation #end
+				 #if($criteria.operator_src) and t.operator_src =  $criteria.operator_src #end
 				]]>  
 			</whereClause> 
 			<orderClause>t.billing_company_id</orderClause>
@@ -108,9 +99,11 @@
 					  where tc.billing_company_id = $criteria.billing_company_id
 					        and my_to_number(t.call_phone) >= my_to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
 					        and my_to_number(t.call_phone) <= my_to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
+					        and t.operator_src = to_char(tc.operator_src)
 					) 
 					and getcontractorpricenew(t.call_phone)=-999999999
 					#if($criteria.no_email) and t.call_kind <> 11 #end
+					#if($criteria.operator_src) and t.operator_src = to_char($criteria.operator_src) #end
 					
 				]]>  
 			</whereClause> 
@@ -139,9 +132,11 @@
 					  where tc.billing_company_id = $criteria.billing_company_id
 					        and my_to_number(t.call_phone) >= my_to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
 					        and my_to_number(t.call_phone) <= my_to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
+					        and t.operator_src = to_char(tc.operator_src)
 					) 
 					and getcontractorpricenew(t.call_phone)=-999999999
 					#if($criteria.no_email) and t.call_kind <> 11 #end
+					#if($criteria.operator_src) and t.operator_src = to_char($criteria.operator_src) #end
 				]]>  
 			</whereClause> 
     	</operationBinding>

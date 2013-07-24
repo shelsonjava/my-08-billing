@@ -90,7 +90,8 @@
 					ts.depart_transp_stat_id = o.transp_stat_id and o.town_id = oc.town_id and
 					ts.arrival_transp_stat_id = i.transp_stat_id and i.town_id = ic.town_id and
 					ts.transp_comp_id = tc.transp_comp_id(+) and
-					ts.transp_res_id = tp.transp_res_id(+)  
+					ts.transp_res_id = tp.transp_res_id(+)					 
+					#if($criteria.transp_schedule_id) and ts.transp_schedule_id = $criteria.transp_schedule_id #end
 					#if($criteria.transp_type_id) and ts.transp_type_id = $criteria.transp_type_id #end
 					#if($criteria.depart_transp_stat_id) and ts.depart_transp_stat_id = $criteria.depart_transp_stat_id #end
 					#if($criteria.arrival_transp_stat_id) and ts.arrival_transp_stat_id = $criteria.arrival_transp_stat_id #end

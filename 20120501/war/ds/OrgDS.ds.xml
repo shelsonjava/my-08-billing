@@ -96,6 +96,7 @@
 		<field name="concat_phones"					type="text"  		title="concat_phones"					hidden="true"/>
 		<field name="concat_activity_descrs"		type="text"  		title="concat_activity_descrs"			hidden="true"/>
 		<field name="flow_priority" 				type="integer" 		title="flow_priority" 					hidden="true"/>
+		<field name="flow_priority_09" 				type="integer" 		title="flow_priority_09" 				hidden="true"/>
 		<field name="is_org_contractor" 			type="integer" 		title="is_org_contractor" 				hidden="true"/>
 		<field name="concat_org_partner_banks"		type="text"  		title="concat_org_partner_banks"/>
 		<field name="hist_start_date"   			type="datetime" 	title="hs_hist_start_date"/>
@@ -217,6 +218,7 @@
 							o.priority,
 	             			o.super_priority,
 	             			o.flow_priority,
+	             			o.flow_priority_09,
 							o.ident_code,
 							o.ident_code_new,
 							decode(o.ident_code_new,null,o.ident_code,o.ident_code_new) as unique_ident_code,
@@ -497,9 +499,8 @@
 						#if($criteria.pp_organization_id)
 							hr.my_rownum 
 						#else
-							sort_by_tbilisi(a.town_id), o.flow_priority,  nvl(o.parrent_organization_id,0), o.priority 
-						#end
-				
+							sort_by_tbilisi(a.town_id), decode($criteria.operator_src, '11809', o.flow_priority_09, o.flow_priority),  nvl(o.parrent_organization_id,0), o.priority 
+						#end				
 			</orderClause>
 		</operationBinding>
 		

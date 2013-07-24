@@ -12,6 +12,7 @@
 		<field name="call_end_date"   			type="datetime"  		title="End date"/>
 		<field name="call_phone"   				type="text"  			title="Phone"/>
 		<field name="uname"   					type="text"  			title="User"/>
+		<field name="remark"   					type="text"  			title="remark"/>
 		
 	</fields>
 	<operationBindings>
@@ -76,25 +77,26 @@
 					  k.organization_id as real_org_id,
 					  k.organization_name as org_name,
 					  k.organization_name as real_name,
+					  k.remark,
 					  sum(k.cnt) as cnt
 					from (
-					  select ce.session_id,ce.organization_id,o.organization_name,1 as cnt from ccare.call_sessions t
+					  select ce.session_id,ce.organization_id,o.organization_name,o.remark, 1 as cnt from ccare.call_sessions t
 					         inner join ccare.call_session_expense ce on ce.call_session_id = t.call_session_id
 					         inner join ccare.org_priorities op on op.org_id = ce.organization_id
 					         inner join ccare.organizations o on o.organization_id = op.org_id
 					  where t.year_month = to_number(to_char($criteria.vHistDate,'YYMM')) and ce.year_month >= to_number(to_char($criteria.vHistDate,'YYMM'))
 					  		#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end
-					  group by ce.session_id, ce.organization_id,o.organization_name
+					  group by ce.session_id, ce.organization_id,o.organization_name, o.remark
 					  union all
-					  select sms.session_call_id, o.organization_id,o.organization_name,1 as cnt from ccare.sent_sms_hist sms 
+					  select sms.session_call_id, o.organization_id,o.organization_name,o.remark, 1 as cnt from ccare.sent_sms_hist sms 
 					         inner join ccare.org_priorities op on op.org_id = sms.organization_id
 					         inner join ccare.organizations o on o.organization_id = op.org_id       
 					  where to_number(to_char(sms.message_sent_time,'YYMM')) = to_number(to_char($criteria.vHistDate,'YYMM')) and 
 					        sms.organization_id is not null 
 					        #if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end
-					  group by sms.session_call_id,o.organization_id,o.organization_name      
+					  group by sms.session_call_id,o.organization_id,o.organization_name, o.remark      
 					) k
-					group by k.organization_id,k.organization_name 
+					group by k.organization_id,k.organization_name , k.remark
             	 ]]>
             </customSQL> 
     	</operationBinding>

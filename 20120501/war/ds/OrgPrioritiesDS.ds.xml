@@ -5,5 +5,13 @@
 		<field name="org_id"   				 	type="text"  			title="org_id"/>
 		<field name="priority_order"   			type="integer"  		title="priority_order"/>
 		<field name="org_name"   				type="text"  			title="org_name"/>
+		<field name="operator_src"				type="integer"			title="operator_src"/>
 	</fields>
+	
+	<operationBindings>
+		<operationBinding operationType="fetch">
+			<orderClause>priority_order</orderClause>
+		</operationBinding>		
+	</operationBindings>
+	
 </DataSource>

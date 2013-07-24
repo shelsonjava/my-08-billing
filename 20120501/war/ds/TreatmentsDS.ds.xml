@@ -1,46 +1,41 @@
-<DataSource ID="TreatmentsDS" serverType="sql" tableName="treatments"
-	qualifyColumnNames="false" dropExtraFields="false">
+<DataSource 
+	ID="TreatmentsDS" 
+	serverType="sql" 
+	tableName="treatments"
+	qualifyColumnNames="false" 
+	dropExtraFields="false">
+	
 	<fields>
-		<field name="treatment_id" type="integer" title="treatment_id"
-			hidden="true" primaryKey="true" />
+		<field name="treatment_id" type="integer" title="treatment_id" hidden="true" primaryKey="true" />
 		<field name="treatment" type="text" title="treatment" />
 		<field name="phone_number" type="text" title="phone_number" />
 		<field name="gender" type="integer" title="gender" />
 		<field name="visible" type="integer" title="visible" />
 		<field name="gender_descr" type="text" title="gender_descr" />
 		<field name="visible_descr" type="text" title="visible_descr" />
-		<field name="loggedUserName" type="text" title="Logged UserName"
-			hidden="true" />
+		<field name="loggedUserName" type="text" title="Logged UserName" hidden="true" />
 	</fields>
 
-	<serverObject lookupStyle="new"
-		className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
+	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
 
 	<operationBindings>
 		<!-- Add -->
-		<operationBinding operationType="add" operationId="addTreatment"
-			serverMethod="addTreatment">
-			<serverObject lookupStyle="new"
-				className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
+		<operationBinding operationType="add" operationId="addTreatment" serverMethod="addTreatment">
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
 		</operationBinding>
 
 		<!-- Update -->
-		<operationBinding operationType="update" operationId="updateTreatments"
-			serverMethod="updateTreatments">
-			<serverObject lookupStyle="new"
-				className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
+		<operationBinding operationType="update" operationId="updateTreatments" serverMethod="updateTreatments">
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
 		</operationBinding>
 
 		<!-- Delete -->
-		<operationBinding operationType="remove" operationId="removeTreatments"
-			serverMethod="removeTreatments">
-			<serverObject lookupStyle="new"
-				className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
+		<operationBinding operationType="remove" operationId="removeTreatments" serverMethod="removeTreatments">
+			<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
 		</operationBinding>
 
 		<!-- FETCH - For Correction -->
-		<operationBinding operationId="searchFromDB"
-			operationType="fetch">
+		<operationBinding operationId="searchFromDB" operationType="fetch">
 			<selectClause>
 				   t.treatment_id
 			      ,t.phone_number
@@ -60,8 +55,6 @@
 				#if($criteria.treatment_id) and t.treatment_id = $criteria.treatment_id #end
 				]]>
 			</whereClause>
-			<orderClause>t.treatment</orderClause>
 		</operationBinding>
-
 	</operationBindings>
 </DataSource>

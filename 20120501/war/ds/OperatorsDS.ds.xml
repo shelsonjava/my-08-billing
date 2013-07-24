@@ -1,0 +1,33 @@
+<DataSource 
+	ID="OperatorsDS" 
+	serverType="sql"
+	tableName="operators" 
+	qualifyColumnNames="false">
+
+	<fields>
+		<field name="id" 					type="integer"		title="id"			hidden="true" primaryKey="true" />
+		<field name="operator_src" 			type="integer" 		title="operator_src"/>
+		<field name="operator_src_descr" 	type="text" 		title="operator_src_descr"/>
+	</fields>
+
+	<operationBindings>
+		<!-- FETCH -->
+		
+		<operationBinding operationId="searchOperators" operationType="fetch">
+			<selectClause>				
+      			t.id,
+      			t.operator_src,
+      			t.operator_src_descr
+			</selectClause>
+			<tableClause>				
+				operators t
+			</tableClause>
+			<whereClause><![CDATA[ 
+				1 = 1				
+				]]>
+			</whereClause>
+			<orderClause>t.id</orderClause>
+		</operationBinding>		
+				
+	</operationBindings>
+</DataSource>
