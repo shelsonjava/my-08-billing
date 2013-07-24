@@ -58,6 +58,7 @@ public class ClientMapUtil {
 	private LinkedHashMap<String, String> gender;
 	private LinkedHashMap<String, String> visible;
 	private LinkedHashMap<String, String> statisticTypes;
+	private LinkedHashMap<String, String> isMobileCompany;
 
 	protected ClientMapUtil() {
 		mapOpClose = new LinkedHashMap<String, String>();
@@ -104,6 +105,7 @@ public class ClientMapUtil {
 		visible = new LinkedHashMap<String, String>();
 		dayOffs = new LinkedHashMap<String, String>();
 		statisticTypes = new LinkedHashMap<String, String>();
+		isMobileCompany = new LinkedHashMap<String, String>();
 
 		mapOpClose.put("0", "ღია");
 		mapOpClose.put("1", "დაფარულია");
@@ -273,6 +275,9 @@ public class ClientMapUtil {
 		statisticTypes.put("1", CallCenterBK.constants.direct());
 		statisticTypes.put("2", CallCenterBK.constants.nonDirect());
 		statisticTypes.put("0", CallCenterBK.constants.government());
+		
+		isMobileCompany.put("0", "არა");
+		isMobileCompany.put("1", "დიახ");
 	}
 
 	public LinkedHashMap<String, String> getCallTypes() {
@@ -449,5 +454,8 @@ public class ClientMapUtil {
 
 	public LinkedHashMap<String, String> getStatisticTypes() {
 		return statisticTypes;
+	}
+	public LinkedHashMap<String, String> getIsMobileCompany() {
+		return isMobileCompany;
 	}
 }

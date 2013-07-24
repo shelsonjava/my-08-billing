@@ -478,6 +478,16 @@ public class DlgViewOrg extends Window {
 			Criteria criteriaInner1 = new Criteria();
 			criteriaInner1.setAttribute("organization_id",
 					parrent_organization_id);
+			criteriaInner1.setAttribute("operator_src",
+					Constants.OPERATOR_11808);
+			ServerSession serverSession = CommonSingleton.getInstance()
+					.getServerSession();
+			if (serverSession != null && serverSession.isWebSession()
+					&& serverSession.getOperatorSrc() != null) {
+				criteriaInner1.setAttribute("operator_src",
+						serverSession.getOperatorSrc());
+			}
+
 			listGridOrgTreeParrent.setCriteria(criteriaInner1);
 			listGridOrgTreeParrent.setWidth100();
 			listGridOrgTreeParrent.setHeight(70);
@@ -541,6 +551,13 @@ public class DlgViewOrg extends Window {
 			Criteria criteriaInner = new Criteria();
 			criteriaInner.setAttribute("parrent_organization_id",
 					organization_id);
+			criteriaInner
+					.setAttribute("operator_src", Constants.OPERATOR_11808);
+			if (serverSession != null && serverSession.isWebSession()
+					&& serverSession.getOperatorSrc() != null) {
+				criteriaInner.setAttribute("operator_src",
+						serverSession.getOperatorSrc());
+			}
 			listGridOrgTreeChilds.setCriteria(criteriaInner);
 			listGridOrgTreeChilds.setWidth100();
 			listGridOrgTreeChilds.setHeight100();
@@ -962,6 +979,13 @@ public class DlgViewOrg extends Window {
 			if (webaddress != null && !webaddress.trim().equals("")) {
 				sms_text.append("web: ").append(webaddress).append("; ");
 			}
+			String social_address = record
+					.getAttributeAsString("social_address");
+
+			if (social_address != null && !social_address.trim().equals("")) {
+				sms_text.append("soc. addr: ").append(social_address)
+						.append("; ");
+			}
 
 			String new_identcode = record
 					.getAttributeAsString("ident_code_new");
@@ -1027,12 +1051,12 @@ public class DlgViewOrg extends Window {
 			}
 			CanvasDisableTimer.addCanvasClickTimer(sendDepInfoSMS);
 			StringBuilder sms_text = new StringBuilder();
-			String legal_statuse = record
-					.getAttributeAsString("legal_form_desc");
-			if (legal_statuse != null
-					&& !legal_statuse.trim().equalsIgnoreCase("")) {
-				sms_text.append(legal_statuse).append(" ");
-			}
+			// String legal_statuse = record
+			// .getAttributeAsString("legal_form_desc");
+			// if (legal_statuse != null
+			// && !legal_statuse.trim().equalsIgnoreCase("")) {
+			// sms_text.append(legal_statuse).append(" ");
+			// }
 			String org_name = record.getAttributeAsString("organization_name");
 			sms_text.append(org_name).append("; ");
 
@@ -1083,21 +1107,21 @@ public class DlgViewOrg extends Window {
 
 			if (real_address != null
 					&& !real_address.trim().equalsIgnoreCase("")) {
-				sms_text.append("mis:").append(real_address).append("; ");
+				sms_text.append(real_address).append("; ");
 			}
 
-			String mail = record.getAttributeAsString("email_address");
-			if (mail != null && !mail.trim().equalsIgnoreCase("")) {
-				sms_text.append("mail: ");
-				sms_text.append(mail).append("; ");
-			}
+			// String mail = record.getAttributeAsString("email_address");
+			// if (mail != null && !mail.trim().equalsIgnoreCase("")) {
+			// sms_text.append("mail: ");
+			// sms_text.append(mail).append("; ");
+			// }
 
-			String webaddress = record.getAttributeAsString("web_address");
-
-			if (webaddress != null && !webaddress.trim().equals("")) {
-				sms_text.append("web: ");
-				sms_text.append(webaddress).append("; ");
-			}
+			// String webaddress = record.getAttributeAsString("web_address");
+			//
+			// if (webaddress != null && !webaddress.trim().equals("")) {
+			// sms_text.append("web: ");
+			// sms_text.append(webaddress).append("; ");
+			// }
 
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();

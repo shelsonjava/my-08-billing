@@ -4,9 +4,11 @@ import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatByBillingCompGraph;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -21,6 +23,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -38,6 +41,7 @@ public class TabStatByBillingComps extends Tab {
 	private VLayout mainLayout;
 
 	private DateItem dateItem;
+	private SelectItem operatorItem;
 	// private DateItem dateItemEnd;
 	// actions
 	private IButton findButton;
@@ -67,7 +71,7 @@ public class TabStatByBillingComps extends Tab {
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth(600);
-			searchForm.setNumCols(4);
+			searchForm.setNumCols(2);
 
 			mainLayout.addMember(searchForm);
 
@@ -80,7 +84,15 @@ public class TabStatByBillingComps extends Tab {
 			dateItem.setValue(date);
 			dateItem.setWidth(200);
 
-			searchForm.setFields(dateItem);
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(200);
+			operatorItem.setName("operator_src");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
+			searchForm.setFields(operatorItem, dateItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(287);
@@ -131,7 +143,8 @@ public class TabStatByBillingComps extends Tab {
 			listGrid.setShowAllRecords(true);
 
 			ListGridField billing_company_name = new ListGridField(
-					"billing_company_name", CallCenterBK.constants.billingComps(), 250);
+					"billing_company_name",
+					CallCenterBK.constants.billingComps(), 250);
 
 			ListGridField calls_cnt = new ListGridField("calls_cnt",
 					CallCenterBK.constants.count(), 100);
@@ -252,6 +265,10 @@ public class TabStatByBillingComps extends Tab {
 			dsRequest.setOperationId("searchStatsByBillingComp");
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("ym", ym);
+			Integer operator_src = Integer.parseInt(operatorItem
+					.getValueAsString());
+			criteria.setAttribute("operator_src", operator_src);
+			criteria.setAttribute("uqdfsd", HTMLPanel.createUniqueId());
 
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override

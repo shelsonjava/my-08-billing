@@ -73,6 +73,12 @@ public class CorporateClient implements Serializable {
 	@Basic
 	@Column(name = "RANGE_CURR_PRICE")
 	private BigDecimal range_curr_price;
+	
+	
+	@Basic
+	@Column(name = "OPERATOR_SRC")
+	private Long operator_src;
+	
 
 	@Transient
 	private String loggedUserName;
@@ -262,5 +268,12 @@ public class CorporateClient implements Serializable {
 	public void setContract_start_date(Timestamp contract_start_date) {
 		this.contract_start_date = contract_start_date;
 	}
+	
+	public Long getOperator_src() {
+		return operator_src;
+	}
 
+	public void setOperator_src(Long operator_src) {
+		this.operator_src = operator_src;
+	}
 }

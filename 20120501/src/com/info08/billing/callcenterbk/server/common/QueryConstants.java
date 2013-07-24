@@ -4,6 +4,7 @@ public interface QueryConstants {
 	
 	
 	public static final String Q_GET_CALL_KIND = " select nvl(max(t.call_kind),0) from ccare.call_sessions t where t.call_session_id = ? ";
+	public static final String Q_GET_CALL_OPERATOR_SRC = " select to_number(nvl(max(t.operator_src),11808)) as operator_src from ccare.call_sessions t where t.call_session_id = ? ";
 	
 	
 	public static final String Q_GET_CC_USER_NEWS_CNT = 
@@ -34,14 +35,18 @@ public interface QueryConstants {
 	public static final String Q_UPDATE_STREET_TRUXA =" update ccare.addresses t set t.town_id = t.town_id where t.street_id = ? ";
 	
 	
-	//public static final String Q_GET_CALL_PRICE = "select getchargeprice(?,?) as price from dual";
-	public static final String Q_GET_CALL_PRICE_NEW = "select getChargePriceNew(?,?,?) as price from dual";
+	public static final String Q_GET_CALL_PRICE_NEW = "select getChargePriceNew(?,?,?,?) as price from dual";
 	
 	public static final String Q_GET_VIRTUAL_SESSION_ID = " select 'VIRT.'||seq_virtual_session_id.nextval as session_id from dual ";
 
-	public static final String Q_GET_BILLING_COMP_IND = " select count(1) from BILLING_COMPANIES_IND t where ? between t.bill_index_start and t.bill_index_end ";
+	public static final String Q_GET_BILLING_COMP_IND = "select count(1) from ccare.BILLING_COMPANIES_IND t\n" +
+					"       inner join ccare.billing_companies c on c.billing_company_id = t.billing_company_id\n" + 
+					"where ? between t.bill_index_start and t.bill_index_end and c.operator_src = ? ";
 
-	public static final String Q_GET_BILLING_COMP_IND_BY_ID = " select count(1) from BILLING_COMPANIES_IND t where ? between t.bill_index_start and t.bill_index_end and t.billing_company_id <> ? ";
+	public static final String Q_GET_BILLING_COMP_IND_BY_ID = "select count(1) from BILLING_COMPANIES_IND t\n" +
+					"       inner join ccare.billing_companies c on c.billing_company_id = t.billing_company_id\n" + 
+					"where ? between t.bill_index_start and t.bill_index_end and t.billing_company_id <> ? and c.operator_src = ? ";
+
 
 	public static final String Q_GET_BILLING_COMP_BILL_BY_DAY = "select\n"
 			+ "      t.phone as phonea,\n"
@@ -878,6 +883,67 @@ public interface QueryConstants {
 			+ "   and o.organization_id = od.organization_id\n"
 			+ "   and o.parrent_organization_id is null\n"
 			+ "   and pn.phone = ? \n" + "   and rownum < 2";
+	
+	
+
+	public static final String Q_GET_ORG_ABONENT_NEW = "select l1.organization_id,l1.organization_name,l1.bid from (\n" +
+			"  select l.organization_id,l.organization_name,l.bid from (\n" + 
+			"    select kk.organization_id,kk.organization_name,\n" + 
+			"           decode(to_char(kk.found_date, 'dd/mm'), to_char(sysdate, 'dd/mm'), 1, 0) as bid ,\n" + 
+			"           1 as priority\n" + 
+			"    from (\n" + 
+			"      select k.organization_id,k.organization_name,k.parrent_organization_id,k.found_date from (\n" + 
+			"        select\n" + 
+			"          oo.organization_id,\n" + 
+			"          oo.organization_name,\n" + 
+			"          oo.parrent_organization_id,\n" + 
+			"          oo.found_date\n" + 
+			"        from ccare.organizations oo\n" + 
+			"        start with oo.organization_id in (\n" + 
+			"            select\n" + 
+			"                   o.organization_id\n" + 
+			"            from ccare.phone_numbers t\n" + 
+			"                   inner join ccare.organization_depart_to_phones p on p.phone_number_id = t.phone_number_id\n" + 
+			"                   inner join ccare.organization_department od on od.org_department_id = p.org_department_id\n" + 
+			"                   inner join ccare.organizations o on o.organization_id = od.organization_id\n" + 
+			"            where t.phone = ?)\n" + 
+			"        connect by prior oo.organization_id = oo.parrent_organization_id\n" + 
+			"        ) k\n" + 
+			"      order by k.parrent_organization_id desc, k.organization_id\n" + 
+			"      ) kk\n" + 
+			"    where kk.organization_name like '%(%' and rownum< 2\n" + 
+			"\n" + 
+			"    union all\n" + 
+			"\n" + 
+			"    select kk.organization_id,kk.organization_name,\n" + 
+			"           decode(to_char(kk.found_date, 'dd/mm'), to_char(sysdate, 'dd/mm'), 1, 0) as bid ,\n" + 
+			"           2 as priority\n" + 
+			"    from (\n" + 
+			"      select k.organization_id,k.organization_name,k.parrent_organization_id,k.found_date from (\n" + 
+			"        select\n" + 
+			"          oo.organization_id,\n" + 
+			"          oo.organization_name,\n" + 
+			"          oo.parrent_organization_id,\n" + 
+			"          oo.found_date\n" + 
+			"        from ccare.organizations oo\n" + 
+			"        start with oo.organization_id in (\n" + 
+			"            select\n" + 
+			"                   o.organization_id\n" + 
+			"            from ccare.phone_numbers t\n" + 
+			"                   inner join ccare.organization_depart_to_phones p on p.phone_number_id = t.phone_number_id\n" + 
+			"                   inner join ccare.organization_department od on od.org_department_id = p.org_department_id\n" + 
+			"                   inner join ccare.organizations o on o.organization_id = od.organization_id\n" + 
+			"            where t.phone = ? )\n" + 
+			"        connect by prior oo.organization_id = oo.parrent_organization_id\n" + 
+			"        ) k\n" + 
+			"      order by k.parrent_organization_id desc, k.organization_id\n" + 
+			"      ) kk\n" + 
+			"    ) l\n" + 
+			"  order by l.priority ) l1\n" + 
+			"where rownum < 2";
+
+	
+	
 
 	public static final String Q_GET_WEB_SESSION_ID = " select (to_number(to_char(sysdate,'YYMM'))*1000000 + SEQ_LOG_CALLS.nextval) AS sessionID from dual ";
 
@@ -1297,5 +1363,5 @@ public interface QueryConstants {
 			+ "where t.staff_id = ?";
 
 	public static final String Q_GET_CORP_CLIENT_PHONES = "select phone_number from corp_client_phones cp where cp.corporate_client_id=?";
-
+	
 }

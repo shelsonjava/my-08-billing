@@ -1,6 +1,9 @@
 package com.info08.billing.callcenterbk.shared.common;
 
 public interface Constants {
+	
+	public static final String OPERATOR_11808 = "11808";
+	public static final String OPERATOR_11809 = "11809";
 	public static final String discSMSDefText = "Tqveni informacia garkvevis procesSia, miiRebT pasuxs mogvianebiT. sainformacio centri 08";
 	public static final String sessionFilesUrl = "http://192.168.1.254:8083/cgi-bin/find.pl";
 	public static final String hrImagesDirUrl = "http://192.168.1.254:8083/cgi-bin/upload.pl";

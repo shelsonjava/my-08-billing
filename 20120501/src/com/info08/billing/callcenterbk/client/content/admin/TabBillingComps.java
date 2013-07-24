@@ -6,6 +6,7 @@ import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetBillingCompsBi
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetBillingCompsBillByMonth;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -41,6 +42,7 @@ public class TabBillingComps extends Tab {
 	private TextItem billingCompNameItem;
 	private TextItem phoneIndexItem;
 	private SelectItem hasCalcItem;
+	private SelectItem operatorItem;
 
 	private IButton findButton;
 	private IButton clearButton;
@@ -72,7 +74,7 @@ public class TabBillingComps extends Tab {
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth(830);
 			searchForm.setTitleWidth(250);
-			searchForm.setNumCols(2);
+			searchForm.setNumCols(4);
 			mainLayout.addMember(searchForm);
 
 			billingCompNameItem = new TextItem();
@@ -93,8 +95,16 @@ public class TabBillingComps extends Tab {
 			hasCalcItem.setValueMap(ClientMapUtil.getInstance()
 					.getHasCalculations());
 
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(200);
+			operatorItem.setName("operator_src");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
 			searchForm.setFields(billingCompNameItem, phoneIndexItem,
-					hasCalcItem);
+					hasCalcItem, operatorItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(830);
@@ -363,6 +373,9 @@ public class TabBillingComps extends Tab {
 				criteria.setAttribute("has_calculation",
 						Integer.parseInt(has_calculation_str));
 			}
+			Integer operator_src = Integer.parseInt(operatorItem
+					.getValueAsString());
+			criteria.setAttribute("operator_src", operator_src);
 
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "searchAllBillingComps");

@@ -14,6 +14,7 @@ import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItemDa
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxRecord;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -67,6 +68,7 @@ public class DlgAddEditContractor extends Window {
 	private TextItem normalPriceItem;
 	private CheckboxItem reCalcRancePriceItem;
 	private TextItem currrentPriceItem;
+	private SelectItem operatorItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
@@ -218,9 +220,17 @@ public class DlgAddEditContractor extends Window {
 			normalPriceItem.setName("normalPriceItem");
 			normalPriceItem.setKeyPressFilter("[0-9\\.]");
 
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(250);
+			operatorItem.setName("operatorItem");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
 			dynamicForm.setFields(noteItem, contractorType, critNumberItem,
 					startDateItem, endDateItem, blockItem, smsWarnItem,
-					priceTypeItem, normalPriceItem);
+					priceTypeItem, normalPriceItem, operatorItem);
 
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setWidth100();
@@ -701,6 +711,11 @@ public class DlgAddEditContractor extends Window {
 				currrentPriceItem.setValue(range_curr_price);
 			}
 
+			Integer operator_src = editRecord.getAttributeAsInt("operator_src");
+			if (operator_src != null) {
+				operatorItem.setValue(operator_src);
+			}
+
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -791,6 +806,10 @@ public class DlgAddEditContractor extends Window {
 			if (isPriceType != null && isPriceType.booleanValue()) {
 				price_type = new Integer(1);
 			}
+			
+			Integer operator_src = Integer.parseInt(operatorItem.getValueAsString());
+			
+			
 			Boolean priceType = priceTypeItem.getValueAsBoolean();
 			String normalPrice = normalPriceItem.getValueAsString();
 			SortedMap<Integer, SortedMap<Integer, String>> sorted = new TreeMap<Integer, SortedMap<Integer, String>>();
@@ -917,6 +936,7 @@ public class DlgAddEditContractor extends Window {
 			record.setAttribute("contractorAdvPrices", sortedParam);
 			record.setAttribute("contractorAdvPhones", contractorAdvPhones);
 			record.setAttribute("max_call_count", max_call_count);
+			record.setAttribute("operator_src", operator_src);
 
 			record.setAttribute("range_curr_price",
 					currrentPriceItem.getValueAsString());
@@ -927,44 +947,45 @@ public class DlgAddEditContractor extends Window {
 				record.setAttribute("checkContractor", 0);
 			}
 
-//			if (contractorAdvPhones != null && !contractorAdvPhones.isEmpty()) {
-//				checkContractPhones(record, contractorAdvPhones);
-//			} else {
-				saveContract(record);
-//			}
+			// if (contractorAdvPhones != null &&
+			// !contractorAdvPhones.isEmpty()) {
+			// checkContractPhones(record, contractorAdvPhones);
+			// } else {
+			saveContract(record);
+			// }
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
 
-//	private void checkContractPhones(final Record record,
-//			LinkedHashMap<String, String> map) {
-//		try {
-//			DataSource ds = DataSource.get("CorporateClientsDS");
-//			com.smartgwt.client.rpc.RPCManager.startQueue();
-//			DSRequest req = new DSRequest();
-//			Criteria cr = new Criteria();
-//
-//			cr.setAttribute("contractorAdvPhones", map);
-//			cr.setAttribute("organization_id", organization_id);
-//
-//			req.setOperationId("checkPhones");
-//			ds.fetchData(cr, new DSCallback() {
-//
-//				@Override
-//				public void execute(DSResponse response, Object rawData,
-//						DSRequest request) {
-//					saveContract(record);
-//				}
-//			}, req);
-//
-//			com.smartgwt.client.rpc.RPCManager.sendQueue();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			SC.say(e.toString());
-//		}
-//	}
+	// private void checkContractPhones(final Record record,
+	// LinkedHashMap<String, String> map) {
+	// try {
+	// DataSource ds = DataSource.get("CorporateClientsDS");
+	// com.smartgwt.client.rpc.RPCManager.startQueue();
+	// DSRequest req = new DSRequest();
+	// Criteria cr = new Criteria();
+	//
+	// cr.setAttribute("contractorAdvPhones", map);
+	// cr.setAttribute("organization_id", organization_id);
+	//
+	// req.setOperationId("checkPhones");
+	// ds.fetchData(cr, new DSCallback() {
+	//
+	// @Override
+	// public void execute(DSResponse response, Object rawData,
+	// DSRequest request) {
+	// saveContract(record);
+	// }
+	// }, req);
+	//
+	// com.smartgwt.client.rpc.RPCManager.sendQueue();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// SC.say(e.toString());
+	// }
+	// }
 
 	private void saveContract(Record record) {
 		try {

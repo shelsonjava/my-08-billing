@@ -186,6 +186,8 @@ public class TabStatOrgCorrect extends Tab {
 					CallCenterBK.constants.address(), 80);
 			ListGridField mail_cnt = new ListGridField("mail_cnt",
 					CallCenterBK.constants.eMail(), 70);
+			ListGridField soc_netw_cnt = new ListGridField("soc_netw_cnt",
+					CallCenterBK.constants.socialAddress(), 70);			
 			ListGridField web_cnt = new ListGridField("web_cnt",
 					CallCenterBK.constants.webaddress(), 80);
 			ListGridField director_cnt = new ListGridField("director_cnt",
@@ -218,9 +220,10 @@ public class TabStatOrgCorrect extends Tab {
 			ident_code_cnt.setAlign(Alignment.CENTER);
 			legal_stat_cnt.setAlign(Alignment.CENTER);
 			dayoffs_cnt.setAlign(Alignment.CENTER);
+			soc_netw_cnt.setAlign(Alignment.CENTER);
 
 			listGrid.setFields(stat_date_descr, full_cnt, name_cnt, phone_cnt,
-					ph_addr_cnt, mail_cnt, web_cnt, director_cnt,
+					ph_addr_cnt, mail_cnt, web_cnt, soc_netw_cnt, director_cnt,
 					part_bank_cnt, staff_count_cnt, fdate_cnt, ident_code_cnt,
 					legal_stat_cnt, dayoffs_cnt);
 

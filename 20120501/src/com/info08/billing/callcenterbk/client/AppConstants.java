@@ -782,4 +782,6 @@ public interface AppConstants extends Constants {
 	String addressShort();
 	String directorShort();
 	String contractor();
+	String mobileOperator();
+	String mobileOperatorName();
 }

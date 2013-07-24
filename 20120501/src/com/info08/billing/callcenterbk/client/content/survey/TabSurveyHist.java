@@ -236,6 +236,8 @@ public class TabSurveyHist extends Tab {
 			// rec_date.setDateFormatter(DateDisplayFormat.TOEUROPEANSHORTDATETIME);
 			ListGridField upd_user = new ListGridField("loked_user",
 					CallCenterBK.constants.updUser(), 100);
+			ListGridField operator_src = new ListGridField("operator_src",
+					CallCenterBK.constants.operator(), 80);
 
 			survey_kind_name.setAlign(Alignment.LEFT);
 			p_numb.setAlign(Alignment.LEFT);
@@ -243,10 +245,12 @@ public class TabSurveyHist extends Tab {
 			survey_person.setAlign(Alignment.LEFT);
 			rec_user.setAlign(Alignment.CENTER);
 			rec_date.setAlign(Alignment.CENTER);
+			operator_src.setAlign(Alignment.CENTER);
 
-			listGrid.setFields(survey_kind_name, survey_reply_type_name,
-					p_numb, survey_phone, survey_person, survey_descript,
-					rec_user, rec_date, upd_user);
+			listGrid.setFields(operator_src, survey_kind_name,
+					survey_reply_type_name, p_numb, survey_phone,
+					survey_person, survey_descript, rec_user, rec_date,
+					upd_user);
 
 			mainLayout.addMember(listGrid);
 

@@ -4,6 +4,7 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewSubscriberOrOrg;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -273,6 +274,7 @@ public class TabFindByNumber extends Tab {
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("organization_id", mainID);
 			criteria.setAttribute("isCallCenter", 1);
+			criteria.setAttribute("operator_src", Constants.OPERATOR_11808);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("customOrgSearchForCallCenterNew");
 			OrgDS.fetchData(criteria, new DSCallback() {
@@ -298,7 +300,7 @@ public class TabFindByNumber extends Tab {
 						pRecord.setAttribute("chief",
 								record.getAttributeAsString("chief"));
 						pRecord.setAttribute("found_date",
-								record.getAttributeAsString("found_date"));
+								record.getAttributeAsDate("found_date"));
 						pRecord.setAttribute("ident_code",
 								record.getAttributeAsString("ident_code"));
 						pRecord.setAttribute("ident_code_new",
@@ -317,6 +319,8 @@ public class TabFindByNumber extends Tab {
 								record.getAttributeAsString("contact_person"));
 						pRecord.setAttribute("staff_count",
 								record.getAttributeAsString("staff_count"));
+						pRecord.setAttribute("social_address",
+								record.getAttributeAsString("social_address"));
 						pRecord.setAttribute("organization_index", record
 								.getAttributeAsString("organization_index"));
 						pRecord.setAttribute("web_address",

@@ -427,14 +427,19 @@ public class TabOrganization extends Tab {
 					}
 					Integer flow_priority = countryRecord
 							.getAttributeAsInt("flow_priority");
+					Integer flow_priority_09 = countryRecord
+							.getAttributeAsInt("flow_priority_09");
 					Integer status = countryRecord.getAttributeAsInt("status");
-					Integer is_contractor = countryRecord.getAttributeAsInt("super_priority");
+					Integer is_contractor = countryRecord
+							.getAttributeAsInt("super_priority");
 					Integer tree_org_child = (countryRecord
 							.getAttributeAsString("tree_org_child") != null && countryRecord
 							.getAttributeAsString("tree_org_child").equals(
 									"associations")) ? 1 : -1000;
 
-					if (flow_priority != null && flow_priority.intValue() < 0) {
+					if ((flow_priority != null && flow_priority.intValue() < 0)
+							|| (flow_priority_09 != null && flow_priority_09
+									.intValue() < 0)) {
 						return "color:red;";
 					} else if (is_contractor != null && is_contractor == 100) {
 						if (tree_org_child != -1000) {
@@ -592,6 +597,8 @@ public class TabOrganization extends Tab {
 						Criteria criteria = new Criteria();
 						criteria.setAttribute("parrent_organization_id",
 								organization_id);
+						criteria.setAttribute("operator_src",
+								Constants.OPERATOR_11808);
 						DSRequest requestProperties = new DSRequest();
 						requestProperties
 								.setOperationId("customOrgSearchForCallCenterNew");
@@ -908,6 +915,7 @@ public class TabOrganization extends Tab {
 	public void search(boolean isExport, boolean count) {
 		try {
 			Criteria criteria = new Criteria();
+			criteria.setAttribute("operator_src", Constants.OPERATOR_11808);
 			String org_name = orgNameGeoItem.getValueAsString();
 			if (org_name != null && !org_name.trim().equals("")) {
 				criteria.setAttribute("organization_name_param", org_name);
@@ -1046,15 +1054,15 @@ public class TabOrganization extends Tab {
 					&& (ident_code == null || ident_code.trim().equals(""))
 					&& (department == null || department.trim().equals(""))
 					&& (web_address == null || web_address.trim().equals(""))
-					&& (email_address == null || email_address.trim().equals(""))
+					&& (email_address == null || email_address.trim()
+							.equals(""))
 					&& (street == null || street.trim().equals(""))
 					&& (legal_street == null || legal_street.trim().equals(""))
 					&& (phone == null || phone.trim().equals(""))
 					&& (org_found_date_start == null && org_found_date_end == null)
-					&& (phone_upd_date == null || phone_upd_date.trim().equals("")) 
-					&& !isByOrgActivity
-					&& (org_statuses == null || org_statuses.trim().equals(""))
-					) {
+					&& (phone_upd_date == null || phone_upd_date.trim().equals(
+							"")) && !isByOrgActivity
+					&& (org_statuses == null || org_statuses.trim().equals(""))) {
 				SC.say(CallCenterBK.constants.warning(),
 						CallCenterBK.constants.findOrgEnterAnyParam());
 				return;
@@ -1067,6 +1075,7 @@ public class TabOrganization extends Tab {
 			if (isExport) {
 				criteria.setAttribute("need_phones", "YES");
 				criteria.setAttribute("isExport", 1L);
+				criteria.setAttribute("operator_src", Constants.OPERATOR_11808);
 				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
 						ExportFormat.values(), "xls"));
 				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
@@ -1148,6 +1157,7 @@ public class TabOrganization extends Tab {
 				.setAttribute("operationId", "customOrgSearchForCallCenterNew");
 		Criteria criteria = new Criteria();
 		criteria.setAttribute("org_department_id", department_id);
+		criteria.setAttribute("operator_src", Constants.OPERATOR_11808);
 		organizationsGrid.invalidateCache();
 		organizationsGrid.fetchData(criteria, new DSCallback() {
 			@Override

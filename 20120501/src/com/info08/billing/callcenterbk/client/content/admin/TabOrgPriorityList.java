@@ -77,15 +77,19 @@ public class TabOrgPriorityList extends Tab implements ISaveResult {
 			lgOrgPriorityType.setFixedRecordHeights(false);
 			lgOrgPriorityType.setCanDragSelectText(true);
 			lgOrgPriorityType.setShowAllRecords(true);
-			
+
 			lgOrgPriorityType.setShowFilterEditor(true);
 			lgOrgPriorityType.setFilterOnKeypress(true);
-			
 
 			ListGridField description = new ListGridField("description",
 					CallCenterBK.constants.description(), 350);
 			description.setAlign(Alignment.CENTER);
 			description.setCanFilter(true);
+
+			ListGridField operator_src = new ListGridField("operator_src",
+					CallCenterBK.constants.operator(), 80);
+			operator_src.setAlign(Alignment.CENTER);
+			operator_src.setCanFilter(true);
 
 			ListGridField remark = new ListGridField("remark",
 					CallCenterBK.constants.comment());
@@ -95,7 +99,8 @@ public class TabOrgPriorityList extends Tab implements ISaveResult {
 			ListGridField changer_user = new ListGridField("changer_user",
 					CallCenterBK.constants.username(), 90);
 			changer_user.setCanFilter(false);
-			lgOrgPriorityType.setFields(description, remark, changer_user);
+			lgOrgPriorityType.setFields(operator_src, description, remark,
+					changer_user);
 
 			mainLayout.addMember(lgOrgPriorityType);
 
@@ -113,12 +118,10 @@ public class TabOrgPriorityList extends Tab implements ISaveResult {
 			lgOrgPriorities.setFixedRecordHeights(false);
 			lgOrgPriorities.setCanDragSelectText(true);
 			lgOrgPriorities.setShowRowNumbers(true);
-			
-			
+
 			ListGridField org_name = new ListGridField("org_name",
 					CallCenterBK.constants.organization());
 			org_name.setAlign(Alignment.LEFT);
-			
 
 			lgOrgPriorities.setFields(org_name);
 

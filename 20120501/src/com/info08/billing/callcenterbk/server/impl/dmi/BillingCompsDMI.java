@@ -84,6 +84,20 @@ public class BillingCompsDMI implements QueryConstants {
 					ohas_calculation.toString()));
 			billingComp.setHas_calculation(has_calculation);
 
+			Long operator_src = Long.parseLong(dsRequest.getFieldValue(
+					"operator_src").toString());
+			Long mobile_company = Long.parseLong(dsRequest.getFieldValue(
+					"mobile_company").toString());
+
+			Object mobile_company_name_o = dsRequest
+					.getFieldValue("mobile_company_name");
+			String mobile_company_name = (mobile_company_name_o == null ? null
+					: mobile_company_name_o.toString());
+
+			billingComp.setOperator_src(operator_src);
+			billingComp.setMobile_company(mobile_company);
+			billingComp.setMobile_company_name(mobile_company_name);
+
 			oracleManager = EMF.getEntityManager();
 			transaction = EMF.getTransaction(oracleManager);
 
@@ -98,7 +112,7 @@ public class BillingCompsDMI implements QueryConstants {
 				LinkedMap indexed = (LinkedMap) oMap;
 				if (!indexed.isEmpty()) {
 					Set keys1 = indexed.keySet();
-					checkBillingCompIndexes(null, indexed);
+					checkBillingCompIndexes(null, operator_src, indexed);
 					for (Object okey1 : keys1) {
 						String str_bill_index_start = okey1.toString();
 						LinkedMap value1 = (LinkedMap) indexed
@@ -190,6 +204,15 @@ public class BillingCompsDMI implements QueryConstants {
 			Long has_calculation = (ohas_calculation == null ? -1L : new Long(
 					ohas_calculation.toString()));
 
+			Long operator_src = Long.parseLong(record.get("operator_src")
+					.toString());
+			Long mobile_company = Long.parseLong(record.get("mobile_company")
+					.toString());
+
+			Object mobile_company_name_o = record.get("mobile_company_name");
+			String mobile_company_name = (mobile_company_name_o == null ? null
+					: mobile_company_name_o.toString());
+
 			BillingCompany billingComp = oracleManager.find(
 					BillingCompany.class, billing_company_id);
 			billingComp.setLoggedUserName(loggedUserName);
@@ -197,6 +220,9 @@ public class BillingCompsDMI implements QueryConstants {
 			billingComp.setOur_percent(our_percent);
 			billingComp.setCall_price(call_price);
 			billingComp.setHas_calculation(has_calculation);
+			billingComp.setOperator_src(operator_src);
+			billingComp.setMobile_company(mobile_company);
+			billingComp.setMobile_company_name(mobile_company_name);
 
 			RCNGenerator.getInstance().initRcn(oracleManager, upd_date,
 					loggedUserName, "Updating Contract.");
@@ -213,7 +239,8 @@ public class BillingCompsDMI implements QueryConstants {
 			if (oMap != null) {
 				LinkedMap indexed = (LinkedMap) oMap;
 				if (!indexed.isEmpty()) {
-					checkBillingCompIndexes(billing_company_id, indexed);
+					checkBillingCompIndexes(billing_company_id, operator_src,
+							indexed);
 					Set keys1 = indexed.keySet();
 					for (Object okey1 : keys1) {
 						String str_st_ind = okey1.toString();
@@ -268,7 +295,7 @@ public class BillingCompsDMI implements QueryConstants {
 
 	@SuppressWarnings("rawtypes")
 	public void checkBillingCompIndexes(Long billing_company_id,
-			LinkedMap indexes) throws Exception {
+			Long operator_src, LinkedMap indexes) throws Exception {
 		EntityManager oracleManager = null;
 		try {
 			String log = "Method:BillingCompsDMI.checkBillingCompIndexes.";
@@ -293,8 +320,9 @@ public class BillingCompsDMI implements QueryConstants {
 						count = new Long(oracleManager
 								.createNativeQuery(
 										QueryConstants.Q_GET_BILLING_COMP_IND)
-								.setParameter(1, st_ind).getSingleResult()
-								.toString());
+								.setParameter(1, st_ind)
+								.setParameter(2, operator_src)
+								.getSingleResult().toString());
 					} else {
 						count = new Long(
 								oracleManager
@@ -302,6 +330,7 @@ public class BillingCompsDMI implements QueryConstants {
 												QueryConstants.Q_GET_BILLING_COMP_IND_BY_ID)
 										.setParameter(1, st_ind)
 										.setParameter(2, billing_company_id)
+										.setParameter(3, operator_src)
 										.getSingleResult().toString());
 					}
 					if (count.longValue() > 0) {
@@ -313,8 +342,9 @@ public class BillingCompsDMI implements QueryConstants {
 						count = new Long(oracleManager
 								.createNativeQuery(
 										QueryConstants.Q_GET_BILLING_COMP_IND)
-								.setParameter(1, end_ind).getSingleResult()
-								.toString());
+								.setParameter(1, end_ind)
+								.setParameter(2, operator_src)
+								.getSingleResult().toString());
 					} else {
 						count = new Long(
 								oracleManager
@@ -322,6 +352,7 @@ public class BillingCompsDMI implements QueryConstants {
 												QueryConstants.Q_GET_BILLING_COMP_IND_BY_ID)
 										.setParameter(1, end_ind)
 										.setParameter(2, billing_company_id)
+										.setParameter(3, operator_src)
 										.getSingleResult().toString());
 					}
 					if (count.longValue() > 0) {

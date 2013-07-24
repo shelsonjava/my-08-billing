@@ -4,6 +4,7 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
 import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddVirtualCharge;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -324,6 +325,7 @@ public class TabVirtualCharge extends Tab {
 
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("organization_id", organization_id);
+			criteria.setAttribute("operator_src", Constants.OPERATOR_11808);
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("customOrgSearchForCallCenterNew");
 

@@ -190,6 +190,7 @@ public class ContractorsDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
+			e.printStackTrace();
 			logger.error("Error While Insert Contract Into Database : ", e);
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());

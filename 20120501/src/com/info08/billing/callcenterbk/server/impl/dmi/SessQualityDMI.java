@@ -52,6 +52,8 @@ public class SessQualityDMI implements QueryConstants {
 					.get("chargeCount").toString());
 			Long virt_call_type = new Long(dsRequest.getValues()
 					.get("virt_call_type").toString());
+			Long operator_src = new Long(dsRequest.getValues()
+					.get("operator_src").toString());
 
 			Timestamp currDate = new Timestamp(System.currentTimeMillis());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyMM");
@@ -64,8 +66,8 @@ public class SessQualityDMI implements QueryConstants {
 					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE_NEW)
 					.setParameter(1, call_phone)
 					.setParameter(2, service.getService_price_id())
-					.setParameter(3, virt_call_type).getSingleResult()
-					.toString());
+					.setParameter(3, virt_call_type)
+					.setParameter(4, operator_src).getSingleResult().toString());
 
 			CallSession logSession = new CallSession();
 			String session_id = oracleManager
@@ -83,6 +85,7 @@ public class SessQualityDMI implements QueryConstants {
 			logSession.setUname(loggedUserName);
 			logSession.setYear_month(ym);
 			logSession.setImportant(0L);
+			logSession.setOperator_src(operator_src.toString());
 
 			oracleManager.persist(logSession);
 
@@ -112,8 +115,7 @@ public class SessQualityDMI implements QueryConstants {
 			if (e instanceof CallCenterException) {
 				throw (CallCenterException) e;
 			}
-			logger.error("Error While Adding Virtual Charges Into Database : ",
-					e);
+			e.printStackTrace();
 			throw new CallCenterException("შეცდომა მონაცემების შენახვისას : "
 					+ e.toString());
 		} finally {

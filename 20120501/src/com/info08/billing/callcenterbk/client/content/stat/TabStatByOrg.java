@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewDirOrgStats;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -39,6 +40,7 @@ public class TabStatByOrg extends Tab {
 	private DateItem dateItem;
 	private SelectItem typeItem;
 	private TextItem organizationNameItem;
+	private SelectItem operatorItem;
 	private IButton findButton;
 	private IButton clearButton;
 	private DynamicForm searchForm;
@@ -63,7 +65,7 @@ public class TabStatByOrg extends Tab {
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth(600);
-			searchForm.setNumCols(2);
+			searchForm.setNumCols(4);
 
 			mainLayout.addMember(searchForm);
 
@@ -86,7 +88,16 @@ public class TabStatByOrg extends Tab {
 			organizationNameItem.setTitle(CallCenterBK.constants.orgName());
 			organizationNameItem.setWidth(200);
 
-			searchForm.setFields(dateItem, typeItem, organizationNameItem);
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(200);
+			operatorItem.setName("operator_src");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
+			searchForm.setFields(operatorItem, dateItem, typeItem,
+					organizationNameItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(287);
@@ -139,9 +150,10 @@ public class TabStatByOrg extends Tab {
 					CallCenterBK.constants.organization());
 			organization.setAlign(Alignment.LEFT);
 			organization.setCanFilter(false);
-			
-			ListGridField organization_address = new ListGridField("concat_address_with_town",
-					CallCenterBK.constants.address(),450);
+
+			ListGridField organization_address = new ListGridField(
+					"concat_address_with_town",
+					CallCenterBK.constants.address(), 450);
 			organization_address.setAlign(Alignment.LEFT);
 			organization_address.setCanFilter(false);
 
@@ -150,7 +162,7 @@ public class TabStatByOrg extends Tab {
 			call_count.setAlign(Alignment.LEFT);
 			call_count.setCanFilter(false);
 
-			listGrid.setFields(organization,organization_address, call_count);
+			listGrid.setFields(organization, organization_address, call_count);
 
 			mainLayout.addMember(listGrid);
 
@@ -190,7 +202,9 @@ public class TabStatByOrg extends Tab {
 					Integer organizationId = record
 							.getAttributeAsInt("organization_id");
 					DlgViewDirOrgStats dlgViewDirOrgStats = new DlgViewDirOrgStats(
-							organizationId, ym);
+							organizationId, ym, typeItem.getValueAsString()
+									.equals("1"), Integer.parseInt(operatorItem
+									.getValueAsString().toString()));
 					dlgViewDirOrgStats.show();
 				}
 			});
@@ -236,6 +250,9 @@ public class TabStatByOrg extends Tab {
 					&& !organization_name.trim().equals("")) {
 				criteria.setAttribute("organization_name", organization_name);
 			}
+			Integer operator_src = Integer.parseInt(operatorItem
+					.getValueAsString());
+			criteria.setAttribute("operator_src", operator_src);
 
 			listGrid.invalidateCache();
 			listGrid.fetchData(criteria, new DSCallback() {

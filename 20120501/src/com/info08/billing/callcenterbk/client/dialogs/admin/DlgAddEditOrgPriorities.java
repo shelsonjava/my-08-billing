@@ -9,6 +9,7 @@ import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxRecord;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.client.utils.ISaveResult;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -22,6 +23,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -36,7 +38,7 @@ public class DlgAddEditOrgPriorities extends Window {
 
 	private TextItem descriptionItem;
 	private TextAreaItem remarkItem;
-
+	private SelectItem operatorItem;
 	private MyComboBoxItem[] orgitems;
 
 	private Record editRecord;
@@ -51,7 +53,7 @@ public class DlgAddEditOrgPriorities extends Window {
 			this.saveResult = saveResult;
 			setTitle(CallCenterBK.constants.extraPriority());
 
-			setHeight(300);
+			setHeight(330);
 			setWidth(715);
 			setShowMinimizeButton(false);
 			setIsModal(true);
@@ -72,7 +74,7 @@ public class DlgAddEditOrgPriorities extends Window {
 			dynamicForm.setAutoFocus(true);
 			dynamicForm.setWidth100();
 			dynamicForm.setTitleWidth(200);
-			dynamicForm.setNumCols(4);
+			dynamicForm.setNumCols(2);
 			hLayout.addMember(dynamicForm);
 
 			descriptionItem = new TextItem();
@@ -89,7 +91,15 @@ public class DlgAddEditOrgPriorities extends Window {
 			remarkItem.setColSpan(4);
 			remarkItem.setRequired(true);
 
-			dynamicForm.setFields(descriptionItem, remarkItem);
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(600);
+			operatorItem.setName("operator_src");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
+			dynamicForm.setFields(operatorItem, descriptionItem, remarkItem);
 
 			ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>();
 			MyComboBoxRecord organization_name = new MyComboBoxRecord(
@@ -176,10 +186,10 @@ public class DlgAddEditOrgPriorities extends Window {
 
 					ib.setWidth(ib.getWidth() + 5);
 				}
-//				if (i == 0 || i == orgitems.length - 1) {
-//					VLayout canv = new VLayout();
-//					orgItem.addCanvas(canv);
-//				}
+				// if (i == 0 || i == orgitems.length - 1) {
+				// VLayout canv = new VLayout();
+				// orgItem.addCanvas(canv);
+				// }
 
 				hLayout.addMember(orgItem);
 			}

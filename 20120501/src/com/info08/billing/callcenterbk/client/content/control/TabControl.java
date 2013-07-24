@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.content.control;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.control.DlgAddEditSessQuality;
 import com.info08.billing.callcenterbk.client.dialogs.control.LogSMSDialog;
 import com.info08.billing.callcenterbk.client.dialogs.control.NotesDialog;
@@ -29,6 +30,8 @@ import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.SpinnerItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.TimeItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -71,6 +74,10 @@ public class TabControl extends Tab {
 
 	private IButton findButton;
 	private IButton clearButton;
+
+	private ListGrid sessionsGrid;
+	private ListGrid sessionChargesGrid;
+	private ListGrid sessionNavigGrid;
 
 	public TabControl() {
 		try {
@@ -306,7 +313,7 @@ public class TabControl extends Tab {
 					80);
 			ListGridField operator = new ListGridField("uname", "ოპ.", 40);
 			ListGridField person_name = new ListGridField("full_user_name",
-					"ოპერატორი", 230);
+					"ოპერატორი");
 			ListGridField date = new ListGridField("call_start_date",
 					"თარიღი/დრო", 130);
 			ListGridField duration = new ListGridField("call_duration",
@@ -317,7 +324,10 @@ public class TabControl extends Tab {
 					"ვინ გათიშა", 90);
 			ListGridField session_quality_desc = new ListGridField(
 					"call_quality_desc", "ხარისხი");
+			ListGridField operator_src = new ListGridField("operator_src",
+					CallCenterBK.constants.operator(), 80);
 
+			operator_src.setAlign(Alignment.CENTER);
 			date.setAlign(Alignment.CENTER);
 			phone.setAlign(Alignment.CENTER);
 			duration.setAlign(Alignment.CENTER);
@@ -325,7 +335,7 @@ public class TabControl extends Tab {
 			hangUp.setAlign(Alignment.CENTER);
 			person_name.setAlign(Alignment.CENTER);
 
-			final ListGrid sessionsGrid = new ListGrid();
+			sessionsGrid = new ListGrid();
 			sessionsGrid.setWidth(825);
 			sessionsGrid.setHeight(224);
 			sessionsGrid.setAlternateRecordStyles(true);
@@ -335,8 +345,8 @@ public class TabControl extends Tab {
 			sessionsGrid.setCanEdit(false);
 			sessionsGrid.setCanRemoveRecords(false);
 			sessionsGrid.setFetchOperation("customSearch");
-			sessionsGrid.setFields(date, operator, person_name, phone,
-					duration, chargeCount, hangUp, session_quality_desc);
+			sessionsGrid.setFields(operator_src, date, operator, person_name,
+					phone, duration, chargeCount, hangUp, session_quality_desc);
 
 			vLayout.addMember(sessionsGrid);
 
@@ -344,7 +354,7 @@ public class TabControl extends Tab {
 			hLayout.setWidth(820);
 			hLayout.setHeight(150);
 
-			final ListGrid sessionChargesGrid = new ListGrid();
+			sessionChargesGrid = new ListGrid();
 			sessionChargesGrid.setWidth(410);
 			sessionChargesGrid.setHeight(200);
 			sessionChargesGrid.setAlternateRecordStyles(true);
@@ -356,7 +366,7 @@ public class TabControl extends Tab {
 			sessionChargesGrid.setFetchOperation("custSessCharges");
 			hLayout.addMember(sessionChargesGrid);
 
-			final ListGrid sessionNavigGrid = new ListGrid();
+			sessionNavigGrid = new ListGrid();
 			sessionNavigGrid.setWidth(410);
 			sessionNavigGrid.setHeight(200);
 			sessionNavigGrid.setAlternateRecordStyles(true);
@@ -405,31 +415,20 @@ public class TabControl extends Tab {
 
 				@Override
 				public void onClick(ClickEvent event) {
-					Criteria criteria = sessionsGrid.getCriteria();
-					if (criteria == null) {
-						criteria = new Criteria();
-					}
-					Criteria formCriteria = searchForm.getValuesAsCriteria();
-					criteria.addCriteria(formCriteria);
-					String operId = operatorItem.getValueAsString();
-					if (operId != null && !operId.trim().equals("")) {
-						criteria.setAttribute("user_id", new Integer(operId));
-					}
-					String serviceId = serviceItem.getValueAsString();
-					if (serviceId != null && !serviceId.trim().equals("")) {
-						criteria.setAttribute("serviceId", new Integer(
-								serviceId));
-					}					
-					Boolean isImportant = checkboxItem.getValueAsBoolean();
-					if(isImportant!=null && isImportant.booleanValue()){
-						criteria.setAttribute("isImportant", isImportant); 
-					}
-					
-					sessionsGrid.invalidateCache();
-					sessionsGrid.filterData(criteria);
-					sessionChargesGrid.invalidateCache();
+					search();
 				}
 			});
+
+			KeyPressHandler kp = new KeyPressHandler() {
+				@Override
+				public void onKeyPress(KeyPressEvent event) {
+					if (event.getKeyName().equals("Enter")) {
+						search();
+					}
+				}
+			};
+
+			numberItem.addKeyPressHandler(kp);
 
 			playButton
 					.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
@@ -669,6 +668,36 @@ public class TabControl extends Tab {
 			}
 		} catch (Exception e) {
 			SC.say(e.toString());
+		}
+	}
+
+	private void search() {
+		Criteria criteria = sessionsGrid.getCriteria();
+		try {
+			if (criteria == null) {
+				criteria = new Criteria();
+			}
+			Criteria formCriteria = searchForm.getValuesAsCriteria();
+			criteria.addCriteria(formCriteria);
+			String operId = operatorItem.getValueAsString();
+			if (operId != null && !operId.trim().equals("")) {
+				criteria.setAttribute("user_id", new Integer(operId));
+			}
+			String serviceId = serviceItem.getValueAsString();
+			if (serviceId != null && !serviceId.trim().equals("")) {
+				criteria.setAttribute("serviceId", new Integer(serviceId));
+			}
+			Boolean isImportant = checkboxItem.getValueAsBoolean();
+			if (isImportant != null && isImportant.booleanValue()) {
+				criteria.setAttribute("isImportant", isImportant);
+			}
+
+			sessionsGrid.invalidateCache();
+			sessionsGrid.filterData(criteria);
+			sessionChargesGrid.invalidateCache();
+		} catch (Exception e) {
+			e.printStackTrace();
+			SC.warn(e.toString());
 		}
 	}
 }

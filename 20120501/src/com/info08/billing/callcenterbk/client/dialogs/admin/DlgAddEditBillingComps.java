@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -41,6 +42,9 @@ public class DlgAddEditBillingComps extends Window {
 	private TextItem billingCompOurPercentItem;
 	private SelectItem hasCalcItem;
 	private TextItem callPriceItem;
+	private SelectItem operatorItem;
+	private SelectItem isMobileOperatorItem;
+	private TextItem mobileCompanyNameItem;
 
 	private DynamicForm dynamicForm;
 
@@ -102,14 +106,38 @@ public class DlgAddEditBillingComps extends Window {
 			callPriceItem.setName("callPriceItem");
 			callPriceItem.setKeyPressFilter("[0-9\\.]");
 
+			mobileCompanyNameItem = new TextItem();
+			mobileCompanyNameItem.setTitle(CallCenterBK.constants
+					.mobileOperatorName());
+			mobileCompanyNameItem.setWidth("100%");
+			mobileCompanyNameItem.setName("mobile_company_name");
+
 			dynamicForm = new DynamicForm();
 			dynamicForm.setAutoFocus(true);
 			dynamicForm.setWidth100();
 			dynamicForm.setTitleWidth(250);
 			dynamicForm.setNumCols(2);
 
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth("100%");
+			operatorItem.setName("operator_src");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
+			isMobileOperatorItem = new SelectItem();
+			isMobileOperatorItem.setTitle(CallCenterBK.constants
+					.mobileOperator());
+			isMobileOperatorItem.setWidth("100%");
+			isMobileOperatorItem.setName("mobile_company");
+			isMobileOperatorItem.setDefaultToFirstOption(true);
+			isMobileOperatorItem.setValueMap(ClientMapUtil.getInstance()
+					.getIsMobileCompany());
+
 			dynamicForm.setFields(billingCompNameItem,
-					billingCompOurPercentItem, hasCalcItem, callPriceItem);
+					billingCompOurPercentItem, hasCalcItem, callPriceItem,
+					operatorItem, isMobileOperatorItem, mobileCompanyNameItem);
 
 			hLayout.addMember(dynamicForm);
 
@@ -295,6 +323,12 @@ public class DlgAddEditBillingComps extends Window {
 			callPriceItem.setValue(editRecord
 					.getAttributeAsString("call_price"));
 
+			operatorItem.setValue(editRecord.getAttributeAsInt("operator_src"));
+			isMobileOperatorItem.setValue(editRecord.getAttributeAsInt(
+					"mobile_company").toString());
+			mobileCompanyNameItem.setValue(editRecord
+					.getAttributeAsString("mobile_company_name"));
+
 			DataSource billingCompsIndDS = DataSource.get("BillingCompsIndDS");
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("billing_company_id",
@@ -368,6 +402,12 @@ public class DlgAddEditBillingComps extends Window {
 				SC.say(CallCenterBK.constants.invalidCallPrice());
 				return;
 			}
+			Integer operator_src = Integer.parseInt(operatorItem
+					.getValueAsString());
+			Integer mobile_company = Integer.parseInt(isMobileOperatorItem
+					.getValueAsString());
+			String mobile_company_name = mobileCompanyNameItem
+					.getValueAsString();
 
 			LinkedHashMap<String, LinkedHashMap<String, String>> indexes = new LinkedHashMap<String, LinkedHashMap<String, String>>();
 			RecordList recordList = listGridIndexes.getDataAsRecordList();
@@ -405,7 +445,9 @@ public class DlgAddEditBillingComps extends Window {
 			record.setAttribute("call_price", call_price);
 			record.setAttribute("billingCompIdexes", indexes);
 			record.setAttribute("has_calculation", has_calculation);
-
+			record.setAttribute("operator_src", operator_src);
+			record.setAttribute("mobile_company", mobile_company);
+			record.setAttribute("mobile_company_name", mobile_company_name);
 			saveBillingComp(record);
 		} catch (Exception e) {
 			e.printStackTrace();

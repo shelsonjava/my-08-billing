@@ -1,9 +1,11 @@
 package com.info08.billing.callcenterbk.client.content.stat;
 
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatFullGraphAmountByMonth;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatFullGraphByMonth;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -17,6 +19,7 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
@@ -39,6 +42,7 @@ public class TabStatFullByMonth extends Tab {
 
 	private TextItem ymStartItem;
 	private TextItem ymEndItem;
+	private SelectItem operatorItem;
 	// actions
 	private IButton findButton;
 	private IButton clearButton;
@@ -68,7 +72,7 @@ public class TabStatFullByMonth extends Tab {
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth(700);
-			searchForm.setNumCols(4);
+			searchForm.setNumCols(2);
 			searchForm.setTitleWidth(150);
 
 			mainLayout.addMember(searchForm);
@@ -83,7 +87,16 @@ public class TabStatFullByMonth extends Tab {
 			ymEndItem.setName("ymEndItem");
 			ymEndItem.setWidth(200);
 
-			searchForm.setFields(ymStartItem, ymEndItem);
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(200);
+			operatorItem.setName("operator_src");
+			// operatorItem.setMultiple(true);
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
+			searchForm.setFields(operatorItem, ymStartItem, ymEndItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(700);
@@ -110,8 +123,8 @@ public class TabStatFullByMonth extends Tab {
 			statN1Btn.setWidth(50);
 			toolStrip.addButton(statN1Btn);
 
-			statN2Btn = new ToolStripButton(CallCenterBK.constants.graphAmount(),
-					"stats.png");
+			statN2Btn = new ToolStripButton(
+					CallCenterBK.constants.graphAmount(), "stats.png");
 			statN2Btn.setLayoutAlign(Alignment.LEFT);
 			statN2Btn.setWidth(50);
 			toolStrip.addButton(statN2Btn);
@@ -163,10 +176,12 @@ public class TabStatFullByMonth extends Tab {
 					"org_contr_comm_cnt", CallCenterBK.constants.direct(), 100);
 
 			ListGridField org_non_contr_cnt = new ListGridField(
-					"org_non_contr_cnt", CallCenterBK.constants.nonDirect(), 100);
+					"org_non_contr_cnt", CallCenterBK.constants.nonDirect(),
+					100);
 
 			ListGridField org_contr_gov_cnt = new ListGridField(
-					"org_contr_gov_cnt", CallCenterBK.constants.government(), 100);
+					"org_contr_gov_cnt", CallCenterBK.constants.government(),
+					100);
 
 			ListGridField org_sum = new ListGridField("org_sum",
 					CallCenterBK.constants.sum(), 100);
@@ -185,7 +200,8 @@ public class TabStatFullByMonth extends Tab {
 					100);
 
 			ListGridField org_email_srv_cnt = new ListGridField(
-					"org_email_srv_cnt", CallCenterBK.constants.nonDirect(), 100);
+					"org_email_srv_cnt", CallCenterBK.constants.nonDirect(),
+					100);
 
 			ListGridField all_sum = new ListGridField("all_sum",
 					CallCenterBK.constants.sum(), 100);
@@ -470,10 +486,12 @@ public class TabStatFullByMonth extends Tab {
 							new String[] { "org_contr_comm_cnt",
 									"org_non_contr_cnt", "org_contr_gov_cnt",
 									"org_sum" }),
-					new HeaderSpan(CallCenterBK.constants.mobile(), new String[] {
-							"magti_cnt", "geocell_cnt", "beeline_cnt" }),
-					new HeaderSpan(CallCenterBK.constants.eMail(), new String[] {
-							"org_contr_email_srv_cnt", "org_email_srv_cnt" }));
+					new HeaderSpan(CallCenterBK.constants.mobile(),
+							new String[] { "magti_cnt", "geocell_cnt",
+									"beeline_cnt" }), new HeaderSpan(
+							CallCenterBK.constants.eMail(), new String[] {
+									"org_contr_email_srv_cnt",
+									"org_email_srv_cnt" }));
 
 			mainLayout.addMember(listGrid);
 
@@ -587,11 +605,21 @@ public class TabStatFullByMonth extends Tab {
 				return;
 			}
 
+			final String operator_src = operatorItem.getValueAsString();
+			if (operator_src == null || operator_src.trim().equals("")) {
+				SC.say(CallCenterBK.constants.pleaseSelOnerecord());
+				return;
+			}
+
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchAllStatisticsByMonth");
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("ym_start", ymStartI);
 			criteria.setAttribute("ym_end", ymEndI);
+			criteria.setAttribute("operator_src",
+					Integer.parseInt(operator_src));
+			criteria.setAttribute("unique_id",
+					"unique_" + HTMLPanel.createUniqueId());
 			listGrid.fetchData(criteria, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,

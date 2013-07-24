@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -16,6 +17,7 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
@@ -29,13 +31,14 @@ public class DlgGetBillingCompsBillByMonth extends Window {
 
 	private TextItem ymItem;
 	private Integer billing_company_id;
+	private SelectItem operatorItem;
 
 	public DlgGetBillingCompsBillByMonth(Integer billing_company_id) {
 		try {
 			this.billing_company_id = billing_company_id;
 			setTitle(CallCenterBK.constants.telCombBillByDay());
 
-			setHeight(110);
+			setHeight(130);
 			setWidth(400);
 			setShowMinimizeButton(false);
 			setIsModal(true);
@@ -63,7 +66,15 @@ public class DlgGetBillingCompsBillByMonth extends Window {
 			ymItem.setName("ymItem");
 			ymItem.setWidth(200);
 
-			dynamicForm.setFields(ymItem);
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(200);
+			operatorItem.setName("operator_src");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
+			dynamicForm.setFields(operatorItem, ymItem);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -147,6 +158,10 @@ public class DlgGetBillingCompsBillByMonth extends Window {
 			criteria.setAttribute("billing_company_id", billing_company_id);
 			criteria.setAttribute("ym", ym);
 			criteria.setAttribute("no_email", 1);
+			Integer operator_src = Integer.parseInt(operatorItem
+					.getValueAsString());
+			criteria.setAttribute("operator_src", operator_src);
+
 			dataSource.exportData(criteria, dsRequest, new DSCallback() {
 
 				@Override

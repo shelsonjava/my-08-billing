@@ -71,6 +71,7 @@ public class CallCenterServlet extends SipServlet implements TimerListener {
 			outRequest.send();
 			sessions.put(request.getSession(), outRequest.getSession());
 			sessions.put(outRequest.getSession(), request.getSession());
+			
 			logger.info("333333333333333333333");
 
 		} catch (Exception e) {
@@ -86,14 +87,11 @@ public class CallCenterServlet extends SipServlet implements TimerListener {
 	@Override
 	protected void doAck(SipServletRequest request) throws ServletException,
 			IOException {
-		logger.info("doAck Called. SipServletRequest [ " + request.toString()
-				+ " ] ");
+		logger.info("doAck Called. SipServletRequest [ " + request.toString() + " ] ");
 
-		SipServletResponse response = (SipServletResponse) sessions.get(
-				request.getSession()).getAttribute("lastResponse");
+		SipServletResponse response = (SipServletResponse) sessions.get(request.getSession()).getAttribute("lastResponse");
 		response.createAck().send();
-		SipApplicationSession sipApplicationSession = request
-				.getApplicationSession();
+		SipApplicationSession sipApplicationSession = request.getApplicationSession();
 		// Defaulting the sip application session to 1h
 		sipApplicationSession.setExpires(60);
 	}

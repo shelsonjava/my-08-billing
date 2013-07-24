@@ -434,13 +434,15 @@ public class SurveyDMI implements QueryConstants {
 			Long call_session_id = Long.parseLong(values.get("call_session_id")
 					.toString());
 			System.out.println("================= call_session_id = "+call_session_id);
-			Long call_kind = new Long(oracleManager.createNativeQuery(QueryConstants.Q_GET_CALL_KIND).setParameter(1, call_session_id).getSingleResult().toString());			
+			Long call_kind = new Long(oracleManager.createNativeQuery(QueryConstants.Q_GET_CALL_KIND).setParameter(1, call_session_id).getSingleResult().toString());
+			Long operator_src = new Long(oracleManager.createNativeQuery(QueryConstants.Q_GET_CALL_OPERATOR_SRC).setParameter(1, call_session_id).getSingleResult().toString());
 
 			Double charge = new Double(oracleManager
 					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE_NEW)
 					.setParameter(1, call_phone)
 					.setParameter(2, service.getService_price_id())
 					.setParameter(3, call_kind)
+					.setParameter(4, operator_src)
 					.getSingleResult().toString());
 
 			for (int i = 0; i < chargeCount; i++) {
@@ -522,6 +524,7 @@ public class SurveyDMI implements QueryConstants {
 			logSession.setUname(loggedUserName);
 			logSession.setYear_month(ym);
 			logSession.setImportant(0L);
+			logSession.setOperator_src(Constants.OPERATOR_11808);
 
 			oracleManager.persist(logSession);
 

@@ -6,8 +6,10 @@ import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOrg;
+import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
+import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.Criterion;
 import com.smartgwt.client.data.DSCallback;
@@ -214,6 +216,16 @@ public class TabFindOrg extends Tab {
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
 
+			ServerSession serverSession = CommonSingleton.getInstance()
+					.getServerSession();
+
+			boolean tmp_is_09_call = false;
+			if (!serverSession.isWebSession()) {
+				tmp_is_09_call = serverSession.getOperatorSrc().toString()
+						.equals(Constants.OPERATOR_11809);
+			}
+			final boolean is_09_call = tmp_is_09_call;
+
 			listGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
@@ -228,9 +240,18 @@ public class TabFindOrg extends Tab {
 							.getAttributeAsInt("priority");
 					Integer flow_priority = countryRecord
 							.getAttributeAsInt("flow_priority");
-					if (flow_priority != null && flow_priority.intValue() < 0) {
+					Integer flow_priority_09 = countryRecord
+							.getAttributeAsInt("flow_priority_09");
+
+					if (!is_09_call && flow_priority != null
+							&& flow_priority.intValue() < 0) {
 						return "color:red;";
-					} else if (extra_priority != null && extra_priority < 0) {
+					} else if (is_09_call && flow_priority_09 != null
+							&& flow_priority_09.intValue() < 0) {
+						return "color:red;";
+					}
+
+					else if (extra_priority != null && extra_priority < 0) {
 						return "color:red;";
 					} else if (statuse != null && statuse.equals(2)) {
 						if (note_crit != null && note_crit.intValue() == -1
@@ -511,7 +532,14 @@ public class TabFindOrg extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-
+			criteria.setAttribute("operator_src", Constants.OPERATOR_11808);
+			ServerSession serverSession = CommonSingleton.getInstance()
+					.getServerSession();
+			if (serverSession != null && !serverSession.isWebSession()
+					&& serverSession.getOperatorSrc() != null) {
+				criteria.setAttribute("operator_src",
+						serverSession.getOperatorSrc());
+			}
 			criteria.setAttribute("isCallCenter", "1");
 
 			String org_name = orgNameGeoItem.getValueAsString();

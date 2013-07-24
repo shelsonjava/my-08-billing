@@ -174,8 +174,7 @@ public class DlgContractorPhones extends Window {
 			organizationGrid = new ListGrid();
 			organizationGrid.setDataSource(OrgDS);
 
-			organizationGrid
-					.setFetchOperation("customOrgSearchForCallCenterNew");
+			organizationGrid.setFetchOperation("customOrgSearchForCallCenterNew");
 
 			organizationGrid.setWidth100();
 			organizationGrid.setHeight(200);

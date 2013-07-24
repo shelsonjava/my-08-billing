@@ -49,7 +49,7 @@ public class DlgHistOrgPriority extends Window {
 
 	public DlgHistOrgPriority() {
 		try {
-			setWidth(750);
+			setWidth(900);
 			setHeight(660);
 			setTitle("გაწითლებული ორგანიზაციების ზარები");
 			setShowMinimizeButton(false);
@@ -109,7 +109,7 @@ public class DlgHistOrgPriority extends Window {
 			histGroupListGrid.setFetchOperation("getStatisticsGroupNew");
 			histGroupListGrid.setCanSort(false);
 			histGroupListGrid.setCanResizeFields(false);
-			histGroupListGrid.setWrapCells(true);
+			histGroupListGrid.setWrapCells(false);
 			histGroupListGrid.setFixedRecordHeights(false);
 			histGroupListGrid.setCanDragSelectText(true);
 			histGroupListGrid.setShowRowNumbers(true);
@@ -118,11 +118,15 @@ public class DlgHistOrgPriority extends Window {
 					CallCenterBK.constants.organization());
 			real_name.setAlign(Alignment.LEFT);
 
+			ListGridField remark = new ListGridField("remark",
+					CallCenterBK.constants.comment(), 400);
+			remark.setAlign(Alignment.LEFT);
+
 			ListGridField cnt = new ListGridField("cnt",
 					CallCenterBK.constants.count(), 50);
-			cnt.setAlign(Alignment.LEFT);
+			cnt.setAlign(Alignment.RIGHT);
 
-			histGroupListGrid.setFields(real_name, cnt);
+			histGroupListGrid.setFields(real_name, remark, cnt);
 
 			histSessionsListGrid = new ListGrid();
 			histSessionsListGrid.setWidth100();
@@ -327,7 +331,7 @@ public class DlgHistOrgPriority extends Window {
 					organizationNameItem.getValueAsString());
 			Date vHistDate = histDate.getValueAsDate();
 			criteria.setAttribute("vHistDate", vHistDate);
-			
+
 			searchByCriteria(criteria);
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -355,7 +359,8 @@ public class DlgHistOrgPriority extends Window {
 			ListGridRecord gridRecord = histGroupListGrid.getSelectedRecord();
 			Criteria criteria = new Criteria();
 			if (gridRecord != null) {
-				criteria.setAttribute("real_org_id",new Integer(gridRecord.getAttribute("real_org_id")));
+				criteria.setAttribute("real_org_id",
+						new Integer(gridRecord.getAttribute("real_org_id")));
 				Date vHistDate = histDate.getValueAsDate();
 				criteria.setAttribute("vHistDate", vHistDate);
 			} else {

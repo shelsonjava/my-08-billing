@@ -34,8 +34,10 @@ public class ChargePanel extends HLayout {
 	private DynamicForm dynamicForm;
 	private DynamicForm dynamicForm1;
 	private DynamicForm dynamicForm2;
+	private DynamicForm dynamicForm3;
 
 	private TextItem userNameItem;
+	private TextItem operatorItem;
 	private TextItem currentNumberItem;
 	private TextItem currentNameItem;
 	private TextItem prevNumberItem;
@@ -86,13 +88,27 @@ public class ChargePanel extends HLayout {
 
 			HLayout hLayout = new HLayout();
 			hLayout.setWidth100();
-
+			hLayout.setPadding(0);
+			hLayout.setMargin(0);
+			
+			HLayout hLayout2 = 	new HLayout();
+			hLayout2.setWidth100();
+			
 			dynamicForm = new DynamicForm();
 			dynamicForm.setAutoFocus(false);
-			dynamicForm.setWidth100();
+			dynamicForm.setWidth(300);
 			dynamicForm.setNumCols(2);
 			dynamicForm.setTitleWidth(120);
-			vLayout.addMember(dynamicForm);
+			hLayout2.addMember(dynamicForm);
+
+			dynamicForm3 = new DynamicForm();
+			dynamicForm3.setAutoFocus(false);
+			dynamicForm3.setWidth(cWidth);
+			dynamicForm3.setNumCols(2);
+			dynamicForm3.setTitleWidth(100);
+			hLayout2.addMember(dynamicForm3);
+			
+			vLayout.addMember(hLayout2);
 
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setPadding(4);
@@ -162,8 +178,17 @@ public class ChargePanel extends HLayout {
 					.getSessionPerson().getUser_name());
 			userNameItem.setCanFocus(false);
 
+			operatorItem = new TextItem();
+			operatorItem.setWidth("100%");
+			operatorItem.setName("operatorItem");
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setCanEdit(false);
+			operatorItem.setValue(CommonSingleton.getInstance()
+					.getServerSession().getOperatorSrc());
+			operatorItem.setCanFocus(false);
+
 			currentNumberItem = new TextItem();
-			currentNumberItem.setWidth(175);
+			currentNumberItem.setWidth(178);
 			currentNumberItem.setName("current_number");
 			currentNumberItem.setTitle(CallCenterBK.constants.currentphone());
 			currentNumberItem.setCanEdit(false);
@@ -179,7 +204,7 @@ public class ChargePanel extends HLayout {
 			currentNameItem.setCanFocus(false);
 
 			prevNumberItem = new TextItem();
-			prevNumberItem.setWidth(175);
+			prevNumberItem.setWidth(178);
 			prevNumberItem.setName("prev_number");
 			prevNumberItem.setTitle(CallCenterBK.constants.prevphone());
 			prevNumberItem.setCanEdit(false);
@@ -200,6 +225,7 @@ public class ChargePanel extends HLayout {
 			hLayout.addMember(dynamicForm2);
 
 			dynamicForm.setFields(userNameItem);
+			dynamicForm3.setFields(operatorItem);
 
 			dynamicForm1.setFields(currentNumberItem, prevNumberItem);
 			dynamicForm2.setFields(currentNameItem, prevNameItem);
@@ -417,12 +443,13 @@ public class ChargePanel extends HLayout {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 			record.setAttribute("session_id", serverSession.getSessionId());
-			record.setAttribute("cse_id", serverSession.getCallSession().getCall_session_id());
+			record.setAttribute("cse_id", serverSession.getCallSession()
+					.getCall_session_id());
 
 			DSRequest req = new DSRequest();
 			req.setAttribute("operationId", "makeCallImportant");
 			DataSource logSessChDS = DataSource.get("LogSessChDS");
-			
+
 			logSessChDS.updateData(record, new DSCallback() {
 				@Override
 				public void execute(DSResponse response, Object rawData,
@@ -578,6 +605,7 @@ public class ChargePanel extends HLayout {
 			record.setAttribute("call_kind", call_kind);
 			record.setAttribute("call_phone", phone);
 			record.setAttribute("event_describtion", event_describtion);
+			record.setAttribute("operator_src", Integer.parseInt(serverSession.getOperatorSrc()));
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");

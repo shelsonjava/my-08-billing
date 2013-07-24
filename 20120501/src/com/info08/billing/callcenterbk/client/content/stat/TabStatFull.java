@@ -8,6 +8,7 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatFullGraph;
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgViewStatFullGraphAmount;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -24,6 +25,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.BooleanItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.grid.CellFormatter;
 import com.smartgwt.client.widgets.grid.HeaderSpan;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -43,6 +45,7 @@ public class TabStatFull extends Tab {
 
 	private DateItem dateItem;
 	private BooleanItem exactDate;
+	private SelectItem operatorItem;
 	// private DateItem dateItemEnd;
 	// actions
 	private IButton findButton;
@@ -92,7 +95,16 @@ public class TabStatFull extends Tab {
 			exactDate.setValue(false);
 			exactDate.setWidth(200);
 
-			searchForm.setFields(dateItem, exactDate);
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(250);
+			operatorItem.setName("operator_src");
+			// operatorItem.setMultiple(true);
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
+			searchForm.setFields(dateItem, exactDate, operatorItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(287);
@@ -804,6 +816,12 @@ public class TabStatFull extends Tab {
 				SC.say(CallCenterBK.constants.invalidDate());
 				return;
 			}
+			final String operator_src = operatorItem.getValueAsString();
+			if (operator_src == null || operator_src.trim().equals("")) {
+				SC.say(CallCenterBK.constants.pleaseSelOnerecord());
+				return;
+			}
+
 			DateTimeFormat dateFormatter = DateTimeFormat.getFormat("yyMM");
 			final Integer ym = new Integer(dateFormatter.format(date));
 
@@ -811,11 +829,14 @@ public class TabStatFull extends Tab {
 			dsRequest.setOperationId("searchPrevStatisticsByMonth");
 			Criteria criteria = new Criteria();
 
+			criteria.setAttribute("operator_src",
+					Integer.parseInt(operator_src));
+
 			Date prevDate = new Date(date.getTime());
 			if (exactDate.getValueAsBoolean()) {
 				CalendarUtil.addDaysToDate(prevDate, -1);
 				criteria.setAttribute("exactDate", prevDate);
-			} else{
+			} else {
 				CalendarUtil.addMonthsToDate(prevDate, -1);
 			}
 			final Integer ym_prev = new Integer(dateFormatter.format(prevDate));
@@ -830,7 +851,7 @@ public class TabStatFull extends Tab {
 					if (records != null && records.length > 0) {
 						record = records[0];
 					}
-					searchData(date, ym, record);
+					searchData(date, ym, record, operator_src);
 				}
 			}, dsRequest);
 
@@ -840,13 +861,16 @@ public class TabStatFull extends Tab {
 		}
 	}
 
-	private void searchData(Date date, Integer ym, Record record) {
+	private void searchData(Date date, Integer ym, Record record,
+			String operator_src) {
 		try {
 			this.prevMonthRecord = record;
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchAllStatistics");
 			Criteria criteria = new Criteria();
 			criteria.setAttribute("ym", ym);
+			criteria.setAttribute("operator_src",
+					Integer.parseInt(operator_src));
 			if (exactDate.getValueAsBoolean()) {
 				criteria.setAttribute("exactDate", date);
 			}

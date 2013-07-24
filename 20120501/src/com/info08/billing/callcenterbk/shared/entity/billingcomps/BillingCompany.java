@@ -43,7 +43,19 @@ public class BillingCompany implements Serializable {
 	@Basic
 	@Column(name = "CALL_PRICE")
 	private Double call_price;
-
+	
+	@Basic
+	@Column(name = "OPERATOR_SRC")
+	private Long operator_src;
+	
+	@Basic
+	@Column(name = "MOBILE_COMPANY")
+	private Long mobile_company;
+	
+	@Basic
+	@Column(name = "MOBILE_COMPANY_NAME")
+	private String mobile_company_name;
+	
 	@Transient
 	private String has_calculation_descr;
 
@@ -118,5 +130,28 @@ public class BillingCompany implements Serializable {
 
 	public void setCall_price(Double call_price) {
 		this.call_price = call_price;
+	}
+	public Long getOperator_src() {
+		return operator_src;
+	}
+
+	public void setOperator_src(Long operator_src) {
+		this.operator_src = operator_src;
+	}
+	
+	public Long getMobile_company() {
+		return mobile_company;
+	}
+	
+	public void setMobile_company(Long mobile_company) {
+		this.mobile_company = mobile_company;
+	}
+	
+	public String getMobile_company_name() {
+		return mobile_company_name;
+	}
+	
+	public void setMobile_company_name(String mobile_company_name) {
+		this.mobile_company_name = mobile_company_name;
 	}
 }

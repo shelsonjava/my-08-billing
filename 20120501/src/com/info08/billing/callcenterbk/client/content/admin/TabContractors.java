@@ -7,6 +7,7 @@ import com.info08.billing.callcenterbk.client.dialogs.admin.DlgGetContractorsBil
 import com.info08.billing.callcenterbk.client.dialogs.admin.DlgUpdateContrCurrRangePrice;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -45,6 +46,7 @@ public class TabContractors extends Tab {
 	private SelectItem contractorType;
 	private SelectItem limitItem;
 	private SelectItem priceTypeItem;
+	private SelectItem operatorItem;
 
 	private IButton findButton;
 	private IButton clearButton;
@@ -119,8 +121,16 @@ public class TabContractors extends Tab {
 			priceTypeItem.setValueMap(ClientMapUtil.getInstance()
 					.getContractorPriceTypes());
 
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(250);
+			operatorItem.setName("operator_src");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
 			searchForm.setFields(orgNameItem, contractorType, limitItem,
-					phoneItem, priceTypeItem);
+					phoneItem, priceTypeItem, operatorItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(830);
@@ -607,6 +617,9 @@ public class TabContractors extends Tab {
 					criteria.setAttribute("limitType", limitType);
 				}
 			}
+			Integer operator_src = Integer.parseInt(operatorItem
+					.getValueAsString());
+			criteria.setAttribute("operator_src", operator_src);
 
 			Integer price_type = new Integer(priceTypeItem.getValueAsString());
 			if (price_type != -1) {

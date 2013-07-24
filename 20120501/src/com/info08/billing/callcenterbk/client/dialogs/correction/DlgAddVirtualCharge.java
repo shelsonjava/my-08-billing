@@ -3,13 +3,14 @@ package com.info08.billing.callcenterbk.client.dialogs.correction;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
+import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Window;
@@ -33,6 +34,7 @@ public class DlgAddVirtualCharge extends Window {
 	private ComboBoxItem serviceItem;
 	private SelectItem typeItem;
 	private TextItem chargeCountItem;
+	private SelectItem operatorItem;
 
 	private IButton chargeButton;
 	private ListGridRecord listGridRecord;
@@ -43,8 +45,8 @@ public class DlgAddVirtualCharge extends Window {
 			this.listGridRecord = listGridRecord;
 			setTitle(CallCenterBK.constants.addCharge());
 
-			setHeight(260);
-			setWidth(620);
+			setHeight(240);
+			setWidth(800);
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);
@@ -96,34 +98,46 @@ public class DlgAddVirtualCharge extends Window {
 			dynamicForm = new DynamicForm();
 			dynamicForm.setAutoFocus(true);
 			dynamicForm.setWidth100();
-			dynamicForm.setNumCols(3);
-			dynamicForm.setTitleOrientation(TitleOrientation.TOP);
+			dynamicForm.setNumCols(4);
 			hLayout.addMember(dynamicForm);
 
 			serviceItem = new ComboBoxItem();
 			serviceItem.setTitle(CallCenterBK.constants.service());
 			serviceItem.setType("comboBox");
 			serviceItem.setName("serviceItem");
-			serviceItem.setWidth(230);
+			serviceItem.setWidth(250);
 			DataSource services = CommonSingleton.getInstance().getServicesDS();
 			serviceItem.setOptionDataSource(services);
+			Criteria criteria = new Criteria();
+			criteria.setAttribute("service_price_id", 50010);
+			serviceItem.setOptionCriteria(criteria);
 			serviceItem.setDisplayField("service_description");
 			serviceItem.setValueField("service_price_id");
+			serviceItem.setDefaultToFirstOption(true);
 
 			typeItem = new SelectItem();
 			typeItem.setTitle(CallCenterBK.constants.type());
 			typeItem.setName("typeItem");
-			typeItem.setWidth(150);
+			typeItem.setWidth(250);
 			typeItem.setDefaultToFirstOption(true);
 			typeItem.setValueMap(ClientMapUtil.getInstance().getCallTypes());
 
 			chargeCountItem = new TextItem();
 			chargeCountItem.setTitle(CallCenterBK.constants.chargeCount());
 			chargeCountItem.setName("chargeCountItem");
-			chargeCountItem.setWidth(208);
+			chargeCountItem.setWidth(250);
 			chargeCountItem.setValue(1);
 
-			dynamicForm.setFields(serviceItem, typeItem, chargeCountItem);
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(250);
+			operatorItem.setName("operatorItem");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
+			dynamicForm.setFields(operatorItem, serviceItem, typeItem,
+					chargeCountItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth100();
@@ -232,6 +246,8 @@ public class DlgAddVirtualCharge extends Window {
 			record.setAttribute("chargeCount", chargeCount);
 			record.setAttribute("call_phone", phone);
 			record.setAttribute("virt_call_type", virt_call_type);
+			record.setAttribute("operator_src", Integer.parseInt(operatorItem
+					.getValueAsString().toString()));
 
 			DSRequest req = new DSRequest();
 			req.setAttribute("operationId", "addChargesWithoutCall");

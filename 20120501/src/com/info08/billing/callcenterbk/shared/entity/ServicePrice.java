@@ -44,6 +44,16 @@ public class ServicePrice implements Serializable {
 	@Basic
 	@Column(name = "SQL_PARAM_COUNT")
 	private Long sql_param_count;
+	
+	
+	@Basic
+	@Column(name = "NORMAL_PRICE_09")
+	private Double normal_price_09;
+	
+	@Basic
+	@Column(name = "ORG_PRICE_09")
+	private Double org_price_09;
+	
 
 	public ServicePrice() {
 	}
@@ -94,5 +104,17 @@ public class ServicePrice implements Serializable {
 
 	public void setSql_param_count(Long sql_param_count) {
 		this.sql_param_count = sql_param_count;
+	}
+	public Double getNormal_price_09() {
+		return normal_price_09;
+	}
+	public void setNormal_price_09(Double normal_price_09) {
+		this.normal_price_09 = normal_price_09;
+	}
+	public Double getOrg_price_09() {
+		return org_price_09;
+	}
+	public void setOrg_price_09(Double org_price_09) {
+		this.org_price_09 = org_price_09;
 	}
 }
