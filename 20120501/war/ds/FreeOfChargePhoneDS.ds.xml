@@ -13,6 +13,7 @@
 		<field name="end_date_descr" 	type="text" 		title="end_date_descr" />
 		<field name="remark" 			type="text" 		title="remark" />
 		<field name="loggedUserName" 	type="text" 		title="Logged UserName" 	hidden="true" />
+		<field name="operator_src"		type="integer"		title="operator_src"		hidden="true"/>
 	</fields>
 
 	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.TreatmentDMI" />
@@ -44,14 +45,15 @@
 			      ,to_char(start_date, 'DD-MM-YYYY') as start_date_descr
 			      ,t.end_date
 			      ,to_char(end_date, 'DD-MM-YYYY') as end_date_descr
+			      ,operator_src
 			</selectClause>
 			<tableClause>free_of_charge_phone t</tableClause>
 			<whereClause><![CDATA[
 				1 = 1 
 				#if($criteria.phone_number) and t.phone_number like '%'||$criteria.phone_number||'%' #end
-				#if($criteria.remark) and t.remark like '%'||$criteria.remark||'%' #end
-				
+				#if($criteria.remark) and t.remark like '%'||$criteria.remark||'%' #end				
 				#if($criteria.phone_number_id) and t.phone_number_id = $criteria.phone_number_id #end
+				#if($criteria.operator_src) and t.operator_src = $criteria.operator_src #end
 				]]>
 			</whereClause>
 			<orderClause>t.start_date desc</orderClause>

@@ -1,0 +1,18 @@
+<DataSource ID="OrgPrioritiesDS1" serverType="sql"
+	tableName="v_org_priorities" qualifyColumnNames="false">
+	<fields>
+		<field name="org_priority_type_id"   	type="integer"  		title="org_priority_type_id"/>
+		<field name="org_id"   				 	type="text"  			title="org_id"/>
+		<field name="priority_order"   			type="integer"  		title="priority_order"/>
+		<field name="org_name"   				type="text"  			title="org_name"/>
+		<field name="operator_src"				type="integer"			title="operator_src"/>
+	</fields>
+	
+	<operationBindings>
+		<operationBinding operationType="fetch">
+			<orderClause>priority_order</orderClause>
+		</operationBinding>		
+	</operationBindings>
+	
+	
+</DataSource>

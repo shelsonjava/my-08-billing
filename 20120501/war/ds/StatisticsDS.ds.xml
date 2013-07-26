@@ -220,7 +220,7 @@
 			         left join v_full_address a on o.physical_address_id = a.addr_id  
 			</tableClause>
 			<whereClause><![CDATA[
-				 ch.year_month = $criteria.ym and ls.year_month = $criteria.ym
+				 ch.year_month = $criteria.ym and ls.year_month = $criteria.ym and ch.charge >= 0 
 				 and trunc(c.contract_start_date) <= trunc(ls.call_start_date)
 				 and trunc(c.contract_end_date) >= trunc(ls.call_start_date)
 				 and c.goverment = $criteria.type	
@@ -257,7 +257,7 @@
 			</tableClause>
 			<whereClause><![CDATA[
 				  ch.year_month = $criteria.ym and cs.year_month = $criteria.ym and 
-			      ch.charge > 0 and cs.call_kind = 3 and not exists
+			      ch.charge >= 0 and cs.call_kind = 3 and not exists
 			        (select 1 from v_normalized_contractor_phones p where p.phone = cs.call_phone)
 			      #if ($criteria.organization_name)
 				 	 #foreach($str in $criteria.organization_name.split(" "))
@@ -294,9 +294,9 @@
 			</tableClause>
 			<whereClause><![CDATA[
 			       ch.year_month = $criteria.ym and cs.year_month = $criteria.ym and 
-			       ch.charge > 0 and
+			       ch.charge >= 0 and
 			       o.organization_id = $criteria.organization_id and
-			       c.operator_src = $criteria.operator_src
+			       cs.operator_src = $criteria.operator_src
 			       #if ($criteria.operator_src) and cs.operator_src = to_char($criteria.operator_src) #end
 				]]>  
 			</whereClause> 
@@ -327,7 +327,7 @@
 			</tableClause>
 			<whereClause><![CDATA[
 			       ch.year_month = $criteria.ym and cs.year_month = $criteria.ym and 
-			       ch.charge > 0 and
+			       ch.charge >= 0 and
 			       o.organization_id = $criteria.organization_id and
 			       c.operator_src = $criteria.operator_src
 			       #if ($criteria.operator_src) and cs.operator_src = to_char($criteria.operator_src) #end

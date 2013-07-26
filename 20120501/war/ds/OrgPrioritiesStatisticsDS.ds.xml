@@ -13,7 +13,7 @@
 		<field name="call_phone"   				type="text"  			title="Phone"/>
 		<field name="uname"   					type="text"  			title="User"/>
 		<field name="remark"   					type="text"  			title="remark"/>
-		
+		<field name="operator_src"   			type="integer"  		title="operator_src"/>
 	</fields>
 	<operationBindings>
 		<operationBinding operationId="getStatisticsGroup1111" operationType="fetch">
@@ -78,25 +78,29 @@
 					  k.organization_name as org_name,
 					  k.organization_name as real_name,
 					  k.remark,
+					  k.operator_src,
 					  sum(k.cnt) as cnt
 					from (
-					  select ce.session_id,ce.organization_id,o.organization_name,o.remark, 1 as cnt from ccare.call_sessions t
+					  select ce.session_id,ce.organization_id,o.organization_name,o.remark, 1 as cnt, op.operator_src from ccare.call_sessions t
 					         inner join ccare.call_session_expense ce on ce.call_session_id = t.call_session_id
 					         inner join ccare.org_priorities op on op.org_id = ce.organization_id
 					         inner join ccare.organizations o on o.organization_id = op.org_id
 					  where t.year_month = to_number(to_char($criteria.vHistDate,'YYMM')) and ce.year_month >= to_number(to_char($criteria.vHistDate,'YYMM'))
 					  		#if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end
-					  group by ce.session_id, ce.organization_id,o.organization_name, o.remark
+					  		#if($criteria.operator_src) and op.operator_src  = $criteria.operator_src and t.operator_src = to_char($criteria.operator_src) #end					  		
+					  group by ce.session_id, ce.organization_id,o.organization_name, o.remark, op.operator_src
 					  union all
-					  select sms.session_call_id, o.organization_id,o.organization_name,o.remark, 1 as cnt from ccare.sent_sms_hist sms 
+					  select sms.session_call_id, o.organization_id,o.organization_name,o.remark, 1 as cnt, op.operator_src from ccare.sent_sms_hist sms
+					  		 inner join ccare.call_sessions cs on cs.session_id = sms.session_call_id 
 					         inner join ccare.org_priorities op on op.org_id = sms.organization_id
 					         inner join ccare.organizations o on o.organization_id = op.org_id       
 					  where to_number(to_char(sms.message_sent_time,'YYMM')) = to_number(to_char($criteria.vHistDate,'YYMM')) and 
 					        sms.organization_id is not null 
 					        #if($criteria.organization_name) and o.organization_name like '%'||$criteria.organization_name||'%' #end
-					  group by sms.session_call_id,o.organization_id,o.organization_name, o.remark      
+					        #if($criteria.operator_src) and op.operator_src  = $criteria.operator_src #end
+					  group by sms.session_call_id,o.organization_id,o.organization_name, o.remark, op.operator_src  
 					) k
-					group by k.organization_id,k.organization_name , k.remark
+					group by k.organization_id,k.organization_name , k.remark, k.operator_src
             	 ]]>
             </customSQL> 
     	</operationBinding>
@@ -117,12 +121,15 @@
 				cs.session_id in
 					(
 					  select t.session_call_id from ccare.sent_sms_hist t
+					  		inner join ccare.call_sessions cs on cs.session_id = t.session_call_id
 					  where t.organization_id = $criteria.real_org_id and to_number(to_char(t.message_sent_time,'YYMM')) = to_number(to_char($criteria.vHistDate,'YYMM'))
-					  
+					  		and cs.operator_src = $criteria.operator_src
 					  union 
 					
 					  select ce.session_id from ccare.call_session_expense ce 
-					  where ce.organization_id = $criteria.real_org_id and to_number(to_char(ce.charge_date,'YYMM')) = to_number(to_char($criteria.vHistDate,'YYMM'))  
+					  		 inner join ccare.call_sessions cs on cs.session_id = ce.session_id
+					  where ce.organization_id = $criteria.real_org_id and to_number(to_char(ce.charge_date,'YYMM')) = to_number(to_char($criteria.vHistDate,'YYMM'))
+					  		and cs.operator_src = $criteria.operator_src  
 					)
 				]]>  
 			</whereClause> 

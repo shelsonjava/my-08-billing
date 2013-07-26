@@ -19,6 +19,7 @@
         <field name="organization_id"  		type="integer"  title="organization_id"/>
         <field name="call_phone"  			type="text"  	title="call_phone"/>
         <field name="event_describtion"		type="text"  	title="event_describtion"/>
+        <field name="operator_src"			type="integer"  title="operator_src"/>        
     </fields>
     
   
@@ -63,7 +64,7 @@
 		<operationBinding operationId="ChargeLogRedOrg" operationType="update">
             <customSQL>
             	 <![CDATA[
-            	      call addorgprioritysessionlog($values.organization_id,$values.session_id)
+            	      call addorgprioritysessionlog($values.organization_id, $values.session_id, $values.operator_src)
             	 ]]>
             </customSQL> 
         </operationBinding>
