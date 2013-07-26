@@ -202,9 +202,11 @@ public class TabStatByOrg extends Tab {
 					Integer organizationId = record
 							.getAttributeAsInt("organization_id");
 					DlgViewDirOrgStats dlgViewDirOrgStats = new DlgViewDirOrgStats(
-							organizationId, ym, typeItem.getValueAsString()
-									.equals("1"), Integer.parseInt(operatorItem
-									.getValueAsString().toString()));
+							organizationId, ym, (typeItem.getValueAsString()
+									.equals("1") || typeItem.getValueAsString()
+									.equals("0")), Integer
+									.parseInt(operatorItem.getValueAsString()
+											.toString()));
 					dlgViewDirOrgStats.show();
 				}
 			});

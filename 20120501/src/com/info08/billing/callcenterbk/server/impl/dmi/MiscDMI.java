@@ -1154,9 +1154,8 @@ public class MiscDMI implements QueryConstants {
 					.getFieldValue("call_kind").toString());
 			Long call_session_id = new Long(dsRequest.getFieldValue(
 					"call_session_id").toString());
-			Long operator_src = new Long(dsRequest.getFieldValue(
-					"operator_src").toString());
-			
+			Long operator_src = new Long(dsRequest
+					.getFieldValue("operator_src").toString());
 
 			Integer organization_id = Integer.parseInt(dsRequest
 					.getFieldValue("organization_id") == null ? "-1"
@@ -1165,7 +1164,7 @@ public class MiscDMI implements QueryConstants {
 					+ service_id + ", session_id = " + session_id + ", ym = "
 					+ ym + ", organization_id = " + organization_id
 					+ ", call_kind = " + call_kind + ", call_phone = "
-					+ call_phone+", operator_src = "+operator_src;
+					+ call_phone + ", operator_src = " + operator_src;
 
 			Timestamp recDate = new Timestamp(System.currentTimeMillis());
 
@@ -1178,8 +1177,8 @@ public class MiscDMI implements QueryConstants {
 					.createNativeQuery(QueryConstants.Q_GET_CALL_PRICE_NEW)
 					.setParameter(1, call_phone)
 					.setParameter(2, service.getService_price_id())
-					.setParameter(3, call_kind)
-					.setParameter(4, operator_src).getSingleResult().toString());
+					.setParameter(3, call_kind).setParameter(4, operator_src)
+					.getSingleResult().toString());
 
 			CallSessionExpense callSessionExpense = new CallSessionExpense();
 			callSessionExpense.setCall_session_id(call_session_id);
@@ -1200,6 +1199,7 @@ public class MiscDMI implements QueryConstants {
 				Map<String, Object> values = new LinkedHashMap<String, Object>();
 				values.put("organization_id", organization_id);
 				values.put("session_id", session_id);
+				values.put("operator_src", operator_src);
 				DMIUtils.updateRecord("LogSessChDS", "ChargeLogRedOrg", values);
 			}
 

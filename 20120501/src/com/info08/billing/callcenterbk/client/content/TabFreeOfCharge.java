@@ -1,7 +1,9 @@
 package com.info08.billing.callcenterbk.client.content;
 
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgAddEditFreeOfChargePhone;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -20,6 +22,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.DoubleClickEvent;
 import com.smartgwt.client.widgets.events.DoubleClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
@@ -41,6 +44,7 @@ public class TabFreeOfCharge extends Tab {
 
 	private TextItem phoneNumberItem;
 	private TextAreaItem remarkItem;
+	private SelectItem operatorItem;
 
 	private IButton findButton;
 	private IButton clearButton;
@@ -81,7 +85,15 @@ public class TabFreeOfCharge extends Tab {
 			remarkItem.setWidth(250);
 			remarkItem.setName("remark");
 
-			searchForm.setFields(phoneNumberItem, remarkItem);
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(250);
+			operatorItem.setName("operatorItem");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
+			searchForm.setFields(operatorItem, phoneNumberItem, remarkItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(540);
@@ -287,7 +299,9 @@ public class TabFreeOfCharge extends Tab {
 		}
 		Criteria formCriteria = searchForm.getValuesAsCriteria();
 		criteria.addCriteria(formCriteria);
-
+		Integer operator_src = Integer.parseInt(operatorItem.getValueAsString());
+		criteria.setAttribute("operator_src", operator_src);
+		
 		freeOfChargePhonesGrid.invalidateCache();
 		DSRequest dsRequest = new DSRequest();
 		dsRequest.setOperationId("searchFromDB");

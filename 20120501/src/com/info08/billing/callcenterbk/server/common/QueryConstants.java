@@ -29,7 +29,7 @@ public interface QueryConstants {
 			"      and t.phone not like '790%' and t.phone not like '5%' and dp.hidden_by_request = 0";
 
 	
-	public static final String Q_GET_PHONE_FREE_OF_CHARGE =" select t.remark from free_of_charge_phone t where t.phone_number = ? and sysdate between t.start_date and t.end_date ";
+	public static final String Q_GET_PHONE_FREE_OF_CHARGE =" select t.remark from free_of_charge_phone t where t.phone_number = ? and t.operator_src = ? and sysdate between t.start_date and t.end_date ";
 	
 	
 	public static final String Q_UPDATE_STREET_TRUXA =" update ccare.addresses t set t.town_id = t.town_id where t.street_id = ? ";
@@ -866,7 +866,7 @@ public interface QueryConstants {
 			+ "   and t.hidden = 0\n" + "   and t.delivered = 0";
 
 	public static final String Q_GET_SPECIAL_TEXT_BY_NUMBER = " select t.note from ALERTS_BY_PHONE t where t.phone_number = ? ";
-	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone_number) from FREE_OF_CHARGE_PHONE t where t.phone_number = ? and trunc(sysdate) between t.start_date and t.end_date ";
+	public static final String Q_GET_NON_CHARGE_ABONENT = "select count(t.phone_number) from FREE_OF_CHARGE_PHONE t where t.phone_number = ? and t.operator_src = ? and trunc(sysdate) between t.start_date and t.end_date ";
 	public static final String Q_GET_NON_CHARGE_ABONENT_REMARK = "select t.remark from FREE_OF_CHARGE_PHONE t where t.phone_number = ? and trunc(sysdate) between t.start_date and t.end_date ";
 	public static final String Q_GET_MOBITEL_NOTE = "select t.description from descriptions t where t.description_id = 56101 ";
 	public static final String Q_GET_TREATMENT = " select treatment, gender from treatments where phone_number = ? ";

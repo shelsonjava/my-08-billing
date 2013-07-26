@@ -53,7 +53,7 @@ public class DlgAddEditOrgPriorities extends Window {
 			this.saveResult = saveResult;
 			setTitle(CallCenterBK.constants.extraPriority());
 
-			setHeight(330);
+			setHeight(350);
 			setWidth(715);
 			setShowMinimizeButton(false);
 			setIsModal(true);
@@ -90,7 +90,7 @@ public class DlgAddEditOrgPriorities extends Window {
 			remarkItem.setName("remark");
 			remarkItem.setColSpan(4);
 			remarkItem.setRequired(true);
-
+			
 			operatorItem = new SelectItem();
 			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setWidth(600);
@@ -98,7 +98,7 @@ public class DlgAddEditOrgPriorities extends Window {
 			operatorItem.setDefaultToFirstOption(true);
 			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
 					"searchOperators", "operator_src", "operator_src_descr");
-
+			
 			dynamicForm.setFields(operatorItem, descriptionItem, remarkItem);
 
 			ArrayList<MyComboBoxRecord> fieldRecords = new ArrayList<MyComboBoxRecord>();
@@ -186,10 +186,10 @@ public class DlgAddEditOrgPriorities extends Window {
 
 					ib.setWidth(ib.getWidth() + 5);
 				}
-				// if (i == 0 || i == orgitems.length - 1) {
-				// VLayout canv = new VLayout();
-				// orgItem.addCanvas(canv);
-				// }
+//				if (i == 0 || i == orgitems.length - 1) {
+//					VLayout canv = new VLayout();
+//					orgItem.addCanvas(canv);
+//				}
 
 				hLayout.addMember(orgItem);
 			}
@@ -246,6 +246,7 @@ public class DlgAddEditOrgPriorities extends Window {
 		try {
 			newRecord.setAttribute("changer_user", CommonSingleton
 					.getInstance().getSessionPerson().getUser_name());
+			
 		} catch (CallCenterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

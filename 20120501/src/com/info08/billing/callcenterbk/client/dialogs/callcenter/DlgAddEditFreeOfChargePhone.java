@@ -2,7 +2,9 @@ package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
 import java.util.Date;
 
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
@@ -15,6 +17,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -27,6 +30,7 @@ public class DlgAddEditFreeOfChargePhone extends Window {
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
 
+	private SelectItem operatorItem;
 	private TextAreaItem remarkItem;
 	private TextItem phoneNumberItem;
 
@@ -43,7 +47,7 @@ public class DlgAddEditFreeOfChargePhone extends Window {
 		setTitle(pRecord == null ? "უფასო ნომრის დამატება"
 				: "უფასო ნომრის მოდიფიცირება");
 
-		setHeight(280);
+		setHeight(300);
 		setWidth(390);
 		setShowMinimizeButton(false);
 		setIsModal(true);
@@ -65,6 +69,14 @@ public class DlgAddEditFreeOfChargePhone extends Window {
 		dynamicForm.setTitleWidth(220);
 		dynamicForm.setNumCols(1);
 		hLayout.addMember(dynamicForm);
+
+		operatorItem = new SelectItem();
+		operatorItem.setTitle(CallCenterBK.constants.operator());
+		operatorItem.setWidth(250);
+		operatorItem.setName("operator_src");
+		operatorItem.setDefaultToFirstOption(true);
+		ClientUtils.fillCombo(operatorItem, "OperatorsDS", "searchOperators",
+				"operator_src", "operator_src_descr");
 
 		phoneNumberItem = new TextItem();
 		phoneNumberItem.setTitle("ნომერი");
@@ -90,8 +102,8 @@ public class DlgAddEditFreeOfChargePhone extends Window {
 		endDateItem.setName("end_date");
 		endDateItem.setUseTextField(true);
 
-		dynamicForm.setFields(phoneNumberItem, startDateItem, endDateItem,
-				remarkItem);
+		dynamicForm.setFields(operatorItem, phoneNumberItem, startDateItem,
+				endDateItem, remarkItem);
 
 		HLayout hLayoutItem = new HLayout(5);
 		hLayoutItem.setWidth100();
@@ -135,6 +147,7 @@ public class DlgAddEditFreeOfChargePhone extends Window {
 			remarkItem.setValue(editRecord.getAttribute("remark"));
 			startDateItem.setValue(editRecord.getAttributeAsDate("start_date"));
 			endDateItem.setValue(editRecord.getAttributeAsDate("end_date"));
+			operatorItem.setValue(editRecord.getAttributeAsInt("operator_src"));
 
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -183,6 +196,8 @@ public class DlgAddEditFreeOfChargePhone extends Window {
 			record.setAttribute("remark", remark);
 			record.setAttribute("start_date", startDate);
 			record.setAttribute("end_date", endDate);
+			record.setAttribute("operator_src",
+					Integer.parseInt(operatorItem.getValueAsString()));
 
 			if (editRecord != null) {
 				record.setAttribute("phone_number_id",

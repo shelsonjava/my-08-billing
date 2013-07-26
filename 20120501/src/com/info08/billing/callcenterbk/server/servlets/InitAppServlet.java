@@ -173,7 +173,9 @@ public class InitAppServlet extends HttpServlet {
 			List freeOfChargeList = oracleManager
 					.createNativeQuery(
 							QueryConstants.Q_GET_PHONE_FREE_OF_CHARGE)
-					.setParameter(1, findPhone).getResultList();
+					.setParameter(1, findPhone)
+					.setParameter(2, Integer.parseInt(operatorSrc))
+					.getResultList();
 			boolean isBirthdayOrg = false;
 			boolean isFreeOfCharge = false;
 			String freeOfChargeText = "";
@@ -236,8 +238,9 @@ public class InitAppServlet extends HttpServlet {
 				Long nonChargeAbonentCount = new Long(oracleManager
 						.createNativeQuery(
 								QueryConstants.Q_GET_NON_CHARGE_ABONENT)
-						.setParameter(1, realPhone).getSingleResult()
-						.toString());
+						.setParameter(1, realPhone)
+						.setParameter(2, Integer.parseInt(operatorSrc))
+						.getSingleResult().toString());
 				if (nonChargeAbonentCount.longValue() > 0) {
 					String remark = oracleManager
 							.createNativeQuery(
@@ -249,7 +252,8 @@ public class InitAppServlet extends HttpServlet {
 				} else {
 
 					List result = oracleManager
-							.createNativeQuery(QueryConstants.Q_GET_ORG_ABONENT_NEW)
+							.createNativeQuery(
+									QueryConstants.Q_GET_ORG_ABONENT_NEW)
 							.setParameter(1, findPhone)
 							.setParameter(2, findPhone).getResultList();
 					if (result != null && !result.isEmpty()) {
@@ -426,15 +430,15 @@ public class InitAppServlet extends HttpServlet {
 					.println("================================== Session Initialized ==================================");
 
 			// // My Host - Test
-			// if (sessionId.startsWith("ts-")) {
-			 response.sendRedirect(response
-			 .encodeRedirectURL("http://127.0.0.1:8888/CallCenterBK.html?gwt.codesvr=127.0.0.1:9997&sessionId="
-			 + sessionId));
+//			// if (sessionId.startsWith("ts-")) {
+			response.sendRedirect(response
+					.encodeRedirectURL("http://127.0.0.1:8888/CallCenterBK.html?gwt.codesvr=127.0.0.1:9997&sessionId="
+							+ sessionId));
 			// } else {
-//			// Live
-//			response.sendRedirect(response
-//					.encodeRedirectURL("http://192.168.1.5:19080/CallCenterBK/CallCenterBK.html?sessionId="
-//							+ sessionId));
+			// // Live
+//			 response.sendRedirect(response
+//			 .encodeRedirectURL("http://192.168.1.5:19080/CallCenterBK/CallCenterBK.html?sessionId="
+//			 + sessionId));
 			// }
 			time = System.currentTimeMillis() - time;
 			System.out.println("Servlet Initialize Time Is : " + time

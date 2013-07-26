@@ -40,6 +40,10 @@ public class FreeOfChargePhone implements Serializable {
 	@Column(name = "REMARK")
 	private String remark;
 
+	@Basic
+	@Column(name = "OPERATOR_SRC")
+	private Long operator_src;
+
 	@Transient
 	private String loggedUserName;
 
@@ -114,6 +118,14 @@ public class FreeOfChargePhone implements Serializable {
 
 	public void setEnd_date_descr(String end_date_descr) {
 		this.end_date_descr = end_date_descr;
+	}
+
+	public Long getOperator_src() {
+		return operator_src;
+	}
+
+	public void setOperator_src(Long operator_src) {
+		this.operator_src = operator_src;
 	}
 
 }

@@ -301,6 +301,9 @@ public class TreatmentDMI implements QueryConstants {
 			Date end_date = record.get("end_date") == null ? null
 					: (Date) record.get("end_date");
 
+			Long operator_src = Long.parseLong(record.get("operator_src")
+					.toString());
+
 			String loggedUserName = record.get("loggedUserName").toString();
 
 			Timestamp updDate = new Timestamp(System.currentTimeMillis());
@@ -312,6 +315,8 @@ public class TreatmentDMI implements QueryConstants {
 
 			freeOfChargePhone.setPhone_number(phone_number);
 			freeOfChargePhone.setRemark(remark);
+			freeOfChargePhone.setOperator_src(operator_src);
+
 			if (start_date != null) {
 				freeOfChargePhone.setStart_date(new Timestamp(start_date
 						.getTime()));

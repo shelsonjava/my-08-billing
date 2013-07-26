@@ -23,6 +23,7 @@ import com.smartgwt.client.widgets.events.VisibilityChangedHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
@@ -40,7 +41,7 @@ public class DlgHistOrgPriority extends Window {
 
 	private DateItem histDate;
 	private TextItem organizationNameItem;
-
+	private SelectItem operatorItem;
 	private ButtonItem findButton;
 
 	private ListGrid histGroupListGrid;
@@ -82,18 +83,28 @@ public class DlgHistOrgPriority extends Window {
 			organizationNameItem.setName("organizationNameItem");
 			organizationNameItem.setWidth(300);
 
+			operatorItem = new SelectItem();
+			operatorItem.setTitle(CallCenterBK.constants.operator());
+			operatorItem.setWidth(200);
+			operatorItem.setName("operatorItem");
+			operatorItem.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+
 			searchForm = new DynamicForm();
 			searchForm.setAutoFocus(true);
 			searchForm.setWidth100();
-			searchForm.setNumCols(3);
+			searchForm.setNumCols(4);
 			searchForm.setPadding(5);
 			searchForm.setTitleOrientation(TitleOrientation.TOP);
+			
 			findButton = new ButtonItem();
 			findButton.setTitle(CallCenterBK.constants.find());
 
 			findButton.setStartRow(false);
 			findButton.setEndRow(false);
-			searchForm.setFields(histDate, organizationNameItem, findButton);
+			searchForm.setFields(histDate, organizationNameItem, operatorItem,
+					findButton);
 
 			searchForm.setBorder("1px solid #CCC");
 
@@ -125,8 +136,12 @@ public class DlgHistOrgPriority extends Window {
 			ListGridField cnt = new ListGridField("cnt",
 					CallCenterBK.constants.count(), 50);
 			cnt.setAlign(Alignment.RIGHT);
+			
+			ListGridField operator_src = new ListGridField("operator_src",
+					CallCenterBK.constants.operator(), 80);
+			operator_src.setAlign(Alignment.CENTER);
 
-			histGroupListGrid.setFields(real_name, remark, cnt);
+			histGroupListGrid.setFields(operator_src, real_name, remark, cnt);
 
 			histSessionsListGrid = new ListGrid();
 			histSessionsListGrid.setWidth100();
@@ -331,6 +346,8 @@ public class DlgHistOrgPriority extends Window {
 					organizationNameItem.getValueAsString());
 			Date vHistDate = histDate.getValueAsDate();
 			criteria.setAttribute("vHistDate", vHistDate);
+			criteria.setAttribute("operator_src",
+					Long.parseLong(operatorItem.getValueAsString()));
 
 			searchByCriteria(criteria);
 		} catch (Exception e) {
@@ -366,7 +383,9 @@ public class DlgHistOrgPriority extends Window {
 			} else {
 				return;
 			}
-
+			
+			criteria.setAttribute("operator_src", operatorItem.getValueAsString());
+			
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setAttribute("operationId", "getStatisticsNew");
 			if (export) {
