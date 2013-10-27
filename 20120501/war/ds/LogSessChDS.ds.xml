@@ -82,6 +82,16 @@
             	 ]]>
             </customSQL> 
         </operationBinding>
+        
+        
+        <operationBinding operationId="LogStaffSMS" operationType="add">
+            <customSQL>
+            	 <![CDATA[
+            	 	call send_sms_to_staff($values.p_staff_id,$values.p_creator_user,$values.sms_text)
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+        
         <operationBinding operationId="LogSMSNew1" operationType="add">
             <customSQL>
             	 <![CDATA[

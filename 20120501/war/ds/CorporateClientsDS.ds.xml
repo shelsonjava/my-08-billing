@@ -36,6 +36,7 @@
 		<field name="contractor_type"		type="integer"		title="contractor_type"			hidden="true"/>
 		<field name="ident_code"			type="text"			title="ident_code"				hidden="true"/>
 		<field name="operator_src"			type="integer"		title="operator_src"			hidden="true"/>
+		<field name="mail_service_price"	type="any"			title="mail_service_price"		hidden="true"/>
 	</fields>
 	<operationBindings>		
 
@@ -103,7 +104,8 @@
 					t.range_curr_price,
 				  	mo1.organization_name,
 				  	decode(t.price_type,0,'მარტ.','რთული') as price_type_descr,
-				  	t.operator_src
+				  	t.operator_src,
+				  	t.mail_service_price
 			</selectClause> 
 			<tableClause>corporate_clients t, organizations mo1</tableClause>
 			<whereClause><![CDATA[
@@ -165,7 +167,8 @@
 				 t.corporate_client_id = c.corporate_client_id and c.organization_id = mo.organization_id
 				 and t.ym = $criteria.ym
 				 #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end	
-				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end			 
+				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end
+				 #if($criteria.operator_src) and c.operator_src = $criteria.operator_src #end
 				]]>  
 			</whereClause> 
 			<orderClause>mo.organization_name</orderClause>
@@ -187,6 +190,7 @@
 				 bi.billing_company_id = tc.billing_company_id(+) and  bi.service_id = s.service_price_id  and bi.ym = $criteria.ym
 				 #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end				 
 				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end
+				 #if($criteria.operator_src) and c.operator_src = $criteria.operator_src #end
 				]]>  
 			</whereClause> 
 			<orderClause>bi.phone, bi.charge_date </orderClause>

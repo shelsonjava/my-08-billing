@@ -34,9 +34,7 @@
 		<field name="physicalAddress"			type="any"			title="physicalAddress" 	hidden="true" />
 		<field name="preStaffRaltive"			type="any"			title="preStaffRaltive" 	hidden="true" />
 		<field name="preStaffFamousPeople"		type="any"			title="preStaffFamousPeople" 	hidden="true" />
-		
-		
-		
+		<field name="full_staff_name"			type="text"			title="full_staff_name" 	hidden="true" />
 	</fields>
 
 	<operationBindings>		
@@ -108,5 +106,23 @@
 			</whereClause> 
 			<orderClause>d.department_name</orderClause>
     	</operationBinding>
+    	
+    	
+    	<operationBinding operationId="getStaffForSms" operationType="fetch">
+    		<selectClause>   			
+    		  	t.staff_id,
+    		  	t.first_name||' '||t.last_name||' ( '||ph.staff_phone||' ) ' as full_staff_name
+			</selectClause> 
+			<tableClause>
+				ccare.staff t
+       				inner join ccare.staff_phones ph on ph.staff_id = t.staff_id and ph.staff_phone_type_id = 71101
+			</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				]]>  
+			</whereClause> 
+			<orderClause>full_staff_name</orderClause>
+    	</operationBinding>
+    	
     </operationBindings>	
 </DataSource>

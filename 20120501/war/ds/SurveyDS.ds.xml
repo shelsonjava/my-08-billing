@@ -137,6 +137,7 @@
 				#if($criteria.survey_kind_id) and tt.survey_kind_id = $criteria.survey_kind_id #end
 				#if($criteria.survey_reply_type_id) and t.survey_reply_type_id = $criteria.survey_reply_type_id #end
 				#if($criteria.SURVEY_CREATED) and trunc(t.SURVEY_CREATED) = trunc($criteria.SURVEY_CREATED) #end
+				#if($criteria.SURVEY_CREATED_BY_MONTH) and to_number(to_char(trunc(t.SURVEY_CREATED),'YYYYMM')) = to_number(to_char(trunc($criteria.SURVEY_CREATED_BY_MONTH),'YYYYMM')) #end
 				#if($criteria.p_numb) and t.p_numb like '%'||$criteria.p_numb||'%' #end
 				#if($criteria.survey_phone) and t.survey_phone like '%'||$criteria.survey_phone||'%' #end
 				#if($criteria.personnel_id) and p.user_id = $criteria.personnel_id #end

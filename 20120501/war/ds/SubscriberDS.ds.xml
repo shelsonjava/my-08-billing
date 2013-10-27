@@ -84,14 +84,13 @@
 			       t.full_hidden,
 			       #if($criteria.for_call_center) 
 			       	
-				   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),
-				   		decode(spm.hidden_by_request,1,map_char_codes_geo('dafaruli'), 
-				       	decode(pnm.phone_state_id,52102,map_char_codes_geo('moxs.'),
-				       	decode(length(pnm.phone),7,'032'||pnm.phone,pnm.phone)))) shown_phones,
-				        
-				        decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.family_name) as family_name,
-				        decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.name) as name,
-			       			
+					   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),
+					   decode(spm.hidden_by_request,1,map_char_codes_geo('dafaruli'), 
+					   decode(pnm.phone_state_id,52102,map_char_codes_geo('moxs.'),
+					   decode(length(pnm.phone),7,'032'||pnm.phone,pnm.phone)))) shown_phones,
+					   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.family_name) as family_name,
+					   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.name) as name,
+			       	   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),decode(pnm.is_parallel,0,'ჩვეულებრივი',1,'პარალელური')) as is_parallel_descr,
 			       #else
 			       	   t.family_name,
 			           t.name,
@@ -175,7 +174,9 @@
 					#if($criteria.phone||$criteria.is_parallel
 							||$criteria.phone_contract_type||$criteria.phone_contract_type
 							||$criteria.phone_state_id||$criteria.phone_type_id||$criteria.ph_hidden_by_request
+							||$criteria.index
 						)
+								 #if($criteria.index) and pnm.phone like $criteria.index||'%' #end
 								 #if($criteria.phone) and pnm.phone = $criteria.phone #end
 						         #if($criteria.is_parallel) AND pnm.is_parallel = $criteria.is_parallel #end
 								 #if($criteria.phone_contract_type) AND spm.phone_contract_type = $criteria.phone_contract_type #end
