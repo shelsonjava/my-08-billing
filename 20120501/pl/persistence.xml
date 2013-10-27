@@ -92,7 +92,7 @@
 			<property name="hibernate.connection.username" value="ccare" />
 			<property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />
 			<property name="hibernate.connection.password" value="ccare" />
-			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@192.168.1.5:1522:ORCL" />
+			<property name="hibernate.connection.url" value="jdbc:oracle:thin:@192.168.1.5:1522:ORCLOPT2" />
 			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="false" />
 		</properties>
