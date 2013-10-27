@@ -60,6 +60,7 @@ public class TabStatFull extends Tab {
 	private ToolStripButton statN1Btn;
 	private ToolStripButton statN2Btn;
 	private ToolStripButton printPreviewBtn;
+	private ToolStripButton excelBtn;
 
 	private Record prevMonthRecord;
 
@@ -144,6 +145,12 @@ public class TabStatFull extends Tab {
 			toolStrip.addButton(printPreviewBtn);
 
 			toolStrip.addSeparator();
+
+			excelBtn = new ToolStripButton(
+					CallCenterBK.constants.export_to_excel(), "excel.png");
+			excelBtn.setLayoutAlign(Alignment.LEFT);
+			excelBtn.setWidth(50);
+			toolStrip.addButton(excelBtn);
 
 			// printPreviewButton.addClickHandler(new ClickHandler() {
 			// public void onClick(ClickEvent event) {
@@ -689,7 +696,14 @@ public class TabStatFull extends Tab {
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					search();
+					search(false);
+				}
+			});
+
+			excelBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					search(true);
 				}
 			});
 
@@ -809,7 +823,7 @@ public class TabStatFull extends Tab {
 		}
 	}
 
-	private void search() {
+	private void search(boolean isExport) {
 		try {
 			final Date date = dateItem.getValueAsDate();
 			if (date == null) {

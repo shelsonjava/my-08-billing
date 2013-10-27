@@ -1074,7 +1074,7 @@ public class DlgViewOrg extends Window {
 			int length = recordList.getLength();
 			if (length > 0) {
 				StringBuilder phones = new StringBuilder("");
-				for (int i = 0; i < length; i++) {
+				for (int i = 0; i < 3; i++) {
 					Record record = recordList.get(i);
 					String dep_phone = record.getAttributeAsString("hid_phone");
 					if (dep_phone == null

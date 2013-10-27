@@ -154,28 +154,51 @@ public class TabStatOrgCorrectUser extends Tab {
 			listGrid.setShowGroupSummary(false);
 			listGrid.setShowAllRecords(true);
 
-			ListGridField act_date = new ListGridField("act_date", CallCenterBK.constants.date(), 100);
-			ListGridField user_name = new ListGridField("user_name", CallCenterBK.constants.usernameShort(), 100);
-			ListGridField new_org = new ListGridField("new_org", CallCenterBK.constants.newOrgShort(), 50);
-			ListGridField del_org = new ListGridField("del_org", CallCenterBK.constants.delOrgShort(), 50);
-			ListGridField new_phone = new ListGridField("new_phone", CallCenterBK.constants.newPhoneShort(), 50);
-			ListGridField phone_upd = new ListGridField("phone_upd", CallCenterBK.constants.phoneUpd(), 50);
-			ListGridField del_phone = new ListGridField("del_phone", CallCenterBK.constants.delPhone(), 50);
-			ListGridField address = new ListGridField("address", CallCenterBK.constants.addressShort(), 50);
-			ListGridField director = new ListGridField("director", CallCenterBK.constants.directorShort(), 55);
-			ListGridField ident_code = new ListGridField("ident_code", CallCenterBK.constants.identCodeShort(), 50);
-			ListGridField work_hour_dayy_off = new ListGridField("work_hour_dayy_off", CallCenterBK.constants.workHourDayOffShort(), 70);
-			ListGridField web_site = new ListGridField("web_site", CallCenterBK.constants.webSiteShort(), 50);
-			ListGridField email = new ListGridField("email", CallCenterBK.constants.eMail(), 50);
-			ListGridField soc_network = new ListGridField("soc_network", CallCenterBK.constants.socialAddressShort(), 50);
-			ListGridField part_bank = new ListGridField("part_bank", CallCenterBK.constants.partnerBankShort1(), 50);
-			ListGridField org_comment = new ListGridField("org_comment", CallCenterBK.constants.orgCommentShort(), 50);
-			ListGridField founded_date = new ListGridField("founded_date", CallCenterBK.constants.foundedShort(), 50);
-			ListGridField other = new ListGridField("other", CallCenterBK.constants.other(), 50);
-			ListGridField new_subs = new ListGridField("new_subs", CallCenterBK.constants.newSubsShort(), 50);
-			ListGridField update_subs = new ListGridField("update_subs", CallCenterBK.constants.updateSubsShort(), 50);
-			ListGridField del_subs = new ListGridField("del_subs", CallCenterBK.constants.delSubsShort(), 50);
-			ListGridField sum = new ListGridField("sum_cnt", CallCenterBK.constants.sum(), 50);
+			ListGridField act_date = new ListGridField("act_date",
+					CallCenterBK.constants.date(), 100);
+			ListGridField user_name = new ListGridField("user_name",
+					CallCenterBK.constants.usernameShort(), 100);
+			ListGridField new_org = new ListGridField("new_org",
+					CallCenterBK.constants.newOrgShort(), 50);
+			ListGridField del_org = new ListGridField("del_org",
+					CallCenterBK.constants.delOrgShort(), 50);
+			ListGridField new_phone = new ListGridField("new_phone",
+					CallCenterBK.constants.newPhoneShort(), 50);
+			ListGridField phone_upd = new ListGridField("phone_upd",
+					CallCenterBK.constants.phoneUpd(), 50);
+			ListGridField del_phone = new ListGridField("del_phone",
+					CallCenterBK.constants.delPhone(), 50);
+			ListGridField address = new ListGridField("address",
+					CallCenterBK.constants.addressShort(), 50);
+			ListGridField director = new ListGridField("director",
+					CallCenterBK.constants.directorShort(), 55);
+			ListGridField ident_code = new ListGridField("ident_code",
+					CallCenterBK.constants.identCodeShort(), 50);
+			ListGridField work_hour_dayy_off = new ListGridField(
+					"work_hour_dayy_off",
+					CallCenterBK.constants.workHourDayOffShort(), 70);
+			ListGridField web_site = new ListGridField("web_site",
+					CallCenterBK.constants.webSiteShort(), 50);
+			ListGridField email = new ListGridField("email",
+					CallCenterBK.constants.eMail(), 50);
+			ListGridField soc_network = new ListGridField("soc_network",
+					CallCenterBK.constants.socialAddressShort(), 50);
+			ListGridField part_bank = new ListGridField("part_bank",
+					CallCenterBK.constants.partnerBankShort1(), 50);
+			ListGridField org_comment = new ListGridField("org_comment",
+					CallCenterBK.constants.orgCommentShort(), 50);
+			ListGridField founded_date = new ListGridField("founded_date",
+					CallCenterBK.constants.foundedShort(), 50);
+			ListGridField other = new ListGridField("other",
+					CallCenterBK.constants.other(), 50);
+			ListGridField new_subs = new ListGridField("new_subs",
+					CallCenterBK.constants.newSubsShort(), 50);
+			ListGridField update_subs = new ListGridField("update_subs",
+					CallCenterBK.constants.updateSubsShort(), 50);
+			ListGridField del_subs = new ListGridField("del_subs",
+					CallCenterBK.constants.delSubsShort(), 50);
+			ListGridField sum = new ListGridField("sum_cnt",
+					CallCenterBK.constants.sum(), 50);
 
 			act_date.setAlign(Alignment.CENTER);
 			user_name.setAlign(Alignment.LEFT);
@@ -212,7 +235,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			new_subs.setWrap(true);
 			update_subs.setWrap(true);
 			del_subs.setWrap(true);
-			
+
 			act_date.setSummaryFunction(new SummaryFunction() {
 				@Override
 				public Object getSummaryValue(Record[] records,
@@ -227,7 +250,7 @@ public class TabStatOrgCorrectUser extends Tab {
 					return CallCenterBK.constants.avarage();
 				}
 			});
-			
+
 			new_org.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -243,9 +266,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			new_org.setSummaryFunction(SummaryFunctionType.SUM);
 			new_org.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
-			
+
 			del_org.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -261,8 +282,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			del_org.setSummaryFunction(SummaryFunctionType.SUM);
 			del_org.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
+
 			new_phone.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -278,9 +298,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			new_phone.setSummaryFunction(SummaryFunctionType.SUM);
 			new_phone.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
-			
+
 			phone_upd.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -296,8 +314,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			phone_upd.setSummaryFunction(SummaryFunctionType.SUM);
 			phone_upd.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
+
 			del_phone.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -314,7 +331,6 @@ public class TabStatOrgCorrectUser extends Tab {
 			del_phone.setSummaryFunction(SummaryFunctionType.SUM);
 			del_phone.addSummaryFunction(SummaryFunctionType.AVG);
 
-			
 			address.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -330,8 +346,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			address.setSummaryFunction(SummaryFunctionType.SUM);
 			address.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
+
 			director.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -347,8 +362,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			director.setSummaryFunction(SummaryFunctionType.SUM);
 			director.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
+
 			ident_code.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -364,7 +378,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			ident_code.setSummaryFunction(SummaryFunctionType.SUM);
 			ident_code.addSummaryFunction(SummaryFunctionType.AVG);
-			
+
 			work_hour_dayy_off.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -380,8 +394,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			work_hour_dayy_off.setSummaryFunction(SummaryFunctionType.SUM);
 			work_hour_dayy_off.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
+
 			web_site.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -397,8 +410,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			web_site.setSummaryFunction(SummaryFunctionType.SUM);
 			web_site.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
+
 			email.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -414,7 +426,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			email.setSummaryFunction(SummaryFunctionType.SUM);
 			email.addSummaryFunction(SummaryFunctionType.AVG);
-			
+
 			soc_network.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -430,7 +442,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			soc_network.setSummaryFunction(SummaryFunctionType.SUM);
 			soc_network.addSummaryFunction(SummaryFunctionType.AVG);
-			
+
 			part_bank.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -446,8 +458,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			part_bank.setSummaryFunction(SummaryFunctionType.SUM);
 			part_bank.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
+
 			org_comment.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -463,8 +474,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			org_comment.setSummaryFunction(SummaryFunctionType.SUM);
 			org_comment.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
+
 			founded_date.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -480,7 +490,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			founded_date.setSummaryFunction(SummaryFunctionType.SUM);
 			founded_date.addSummaryFunction(SummaryFunctionType.AVG);
-			
+
 			other.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -496,7 +506,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			other.setSummaryFunction(SummaryFunctionType.SUM);
 			other.addSummaryFunction(SummaryFunctionType.AVG);
-			
+
 			new_subs.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -512,7 +522,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			new_subs.setSummaryFunction(SummaryFunctionType.SUM);
 			new_subs.addSummaryFunction(SummaryFunctionType.AVG);
-			
+
 			update_subs.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -528,7 +538,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			update_subs.setSummaryFunction(SummaryFunctionType.SUM);
 			update_subs.addSummaryFunction(SummaryFunctionType.AVG);
-			
+
 			del_subs.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -544,8 +554,7 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			del_subs.setSummaryFunction(SummaryFunctionType.SUM);
 			del_subs.addSummaryFunction(SummaryFunctionType.AVG);
-			
-			
+
 			sum.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {
@@ -561,15 +570,12 @@ public class TabStatOrgCorrectUser extends Tab {
 			});
 			sum.setSummaryFunction(SummaryFunctionType.SUM);
 			sum.addSummaryFunction(SummaryFunctionType.AVG);
-			
+
 			listGrid.setFields(act_date, user_name, new_org, del_org,
-					new_phone, phone_upd, del_phone, address, director, ident_code,
-					work_hour_dayy_off, web_site, email, soc_network,
-					part_bank, org_comment, founded_date, other, new_subs,
-					update_subs, del_subs, sum);
-			
-			
-			
+					new_phone, phone_upd, del_phone, address, director,
+					ident_code, work_hour_dayy_off, web_site, email,
+					soc_network, part_bank, org_comment, founded_date, other,
+					new_subs, update_subs, del_subs, sum);
 
 			mainLayout.addMember(listGrid);
 
@@ -580,11 +586,11 @@ public class TabStatOrgCorrectUser extends Tab {
 					search();
 				}
 			});
-			
-			userItem.addKeyPressHandler(new KeyPressHandler() {				
+
+			userItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
-					if(event.getKeyName().equals("Enter")){
+					if (event.getKeyName().equals("Enter")) {
 						search();
 					}
 				}
@@ -607,14 +613,15 @@ public class TabStatOrgCorrectUser extends Tab {
 	private void search() {
 		try {
 			DSRequest dsRequest = new DSRequest();
-			dsRequest.setOperationId("searchCorrUserStats");
 			Criteria criteria = new Criteria();
 
 			Date date = dateItem.getValueAsDate();
 			boolean byMonth = byMonthItem.getValueAsBoolean().booleanValue();
 			if (byMonth) {
+				dsRequest.setOperationId("searchCorrUserStatsByMonth");
 				criteria.setAttribute("mmyy", date);
 			} else {
+				dsRequest.setOperationId("searchCorrUserStats");
 				criteria.setAttribute("act_date", date);
 			}
 			String user_name = userItem.getValueAsString();

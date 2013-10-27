@@ -19,6 +19,7 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -44,6 +45,7 @@ public class TabSurveyHist extends Tab {
 	private ComboBoxItem operatorItem;
 	private ComboBoxItem updateUserItem;
 	private SelectItem discResponseType;
+	private CheckboxItem byMonthItem;
 
 	private VLayout mainLayout;
 
@@ -153,6 +155,11 @@ public class TabSurveyHist extends Tab {
 			discResponseType.setName("discResponseType");
 			discResponseType.setWidth(250);
 
+			byMonthItem = new CheckboxItem();
+			byMonthItem.setTitle(CallCenterBK.constants.byMonth());
+			byMonthItem.setName("byMonthItem");
+			byMonthItem.setWidth(250);
+
 			DataSource surveyReplyTypeDS = DataSource.get("SurveyReplyTypeDS");
 			discResponseType
 					.setOptionOperationId("searchSurveyReplyTypesForCB");
@@ -163,7 +170,7 @@ public class TabSurveyHist extends Tab {
 
 			searchForm.setFields(nmItem, contactNmItem, surveyKindItem,
 					surveyDateItem, operatorItem, updateUserItem,
-					discResponseType);
+					discResponseType, byMonthItem);
 
 			HLayout buttonLayout = new HLayout(5);
 			buttonLayout.setWidth(500);
@@ -384,13 +391,16 @@ public class TabSurveyHist extends Tab {
 				criteria.setAttribute("survey_reply_type_id", new Integer(
 						survey_reply_type_id));
 			}
-
 			criteria.setAttribute("survery_responce_status", new Integer(1));
-
 			try {
-				Date SURVEY_CREATED = surveyDateItem.getValueAsDate();
-				if (SURVEY_CREATED != null) {
-					criteria.setAttribute("SURVEY_CREATED", SURVEY_CREATED);
+				Date date = surveyDateItem.getValueAsDate();
+				boolean byMonth = byMonthItem.getValueAsBoolean();
+				if (date != null) {
+					if (byMonth) {
+						criteria.setAttribute("SURVEY_CREATED_BY_MONTH", date);
+					} else {
+						criteria.setAttribute("SURVEY_CREATED", date);
+					}
 				}
 			} catch (Exception e) {
 			}

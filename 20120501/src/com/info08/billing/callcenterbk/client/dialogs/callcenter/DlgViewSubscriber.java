@@ -95,10 +95,13 @@ public class DlgViewSubscriber extends Window {
 				CallCenterBK.constants.address());
 		DetailViewerField phone = new DetailViewerField("shown_phones",
 				CallCenterBK.constants.phone());
+		DetailViewerField is_parallel_descr = new DetailViewerField(
+				"is_parallel_descr", CallCenterBK.constants.status());
 
 		detailViewer.viewSelectedData(listGrid);
 
-		detailViewer.setFields(firstname, lastname, city, address, phone);
+		detailViewer.setFields(firstname, lastname, city, address, phone,
+				is_parallel_descr);
 		mainLayout.addMember(detailViewer);
 
 		HLayout hLayoutItem = new HLayout(5);

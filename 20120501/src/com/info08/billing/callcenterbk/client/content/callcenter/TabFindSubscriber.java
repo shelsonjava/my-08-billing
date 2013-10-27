@@ -155,7 +155,7 @@ public class TabFindSubscriber extends Tab {
 		listGrid.setFilterOnKeypress(true);
 
 		ListGridField name = new ListGridField("name",
-				CallCenterBK.constants.name(), 120);
+				CallCenterBK.constants.name(), 100);
 		name.setCanFilter(true);
 
 		ListGridField family_name = new ListGridField("family_name",
@@ -163,7 +163,7 @@ public class TabFindSubscriber extends Tab {
 		family_name.setCanFilter(true);
 
 		ListGridField city = new ListGridField("town_name",
-				CallCenterBK.constants.town(), 140);
+				CallCenterBK.constants.town(), 100);
 		city.setCanFilter(false);
 
 		ListGridField address = new ListGridField("concat_address",
@@ -174,7 +174,9 @@ public class TabFindSubscriber extends Tab {
 				CallCenterBK.constants.phone(), 100);
 		phone.setCanFilter(true);
 		ListGridField phoneStateField = new ListGridField("phone_state",
-				"მდგომარეობა", 100);
+				"მდგომარეობა", 90);
+		ListGridField phoneStatusField = new ListGridField("is_parallel_descr",
+				CallCenterBK.constants.status(), 100);
 
 		name.setAlign(Alignment.LEFT);
 		family_name.setAlign(Alignment.LEFT);
@@ -183,7 +185,7 @@ public class TabFindSubscriber extends Tab {
 		phone.setAlign(Alignment.CENTER);
 
 		listGrid.setFields(family_name, name, city, address, phone,
-				phoneStateField);
+				phoneStateField, phoneStatusField);
 		mainLayout.addMember(listGrid);
 
 		clearButton.addClickHandler(new ClickHandler() {

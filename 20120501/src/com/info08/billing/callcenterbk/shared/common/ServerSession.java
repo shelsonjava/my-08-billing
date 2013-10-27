@@ -55,6 +55,7 @@ public class ServerSession implements Serializable {
 	private String freeOfChargeText;
 	private boolean isBirthdayOrg;
 	private Long unreadNewsCnt = 0L;
+	private ServerSessionSurvItem surveryList[];
 
 	@SuppressWarnings("deprecation")
 	public ServerSession() {
@@ -409,5 +410,13 @@ public class ServerSession implements Serializable {
 
 	public void setUnreadNewsCnt(Long unreadNewsCnt) {
 		this.unreadNewsCnt = unreadNewsCnt;
+	}
+
+	public ServerSessionSurvItem[] getSurveryList() {
+		return surveryList;
+	}
+
+	public void setSurveryList(ServerSessionSurvItem surveryList[]) {
+		this.surveryList = surveryList;
 	}
 }

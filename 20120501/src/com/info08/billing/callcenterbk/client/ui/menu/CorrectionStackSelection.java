@@ -113,6 +113,8 @@ public class CorrectionStackSelection extends SectionStackSection {
 					.hasPermission("105500");
 			boolean hasVirtChargePerm = CommonSingleton.getInstance()
 					.hasPermission("106550");
+			boolean hasFreeNumber = CommonSingleton.getInstance()
+					.hasPermission("106600");
 
 			menuData[0].setAttribute("enabled", hasOrgBusActPerm);
 			menuData[1].setAttribute("enabled", hasOrgManPerm);
@@ -123,7 +125,7 @@ public class CorrectionStackSelection extends SectionStackSection {
 			menuData[6].setAttribute("enabled", hasOrgManPerm);
 			menuData[7].setAttribute("enabled", hasOrgManPerm);
 			menuData[8].setAttribute("enabled", hasOrgManPerm);
-			menuData[9].setAttribute("enabled", hasOrgManPerm);
+			menuData[9].setAttribute("enabled", hasFreeNumber);
 
 		} catch (Exception e) {
 			e.printStackTrace();

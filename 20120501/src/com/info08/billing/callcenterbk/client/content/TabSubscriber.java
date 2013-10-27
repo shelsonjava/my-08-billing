@@ -73,6 +73,7 @@ public class TabSubscriber extends Tab {
 	private TextItem adressItem;
 	private TextItem blockItem;
 	private TextItem appartItem;
+	private TextItem indexItem;
 	private TextAreaItem addrAddInfoItem;
 	private IButton findButton;
 	private IButton clearButton;
@@ -296,8 +297,13 @@ public class TabSubscriber extends Tab {
 			}
 			columnMap = newcolumnMap;
 
-			searchFormPhone.setFields(phoneIsHideItem, isParallelItem,
-					phoneContractType, phoneStateItem, phoneTypeItem);
+			indexItem = new TextItem("index", CallCenterBK.constants.index());
+			indexItem.setWidth(200);
+
+			searchFormPhone
+					.setFields(phoneIsHideItem, isParallelItem,
+							phoneContractType, phoneStateItem, phoneTypeItem,
+							indexItem);
 
 			clearItems();
 			HLayout buttonLayout = new HLayout(5);
@@ -670,10 +676,15 @@ public class TabSubscriber extends Tab {
 		String selLastName = lastNameItem.getValueAsString();
 		String phone = phoneItem.getValueAsString();
 		String street = streetItem.getValueAsString();
-
+		String index = indexItem.getValueAsString();
 		if (selFirstName == null && selLastName == null && phone == null
-				&& street == null) {
-			SC.say("მიუთითეთ შემდეგი პარამეტრებიდან ერთ-ერთი : სახელი, გვარი, ნომერი, ქუჩა");
+				&& street == null && index == null) {
+			SC.say("მიუთითეთ შემდეგი პარამეტრებიდან ერთ-ერთი : სახელი, გვარი, ნომერი, ქუჩა, ინდექსი");
+			return;
+		}
+
+		if (index != null && index.length() < 3) {
+			SC.say("ინდექსი უნდა იყოს მინიმუმ 3 სიმბოლო");
 			return;
 		}
 

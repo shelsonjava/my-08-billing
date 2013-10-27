@@ -784,4 +784,9 @@ public interface AppConstants extends Constants {
 	String contractor();
 	String mobileOperator();
 	String mobileOperatorName();
+	String mail_service_price();
+	String invalid_mail_service_price();
+	String staff();
+	String all_staff();
+	String export_to_excel();
 }

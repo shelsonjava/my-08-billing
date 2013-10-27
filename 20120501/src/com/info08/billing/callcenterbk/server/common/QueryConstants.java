@@ -1364,4 +1364,33 @@ public interface QueryConstants {
 
 	public static final String Q_GET_CORP_CLIENT_PHONES = "select phone_number from corp_client_phones cp where cp.corporate_client_id=?";
 	
+	public static final String Q_GET_SURVEYS_BY_PHONE = "select tt.survey_kind_name,\n" +
+			"            r.survey_reply_type_name,\n" + 
+			"            t.survey_id,\n" + 
+			"            t.session_call_id,\n" + 
+			"            t.p_numb,\n" + 
+			"            t.survey_descript,\n" + 
+			"            t.survey_phone,\n" + 
+			"            t.survey_kind_id,\n" + 
+			"            t.survey_reply_type_id,\n" + 
+			"            t.survey_person,\n" + 
+			"            t.survery_responce_status,\n" + 
+			"            t.survey_done,\n" + 
+			"            t.bblocked,\n" + 
+			"            t.survey_creator,\n" + 
+			"            t.survey_created,\n" + 
+			"            t.loked_user,\n" + 
+			"            ss.call_start_date start_date,\n" + 
+			"             p.user_id personnel_id,\n" + 
+			"             ss.operator_src\n" + 
+			"  from ccare.survey t\n" + 
+			"       left join ccare.survey_kind tt on tt.survey_kind_id = t.survey_kind_id\n" + 
+			"       left join ccare.survey_reply_type r on r.survey_reply_type_id = t.survey_reply_type_id\n" + 
+			"       left join ccare.call_sessions ss on ss.session_id = t.session_call_id\n" + 
+			"       left join ccare.users p on p.user_name = t.survey_creator\n" + 
+			" where trunc(t.survey_created) >= trunc(sysdate - 1)\n" + 
+			"   and (t.survey_phone = ? or t.p_numb = ?)\n" + 
+			"order by t.survey_created desc\n" + 
+			"\n" + 
+			"";
 }

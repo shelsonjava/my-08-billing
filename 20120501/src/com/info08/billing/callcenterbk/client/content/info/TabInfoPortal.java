@@ -6,6 +6,7 @@ import com.info08.billing.callcenterbk.client.dialogs.callcenter.DlgViewOpRemark
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
+import com.info08.billing.callcenterbk.shared.common.ServerSessionSurvItem;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -21,7 +22,9 @@ import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SpacerItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
-import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.grid.ListGrid;
+import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -144,6 +147,102 @@ public class TabInfoPortal extends Tab {
 						}
 					}
 				});
+
+				final ListGrid listGrid = new ListGrid() {
+					protected String getCellCSSText(ListGridRecord record,
+							int rowNum, int colNum) {
+						ListGridRecord countryRecord = (ListGridRecord) record;
+						if (countryRecord == null) {
+							return super.getCellCSSText(record, rowNum, colNum);
+						}
+						Integer bblocked = countryRecord
+								.getAttributeAsInt("bblocked");
+						if (bblocked != null && bblocked.equals(1)) {
+							return "color:red;";
+						} else {
+							return super.getCellCSSText(record, rowNum, colNum);
+						}
+					};
+				};
+
+				listGrid.setWidth(1300);
+				listGrid.setHeight100();
+				listGrid.setDataSource(SurveyClientDS.getInstance());
+				listGrid.setWrapCells(true);
+				listGrid.setFixedRecordHeights(false);
+				listGrid.setCanDragSelectText(true);
+				listGrid.setShowRowNumbers(true);
+				listGrid.setAutoFetchData(true);
+
+				ListGridField survey_kind_name = new ListGridField(
+						"survey_kind_name", CallCenterBK.constants.type(), 100);
+				ListGridField p_numb = new ListGridField("p_numb",
+						CallCenterBK.constants.phone(), 80);
+				ListGridField survey_phone = new ListGridField("survey_phone",
+						CallCenterBK.constants.contactPhone(), 120);
+				ListGridField survey_person = new ListGridField(
+						"survey_person",
+						CallCenterBK.constants.contactPerson(), 150);
+				ListGridField survey_descript = new ListGridField(
+						"survey_descript", CallCenterBK.constants.message());
+				ListGridField rec_user = new ListGridField("survey_creator",
+						CallCenterBK.constants.shortOp(), 50);
+				ListGridField rec_date = new ListGridField("survey_created",
+						CallCenterBK.constants.time(), 100);
+				ListGridField upd_user = new ListGridField("loked_user",
+						CallCenterBK.constants.updUser(), 100);
+				ListGridField operator_src = new ListGridField("operator_src",
+						CallCenterBK.constants.operator(), 80);
+
+				survey_kind_name.setAlign(Alignment.LEFT);
+				p_numb.setAlign(Alignment.LEFT);
+				survey_phone.setAlign(Alignment.LEFT);
+				survey_person.setAlign(Alignment.LEFT);
+				rec_user.setAlign(Alignment.CENTER);
+				rec_date.setAlign(Alignment.CENTER);
+				operator_src.setAlign(Alignment.CENTER);
+
+				listGrid.setFields(operator_src, survey_kind_name, p_numb,
+						survey_phone, survey_person, survey_descript, rec_user,
+						rec_date, upd_user);
+
+				mainLayout.addMember(listGrid);
+
+				ServerSessionSurvItem surveyData[] = serverSession
+						.getSurveryList();
+				if (surveyData != null && surveyData.length > 0) {
+					for (ServerSessionSurvItem record : surveyData) {
+						ListGridRecord gridRecord = new ListGridRecord();
+						gridRecord.setAttribute("bblocked", record.getBblocked());
+						gridRecord.setAttribute("loked_user", record.getLoked_user());
+						gridRecord.setAttribute("operator_src", record.getOperator_src());
+						gridRecord.setAttribute("p_numb", record.getP_numb());
+						gridRecord.setAttribute("personnel_id", record.getPersonnel_id());
+						gridRecord.setAttribute("session_call_id", record.getSession_call_id());
+						gridRecord.setAttribute("survery_responce_status", record.getSurvery_responce_status());
+						gridRecord.setAttribute("survey_creator", record.getSurvey_creator());
+						gridRecord.setAttribute("survey_descript", record.getSurvey_descript());
+						gridRecord.setAttribute("survey_done", record.getSurvey_done());
+						gridRecord.setAttribute("survey_kind_id", record.getSurvey_kind_id());
+						gridRecord.setAttribute("survey_kind_name", record.getSurvey_kind_name());
+						gridRecord.setAttribute("survey_person", record.getSurvey_person());
+						gridRecord.setAttribute("survey_phone", record.getSurvey_phone());
+						gridRecord.setAttribute("survey_reply_type_id", record.getSurvey_reply_type_id());
+						gridRecord.setAttribute("survey_reply_type_name", record.getSurvey_reply_type_name());
+						gridRecord.setAttribute("start_date", record.getStart_date());						
+						gridRecord.setAttribute("survey_created", record.getSurvey_created());
+						gridRecord.setAttribute("survey_id", record.getSurvey_id());
+						listGrid.addData(gridRecord, new DSCallback() {							
+							@Override
+							public void execute(DSResponse response, Object rawData, DSRequest request) {
+								Record dat[] = response.getData();
+								if(dat!=null && dat.length>0){
+									listGrid.selectRecord(dat[0]);	
+								}
+							}
+						});
+					}								
+				}
 			}
 
 			if (serverSession.getCallType() == Constants.callTypeNoncharge) {
@@ -170,18 +269,17 @@ public class TabInfoPortal extends Tab {
 			if (freeOfCharge != null && !freeOfCharge.trim().equals("")) {
 				SC.say(freeOfCharge);
 			}
-			
+
 			boolean isBirthdayOrg = serverSession.isBirthdayOrg();
 			if (isBirthdayOrg) {
 				SC.say(CallCenterBK.constants.birthdayAlert());
 			}
-			
-			
-			HLayout hLayout = new HLayout();
-			hLayout.setHeight(400);
-			hLayout.setWidth100();
-			hLayout.setStyleName("headerClass");
-			mainLayout.addMember(hLayout);
+
+//			HLayout hLayout = new HLayout();
+//			hLayout.setHeight(400);
+//			hLayout.setWidth100();
+//			hLayout.setStyleName("headerClass");
+//			mainLayout.addMember(hLayout);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

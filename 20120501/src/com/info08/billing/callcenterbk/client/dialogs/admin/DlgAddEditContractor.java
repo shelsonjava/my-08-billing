@@ -69,6 +69,7 @@ public class DlgAddEditContractor extends Window {
 	private CheckboxItem reCalcRancePriceItem;
 	private TextItem currrentPriceItem;
 	private SelectItem operatorItem;
+	private TextItem mailServicePriceItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
@@ -220,6 +221,13 @@ public class DlgAddEditContractor extends Window {
 			normalPriceItem.setName("normalPriceItem");
 			normalPriceItem.setKeyPressFilter("[0-9\\.]");
 
+			mailServicePriceItem = new TextItem();
+			mailServicePriceItem.setTitle(CallCenterBK.constants
+					.mail_service_price());
+			mailServicePriceItem.setWidth(200);
+			mailServicePriceItem.setName("mailServicePriceItem");
+			mailServicePriceItem.setKeyPressFilter("[0-9\\.]");
+
 			operatorItem = new SelectItem();
 			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setWidth(250);
@@ -230,7 +238,8 @@ public class DlgAddEditContractor extends Window {
 
 			dynamicForm.setFields(noteItem, contractorType, critNumberItem,
 					startDateItem, endDateItem, blockItem, smsWarnItem,
-					priceTypeItem, normalPriceItem, operatorItem);
+					priceTypeItem, normalPriceItem, operatorItem,
+					mailServicePriceItem);
 
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setWidth100();
@@ -704,6 +713,12 @@ public class DlgAddEditContractor extends Window {
 			if (call_price != null && !call_price.trim().equals("")) {
 				normalPriceItem.setValue(call_price);
 			}
+			String mail_service_price = editRecord
+					.getAttributeAsString("mail_service_price");
+			if (mail_service_price != null
+					&& !mail_service_price.trim().equals("")) {
+				mailServicePriceItem.setValue(mail_service_price);
+			}
 
 			String range_curr_price = editRecord
 					.getAttributeAsString("range_curr_price");
@@ -806,12 +821,24 @@ public class DlgAddEditContractor extends Window {
 			if (isPriceType != null && isPriceType.booleanValue()) {
 				price_type = new Integer(1);
 			}
-			
-			Integer operator_src = Integer.parseInt(operatorItem.getValueAsString());
-			
-			
+
+			Integer operator_src = Integer.parseInt(operatorItem
+					.getValueAsString());
+
 			Boolean priceType = priceTypeItem.getValueAsBoolean();
 			String normalPrice = normalPriceItem.getValueAsString();
+			String mailSrvPrice = mailServicePriceItem.getValueAsString();
+
+			if (mailSrvPrice != null && !mailSrvPrice.equals("")) {
+				try {
+					Float.parseFloat(mailSrvPrice);
+					normalPrice = mailSrvPrice;
+				} catch (Exception e) {
+					SC.say(CallCenterBK.constants.invalid_mail_service_price());
+					return;
+				}
+			}
+
 			SortedMap<Integer, SortedMap<Integer, String>> sorted = new TreeMap<Integer, SortedMap<Integer, String>>();
 			LinkedHashMap<String, LinkedHashMap<String, String>> sortedParam = new LinkedHashMap<String, LinkedHashMap<String, String>>();
 			if (priceType == null || !priceType.booleanValue()) {
@@ -933,6 +960,7 @@ public class DlgAddEditContractor extends Window {
 			record.setAttribute("sms_warning", sms_warning);
 			record.setAttribute("price_type", price_type);
 			record.setAttribute("call_price", normalPrice);
+			record.setAttribute("mail_service_price", mailSrvPrice);
 			record.setAttribute("contractorAdvPrices", sortedParam);
 			record.setAttribute("contractorAdvPhones", contractorAdvPhones);
 			record.setAttribute("max_call_count", max_call_count);

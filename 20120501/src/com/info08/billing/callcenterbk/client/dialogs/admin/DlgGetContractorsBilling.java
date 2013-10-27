@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -18,6 +19,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
@@ -31,6 +33,7 @@ public class DlgGetContractorsBilling extends Window {
 
 	private TextItem ymItem;
 	private CheckboxItem generateBillItem;
+	private SelectItem operatorItem;
 	private boolean full;
 	private Integer corporate_client_id;
 	private Integer is_budget;
@@ -43,8 +46,12 @@ public class DlgGetContractorsBilling extends Window {
 			this.is_budget = is_budget;
 			setTitle(full ? CallCenterBK.constants.contractorsBillingFull()
 					: CallCenterBK.constants.contractorsBilling());
+			if (corporate_client_id == null) {
+				setHeight(160);
+			} else {
+				setHeight(140);
+			}
 
-			setHeight(140);
 			setWidth(400);
 			setShowMinimizeButton(false);
 			setIsModal(true);
@@ -78,7 +85,21 @@ public class DlgGetContractorsBilling extends Window {
 			generateBillItem.setName("generateBillItem");
 			generateBillItem.setWidth(200);
 
-			dynamicForm.setFields(ymItem, generateBillItem);
+			if (corporate_client_id == null) {
+				operatorItem = new SelectItem();
+				operatorItem.setTitle(CallCenterBK.constants.operator());
+				operatorItem.setWidth(200);
+				operatorItem.setName("operator_src");
+				operatorItem.setDefaultToFirstOption(true);
+				ClientUtils
+						.fillCombo(operatorItem, "OperatorsDS",
+								"searchOperators", "operator_src",
+								"operator_src_descr");
+
+				dynamicForm.setFields(operatorItem, ymItem, generateBillItem);
+			} else {
+				dynamicForm.setFields(ymItem, generateBillItem);
+			}
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -203,6 +224,13 @@ public class DlgGetContractorsBilling extends Window {
 				criteria.setAttribute("is_budget", is_budget);
 				criteria.setAttribute("goverment", is_budget);
 			}
+			if (operatorItem != null && operatorItem.getValueAsString() != null
+					&& !operatorItem.getValueAsString().trim().equals("")) {
+				Integer operator_src = Integer.parseInt(operatorItem
+						.getValueAsString());
+				criteria.setAttribute("operator_src", operator_src);
+			}
+
 			dataSource.exportData(criteria, dsRequest, new DSCallback() {
 
 				@Override
