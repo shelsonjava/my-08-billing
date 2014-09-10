@@ -81,6 +81,8 @@
 					 #if($criteria.org_dep_to_ph_id) and t.org_dep_to_ph_id = $criteria.org_dep_to_ph_id #end
 					 #if($criteria.org_department_id) and t.org_department_id = $criteria.org_department_id #end
 					 #if($criteria.phone) and p.phone like '%'||$criteria.phone||'%' #end
+					 #if($criteria.from_date) and trunc(t.rec_upd_date) >= trunc($criteria.from_date) #end
+					 #if($criteria.to_date) and trunc(t.rec_upd_date) <= trunc($criteria.to_date) #end					 				
 				 ]]>
 			</whereClause>
 			<orderClause>t.for_contact desc, phone_order</orderClause>

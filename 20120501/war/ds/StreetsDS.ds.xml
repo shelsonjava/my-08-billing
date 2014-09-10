@@ -212,6 +212,22 @@
 				 	AND (t.street_name like '%'||$criteria.street_name5||'%' OR t.street_old_name_descr like '%'||$criteria.street_name5||'%') 
 				 #end
 				 #if($criteria.street_index) AND t.street_index like '%'||($criteria.street_index)||'%' #end
+				 
+				 #if($criteria.street_location1) 
+				 	AND (t.street_location like '%'||$criteria.street_location1||'%') 
+				 #end
+				 #if($criteria.street_location2) 
+				 	AND (t.street_location like '%'||$criteria.street_location2||'%') 
+				 #end
+				 #if($criteria.street_location3) 
+				 	AND (t.street_location like '%'||$criteria.street_location3||'%') 
+				 #end
+				 #if($criteria.street_location4) 
+				 	AND (t.street_location like '%'||$criteria.street_location4||'%') 
+				 #end
+				 #if($criteria.street_location5) 
+				 	AND (t.street_location like '%'||$criteria.street_location5||'%') 
+				 #end				 
 				]]>  
 			</whereClause>
 			<groupClause>c.town_name, t.streets_id, t.street_name, t.street_location, t.town_id, t.street_old_name_descr, t.hide_for_call_center,t.hide_for_correction</groupClause>

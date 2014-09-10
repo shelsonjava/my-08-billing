@@ -37,6 +37,7 @@
 		<field name="ident_code"			type="text"			title="ident_code"				hidden="true"/>
 		<field name="operator_src"			type="integer"		title="operator_src"			hidden="true"/>
 		<field name="mail_service_price"	type="any"			title="mail_service_price"		hidden="true"/>
+		<field name="charge_cnt"			type="integer"		title="charge_cnt"				hidden="true"/>
 	</fields>
 	<operationBindings>		
 
@@ -165,7 +166,7 @@
 			<tableClause>corp_client_bill t, corporate_clients c, organizations mo </tableClause>
 			<whereClause><![CDATA[
 				 t.corporate_client_id = c.corporate_client_id and c.organization_id = mo.organization_id
-				 and t.ym = $criteria.ym
+				 and t.ym = $criteria.ym and t.amount> 0
 				 #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end	
 				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end
 				 #if($criteria.operator_src) and c.operator_src = $criteria.operator_src #end
@@ -186,8 +187,9 @@
 			</selectClause> 
 			<tableClause> corp_client_bill_items bi, corporate_clients c, organizations mo, BILLING_COMPANIES tc, service_prices s </tableClause>
 			<whereClause><![CDATA[
-				 bi.corporate_client_id = c.corporate_client_id and c.organization_id = mo.organization_id and 
+				 bi.corporate_client_id = c.corporate_client_id and c.organization_id = mo.organization_id and 				 
 				 bi.billing_company_id = tc.billing_company_id(+) and  bi.service_id = s.service_price_id  and bi.ym = $criteria.ym
+				 and bi.price > 0				 
 				 #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end				 
 				 #if($criteria.goverment) and c.goverment = $criteria.goverment #end
 				 #if($criteria.operator_src) and c.operator_src = $criteria.operator_src #end
@@ -195,6 +197,48 @@
 			</whereClause> 
 			<orderClause>bi.phone, bi.charge_date </orderClause>
     	</operationBinding>
+    	
+    	<operationBinding operationId="getFullContrBillMain3" operationType="fetch">
+    		<selectClause>
+    			           mo.organization_name,
+					       bi.phone,
+					       bi.call_date,
+					       bi.session_id,
+					       count(1) as charge_cnt
+			</selectClause> 
+			<tableClause>
+			    		    ccare.corp_client_bill_items bi,
+					        ccare.corporate_clients      c,
+					        ccare.organizations          mo,
+					        ccare.BILLING_COMPANIES      tc,
+					        ccare.service_prices         s 
+			</tableClause>
+			<whereClause><![CDATA[
+				 	   bi.corporate_client_id = c.corporate_client_id and 
+				 	   c.organization_id = mo.organization_id and 
+				 	   bi.billing_company_id = tc.billing_company_id(+) and 
+				 	   bi.service_id = s.service_price_id and
+				 	   bi.price > 0
+				 	   
+				 	   #if($criteria.ym) and bi.ym = $criteria.ym #end 
+				 	    
+				 	   #if($criteria.startDate) and trunc(bi.call_date) >= trunc($criteria.startDate) #end
+				 	   #if($criteria.endDate) and trunc(bi.call_date) <= trunc($criteria.endDate) #end
+				 				 
+					   #if($criteria.corporate_client_id) and c.corporate_client_id = $criteria.corporate_client_id #end				 
+					   #if($criteria.goverment) and c.goverment = $criteria.goverment #end
+					   #if($criteria.operator_src) and c.operator_src = $criteria.operator_src #end
+				]]>  
+			</whereClause> 
+			<groupClause> 
+			    	   mo.organization_name,
+				       bi.phone,
+				       bi.call_date,
+				       bi.session_id
+       		</groupClause>
+			<orderClause>bi.call_date </orderClause>
+    	</operationBinding>
+    	
     	
     </operationBindings>	
 </DataSource>

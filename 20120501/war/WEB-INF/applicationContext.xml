@@ -28,6 +28,18 @@
 	</bean>
 	<!--  Sms Sender-->
 	
+	<!--  Number Porting Checker -->
+	<!--  
+	<bean id="timerFactoryNP" class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<ref bean="scheduledTaskNP" />
+			</list>
+		</property>
+	</bean>
+	-->
+	<!--  Number Porting Checker -->
+	
 	
 	<!-- Factories -->
 	
@@ -44,6 +56,14 @@
 		class="com.info08.billing.callcenterbk.server.spring.jobs.SMSSenderJob">
 	</bean>
 	<!--  Sms Sender-->
+	
+	<!--  NP Checker-->
+	<!--  
+	<bean id="checkNP"
+		class="com.info08.billing.callcenterbk.server.spring.jobs.NPCheckerJob">
+	</bean>
+	-->
+	<!--  NP Checker-->
 	
 	<!-- Job Classes -->
 
@@ -67,6 +87,18 @@
 		<property name="timerTask" ref="sendSurveySMSMessages" />
 	</bean>
 	<!-- Survey SMS Sender -->
+	
+	
+	<!-- Number Porting Check Task -->
+	<!--  
+	<bean id="scheduledTaskNP" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<property name="delay" value="5000" />
+		<property name="period" value="5000" />
+		<property name="timerTask" ref="checkNP" />
+	</bean>
+	-->
+	<!-- Survey SMS Sender -->
+	
 	
 	<!-- Schedulers -->
 	

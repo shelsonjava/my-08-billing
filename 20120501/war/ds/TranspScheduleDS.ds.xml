@@ -37,6 +37,8 @@
 		<field name="formated_arrival_time"		type="text"			title="formated_arrival_time"/>												
 		<field name="departureCity"				type="text"			title="departureCity"/>
 		<field name="departureStation"			type="text"			title="departureStation"/>		
+		<field name="alarm"						type="text"			title="alarm"/>	
+		<field name="note_crit"					type="integer"		title="note_crit"/>
 	</fields>
 
 	<operationBindings>		
@@ -82,7 +84,9 @@
 				ic.town_name as arrival_city,
 				to_char((ts.arrival_time+ic.normal_gmt/24),'HH24:mi') cmt,
 				to_char(ts.depart_time,'HH24:MI') formated_depart_time,
-       			to_char(ts.arrival_time ,'HH24:MI') formated_arrival_time
+       			to_char(ts.arrival_time ,'HH24:MI') formated_arrival_time,
+       			'!!!!!' as alarm,
+       			ts.important as note_crit
 			</selectClause> 
 			<tableClause>transp_schedules ts, transp_types tt,transp_stations o, towns oc,transp_stations i, towns ic, transp_companies tc, transp_resource tp</tableClause>
 			<whereClause><![CDATA[

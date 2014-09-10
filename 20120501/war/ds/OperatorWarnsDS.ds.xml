@@ -22,6 +22,7 @@
         <field name="delivered"			type="integer"  	title="delivered"  			hidden="true"/>
 		<field name="loggedUserName"	type="text"  		title="loggedUserName" 		hidden="true"/>
 		<field name="call_start_date" 	type="datetime" 	title="call_start_date" 	hidden="true"/>
+		<field name="status_descr"		type="text"  		title="status_descr" 		hidden="true"/>
     </fields>
      <operationBindings>
 
@@ -54,7 +55,8 @@
       			t.important,
       			cs.call_start_date,
       			t.update_user,
-      			t.update_date
+      			t.update_date,
+      			decode(t.delivered,1,'დათანხმებული','დაუთანხმებელი') as status_descr
 			</selectClause> 
 			<tableClause>
 				operator_warns t , 
@@ -69,6 +71,10 @@
 				#if($criteria.user_name) and t.operator = $criteria.user_name #end
 				#if($criteria.delivered) and t.delivered = $criteria.delivered #end
 				#if($criteria.user_id) and rec.user_id = $criteria.user_id #end
+				#if($criteria.sender_user_id) and send.user_id = $criteria.sender_user_id #end
+				#if($criteria.receiver_user_id) and rec.user_id = $criteria.receiver_user_id #end
+				#if($criteria.delivered) and t.delivered = $criteria.delivered #end
+				#if($criteria.date) and trunc(t.warn_send_date) = trunc($criteria.date) #end								
 				]]>  
 			</whereClause> 
     	</operationBinding>

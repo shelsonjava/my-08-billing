@@ -92,13 +92,12 @@
 				 trunc(ch.charge_date) = trunc($criteria.date_param) and
 					exists (
 					  select 
-					    my_to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start)),
-					    my_to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_start,i.bill_index_end))
+					    1
 					  from BILLING_COMPANIES tc 
 					         inner join BILLING_COMPANIES_ind i on i.billing_company_id = tc.billing_company_id
 					  where tc.billing_company_id = $criteria.billing_company_id
-					        and my_to_number(t.call_phone) >= my_to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
-					        and my_to_number(t.call_phone) <= my_to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
+					        and my_to_number(t.call_phone) >= i.bill_index_start
+					        and my_to_number(t.call_phone) <= i.bill_index_end
 					        and t.operator_src = to_char(tc.operator_src)
 					) 
 					and getcontractorpricenew(t.call_phone)=-999999999
@@ -125,13 +124,12 @@
 				 t.year_month = $criteria.ym and ch.year_month = $criteria.ym and
 					exists (
 					  select 
-					    my_to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start)),
-					    my_to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_start,i.bill_index_end))
+					    1
 					  from BILLING_COMPANIES tc 
 					         inner join BILLING_COMPANIES_ind i on i.billing_company_id = tc.billing_company_id
 					  where tc.billing_company_id = $criteria.billing_company_id
-					        and my_to_number(t.call_phone) >= my_to_number(decode(length(i.bill_index_start),7,'32'||i.bill_index_start,i.bill_index_start))
-					        and my_to_number(t.call_phone) <= my_to_number(decode(length(i.bill_index_end),7,'32'||i.bill_index_end,i.bill_index_end))
+					        and my_to_number(t.call_phone) >= i.bill_index_start
+					        and my_to_number(t.call_phone) <= i.bill_index_end
 					        and t.operator_src = to_char(tc.operator_src)
 					) 
 					and getcontractorpricenew(t.call_phone)=-999999999

@@ -1,3 +1,41 @@
+body {
+	margin: 0px;
+}
+.mainMenu {
+	font-size: 14px;
+	font-weight: bold;
+	color: #004A79;
+}
+
+.myMenuMain {
+	background-color: white;
+	background-image: url("./images/Menu/menu_background.png");
+	background-repeat: repeat-y;
+	background-attachment: scroll;
+	background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, #fafafa),
+		color-stop(25px, #dbdbdb), color-stop(25px, #ffffff),
+		color-stop(100%, #ffffff));
+	background-image: -webkit-linear-gradient(left, #fafafa 0%, #dbdbdb 25px, #ffffff 25px,
+		#ffffff 100%);
+	background-image: -moz-linear-gradient(left, #fafafa 0%, #dbdbdb 25px, #ffffff 25px,
+		#ffffff 100%);
+	background-image: -o-linear-gradient(left, #fafafa 0%, #dbdbdb 25px, #ffffff 25px, #ffffff
+		100%);
+	background-image: -ms-linear-gradient(left, #fafafa 0%, #dbdbdb 25px, #ffffff 25px,
+		#ffffff 100%);
+	background-image: linear-gradient(left, #fafafa 0%, #dbdbdb 25px, #ffffff 25px, #ffffff
+		100%);
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1,
+		startColorstr='#fafafa', endColorstr='white');
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(GradientType=1, startColorstr='#fafafa', endColorstr='white')";
+	border: 1px solid #8fa7c7;
+}
+
+.appTitleStyle {
+	padding-left: 10px;
+}
+
 .abouttext {
 	color: gray;
 }
@@ -184,4 +222,15 @@
 .newsBtnBlackDown{
 	color: black;
 	font-size: 11px;
+}
+
+.exampleSeparator {
+    background-color: white;
+    border-bottom: 2px solid gray;
+    color: black;
+    font-weight: bold;
+    text-align: left;
+}
+.textItemRed {
+	color: red;
 }

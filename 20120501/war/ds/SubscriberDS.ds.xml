@@ -50,6 +50,7 @@
 		<field name="off_user"		   				type="text"  	title="hs_off_user"/>
 		<field name="off_user"		   				type="text"  	title="hs_off_user"/>
 		<field name="rdeleted"   					type="boolean"  title="hph_rcn" 			sqlStorageStrategy="integer"/>
+		<field name="phone_contract_type_desc"		type="text"  	title="phone_contract_type_desc"/>
 	</fields>
 	
 	
@@ -91,6 +92,7 @@
 					   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.family_name) as family_name,
 					   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),t.name) as name,
 			       	   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),decode(pnm.is_parallel,0,'ჩვეულებრივი',1,'პარალელური')) as is_parallel_descr,
+			       	   decode(t.full_hidden,1, map_char_codes_geo('dafaruli'),getdescription(spm.phone_contract_type)) as phone_contract_type_desc,
 			       #else
 			       	   t.family_name,
 			           t.name,

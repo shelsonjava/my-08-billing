@@ -109,7 +109,8 @@
 		<field name="cust_order"					type="integer"  	title="cust_order"/>
 		<field name="org_acctivity_name"			type="text"  		title="cust_order"/>
 		<field name="org_activity_id"				type="integer"  	title="cust_order"/>
-		
+		<field name="activity_description"			type="text"  		title="activity_description"/>
+		<field name="cnt"							type="integer"  	title="cnt"/>
 	</fields>
 	<operationBindings>
 	
@@ -742,6 +743,90 @@
 			</whereClause>	
 			<orderClause>t.organization_id, start_rcn desc</orderClause>
 		</operationBinding>
+		
+    	
+    	
+    	<operationBinding operationId="searchOrgAcctivitiesStats" operationType="fetch">
+            <customSQL>
+            	 <![CDATA[
+            		
+            		select k.activity_description,sum(k.cnt) as cnt from (
+            		
+            		select a.activity_description as activity_description,
+					count(1) as cnt
+					from  ccare.call_session_expense t 
+					       inner join ccare.organizations o on o.organization_id = t.organization_id
+					       inner join ccare.organization_to_activities oa on oa.organization_id = o.organization_id
+					       inner join ccare.organization_activities a on a.org_activity_id = oa.org_activity_id
+					
+					where t.service_id = 50004 and t.organization_id is not null and t.organization_id>0 
+      				and trunc(t.charge_date) between trunc($criteria.start_date) and trunc($criteria.end_date)
+      				and oa.org_activity_id in (
+      					1 
+      					#foreach($str in $criteria.orgActivitiesCrit.split(","))
+							,to_number($str)  
+						#end
+					)
+					
+					group by a.activity_description
+					
+					
+					union all
+					
+					
+					select a.activity_description as activity_description,
+					count(1) as cnt
+					from  ccare.sent_sms_hist t 
+					       inner join ccare.organizations o on o.organization_id = t.organization_id
+					       inner join ccare.organization_to_activities oa on oa.organization_id = o.organization_id
+					       inner join ccare.organization_activities a on a.org_activity_id = oa.org_activity_id
+					
+					where t.service_id = 50004 and t.organization_id is not null and t.organization_id>0 
+      				and trunc(t.message_sent_time) between trunc($criteria.start_date) and trunc($criteria.end_date)
+      				and oa.org_activity_id in (
+      					1 
+      					#foreach($str in $criteria.orgActivitiesCrit.split(","))
+							,to_number($str)  
+						#end
+					)
+					
+					group by a.activity_description
+					
+					) k
+					
+					group by k.activity_description
+					order by sum(k.cnt) desc
+					
+            	 ]]>
+            </customSQL> 
+        </operationBinding>
+    	
+    	
+    	
+    	<operationBinding operationId="searchOrgAcctivitiesStats1" operationType="fetch">
+    		<selectClause>   			
+				a.activity_description as activity_description,
+				count(1) as cnt
+			</selectClause> 
+			<tableClause>
+			    	 ccare.call_session_expense t 
+					       inner join ccare.organizations o on o.organization_id = t.organization_id
+					       inner join ccare.organization_to_activities oa on oa.organization_id = o.organization_id
+					       inner join ccare.organization_activities a on a.org_activity_id = oa.org_activity_id
+			</tableClause>	
+			<whereClause>			    
+			    	t.service_id = 50004 and t.organization_id is not null and t.organization_id>0 
+      				and trunc(t.charge_date) between trunc($criteria.start_date) and trunc($criteria.end_date)
+      				and oa.org_activity_id in (
+      					1 
+      					#foreach($str in $criteria.orgActivitiesCrit.split(","))
+							,to_number($str)  
+						#end
+					)
+			</whereClause>				
+			<groupClause>a.activity_description</groupClause>
+			<orderClause>count(1) desc</orderClause>	
+    	</operationBinding>
     	
 	</operationBindings>
 </DataSource>

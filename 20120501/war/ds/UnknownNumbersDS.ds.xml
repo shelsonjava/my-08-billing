@@ -7,6 +7,7 @@
 		<field name="phone_number_id" 	type="integer" 	title="phone_number_id" 	hidden="true" 	primaryKey="true" />
 		<field name="phone_number" 		type="text" 	title="phone_number" />
 		<field name="loggedUserName" 	type="text" 	title="Logged UserName" 	hidden="true" />
+		<field name="rec_date" 			type="datetime" title="rec_date" />
 	</fields>
 
 	<serverObject lookupStyle="new"
@@ -24,6 +25,7 @@
 			<selectClause>
 				   t.phone_number_id
 			      ,t.phone_number
+			      ,rec_date
 			</selectClause>
 			<tableClause>unknown_phone_numbers t</tableClause>
 			<whereClause><![CDATA[
