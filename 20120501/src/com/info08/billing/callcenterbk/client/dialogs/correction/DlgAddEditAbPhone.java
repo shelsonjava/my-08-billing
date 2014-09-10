@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddPhoneOrgs;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
@@ -94,15 +95,16 @@ public class DlgAddEditAbPhone extends Window {
 		isParallelItem.setFetchMissingValues(false);
 
 		phoneContractType = new SelectItem();
-		//ClientUtils.fillDescriptionCombo(phoneContractType,Constants.DT_PHONECONTRACTTYPES);
-		phoneContractType.setValueMap(ClientMapUtil.getInstance().getMapStatuses());
+		// ClientUtils.fillDescriptionCombo(phoneContractType,Constants.DT_PHONECONTRACTTYPES);
+		phoneContractType.setValueMap(ClientMapUtil.getInstance()
+				.getMapStatuses());
 		phoneContractType.setTitle(CallCenterBK.constants.status());
 		phoneContractType.setName("phone_contract_type");
 		phoneContractType.setWidth(100);
 		phoneContractType.setDefaultToFirstOption(true);
 
 		phoneStateItem = new SelectItem();
-		//ClientUtils.fillDescriptionCombo(phoneStateItem,Constants.DT_PHONESTATES);
+		// ClientUtils.fillDescriptionCombo(phoneStateItem,Constants.DT_PHONESTATES);
 		phoneStateItem.setValueMap(ClientMapUtil.getInstance().getMapStates());
 		phoneStateItem.setTitle(CallCenterBK.constants.state());
 		phoneStateItem.setName("phone_state_id");
@@ -111,7 +113,8 @@ public class DlgAddEditAbPhone extends Window {
 		phoneStateItem.setWidth(100);
 
 		phoneTypeItem = new SelectItem();
-		//ClientUtils.fillDescriptionCombo(phoneTypeItem, Constants.DT_PHONETYPES);
+		// ClientUtils.fillDescriptionCombo(phoneTypeItem,
+		// Constants.DT_PHONETYPES);
 		phoneTypeItem.setValueMap(ClientMapUtil.getInstance().getMapTypes());
 		phoneTypeItem.setTitle(CallCenterBK.constants.type());
 		phoneTypeItem.setName("phone_type_id");
@@ -174,11 +177,11 @@ public class DlgAddEditAbPhone extends Window {
 						+ " !. ტელეფონის ნომერი შედგება მხოლოდ ციფრებისაგან. ");
 				return;
 			}
-			/*if (oPhone.length() > 7) {
-				SC.say("არასწორი ტელეფონის ნომერი " + oPhone
-						+ " !. ტელეფონის ნომერი შედგება მხოლოდ 7 ციფრისაგან. ");
-				return;
-			}*/
+			/*
+			 * if (oPhone.length() > 7) { SC.say("არასწორი ტელეფონის ნომერი " +
+			 * oPhone + " !. ტელეფონის ნომერი შედგება მხოლოდ 7 ციფრისაგან. ");
+			 * return; }
+			 */
 
 			String opClose = isHideItem.getValueAsString();
 			if (opClose == null) {
@@ -298,7 +301,6 @@ public class DlgAddEditAbPhone extends Window {
 					public void execute(DSResponse response, Object rawData,
 							DSRequest request) {
 						try {
-
 							Record records[] = response.getData();
 							if (records != null && records.length > 0) {
 								Record record = records[0];
@@ -312,31 +314,18 @@ public class DlgAddEditAbPhone extends Window {
 										+ record.getAttribute("phone"));
 								return;
 							} else {
-								fillRecord(listGridRecord, phone, iOpClose,
+								preSave(listGridRecord, phone, iOpClose,
 										iParalelUsual, iPhoneStatus,
-										iPhoneState, iPhoneType);
-								if (isAdd1) {
-									listGridPhones.addData(listGridRecord);
-								} else {
-									listGridPhones.updateData(listGridRecord);
-								}
-								destroy();
+										iPhoneState, iPhoneType, isAdd1);
 							}
-
 						} catch (Exception e) {
 							SC.say(e.toString());
 						}
 					}
 				}, req);
 			} else {
-				fillRecord(listGridRecord, phone, iOpClose, iParalelUsual,
-						iPhoneStatus, iPhoneState, iPhoneType);
-				if (isAdd1) {
-					listGridPhones.addData(listGridRecord);
-				} else {
-					listGridPhones.updateData(listGridRecord);
-				}
-				destroy();
+				preSave(listGridRecord, phone, iOpClose, iParalelUsual,
+						iPhoneStatus, iPhoneState, iPhoneType, isAdd1);
 			}
 		} catch (Exception e) {
 			SC.say(e.toString());
@@ -371,6 +360,69 @@ public class DlgAddEditAbPhone extends Window {
 					.getInstance().getSessionPerson() + "");
 		} catch (Exception e) {
 			SC.say(e.toString());
+		}
+	}
+
+	private void preSave(final Record listGridRecord, final Integer phone,
+			final Integer iOpClose, final Integer iParalelUsual,
+			final Integer iPhoneStatus, final Integer iPhoneState,
+			final Integer iPhoneType, final boolean isAdd1)
+			throws CallCenterException {
+		try {
+			final MyCustomClass myCustomClass = new MyCustomClass(
+					listGridRecord, phone, iOpClose, iParalelUsual,
+					iPhoneStatus, iPhoneState, iPhoneType, isAdd1);
+			DataSource phoneViewDS = DataSource.get("PhoneViewDS");
+			Criteria criteria = new Criteria();
+			criteria.setAttribute("reall_address", "YES");
+			criteria.setAttribute("phone", phone.toString());
+
+			DSRequest dsRequest = new DSRequest();
+			dsRequest.setOperationId("customSearch");
+
+			phoneViewDS.fetchData(criteria, new DSCallback() {
+				@Override
+				public void execute(DSResponse response, Object rawData,
+						DSRequest request) {
+					Record records[] = response.getData();
+					if (records == null || records.length <= 0) {
+						checkedAndSave(myCustomClass);
+						return;
+					}
+
+					DlgAddPhoneOrgs dlgAddPhoneOrgs = new DlgAddPhoneOrgs(
+							(phone + ""), null, DlgAddEditAbPhone.this,
+							myCustomClass, records);
+					dlgAddPhoneOrgs.show();
+				}
+			}, dsRequest);
+
+		} catch (Exception e) {
+			SC.say(e.toString());
+		}
+	}
+
+	public void checkedAndSave(MyCustomClass myCustomClass) {
+		try {
+			Record listGridRecord = myCustomClass.getListGridRecord();
+			Integer phone = myCustomClass.getPhone();
+			Integer iOpClose = myCustomClass.getiOpClose();
+			Integer iParalelUsual = myCustomClass.getiParalelUsual();
+			Integer iPhoneStatus = myCustomClass.getiPhoneStatus();
+			Integer iPhoneState = myCustomClass.getiPhoneState();
+			Integer iPhoneType = myCustomClass.getiPhoneType();
+			boolean isAdd1 = myCustomClass.isAdd1();
+
+			fillRecord(listGridRecord, phone, iOpClose, iParalelUsual,
+					iPhoneStatus, iPhoneState, iPhoneType);
+			if (isAdd1) {
+				listGridPhones.addData(listGridRecord);
+			} else {
+				listGridPhones.updateData(listGridRecord);
+			}
+			destroy();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

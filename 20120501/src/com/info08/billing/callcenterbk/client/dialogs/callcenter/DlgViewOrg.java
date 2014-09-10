@@ -1073,9 +1073,13 @@ public class DlgViewOrg extends Window {
 			RecordList recordList = phonesGrid.getDataAsRecordList();
 			int length = recordList.getLength();
 			if (length > 0) {
+				if (length > 3) {
+					length = 3;
+				}
 				StringBuilder phones = new StringBuilder("");
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < length; i++) {
 					Record record = recordList.get(i);
+
 					String dep_phone = record.getAttributeAsString("hid_phone");
 					if (dep_phone == null
 							|| dep_phone.trim().equalsIgnoreCase("")) {

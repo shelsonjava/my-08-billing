@@ -13,6 +13,9 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ExportDisplay;
+import com.smartgwt.client.types.ExportFormat;
+import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -48,6 +51,7 @@ public class TabStatByOrg extends Tab {
 	private DataSource statisticsDS;
 
 	private ToolStripButton viewDetail;
+	private ToolStripButton excelBtn;
 
 	public TabStatByOrg(TabSet tabSet) {
 		try {
@@ -124,6 +128,14 @@ public class TabStatByOrg extends Tab {
 			viewDetail.setWidth(50);
 			toolStrip.addButton(viewDetail);
 
+			toolStrip.addSeparator();
+
+			excelBtn = new ToolStripButton(
+					CallCenterBK.constants.export_to_excel(), "excel.png");
+			excelBtn.setLayoutAlign(Alignment.LEFT);
+			excelBtn.setWidth(50);
+			toolStrip.addButton(excelBtn);
+
 			listGrid = new ListGrid();
 
 			listGrid.setWidth100();
@@ -170,7 +182,14 @@ public class TabStatByOrg extends Tab {
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					search();
+					search(false);
+				}
+			});
+
+			excelBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					search(true);
 				}
 			});
 
@@ -215,7 +234,7 @@ public class TabStatByOrg extends Tab {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
-						search();
+						search(false);
 					}
 				}
 			});
@@ -226,7 +245,7 @@ public class TabStatByOrg extends Tab {
 		}
 	}
 
-	private void search() {
+	private void search(boolean isExport) {
 		try {
 			final Date date = dateItem.getValueAsDate();
 			if (date == null) {
@@ -256,14 +275,32 @@ public class TabStatByOrg extends Tab {
 					.getValueAsString());
 			criteria.setAttribute("operator_src", operator_src);
 
-			listGrid.invalidateCache();
-			listGrid.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, dsRequest);
+			if (isExport) {
+				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
+						ExportFormat.values(), "xls"));
+				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
 
+				dsRequest.setExportFields(new String[] { "organization_name",
+						"concat_address_with_town", "call_count" });
+
+				listGrid.getDataSource().exportData(criteria, dsRequest,
+						new DSCallback() {
+							@Override
+							public void execute(DSResponse response,
+									Object rawData, DSRequest request) {
+							}
+						});
+
+			} else {
+
+				listGrid.invalidateCache();
+				listGrid.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+					}
+				}, dsRequest);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

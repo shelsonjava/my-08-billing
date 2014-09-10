@@ -129,8 +129,11 @@ public class TabUnknownPhones extends Tab implements ISaveResult {
 
 			ListGridField phone_number = new ListGridField("phone_number",
 					"ნომერი");
+			ListGridField rec_date = new ListGridField("rec_date", "თარიღი",
+					150);
+			rec_date.setAlign(Alignment.CENTER);
 
-			unknownPhonesGrid.setFields(phone_number);
+			unknownPhonesGrid.setFields(phone_number, rec_date);
 
 			mainLayout.addMember(unknownPhonesGrid);
 

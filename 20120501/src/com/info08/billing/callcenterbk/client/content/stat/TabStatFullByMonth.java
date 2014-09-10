@@ -13,7 +13,10 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ExportDisplay;
+import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.types.SummaryFunctionType;
+import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -55,6 +58,7 @@ public class TabStatFullByMonth extends Tab {
 
 	private ToolStripButton statN1Btn;
 	private ToolStripButton statN2Btn;
+	private ToolStripButton excelBtn;
 
 	public TabStatFullByMonth(TabSet tabSet) {
 		try {
@@ -128,6 +132,14 @@ public class TabStatFullByMonth extends Tab {
 			statN2Btn.setLayoutAlign(Alignment.LEFT);
 			statN2Btn.setWidth(50);
 			toolStrip.addButton(statN2Btn);
+
+			toolStrip.addSeparator();
+
+			excelBtn = new ToolStripButton(
+					CallCenterBK.constants.export_to_excel(), "excel.png");
+			excelBtn.setLayoutAlign(Alignment.LEFT);
+			excelBtn.setWidth(50);
+			toolStrip.addButton(excelBtn);
 
 			listGrid = new ListGrid() {
 				@Override
@@ -499,7 +511,14 @@ public class TabStatFullByMonth extends Tab {
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					search();
+					search(false);
+				}
+			});
+
+			excelBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					search(true);
 				}
 			});
 
@@ -507,7 +526,7 @@ public class TabStatFullByMonth extends Tab {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
-						search();
+						search(false);
 					}
 				}
 			});
@@ -515,7 +534,7 @@ public class TabStatFullByMonth extends Tab {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
-						search();
+						search(false);
 					}
 				}
 			});
@@ -577,7 +596,7 @@ public class TabStatFullByMonth extends Tab {
 		}
 	}
 
-	private void search() {
+	private void search(boolean isExport) {
 		try {
 			String ymStart = ymStartItem.getValueAsString();
 			if (ymStart == null || ymStart.trim().length() != 4) {
@@ -610,7 +629,6 @@ public class TabStatFullByMonth extends Tab {
 				SC.say(CallCenterBK.constants.pleaseSelOnerecord());
 				return;
 			}
-
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchAllStatisticsByMonth");
 			Criteria criteria = new Criteria();
@@ -620,13 +638,36 @@ public class TabStatFullByMonth extends Tab {
 					Integer.parseInt(operator_src));
 			criteria.setAttribute("unique_id",
 					"unique_" + HTMLPanel.createUniqueId());
-			listGrid.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, dsRequest);
 
+			if (isExport) {
+				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
+						ExportFormat.values(), "xls"));
+				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
+
+				dsRequest.setExportFields(new String[] { "ym", "abonent_cnt",
+						"org_contr_comm_cnt", "org_non_contr_cnt",
+						"org_contr_gov_cnt", "org_sum", "magti_cnt",
+						"geocell_cnt", "beeline_cnt",
+						"org_contr_email_srv_cnt", "org_email_srv_cnt",
+						"all_sum", "all_amount" });
+
+				listGrid.getDataSource().exportData(criteria, dsRequest,
+						new DSCallback() {
+							@Override
+							public void execute(DSResponse response,
+									Object rawData, DSRequest request) {
+							}
+						});
+
+			} else {
+
+				listGrid.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+					}
+				}, dsRequest);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

@@ -233,7 +233,8 @@ public class DlgAddEditOrgDepPhone extends Window {
 					}
 
 					DlgAddPhoneOrgs dlgAddPhoneOrgs = new DlgAddPhoneOrgs(
-							phone, DlgAddEditOrgDepPhone.this, records);
+							phone, DlgAddEditOrgDepPhone.this, null, null,
+							records);
 					dlgAddPhoneOrgs.show();
 				}
 			}, dsRequest);

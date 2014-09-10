@@ -43,6 +43,7 @@ public class TabFindStreets extends Tab {
 	private ComboBoxItem townDistrictsItem;
 	private TextItem streetNameItem;
 	private TextItem indexItem;
+	private TextItem streetLocationItem;
 
 	// main content layout
 	private VLayout mainLayout;
@@ -140,8 +141,23 @@ public class TabFindStreets extends Tab {
 		indexItem.setName("indexItem");
 		indexItem.setWidth(250);
 
+		streetLocationItem = new TextItem();
+		streetLocationItem.setTitle("კომენტარი");
+		streetLocationItem.setWidth(500);
+		streetLocationItem.setName("street_location");
+		streetLocationItem.setColSpan(2);
+
+		streetLocationItem.addKeyPressHandler(new KeyPressHandler() {
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getKeyName().equals("Enter")) {
+					search();
+				}
+			}
+		});
+
 		searchForm.setFields(townsItem, townDistrictsItem, streetNameItem,
-				indexItem);
+				indexItem, streetLocationItem);
 		searchForm.focusInItem(streetNameItem);
 
 		HLayout buttonLayout = new HLayout(5);
@@ -225,6 +241,7 @@ public class TabFindStreets extends Tab {
 			public void onClick(ClickEvent event) {
 				streetNameItem.clearValue();
 				indexItem.clearValue();
+				streetLocationItem.clearValue();
 			}
 		});
 
@@ -259,17 +276,18 @@ public class TabFindStreets extends Tab {
 	private void search() {
 		try {
 			Criteria criteria = new Criteria();
-			
 
 			String town_id = townsItem.getValueAsString();
 			String streetIndex = indexItem.getValueAsString();
 			String street_name = streetNameItem.getValueAsString();
 			String town_district_id = townDistrictsItem.getValueAsString();
+			String street_location = streetLocationItem.getValueAsString();
 
 			if ((streetIndex == null || streetIndex.trim().equals(""))
 					&& (street_name == null || street_name.trim().equals(""))
-					&& (town_district_id == null || town_district_id.trim()
-							.equals(""))) {
+					&& (town_district_id == null || town_district_id.trim().equals(""))
+					&& (street_location == null || street_location.trim().equals(""))
+			   ) {
 				SC.say(CallCenterBK.constants.plzEnterStreetNameOrIdx());
 				return;
 			}
@@ -294,6 +312,16 @@ public class TabFindStreets extends Tab {
 				for (String string : arrStr) {
 					String item = string.trim();
 					criteria.setAttribute("street_name" + i, item);
+					i++;
+				}
+			}
+			if (street_location != null && !street_location.trim().equals("")) {
+				String tmp = street_location.trim();
+				String arrStr[] = tmp.split(" ");
+				int i = 1;
+				for (String string : arrStr) {
+					String item = string.trim();
+					criteria.setAttribute("street_location" + i, item);
 					i++;
 				}
 			}

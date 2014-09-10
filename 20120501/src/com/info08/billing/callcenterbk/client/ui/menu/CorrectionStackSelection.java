@@ -29,16 +29,13 @@ public class CorrectionStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", "ორგ. საქმიანობები", true,
-					"organization.gif"),
+			new MenuNode("100", "1", "ორგ. საქმიანობები", true,"organization.gif"),
 			new MenuNode("101", "2", "ორგანიზაციები", true, "organization.gif"),
 			new MenuNode("102", "3", "აბონენტები", true, "person.png"),
 			new MenuNode("103", "4", "სახელები", true, "person.png"),
 			new MenuNode("104", "5", "გვარები", true, "person.png"),
-			new MenuNode("105", "6", CallCenterBK.constants.virtualCharge(),
-					true, "moneySmall.png"),
-			new MenuNode("106", "1", CallCenterBK.constants.importedNumbers(),
-					true, "import.png"),
+			new MenuNode("105", "6", CallCenterBK.constants.virtualCharge(), true, "moneySmall.png"),
+			new MenuNode("106", "1", CallCenterBK.constants.importedNumbers(), true, "import.png"),
 			new MenuNode("107", "1", "მიმართვები", true, "person.png"),
 			new MenuNode("108", "1", "უცნობი ნომრები", true, "phone.png"),
 			new MenuNode("109", "1", "უფასო ნომრები", true, "phone.png") };

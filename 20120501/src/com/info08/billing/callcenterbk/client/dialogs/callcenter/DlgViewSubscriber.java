@@ -96,7 +96,7 @@ public class DlgViewSubscriber extends Window {
 		DetailViewerField phone = new DetailViewerField("shown_phones",
 				CallCenterBK.constants.phone());
 		DetailViewerField is_parallel_descr = new DetailViewerField(
-				"is_parallel_descr", CallCenterBK.constants.status());
+				"phone_contract_type_desc", CallCenterBK.constants.status());
 
 		detailViewer.viewSelectedData(listGrid);
 

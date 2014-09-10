@@ -144,28 +144,31 @@ public class TabPartniorNumbersList extends Tab implements ISaveResult {
 			importedListGrid.setWrapCells(true);
 			importedListGrid.setFixedRecordHeights(false);
 			importedListGrid.setCanDragSelectText(true);
+			importedListGrid.setShowFilterEditor(true);
+			importedListGrid.setFilterOnKeypress(true);
 
-			ListGridField phone = new ListGridField("phone_number",
-					CallCenterBK.constants.phone(), 70);
+			ListGridField phone = new ListGridField("phone_number", CallCenterBK.constants.phone(), 70);
 			phone.setAlign(Alignment.CENTER);
+			phone.setCanFilter(true);
 
-			ListGridField subscriber_name = new ListGridField(
-					"subscriber_name", CallCenterBK.constants.name(), 350);
+			ListGridField subscriber_name = new ListGridField("subscriber_name", CallCenterBK.constants.name(), 350);
+			subscriber_name.setCanFilter(true);
 
-			ListGridField address = new ListGridField("address",
-					CallCenterBK.constants.address(), 450);
+			ListGridField address = new ListGridField("address",CallCenterBK.constants.address(), 450);
+			address.setCanFilter(true);
 
-			has_subscriber = new ListGridField("has_subscriber",
-					CallCenterBK.constants.abonent(), 50);
+			has_subscriber = new ListGridField("has_subscriber",CallCenterBK.constants.abonent(), 50);
+			has_subscriber.setCanFilter(false);			
 			has_subscriber.setType(ListGridFieldType.BOOLEAN);
+			
 
-			has_organisation = new ListGridField("has_organisation",
-					CallCenterBK.constants.organization(), 50);
+			has_organisation = new ListGridField("has_organisation",CallCenterBK.constants.organization(), 50);
 			has_organisation.setType(ListGridFieldType.BOOLEAN);
+			has_organisation.setCanFilter(false);
 
-			org_department_count = new ListGridField("org_department_count",
-					CallCenterBK.constants.count(), 50);
+			org_department_count = new ListGridField("org_department_count", CallCenterBK.constants.count(), 50);
 			org_department_count.setType(ListGridFieldType.INTEGER);
+			org_department_count.setCanFilter(false);
 
 			importedListGrid.setFields(phone, subscriber_name, address,
 					has_subscriber, has_organisation, org_department_count);

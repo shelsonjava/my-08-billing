@@ -33,7 +33,6 @@ public class DlgGetBillingCompsBillByDay extends Window {
 	private DateItem dateItem;
 	private Integer billing_company_id;
 	private SelectItem operatorItem;
-	
 
 	public DlgGetBillingCompsBillByDay(Integer billing_company_id) {
 		try {
@@ -68,7 +67,7 @@ public class DlgGetBillingCompsBillByDay extends Window {
 			dateItem.setName("dateItem");
 			dateItem.setWidth(200);
 			dateItem.setValue(new Date());
-			
+
 			operatorItem = new SelectItem();
 			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setWidth(200);
@@ -77,7 +76,7 @@ public class DlgGetBillingCompsBillByDay extends Window {
 			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
 					"searchOperators", "operator_src", "operator_src_descr");
 
-			dynamicForm.setFields(operatorItem,dateItem);
+			dynamicForm.setFields(operatorItem, dateItem);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -144,8 +143,7 @@ public class DlgGetBillingCompsBillByDay extends Window {
 			Integer operator_src = Integer.parseInt(operatorItem
 					.getValueAsString());
 			criteria.setAttribute("operator_src", operator_src);
-			
-			
+
 			dataSource.exportData(criteria, dsRequest, new DSCallback() {
 
 				@Override

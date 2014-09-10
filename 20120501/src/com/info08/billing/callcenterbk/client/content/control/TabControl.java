@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyComboboxItemMultClass;
+import com.info08.billing.callcenterbk.client.common.components.MyComboboxItemMultiple;
 import com.info08.billing.callcenterbk.client.dialogs.control.DlgAddEditSessQuality;
 import com.info08.billing.callcenterbk.client.dialogs.control.LogSMSDialog;
 import com.info08.billing.callcenterbk.client.dialogs.control.NotesDialog;
@@ -68,6 +70,8 @@ public class TabControl extends Tab {
 	private TimeItem startTimeItem;
 	private TimeItem endTimeItem;
 	private CheckboxItem checkboxItem;
+	private SelectItem operatorItem1;
+	private MyComboboxItemMultiple orgActivity;
 
 	private DataSource sessionsDS;
 	private DataSource sessionChargesDS;
@@ -112,7 +116,7 @@ public class TabControl extends Tab {
 			callTypeItem.setWidth("100%");
 
 			operatorItem = new ComboBoxItem();
-			operatorItem.setTitle("ოპერატორი");
+			operatorItem.setTitle("User");
 			operatorItem.setType("comboBox");
 			operatorItem.setWidth("100%");
 			operatorItem.setName("user_id");
@@ -229,10 +233,31 @@ public class TabControl extends Tab {
 			sessQualityTypeItem.setDefaultToFirstOption(true);
 			sessQualityTypeItem.setWidth("100%");
 
+			operatorItem1 = new SelectItem();
+			operatorItem1.setTitle(CallCenterBK.constants.operator());
+			operatorItem1.setWidth("100%");
+			operatorItem1.setName("operator_src");
+			operatorItem1.setDefaultToFirstOption(true);
+			ClientUtils.fillCombo(operatorItem1, "OperatorsDS",
+					"searchOperators", "operator_src", "operator_src_descr");
+			
+			
+			orgActivity = new MyComboboxItemMultiple();
+			orgActivity.setTitle(CallCenterBK.constants.activity());
+			orgActivity.setWidth("100%");
+			MyComboboxItemMultClass params = new MyComboboxItemMultClass(
+					"OrgActDS", "searchAllBusinesActivitiesForCB",
+					"org_activity_id", new String[] { "activity_description" },
+					new String[] { CallCenterBK.constants.activity() }, null,
+					CallCenterBK.constants.chooseActivity(), 700, 400,
+					CallCenterBK.constants.thisRecordAlreadyChoosen());
+			orgActivity.setParams(params);
+
 			searchForm.setFields(serviceItem, operatorItem, numberCondTypeItem,
 					numberItem, startDateItem, endDateItem, startTimeItem,
 					endTimeItem, numOfSecondsStart, numOfSecondsEnd,
-					chargedCallItem, sessQualityTypeItem, checkboxItem);
+					chargedCallItem, sessQualityTypeItem, checkboxItem,
+					operatorItem1,orgActivity);
 
 			vLayout.addMember(searchForm);
 
@@ -571,6 +596,7 @@ public class TabControl extends Tab {
 					}
 					Criteria formCriteria = searchForm.getValuesAsCriteria();
 					criteria.addCriteria(formCriteria);
+					orgActivity.clearValues();
 				}
 			});
 
@@ -690,6 +716,28 @@ public class TabControl extends Tab {
 			Boolean isImportant = checkboxItem.getValueAsBoolean();
 			if (isImportant != null && isImportant.booleanValue()) {
 				criteria.setAttribute("isImportant", isImportant);
+			}
+			
+			Integer operator_src = Integer.parseInt(operatorItem1.getValueAsString());
+			criteria.setAttribute("operator_src", operator_src);
+			
+			MyComboboxItemMultClass orgActivities = orgActivity.getParamClass();
+			
+			Record records[] = orgActivities.getValueRecords();
+			
+			if(records!=null && records.length>0){
+				String orgActivitiesCrit = "";
+				int i = 0;
+				for (Record record : records) {
+					Integer org_activity_id = record
+							.getAttributeAsInt("org_activity_id");
+					if (i > 0) {
+						orgActivitiesCrit += ",";
+					}
+					orgActivitiesCrit += org_activity_id;
+					i++;
+				}
+				criteria.setAttribute("orgActivitiesCrit", orgActivitiesCrit);
 			}
 
 			sessionsGrid.invalidateCache();

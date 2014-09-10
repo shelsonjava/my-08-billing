@@ -2,10 +2,11 @@ package com.info08.billing.callcenterbk.client.dialogs.survey;
 
 import java.util.Date;
 
-import com.bramosystems.oss.player.core.client.LoadException;
+import com.bramosystems.oss.player.core.client.AbstractMediaPlayer;
+import com.bramosystems.oss.player.core.client.PlayerUtil;
+import com.bramosystems.oss.player.core.client.Plugin;
 import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
-import com.bramosystems.oss.player.core.client.ui.FlashMediaPlayer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.control.NotesDialog;
@@ -92,7 +93,8 @@ public class DlgSurveyManagerHist extends Window {
 			removeChargeBtn.setWidth(50);
 			toolStrip.addButton(removeChargeBtn);
 
-			smsBtn = new ToolStripButton(CallCenterBK.constants.sms(), "sms.png");
+			smsBtn = new ToolStripButton(CallCenterBK.constants.sms(),
+					"sms.png");
 			smsBtn.setLayoutAlign(Alignment.LEFT);
 			smsBtn.setWidth(50);
 			toolStrip.addButton(smsBtn);
@@ -119,10 +121,10 @@ public class DlgSurveyManagerHist extends Window {
 					"survey_person", CallCenterBK.constants.contactPerson());
 			DetailViewerField survey_descript = new DetailViewerField(
 					"survey_descript", CallCenterBK.constants.message());
-			DetailViewerField rec_user = new DetailViewerField("survey_creator",
-					CallCenterBK.constants.operator());
-			DetailViewerField rec_date = new DetailViewerField("survey_created",
-					CallCenterBK.constants.time());
+			DetailViewerField rec_user = new DetailViewerField(
+					"survey_creator", CallCenterBK.constants.operator());
+			DetailViewerField rec_date = new DetailViewerField(
+					"survey_created", CallCenterBK.constants.time());
 			DetailViewerField status_descr = new DetailViewerField(
 					"survey_reply_type_name", CallCenterBK.constants.status());
 
@@ -330,19 +332,17 @@ public class DlgSurveyManagerHist extends Window {
 					winModal.destroy();
 				}
 			});
-			FlashMediaPlayer player = null;
+			AbstractMediaPlayer player = null;
 			HLayout hLayout = new HLayout();
 			hLayout.setWidth100();
 			hLayout.setHeight100();
-			player = new FlashMediaPlayer(url);
+			player = PlayerUtil.getPlayer(Plugin.Auto, url, true);// new
+																	// FlashMediaPlayer(url);
 
 			hLayout.addMember(player);
 			winModal.addItem(hLayout);
 			winModal.show();
 			// player.setVolume(1d);
-		} catch (LoadException e) {
-			SC.say(e.getMessage());
-			return;
 		} catch (PluginVersionException e) {
 			SC.say(e.getMessage());
 			return;

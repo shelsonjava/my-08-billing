@@ -1382,7 +1382,8 @@ public interface QueryConstants {
 			"            t.loked_user,\n" + 
 			"            ss.call_start_date start_date,\n" + 
 			"             p.user_id personnel_id,\n" + 
-			"             ss.operator_src\n" + 
+			"             ss.operator_src,\n" + 
+			"             decode (t.survery_responce_status,1,'დასრულებულია', 'ირკვევა') as survey_stat_descr\n" +			
 			"  from ccare.survey t\n" + 
 			"       left join ccare.survey_kind tt on tt.survey_kind_id = t.survey_kind_id\n" + 
 			"       left join ccare.survey_reply_type r on r.survey_reply_type_id = t.survey_reply_type_id\n" + 
@@ -1393,4 +1394,16 @@ public interface QueryConstants {
 			"order by t.survey_created desc\n" + 
 			"\n" + 
 			"";
+	
+	public static final String Q_GET_PORT_CHECK_PHONES = "select t.call_session_id,t.call_phone from ccare.call_sessions t where t.port_checked = 0 and rownum < 101 for update ";
+	public static final String Q_GET_UPDATE_SESSION = " update ccare.call_sessions t set t.port_checked = 1, t.port_company_id = ? where t.call_session_id = ? ";
+	
+	public static final String Q_GET_ORG_SUBS_CALL = "select decode(count(1),1,2,1) as org_subs_call from ccare.phone_numbers ph\n" +
+			"         inner join ccare.organization_depart_to_phones odp on odp.phone_number_id = ph.phone_number_id\n" + 
+			"         inner join ccare.organization_department od on od.org_department_id = odp.org_department_id\n" + 
+			"         inner join ccare.organizations o on o.organization_id = od.organization_id\n" + 
+			"where ph.phone = ccare.normalizecityphoneifpossibe(?) and rownum < 2 and ph.phone not like '5%' and ph.phone not like '790%'";
+	
+	
+	public static final String Q_RED_ORG = "delete from ccare.org_priority_list t where t.id = ? ";
 }

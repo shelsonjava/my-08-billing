@@ -56,6 +56,7 @@ public class ServerSession implements Serializable {
 	private boolean isBirthdayOrg;
 	private Long unreadNewsCnt = 0L;
 	private ServerSessionSurvItem surveryList[];
+	private Long orgSubsCall;
 
 	@SuppressWarnings("deprecation")
 	public ServerSession() {
@@ -418,5 +419,13 @@ public class ServerSession implements Serializable {
 
 	public void setSurveryList(ServerSessionSurvItem surveryList[]) {
 		this.surveryList = surveryList;
+	}
+
+	public Long getOrgSubsCall() {
+		return orgSubsCall;
+	}
+
+	public void setOrgSubsCall(Long orgSubsCall) {
+		this.orgSubsCall = orgSubsCall;
 	}
 }

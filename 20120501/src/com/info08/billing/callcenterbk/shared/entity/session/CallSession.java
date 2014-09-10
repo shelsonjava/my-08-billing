@@ -83,6 +83,10 @@ public class CallSession implements Serializable {
 	@Basic
 	@Column(name = "IMPORTANT")
 	private Long important;
+	
+	@Basic
+	@Column(name = "ORG_SUBS_CALL")
+	private Long orgSubsCall;
 
 	public CallSession() {
 	}
@@ -197,5 +201,13 @@ public class CallSession implements Serializable {
 
 	public void setImportant(Long important) {
 		this.important = important;
+	}
+
+	public Long getOrgSubsCall() {
+		return orgSubsCall;
+	}
+
+	public void setOrgSubsCall(Long orgSubsCall) {
+		this.orgSubsCall = orgSubsCall;
 	}
 }

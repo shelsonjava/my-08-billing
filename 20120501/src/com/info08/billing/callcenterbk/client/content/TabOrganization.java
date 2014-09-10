@@ -39,6 +39,8 @@ import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
 import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -221,6 +223,25 @@ public class TabOrganization extends Tab {
 			regionItem.setName("town_district_id");
 			regionItem.setWidth(245);
 
+			townItem.addChangedHandler(new ChangedHandler() {
+				@Override
+				public void onChanged(ChangedEvent event) {
+					String value = townItem.getValueAsString();
+					if (value == null) {
+						return;
+					}
+					regionItem.clearValue();
+					Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
+					aditionalCriteria.put("town_id", Integer.parseInt(value));
+					aditionalCriteria.put("need_indexes", 1);
+
+					ClientUtils.fillCombo(regionItem, "TownDistrictDS",
+							"searchCityRegsFromDBForCombos",
+							"town_district_id", "town_district_name",
+							aditionalCriteria);
+				}
+			});
+
 			Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
 			aditionalCriteria.put("town_id", Constants.defCityTbilisiId);
 			aditionalCriteria.put("need_indexes", 1);
@@ -250,6 +271,24 @@ public class TabOrganization extends Tab {
 			ClientUtils.fillCombo(legalRegionItem, "TownDistrictDS",
 					"searchCityRegsFromDBForCombos", "town_district_id",
 					"town_district_name", aditionalCriteria);
+
+			legalTownItem.addChangedHandler(new ChangedHandler() {
+				@Override
+				public void onChanged(ChangedEvent event) {
+					String value = legalTownItem.getValueAsString();
+					if (value == null) {
+						return;
+					}
+					legalRegionItem.clearValue();
+					Map<String, Integer> aditionalCriteria = new TreeMap<String, Integer>();
+					aditionalCriteria.put("town_id", Integer.parseInt(value));
+					aditionalCriteria.put("need_indexes", 1);
+					ClientUtils.fillCombo(legalRegionItem, "TownDistrictDS",
+							"searchCityRegsFromDBForCombos",
+							"town_district_id", "town_district_name",
+							aditionalCriteria);
+				}
+			});
 
 			phoneUpdDateItem = new TextItem();
 			phoneUpdDateItem.setName("organization_index");

@@ -153,6 +153,8 @@ public class TabFindSubscriber extends Tab {
 		listGrid.setCanDragSelectText(true);
 		listGrid.setShowFilterEditor(true);
 		listGrid.setFilterOnKeypress(true);
+		listGrid.setWrapCells(true);
+		listGrid.setFixedRecordHeights(false);
 
 		ListGridField name = new ListGridField("name",
 				CallCenterBK.constants.name(), 100);
@@ -175,8 +177,9 @@ public class TabFindSubscriber extends Tab {
 		phone.setCanFilter(true);
 		ListGridField phoneStateField = new ListGridField("phone_state",
 				"მდგომარეობა", 90);
-		ListGridField phoneStatusField = new ListGridField("is_parallel_descr",
-				CallCenterBK.constants.status(), 100);
+		ListGridField phoneStatusField = new ListGridField(
+				"phone_contract_type_desc", CallCenterBK.constants.status(),
+				120);
 
 		name.setAlign(Alignment.LEFT);
 		family_name.setAlign(Alignment.LEFT);

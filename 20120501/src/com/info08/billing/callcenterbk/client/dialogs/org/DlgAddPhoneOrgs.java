@@ -1,6 +1,8 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.dialogs.correction.DlgAddEditAbPhone;
+import com.info08.billing.callcenterbk.client.dialogs.correction.MyCustomClass;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.Record;
@@ -22,8 +24,12 @@ public class DlgAddPhoneOrgs extends Window {
 	private VLayout hLayout;
 	private ListGrid listGrid;
 
+	private DlgAddPhoneOrgs instance;
+
 	public DlgAddPhoneOrgs(final String phone,
-			final DlgAddEditOrgDepPhone dlgAddEditOrgDepPhone, Record records[]) {
+			final DlgAddEditOrgDepPhone dlgAddEditOrgDepPhone,
+			final DlgAddEditAbPhone dlgAddEditSubscriber,
+			final MyCustomClass myCustomClass, Record records[]) {
 		try {
 			setTitle(CallCenterBK.constants.phoneOrgs());
 			setHeight(500);
@@ -164,11 +170,17 @@ public class DlgAddPhoneOrgs extends Window {
 			saveItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					dlgAddEditOrgDepPhone.checkedAndSave(phone);
+					if (dlgAddEditOrgDepPhone != null) {
+						dlgAddEditOrgDepPhone.checkedAndSave(phone);
+					} else if (dlgAddEditSubscriber != null) {
+						dlgAddEditSubscriber.checkedAndSave(myCustomClass);
+					}
+					instance.destroy();
 				}
 			});
 
 			addItem(hLayout);
+			instance = this;
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

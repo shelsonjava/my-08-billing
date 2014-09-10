@@ -84,11 +84,9 @@ public class SMSSenderJob extends TimerTask {
 					.createNamedQuery("SentSMSHist.getForSending")
 					.getResultList();
 			if (resultList == null || resultList.isEmpty()) {
-				//log.append("SMS Batch List Is Empty.");
-				//logger.info(log.toString());
 				return;
 			}
-			
+
 			transaction = EMF.getTransaction(oracleManager);
 
 			for (SentSMSHist logSMS : resultList) {
@@ -105,7 +103,7 @@ public class SMSSenderJob extends TimerTask {
 				objectMessage.setObject(logSMS);
 				publisher.send(objectMessage);
 			}
-			
+
 			EMF.commitTransaction(transaction);
 		} catch (Exception e) {
 			logger.error(e.toString());

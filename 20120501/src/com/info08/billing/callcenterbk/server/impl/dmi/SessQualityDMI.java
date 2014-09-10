@@ -69,6 +69,10 @@ public class SessQualityDMI implements QueryConstants {
 					.setParameter(3, virt_call_type)
 					.setParameter(4, operator_src).getSingleResult().toString());
 
+			Long orgSubsCall = new Long(oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_ORG_SUBS_CALL)
+					.setParameter(1, call_phone).getSingleResult().toString());
+
 			CallSession logSession = new CallSession();
 			String session_id = oracleManager
 					.createNativeQuery(QueryConstants.Q_GET_VIRTUAL_SESSION_ID)
@@ -86,6 +90,7 @@ public class SessQualityDMI implements QueryConstants {
 			logSession.setYear_month(ym);
 			logSession.setImportant(0L);
 			logSession.setOperator_src(operator_src.toString());
+			logSession.setOrgSubsCall(orgSubsCall);
 
 			oracleManager.persist(logSession);
 

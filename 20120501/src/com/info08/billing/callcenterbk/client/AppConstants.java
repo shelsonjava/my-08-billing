@@ -789,4 +789,23 @@ public interface AppConstants extends Constants {
 	String staff();
 	String all_staff();
 	String export_to_excel();
+	String survey_list_for_number();
+	String result();
+	String not_accepted();
+	String accepted();
+	String charges_by_org_act();
+	String enter_search_criteria();
+	String billingDetailed2();
+	String billingtitle();
+	String billingDetailed3();
+	String please_enter_start_and_end_date();
+	String phones_export();
+	String freeCallsSubscriber();
+	String freeCallsOrganization();
+	String red_orgs();
+	String debt();
+	String tariff();
+	String billing_date();
+	String debt_amount();
+	String plzEnterAllFields();
 }

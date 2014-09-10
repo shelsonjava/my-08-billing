@@ -90,10 +90,10 @@ public class ChargePanel extends HLayout {
 			hLayout.setWidth100();
 			hLayout.setPadding(0);
 			hLayout.setMargin(0);
-			
-			HLayout hLayout2 = 	new HLayout();
+
+			HLayout hLayout2 = new HLayout();
 			hLayout2.setWidth100();
-			
+
 			dynamicForm = new DynamicForm();
 			dynamicForm.setAutoFocus(false);
 			dynamicForm.setWidth(300);
@@ -107,7 +107,7 @@ public class ChargePanel extends HLayout {
 			dynamicForm3.setNumCols(2);
 			dynamicForm3.setTitleWidth(100);
 			hLayout2.addMember(dynamicForm3);
-			
+
 			vLayout.addMember(hLayout2);
 
 			ToolStrip toolStrip = new ToolStrip();
@@ -183,8 +183,14 @@ public class ChargePanel extends HLayout {
 			operatorItem.setName("operatorItem");
 			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setCanEdit(false);
-			operatorItem.setValue(CommonSingleton.getInstance()
-					.getServerSession().getOperatorSrc());
+			String operator = CommonSingleton.getInstance().getServerSession()
+					.getOperatorSrc();
+			if (operator != null && !operator.trim().equals("")) {
+				operatorItem.setValue(operator);
+				if (operator.equals(Constants.OPERATOR_800800909)) {
+					operatorItem.setTextBoxStyle("textItemRed");
+				}
+			}
 			operatorItem.setCanFocus(false);
 
 			currentNumberItem = new TextItem();
@@ -605,7 +611,8 @@ public class ChargePanel extends HLayout {
 			record.setAttribute("call_kind", call_kind);
 			record.setAttribute("call_phone", phone);
 			record.setAttribute("event_describtion", event_describtion);
-			record.setAttribute("operator_src", Integer.parseInt(serverSession.getOperatorSrc()));
+			record.setAttribute("operator_src",
+					Integer.parseInt(serverSession.getOperatorSrc()));
 
 			DSRequest req = new DSRequest();
 			DataSource logSessChDS = DataSource.get("LogSessChDS");

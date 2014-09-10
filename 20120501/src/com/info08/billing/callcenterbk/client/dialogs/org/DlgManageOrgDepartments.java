@@ -273,10 +273,66 @@ public class DlgManageOrgDepartments extends Window {
 								"org_department_id", department_id);
 						if (rec != null)
 							orgDepListGrid.selectRecord(rec);
-
 					}
 				});
 			}
+
+			// HLayout hLayoutFind = new HLayout();
+			// hLayoutFind.setWidth100();
+			// hLayoutFind.setHeight(20);
+			// content.addMember(hLayoutFind);
+
+			// DynamicForm dynamicFormFind = new DynamicForm();
+			// dynamicFormFind.setWidth(800);
+			// dynamicFormFind.setNumCols(6);
+			// dynamicFormFind.setTitleWidth(150);
+			//
+			// final TextItem phoneItem = new TextItem("phoneItem",
+			// CallCenterBK.constants.phone());
+			// final DateItem fromDateItem = new DateItem("fromDateItem",
+			// CallCenterBK.constants.dateFrom());
+			// final DateItem toDateItem = new DateItem("toDateItem",
+			// CallCenterBK.constants.dateTo());
+			// fromDateItem.setUseTextField(true);
+			// toDateItem.setUseTextField(true);
+			//
+			// dynamicFormFind.setFields(phoneItem, fromDateItem, toDateItem);
+
+			// IButton searchButton = new
+			// IButton(CallCenterBK.constants.find());
+			// IButton clearButton1 = new
+			// IButton(CallCenterBK.constants.clear());
+
+			// hLayoutFind.setMembers(dynamicFormFind, searchButton,
+			// clearButton1);
+			//
+			// clearButton1.addClickHandler(new ClickHandler() {
+			// @Override
+			// public void onClick(ClickEvent event) {
+			// phoneItem.clearValue();
+			// fromDateItem.clearValue();
+			// toDateItem.clearValue();
+			// }
+			// });
+			// searchButton.addClickHandler(new ClickHandler() {
+			// @Override
+			// public void onClick(ClickEvent event) {
+			// seachPhones(phoneItem, fromDateItem, toDateItem);
+			// }
+			// });
+
+			// KeyPressHandler kh = new KeyPressHandler() {
+			// @Override
+			// public void onKeyPress(KeyPressEvent event) {
+			// if (event.getKeyName().equals("Enter")) {
+			// seachPhones(phoneItem, fromDateItem, toDateItem);
+			// }
+			// }
+			// };
+			//
+			// phoneItem.addKeyPressHandler(kh);
+			// fromDateItem.addKeyPressHandler(kh);
+			// toDateItem.addKeyPressHandler(kh);
 
 			ToolStrip toolStrip1 = new ToolStrip();
 			toolStrip1.setWidth100();
@@ -339,10 +395,12 @@ public class DlgManageOrgDepartments extends Window {
 			orgDepPhonesListGrid.setCanDragSelectText(true);
 			orgDepPhonesListGrid.setShowRowNumbers(true);
 
-			ListGridField phone = new ListGridField("phone",CallCenterBK.constants.phone());
+			ListGridField phone = new ListGridField("phone",
+					CallCenterBK.constants.phone());
 			phone.setCanFilter(true);
 
-			ListGridField rec_upd_date = new ListGridField("rec_upd_date",CallCenterBK.constants.updDate(), 130);
+			ListGridField rec_upd_date = new ListGridField("rec_upd_date",
+					CallCenterBK.constants.updDate(), 130);
 			rec_upd_date.setAlign(Alignment.CENTER);
 			rec_upd_date.setCanFilter(false);
 
@@ -848,4 +906,39 @@ public class DlgManageOrgDepartments extends Window {
 			SC.say(e.toString());
 		}
 	}
+
+	// private void seachPhones(final TextItem phoneItem,
+	// final DateItem fromDateItem, final DateItem toDateItem) {
+	// Record record = orgDepListGrid.getSelectedRecord();
+	// if (record == null) {
+	// SC.say(CallCenterBK.constants.pleaseSelOnerecord());
+	// return;
+	// }
+	// Integer org_department_id = record
+	// .getAttributeAsInt("org_department_id");
+	// Criteria criteria = new Criteria();
+	// criteria.setAttribute("org_department_id", org_department_id);
+	// String phone = phoneItem.getValueAsString();
+	// if (phone != null && !phone.trim().equals("")) {
+	// criteria.setAttribute("phone", phone);
+	// }
+	// Date fromDate = fromDateItem.getValueAsDate();
+	// if (fromDate != null) {
+	// criteria.setAttribute("from_date", fromDate);
+	// }
+	// Date toDate = toDateItem.getValueAsDate();
+	// if (toDate != null) {
+	// criteria.setAttribute("to_date", toDate);
+	// }
+	//
+	// DSRequest dsRequest = new DSRequest();
+	// dsRequest.setAttribute("operationId", "searchOrgDepPhones");
+	// orgDepPhonesListGrid.invalidateCache();
+	// orgDepPhonesListGrid.filterData(criteria, new DSCallback() {
+	// @Override
+	// public void execute(DSResponse response, Object rawData,
+	// DSRequest request) {
+	// }
+	// }, dsRequest);
+	// }
 }

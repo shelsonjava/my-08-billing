@@ -507,6 +507,10 @@ public class SurveyDMI implements QueryConstants {
 			Timestamp currDate = new Timestamp(System.currentTimeMillis());
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyMM");
 			Long ym = new Long(dateFormat.format(currDate));
+			
+			Long orgSubsCall = new Long(oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_ORG_SUBS_CALL)
+					.setParameter(1, phone).getSingleResult().toString());
 
 			CallSession logSession = new CallSession();
 			String session_id = oracleManager
@@ -525,6 +529,7 @@ public class SurveyDMI implements QueryConstants {
 			logSession.setYear_month(ym);
 			logSession.setImportant(0L);
 			logSession.setOperator_src(Constants.OPERATOR_11808);
+			logSession.setOrgSubsCall(orgSubsCall);
 
 			oracleManager.persist(logSession);
 

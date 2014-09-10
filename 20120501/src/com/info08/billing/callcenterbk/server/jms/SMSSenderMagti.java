@@ -18,7 +18,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -39,12 +39,6 @@ public class SMSSenderMagti implements MessageListener {
 	protected long start;
 	private Topic topic;
 	private String url = "tcp://localhost:61617";
-	// private String urlMgt =
-	// "http://81.95.160.47/mt/sendsms?username=jeocnobari&password=jeo123&client_id=414&service_id=%s&to=%s&text=%s";
-	// private String from = "16008";
-	// http://msg.ge/bi/track.php?username=nolrva&password=as110rva&client_id=3&service_id=0003&message_id=7
-	// private String urlSMS =
-	// "http://msg.ge/bi/sendsms.php?username=nolrva&password=as110rva&client_id=3&service_id=0003&to=%s&text=%s";
 	private String urlSMS = "http://91.151.128.64:7777/pls/sms/phttp2sms.Process?src=11375&dst=%s&txt=%s";
 
 	public void run() throws JMSException {
@@ -81,7 +75,7 @@ public class SMSSenderMagti implements MessageListener {
 	}
 
 	private void sendOverHttp(SentSMSHist logSMS) {
-		HttpPost method = null;
+		HttpGet method = null;
 		HttpClient client = null;
 		try {
 			String phone = logSMS.getReciever_number().trim();
@@ -94,14 +88,14 @@ public class SMSSenderMagti implements MessageListener {
 			String smsTxt = logSMS.getMessage_context();
 			smsTxt = URLEncoder.encode(smsTxt, "UTF-8");
 			String lUrl = String.format(urlSMS, phone, smsTxt);
-			logger.info("Sengind SMS. lUrl = " + lUrl);
+			System.out.println("Sengind SMS. lUrl = " + lUrl);
 
 			HttpParams httpParams = new BasicHttpParams();
 			HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
 			HttpConnectionParams.setSoTimeout(httpParams, 10000);
 
 			client = new DefaultHttpClient(httpParams);
-			method = new HttpPost(lUrl);
+			method = new HttpGet(lUrl);
 
 			HttpResponse httpResponse = client.execute(method);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();

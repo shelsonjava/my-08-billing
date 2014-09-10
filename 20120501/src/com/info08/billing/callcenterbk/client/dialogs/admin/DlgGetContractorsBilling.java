@@ -1,5 +1,8 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
+import java.util.Date;
+
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
@@ -19,6 +22,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
+import com.smartgwt.client.widgets.form.fields.DateItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
@@ -34,22 +38,34 @@ public class DlgGetContractorsBilling extends Window {
 	private TextItem ymItem;
 	private CheckboxItem generateBillItem;
 	private SelectItem operatorItem;
+	private DateItem startDateItem;
+	private DateItem endDateItem;
+
 	private boolean full;
 	private Integer corporate_client_id;
 	private Integer is_budget;
+	private boolean byCnt;
+	private boolean byDays;
 
 	public DlgGetContractorsBilling(Integer corporate_client_id, boolean full,
-			Integer is_budget) {
+			boolean byCnt, Integer is_budget, boolean byDays) {
 		try {
 			this.full = full;
-			this.corporate_client_id = corporate_client_id;
+			this.byCnt = byCnt;
+			this.byDays = byDays;
 			this.is_budget = is_budget;
+			this.corporate_client_id = corporate_client_id;
+
 			setTitle(full ? CallCenterBK.constants.contractorsBillingFull()
 					: CallCenterBK.constants.contractorsBilling());
 			if (corporate_client_id == null) {
 				setHeight(160);
 			} else {
-				setHeight(140);
+				if (byDays) {
+					setHeight(160);
+				} else {
+					setHeight(140);
+				}
 			}
 
 			setWidth(400);
@@ -85,6 +101,16 @@ public class DlgGetContractorsBilling extends Window {
 			generateBillItem.setName("generateBillItem");
 			generateBillItem.setWidth(200);
 
+			startDateItem = new DateItem("startDateItem",
+					CallCenterBK.constants.startDate());
+			startDateItem.setWidth(200);
+			startDateItem.setUseTextField(true);
+
+			endDateItem = new DateItem("endDateItem",
+					CallCenterBK.constants.endDate());
+			endDateItem.setWidth(200);
+			endDateItem.setUseTextField(true);
+
 			if (corporate_client_id == null) {
 				operatorItem = new SelectItem();
 				operatorItem.setTitle(CallCenterBK.constants.operator());
@@ -98,7 +124,12 @@ public class DlgGetContractorsBilling extends Window {
 
 				dynamicForm.setFields(operatorItem, ymItem, generateBillItem);
 			} else {
-				dynamicForm.setFields(ymItem, generateBillItem);
+				if (byDays) {
+					dynamicForm.setFields(startDateItem, endDateItem,
+							generateBillItem);
+				} else {
+					dynamicForm.setFields(ymItem, generateBillItem);
+				}
 			}
 
 			HLayout hLayoutItem = new HLayout(5);
@@ -148,30 +179,50 @@ public class DlgGetContractorsBilling extends Window {
 
 	private void save() {
 		try {
-			String yearMonthStr = ymItem.getValueAsString();
-			if (yearMonthStr == null || yearMonthStr.trim().equals("")) {
-				SC.say(CallCenterBK.constants.plzEnterYearMonth());
-				return;
-			}
-			yearMonthStr = yearMonthStr.trim();
-
-			if (yearMonthStr.length() < 4) {
-				SC.say(CallCenterBK.constants.invalidYearMonth());
-				return;
-			}
 			final Integer ym;
-			try {
-				ym = Integer.parseInt(yearMonthStr);
-			} catch (Exception e) {
-				SC.say(CallCenterBK.constants.invalidYearMonth());
-				return;
+			final Date startDate, endDate;
+			if (!byDays) {
+				startDate = null;
+				endDate = null;
+				String yearMonthStr = ymItem.getValueAsString();
+				if (yearMonthStr == null || yearMonthStr.trim().equals("")) {
+					SC.say(CallCenterBK.constants.plzEnterYearMonth());
+					return;
+				}
+				yearMonthStr = yearMonthStr.trim();
+
+				if (yearMonthStr.length() < 4) {
+					SC.say(CallCenterBK.constants.invalidYearMonth());
+					return;
+				}
+				try {
+					ym = Integer.parseInt(yearMonthStr);
+				} catch (Exception e) {
+					SC.say(CallCenterBK.constants.invalidYearMonth());
+					return;
+				}
+			} else {
+				startDate = startDateItem.getValueAsDate();
+				endDate = endDateItem.getValueAsDate();
+
+				if (startDate == null || endDate == null) {
+					SC.say(CallCenterBK.constants
+							.please_enter_start_and_end_date());
+					return;
+				}
+				DateTimeFormat dateTimeFormat = DateTimeFormat
+						.getFormat("yyMM");
+				ym = Integer.parseInt(dateTimeFormat.format(startDate));
 			}
 
 			final DataSource dataSource = DataSource.get("CorporateClientsDS");
 			boolean genBill = generateBillItem.getValueAsBoolean();
 			if (genBill) {
 				Record record = new Record();
-				record.setAttribute("ym", ym);
+				if (ym != null) {
+					record.setAttribute("ym", ym);
+				}
+
 				record.setAttribute("corporate_client_id", 123123123);
 
 				DSRequest dsRequest = new DSRequest();
@@ -182,11 +233,11 @@ public class DlgGetContractorsBilling extends Window {
 					@Override
 					public void execute(DSResponse response, Object rawData,
 							DSRequest request) {
-						showReport(dataSource, ym);
+						showReport(dataSource, ym, startDate, endDate);
 					}
 				}, dsRequest);
 			} else {
-				showReport(dataSource, ym);
+				showReport(dataSource, ym, startDate, endDate);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,14 +245,18 @@ public class DlgGetContractorsBilling extends Window {
 		}
 	}
 
-	private void showReport(DataSource dataSource, Integer ym) {
+	private void showReport(DataSource dataSource, Integer ym, Date startDate,
+			Date endDate) {
 		try {
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
 					ExportFormat.values(), "xls"));
 			dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
-
-			if (full) {
+			if (byCnt) {
+				dsRequest.setOperationId("getFullContrBillMain3");
+				dsRequest.setExportFields(new String[] { "organization_name",
+						"phone", "call_date", "charge_cnt" });
+			} else if (full) {
 				dsRequest.setOperationId("getFullContrBillMain2");
 				dsRequest.setExportFields(new String[] {
 						"billing_company_name", "organization_name",
@@ -215,7 +270,13 @@ public class DlgGetContractorsBilling extends Window {
 			}
 
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("ym", ym);
+			if (startDate != null && endDate != null) {
+				criteria.setAttribute("startDate", startDate);
+				criteria.setAttribute("endDate", endDate);
+			} else {
+				criteria.setAttribute("ym", ym);
+			}
+
 			if (corporate_client_id != null) {
 				criteria.setAttribute("corporate_client_id",
 						corporate_client_id);
@@ -224,6 +285,7 @@ public class DlgGetContractorsBilling extends Window {
 				criteria.setAttribute("is_budget", is_budget);
 				criteria.setAttribute("goverment", is_budget);
 			}
+
 			if (operatorItem != null && operatorItem.getValueAsString() != null
 					&& !operatorItem.getValueAsString().trim().equals("")) {
 				Integer operator_src = Integer.parseInt(operatorItem

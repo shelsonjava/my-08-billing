@@ -15,8 +15,11 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ExportDisplay;
+import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.types.Visibility;
 import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -33,9 +36,13 @@ import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.menu.Menu;
+import com.smartgwt.client.widgets.menu.MenuItem;
+import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
+import com.smartgwt.client.widgets.toolbar.ToolStripMenuButton;
 
 public class TabContractors extends Tab {
 
@@ -64,6 +71,10 @@ public class TabContractors extends Tab {
 
 	private ToolStripButton contractorsBillBtn1;
 	private ToolStripButton contractorsBillFullBtn1;
+
+	private ToolStripButton contractorsBillFullBtn2;
+
+	private ToolStripButton phonesExportBtn;
 
 	private ListGrid contractorsGrid;
 	private DataSource CorporateClientsDS;
@@ -199,17 +210,41 @@ public class TabContractors extends Tab {
 
 			toolStrip.addSeparator();
 
+			Menu billingMenu = new Menu();
+			billingMenu.setShowShadow(false);
+			billingMenu.setShadowOffset(50);
+
+			MenuItem miContrBill = new MenuItem(
+					CallCenterBK.constants.billing(), "billing.png");
+			MenuItem miContrBillFull = new MenuItem(
+					CallCenterBK.constants.billingDetailed(), "billing.png");
+			MenuItem miContrBill1 = new MenuItem(
+					CallCenterBK.constants.billing1(), "billing.png");
+			MenuItem miContrBillFull1 = new MenuItem(
+					CallCenterBK.constants.billingDetailed1(), "billing.png");
+			MenuItem miContrBillFull2 = new MenuItem(
+					CallCenterBK.constants.billingDetailed2(), "billing.png");
+			MenuItem miContrBillFull3 = new MenuItem(
+					CallCenterBK.constants.billingDetailed3(), "billing.png");
+
+			billingMenu.setItems(miContrBill, miContrBillFull, miContrBill1,
+					miContrBillFull1, miContrBillFull2, miContrBillFull3);
+
+			ToolStripMenuButton menuButton = new ToolStripMenuButton(
+					CallCenterBK.constants.billingtitle(), billingMenu);
+			toolStrip.addMenuButton(menuButton);
+
 			contractorsBillBtn = new ToolStripButton(
 					CallCenterBK.constants.billing(), "billing.png");
 			contractorsBillBtn.setLayoutAlign(Alignment.LEFT);
 			contractorsBillBtn.setWidth(50);
-			toolStrip.addButton(contractorsBillBtn);
+			// toolStrip.addButton(contractorsBillBtn);
 
 			contractorsBillFullBtn = new ToolStripButton(
 					CallCenterBK.constants.billingDetailed(), "billing.png");
 			contractorsBillFullBtn.setLayoutAlign(Alignment.LEFT);
 			contractorsBillFullBtn.setWidth(50);
-			toolStrip.addButton(contractorsBillFullBtn);
+			// toolStrip.addButton(contractorsBillFullBtn);
 
 			toolStrip.addSeparator();
 
@@ -217,13 +252,27 @@ public class TabContractors extends Tab {
 					CallCenterBK.constants.billing1(), "billing.png");
 			contractorsBillBtn1.setLayoutAlign(Alignment.LEFT);
 			contractorsBillBtn1.setWidth(50);
-			toolStrip.addButton(contractorsBillBtn1);
+			// toolStrip.addButton(contractorsBillBtn1);
 
 			contractorsBillFullBtn1 = new ToolStripButton(
 					CallCenterBK.constants.billingDetailed1(), "billing.png");
 			contractorsBillFullBtn1.setLayoutAlign(Alignment.LEFT);
 			contractorsBillFullBtn1.setWidth(50);
-			toolStrip.addButton(contractorsBillFullBtn1);
+			// toolStrip.addButton(contractorsBillFullBtn1);
+
+			contractorsBillFullBtn2 = new ToolStripButton(
+					CallCenterBK.constants.billingDetailed2(), "billing.png");
+			contractorsBillFullBtn2.setLayoutAlign(Alignment.LEFT);
+			contractorsBillFullBtn2.setWidth(50);
+			// toolStrip.addButton(contractorsBillFullBtn2);
+
+			phonesExportBtn = new ToolStripButton(
+					CallCenterBK.constants.phones_export(), "excel.png");
+			phonesExportBtn.setLayoutAlign(Alignment.LEFT);
+			phonesExportBtn.setWidth(50);
+
+			toolStrip.addSeparator();
+			toolStrip.addButton(phonesExportBtn);
 
 			contractorsGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
@@ -433,26 +482,123 @@ public class TabContractors extends Tab {
 			contractorsBillBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					getContractorsBilling(false);
+					getContractorsBilling(false, false, false);
 				}
 			});
+
+			miContrBill
+					.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+						@Override
+						public void onClick(MenuItemClickEvent event) {
+							getContractorsBilling(false, false, false);
+						}
+					});
+
 			contractorsBillFullBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					getContractorsBilling(true);
+					getContractorsBilling(true, false, false);
 				}
 			});
+
+			miContrBillFull
+					.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+						@Override
+						public void onClick(MenuItemClickEvent event) {
+							getContractorsBilling(true, false, false);
+						}
+					});
 
 			contractorsBillBtn1.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					getContractorsBilling1(false);
+					getContractorsBilling1(false, false, false);
 				}
 			});
+
+			miContrBill1
+					.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+						@Override
+						public void onClick(MenuItemClickEvent event) {
+							getContractorsBilling1(false, false, false);
+						}
+					});
+
 			contractorsBillFullBtn1.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					getContractorsBilling1(true);
+					getContractorsBilling1(true, false, false);
+				}
+			});
+			miContrBillFull1
+					.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+						@Override
+						public void onClick(MenuItemClickEvent event) {
+							getContractorsBilling1(true, false, false);
+						}
+					});
+
+			contractorsBillFullBtn2.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					getContractorsBilling1(true, true, false);
+				}
+			});
+			miContrBillFull2
+					.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+						@Override
+						public void onClick(MenuItemClickEvent event) {
+							getContractorsBilling1(true, true, false);
+						}
+					});
+			miContrBillFull3
+					.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+						@Override
+						public void onClick(MenuItemClickEvent event) {
+							getContractorsBilling1(true, true, true);
+						}
+					});
+
+			phonesExportBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					ListGridRecord listGridRecord = contractorsGrid
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+
+					Long corporate_client_id = listGridRecord
+							.getAttributeAsLong("corporate_client_id");
+					if (corporate_client_id == null) {
+						SC.say(CallCenterBK.constants.invalidRecord());
+						return;
+					}
+
+					DataSource dataSource = DataSource
+							.get("CorpClientPhonesDS");
+
+					DSRequest dsRequest = new DSRequest();
+					dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
+							ExportFormat.values(), "xls"));
+					dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
+					dsRequest.setOperationId("searchContractorPhones");
+					dsRequest.setExportFields(new String[] { "phone_number" });
+
+					Criteria criteria = new Criteria();
+					criteria.setAttribute("corporate_client_id",
+							corporate_client_id);
+
+					dataSource.exportData(criteria, dsRequest,
+							new DSCallback() {
+								@Override
+								public void execute(DSResponse response,
+										Object rawData, DSRequest request) {
+
+								}
+							});
+
 				}
 			});
 
@@ -463,7 +609,8 @@ public class TabContractors extends Tab {
 		}
 	}
 
-	private void getContractorsBilling1(boolean full) {
+	private void getContractorsBilling1(boolean full, boolean byCnt,
+			boolean byDays) {
 		try {
 			ListGridRecord listGridRecord = contractorsGrid.getSelectedRecord();
 			if (listGridRecord == null) {
@@ -481,20 +628,21 @@ public class TabContractors extends Tab {
 					contractorType.getValueAsString());
 
 			DlgGetContractorsBilling dlgGetCOntractorsBilling = new DlgGetContractorsBilling(
-					corporate_client_id, full, contractor_type);
+					corporate_client_id, full, byCnt, contractor_type, byDays);
 			dlgGetCOntractorsBilling.show();
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
 	}
 
-	private void getContractorsBilling(boolean full) {
+	private void getContractorsBilling(boolean full, boolean byCnt,
+			boolean byDays) {
 		try {
 			Integer contractor_type = new Integer(
 					contractorType.getValueAsString());
 
 			DlgGetContractorsBilling dlgGetCOntractorsBilling = new DlgGetContractorsBilling(
-					null, full, contractor_type);
+					null, full, byCnt, contractor_type, byDays);
 			dlgGetCOntractorsBilling.show();
 		} catch (Exception e) {
 			SC.say(e.toString());

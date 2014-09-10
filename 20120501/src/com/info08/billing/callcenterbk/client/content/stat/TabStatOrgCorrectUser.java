@@ -11,7 +11,10 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ExportDisplay;
+import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.types.SummaryFunctionType;
+import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -31,6 +34,8 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
+import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class TabStatOrgCorrectUser extends Tab {
 
@@ -49,6 +54,9 @@ public class TabStatOrgCorrectUser extends Tab {
 
 	private ListGrid listGrid;
 	private DataSource statsByBillingpDS;
+
+	private ToolStripButton statN1Btn;
+	private ToolStripButton excelBtn;
 
 	public TabStatOrgCorrectUser(TabSet tabSet) {
 		try {
@@ -103,6 +111,25 @@ public class TabStatOrgCorrectUser extends Tab {
 
 			buttonLayout.setMembers(findButton, clearButton);
 			mainLayout.addMember(buttonLayout);
+
+			ToolStrip toolStrip = new ToolStrip();
+			toolStrip.setWidth(500);
+			toolStrip.setPadding(5);
+			mainLayout.addMember(toolStrip);
+
+			statN1Btn = new ToolStripButton(CallCenterBK.constants.graph(),
+					"stats.png");
+			statN1Btn.setLayoutAlign(Alignment.LEFT);
+			statN1Btn.setWidth(50);
+			toolStrip.addButton(statN1Btn);
+
+			toolStrip.addSeparator();
+
+			excelBtn = new ToolStripButton(
+					CallCenterBK.constants.export_to_excel(), "excel.png");
+			excelBtn.setLayoutAlign(Alignment.LEFT);
+			excelBtn.setWidth(50);
+			toolStrip.addButton(excelBtn);
 
 			listGrid = new ListGrid() {
 				@Override
@@ -583,7 +610,14 @@ public class TabStatOrgCorrectUser extends Tab {
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					search();
+					search(false);
+				}
+			});
+
+			excelBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					search(true);
 				}
 			});
 
@@ -591,7 +625,7 @@ public class TabStatOrgCorrectUser extends Tab {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
-						search();
+						search(false);
 					}
 				}
 			});
@@ -610,7 +644,7 @@ public class TabStatOrgCorrectUser extends Tab {
 		}
 	}
 
-	private void search() {
+	private void search(boolean isExport) {
 		try {
 			DSRequest dsRequest = new DSRequest();
 			Criteria criteria = new Criteria();
@@ -629,14 +663,36 @@ public class TabStatOrgCorrectUser extends Tab {
 				criteria.setAttribute("user_name", user_name);
 			}
 
-			listGrid.invalidateCache();
-			listGrid.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, dsRequest);
+			if (isExport) {
+				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
+						ExportFormat.values(), "xls"));
+				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
 
+				dsRequest.setExportFields(new String[] { "act_date",
+						"user_name", "new_org", "del_org", "new_phone",
+						"phone_upd", "del_phone", "address", "director",
+						"ident_code", "work_hour_dayy_off", "web_site",
+						"email", "soc_network", "part_bank", "org_comment",
+						"founded_date", "other", "new_subs", "update_subs",
+						"del_subs", "sum_cnt" });
+
+				listGrid.getDataSource().exportData(criteria, dsRequest,
+						new DSCallback() {
+							@Override
+							public void execute(DSResponse response,
+									Object rawData, DSRequest request) {
+							}
+						});
+
+			} else {
+				listGrid.invalidateCache();
+				listGrid.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+					}
+				}, dsRequest);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

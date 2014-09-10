@@ -25,7 +25,8 @@ public class ServerSessionSurvItem implements Serializable {
 	private Timestamp start_date;
 	private Integer personnel_id;
 	private String operator_src;
-
+	private String survey_stat_descr;
+	
 	public String getSurvey_kind_name() {
 		return survey_kind_name;
 	}
@@ -176,5 +177,11 @@ public class ServerSessionSurvItem implements Serializable {
 
 	public void setSurvey_id(Long survey_id) {
 		this.survey_id = survey_id;
+	}
+	public String getSurvey_stat_descr() {
+		return survey_stat_descr;
+	}
+	public void setSurvey_stat_descr(String survey_stat_descr) {
+		this.survey_stat_descr = survey_stat_descr;
 	}
 }

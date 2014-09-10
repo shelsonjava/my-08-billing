@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.ui.menu;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.content.control.TabControl;
+import com.info08.billing.callcenterbk.client.content.control.TabControlRemark;
 import com.info08.billing.callcenterbk.client.content.control.TabViewSentSMSLog;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
@@ -19,11 +20,9 @@ import com.smartgwt.client.widgets.tree.TreeNode;
 
 public class ControlStackSelection extends SectionStackSection {
 
-	public TreeNode[] employeeData = new TreeNode[2];
+	public TreeNode[] employeeData = new TreeNode[3];
 	private TreeGrid employeeTreeGrid;
 	private Body body;
-	private MenuTreeNode callViewnode;
-	private MenuTreeNode viewSmsLogNode;
 
 	public ControlStackSelection(Body body) {
 		try {
@@ -32,13 +31,9 @@ public class ControlStackSelection extends SectionStackSection {
 			setExpanded(false);
 			setCanCollapse(true);
 
-			callViewnode = new MenuTreeNode("100", "1", "ზარების დათვალიერება",
-					true, "call.gif", false);
-			employeeData[0] = callViewnode;
-
-			viewSmsLogNode = new MenuTreeNode("101", "1",
-					CallCenterBK.constants.smsLog(), true, "sms.png", false);
-			employeeData[1] = viewSmsLogNode;
+			employeeData[0] = new MenuTreeNode("100", "1", "ზარების დათვალიერება",true, "call.gif", false);
+			employeeData[1] = new MenuTreeNode("101", "1",CallCenterBK.constants.smsLog(), true, "sms.png", false);
+			employeeData[2] = new MenuTreeNode("102", "1",CallCenterBK.constants.remarks(), true, "alert.png", false);
 
 			Tree employeeTree = new Tree();
 			employeeTree.setModelType(TreeModelType.PARENT);
@@ -96,14 +91,13 @@ public class ControlStackSelection extends SectionStackSection {
 
 	public void setMenuPersmission() {
 		try {
-			boolean hasPermission = CommonSingleton.getInstance()
-					.hasPermission("100000");
-			callViewnode.setAttribute("enabled", hasPermission);
-
-			boolean hasSmsLogPerm = CommonSingleton.getInstance()
-					.hasPermission("100500");
-			viewSmsLogNode.setAttribute("enabled", hasSmsLogPerm);
-
+			boolean hasPermission = CommonSingleton.getInstance().hasPermission("100000");
+			boolean hasSmsLogPerm = CommonSingleton.getInstance().hasPermission("100500");
+			boolean hasRemarksPerm = CommonSingleton.getInstance().hasPermission("102500");
+			employeeData[0].setAttribute("enabled", hasPermission);
+			employeeData[1].setAttribute("enabled", hasSmsLogPerm);
+			employeeData[2].setAttribute("enabled", hasRemarksPerm);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -120,7 +114,10 @@ public class ControlStackSelection extends SectionStackSection {
 		} else if (menuId.equals("101")) {
 			TabViewSentSMSLog tabViewSMSLog = new TabViewSentSMSLog();
 			body.addTab(tabViewSMSLog);
-		}
+		} else if (menuId.equals("102")) {
+			TabControlRemark tabControlRemark = new TabControlRemark();
+			body.addTab(tabControlRemark);
+		}		
 	}
 
 	public static class MenuTreeNode extends TreeNode {

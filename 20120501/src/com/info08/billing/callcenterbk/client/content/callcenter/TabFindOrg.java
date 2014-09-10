@@ -621,8 +621,14 @@ public class TabFindOrg extends Tab {
 			if (org_found_date_end != null) {
 				criteria.setAttribute("org_found_date_end", org_found_date_end);
 			}
-
-			if ((org_name == null || org_name.trim().equals(""))
+			
+			String department = orgDepartmentItem.getValueAsString();
+			if (department != null && !department.trim().equalsIgnoreCase("")) {
+				criteria.setAttribute("department_param", department);
+			}
+			
+			if ((department == null || department.trim().equals("")) 
+					&& (org_name == null || org_name.trim().equals(""))
 					&& (phoneNumber == null || phoneNumber.trim().equals(""))
 					&& (remark == null || remark.trim().equals(""))
 					&& (chief == null || chief.trim().equals(""))

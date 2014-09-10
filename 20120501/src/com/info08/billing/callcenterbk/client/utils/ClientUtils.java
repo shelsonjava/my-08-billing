@@ -7,10 +7,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.bramosystems.oss.player.core.client.LoadException;
+import com.bramosystems.oss.player.core.client.AbstractMediaPlayer;
+import com.bramosystems.oss.player.core.client.PlayerUtil;
+import com.bramosystems.oss.player.core.client.Plugin;
 import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
-import com.bramosystems.oss.player.core.client.ui.FlashMediaPlayer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
@@ -444,19 +445,16 @@ public class ClientUtils {
 					winModal.destroy();
 				}
 			});
-			FlashMediaPlayer player = null;
+			AbstractMediaPlayer player = null;
 			HLayout hLayout = new HLayout();
 			hLayout.setWidth100();
 			hLayout.setHeight100();
-			player = new FlashMediaPlayer(url);
+			player = PlayerUtil.getPlayer(Plugin.Auto, url, true);// new FlashMediaPlayer(url);
 
 			hLayout.addMember(player);
 			winModal.addItem(hLayout);
 			winModal.show();
 			// player.setVolume(1d);
-		} catch (LoadException e) {
-			SC.say(e.getMessage());
-			return;
 		} catch (PluginVersionException e) {
 			SC.say(e.getMessage());
 			return;

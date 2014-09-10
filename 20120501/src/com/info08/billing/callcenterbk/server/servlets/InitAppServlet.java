@@ -88,8 +88,10 @@ public class InitAppServlet extends HttpServlet {
 				operatorSrc = "11809";
 			} else if (sessionId.endsWith("C")) {
 				operatorSrc = "16007";
+			} else if (sessionId.endsWith("G")) {
+				operatorSrc = "800800909";
 			} else {
-				out.println("Invalid Call Number (f.e 11808,11809) ");
+				out.println("Invalid Call Number (f.e 11808,11809,800800909) ");
 				return;
 			}
 
@@ -315,9 +317,13 @@ public class InitAppServlet extends HttpServlet {
 					.setParameter(1, user.getUser_id()).getSingleResult()
 					.toString());
 
+			Long orgSubsCall = new Long(oracleManager
+					.createNativeQuery(QueryConstants.Q_GET_ORG_SUBS_CALL)
+					.setParameter(1, findPhone).getSingleResult().toString());
+
 			List resultList = oracleManager
 					.createNativeQuery(QueryConstants.Q_GET_SURVEYS_BY_PHONE)
-					.setParameter(1, findPhone).setParameter(2, findPhone)
+					.setParameter(1, realPhone).setParameter(2, realPhone)
 					.getResultList();
 			ServerSessionSurvItem surveryList[] = null;
 			if (resultList != null && !resultList.isEmpty()) {
@@ -326,25 +332,45 @@ public class InitAppServlet extends HttpServlet {
 				for (Object object : resultList) {
 					Object row[] = (Object[]) object;
 					ServerSessionSurvItem record = new ServerSessionSurvItem();
-					record.setSurvey_kind_name(row[0]==null?null:row[0].toString());
-					record.setSurvey_reply_type_name(row[1]==null?null:row[1].toString());
-					record.setSurvey_id(row[2]==null?null:Long.parseLong(row[2].toString()));
-					record.setSession_call_id(row[3]==null?null:row[3].toString());
-					record.setP_numb(row[4]==null?null:row[4].toString());
-					record.setSurvey_descript(row[5]==null?null:row[5].toString());
-					record.setSurvey_phone(row[6]==null?null:row[6].toString());
-					record.setSurvey_kind_id(row[7]==null?null:Integer.parseInt(row[7].toString()));
-					record.setSurvey_reply_type_id(row[8]==null?null:Integer.parseInt(row[8].toString()));
-					record.setSurvey_person(row[9]==null?null:row[9].toString());
-					record.setSurvery_responce_status(row[10]==null?null:Integer.parseInt(row[10].toString()));
-					record.setSurvey_done(row[11]==null?null:Integer.parseInt(row[11].toString()));
-					record.setBblocked(row[12]==null?null:Integer.parseInt(row[12].toString()));
-					record.setSurvey_creator(row[13]==null?null:row[0].toString());
-					record.setSurvey_created(row[14]==null?null:(Timestamp)row[14]);
-					record.setLoked_user(row[15]==null?null:row[15].toString());
-					record.setStart_date(row[16]==null?null:(Timestamp)row[16]);
-					record.setPersonnel_id(row[17]==null?null:Integer.parseInt(row[17].toString()));
-					record.setOperator_src(row[18]==null?null:row[18].toString());
+					record.setSurvey_kind_name(row[0] == null ? null : row[0]
+							.toString());
+					record.setSurvey_reply_type_name(row[1] == null ? null
+							: row[1].toString());
+					record.setSurvey_id(row[2] == null ? null : Long
+							.parseLong(row[2].toString()));
+					record.setSession_call_id(row[3] == null ? null : row[3]
+							.toString());
+					record.setP_numb(row[4] == null ? null : row[4].toString());
+					record.setSurvey_descript(row[5] == null ? null : row[5]
+							.toString());
+					record.setSurvey_phone(row[6] == null ? null : row[6]
+							.toString());
+					record.setSurvey_kind_id(row[7] == null ? null : Integer
+							.parseInt(row[7].toString()));
+					record.setSurvey_reply_type_id(row[8] == null ? null
+							: Integer.parseInt(row[8].toString()));
+					record.setSurvey_person(row[9] == null ? null : row[9]
+							.toString());
+					record.setSurvery_responce_status(row[10] == null ? null
+							: Integer.parseInt(row[10].toString()));
+					record.setSurvey_done(row[11] == null ? null : Integer
+							.parseInt(row[11].toString()));
+					record.setBblocked(row[12] == null ? null : Integer
+							.parseInt(row[12].toString()));
+					record.setSurvey_creator(row[13] == null ? null : row[13]
+							.toString());
+					record.setSurvey_created(row[14] == null ? null
+							: (Timestamp) row[14]);
+					record.setLoked_user(row[15] == null ? null : row[15]
+							.toString());
+					record.setStart_date(row[16] == null ? null
+							: (Timestamp) row[16]);
+					record.setPersonnel_id(row[17] == null ? null : Integer
+							.parseInt(row[17].toString()));
+					record.setOperator_src(row[18] == null ? null : row[18]
+							.toString());
+					record.setSurvey_stat_descr(row[19] == null ? null
+							: row[19].toString());
 					surveryList[i] = record;
 					i++;
 				}
@@ -426,6 +452,7 @@ public class InitAppServlet extends HttpServlet {
 			serverSession.setFreeOfChargeText(freeOfChargeText);
 			serverSession.setBirthdayOrg(isBirthdayOrg);
 			serverSession.setUnreadNewsCnt(unreadNewsCnt);
+			serverSession.setOrgSubsCall(orgSubsCall);			
 
 			if (isContractor) {
 				blockContractor(serverSession, oracleManager);
@@ -448,6 +475,7 @@ public class InitAppServlet extends HttpServlet {
 			callSession.setCall_duration(0L);
 			callSession.setOperator_src(operatorSrc);
 			callSession.setImportant(0L);
+			callSession.setOrgSubsCall(orgSubsCall);
 
 			oracleManager.persist(callSession);
 			serverSession.setCallSession(callSession);
@@ -467,14 +495,14 @@ public class InitAppServlet extends HttpServlet {
 
 			// // My Host - Test
 			// // if (sessionId.startsWith("ts-")) {
-			response.sendRedirect(response
-					.encodeRedirectURL("http://127.0.0.1:8888/CallCenterBK.html?gwt.codesvr=127.0.0.1:9997&sessionId="
-							+ sessionId));
-			// } else {
-			// // Live
 			// response.sendRedirect(response
-			// .encodeRedirectURL("http://192.168.1.5:19080/CallCenterBK/CallCenterBK.html?sessionId="
+			// .encodeRedirectURL("http://127.0.0.1:8888/CallCenterBK.html?gwt.codesvr=127.0.0.1:9997&sessionId="
 			// + sessionId));
+			// } else {
+			// // // Live
+			response.sendRedirect(response
+					.encodeRedirectURL("http://192.168.1.5:19080/CallCenterBK/CallCenterBK.html?sessionId="
+							+ sessionId));
 			// }
 			time = System.currentTimeMillis() - time;
 			System.out.println("Servlet Initialize Time Is : " + time

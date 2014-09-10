@@ -16,7 +16,10 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ExportDisplay;
+import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.types.SummaryFunctionType;
+import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
@@ -251,12 +254,14 @@ public class TabStatFull extends Tab {
 
 			ListGridField free_call_non_contr_cnt = new ListGridField(
 					"free_call_non_contr_cnt",
-					CallCenterBK.constants.freeCalls5TetriNonContr(), 70);
+					CallCenterBK.constants.freeCallsSubscriber(), 70);
+			free_call_non_contr_cnt.setAttribute("wrap", true);
 
 			ListGridField free_call_contr_cnt = new ListGridField(
 					"free_call_contr_cnt",
-					CallCenterBK.constants.freeCalls5TetriContr(), 75);
-
+					CallCenterBK.constants.freeCallsOrganization(), 75);
+			free_call_contr_cnt.setAttribute("wrap", true);
+			
 			ListGridField all_sum = new ListGridField("all_sum",
 					CallCenterBK.constants.sum(), 70);
 
@@ -823,7 +828,7 @@ public class TabStatFull extends Tab {
 		}
 	}
 
-	private void search(boolean isExport) {
+	private void search(final boolean isExport) {
 		try {
 			final Date date = dateItem.getValueAsDate();
 			if (date == null) {
@@ -856,27 +861,30 @@ public class TabStatFull extends Tab {
 			final Integer ym_prev = new Integer(dateFormatter.format(prevDate));
 			criteria.setAttribute("ym", ym_prev);
 
-			statisticsDS.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-					Record[] records = response.getData();
-					Record record = null;
-					if (records != null && records.length > 0) {
-						record = records[0];
+			if (isExport) {
+				searchData(isExport, date, ym, null, operator_src);
+			} else {
+				statisticsDS.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+						Record[] records = response.getData();
+						Record record = null;
+						if (records != null && records.length > 0) {
+							record = records[0];
+						}
+						searchData(isExport, date, ym, record, operator_src);
 					}
-					searchData(date, ym, record, operator_src);
-				}
-			}, dsRequest);
-
+				}, dsRequest);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
 
-	private void searchData(Date date, Integer ym, Record record,
-			String operator_src) {
+	private void searchData(boolean isExport, Date date, Integer ym,
+			Record record, String operator_src) {
 		try {
 			this.prevMonthRecord = record;
 			DSRequest dsRequest = new DSRequest();
@@ -889,12 +897,36 @@ public class TabStatFull extends Tab {
 				criteria.setAttribute("exactDate", date);
 			}
 			criteria.setAttribute("aaaa", System.currentTimeMillis());
-			listGrid.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, dsRequest);
+
+			if (isExport) {
+				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
+						ExportFormat.values(), "xls"));
+				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
+
+				dsRequest.setExportFields(new String[] { "stat_date",
+						"abonent_cnt", "org_contr_comm_cnt",
+						"org_non_contr_cnt", "org_contr_gov_cnt", "org_sum",
+						"magti_cnt", "geocell_cnt", "beeline_cnt",
+						"org_contr_email_srv_cnt", "org_email_srv_cnt",
+						"free_call_non_contr_cnt", "free_call_contr_cnt",
+						"all_sum", "all_amount" });
+
+				listGrid.getDataSource().exportData(criteria, dsRequest,
+						new DSCallback() {
+							@Override
+							public void execute(DSResponse response,
+									Object rawData, DSRequest request) {
+							}
+						});
+
+			} else {
+				listGrid.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+					}
+				}, dsRequest);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

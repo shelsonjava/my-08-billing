@@ -8,9 +8,10 @@ import com.info08.billing.callcenterbk.client.content.admin.TabBlackList;
 import com.info08.billing.callcenterbk.client.content.admin.TabContractors;
 import com.info08.billing.callcenterbk.client.content.admin.TabGSMIndexes;
 import com.info08.billing.callcenterbk.client.content.admin.TabLandlineIndexes;
+import com.info08.billing.callcenterbk.client.content.admin.TabOrgPriorityCompList;
 import com.info08.billing.callcenterbk.client.content.admin.TabOrgPriorityList;
 import com.info08.billing.callcenterbk.client.content.admin.TabSendSMS;
-import com.info08.billing.callcenterbk.client.content.admin.TabTest;
+import com.info08.billing.callcenterbk.client.content.admin.TabStatByOrgAct;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.Body;
 import com.smartgwt.client.types.TreeModelType;
@@ -36,8 +37,10 @@ public class AdminStackSelection extends SectionStackSection {
 			new MenuNode("104", "1", CallCenterBK.constants.blockPhone(), true, "telephone_delete.png"),
 			new MenuNode("105", "1", CallCenterBK.constants.billingComps(), true, "phone.png"),
 			new MenuNode("106", "1", CallCenterBK.constants.extraPriority(), true, "sort.png"),
-			new MenuNode("107", "1", CallCenterBK.constants.sendSMS(), true, "sms.png"),
-			new MenuNode("108", "1", "Test Panel",true, "sms.png")
+			new MenuNode("107", "1", CallCenterBK.constants.sendSMS(), true, "sms.png"),			
+			new MenuNode("108", "1", "Test Panel",true, "sms.png"),
+			new MenuNode("109", "1", CallCenterBK.constants.charges_by_org_act(), true, "stats.png"),
+			new MenuNode("110", "1", CallCenterBK.constants.red_orgs(), true, "contracts.png"),
 	};
 
 	private TreeGrid menuTreeGrid;
@@ -108,6 +111,7 @@ public class AdminStackSelection extends SectionStackSection {
 			menuData[6].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107700"));
 			menuData[7].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107800"));
 			menuData[8].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107000"));
+			menuData[9].setAttribute("enabled", CommonSingleton.getInstance().hasPermission("107700"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
@@ -140,10 +144,11 @@ public class AdminStackSelection extends SectionStackSection {
 			body.addTab(new TabOrgPriorityList());
 		} else if (menuId.equals("107")) {
 			body.addTab(new TabSendSMS());
-		} else if (menuId.equals("108")) {
-			body.addTab(new TabTest());
+		} else if (menuId.equals("109")) {
+			body.addTab(new TabStatByOrgAct());
+		}else if (menuId.equals("110")) {
+			body.addTab(new TabOrgPriorityCompList());
 		}
-
 	}
 
 	public static class MenuNode extends TreeNode {

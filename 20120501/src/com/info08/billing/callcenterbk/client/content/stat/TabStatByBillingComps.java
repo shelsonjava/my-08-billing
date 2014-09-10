@@ -16,7 +16,10 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ExportDisplay;
+import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.types.SummaryFunctionType;
+import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -54,6 +57,7 @@ public class TabStatByBillingComps extends Tab {
 	private DataSource statsByBillingpDS;
 
 	private ToolStripButton statN1Btn;
+	private ToolStripButton excelBtn;
 
 	public TabStatByBillingComps(TabSet tabSet) {
 		try {
@@ -118,6 +122,14 @@ public class TabStatByBillingComps extends Tab {
 			statN1Btn.setLayoutAlign(Alignment.LEFT);
 			statN1Btn.setWidth(50);
 			toolStrip.addButton(statN1Btn);
+
+			toolStrip.addSeparator();
+
+			excelBtn = new ToolStripButton(
+					CallCenterBK.constants.export_to_excel(), "excel.png");
+			excelBtn.setLayoutAlign(Alignment.LEFT);
+			excelBtn.setWidth(50);
+			toolStrip.addButton(excelBtn);
 
 			listGrid = new ListGrid();
 
@@ -213,7 +225,14 @@ public class TabStatByBillingComps extends Tab {
 			findButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					search();
+					search(false);
+				}
+			});
+
+			excelBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					search(true);
 				}
 			});
 
@@ -251,7 +270,7 @@ public class TabStatByBillingComps extends Tab {
 		}
 	}
 
-	private void search() {
+	private void search(boolean isExport) {
 		try {
 			final Date date = dateItem.getValueAsDate();
 			if (date == null) {
@@ -270,13 +289,30 @@ public class TabStatByBillingComps extends Tab {
 			criteria.setAttribute("operator_src", operator_src);
 			criteria.setAttribute("uqdfsd", HTMLPanel.createUniqueId());
 
-			listGrid.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
-				}
-			}, dsRequest);
+			if (isExport) {
+				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
+						ExportFormat.values(), "xls"));
+				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
 
+				dsRequest.setExportFields(new String[] {
+						"billing_company_name", "calls_cnt", "calls_amm" });
+				listGrid.getDataSource().exportData(criteria, dsRequest,
+						new DSCallback() {
+							@Override
+							public void execute(DSResponse response,
+									Object rawData, DSRequest request) {
+							}
+						});
+
+			} else {
+
+				listGrid.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							DSRequest request) {
+					}
+				}, dsRequest);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());

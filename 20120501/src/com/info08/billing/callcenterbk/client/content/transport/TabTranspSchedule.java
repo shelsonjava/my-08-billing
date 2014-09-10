@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.content.transport;
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.dialogs.transport.DlgAddEditTranspSchedule;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -330,7 +331,7 @@ public class TabTranspSchedule extends Tab {
 			mainLayout.addMember(buttonLayout);
 
 			ToolStrip toolStrip = new ToolStrip();
-			toolStrip.setWidth(1140);
+			toolStrip.setWidth(1300);
 			toolStrip.setPadding(5);
 			mainLayout.addMember(toolStrip);
 
@@ -349,9 +350,25 @@ public class TabTranspSchedule extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			listGrid = new ListGrid();
+			listGrid = new ListGrid() {
+				protected String getCellCSSText(ListGridRecord record,
+						int rowNum, int colNum) {
+					ListGridRecord countryRecord = (ListGridRecord) record;
+					if (countryRecord == null) {
+						return super.getCellCSSText(record, rowNum, colNum);
+					}
+					Integer note_crit = countryRecord
+							.getAttributeAsInt("note_crit");
+					if (colNum == 10 && note_crit != null
+							&& note_crit.equals(-1)) {
+						return "color:red;";
+					} else {
+						return super.getCellCSSText(record, rowNum, colNum);
+					}
+				};
+			};
 
-			listGrid.setWidth(1140);
+			listGrid.setWidth(1300);
 			listGrid.setHeight100();
 			listGrid.setAlternateRecordStyles(true);
 			listGrid.setDataSource(datasource);
@@ -396,6 +413,12 @@ public class TabTranspSchedule extends Tab {
 					"formated_depart_time", "გასვ. დრო", 70);
 			ListGridField formated_arrival_time = new ListGridField(
 					"formated_arrival_time", "ჩასვ. დრო", 70);
+			ListGridField alarm = new ListGridField("alarm", "*", 20);
+			alarm.setAlign(Alignment.CENTER);
+			alarm.setCanFilter(false);
+
+			ListGridField days_descr = new ListGridField("days_descr",
+					CallCenterBK.constants.days());
 
 			formated_depart_time.setCellFormatter(new CellFormatter() {
 				@Override
@@ -432,7 +455,8 @@ public class TabTranspSchedule extends Tab {
 
 			listGrid.setFields(transport_type, depart_station, arrival_station,
 					transp_company, transp_resource, transp_model_descr,
-					formated_depart_time, formated_arrival_time);
+					formated_depart_time, formated_arrival_time, days_descr,
+					alarm);
 
 			mainLayout.addMember(listGrid);
 			findButton.addClickHandler(new ClickHandler() {

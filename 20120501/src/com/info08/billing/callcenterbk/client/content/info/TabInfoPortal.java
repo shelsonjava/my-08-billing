@@ -29,6 +29,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
+import com.smartgwt.client.widgets.Label;
 
 public class TabInfoPortal extends Tab {
 
@@ -171,11 +172,26 @@ public class TabInfoPortal extends Tab {
 				listGrid.setWrapCells(true);
 				listGrid.setFixedRecordHeights(false);
 				listGrid.setCanDragSelectText(true);
-				listGrid.setShowRowNumbers(true);
+				listGrid.setShowRowNumbers(false);
 				listGrid.setAutoFetchData(true);
+				listGrid.setCanRemoveRecords(false);
+				listGrid.setCanResizeFields(false);
+				listGrid.setCanReorderFields(false);
+				listGrid.setShowFilterEditor(false);
+				listGrid.setCanGroupBy(false);
+				listGrid.setCanDragRecordsOut(false);
+				listGrid.setCanDragReposition(false);
+				listGrid.setCanDragResize(false);
 
 				ListGridField survey_kind_name = new ListGridField(
 						"survey_kind_name", CallCenterBK.constants.type(), 100);
+				ListGridField survey_stat_descr = new ListGridField(
+						"survey_stat_descr", CallCenterBK.constants.status(),
+						100);
+				ListGridField result = new ListGridField(
+						"survey_reply_type_name",
+						CallCenterBK.constants.result(), 150);
+
 				ListGridField p_numb = new ListGridField("p_numb",
 						CallCenterBK.constants.phone(), 80);
 				ListGridField survey_phone = new ListGridField("survey_phone",
@@ -189,12 +205,12 @@ public class TabInfoPortal extends Tab {
 						CallCenterBK.constants.shortOp(), 50);
 				ListGridField rec_date = new ListGridField("survey_created",
 						CallCenterBK.constants.time(), 100);
-				ListGridField upd_user = new ListGridField("loked_user",
-						CallCenterBK.constants.updUser(), 100);
 				ListGridField operator_src = new ListGridField("operator_src",
 						CallCenterBK.constants.operator(), 80);
 
 				survey_kind_name.setAlign(Alignment.LEFT);
+				survey_stat_descr.setAlign(Alignment.LEFT);
+				result.setAlign(Alignment.LEFT);
 				p_numb.setAlign(Alignment.LEFT);
 				survey_phone.setAlign(Alignment.LEFT);
 				survey_person.setAlign(Alignment.LEFT);
@@ -202,10 +218,19 @@ public class TabInfoPortal extends Tab {
 				rec_date.setAlign(Alignment.CENTER);
 				operator_src.setAlign(Alignment.CENTER);
 
-				listGrid.setFields(operator_src, survey_kind_name, p_numb,
-						survey_phone, survey_person, survey_descript, rec_user,
-						rec_date, upd_user);
+				listGrid.setFields(survey_kind_name, survey_stat_descr, result,
+						p_numb, survey_phone, survey_person, survey_descript,
+						rec_user, rec_date);
 
+				VLayout layout = new VLayout(15);
+				Label localDataLabel = new Label(
+						CallCenterBK.constants.survey_list_for_number());
+				localDataLabel.setWidth(1300);
+				localDataLabel.setHeight(25);
+				localDataLabel.setBaseStyle("exampleSeparator");
+				layout.addMember(localDataLabel);
+
+				mainLayout.addMember(layout);
 				mainLayout.addMember(listGrid);
 
 				ServerSessionSurvItem surveyData[] = serverSession
@@ -213,35 +238,57 @@ public class TabInfoPortal extends Tab {
 				if (surveyData != null && surveyData.length > 0) {
 					for (ServerSessionSurvItem record : surveyData) {
 						ListGridRecord gridRecord = new ListGridRecord();
-						gridRecord.setAttribute("bblocked", record.getBblocked());
-						gridRecord.setAttribute("loked_user", record.getLoked_user());
-						gridRecord.setAttribute("operator_src", record.getOperator_src());
+						gridRecord.setAttribute("bblocked",
+								record.getBblocked());
+						gridRecord.setAttribute("loked_user",
+								record.getLoked_user());
+						gridRecord.setAttribute("operator_src",
+								record.getOperator_src());
 						gridRecord.setAttribute("p_numb", record.getP_numb());
-						gridRecord.setAttribute("personnel_id", record.getPersonnel_id());
-						gridRecord.setAttribute("session_call_id", record.getSession_call_id());
-						gridRecord.setAttribute("survery_responce_status", record.getSurvery_responce_status());
-						gridRecord.setAttribute("survey_creator", record.getSurvey_creator());
-						gridRecord.setAttribute("survey_descript", record.getSurvey_descript());
-						gridRecord.setAttribute("survey_done", record.getSurvey_done());
-						gridRecord.setAttribute("survey_kind_id", record.getSurvey_kind_id());
-						gridRecord.setAttribute("survey_kind_name", record.getSurvey_kind_name());
-						gridRecord.setAttribute("survey_person", record.getSurvey_person());
-						gridRecord.setAttribute("survey_phone", record.getSurvey_phone());
-						gridRecord.setAttribute("survey_reply_type_id", record.getSurvey_reply_type_id());
-						gridRecord.setAttribute("survey_reply_type_name", record.getSurvey_reply_type_name());
-						gridRecord.setAttribute("start_date", record.getStart_date());						
-						gridRecord.setAttribute("survey_created", record.getSurvey_created());
-						gridRecord.setAttribute("survey_id", record.getSurvey_id());
-						listGrid.addData(gridRecord, new DSCallback() {							
+						gridRecord.setAttribute("personnel_id",
+								record.getPersonnel_id());
+						gridRecord.setAttribute("session_call_id",
+								record.getSession_call_id());
+						gridRecord.setAttribute("survery_responce_status",
+								record.getSurvery_responce_status());
+						gridRecord.setAttribute("survey_creator",
+								record.getSurvey_creator());
+						gridRecord.setAttribute("survey_descript",
+								record.getSurvey_descript());
+						gridRecord.setAttribute("survey_done",
+								record.getSurvey_done());
+						gridRecord.setAttribute("survey_kind_id",
+								record.getSurvey_kind_id());
+						gridRecord.setAttribute("survey_kind_name",
+								record.getSurvey_kind_name());
+						gridRecord.setAttribute("survey_person",
+								record.getSurvey_person());
+						gridRecord.setAttribute("survey_phone",
+								record.getSurvey_phone());
+						gridRecord.setAttribute("survey_reply_type_id",
+								record.getSurvey_reply_type_id());
+						gridRecord.setAttribute("survey_reply_type_name",
+								record.getSurvey_reply_type_name());
+						gridRecord.setAttribute("start_date",
+								record.getStart_date());
+						gridRecord.setAttribute("survey_created",
+								record.getSurvey_created());
+						gridRecord.setAttribute("survey_id",
+								record.getSurvey_id());
+						gridRecord.setAttribute("survey_stat_descr",
+								record.getSurvey_stat_descr());
+
+						listGrid.addData(gridRecord, new DSCallback() {
 							@Override
-							public void execute(DSResponse response, Object rawData, DSRequest request) {
+							public void execute(DSResponse response,
+									Object rawData, DSRequest request) {
 								Record dat[] = response.getData();
-								if(dat!=null && dat.length>0){
-									listGrid.selectRecord(dat[0]);	
+								if (dat != null && dat.length > 0) {
+									listGrid.selectRecord(dat[0]);
 								}
 							}
 						});
-					}								
+					}
 				}
 			}
 
@@ -275,14 +322,36 @@ public class TabInfoPortal extends Tab {
 				SC.say(CallCenterBK.constants.birthdayAlert());
 			}
 
-//			HLayout hLayout = new HLayout();
-//			hLayout.setHeight(400);
-//			hLayout.setWidth100();
-//			hLayout.setStyleName("headerClass");
-//			mainLayout.addMember(hLayout);
+//			String htm = "<applet width=\"600px\" height=\"400px\" src=\"com/info08/billing/callcenterbk/server/swing/ui/MainForm.class\" </applet>";
+//			HTMLPanel applet = new HTMLPanel(htm);
+			//HTMLPanel panel = new HTMLPanel(htm);
+
+			// Applet getInfoApplet = new Applet();
+			// getInfoApplet.setCode("com.info08.billing.callcenterbk.server.swing.ui.SipClient");
+			// getInfoApplet.setArchive("SipClient.jar");
+			// getInfoApplet.setWidth(400);
+			// getInfoApplet.setHeight(500);
+			// getInfoApplet.setAltHTML("<em>Your browser does not support Java!</em>");
+			// getInfoApplet.setScriptable(true); // I believe IE needs these
+			// set explicitly
+			// getInfoApplet.setMayScript(true);// --- ditto ---
+
+			// HLayout hLayout = new HLayout();
+			// hLayout.setHeight(400);
+			// hLayout.setWidth100();
+			// hLayout.setStyleName("headerClass");
+//			mainLayout.addMember(applet);
 		} catch (Exception e) {
 			e.printStackTrace();
 			SC.say(e.toString());
 		}
 	}
+
+	/**
+	 * Shows the file selection dialog box.
+	 */
+	public static native void showFileDialog()/*-{
+		$doc.applets[0].showDialog(true);
+	}-*/;
+
 }
