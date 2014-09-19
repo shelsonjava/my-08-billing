@@ -18,6 +18,7 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ExportDisplay;
 import com.smartgwt.client.types.ExportFormat;
+import com.smartgwt.client.types.TextMatchStyle;
 import com.smartgwt.client.types.TimeDisplayFormat;
 import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
@@ -117,10 +118,13 @@ public class TabControl extends Tab {
 
 			operatorItem = new ComboBoxItem();
 			operatorItem.setTitle("User");
-			operatorItem.setType("comboBox");
 			operatorItem.setWidth("100%");
 			operatorItem.setName("user_id");
-
+			
+			ClientUtils.fillCombo(operatorItem, "UsersDS",
+					"searchUser11", "user_id", "fullPersonName");
+			operatorItem.setTextMatchStyle(TextMatchStyle.SUBSTRING);
+			
 			serviceItem = new ComboBoxItem();
 			serviceItem.setTitle("სერვისი");
 			serviceItem.setType("comboBox");
@@ -372,7 +376,9 @@ public class TabControl extends Tab {
 			sessionsGrid.setFetchOperation("customSearch");
 			sessionsGrid.setFields(operator_src, date, operator, person_name,
 					phone, duration, chargeCount, hangUp, session_quality_desc);
-
+			sessionsGrid.setCanSelectText(true);
+			sessionsGrid.setCanDragSelectText(true);
+			
 			vLayout.addMember(sessionsGrid);
 
 			HLayout hLayout = new HLayout(5);
@@ -680,14 +686,7 @@ public class TabControl extends Tab {
 
 	private void fillCombos() {
 		try {
-			DataSource persons = CommonSingleton.getInstance().getUsersDS();
 			DataSource services = CommonSingleton.getInstance().getServicesDS();
-			if (persons != null) {
-				operatorItem.setOptionOperationId("searchUser");
-				operatorItem.setOptionDataSource(persons);
-				operatorItem.setValueField("user_id");
-				operatorItem.setDisplayField("fullPersonName");
-			}
 			if (services != null) {
 				serviceItem.setOptionDataSource(services);
 				serviceItem.setDisplayField("service_description");

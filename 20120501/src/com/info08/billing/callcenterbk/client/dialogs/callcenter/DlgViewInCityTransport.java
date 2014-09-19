@@ -176,6 +176,8 @@ public class DlgViewInCityTransport extends Window {
 				.setFetchOperation("searchAllPublicTransportDirectionstreets");
 		listGridInner.setCanSort(false);
 		listGridInner.setCanResizeFields(false);
+		listGridInner.setCanSelectText(true);
+		listGridInner.setCanDragSelectText(true);
 
 		ListGridField dir_order = new ListGridField("dir_order",
 				CallCenterBK.constants.no(), 50);

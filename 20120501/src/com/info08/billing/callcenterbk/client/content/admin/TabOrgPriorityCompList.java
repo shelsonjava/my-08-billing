@@ -97,9 +97,9 @@ public class TabOrgPriorityCompList extends Tab {
 			listGrid = new ListGrid() {
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
-					ListGridRecord countryRecord = (ListGridRecord) record;
-					if (countryRecord == null) {
-						return super.getCellCSSText(record, rowNum, colNum);
+					Integer debt = record.getAttributeAsInt("debt");
+					if (debt.equals(new Integer(1))) {
+						return "color:red;";
 					}
 					return super.getCellCSSText(record, rowNum, colNum);
 				};
@@ -131,7 +131,7 @@ public class TabOrgPriorityCompList extends Tab {
 					CallCenterBK.constants.debt(), 50);
 
 			ListGridField debt_amount = new ListGridField("debt_amount",
-					CallCenterBK.constants.amount(), 60);
+					CallCenterBK.constants.debt_amount(), 60);
 
 			ListGridField tariff = new ListGridField("tariff",
 					CallCenterBK.constants.tariff(), 70);

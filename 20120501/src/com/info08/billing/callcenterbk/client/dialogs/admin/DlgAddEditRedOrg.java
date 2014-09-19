@@ -63,7 +63,7 @@ public class DlgAddEditRedOrg extends Window {
 			setTitle(CallCenterBK.constants.red_orgs());
 
 			setHeight(400);
-			setWidth(800);
+			setWidth(820);
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);
