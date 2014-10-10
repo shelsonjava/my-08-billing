@@ -166,6 +166,7 @@ public class TabControlRemark extends Tab {
 			listGrid.setWrapCells(true);
 			listGrid.setFixedRecordHeights(false);
 			listGrid.setCanDragSelectText(true);
+			listGrid.setShowRowNumbers(true);
 
 			ListGridField warn_send_date = new ListGridField("warn_send_date",
 					CallCenterBK.constants.date(), 100);

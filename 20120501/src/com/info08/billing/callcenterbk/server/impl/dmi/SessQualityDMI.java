@@ -202,12 +202,15 @@ public class SessQualityDMI implements QueryConstants {
 					+ call_session_id;
 			log += ". Result : getLogSessionItem Finished Successfully.";
 			CallSessionItem existingRecord = new CallSessionItem();
+
+			System.out.println("call_session_id = " + call_session_id);
+
 			DMIUtils.findRecordById("CallSessDS", "customSearch",
 					call_session_id, "call_session_id", existingRecord);
 			logger.info(log);
 			return existingRecord;
 		} catch (Exception e) {
-			logger.error("Error While Retrieving : ", e);
+			e.printStackTrace();
 			throw new CallCenterException(
 					"შეცდომა მონაცემების წამოღებისას მონაცემთა ბაზიდან: "
 							+ e.toString());

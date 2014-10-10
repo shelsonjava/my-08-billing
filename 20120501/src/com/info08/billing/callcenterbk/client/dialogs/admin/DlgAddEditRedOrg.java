@@ -50,6 +50,7 @@ public class DlgAddEditRedOrg extends Window {
 	private TextItem debtAmountItem;
 	private SelectItem operatorItem;
 	private TextItem contactPhonesItem;
+	private TextItem debetAmountItem;
 
 	private ListGridRecord editRecord;
 	private ListGrid listGrid;
@@ -62,13 +63,13 @@ public class DlgAddEditRedOrg extends Window {
 			this.listGrid = listGrid;
 			setTitle(CallCenterBK.constants.red_orgs());
 
-			setHeight(400);
+			setHeight(420);
 			setWidth(820);
 			setShowMinimizeButton(false);
 			setIsModal(true);
 			setShowModalMask(true);
-			setCanDrag(false);
-			setCanDragReposition(false);
+			setCanDrag(true);
+			setCanDragReposition(true);
 			setCanDragResize(false);
 			setCanDragScroll(false);
 			centerInPage();
@@ -187,6 +188,12 @@ public class DlgAddEditRedOrg extends Window {
 			debtAmountItem.setName("termAmountItem");
 			debtAmountItem.setKeyPressFilter("[0-9\\.]");
 
+			debetAmountItem = new TextItem();
+			debetAmountItem.setTitle(CallCenterBK.constants.debet_amount());
+			debetAmountItem.setWidth(250);
+			debetAmountItem.setName("debetAmountItem");
+			debetAmountItem.setKeyPressFilter("[0-9\\.]");
+
 			operatorItem = new SelectItem();
 			operatorItem.setTitle(CallCenterBK.constants.operator());
 			operatorItem.setWidth(250);
@@ -197,7 +204,8 @@ public class DlgAddEditRedOrg extends Window {
 
 			dynamicForm.setFields(remarkItem, contactPhonesItem,
 					billingDateItem, debtItem, startDateItem, smsWarnItem,
-					endDateItem, tariffItem, operatorItem, debtAmountItem);
+					endDateItem, tariffItem, operatorItem, debtAmountItem,
+					debetAmountItem);
 
 			HLayout hLayoutItem = new HLayout(5);
 			hLayoutItem.setWidth100();
@@ -288,6 +296,11 @@ public class DlgAddEditRedOrg extends Window {
 			if (debt_amount != null) {
 				debtAmountItem.setValue(debt_amount);
 			}
+			Double debet = editRecord.getAttributeAsDouble("debet");
+			if (debet != null) {
+				debetAmountItem.setValue(debet);
+			}
+
 			Integer operator_src = editRecord.getAttributeAsInt("operator_src");
 			if (operator_src != null) {
 				operatorItem.setValue(operator_src);
@@ -401,6 +414,12 @@ public class DlgAddEditRedOrg extends Window {
 			record.setAttribute("debt_amount", debt_amount);
 			record.setAttribute("operator_src", operator_src);
 			record.setAttribute("contact_phones", contact_phones);
+
+			String sDebetAmount = debetAmountItem.getValueAsString();
+			if (sDebetAmount != null && !sDebetAmount.trim().equals("")) {
+				record.setAttribute("debet", Double.parseDouble(sDebetAmount));
+			}
+
 			if (editRecord != null) {
 				record.setAttribute("id", editRecord.getAttributeAsInt("id"));
 			}
@@ -422,7 +441,7 @@ public class DlgAddEditRedOrg extends Window {
 					public void execute(DSResponse response, Object rawData,
 							DSRequest request) {
 						listGrid.invalidateCache();
-						destroy();						
+						destroy();
 					}
 				}, req);
 			} else {

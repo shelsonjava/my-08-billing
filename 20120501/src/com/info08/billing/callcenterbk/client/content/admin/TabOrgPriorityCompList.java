@@ -10,6 +10,8 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ListGridFieldType;
+import com.smartgwt.client.types.SummaryFunctionType;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
@@ -22,6 +24,8 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
@@ -95,6 +99,7 @@ public class TabOrgPriorityCompList extends Tab {
 			});
 
 			listGrid = new ListGrid() {
+
 				protected String getCellCSSText(ListGridRecord record,
 						int rowNum, int colNum) {
 					Integer debt = record.getAttributeAsInt("debt");
@@ -120,43 +125,72 @@ public class TabOrgPriorityCompList extends Tab {
 			listGrid.setFixedRecordHeights(false);
 			listGrid.setDataPageSize(75);
 			listGrid.setCanDragSelectText(true);
+			listGrid.setShowRowNumbers(true);
+			listGrid.setCanResizeFields(true);
+			listGrid.setShowFilterEditor(true);
+			listGrid.setFilterOnKeypress(true);
+			listGrid.setShowGridSummary(true);
+			listGrid.setShowGroupSummary(true);
+			listGrid.setAutoFetchData(true); 
+			listGrid.setShowAllRecords(true);  
 
 			ListGridField organization_name = new ListGridField(
 					"organization_name", CallCenterBK.constants.orgNameFull(),
 					300);
+			organization_name.setCanFilter(false);
+			organization_name.setSummaryFunction(SummaryFunctionType.COUNT);
+			
+			
 			ListGridField remark = new ListGridField("remark",
 					CallCenterBK.constants.remark());
+			remark.setCanFilter(true);
 
 			ListGridField debt = new ListGridField("debt",
 					CallCenterBK.constants.debt(), 50);
+			debt.setType(ListGridFieldType.BOOLEAN);
 
 			ListGridField debt_amount = new ListGridField("debt_amount",
 					CallCenterBK.constants.debt_amount(), 60);
+			debt_amount.setCanFilter(false);
+			debt_amount.setSummaryFunction(SummaryFunctionType.SUM);
 
 			ListGridField tariff = new ListGridField("tariff",
 					CallCenterBK.constants.tariff(), 70);
+			tariff.setCanFilter(false);
+			tariff.setSummaryFunction(SummaryFunctionType.SUM);
+
+			ListGridField debet = new ListGridField("debet",
+					CallCenterBK.constants.debet_amount(), 70);
+			debet.setCanFilter(false);
+			debet.setSummaryFunction(SummaryFunctionType.SUM);
 
 			ListGridField billing_date = new ListGridField("billing_date",
 					CallCenterBK.constants.billing_date(), 100);
+			billing_date.setCanFilter(false);
 
 			ListGridField start_date = new ListGridField("start_date",
 					CallCenterBK.constants.startDate(), 100);
+			start_date.setCanFilter(false);
 
 			ListGridField end_date = new ListGridField("end_date",
 					CallCenterBK.constants.endDate(), 100);
+			end_date.setCanFilter(false);
 
 			ListGridField contact_phones = new ListGridField("contact_phones",
 					CallCenterBK.constants.contactPhone(), 200);
+			contact_phones.setCanFilter(true);
 
 			ListGridField update_date = new ListGridField("update_date",
 					CallCenterBK.constants.updDate(), 100);
+			update_date.setCanFilter(false);
 
 			ListGridField update_user = new ListGridField("update_user",
 					CallCenterBK.constants.updUser(), 100);
+			update_user.setCanFilter(false);
 
-			listGrid.setFields(organization_name, remark, debt, debt_amount,
-					tariff, billing_date, start_date, end_date, update_date,
-					contact_phones, update_user);
+			listGrid.setFields(debt, organization_name, remark, tariff,
+					debt_amount, debet, billing_date, start_date, end_date,
+					update_date, contact_phones, update_user);
 
 			ToolStrip toolStrip = new ToolStrip();
 			toolStrip.setWidth(1500);
@@ -235,6 +269,21 @@ public class TabOrgPriorityCompList extends Tab {
 									}
 								}
 							});
+				}
+			});
+
+			listGrid.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
+				@Override
+				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
+					ListGridRecord listGridRecord = listGrid
+							.getSelectedRecord();
+					if (listGridRecord == null) {
+						SC.say(CallCenterBK.constants.pleaseSelrecord());
+						return;
+					}
+					DlgAddEditRedOrg dlgAddEditContractor = new DlgAddEditRedOrg(
+							listGrid, listGridRecord);
+					dlgAddEditContractor.show();
 				}
 			});
 

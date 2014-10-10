@@ -67,6 +67,7 @@ public class DlgAddEditSessQuality extends Window {
 			mapSessQualities.put("3", "ცუდი");
 			mapSessQualities.put("5", "მენეჯერის დახმარება");
 			mapSessQualities.put("-1", "ძალიან ცუდი");
+			mapSessQualities.put("6", "არასრული");
 
 			qualityItem.setValueMap(mapSessQualities);
 			qualityItem.setDefaultToFirstOption(true);

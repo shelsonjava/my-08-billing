@@ -79,6 +79,10 @@ public class OrgPriorityList implements Serializable {
 	@Column(name = "SMS_WARNING")
 	private Long sms_warning;
 
+	@Basic
+	@Column(name = "DEBET")
+	private Double debet;
+	
 	public OrgPriorityList() {
 	}
 
@@ -192,5 +196,13 @@ public class OrgPriorityList implements Serializable {
 
 	public void setSms_warning(Long sms_warning) {
 		this.sms_warning = sms_warning;
+	}
+
+	public Double getDebet() {
+		return debet;
+	}
+
+	public void setDebet(Double debet) {
+		this.debet = debet;
 	}
 }

@@ -226,6 +226,7 @@ public class TabControl extends Tab {
 			sessQualItems.put("4", "ჩვეულებრივი");
 			sessQualItems.put("5", "მენეჯერის დახმარება");
 			sessQualItems.put("-1", "ძალიან ცუდი");
+			sessQualItems.put("6", "არასრული");
 			sessQualItems.put("100", "ყველა");
 
 			checkboxItem = new CheckboxItem();

@@ -56,6 +56,10 @@ public class OrgPriorityListDMI implements QueryConstants {
 			Long id = dsRequest.getValues().get("id") == null ? null
 					: new Long(dsRequest.getValues().get("id").toString());
 
+			Double debet = new Double(
+					dsRequest.getValues().get("debet") == null ? "0"
+							: dsRequest.getValues().get("debet").toString());
+
 			Timestamp currDateTime = new Timestamp(System.currentTimeMillis());
 
 			OrgPriorityList orgPriorityList = new OrgPriorityList();
@@ -77,6 +81,7 @@ public class OrgPriorityListDMI implements QueryConstants {
 			orgPriorityList.setUpdate_date(currDateTime);
 			orgPriorityList.setUpdate_user(loggedUserName);
 			orgPriorityList.setSms_warning(sms_warning);
+			orgPriorityList.setDebet(debet);
 
 			if (id != null) {
 				oracleManager.merge(orgPriorityList);
