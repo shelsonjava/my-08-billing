@@ -5,7 +5,7 @@
 		<field name="organization_id" 		type="integer" 			title="organization_id"/>
 		<field name="remark"  				type="text"				title="remark" />
 		<field name="debt" 					type="integer" 			title="debt"/>
-		<field name="tariff" 				type="integer" 			title="tariff"/>
+		<field name="tariff" 				type="any" 				title="tariff"/>
 		<field name="billing_date" 			type="datetime" 		title="billing_date"/>
 		<field name="start_date" 			type="datetime" 		title="start_date"/>
 		<field name="end_date" 				type="datetime" 		title="end_date"/>
@@ -13,9 +13,10 @@
 		<field name="organization_name"  	type="text"				title="organization_name" />	
 		<field name="update_user" 			type="text" 			title="update_user"/>
 		<field name="update_date" 			type="datetime" 		title="update_date"/>	
-		<field name="debt_amount" 			type="integer" 			title="debt_amount"/>
+		<field name="debt_amount" 			type="any" 				title="debt_amount"/>
 		<field name="operator_src" 			type="integer" 			title="operator_src"/>
 		<field name="sms_warning" 			type="integer" 			title="sms_warning"/>
+		<field name="debet" 				type="any" 				title="debet"/>
 	</fields>
 
 	<operationBindings>
@@ -48,7 +49,8 @@
 					t.update_date,
 					t.debt_amount,
 					t.operator_src,
-					t.sms_warning
+					t.sms_warning,
+					t.debet
 			</selectClause>
 			<tableClause>				
 					ccare.org_priority_list t

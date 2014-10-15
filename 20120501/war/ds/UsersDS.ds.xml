@@ -16,6 +16,7 @@
 		<field name="department_name" 		type="text" 		title="department_name" />
 		<field name="schedule_txt" 			type="text" 		title="schedule_txt"		hidden="true" />
 		<field name="aaaaaa" 				type="text" 		title="aaaaaa" 				hidden="true" />
+		<field name="fullPersonName" 		type="text" 		title="fullPersonName" 		hidden="true" />
 	</fields>
 
 	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />
@@ -68,6 +69,23 @@
 						to_char(ob.break_date,'dd/mm/yy')=to_char(sysdate,'dd/mm/yy') and ob.user_id = $criteria.user_id
             	 ]]>
 			</customSQL>
+		</operationBinding>
+		
+		
+		<!-- Custom Search -->
+		<operationBinding operationId="searchUser11" operationType="fetch">
+			<selectClause>
+				u.user_id,
+				u.user_name||' ( '||u.user_firstname||' '||u.user_lastname||' ) ' as fullPersonName				
+			</selectClause>
+			<tableClause>users u</tableClause>
+			<whereClause><![CDATA[
+				1 = 1
+				]]>
+			</whereClause>
+			<orderClause>u.user_lastname desc</orderClause>
+		    
+		    
 		</operationBinding>
 		
 		<operationBinding operationId="getOperatorBreaksComboUserName" operationType="fetch">

@@ -46,7 +46,7 @@
 				substr(s.uname,3,length(s.uname)) as uname,
 				s.call_start_date,
 				s.call_phone,
-				s.call_duration,
+				CAST (s.call_duration AS INT) as call_duration,
 				decode(s.reject_type,0,'აბონენტმა',1,'ოპერატორმა','უცნობია') as reject_type,
 				count(ch.session_id) as chargeCount,
 				s.call_quality,
@@ -76,8 +76,7 @@
 			            (            
 			              select  1 from SENT_SMS_HIST sms 
 			              where sms.SESSION_CALL_ID = s.session_id and sms.service_id = $criteria.serviceId and
-			              trunc( sms.message_sent_time) > trunc(s.call_start_date) and
-			              trunc( sms.message_sent_time) < trunc(s.call_start_date)
+			              trunc( sms.message_sent_time) = trunc(s.call_start_date) 
 			            )
 			          )
 					
@@ -99,6 +98,34 @@
 					ch.service_id = 50019
 				#end
 				#if($criteria.sessQualityTypeItem && $criteria.sessQualityTypeItem != 100) AND s.call_quality = $criteria.sessQualityTypeItem #end
+				
+				
+				#if($criteria.orgActivitiesCrit)
+							 	and ( ch.organization_id in (
+							 		select 
+							 				oa.organization_id from organization_to_activities oa 
+							 		where 1<>1 
+									 	#foreach($str in $criteria.orgActivitiesCrit.split(","))
+									 		or oa.org_activity_id = to_number($str)  
+										#end
+							 	        )							 	        
+							 	   or       							 	    
+							 	    (
+							 	    	exists (
+							 	    		select 1 from ccare.SENT_SMS_HIST sms
+							 	    			inner join organization_to_activities oa on oa.organization_id = sms.organization_id
+							 	    		where sms.SESSION_CALL_ID = s.session_id and 
+			              				    trunc(sms.message_sent_time) = trunc(s.call_start_date) 
+			              				    	#foreach($str in $criteria.orgActivitiesCrit.split(","))
+									 				or oa.org_activity_id = to_number($str)  
+												#end
+							 	    	)
+							 	    )
+							 	    
+							 	 ) 
+							 #end
+				
+				
 				]]>
 			</whereClause>
 			<groupClause>
@@ -107,6 +134,7 @@
 				s.session_id,
 				s.year_month,
 				substr(s.uname,3,length(s.uname)),
+				CAST (s.call_duration AS INT),
 				s.call_start_date,
 				s.call_phone,
 				s.call_duration,
