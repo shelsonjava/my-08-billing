@@ -13,6 +13,9 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ExportDisplay;
+import com.smartgwt.client.types.ExportFormat;
+import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -34,6 +37,7 @@ public class TabStatByOrgAct extends Tab {
 	private DateItem startDateItem;
 	private DateItem endDateItem;
 
+	private IButton exportButton;
 	private IButton sendButton;
 	private IButton clearButton;
 
@@ -87,17 +91,30 @@ public class TabStatByOrgAct extends Tab {
 			buttonLayout.setHeight(30);
 			buttonLayout.setAlign(Alignment.RIGHT);
 
+			exportButton = new IButton();
+			exportButton.setTitle(CallCenterBK.constants.export_to_excel());
+
 			sendButton = new IButton();
 			sendButton.setTitle(CallCenterBK.constants.find());
+
 			clearButton = new IButton();
 			clearButton.setTitle(CallCenterBK.constants.clear());
-			buttonLayout.setMembers(sendButton, clearButton);
+
+			buttonLayout.setMembers(exportButton, sendButton, clearButton);
+
 			mainLayout.addMember(buttonLayout);
+
+			exportButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					search(true);
+				}
+			});
 
 			sendButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					search();
+					search(false);
 				}
 			});
 			clearButton.addClickHandler(new ClickHandler() {
@@ -151,7 +168,7 @@ public class TabStatByOrgAct extends Tab {
 		}
 	}
 
-	private void search() {
+	private void search(boolean isExport) {
 		try {
 			Date start_date = startDateItem.getValueAsDate();
 			Date end_date = endDateItem.getValueAsDate();
@@ -186,13 +203,19 @@ public class TabStatByOrgAct extends Tab {
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchOrgAcctivitiesStats");
 
-			listGrid.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						com.smartgwt.client.data.DSRequest request) {
-				}
-			}, dsRequest);
-
+			if (!isExport) {
+				listGrid.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							com.smartgwt.client.data.DSRequest request) {
+					}
+				}, dsRequest);
+			} else {
+				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
+						ExportFormat.values(), "xls"));
+				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
+				listGrid.exportData(dsRequest);
+			}
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}

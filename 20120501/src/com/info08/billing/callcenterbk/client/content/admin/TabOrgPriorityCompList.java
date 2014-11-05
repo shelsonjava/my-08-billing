@@ -10,9 +10,12 @@ import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.ExportDisplay;
+import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.SummaryFunctionType;
 import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -46,6 +49,7 @@ public class TabOrgPriorityCompList extends Tab {
 	private ToolStripButton addBtn;
 	private ToolStripButton editBtn;
 	private ToolStripButton deleteBtn;
+	private ToolStripButton exportBtn;
 
 	public TabOrgPriorityCompList() {
 		try {
@@ -88,7 +92,7 @@ public class TabOrgPriorityCompList extends Tab {
 			sendButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					search();
+					search(false);
 				}
 			});
 			clearButton.addClickHandler(new ClickHandler() {
@@ -131,16 +135,15 @@ public class TabOrgPriorityCompList extends Tab {
 			listGrid.setFilterOnKeypress(true);
 			listGrid.setShowGridSummary(true);
 			listGrid.setShowGroupSummary(true);
-			listGrid.setAutoFetchData(true); 
-			listGrid.setShowAllRecords(true);  
+			listGrid.setAutoFetchData(true);
+			listGrid.setShowAllRecords(true);
 
 			ListGridField organization_name = new ListGridField(
 					"organization_name", CallCenterBK.constants.orgNameFull(),
 					300);
 			organization_name.setCanFilter(false);
 			organization_name.setSummaryFunction(SummaryFunctionType.COUNT);
-			
-			
+
 			ListGridField remark = new ListGridField("remark",
 					CallCenterBK.constants.remark());
 			remark.setCanFilter(true);
@@ -215,14 +218,28 @@ public class TabOrgPriorityCompList extends Tab {
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
+			toolStrip.addSeparator();
+			exportBtn = new ToolStripButton(
+					CallCenterBK.constants.export_to_excel(), "excel.gif");
+			exportBtn.setLayoutAlign(Alignment.LEFT);
+			exportBtn.setWidth(50);
+			toolStrip.addButton(exportBtn);
+
 			mainLayout.addMember(listGrid);
 			setPane(mainLayout);
+
+			exportBtn.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					search(true);
+				}
+			});
 
 			orgNameItem.addKeyPressHandler(new KeyPressHandler() {
 				@Override
 				public void onKeyPress(KeyPressEvent event) {
 					if (event.getKeyName().equals("Enter")) {
-						search();
+						search(false);
 					}
 				}
 			});
@@ -318,7 +335,7 @@ public class TabOrgPriorityCompList extends Tab {
 		}
 	}
 
-	private void search() {
+	private void search(boolean isExport) {
 		try {
 			Criteria criteria = new Criteria();
 			String org_name = orgNameItem.getValueAsString();
@@ -329,12 +346,19 @@ public class TabOrgPriorityCompList extends Tab {
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("SearchOrgs");
 			listGrid.invalidateCache();
-			listGrid.fetchData(criteria, new DSCallback() {
-				@Override
-				public void execute(DSResponse response, Object rawData,
-						com.smartgwt.client.data.DSRequest request) {
-				}
-			}, dsRequest);
+			if (!isExport) {
+				listGrid.fetchData(criteria, new DSCallback() {
+					@Override
+					public void execute(DSResponse response, Object rawData,
+							com.smartgwt.client.data.DSRequest request) {
+					}
+				}, dsRequest);
+			} else {
+				dsRequest.setExportAs((ExportFormat) EnumUtil.getEnum(
+						ExportFormat.values(), "xls"));
+				dsRequest.setExportDisplay(ExportDisplay.DOWNLOAD);
+				listGrid.exportData(dsRequest);
+			}
 
 		} catch (Exception e) {
 			SC.say(e.toString());
