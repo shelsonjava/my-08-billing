@@ -50,7 +50,7 @@
 				decode(s.reject_type,0,'აბონენტმა',1,'ოპერატორმა','უცნობია') as reject_type,
 				count(ch.session_id) as chargeCount,
 				s.call_quality,
-				decode(s.call_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება','უცნობი') as call_quality_desc,
+				decode(s.call_quality,0,'მოუსმენელი', 4,'ჩვეულებრივი',-1,'ძალიან ცუდი',1,'ძალიან კარგი',2,'კარგი',3,'ცუდი',5, 'მენეჯერის დახმარება',6,'არასრული','უცნობი') as call_quality_desc,
 				p.user_firstname||' '||p.user_lastname as full_user_name,
 				s.operator_src
 			</selectClause>
