@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.control;
 
 import java.util.LinkedHashMap;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -11,7 +12,6 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -20,7 +20,7 @@ import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditSessQuality extends Window {
+public class DlgAddEditSessQuality extends MyWindow {
 
 	private VLayout hLayout;
 	private SelectItem qualityItem;
@@ -28,7 +28,7 @@ public class DlgAddEditSessQuality extends Window {
 	
 	public DlgAddEditSessQuality(final String sessionId, Integer quality, final Integer call_session_id,
 			final DataSource sessionDS) {
-
+		super();
 		try {
 			setWidth(330);
 			setHeight(128);

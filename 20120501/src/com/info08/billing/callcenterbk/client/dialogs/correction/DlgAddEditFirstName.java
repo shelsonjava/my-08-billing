@@ -1,5 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.correction;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -9,7 +10,6 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -18,7 +18,7 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditFirstName extends Window {
+public class DlgAddEditFirstName extends MyWindow {
 
 	private VLayout hLayout;
 	private TextItem firstNameItem;
@@ -26,7 +26,7 @@ public class DlgAddEditFirstName extends Window {
 
 	public DlgAddEditFirstName(final Integer name_id, String firstName,
 			final DataSource NameDS) {
-
+		super();
 		setWidth(400);
 		setHeight(130);
 		setTitle(name_id == null ? "ახალი სახელი" : "სახელის შესწორება");

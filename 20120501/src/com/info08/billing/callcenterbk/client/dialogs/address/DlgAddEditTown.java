@@ -1,5 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.address;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -12,7 +13,6 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -25,7 +25,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditTown extends Window {
+public class DlgAddEditTown extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -41,6 +41,7 @@ public class DlgAddEditTown extends Window {
 	private ListGrid cityGrid;
 
 	public DlgAddEditTown(ListGrid cityGrid, ListGridRecord cityRecord) {
+		super();
 		this.lCityRecord = cityRecord;
 		this.cityGrid = cityGrid;
 

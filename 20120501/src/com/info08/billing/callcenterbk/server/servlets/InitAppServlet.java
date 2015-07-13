@@ -520,6 +520,7 @@ public class InitAppServlet extends HttpServlet {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void blockContractor(ServerSession serverSession,
 			EntityManager oracleManager) {
 		try {

@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -11,7 +12,6 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -20,7 +20,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgSortOrderOrgDeps extends Window {
+public class DlgSortOrderOrgDeps extends MyWindow {
 
 	private VLayout hLayout;
 	private ListGrid listGrid;
@@ -32,6 +32,7 @@ public class DlgSortOrderOrgDeps extends Window {
 	public DlgSortOrderOrgDeps(Integer organization_id,
 			Integer org_department_id,
 			DlgManageOrgDepartments dlgManageOrgDepartments) {
+		super();
 		try {
 			this.dlgManageOrgDepartments = dlgManageOrgDepartments;
 			this.organization_id = organization_id;

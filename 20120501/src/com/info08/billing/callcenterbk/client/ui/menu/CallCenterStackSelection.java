@@ -71,7 +71,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 		VLayout vLayout = new VLayout(5);
 		vLayout.setWidth100();
 		vLayout.setHeight100();
-		vLayout.setPadding(10);
+		vLayout.setPadding(5);
 
 		iButtonOrg = new IButton();
 		iButtonOrg.setTitle(CallCenterBK.constants.organization());
@@ -138,6 +138,7 @@ public class CallCenterStackSelection extends SectionStackSection {
 		iButtonCityDist.setIcon("measure_distance.gif");
 		iButtonCityDist.setWidth100();
 		iButtonCityDist.setAlign(Alignment.LEFT);
+		
 
 		iButtonExactTime = new IButton();
 		iButtonExactTime.setTitle(CallCenterBK.constants.exactTime());

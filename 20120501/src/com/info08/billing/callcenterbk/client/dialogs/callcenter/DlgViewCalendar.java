@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
@@ -15,7 +16,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgViewCalendar extends Window {
+public class DlgViewCalendar extends MyWindow {
 
 	private VLayout mainLayout;
 
@@ -40,6 +40,7 @@ public class DlgViewCalendar extends Window {
 
 	public DlgViewCalendar(ListGrid listGrid, DataSource dataSource,
 			ListGridRecord listGridRecord) {
+		super();
 		this.listGridRecord = listGridRecord;
 
 		setTitle(CallCenterBK.constants.calendar());
@@ -140,6 +141,7 @@ public class DlgViewCalendar extends Window {
 		addItem(mainLayout);
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void destroyDlg() {
 		try {
 			final DlgViewCalendar dlgViewIndex = this;
@@ -193,6 +195,7 @@ public class DlgViewCalendar extends Window {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void sendSMS() {
 		try {
 			ServerSession serverSession = CommonSingleton.getInstance()

@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import com.google.gwt.i18n.client.NumberFormat;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -12,7 +13,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SummaryFunctionType;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.CellFormatter;
@@ -23,7 +23,7 @@ import com.smartgwt.client.widgets.grid.SummaryFunction;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgViewDirOrgStats extends Window {
+public class DlgViewDirOrgStats extends MyWindow {
 
 	private VLayout hLayout;
 
@@ -36,6 +36,7 @@ public class DlgViewDirOrgStats extends Window {
 
 	public DlgViewDirOrgStats(Integer organizationId, Integer ym,
 			boolean isContractor, Integer operator_src) {
+		super();
 		try {
 			this.organizationId = organizationId;
 			this.ym = ym;

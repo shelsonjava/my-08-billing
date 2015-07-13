@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.address;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -14,7 +15,6 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -25,7 +25,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditStreetIndex extends Window {
+public class DlgAddEditStreetIndex extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -40,6 +40,7 @@ public class DlgAddEditStreetIndex extends Window {
 	private ListGrid listGrid;
 
 	public DlgAddEditStreetIndex(ListGrid listGrid, ListGridRecord pRecord) {
+		super();
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 

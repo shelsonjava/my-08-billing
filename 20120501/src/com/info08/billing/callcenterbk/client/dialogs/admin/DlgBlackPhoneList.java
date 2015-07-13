@@ -1,12 +1,12 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -15,11 +15,12 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgBlackPhoneList extends Window {
+public class DlgBlackPhoneList extends MyWindow {
 
 	private VLayout hLayout;
 
 	public DlgBlackPhoneList(ListGridRecord listGridRecord) {
+		super();
 		try {
 
 			setTitle(CallCenterBK.constants.blockPhoneList());

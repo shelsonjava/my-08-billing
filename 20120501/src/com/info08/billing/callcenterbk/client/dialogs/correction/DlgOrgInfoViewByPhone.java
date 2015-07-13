@@ -1,10 +1,10 @@
 package com.info08.billing.callcenterbk.client.dialogs.correction;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -15,9 +15,10 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class DlgOrgInfoViewByPhone extends Window {
+public class DlgOrgInfoViewByPhone extends MyWindow {
 
 	public DlgOrgInfoViewByPhone(String phone) {
+		super();
 		setWidth(600);
 		setHeight(700);
 		setTitle("ორგანიზაციები ნომრის მიხედვით");

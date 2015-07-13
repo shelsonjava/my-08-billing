@@ -50,6 +50,14 @@ public class Users implements java.io.Serializable {
 	@Basic
 	@Column(name = "USER_PASSWORD", nullable = false, length = 6)
 	private String user_password;
+	
+	@Basic
+	@Column(name = "SIP_USER_NAME")
+	private String sip_user_name;
+	
+	@Basic
+	@Column(name = "SIP_PASSWORD")
+	private String sip_password;
 
 	@Transient
 	private String loggedUserName;
@@ -156,4 +164,19 @@ public class Users implements java.io.Serializable {
 		this.loggedUserName = loggedUserName;
 	}
 
+	public String getSip_user_name() {
+		return sip_user_name;
+	}
+
+	public void setSip_user_name(String sip_user_name) {
+		this.sip_user_name = sip_user_name;
+	}
+
+	public String getSip_password() {
+		return sip_password;
+	}
+
+	public void setSip_password(String sip_password) {
+		this.sip_password = sip_password;
+	}
 }

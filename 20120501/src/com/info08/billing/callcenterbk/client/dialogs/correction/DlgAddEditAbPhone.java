@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.dialogs.org.DlgAddPhoneOrgs;
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
@@ -19,7 +20,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -30,7 +30,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditAbPhone extends Window {
+public class DlgAddEditAbPhone extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm formPhone;
@@ -45,6 +45,7 @@ public class DlgAddEditAbPhone extends Window {
 
 	public DlgAddEditAbPhone(final Record listGridRecord,
 			ListGrid listGridPhones, Integer subscriber_id, String phone_number) {
+		super();
 		this.listGridPhones = listGridPhones;
 		this.subscriber_id = subscriber_id;
 		setWidth(750);

@@ -1,5 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.address;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -8,19 +9,19 @@ import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgHistStreets extends Window {
+public class DlgHistStreets extends MyWindow {
 
 	private VLayout hLayout;
 	private ListGrid histStreetsGrid;
 	private DataSource streetsDS;
 
 	public DlgHistStreets(ListGridRecord listGridRecord) {
+		super();
 		try {
 
 			streetsDS = DataSource.get("StreetsDS");

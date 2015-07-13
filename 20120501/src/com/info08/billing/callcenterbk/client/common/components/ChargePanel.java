@@ -50,6 +50,9 @@ public class ChargePanel extends HLayout {
 	private ToolStripButton viewChargeInfo;
 	private ToolStripButton surveyBtn;
 	private ToolStripButton makeImportantCall;
+	
+	
+	private ToolStripButton makeCall;
 
 	private ToolStripButton chargeBtn;
 	private Integer service_id;
@@ -142,6 +145,17 @@ public class ChargePanel extends HLayout {
 			toolStrip.addButton(makeImportantCall);
 
 			toolStrip.addSeparator();
+			
+			makeCall = new ToolStripButton("CALL 01");
+			//toolStrip.addButton(makeCall);
+			
+			makeCall.addClickHandler(new ClickHandler() {				
+				@Override
+				public void onClick(ClickEvent event) {
+					sipCall();
+				}
+			});
+			
 			toolStrip.addFill();
 
 			chargeBtn = new ToolStripButton(CallCenterBK.constants.charge(),
@@ -278,6 +292,11 @@ public class ChargePanel extends HLayout {
 		}
 	}
 
+	
+	public static native void sipCall() /*-{
+		$wnd.sipCall("call-audio");		
+	}-*/;
+	
 	public ChargePanel(int width, boolean enableChargeButton,
 			boolean enableSurveyButton, Integer service_id,
 			Integer organization_id) {
@@ -296,6 +315,7 @@ public class ChargePanel extends HLayout {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void logSessionEvent(String event_describtion) {
 		try {
 			final ServerSession serverSession = CommonSingleton.getInstance()
@@ -346,6 +366,7 @@ public class ChargePanel extends HLayout {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void drawDynamicPanel(boolean isOperator) {
 		try {
 			ServerSession serverSession = CommonSingleton.getInstance()
@@ -432,6 +453,7 @@ public class ChargePanel extends HLayout {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void makeCallImportant() {
 		try {
 			ServerSession serverSession = CommonSingleton.getInstance()
@@ -470,6 +492,7 @@ public class ChargePanel extends HLayout {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void viewChargesInfo() {
 		try {
 			ServerSession serverSession = CommonSingleton.getInstance()
@@ -495,6 +518,7 @@ public class ChargePanel extends HLayout {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void addMyMobile() {
 		try {
 			ServerSession serverSession = CommonSingleton.getInstance()
@@ -562,6 +586,7 @@ public class ChargePanel extends HLayout {
 		return iTimeStamp;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void makeCharge() {
 		try {
 
@@ -638,6 +663,7 @@ public class ChargePanel extends HLayout {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void refreshChargeCounterContent() {
 		try {
 			ServerSession serverSession = CommonSingleton.getInstance()

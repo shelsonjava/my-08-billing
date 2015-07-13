@@ -27,22 +27,22 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 public class West extends VLayout {
 
-	private static SectionStack menuStack;
-	protected static Body body;
-	private static CorrectionStackSelection correction;
-	private static ControlStackSelection control;
-	private static SurveyStackSelection survey;
-	private static AddressStackSelection address;
-	private static TransportStackSelection transport;
-	private static MiscStackSelection various;
-	private static AdminStackSelection admin;
-	private static HrStackSelection hr;
-	private static CallCenterStackSelection callCenter;
-	private static StatStackSelection statistics;
+	private SectionStack menuStack;
+	protected Body body;
+	private CorrectionStackSelection correction;
+	private ControlStackSelection control;
+	private SurveyStackSelection survey;
+	private AddressStackSelection address;
+	private TransportStackSelection transport;
+	private MiscStackSelection various;
+	private AdminStackSelection admin;
+	private HrStackSelection hr;
+	private CallCenterStackSelection callCenter;
+	private StatStackSelection statistics;
 
 	public West(Body body) {
-		West.body = body;
-		setWidth(210);
+		this.body = body;
+		setWidth(150);
 		setHeight100();
 
 		menuStack = new SectionStack();
@@ -62,10 +62,10 @@ public class West extends VLayout {
 		});
 	}
 
-	public static void openByLoggedUser() {
+	@SuppressWarnings("rawtypes")
+	public void openByLoggedUser() {
 		try {
-			Long personelTypeId = CommonSingleton.getInstance()
-					.getSessionPerson().getDepartment_id();
+			Long personelTypeId = CommonSingleton.getInstance().getSessionPerson().getDepartment_id();
 			if (personelTypeId == null) {
 				return;
 			}
@@ -146,33 +146,29 @@ public class West extends VLayout {
 
 			if (personelTypeId.equals(Constants.OperatorDepartmentID)) {
 				callCenter.setExpanded(true);
-				ServerSession serverSession = CommonSingleton.getInstance()
-						.getServerSession();
+				ServerSession serverSession = CommonSingleton.getInstance().getServerSession();
 				callCenter.setButtonsVisible();
 				if (serverSession == null || !serverSession.isWebSession()) {
 
 					// application loaded
 
-					DataSource dataSource = DataSource.get("LockDS");
+//					DataSource dataSource = DataSource.get("LockDS");
+//
+//					com.smartgwt.client.rpc.RPCManager.startQueue();
+//					Record record = new Record();
+//					String sid = serverSession.getSessionId();
+//					record.setAttribute("session_my_id", sid);
+//					DSRequest dsRequest = new DSRequest();
+//					dsRequest.setAttribute("operationId", "updateLockStatus");
+//					dataSource.updateData(record, new DSCallback() {
+//						@Override
+//						public void execute(DSResponse response, Object rawData, DSRequest request) {
+//						}
+//					}, dsRequest);
+//					com.smartgwt.client.rpc.RPCManager.sendQueue();
 
-					com.smartgwt.client.rpc.RPCManager.startQueue();
-					Record record = new Record();
-					String sid = serverSession.getSessionId();
-					record.setAttribute("session_my_id", sid);
-					DSRequest dsRequest = new DSRequest();
-					dsRequest.setAttribute("operationId", "updateLockStatus");
-					dataSource.updateData(record, new DSCallback() {
-						@Override
-						public void execute(DSResponse response,
-								Object rawData, DSRequest request) {
-						}
-					}, dsRequest);
-					com.smartgwt.client.rpc.RPCManager.sendQueue();
-
-					String specTextMessage = serverSession
-							.getSpecialAlertMessage();
-					if (specTextMessage != null
-							&& !specTextMessage.trim().equals("")) {
+					String specTextMessage = serverSession.getSpecialAlertMessage();
+					if (specTextMessage != null && !specTextMessage.trim().equals("")) {
 						SC.warn(specTextMessage.trim());
 					}
 					callCenter.initStartupScript();

@@ -39,7 +39,8 @@ public class SMSSenderMagti implements MessageListener {
 	protected long start;
 	private Topic topic;
 	private String url = "tcp://localhost:61617";
-	private String urlSMS = "http://91.151.128.64:7777/pls/sms/phttp2sms.Process?src=11375&dst=%s&txt=%s";
+	private String urlSMS1 = "http://91.151.128.64:7777/pls/sms/phttp2sms.Process?src=11375&dst=%s&txt=%s";
+	private String urlSMS = "http://msg.ge/bi/sendsms.php?username=nolrva&password=as110rvasw&client_id=3&service_id=0003&to=%s&text=%s";
 
 	public void run() throws JMSException {
 		try {
@@ -108,29 +109,47 @@ public class SMSSenderMagti implements MessageListener {
 			String str = null;
 			if (httpEntity == null) {
 				logSMS.setHist_status_id(-9L);
+				logSMS.setGsm_operator_msg_id("-9");
 			} else {
 				str = EntityUtils.toString(httpEntity);
 				if (statusCode == HttpStatus.SC_OK) {
 					if (str == null) {
 						logSMS.setHist_status_id(-7L);
-					} else if (str != null && str.contains("N")) {
-						logSMS.setHist_status_id(-3L);
-					} else if (str != null && str.contains("Y")) {
-						logSMS.setHist_status_id(1L);
-						logSMS.setGsm_operator_msg_id("10000");
-					} else {
-						logSMS.setHist_status_id(-8L);
+						logSMS.setGsm_operator_msg_id("-7");
+					} 
+					
+					Long histStatusId = Long.parseLong(str.substring(0,4));
+					String messageId = str.substring(5,str.length());
+					
+					if(histStatusId.equals(0L)){
+						histStatusId = 1L;
 					}
+					
+					logSMS.setHist_status_id(histStatusId);
+					logSMS.setGsm_operator_msg_id(str);
+					
+					
+//					else if (str != null && str.contains("N")) {
+//						logSMS.setHist_status_id(-3L);
+//					} else if (str != null && str.contains("Y")) {
+//						logSMS.setHist_status_id(1L);
+//						logSMS.setGsm_operator_msg_id("10000");
+//					} else {
+//						logSMS.setHist_status_id(-8L);
+//					}
 				} else {
 					logSMS.setHist_status_id(-4L);
+					logSMS.setGsm_operator_msg_id("-4");
 				}
 			}
-			logger.info("SMS Response : " + str + ", phone = " + phone
+			System.out.println("SMS Response : " + str + ", phone = " + phone
 					+ ", Status = " + logSMS.getHist_status_id());
 
 		} catch (Exception e) {
-			logger.error("Error While Sending Message Over HTTP : ", e);
+			e.printStackTrace();
+			System.out.println("Error While Sending Message Over HTTP : "+ e.toString());
 			logSMS.setHist_status_id(-5L);
+			logSMS.setGsm_operator_msg_id("-5");
 		} finally {
 			if (client != null) {
 				client.getConnectionManager().shutdown();

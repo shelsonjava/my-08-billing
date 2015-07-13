@@ -9,6 +9,7 @@ import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.content.survey.TabSurvey;
 import com.info08.billing.callcenterbk.client.dialogs.control.NotesDialog;
 import com.smartgwt.client.data.Criteria;
@@ -36,7 +37,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgSurveyManager extends Window {
+public class DlgSurveyManager extends MyWindow {
 
 	private VLayout hLayout;
 	private ListGridRecord editRecord;
@@ -51,6 +52,7 @@ public class DlgSurveyManager extends Window {
 
 	public DlgSurveyManager(final TabSurvey tabSurvey,
 			final DataSource dataSource, final ListGridRecord pRecord) {
+		super();
 		try {
 			this.editRecord = pRecord;
 			setTitle(CallCenterBK.constants.resolveSurvey());

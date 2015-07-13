@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.org;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.content.TabOrganization;
 import com.info08.billing.callcenterbk.client.dialogs.address.StreetToTownDistrictsClientDS;
 import com.smartgwt.client.data.Criteria;
@@ -9,7 +10,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -22,7 +22,7 @@ import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgOrgAdvSearch extends Window {
+public class DlgOrgAdvSearch extends MyWindow {
 
 	private IButton clearButton;
 	private IButton okButton;
@@ -39,6 +39,7 @@ public class DlgOrgAdvSearch extends Window {
 	private TabOrganization tabOrganization;
 
 	public DlgOrgAdvSearch(TabOrganization tabOrganization, Criteria criteria) {
+		super();
 		try {
 			this.tabOrganization = tabOrganization;
 			setTitle(CallCenterBK.constants.advParameters());

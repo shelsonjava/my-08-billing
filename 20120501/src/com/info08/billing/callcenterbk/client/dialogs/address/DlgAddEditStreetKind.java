@@ -1,5 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.address;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -8,7 +9,6 @@ import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -18,7 +18,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditStreetKind extends Window {
+public class DlgAddEditStreetKind extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -28,11 +28,11 @@ public class DlgAddEditStreetKind extends Window {
 	private ListGrid listGrid;
 
 	public DlgAddEditStreetKind(ListGrid listGrid, ListGridRecord pRecord) {
+		super();	
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 
-		setTitle(pRecord == null ? "ახალი ქუჩის ტიპის დამატება"
-				: "ქუჩის ტიპის მოდიფიცირება");
+		setTitle(pRecord == null ? "ახალი ქუჩის ტიპის დამატება" : "ქუჩის ტიპის მოდიფიცირება");
 
 		setHeight(140);
 		setWidth(520);
@@ -102,8 +102,7 @@ public class DlgAddEditStreetKind extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			streetKindNameItem.setValue(editRecord
-					.getAttribute("street_kind_name"));
+			streetKindNameItem.setValue(editRecord.getAttribute("street_kind_name"));
 		} catch (Exception e) {
 			SC.say(e.toString());
 		}
@@ -112,12 +111,11 @@ public class DlgAddEditStreetKind extends Window {
 	private void save() {
 		try {
 			String streetKindName = streetKindNameItem.getValueAsString();
-			if (streetKindName == null
-					|| streetKindName.trim().equalsIgnoreCase("")) {
+			if (streetKindName == null || streetKindName.trim().equalsIgnoreCase("")) {
 				SC.say("შეიყვანეთ ქართული დასახელება !");
 				return;
 			}
-			
+
 			if (streetKindName.length() > 155) {
 				SC.say("ქართული დასახელება შედგება მაქსიმუმ 155 სიმბოლოსაგან !");
 				return;
@@ -126,14 +124,12 @@ public class DlgAddEditStreetKind extends Window {
 			com.smartgwt.client.rpc.RPCManager.startQueue();
 			Record record = new Record();
 
-			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name();
+			String loggedUser = CommonSingleton.getInstance().getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("street_kind_name", streetKindName);
 
 			if (editRecord != null) {
-				record.setAttribute("street_kind_id",
-						editRecord.getAttributeAsInt("street_kind_id"));
+				record.setAttribute("street_kind_id", editRecord.getAttributeAsInt("street_kind_id"));
 			}
 
 			DSRequest req = new DSRequest();
@@ -142,8 +138,7 @@ public class DlgAddEditStreetKind extends Window {
 				req.setAttribute("operationId", "addStreetKind");
 				listGrid.addData(record, new DSCallback() {
 					@Override
-					public void execute(DSResponse response, Object rawData,
-							DSRequest request) {
+					public void execute(DSResponse response, Object rawData, DSRequest request) {
 						destroy();
 					}
 				}, req);
@@ -151,8 +146,7 @@ public class DlgAddEditStreetKind extends Window {
 				req.setAttribute("operationId", "updateStreetKind");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
-					public void execute(DSResponse response, Object rawData,
-							DSRequest request) {
+					public void execute(DSResponse response, Object rawData, DSRequest request) {
 						destroy();
 					}
 				}, req);

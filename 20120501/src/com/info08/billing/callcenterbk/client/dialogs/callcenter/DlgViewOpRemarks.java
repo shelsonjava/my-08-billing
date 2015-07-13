@@ -9,6 +9,7 @@ import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.data.Criteria;
@@ -37,7 +38,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class DlgViewOpRemarks extends Window {
+public class DlgViewOpRemarks extends MyWindow {
 
 	private VLayout hLayout;
 	private ListGrid listGrid;
@@ -45,6 +46,7 @@ public class DlgViewOpRemarks extends Window {
 	private ToolStripButton remarksBtn;
 
 	public DlgViewOpRemarks(ToolStripButton remarksBtn) {
+		super();
 		try {
 			this.remarksBtn = remarksBtn;
 			setTitle(CallCenterBK.constants.remarks());
@@ -221,6 +223,7 @@ public class DlgViewOpRemarks extends Window {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private void closeDlg() {
 		try {
 			RecordList recordList = listGrid.getDataAsRecordList();

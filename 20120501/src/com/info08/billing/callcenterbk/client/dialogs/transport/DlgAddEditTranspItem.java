@@ -3,13 +3,13 @@ package com.info08.billing.callcenterbk.client.dialogs.transport;
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TimeDisplayFormat;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -23,7 +23,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditTranspItem extends Window {
+public class DlgAddEditTranspItem extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -40,6 +40,7 @@ public class DlgAddEditTranspItem extends Window {
 
 	public DlgAddEditTranspItem(ListGrid listGrid, ListGridRecord pRecord,
 			Integer transport_type_id) {
+		super();
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 

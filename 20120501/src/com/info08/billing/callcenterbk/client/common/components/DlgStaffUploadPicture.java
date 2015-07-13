@@ -9,7 +9,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.FileItem;
@@ -18,7 +17,7 @@ import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgStaffUploadPicture extends Window {
+public class DlgStaffUploadPicture extends MyWindow {
 
 	private VLayout hLayout;
 	Integer photoId;
@@ -31,6 +30,7 @@ public class DlgStaffUploadPicture extends Window {
 	private ImageViewerItem parentItem;
 
 	public DlgStaffUploadPicture(Integer photoId, ImageViewerItem parentItem) {
+		super();
 		this.photoId = photoId;
 		this.parentItem = parentItem;
 		setTitle("სურათის ატვირთვა");

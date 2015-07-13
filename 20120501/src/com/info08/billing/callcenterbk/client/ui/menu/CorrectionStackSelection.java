@@ -29,7 +29,7 @@ public class CorrectionStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", "ორგ. საქმიანობები", true,"organization.gif"),
+			new MenuNode("100", "1", "ორგ. საქმ-ი", true,"organization.gif"),
 			new MenuNode("101", "2", "ორგანიზაციები", true, "organization.gif"),
 			new MenuNode("102", "3", "აბონენტები", true, "person.png"),
 			new MenuNode("103", "4", "სახელები", true, "person.png"),
@@ -37,28 +37,28 @@ public class CorrectionStackSelection extends SectionStackSection {
 			new MenuNode("105", "6", CallCenterBK.constants.virtualCharge(), true, "moneySmall.png"),
 			new MenuNode("106", "1", CallCenterBK.constants.importedNumbers(), true, "import.png"),
 			new MenuNode("107", "1", "მიმართვები", true, "person.png"),
-			new MenuNode("108", "1", "უცნობი ნომრები", true, "phone.png"),
-			new MenuNode("109", "1", "უფასო ნომრები", true, "phone.png") };
+			new MenuNode("108", "1", "უცნ. ნომრები", true, "phone.png"),
+			new MenuNode("109", "1", "უფასო ნომრ.", true, "phone.png") };
 
 	private TreeGrid menuTreeGrid;
 
 	public CorrectionStackSelection(Body body) {
 		this.body = body;
-		setTitle("კორექციის განყოფილება");
+		setTitle("კორექცია");
 		setExpanded(false);
 		setCanCollapse(true);
 
 		Tree menuTree = new Tree();
 		menuTree.setModelType(TreeModelType.PARENT);
 		menuTree.setRootValue(1);
-		menuTree.setNameProperty("ქმედებების ჩამონათვალი");
+		menuTree.setNameProperty("ქმედებები");
 		menuTree.setIdField("Id");
 		menuTree.setParentIdField("ReportsTo");
 		menuTree.setOpenProperty("isOpen");
 		menuTree.setData(menuData);
 
 		TreeGridField formattedField = new TreeGridField(
-				"ქმედებების ჩამონათვალი");
+				"ქმედებები");
 		formattedField.setWidth("100%");
 		formattedField.setCellFormatter(new CellFormatter() {
 			public String format(Object value, ListGridRecord record,

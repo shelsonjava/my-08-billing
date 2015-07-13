@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
@@ -25,7 +26,6 @@ import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.HTMLFlow;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -39,7 +39,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditSubscriber extends Window {
+public class DlgAddEditSubscriber extends MyWindow {
 
 	private VLayout hLayout;
 
@@ -77,6 +77,7 @@ public class DlgAddEditSubscriber extends Window {
 
 	public DlgAddEditSubscriber(final Record abonentRecord,
 			ListGrid abonentsGrid, final String phoneNumber) {
+		super();
 		try {
 			this.abonentsGrid = abonentsGrid;
 			setWidth(760);

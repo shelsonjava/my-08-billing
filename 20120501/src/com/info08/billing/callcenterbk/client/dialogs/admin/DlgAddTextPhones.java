@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.TreeSet;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
 import com.smartgwt.client.data.DSRequest;
@@ -22,7 +23,7 @@ import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddTextPhones extends Window {
+public class DlgAddTextPhones extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -35,6 +36,7 @@ public class DlgAddTextPhones extends Window {
 
 	public DlgAddTextPhones(DlgContractorPhones contractorPhones,
 			Integer organization_id) {
+		super();
 		try {
 			this.contractorPhones = contractorPhones;
 			this.organization_id = organization_id;

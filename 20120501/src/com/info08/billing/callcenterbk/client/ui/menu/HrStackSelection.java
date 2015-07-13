@@ -20,7 +20,7 @@ public class HrStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] { new MenuNode(
-			"100", "1", "თანამშრომლების მართვა", true, "users.png") };
+			"100", "1", "თანამშრ-ი", true, "users.png") };
 
 	private TreeGrid menuTreeGrid;
 

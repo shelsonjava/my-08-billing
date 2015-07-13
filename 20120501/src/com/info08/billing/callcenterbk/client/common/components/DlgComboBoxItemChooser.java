@@ -9,7 +9,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.BrowserEvent;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -22,7 +21,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgComboBoxItemChooser extends Window {
+public class DlgComboBoxItemChooser extends MyWindow {
 
 	private VLayout hLayout;
 
@@ -33,6 +32,7 @@ public class DlgComboBoxItemChooser extends Window {
 			DataSource dataSource, Criteria criteria, String operationId,
 			ArrayList<MyComboBoxRecord> myFields, Integer height,
 			Integer width, final String myIdField, String myChooserTitle) {
+		super();
 		this.comboBoxItem = comboBoxItem;
 		setTitle(CallCenterBK.constants.shoose() + " : " + myChooserTitle
 				+ " !");

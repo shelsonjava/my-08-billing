@@ -809,4 +809,5 @@ public interface AppConstants extends Constants {
 	String debt_amount();
 	String plzEnterAllFields();
 	String debet_amount();
+	String invalid_transfer_phone();
 }

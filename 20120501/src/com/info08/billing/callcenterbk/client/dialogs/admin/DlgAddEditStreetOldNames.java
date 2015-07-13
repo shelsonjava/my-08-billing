@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.content.TabStreetOldNames;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
@@ -27,7 +28,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class DlgAddEditStreetOldNames extends Window {
+public class DlgAddEditStreetOldNames extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -48,6 +49,7 @@ public class DlgAddEditStreetOldNames extends Window {
 
 	public DlgAddEditStreetOldNames(TabStreetOldNames hstStreets,
 			ListGrid listGrid, ListGridRecord pRecord) {
+		super();
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;

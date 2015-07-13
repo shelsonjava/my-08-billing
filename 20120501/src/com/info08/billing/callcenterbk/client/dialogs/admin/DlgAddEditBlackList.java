@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 import java.util.Map;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
@@ -16,7 +17,6 @@ import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -29,7 +29,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class DlgAddEditBlackList extends Window {
+public class DlgAddEditBlackList extends MyWindow {
 
 	private VLayout hLayout;
 
@@ -46,7 +46,7 @@ public class DlgAddEditBlackList extends Window {
 	private Long blackListId;
 
 	public DlgAddEditBlackList(ListGrid listGrid, ListGridRecord pRecord) {
-
+		super();
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 		try {

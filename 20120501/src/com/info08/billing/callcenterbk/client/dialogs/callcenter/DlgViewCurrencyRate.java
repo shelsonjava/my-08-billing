@@ -4,6 +4,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
@@ -17,7 +18,6 @@ import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -36,7 +36,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgViewCurrencyRate extends Window {
+public class DlgViewCurrencyRate extends MyWindow {
 
 	private DynamicForm searchForm;
 	private TextItem amountItem;
@@ -64,7 +64,7 @@ public class DlgViewCurrencyRate extends Window {
 	public DlgViewCurrencyRate(DataSource dataSource,
 			ListGridRecord recordFrom, ListGridRecord recordTo, double amount,
 			Record[] rates) {
-
+		super();
 		this.recordFrom = recordFrom;
 		this.recordTo = recordTo;
 		this.rates = rates;

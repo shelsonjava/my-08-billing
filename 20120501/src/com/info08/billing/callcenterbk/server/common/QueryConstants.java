@@ -1406,4 +1406,17 @@ public interface QueryConstants {
 	
 	
 	public static final String Q_RED_ORG = "delete from ccare.org_priority_list t where t.id = ? ";
+	
+	
+
+	public static final String Q_UPDATE_CALL_SESSION = "update ccare.call_sessions t\n" +
+			"set\n" + 
+			"       t.reject_type = ?,\n" + 
+			"       t.call_duration = ?,\n" + 
+			"       t.switch_over_type = ?,\n" + 
+			"       t.call_end_date = sysdate \n" + 
+			"\n" + 
+			"where t.session_id = ? and t.call_end_date is null";
+
+	
 }

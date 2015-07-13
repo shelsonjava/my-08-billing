@@ -9,6 +9,7 @@ import com.bramosystems.oss.player.core.client.PluginNotFoundException;
 import com.bramosystems.oss.player.core.client.PluginVersionException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -35,7 +36,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class NotesDialog extends Window {
+public class NotesDialog extends MyWindow {
 
 	private VLayout hLayout;
 	private DataSource operatorWarnsDS = null;
@@ -45,7 +46,7 @@ public class NotesDialog extends Window {
 	protected Integer myOperId;
 
 	public NotesDialog(String sessionId, Integer operId) {
-
+		super();
 		mySessionId = sessionId;
 		myOperId = operId;
 

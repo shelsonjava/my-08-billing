@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -13,7 +14,6 @@ import com.smartgwt.client.types.ExportFormat;
 import com.smartgwt.client.util.EnumUtil;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -24,7 +24,7 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgGetBillingCompsBillByMonth extends Window {
+public class DlgGetBillingCompsBillByMonth extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -34,6 +34,7 @@ public class DlgGetBillingCompsBillByMonth extends Window {
 	private SelectItem operatorItem;
 
 	public DlgGetBillingCompsBillByMonth(Integer billing_company_id) {
+		super();
 		try {
 			this.billing_company_id = billing_company_id;
 			setTitle(CallCenterBK.constants.telCombBillByDay());

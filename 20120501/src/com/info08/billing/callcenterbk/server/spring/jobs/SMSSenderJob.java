@@ -70,9 +70,16 @@ public class SMSSenderJob extends TimerTask {
 			if (inetAddress.contains("127.0.0.")) {
 				return;
 			}
-			if (inetAddress.contains("192.168.1.7")) {
+			if (inetAddress.contains("192.168.1.3")) {
 				return;
 			}
+			if (inetAddress.contains("localhost")) {
+				return;
+			}
+			if (inetAddress.contains("192.168.1.28")) {
+				return;
+			}
+			
 			oracleManager = EMF.getEntityManager();
 			if (oracleManager == null) {
 				log.append("SMS Batch List Error. Couldn't Initialiaze Database.");

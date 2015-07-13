@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import com.google.gwt.i18n.client.NumberFormat;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ChartType;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.chart.ChartPointHoverCustomizer;
 import com.smartgwt.client.widgets.chart.FacetChart;
 import com.smartgwt.client.widgets.cube.Facet;
@@ -19,13 +19,14 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgViewStatFullGraphAmount extends Window {
+public class DlgViewStatFullGraphAmount extends MyWindow {
 
 	private VLayout hLayout;
 	protected FacetChart chart;
 	private ListGridRecord records[];
 
 	public DlgViewStatFullGraphAmount(ListGridRecord records[]) {
+		super();
 		try {
 			this.records = records;
 			setTitle(CallCenterBK.constants.graphAmount());

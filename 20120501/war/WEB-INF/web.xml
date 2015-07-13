@@ -23,16 +23,20 @@
 	 <!-- Note: The servlets/filters referenced here are documented in the SDK javadoc -->  
   
     <!-- //>FileLoader -->  
-    <!-- Dynamic Compression -->  
+    <!-- Dynamic Compression -->
+    <!--   
     <filter>  
         <filter-name>CompressionFilter</filter-name>  
         <filter-class>com.isomorphic.servlet.CompressionFilter</filter-class>  
-    </filter>  
-    <!-- CompressionFilter for dynamic compression -->  
+    </filter>
+     -->  
+    <!-- CompressionFilter for dynamic compression -->
+    <!--   
     <filter-mapping>  
         <filter-name>CompressionFilter</filter-name>  
         <url-pattern>/*</url-pattern>  
     </filter-mapping>  
+     -->
     <!-- //<FileLoader -->  
   	
   	
@@ -98,15 +102,19 @@
 	</filter-mapping>
 
 	<!-- //>FileLoader Dynamic Compression -->
+	<!-- 
 	<filter>
 		<filter-name>CompressionFilter</filter-name>
 		<filter-class>com.isomorphic.servlet.CompressionFilter</filter-class>
 	</filter>
+	 -->
 	<!-- CompressionFilter for dynamic compression -->
+	<!-- 
 	<filter-mapping>
 		<filter-name>CompressionFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	 -->
 	<!-- //<FileLoader Servlets -->
 	<servlet>
 		<servlet-name>IDACall</servlet-name>
@@ -230,7 +238,7 @@
 	</mime-mapping>
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>CallCenterBK.html</welcome-file>
+		<welcome-file>CallCenterBK.jsp</welcome-file>
 	</welcome-file-list>
 	<jsp-config>
 		<!-- Isomorphic JSP tags -->

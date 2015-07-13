@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.info08.billing.callcenterbk.shared.entity.SipConfig;
 import com.info08.billing.callcenterbk.shared.entity.Users;
 import com.info08.billing.callcenterbk.shared.entity.callcenter.Treatments;
 import com.info08.billing.callcenterbk.shared.entity.session.CallSession;
 
-public class ServerSession implements Serializable {
+public class ServerSession<T extends IsSerializable> implements Serializable {
 
 	private static final long serialVersionUID = -1814238115292961188L;
 	private String sessionId;
@@ -27,6 +29,7 @@ public class ServerSession implements Serializable {
 	private int yearMonth;
 	private Users user;
 	private int callType;
+	@SuppressWarnings("rawtypes")
 	private ServerSession prevSession;
 	private Treatments treatment;
 	private boolean phoneIsMobile;
@@ -57,7 +60,12 @@ public class ServerSession implements Serializable {
 	private Long unreadNewsCnt = 0L;
 	private ServerSessionSurvItem surveryList[];
 	private Long orgSubsCall;
-
+	private SipConfig sipConfs[];
+	
+	private Long sipCallDuration;
+	private Long switchOverType;
+	private Long rejectType;
+	
 	@SuppressWarnings("deprecation")
 	public ServerSession() {
 		Date date = new Date();
@@ -205,10 +213,12 @@ public class ServerSession implements Serializable {
 		this.callType = callType;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public ServerSession getPrevSession() {
 		return prevSession;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setPrevSession(ServerSession prevSession) {
 		this.prevSession = prevSession;
 	}
@@ -427,5 +437,37 @@ public class ServerSession implements Serializable {
 
 	public void setOrgSubsCall(Long orgSubsCall) {
 		this.orgSubsCall = orgSubsCall;
+	}
+
+	public SipConfig[] getSipConfs() {
+		return sipConfs;
+	}
+
+	public void setSipConfs(SipConfig sipConfs[]) {
+		this.sipConfs = sipConfs;
+	}
+
+	public Long getSipCallDuration() {
+		return sipCallDuration;
+	}
+
+	public void setSipCallDuration(Long sipCallDuration) {
+		this.sipCallDuration = sipCallDuration;
+	}
+
+	public Long getSwitchOverType() {
+		return switchOverType;
+	}
+
+	public void setSwitchOverType(Long switchOverType) {
+		this.switchOverType = switchOverType;
+	}
+
+	public Long getRejectType() {
+		return rejectType;
+	}
+
+	public void setRejectType(Long rejectType) {
+		this.rejectType = rejectType;
 	}
 }

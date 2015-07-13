@@ -13,6 +13,7 @@ public interface Constants {
 	public static final Integer defCityTbilisiId = 51063;
 	public static final Integer defCountryGeorgiaId = 50185;
 	public static final Long OperatorDepartmentID = 50004L;
+	public static final Long ITDepartmentID = 50000L;
 	public static final int[] dayArray = { 0, 1, 2, 4, 8, 16, 32, 64 , 128};
 	public static final String callStart = "start";
 	public static final int callTypeAbonent = 0;

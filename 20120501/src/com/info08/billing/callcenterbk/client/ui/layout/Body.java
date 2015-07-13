@@ -19,14 +19,14 @@ public class Body extends VLayout {
 
 	Menu contextMenu;
 
-	
-	private static Body instance=null;
-	
-	public static Body getInstance(){
+	private static Body instance = null;
+
+	public static Body getInstance() {
 		return instance;
 	}
+
 	public Body() {
-		instance=this;
+		instance = this;
 		contextMenu = new Menu();
 		contextMenu.setWidth(150);
 
@@ -72,7 +72,7 @@ public class Body extends VLayout {
 					}
 				}
 			}
-		});		
+		});
 		addShowContextMenuHandler(new ShowContextMenuHandler() {
 			@Override
 			public void onShowContextMenu(ShowContextMenuEvent event) {
@@ -103,10 +103,22 @@ public class Body extends VLayout {
 	public void closeAllTab() {
 		mainTabPanel.clear();
 	}
+
+	public void reInitTabSet() {
+		Tab tabs[] = mainTabPanel.getTabs();
+		if (tabs != null && tabs.length > 0) {
+			for (Tab tab : tabs) {
+				if (tab.getCanClose()) {
+					mainTabPanel.removeTab(tab);
+				}
+			}
+		}
+	}
+
 	public TabInfoPortal getTabInfoPortal() {
 		return tabInfoPortal;
 	}
-	
+
 	public TabSet getMainTabPanel() {
 		return mainTabPanel;
 	}

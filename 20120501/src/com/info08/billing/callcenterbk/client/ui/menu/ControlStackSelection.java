@@ -27,25 +27,25 @@ public class ControlStackSelection extends SectionStackSection {
 	public ControlStackSelection(Body body) {
 		try {
 			this.body = body;
-			setTitle("კონტროლის განყოფილება");
+			setTitle("კონტროლი");
 			setExpanded(false);
 			setCanCollapse(true);
 
-			employeeData[0] = new MenuTreeNode("100", "1", "ზარების დათვალიერება",true, "call.gif", false);
+			employeeData[0] = new MenuTreeNode("100", "1", "ზარების დათვ.",true, "call.gif", false);
 			employeeData[1] = new MenuTreeNode("101", "1",CallCenterBK.constants.smsLog(), true, "sms.png", false);
 			employeeData[2] = new MenuTreeNode("102", "1",CallCenterBK.constants.remarks(), true, "alert.png", false);
 
 			Tree employeeTree = new Tree();
 			employeeTree.setModelType(TreeModelType.PARENT);
 			employeeTree.setRootValue(1);
-			employeeTree.setNameProperty("ქმედებების ჩამონათვალი");
+			employeeTree.setNameProperty("ქმედებები");
 			employeeTree.setIdField("Id");
 			employeeTree.setParentIdField("ReportsTo");
 			employeeTree.setOpenProperty("isOpen");
 			employeeTree.setData(employeeData);
 
 			TreeGridField formattedField = new TreeGridField(
-					"ქმედებების ჩამონათვალი");
+					"ქმედებები");
 			formattedField.setCellFormatter(new CellFormatter() {
 				public String format(Object value, ListGridRecord record,
 						int rowNum, int colNum) {

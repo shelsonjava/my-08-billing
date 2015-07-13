@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
@@ -20,7 +21,6 @@ import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -39,7 +39,7 @@ import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditStreet extends Window {
+public class DlgAddEditStreet extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -73,7 +73,7 @@ public class DlgAddEditStreet extends Window {
 
 	public DlgAddEditStreet(final ListGrid listGrid,
 			final ListGridRecord pRecord) {
-
+		super();
 		try {
 
 			setTitle(pRecord == null ? "ახალი ქუჩის დამატება"

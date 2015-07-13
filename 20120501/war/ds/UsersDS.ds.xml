@@ -17,6 +17,8 @@
 		<field name="schedule_txt" 			type="text" 		title="schedule_txt"		hidden="true" />
 		<field name="aaaaaa" 				type="text" 		title="aaaaaa" 				hidden="true" />
 		<field name="fullPersonName" 		type="text" 		title="fullPersonName" 		hidden="true" />
+		<field name="sip_user_name" 		type="text" 		title="sip_user_name" 	 	hidden="true" />
+		<field name="sip_password" 			type="text" 		title="sip_password" 	 	hidden="true" />
 	</fields>
 
 	<serverObject lookupStyle="new" className="com.info08.billing.callcenterbk.server.impl.dmi.UsersDMI" />

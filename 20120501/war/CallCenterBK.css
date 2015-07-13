@@ -80,6 +80,28 @@ body {
 	font-size: 12px;
 }
 
+
+ .fontRedAndBoldBtn,
+ .fontRedAndBoldBtnOver,
+ .fontRedAndBoldBtnDown,
+ .fontRedAndBoldBtnSelected,
+ .fontRedAndBoldFocused,
+ .fontRedAndBoldBtnSelectedFocused,
+ .fontRedAndBoldBtnSelectedOver,
+ .fontRedAndBoldBtnFocusedOver,
+ .fontRedAndBoldBtnSelectedFocusedOver,
+ .fontRedAndBoldBtnSelectedDown,
+ .fontRedAndBoldBtnFocusedDown
+ .fontRedAndBoldBtnSelectedFocusedDown
+ .fontRedAndBoldBtnDisabled
+ .fontRedAndBoldBtnSelectedDisabled
+ {
+	color: red;
+	font-weight: bold;	
+	font-size: 12px;
+}
+
+
 .fontRedWithBorder {
 	color: red;
 	border-bottom: 1px solid #a7abb4;

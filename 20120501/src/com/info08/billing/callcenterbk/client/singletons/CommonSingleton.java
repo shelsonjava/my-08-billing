@@ -2,6 +2,8 @@ package com.info08.billing.callcenterbk.client.singletons;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import com.info08.billing.callcenterbk.client.exception.CallCenterException;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
@@ -12,6 +14,7 @@ import com.smartgwt.client.data.DSRequest;
 import com.smartgwt.client.data.DSResponse;
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Window;
 
 public class CommonSingleton {
 
@@ -28,9 +31,17 @@ public class CommonSingleton {
 	private DataSource servicesDS;
 	private DataSource departmentDS;
 	public Users sessionPerson;
+
+	@SuppressWarnings("rawtypes")
 	private ServerSession serverSession;
+	private boolean callCenterOperator;
+
+	private TreeMap<String, Window> dialogInstances;
 
 	public CommonSingleton() {
+		if (dialogInstances == null) {
+			dialogInstances = new TreeMap<String, Window>();
+		}
 	}
 
 	public void reInitDS() throws CallCenterException {
@@ -46,8 +57,7 @@ public class CommonSingleton {
 			dsRequest.setAttribute("operationId", "searchAllUser");
 			usersDS.fetchData(criteria, new DSCallback() {
 				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
+				public void execute(DSResponse response, Object rawData, DSRequest request) {
 
 				}
 			}, dsRequest);
@@ -58,8 +68,7 @@ public class CommonSingleton {
 			dsRequest.setAttribute("operationId", "searchDepartments");
 			departmentDS.fetchData(criteria, new DSCallback() {
 				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
+				public void execute(DSResponse response, Object rawData, DSRequest request) {
 
 				}
 			}, dsRequest);
@@ -104,10 +113,12 @@ public class CommonSingleton {
 		this.sessionPerson = sessionPerson;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public ServerSession getServerSession() {
 		return serverSession;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setServerSession(ServerSession serverSession) {
 		this.serverSession = serverSession;
 	}
@@ -116,11 +127,18 @@ public class CommonSingleton {
 		this.departmentDS = departmentDS;
 	}
 
+	public boolean isCallCenterOperator() {
+		return callCenterOperator;
+	}
+
+	public void setCallCenterOperator(boolean callCenterOperator) {
+		this.callCenterOperator = callCenterOperator;
+	}
+
 	public boolean hasPermission(String accessKey) {
 		try {
 			Long persTypeId = sessionPerson.getDepartment_id();
-			if (persTypeId != null
-					&& (persTypeId.equals(2) || persTypeId.equals(7))) {
+			if (persTypeId != null && (persTypeId.equals(2) || persTypeId.equals(7))) {
 				return true;
 			}
 			Map<String, String> mapPerms = sessionPerson.getUserPerms();
@@ -138,5 +156,37 @@ public class CommonSingleton {
 	public String getUnixTimeStamp() {
 		Date date = new Date();
 		return date.getTime() + "";
+	}
+
+	public void addDialogInstance(Window window) {
+		if (dialogInstances == null) {
+			dialogInstances = new TreeMap<String, Window>();
+		}
+		dialogInstances.put(window.getClass().getName(), window);
+	}
+
+	public void removeDialogInstance(Window window) {
+		if (dialogInstances == null) {
+			return;
+		}
+		dialogInstances.remove(window.getClass().getName());
+	}
+
+	public TreeMap<String, Window> getDialogInstances() {
+		return dialogInstances;
+	}
+
+	public void closeAllOpenDialogs() {
+		if (dialogInstances == null || dialogInstances.isEmpty()) {
+			return;
+		}
+		Set<String> keys = dialogInstances.keySet();
+		for (String key : keys) {
+			Window window = dialogInstances.get(key);
+			if (window == null) {
+				continue;
+			}
+			window.destroy();
+		}
 	}
 }

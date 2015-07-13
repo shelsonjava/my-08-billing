@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.info08.billing.callcenterbk.shared.common.Constants;
@@ -23,7 +24,6 @@ import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -44,7 +44,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class DlgAddEditTranspSchedule extends Window {
+public class DlgAddEditTranspSchedule extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -75,6 +75,7 @@ public class DlgAddEditTranspSchedule extends Window {
 
 	public DlgAddEditTranspSchedule(ListGrid listGrid, ListGridRecord pRecord,
 			final Integer transp_type_id) {
+		super();
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;

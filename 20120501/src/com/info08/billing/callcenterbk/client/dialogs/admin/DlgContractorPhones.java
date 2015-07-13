@@ -1,6 +1,7 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.shared.common.CommonFunctions;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -15,7 +16,6 @@ import com.smartgwt.client.types.FieldType;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class DlgContractorPhones extends Window {
+public class DlgContractorPhones extends MyWindow {
 
 	private IButton okButton;
 	private IButton closeButton;
@@ -63,6 +63,7 @@ public class DlgContractorPhones extends Window {
 
 	public DlgContractorPhones(final Integer organization_id,
 			ListGrid listGridPhones) {
+		super();
 		try {
 			this.listGridPhones = listGridPhones;
 			this.organization_id = organization_id;

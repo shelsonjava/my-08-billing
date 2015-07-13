@@ -1,11 +1,11 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -16,7 +16,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditStaffLanguages extends Window {
+public class DlgAddEditStaffLanguages extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -29,6 +29,7 @@ public class DlgAddEditStaffLanguages extends Window {
 	private ListGrid listGrid;
 
 	public DlgAddEditStaffLanguages(ListGrid listGrid, ListGridRecord pRecord) {
+		super();
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 

@@ -1,8 +1,8 @@
 package com.info08.billing.callcenterbk.client.dialogs.control;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DataSource;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
@@ -10,7 +10,7 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 
-public class SessDiscHistDialog extends Window {
+public class SessDiscHistDialog extends MyWindow {
 
 	private VLayout hLayout;
 	private DataSource sessSurvHistDS = null;
@@ -18,7 +18,7 @@ public class SessDiscHistDialog extends Window {
 	private DetailViewer detailViewer;
 
 	public SessDiscHistDialog(String sessionId) {
-
+		super();	
 		setWidth(850);
 		setHeight(450);
 		setTitle("გარკვევები");

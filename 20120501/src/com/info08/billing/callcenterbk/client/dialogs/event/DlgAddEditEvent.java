@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -15,7 +16,6 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TimeDisplayFormat;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -31,7 +31,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditEvent extends Window {
+public class DlgAddEditEvent extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -58,6 +58,7 @@ public class DlgAddEditEvent extends Window {
 	public DlgAddEditEvent(ListGrid listGrid, ListGridRecord pRecord,
 			Integer event_owner_id, Integer event_category_id,
 			Date defaultDate, int action) {
+		super();
 		try {
 
 			this.editRecord = pRecord;

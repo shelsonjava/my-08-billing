@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.ImageViewerItem;
 import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
 import com.smartgwt.client.data.Criteria;
@@ -22,7 +23,6 @@ import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.DoubleClickEvent;
@@ -46,7 +46,7 @@ import com.smartgwt.client.widgets.tab.events.TabSelectedHandler;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class DlgAddEditStaff extends Window {
+public class DlgAddEditStaff extends MyWindow {
 
 	// main layout
 	private VLayout hLayout;
@@ -121,6 +121,7 @@ public class DlgAddEditStaff extends Window {
 	private ToolStripButton editStaffFamousPeopleBtn;
 
 	public DlgAddEditStaff(DataSource dataSource, ListGridRecord listGridRecord) {
+		super();
 		this.dataSource = dataSource;
 		this.listGridRecord = listGridRecord;
 		setTitle(CallCenterBK.constants.manageOrgs());

@@ -32,36 +32,36 @@ public class AddressStackSelection extends SectionStackSection {
 	public static final TreeNode[] menuData = new TreeNode[] {
 			new MenuNode("100", "1", "ქვეყნები", true, "country.png"),
 			new MenuNode("101", "1", "ქალაქები", true, "city.png"),
-			new MenuNode("102", "1", "ქალაქის რეგიონები", true, "city.png"),
-			new MenuNode("103", "1", "მანძილი ქალაქებს შორის", true, "measure_distance.gif"),
-			new MenuNode("104", "1", "ქუჩების მართვა", true, "street.png"),
-			new MenuNode("105", "1", "ქუჩების ტიპების მართვა", true, "street.png"),
-			new MenuNode("106", "1", "ქუჩების დასახელებები", true, "street.png"),
-			new MenuNode("107", "1", "ქუჩების ისტორია", true, "street.png"),
-			new MenuNode("108", "1", "ინდექსები - რაიონები", true, "index.jpg"),
-			new MenuNode("109", "1", "ინდექსები - სოფლები", true, "index.jpg"),
-			new MenuNode("110", "1", "ინდექსები - ქუჩები", true, "index.jpg"),
-			new MenuNode("111", "1", "ინდექსები - ქვეყნები", true, "index.jpg") };
+			new MenuNode("102", "1", "ქალაქის რეგ.", true, "city.png"),
+			new MenuNode("103", "1", "მანძ. ქალაქ.შ", true, "measure_distance.gif"),
+			new MenuNode("104", "1", "ქუჩები", true, "street.png"),
+			new MenuNode("105", "1", "ქუჩების ტიპები", true, "street.png"),
+			new MenuNode("106", "1", "ქუჩების დასახ.", true, "street.png"),
+			new MenuNode("107", "1", "ქუჩების ისტ.", true, "street.png"),
+			new MenuNode("108", "1", "ინდ-რაიონ.", true, "index.jpg"),
+			new MenuNode("109", "1", "ინდ-სოფლ.", true, "index.jpg"),
+			new MenuNode("110", "1", "ინდ-ქუჩ.", true, "index.jpg"),
+			new MenuNode("111", "1", "ინდ-ქვეყ.", true, "index.jpg") };
 
 	private TreeGrid menuTreeGrid;
 
 	public AddressStackSelection(Body body) {
 		this.body = body;
-		setTitle("მისამართების განყოფილება");
+		setTitle("მისამართები");
 		setExpanded(false);
 		setCanCollapse(true);
 
 		Tree menuTree = new Tree();
 		menuTree.setModelType(TreeModelType.PARENT);
 		menuTree.setRootValue(1);
-		menuTree.setNameProperty("ქმედებების ჩამონათვალი");
+		menuTree.setNameProperty("ქმედებები");
 		menuTree.setIdField("Id");
 		menuTree.setParentIdField("ReportsTo");
 		menuTree.setOpenProperty("isOpen");
 		menuTree.setData(menuData);
 
 		TreeGridField formattedField = new TreeGridField(
-				"ქმედებების ჩამონათვალი");
+				"ქმედებები");
 		formattedField.setCellFormatter(new CellFormatter() {
 			public String format(Object value, ListGridRecord record,
 					int rowNum, int colNum) {

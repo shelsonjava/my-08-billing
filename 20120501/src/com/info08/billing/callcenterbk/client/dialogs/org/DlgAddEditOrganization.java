@@ -9,6 +9,7 @@ import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.MyAddressPanel2;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxItem;
 import com.info08.billing.callcenterbk.client.common.components.MyComboBoxRecord;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
@@ -26,7 +27,6 @@ import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -47,7 +47,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
-public class DlgAddEditOrganization extends Window {
+public class DlgAddEditOrganization extends MyWindow {
 
 	// main layout
 	private VLayout hLayout;
@@ -100,6 +100,7 @@ public class DlgAddEditOrganization extends Window {
 
 	public DlgAddEditOrganization(ListGridRecord parrentRecord,
 			Record listGridRecord, ListGrid organizationsGrid) {
+		super();
 		try {
 			this.organizationsGrid = organizationsGrid;
 			this.listGridRecord = listGridRecord;

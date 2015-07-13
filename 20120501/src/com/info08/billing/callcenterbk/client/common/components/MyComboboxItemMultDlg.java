@@ -15,7 +15,6 @@ import com.smartgwt.client.data.fields.DataSourceTextField;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.DragDataAction;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -26,13 +25,14 @@ import com.smartgwt.client.widgets.grid.events.RecordDoubleClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class MyComboboxItemMultDlg extends Window {
+public class MyComboboxItemMultDlg extends MyWindow {
 
 	private MyComboboxItemMultClass classItem;
 	private ListGrid srcListGrid;
 	private ListGrid destListGrid;
 
 	public MyComboboxItemMultDlg(final MyComboboxItemMultiple myItem) {
+		super();
 		classItem = myItem.getParamClass();
 
 		setWidth(classItem.getWindowWidth());

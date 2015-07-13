@@ -1,10 +1,10 @@
 package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -12,11 +12,12 @@ import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgViewCallRules extends Window {
+public class DlgViewCallRules extends MyWindow {
 
 	private VLayout mainLayout;
 
 	public DlgViewCallRules() {
+		super();
 		setTitle(CallCenterBK.constants.info());
 
 		setHeight(175);

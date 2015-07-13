@@ -2,6 +2,7 @@ package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 
 import com.google.gwt.i18n.client.NumberFormat;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.data.Criteria;
@@ -12,7 +13,6 @@ import com.smartgwt.client.types.GroupStartOpen;
 import com.smartgwt.client.types.SummaryFunctionType;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -24,7 +24,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgViewChargesByPhone extends Window {
+public class DlgViewChargesByPhone extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -33,6 +33,7 @@ public class DlgViewChargesByPhone extends Window {
 	private ListGrid listGrid;
 
 	public DlgViewChargesByPhone() {
+		super();
 		try {
 			ServerSession serverSession = CommonSingleton.getInstance()
 					.getServerSession();

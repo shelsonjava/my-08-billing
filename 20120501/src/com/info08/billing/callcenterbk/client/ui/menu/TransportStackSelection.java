@@ -24,41 +24,41 @@ public class TransportStackSelection extends SectionStackSection {
 
 	private Body body;
 	public static final TreeNode[] menuData = new TreeNode[] {
-			new MenuNode("100", "1", "ტრანსპორტის ტიპები", true,
+			new MenuNode("100", "1", "ტრანსპ. ტიპები", true,
 					"configuration.png"),
-			new MenuNode("101", "1", "სატრანსპ. კომპანიები", true,
+			new MenuNode("101", "1", "ტრანსპ. კომპ.", true,
 					"city.png"),
-			new MenuNode("102", "1", "სატრანსპ. სადგურები", true,
+			new MenuNode("102", "1", "ტრანსპ. სადგ.", true,
 					"LetterSicon.png"),
-			new MenuNode("103", "1", "ქალაქის ავტობუსი/მიკრო", true, "bus.gif"),
-			new MenuNode("104", "1", "ავტ./მიკრო მარშუტები", true,
+			new MenuNode("103", "1", "ქალ. ავტ./მიკრ", true, "bus.gif"),
+			new MenuNode("104", "1", "ავტ./მიკრ მარშ.", true,
 					"bus.gif"),
-			new MenuNode("105", "1", "ტრანსპ. განრიგი(ავიაცია)", true,
+			new MenuNode("105", "1", "განრიგი(ავ.)", true,
 					"aviation.gif"),
-			new MenuNode("106", "1", "ტრანსპ. განრიგი(რკინ.)", true,
+			new MenuNode("106", "1", "განრიგი(რკინ.)", true,
 					"train.png"),
-			new MenuNode("107", "1", "ტრანსპ. განრიგი(ავტ.)", true,
+			new MenuNode("107", "1", "განრიგი(ავტ.)", true,
 					"bus.gif") };
 
 	private TreeGrid menuTreeGrid;
 
 	public TransportStackSelection(Body body) {
 		this.body = body;
-		setTitle("ტრანსპორტის განყოფილება");
+		setTitle("ტრანსპორტი");
 		setExpanded(false);
 		setCanCollapse(true);
 
 		Tree menuTree = new Tree();
 		menuTree.setModelType(TreeModelType.PARENT);
 		menuTree.setRootValue(1);
-		menuTree.setNameProperty("ქმედებების ჩამონათვალი");
+		menuTree.setNameProperty("ქმედებები");
 		menuTree.setIdField("Id");
 		menuTree.setParentIdField("ReportsTo");
 		menuTree.setOpenProperty("isOpen");
-		menuTree.setData(menuData);
+		menuTree.setData(menuData);		
 
 		TreeGridField formattedField = new TreeGridField(
-				"ქმედებების ჩამონათვალი");
+				"ქმედებები");
 		formattedField.setCellFormatter(new CellFormatter() {
 			public String format(Object value, ListGridRecord record,
 					int rowNum, int colNum) {

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -18,7 +19,6 @@ import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -38,7 +38,7 @@ import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgHistOrganization extends Window {
+public class DlgHistOrganization extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm searchForm;
@@ -76,6 +76,7 @@ public class DlgHistOrganization extends Window {
 	private DetailViewer detailViewer;
 
 	public DlgHistOrganization(final Record abonentRecord) {
+		super();
 		try {
 			setWidth(1260);
 			setHeight(730);

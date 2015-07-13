@@ -11,7 +11,6 @@ import com.info08.billing.callcenterbk.client.service.CommonService;
 import com.info08.billing.callcenterbk.client.service.CommonServiceAsync;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.ui.layout.MainLayout;
-import com.info08.billing.callcenterbk.client.ui.layout.West;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
 import com.smartgwt.client.util.SC;
 
@@ -21,7 +20,8 @@ import com.smartgwt.client.util.SC;
  * ბრაუზერში). ამ კლასის გამოძახება ხდება როგორც მისამართით (მაგ.: <a
  * href="http://192.168.1.1:8080/CallCenter"
  * >http://192.168.1.1:8080/CallCenter</a>) ასევე მისი გამოძახება ხდება სერვლეტ
- * კლასიდან {@link com.info08.billing.callcenterbk.server.servlets.InitAppServlet} , 
+ * კლასიდან
+ * {@link com.info08.billing.callcenterbk.server.servlets.InitAppServlet} ,
  * რომელსაც თავისთავად იძახებს ე.წ. SIP კლიენტი რომელშიც შემოდის აბონენტის ზარი.
  * ანუ პროცესი მიმდინარეობს შემდეგნაირად : ზარი შემოდის SIP კლიენტში, ის ხსნის
  * ბილინგისა და ქოლცენტის პროგრამას, ელოდება მის ჩატვირთვას და და შემდგომი ამისა
@@ -120,44 +120,44 @@ public class CallCenterBK implements EntryPoint {
 	public void onModuleLoad() {
 		try {
 
-//			
-//			VLayout mainLayout = new VLayout(5);
-//			mainLayout.setWidth100();
-//			mainLayout.setHeight100();
-//			mainLayout.setMargin(5);
-//
-//			final Chart chart = new Chart()
-//					.setType(Series.Type.AREA)
-//					.setChartTitleText("Area chart with negative values")
-//					.setToolTip(
-//							new ToolTip().setFormatter(new ToolTipFormatter() {
-//								public String format(ToolTipData toolTipData) {
-//									return toolTipData.getSeriesName() + ": "
-//											+ toolTipData.getYAsLong();
-//								}
-//							})).setCredits(new Credits().setEnabled(false));
-//
-//			chart.getXAxis().setCategories("Apples", "Oranges", "Pears",
-//					"Grapes", "Bananas");
-//
-//			chart.addSeries(chart.createSeries().setName("John")
-//					.setPoints(new Number[] { 5, 3, 4, 7, 2 }));
-//			chart.addSeries(chart.createSeries().setName("Jane")
-//					.setPoints(new Number[] { 2, -2, -3, 2, 1 }));
-//			chart.addSeries(chart.createSeries().setName("Joe")
-//					.setPoints(new Number[] { 3, 4, 4, -2, 5 }));
-//
-//			mainLayout.addMember(chart);
-//			
-//			TabSet tabSet = new TabSet();
-//			tabSet.setWidth100();
-//			tabSet.setHeight100();
-//			Tab tab = new Tab();
-//			tab.setPane(mainLayout);
-//			tabSet.addTab(tab);
-//			
-//			RootPanel.get().add(tabSet);
-			
+			//
+			// VLayout mainLayout = new VLayout(5);
+			// mainLayout.setWidth100();
+			// mainLayout.setHeight100();
+			// mainLayout.setMargin(5);
+			//
+			// final Chart chart = new Chart()
+			// .setType(Series.Type.AREA)
+			// .setChartTitleText("Area chart with negative values")
+			// .setToolTip(
+			// new ToolTip().setFormatter(new ToolTipFormatter() {
+			// public String format(ToolTipData toolTipData) {
+			// return toolTipData.getSeriesName() + ": "
+			// + toolTipData.getYAsLong();
+			// }
+			// })).setCredits(new Credits().setEnabled(false));
+			//
+			// chart.getXAxis().setCategories("Apples", "Oranges", "Pears",
+			// "Grapes", "Bananas");
+			//
+			// chart.addSeries(chart.createSeries().setName("John")
+			// .setPoints(new Number[] { 5, 3, 4, 7, 2 }));
+			// chart.addSeries(chart.createSeries().setName("Jane")
+			// .setPoints(new Number[] { 2, -2, -3, 2, 1 }));
+			// chart.addSeries(chart.createSeries().setName("Joe")
+			// .setPoints(new Number[] { 3, 4, 4, -2, 5 }));
+			//
+			// mainLayout.addMember(chart);
+			//
+			// TabSet tabSet = new TabSet();
+			// tabSet.setWidth100();
+			// tabSet.setHeight100();
+			// Tab tab = new Tab();
+			// tab.setPane(mainLayout);
+			// tabSet.addTab(tab);
+			//
+			// RootPanel.get().add(tabSet);
+
 			sessionId = com.google.gwt.user.client.Window.Location
 					.getParameter("sessionId");
 
@@ -178,20 +178,27 @@ public class CallCenterBK implements EntryPoint {
 	 *             გამოისვრის შეცდომას თუ ვერ მოხდა იდენტიფიცირება ან კიდევ
 	 *             რაიმე სხვა სახის შეცდომა.
 	 */
+
+	public static void drawMainPanel() {
+		try {
+			mainLayout = new MainLayout();
+			// RootPanel.get().add(mainLayout);
+			mainLayout.draw();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void initUI() throws CallCenterException {
+		CommonSingleton.getInstance().reInitDS();
 		if (mainLayout != null) {
 			mainLayout.destroy();
 		}
-
 		if (!isOperator) {
-			CommonSingleton.getInstance().reInitDS();
-			mainLayout = new MainLayout();
-			//RootPanel.get().add(mainLayout);
-			mainLayout.draw();
-			LoginDialog loginDialog = new LoginDialog(mainLayout);
+			LoginDialog loginDialog = new LoginDialog();
 			loginDialog.draw();
 		} else {
-			commonService.login("noUserName", "noPassword", sessionId,
+			commonService.login("noUserName", "noPassword", sessionId, false,
 					new AsyncCallback<ServerSession>() {
 						@Override
 						public void onSuccess(ServerSession serverSession) {
@@ -203,8 +210,9 @@ public class CallCenterBK implements EntryPoint {
 										serverSession.getUser());
 								CommonSingleton.getInstance().setServerSession(
 										serverSession);
-								West.openByLoggedUser();
 								mainLayout.getCenterPanel().getBodyPanel();
+								mainLayout.getCenterPanel().getWestPanel()
+										.openByLoggedUser();
 								TabInfoPortal.draw();
 							} catch (Exception e) {
 								SC.say(e.toString());
@@ -226,7 +234,7 @@ public class CallCenterBK implements EntryPoint {
 	 * 
 	 * @return MainLayout აბრუნებს მთავარი განლაგების მენეჯერის კლასს.
 	 */
-	public MainLayout getMainLayout() {
+	public static MainLayout getMainLayout() {
 		return mainLayout;
 	}
 }

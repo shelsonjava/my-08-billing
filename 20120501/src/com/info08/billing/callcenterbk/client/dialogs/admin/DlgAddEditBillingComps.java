@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.admin;
 import java.util.LinkedHashMap;
 
 import com.info08.billing.callcenterbk.client.CallCenterBK;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.ClientMapUtil;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.client.utils.ClientUtils;
@@ -18,7 +19,6 @@ import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -34,7 +34,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class DlgAddEditBillingComps extends Window {
+public class DlgAddEditBillingComps extends MyWindow {
 
 	private VLayout hLayout;
 
@@ -57,11 +57,11 @@ public class DlgAddEditBillingComps extends Window {
 	private ToolStripButton deleteBtn;
 
 	public DlgAddEditBillingComps(ListGrid listGrid, ListGridRecord pRecord) {
+		super();
 		try {
 			this.editRecord = pRecord;
 			this.listGrid = listGrid;
-			setTitle(pRecord == null ? CallCenterBK.constants.addBillingComp()
-					: CallCenterBK.constants.editBillingComp());
+			setTitle(pRecord == null ? CallCenterBK.constants.addBillingComp() : CallCenterBK.constants.editBillingComp());
 
 			setHeight(600);
 			setWidth(800);
@@ -80,14 +80,12 @@ public class DlgAddEditBillingComps extends Window {
 			hLayout.setPadding(10);
 
 			billingCompNameItem = new TextItem();
-			billingCompNameItem.setTitle(CallCenterBK.constants
-					.companyNameFull());
+			billingCompNameItem.setTitle(CallCenterBK.constants.companyNameFull());
 			billingCompNameItem.setWidth("100%");
 			billingCompNameItem.setName("billingCompNameItem");
 
 			billingCompOurPercentItem = new TextItem();
-			billingCompOurPercentItem.setTitle(CallCenterBK.constants
-					.ourPercent());
+			billingCompOurPercentItem.setTitle(CallCenterBK.constants.ourPercent());
 			billingCompOurPercentItem.setWidth("100%");
 			billingCompOurPercentItem.setName("billingCompOurPercentItem");
 			billingCompOurPercentItem.setKeyPressFilter("[0-9\\.]");
@@ -97,8 +95,7 @@ public class DlgAddEditBillingComps extends Window {
 			hasCalcItem.setWidth("100%");
 			hasCalcItem.setName("hasCalcItem");
 			hasCalcItem.setDefaultToFirstOption(true);
-			hasCalcItem.setValueMap(ClientMapUtil.getInstance()
-					.getHasCalculations1());
+			hasCalcItem.setValueMap(ClientMapUtil.getInstance().getHasCalculations1());
 
 			callPriceItem = new TextItem();
 			callPriceItem.setTitle(CallCenterBK.constants.callPrice());
@@ -107,8 +104,7 @@ public class DlgAddEditBillingComps extends Window {
 			callPriceItem.setKeyPressFilter("[0-9\\.]");
 
 			mobileCompanyNameItem = new TextItem();
-			mobileCompanyNameItem.setTitle(CallCenterBK.constants
-					.mobileOperatorName());
+			mobileCompanyNameItem.setTitle(CallCenterBK.constants.mobileOperatorName());
 			mobileCompanyNameItem.setWidth("100%");
 			mobileCompanyNameItem.setName("mobile_company_name");
 
@@ -123,21 +119,16 @@ public class DlgAddEditBillingComps extends Window {
 			operatorItem.setWidth("100%");
 			operatorItem.setName("operator_src");
 			operatorItem.setDefaultToFirstOption(true);
-			ClientUtils.fillCombo(operatorItem, "OperatorsDS",
-					"searchOperators", "operator_src", "operator_src_descr");
+			ClientUtils.fillCombo(operatorItem, "OperatorsDS", "searchOperators", "operator_src", "operator_src_descr");
 
 			isMobileOperatorItem = new SelectItem();
-			isMobileOperatorItem.setTitle(CallCenterBK.constants
-					.mobileOperator());
+			isMobileOperatorItem.setTitle(CallCenterBK.constants.mobileOperator());
 			isMobileOperatorItem.setWidth("100%");
 			isMobileOperatorItem.setName("mobile_company");
 			isMobileOperatorItem.setDefaultToFirstOption(true);
-			isMobileOperatorItem.setValueMap(ClientMapUtil.getInstance()
-					.getIsMobileCompany());
+			isMobileOperatorItem.setValueMap(ClientMapUtil.getInstance().getIsMobileCompany());
 
-			dynamicForm.setFields(billingCompNameItem,
-					billingCompOurPercentItem, hasCalcItem, callPriceItem,
-					operatorItem, isMobileOperatorItem, mobileCompanyNameItem);
+			dynamicForm.setFields(billingCompNameItem, billingCompOurPercentItem, hasCalcItem, callPriceItem, operatorItem, isMobileOperatorItem, mobileCompanyNameItem);
 
 			hLayout.addMember(dynamicForm);
 
@@ -153,26 +144,22 @@ public class DlgAddEditBillingComps extends Window {
 			toolStrip.setPadding(5);
 			hLayout.addMember(toolStrip);
 
-			addBtn = new ToolStripButton(CallCenterBK.constants.add(),
-					"addIcon.png");
+			addBtn = new ToolStripButton(CallCenterBK.constants.add(), "addIcon.png");
 			addBtn.setLayoutAlign(Alignment.LEFT);
 			addBtn.setWidth(50);
 			toolStrip.addButton(addBtn);
 
-			editBtn = new ToolStripButton(CallCenterBK.constants.modify(),
-					"editIcon.png");
+			editBtn = new ToolStripButton(CallCenterBK.constants.modify(), "editIcon.png");
 			editBtn.setLayoutAlign(Alignment.LEFT);
 			editBtn.setWidth(50);
 			toolStrip.addButton(editBtn);
 
-			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(),
-					"deleteIcon.png");
+			deleteBtn = new ToolStripButton(CallCenterBK.constants.disable(), "deleteIcon.png");
 			deleteBtn.setLayoutAlign(Alignment.LEFT);
 			deleteBtn.setWidth(50);
 			toolStrip.addButton(deleteBtn);
 
-			BillingCompIndClientDS billingCompIndClientDS = BillingCompIndClientDS
-					.getInstance();
+			BillingCompIndClientDS billingCompIndClientDS = BillingCompIndClientDS.getInstance();
 
 			listGridIndexes = new ListGrid();
 			listGridIndexes.setHeight100();
@@ -187,24 +174,19 @@ public class DlgAddEditBillingComps extends Window {
 			listGridIndexes.setCanDragSelectText(true);
 			listGridIndexes.setShowRowNumbers(true);
 
-			ListGridField bill_index_start = new ListGridField(
-					"bill_index_start", CallCenterBK.constants.startIndex());
+			ListGridField bill_index_start = new ListGridField("bill_index_start", CallCenterBK.constants.startIndex());
 			bill_index_start.setAlign(Alignment.CENTER);
 
-			ListGridField bill_index_end = new ListGridField("bill_index_end",
-					CallCenterBK.constants.endIndex());
+			ListGridField bill_index_end = new ListGridField("bill_index_end", CallCenterBK.constants.endIndex());
 			bill_index_end.setAlign(Alignment.CENTER);
 
-			ListGridField applied_wholly_descr = new ListGridField(
-					"applied_wholly_descr", CallCenterBK.constants.type());
+			ListGridField applied_wholly_descr = new ListGridField("applied_wholly_descr", CallCenterBK.constants.type());
 			applied_wholly_descr.setAlign(Alignment.CENTER);
 
-			ListGridField calcul_type_descr = new ListGridField(
-					"calcul_type_descr", CallCenterBK.constants.type());
+			ListGridField calcul_type_descr = new ListGridField("calcul_type_descr", CallCenterBK.constants.type());
 			calcul_type_descr.setAlign(Alignment.CENTER);
 
-			listGridIndexes.setFields(bill_index_start, bill_index_end,
-					applied_wholly_descr, calcul_type_descr);
+			listGridIndexes.setFields(bill_index_start, bill_index_end, applied_wholly_descr, calcul_type_descr);
 
 			hLayout.addMember(listGridIndexes);
 
@@ -240,31 +222,28 @@ public class DlgAddEditBillingComps extends Window {
 			deleteBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					final ListGridRecord records[] = listGridIndexes
-							.getSelectedRecords();
+					final ListGridRecord records[] = listGridIndexes.getSelectedRecords();
 					if (records == null || records.length <= 0) {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
-					SC.ask(CallCenterBK.constants.deleteConfirm(),
-							new BooleanCallback() {
-								@Override
-								public void execute(Boolean value) {
-									if (value) {
-										for (ListGridRecord record : records) {
-											listGridIndexes.removeData(record);
-										}
-									}
+					SC.ask(CallCenterBK.constants.deleteConfirm(), new BooleanCallback() {
+						@Override
+						public void execute(Boolean value) {
+							if (value) {
+								for (ListGridRecord record : records) {
+									listGridIndexes.removeData(record);
 								}
-							});
+							}
+						}
+					});
 				}
 			});
 
 			addBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					DlgAddEditBillingCompsInd dlgAddEditBillingCompInd = new DlgAddEditBillingCompsInd(
-							listGridIndexes, null);
+					DlgAddEditBillingCompsInd dlgAddEditBillingCompInd = new DlgAddEditBillingCompsInd(listGridIndexes, null);
 					dlgAddEditBillingCompInd.show();
 				}
 			});
@@ -272,33 +251,27 @@ public class DlgAddEditBillingComps extends Window {
 			editBtn.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					ListGridRecord listGridRecord = listGridIndexes
-							.getSelectedRecord();
+					ListGridRecord listGridRecord = listGridIndexes.getSelectedRecord();
 
 					if (listGridRecord == null) {
 						SC.say(CallCenterBK.constants.pleaseSelrecord());
 						return;
 					}
 
-					DlgAddEditBillingCompsInd dlgAddEditBillingCompInd = new DlgAddEditBillingCompsInd(
-							listGridIndexes, listGridRecord);
+					DlgAddEditBillingCompsInd dlgAddEditBillingCompInd = new DlgAddEditBillingCompsInd(listGridIndexes, listGridRecord);
 					dlgAddEditBillingCompInd.show();
 				}
 			});
 
-			listGridIndexes
-					.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
-						@Override
-						public void onRecordDoubleClick(
-								RecordDoubleClickEvent event) {
-							ListGridRecord listGridRecord = listGridIndexes
-									.getSelectedRecord();
+			listGridIndexes.addRecordDoubleClickHandler(new RecordDoubleClickHandler() {
+				@Override
+				public void onRecordDoubleClick(RecordDoubleClickEvent event) {
+					ListGridRecord listGridRecord = listGridIndexes.getSelectedRecord();
 
-							DlgAddEditBillingCompsInd dlgAddEditBillingCompInd = new DlgAddEditBillingCompsInd(
-									listGridIndexes, listGridRecord);
-							dlgAddEditBillingCompInd.show();
-						}
-					});
+					DlgAddEditBillingCompsInd dlgAddEditBillingCompInd = new DlgAddEditBillingCompsInd(listGridIndexes, listGridRecord);
+					dlgAddEditBillingCompInd.show();
+				}
+			});
 
 			addItem(hLayout);
 			fillFields();
@@ -314,31 +287,23 @@ public class DlgAddEditBillingComps extends Window {
 			if (editRecord == null) {
 				return;
 			}
-			billingCompNameItem.setValue(editRecord
-					.getAttributeAsString("billing_company_name"));
-			billingCompOurPercentItem.setValue(editRecord
-					.getAttributeAsString("our_percent"));
-			hasCalcItem.setValue(editRecord
-					.getAttributeAsInt("has_calculation"));
-			callPriceItem.setValue(editRecord
-					.getAttributeAsString("call_price"));
+			billingCompNameItem.setValue(editRecord.getAttributeAsString("billing_company_name"));
+			billingCompOurPercentItem.setValue(editRecord.getAttributeAsString("our_percent"));
+			hasCalcItem.setValue(editRecord.getAttributeAsInt("has_calculation"));
+			callPriceItem.setValue(editRecord.getAttributeAsString("call_price"));
 
 			operatorItem.setValue(editRecord.getAttributeAsInt("operator_src"));
-			isMobileOperatorItem.setValue(editRecord.getAttributeAsInt(
-					"mobile_company").toString());
-			mobileCompanyNameItem.setValue(editRecord
-					.getAttributeAsString("mobile_company_name"));
+			isMobileOperatorItem.setValue(editRecord.getAttributeAsInt("mobile_company").toString());
+			mobileCompanyNameItem.setValue(editRecord.getAttributeAsString("mobile_company_name"));
 
 			DataSource billingCompsIndDS = DataSource.get("BillingCompsIndDS");
 			Criteria criteria = new Criteria();
-			criteria.setAttribute("billing_company_id",
-					editRecord.getAttributeAsInt("billing_company_id"));
+			criteria.setAttribute("billing_company_id", editRecord.getAttributeAsInt("billing_company_id"));
 			DSRequest dsRequest = new DSRequest();
 			dsRequest.setOperationId("searchAllBillingCompInds");
 			billingCompsIndDS.fetchData(criteria, new DSCallback() {
 				@Override
-				public void execute(DSResponse response, Object rawData,
-						DSRequest request) {
+				public void execute(DSResponse response, Object rawData, DSRequest request) {
 					Record[] records = response.getData();
 					if (records != null && records.length > 0) {
 						for (Record record : records) {
@@ -355,24 +320,20 @@ public class DlgAddEditBillingComps extends Window {
 
 	private void save() {
 		try {
-			String billing_company_name = billingCompNameItem
-					.getValueAsString();
-			if (billing_company_name == null
-					|| billing_company_name.trim().equals("")) {
+			String billing_company_name = billingCompNameItem.getValueAsString();
+			if (billing_company_name == null || billing_company_name.trim().equals("")) {
 				SC.say(CallCenterBK.constants.plzEnterBillingCompName());
 				return;
 			}
 			billing_company_name = billing_company_name.trim();
 
-			String our_percent_str = billingCompOurPercentItem
-					.getValueAsString();
+			String our_percent_str = billingCompOurPercentItem.getValueAsString();
 			if (our_percent_str == null || our_percent_str.trim().equals("")) {
 				SC.say(CallCenterBK.constants.plzEnterOurPercent());
 				return;
 			}
 
-			Integer has_calculation = new Integer(
-					hasCalcItem.getValueAsString());
+			Integer has_calculation = new Integer(hasCalcItem.getValueAsString());
 
 			Double our_percent = null;
 			try {
@@ -402,12 +363,9 @@ public class DlgAddEditBillingComps extends Window {
 				SC.say(CallCenterBK.constants.invalidCallPrice());
 				return;
 			}
-			Integer operator_src = Integer.parseInt(operatorItem
-					.getValueAsString());
-			Integer mobile_company = Integer.parseInt(isMobileOperatorItem
-					.getValueAsString());
-			String mobile_company_name = mobileCompanyNameItem
-					.getValueAsString();
+			Integer operator_src = Integer.parseInt(operatorItem.getValueAsString());
+			Integer mobile_company = Integer.parseInt(isMobileOperatorItem.getValueAsString());
+			String mobile_company_name = mobileCompanyNameItem.getValueAsString();
 
 			LinkedHashMap<String, LinkedHashMap<String, String>> indexes = new LinkedHashMap<String, LinkedHashMap<String, String>>();
 			RecordList recordList = listGridIndexes.getDataAsRecordList();
@@ -416,14 +374,10 @@ public class DlgAddEditBillingComps extends Window {
 				for (int i = 0; i < length; i++) {
 					Record record = recordList.get(i);
 
-					Integer bill_index_start = record
-							.getAttributeAsInt("bill_index_start");
-					Integer bill_index_end = record
-							.getAttributeAsInt("bill_index_end");
-					Integer applied_wholly = record
-							.getAttributeAsInt("applied_wholly");
-					Integer calcul_type = record
-							.getAttributeAsInt("calcul_type");
+					Integer bill_index_start = record.getAttributeAsInt("bill_index_start");
+					Integer bill_index_end = record.getAttributeAsInt("bill_index_end");
+					Integer applied_wholly = record.getAttributeAsInt("applied_wholly");
+					Integer calcul_type = record.getAttributeAsInt("calcul_type");
 					LinkedHashMap<String, String> param = new LinkedHashMap<String, String>();
 					param.put("str_bill_index_end", bill_index_end.toString());
 					param.put("str_applied_wholly", applied_wholly.toString());
@@ -434,11 +388,9 @@ public class DlgAddEditBillingComps extends Window {
 
 			Record record = new Record();
 			if (editRecord != null) {
-				record.setAttribute("billing_company_id",
-						editRecord.getAttributeAsInt("billing_company_id"));
+				record.setAttribute("billing_company_id", editRecord.getAttributeAsInt("billing_company_id"));
 			}
-			String loggedUser = CommonSingleton.getInstance()
-					.getSessionPerson().getUser_name();
+			String loggedUser = CommonSingleton.getInstance().getSessionPerson().getUser_name();
 			record.setAttribute("loggedUserName", loggedUser);
 			record.setAttribute("billing_company_name", billing_company_name);
 			record.setAttribute("our_percent", our_percent);
@@ -463,8 +415,7 @@ public class DlgAddEditBillingComps extends Window {
 				req.setAttribute("operationId", "addBillingComp");
 				listGrid.addData(record, new DSCallback() {
 					@Override
-					public void execute(DSResponse response, Object rawData,
-							DSRequest request) {
+					public void execute(DSResponse response, Object rawData, DSRequest request) {
 						destroy();
 					}
 				}, req);
@@ -472,8 +423,7 @@ public class DlgAddEditBillingComps extends Window {
 				req.setAttribute("operationId", "updateBillingComp");
 				listGrid.updateData(record, new DSCallback() {
 					@Override
-					public void execute(DSResponse response, Object rawData,
-							DSRequest request) {
+					public void execute(DSResponse response, Object rawData, DSRequest request) {
 						destroy();
 					}
 				}, req);

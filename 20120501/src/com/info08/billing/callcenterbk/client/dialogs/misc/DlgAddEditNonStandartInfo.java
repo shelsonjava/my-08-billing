@@ -1,5 +1,6 @@
 package com.info08.billing.callcenterbk.client.dialogs.misc;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.smartgwt.client.data.Criteria;
 import com.smartgwt.client.data.DSCallback;
@@ -23,7 +24,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
-public class DlgAddEditNonStandartInfo extends Window {
+public class DlgAddEditNonStandartInfo extends MyWindow {
 
 	private VLayout hLayout;
 	private DynamicForm dynamicForm;
@@ -35,6 +36,7 @@ public class DlgAddEditNonStandartInfo extends Window {
 	private ListGrid listGrid;
 
 	public DlgAddEditNonStandartInfo(ListGrid listGrid, ListGridRecord pRecord) {
+		super();
 		this.editRecord = pRecord;
 		this.listGrid = listGrid;
 

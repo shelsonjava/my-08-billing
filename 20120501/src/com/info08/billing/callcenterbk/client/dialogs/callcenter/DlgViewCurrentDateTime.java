@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
@@ -28,7 +29,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
-public class DlgViewCurrentDateTime extends Window {
+public class DlgViewCurrentDateTime extends MyWindow {
 
 	private VLayout mainLayout;
 
@@ -42,7 +43,7 @@ public class DlgViewCurrentDateTime extends Window {
 	private ToolStripButton sendSMS;
 
 	public DlgViewCurrentDateTime() {
-
+		super();
 		setTitle(CallCenterBK.constants.exactTime());
 
 		setHeight(280);

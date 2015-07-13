@@ -32,7 +32,7 @@ public class StatStackSelection extends SectionStackSection {
 		new MenuNode("103", "1", CallCenterBK.constants.statisticByBillingComp(), true,"stats.png"),
 		new MenuNode("104", "1", CallCenterBK.constants.statisticOrgCorrect(), true,"stats.png"),		
 		new MenuNode("105", "1", CallCenterBK.constants.statisticByOrgs(), true,"stats.png"),
-		new MenuNode("106", "1", CallCenterBK.constants.statisticOrgCorrect()+"(1)", true,"stats.png"),
+		new MenuNode("106", "1", CallCenterBK.constants.statisticOrgCorrect()+".1", true,"stats.png"),
 	};
 
 	private TreeGrid menuTreeGrid;

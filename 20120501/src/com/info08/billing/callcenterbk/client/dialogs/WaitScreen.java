@@ -1,13 +1,14 @@
 package com.info08.billing.callcenterbk.client.dialogs;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.HLayout;
 
-public class WaitScreen extends Window {
+public class WaitScreen extends MyWindow {
 
 	public WaitScreen() {
+		super();
 		setWidth(300);
 		setHeight(70);
 		setIsModal(true);

@@ -3,6 +3,7 @@ package com.info08.billing.callcenterbk.client.dialogs.callcenter;
 import com.info08.billing.callcenterbk.client.CallCenterBK;
 import com.info08.billing.callcenterbk.client.common.components.CanvasDisableTimer;
 import com.info08.billing.callcenterbk.client.common.components.ChargePanel;
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.info08.billing.callcenterbk.client.singletons.CommonSingleton;
 import com.info08.billing.callcenterbk.shared.common.Constants;
 import com.info08.billing.callcenterbk.shared.common.ServerSession;
@@ -18,7 +19,6 @@ import com.smartgwt.client.types.DateDisplayFormat;
 import com.smartgwt.client.types.TitleOrientation;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
@@ -46,7 +46,7 @@ import com.smartgwt.client.widgets.tree.TreeGridField;
 import com.smartgwt.client.widgets.viewer.DetailViewer;
 import com.smartgwt.client.widgets.viewer.DetailViewerField;
 
-public class DlgViewOrg extends Window {
+public class DlgViewOrg extends MyWindow {
 
 	private VLayout hLayout;
 
@@ -85,7 +85,7 @@ public class DlgViewOrg extends Window {
 
 	public DlgViewOrg(final DataSource dataSource, final Record pRecord,
 			boolean viewMainInfoFirst) {
-
+		super();
 		try {
 
 			this.record = pRecord;

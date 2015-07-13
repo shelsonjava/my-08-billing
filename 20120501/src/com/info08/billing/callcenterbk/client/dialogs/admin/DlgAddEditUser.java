@@ -1,9 +1,9 @@
 package com.info08.billing.callcenterbk.client.dialogs.admin;
 
+import com.info08.billing.callcenterbk.client.common.components.MyWindow;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.CloseClickEvent;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.events.KeyPressEvent;
@@ -13,12 +13,12 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
-public class DlgAddEditUser extends Window {
+public class DlgAddEditUser extends MyWindow {
 
 	private VLayout hLayout;
 
 	public DlgAddEditUser(Object abonentRecord) {
-
+		super();
 		setTitle(abonentRecord == null ? "ახალი მომხმარებლის დამატება"
 				: "მომხმარებლის მოდიფიცირება");
 		setHeight(600);
